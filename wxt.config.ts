@@ -83,7 +83,8 @@ export default defineConfig({
       },
       browser_specific_settings: {
         gecko: {
-          id: "{bd311a81-4530-4fcc-9178-74006155461b}",
+          // fork 专属 Firefox 扩展 ID，区别于上游 read-frog，避免 AMO 上架撞车
+          id: "translatebuff@translatebuff.com",
           strict_min_version: "112.0",
           data_collection_permissions: {
             required: ["none"],

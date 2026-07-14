@@ -29,7 +29,7 @@
 - [x] 4.2 运行测试确认失败
 - [x] 4.3 创建 `src/fork/identity/fork-build.json`（`{ "forkBuildNumber": 0 }`）与 `src/fork/identity/version.ts`（`computeForkVersion` + `readForkBuildNumber`）
 - [x] 4.4 运行测试确认通过
-- [x] 4.5 在 `wxt.config.ts` manifest 工厂接入：`name = FORK_BRANDING.name`、`version = computeForkVersion(pkg.version, readForkBuildNumber())`、`version_name`
+- [x] 4.5 在 `wxt.config.ts` manifest 工厂接入：`name = FORK_BRANDING.name`、`version = computeForkVersion(pkg.version, readForkBuildNumber())`、`version_name`，并将 Firefox `gecko.id` 改为 fork 专属 `translatebuff@translatebuff.com`（避免 AMO 上架撞车）
 - [x] 4.6 `pnpm run build` 后校验 `.output/chrome-mv3/manifest.json` 的 `name` 为品牌名、`version` 为 4 段
 - [x] 4.7 提交（feat(fork): compute independent 4-segment manifest version）
 
