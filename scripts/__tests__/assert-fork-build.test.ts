@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest"
-import { findMissingForkDomains, findUpstreamDomainHits } from "../assert-fork-build.mjs"
+import {
+  findMissingForkDomains,
+  findUpstreamDomainHits,
+  readForkDomainsFromEnv,
+} from "../assert-fork-build.mjs"
 
 describe("findUpstreamDomainHits", () => {
   it("命中上游域名时返回该域名", () => {
@@ -30,5 +34,23 @@ describe("findMissingForkDomains", () => {
         "www.translatebuff.com",
       ]),
     ).toEqual(["www.translatebuff.com"])
+  })
+})
+
+describe("readForkDomainsFromEnv", () => {
+  it("从 .env.production 文本解析 WXT_API_URL/WXT_WEBSITE_URL 的 host", () => {
+    const envText = [
+      "WXT_API_URL=https://api.translatebuff.com",
+      "WXT_WEBSITE_URL=https://www.translatebuff.com",
+      "WXT_AUTH_COOKIE_DOMAINS=translatebuff.com",
+    ].join("\n")
+    expect(readForkDomainsFromEnv(envText)).toEqual([
+      "api.translatebuff.com",
+      "www.translatebuff.com",
+    ])
+  })
+
+  it("缺失这两个键时返回空数组", () => {
+    expect(readForkDomainsFromEnv("WXT_AUTH_COOKIE_DOMAINS=translatebuff.com")).toEqual([])
   })
 })

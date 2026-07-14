@@ -1,4 +1,4 @@
-import { readdirSync, readFileSync, statSync } from "node:fs"
+import { readdirSync, readFileSync } from "node:fs"
 import { join } from "node:path"
 import { pathToFileURL } from "node:url"
 
@@ -13,20 +13,45 @@ export function findMissingForkDomains(bundleText, required) {
   return required.filter((d) => !bundleText.includes(d))
 }
 
+// 从 .env.production 文本派生 fork 域名（与构建消费同一 env 源，换域名只改 .env.production 一处）
+export function readForkDomainsFromEnv(envText) {
+  const hosts = []
+  for (const key of ["WXT_API_URL", "WXT_WEBSITE_URL"]) {
+    const match = envText.match(new RegExp(`^${key}=(.+)$`, "m"))
+    if (!match) continue
+    try {
+      hosts.push(new URL(match[1].trim()).host)
+    } catch {
+      // 忽略非法 URL
+    }
+  }
+  return hosts
+}
+
 function walk(dir, acc = []) {
-  for (const name of readdirSync(dir)) {
-    const p = join(dir, name)
-    if (statSync(p).isDirectory()) walk(p, acc)
-    else if (/\.(js|json)$/.test(name)) acc.push(p)
+  for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    const p = join(dir, entry.name)
+    if (entry.isDirectory()) walk(p, acc)
+    else if (/\.(js|json)$/.test(entry.name)) acc.push(p)
   }
   return acc
 }
 
 // 兼容 Windows 的入口判定：直接运行时才跑 CLI，被测试 import 时不触发
 if (import.meta.url === pathToFileURL(process.argv[1]).href) {
-  const requiredForkDomains = ["api.translatebuff.com", "www.translatebuff.com"]
   const upstreamResidual = ["api.readfrog.app", "www.readfrog.app"]
   const outDir = process.env.FORK_OUT_DIR ?? ".output/chrome-mv3"
+
+  let requiredForkDomains = []
+  try {
+    requiredForkDomains = readForkDomainsFromEnv(readFileSync(".env.production", "utf8"))
+  } catch {
+    // .env.production 缺失
+  }
+  if (requiredForkDomains.length === 0) {
+    console.error("无法从 .env.production 解析 fork 域名（缺失或非法），无法校验 env 覆盖是否生效")
+    process.exit(1)
+  }
 
   let bundleText = ""
   for (const file of walk(outDir)) bundleText += readFileSync(file, "utf8")

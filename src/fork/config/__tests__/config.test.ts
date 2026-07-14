@@ -7,8 +7,8 @@ describe("fork config", () => {
     expect(() => forkConfigSchema.parse(DEFAULT_FORK_CONFIG)).not.toThrow()
   })
 
-  it("把 v0 配置迁移到当前版本并补齐默认值", () => {
-    const migrated = migrateForkConfig({}, 0)
+  it("把旧配置迁移到当前版本并补齐默认值", () => {
+    const migrated = migrateForkConfig({})
     expect(forkConfigSchema.parse(migrated)).toEqual(migrated)
   })
 })
