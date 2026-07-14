@@ -21,6 +21,13 @@ Translatebuff 是 read-frog 的软 fork（上游：mengxi-ream/read-frog）。
 - src/utils/config/migration-scripts/*
 - src/utils/constants/models.ts、src/utils/constants/providers.ts
 - package.json `version`、CHANGELOG.md、pnpm-lock.yaml
+- .changeset/（保留 take-theirs、休眠；**fork 永不运行 `changeset version`/`release`**，避免删除目录导致每次同步 modify/delete 冲突）
+
+## 发版号（B1）
+
+- manifest `version` 由 `wxt.config.ts` 从上游 `package.json` 版本派生 4 段号：`${pkg.version}.${forkBuildNumber}`。
+- fork 自有发版：改 `src/fork/identity/fork-build.json` 的 `forkBuildNumber`（跟进新上游版本时归零）。
+- `package.json version` 与 `CHANGELOG.md` 一律 take-theirs，绝不在 fork 上跑 changesets。
 
 ## 唯一允许原地编辑的上游文件
 
