@@ -1,6 +1,6 @@
 import { browser } from "#imports"
+import { FORK_BRANDING } from "@/fork/branding"
 import { EXTENSION_VERSION } from "@/utils/constants/app"
-import { i18n } from "@/utils/i18n"
 
 const EDGE_VERSION_RE = /Edg(?:e|A|iOS)?\/([\d.]+)/i
 const EDGE_LEGACY_VERSION_RE = /Edge\/([\d.]+)/i
@@ -52,7 +52,8 @@ function getUILang(): string {
 }
 
 export async function setupUninstallSurvey() {
-  const surveyUrl = i18n.t("uninstallSurveyUrl")
+  // fork：卸载调研指向 fork 站点，避免改 9 个 locale 文件里的 uninstallSurveyUrl
+  const surveyUrl = `${FORK_BRANDING.websiteUrl}/uninstall-survey`
   const browserType = import.meta.env.BROWSER
 
   const url = new URL(surveyUrl)
