@@ -1,0 +1,28 @@
+{
+  "files": [
+    "wxt.config.ts",
+    "src/entrypoints/background/index.ts",
+    "src/utils/constants/app.ts",
+    "src/entrypoints/popup/app.tsx",
+    "src/entrypoints/options/app.tsx",
+    "src/entrypoints/sidepanel/app.tsx",
+    "src/entrypoints/translation-hub/app.tsx",
+    "src/entrypoints/side.content/app.tsx",
+    "src/entrypoints/selection.content/app.tsx",
+    "src/entrypoints/selection.content/index.tsx",
+    "src/utils/auth/auth-client.ts",
+    "src/utils/auth/background-auth-client.ts",
+    "src/utils/orpc/client.ts",
+    "src/utils/orpc/background-client.ts",
+    "src/entrypoints/background/uninstall-survey.ts",
+    "src/locales/en.yml",
+    "src/locales/zh-CN.yml",
+    "src/locales/zh-TW.yml",
+    "src/locales/es.yml",
+    "src/locales/ja.yml",
+    "src/locales/ko.yml",
+    "src/locales/ru.yml",
+    "src/locales/tr.yml",
+    "src/locales/vi.yml"
+  ]
+}

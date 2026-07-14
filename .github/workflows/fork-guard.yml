@@ -1,0 +1,25 @@
+name: fork-guard
+on:
+  pull_request:
+    branches: [main]
+jobs:
+  boundary:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Fork boundary check
+        run: FORK_DIFF_BASE=origin/${{ github.base_ref }} node scripts/check-fork-boundary.mjs
+      - run: pnpm run test
+      - run: pnpm run build
+      - run: pnpm run build:edge
+      - run: pnpm run build:firefox
+      - name: Assert no upstream domains in bundle
+        run: node scripts/assert-fork-build.mjs
