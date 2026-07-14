@@ -2,6 +2,7 @@ import "@/utils/zod-config"
 import type { Config, UiLanguage } from "@/types/config/config"
 import { browser, defineBackground } from "#imports"
 import { env } from "@/env"
+import { setupFork } from "@/fork/background"
 import { storageAdapter } from "@/utils/atoms/storage-adapter"
 import { CONFIG_STORAGE_KEY } from "@/utils/constants/config"
 import { initI18n, setUiLanguage } from "@/utils/i18n"
@@ -38,6 +39,7 @@ import { setupUninstallSurvey } from "./uninstall-survey"
 export default defineBackground({
   type: "module",
   main: () => {
+    setupFork()
     logger.info("Hello background!", { id: browser.runtime.id })
 
     browser.runtime.onInstalled.addListener(async (details) => {
