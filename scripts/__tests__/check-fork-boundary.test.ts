@@ -23,4 +23,9 @@ describe("classifyChangedFiles", () => {
     const { violations } = classifyChangedFiles(["src/entrypoints/popup/app.tsx"], ALLOW)
     expect(violations).toEqual(["src/entrypoints/popup/app.tsx"])
   })
+
+  it("放行 fork 自有根文件 .env.production", () => {
+    const { violations } = classifyChangedFiles([".env.production"], ALLOW)
+    expect(violations).toEqual([])
+  })
 })

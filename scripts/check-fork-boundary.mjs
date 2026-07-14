@@ -1,5 +1,6 @@
 import { execSync } from "node:child_process"
 import { readFileSync } from "node:fs"
+import { pathToFileURL } from "node:url"
 
 // 判定改动文件是否越界：允许 src/fork/** 与 allowlist 内的上游文件
 export function classifyChangedFiles(changed, allowlist) {
@@ -8,13 +9,14 @@ export function classifyChangedFiles(changed, allowlist) {
     if (f.startsWith("src/fork/")) return false
     if (f.startsWith("scripts/") || f.startsWith("docs/") || f === "FORK.md") return false
     if (f.startsWith("openspec/") || f.startsWith(".github/")) return false
+    if (f === ".env.production" || f === ".env") return false
     return !allow.has(f)
   })
   return { violations }
 }
 
-// 仅在直接运行时执行 git diff 检查（被测试 import 时不触发）
-if (import.meta.url === `file://${process.argv[1]}`) {
+// 仅在直接运行时执行 git diff 检查（被测试 import 时不触发；兼容 Windows 路径）
+if (import.meta.url === pathToFileURL(process.argv[1]).href) {
   const base = process.env.FORK_DIFF_BASE ?? "origin/main"
   const changed = execSync(`git diff --name-only ${base}...HEAD`, { encoding: "utf8" })
     .split("\n")
