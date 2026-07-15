@@ -62,7 +62,7 @@ Translatebuff 是 read-frog 的软 fork（上游：mengxi-ream/read-frog）。
 
 ### D 类 · 直接从上游同步（其余全部 = 引擎，take upstream）
 
-- src/utils/host/translate/**（翻译引擎）、src/entrypoints/background/_（除 index.ts）、content-scripts 注入逻辑、utils/_、hooks/_、未 fork 的 components/_ 等
+- `src/utils/host/translate/**`（翻译引擎）、`src/entrypoints/background/`（除 index.ts）、content-scripts 注入逻辑、`src/utils/`、`src/hooks/`、未 fork 的 `src/components/` 等
 - **操作**：merge 自动合入，无需干预。
 - `@read-frog/definitions` / `@read-frog/api-contract`：**升版本号即同步**（take 上游 package.json + `pnpm install`）；升前 diff 其常量（AUTH_BASE_PATH / ORPC_PREFIX / AUTH_COOKIE_PATTERNS / orpc 形状）防契约漂移。
 
