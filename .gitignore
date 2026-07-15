@@ -47,3 +47,6 @@ scripts/output/
 
 reference/
 .gstack/
+
+# ai
+.claude
