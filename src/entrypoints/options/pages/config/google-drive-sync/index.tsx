@@ -84,6 +84,8 @@ export function GoogleDriveSyncCard() {
                   <img
                     src={authData.userInfo.picture}
                     alt="Google Account"
+                    width={20}
+                    height={20}
                     className="size-5 rounded-full border"
                   />
                 )}

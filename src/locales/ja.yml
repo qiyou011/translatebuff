@@ -1,7 +1,6 @@
 name: 読書カエル
 extName: 読書カエル - 翻訳して学ぶ
 extDescription: 読書カエルは、あらゆるウェブサイトから言語を深く学ぶために設計されたオープンソースのブラウザ拡張機能です。
-uninstallSurveyUrl: https://tally.so/r/nPK6Ob
 account:
   login: ログイン
   webApp: ウェブアプリ
@@ -16,7 +15,7 @@ contextMenu:
   readAloudSelection: 「%s」を読み上げ
   showOriginal: 原文を表示
 sidePanel:
-  firefoxUserActionHint: Firefox では、ブラウザーのサイドバーから Read Frog を開いてください。
+  firefoxUserActionHint: Firefox では、ブラウザーのサイドバーから Translatebuff を開いてください。
   firefoxUserActionHelpText: Firefox サイドバーの開き方を見る
   firefoxUserActionHelpUrl: https://support.mozilla.org/ja/kb/use-sidebar-access-tools-and-vertical-tabs
 popup:
@@ -315,7 +314,7 @@ options:
     floatingButton:
       globalToggle:
         title: フローティングボタンを有効化
-        description: ウェブページにフローティングボタンを表示し、Read Frog機能に素早くアクセス
+        description: ウェブページにフローティングボタンを表示し、Translatebuff機能に素早くアクセス
       closeMenu:
         disableForSite: このサイトで無効化
         disableGlobally: グローバルで無効化
@@ -432,7 +431,7 @@ options:
             title: Notebase 接続
             description: このアクションの構造化された結果をリモート Notebase に保存します。
             loginRequiredTitle: Notebase を設定するにはログインが必要です
-            loginRequiredDescription: notebase を選択したりマッピングを編集したりする前に、readfrog.app にログインしてください。
+            loginRequiredDescription: notebase を選択したりマッピングを編集したりする前に、translatebuff.com にログインしてください。
             loginRequiredConnectedDescription: この接続は下のアカウントで作成されました。同じアカウントでログインするとフィールドマッピングが復元されます。別のアカウントでログインした場合、Notebase を作成または接続すると以前のマッピングは消去されます。
             loginAction: ログイン
             connectedAccountLabel: 接続済みアカウント
@@ -444,7 +443,7 @@ options:
             clearConnectionAction: 接続をクリア
             refreshAction: 更新
             emptyTitle: Notebase がまだありません
-            emptyDescription: readfrog.app で notebase を作成してから、ここに戻ってフィールドをマッピングしてください。
+            emptyDescription: translatebuff.com で notebase を作成してから、ここに戻ってフィールドをマッピングしてください。
             openNotebaseAction: Notebase を開く
             accessDeniedTitle: Notebase にアクセスできません
             accessDeniedDescription: このアカウントには Notebase データを読み込む権限がありません。
@@ -534,7 +533,7 @@ options:
       title: 個人化プロンプト
       description: 異なるタイプのプロンプトをカスタマイズすることで、翻訳時にプロンプトタイプを自ら調整できます。プロンプトとは、ユーザーがLLMに送信するテキストを指します。
       communityPrompts: コミュニティからプロンプトを取得・共有
-      communityPromptsUrl: https://github.com/mengxi-ream/read-frog/discussions/821
+      communityPromptsUrl: https://www.translatebuff.com
       addPrompt: プロンプトを追加
       default: デフォルト
       importSuccess: インポート成功
@@ -703,7 +702,7 @@ options:
       fallback: フォールバック
       selectPlaceholder: ボイスを選択
       noVoicesFound: ボイスが見つかりません
-      previewSample: Read Frog からこんにちは！朗読するときはこのように聞こえます。
+      previewSample: Translatebuff からこんにちは！朗読するときはこのように聞こえます。
     languageVoice:
       label: 言語別ボイス
       reset: リセット
@@ -728,12 +727,12 @@ options:
   config:
     title: 設定
     about:
-      title: Read Frog について
-      description: Read Frog は 2025 年 4 月に生まれました
-      mission: Read Frog は、AI 時代における質の高い教育機会への平等なアクセスを広げるため、語学学習、医学、その他の知識集約型分野で、実際の教師に近い学習体験を手頃な価格で提供することを目指しています。
+      title: Translatebuff について
+      description: Translatebuff は 2025 年 4 月に生まれました
+      mission: Translatebuff は、AI 時代における質の高い教育機会への平等なアクセスを広げるため、語学学習、医学、その他の知識集約型分野で、実際の教師に近い学習体験を手頃な価格で提供することを目指しています。
       analytics:
         title: ユーザー体験の改善に協力する
-        tooltip: 有効にすると、Read Frog は匿名の利用シグナルを送信し、機能の安定性確認、性能や UX の改善、今後優先すべき機能の判断に役立てます。
+        tooltip: 有効にすると、Translatebuff は匿名の利用シグナルを送信し、機能の安定性確認、性能や UX の改善、今後優先すべき機能の判断に役立てます。
     sync:
       title: 手動設定同期
       description: 手動で設定をインポート・エクスポート
@@ -742,7 +741,7 @@ options:
       importSuccess: 設定のインポートが完了しました
       exportSuccess: 設定のエクスポートが完了しました
       importError: インポートに失敗しました
-      versionTooNew: インポートされた設定のバージョンが新しいため、Read Frogを最新バージョンにアップグレードしてください
+      versionTooNew: インポートされた設定のバージョンが新しいため、Translatebuffを最新バージョンにアップグレードしてください
       migrationError: 移行に失敗しました
       validationError: 設定の検証に失敗しました
       exportOptions:
@@ -785,7 +784,7 @@ options:
           progress: $1/$2 個の変更を解決しました
           confirm: 同期を確認
           cancel: キャンセル
-          hasUnresolvedInChildren: ⚠ 未解決の変更を含む
+          hasUnresolvedInChildren: 未解決の変更を含む
           item: 項目
           items: 項目
           unresolvedPrompt: "[未解決 - 選択してください]"
@@ -965,7 +964,7 @@ action:
   saveToNotebaseSaving: 保存中...
   saveToNotebaseSuccess: Notebase に保存しました
   saveToNotebaseFailed: Notebase への保存に失敗しました
-  saveToNotebaseLoginRequired: Notebase に保存するには readfrog.app にログインしてください
+  saveToNotebaseLoginRequired: Notebase に保存するには translatebuff.com にログインしてください
   saveToNotebaseAccessDenied: このアカウントでは選択した Notebase にアクセスできません
   saveToNotebaseLimitExceeded: さらに Notebase ノートを保存するにはアップグレードが必要です
   saveToNotebaseTableUnavailable: 選択した Notebase は利用できなくなりました
@@ -985,8 +984,8 @@ action:
   saveToNotebaseMissingNotebaseDescription: 以前の Notebase は存在しないか、このアカウントでは開けません。新しい Notebase を作成して保存するか、Custom AI Actions で既存の Notebase に接続してください。
   saveToNotebaseAccountUnavailableDescription: ログイン中のアカウントが下の接続済みアカウントと一致しません。作成して保存すると、以前の接続設定とフィールドマッピングが置き換えられます。Custom AI Actions で既存の Notebase に接続することもできます。
   saveToNotebasePendingLogin: ログイン後に保存を完了
-  saveToNotebasePendingLoginDescription: ログイン後、Read Frog が Notebase を作成し、この結果を自動で保存します。
-  saveToNotebasePendingConnectedLoginDescription: ログイン後、Read Frog は可能であれば接続済み Notebase に保存します。このアカウントで利用できない場合は、新しい Notebase を作成して保存します。
+  saveToNotebasePendingLoginDescription: ログイン後、Translatebuff が Notebase を作成し、この結果を自動で保存します。
+  saveToNotebasePendingConnectedLoginDescription: ログイン後、Translatebuff は可能であれば接続済み Notebase に保存します。このアカウントで利用できない場合は、新しい Notebase を作成して保存します。
   upgrade: アップグレード
   openCustomActions: Custom AI Actions を開く
   openNotebase: Notebase を開く
@@ -1010,7 +1009,7 @@ subtitles:
     downloadTranslatedComplete: 翻訳字幕をダウンロードしました
     downloadSource: 元字幕をダウンロード
   state:
-    loading: Read Frog 字幕読み込み中
+    loading: Translatebuff 字幕読み込み中
     error: エラーが発生しました
   errors:
     http429: 429 YouTube字幕APIへのリクエストが多すぎます。しばらくしてから再試行してください

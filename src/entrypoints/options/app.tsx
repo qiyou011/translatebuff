@@ -62,7 +62,7 @@ const ROUTE_COMPONENTS: Record<RoutePath, ComponentType> = {
 function RouteLoadingFallback() {
   return (
     <div className="flex flex-1 items-center justify-center p-8 text-sm text-muted-foreground">
-      Loading settings...
+      Loading settings…
     </div>
   )
 }

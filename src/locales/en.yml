@@ -1,7 +1,6 @@
-name: Read Frog
-extName: "Read Frog - Translate & Learn"
-extDescription: Read Frog is an open source browser extension designed to help you learn languages deeply from any website.
-uninstallSurveyUrl: https://tally.so/r/nPK6Ob
+name: Translatebuff
+extName: "Translatebuff - Translate & Learn"
+extDescription: Translatebuff is an open source browser extension designed to help you learn languages deeply from any website.
 account:
   login: Log in
   webApp: Web app
@@ -16,7 +15,7 @@ contextMenu:
   readAloudSelection: Read aloud "%s"
   showOriginal: Show Original
 sidePanel:
-  firefoxUserActionHint: In Firefox, open Read Frog from the browser sidebar.
+  firefoxUserActionHint: In Firefox, open Translatebuff from the browser sidebar.
   firefoxUserActionHelpText: Learn how to open the Firefox sidebar
   firefoxUserActionHelpUrl: https://support.mozilla.org/en-US/kb/use-sidebar-access-tools-and-vertical-tabs
 popup:
@@ -51,7 +50,7 @@ popup:
   discord:
     tooltip: Join Discord to connect with developers and get early access to new features
   blog:
-    notification: What's new in Read Frog
+    notification: What's new in Translatebuff
   aiSmartContext: AI Smart Context
   aiSmartContextDescription: Uses webpage context to improve translation quality. Requires LLM translation provider.
   more:
@@ -316,7 +315,7 @@ options:
     floatingButton:
       globalToggle:
         title: Enable Floating Button
-        description: Display the floating button on web pages for quick access to Read Frog features
+        description: Display the floating button on web pages for quick access to Translatebuff features
       closeMenu:
         disableForSite: Disable for this site
         disableGlobally: Disable globally
@@ -433,7 +432,7 @@ options:
             title: Notebase Connection
             description: Save this action's structured results to a remote notebase.
             loginRequiredTitle: Log in to configure Notebase
-            loginRequiredDescription: Sign in on readfrog.app before choosing a notebase or editing mappings.
+            loginRequiredDescription: Sign in on translatebuff.com before choosing a notebase or editing mappings.
             loginRequiredConnectedDescription: This connection was created by the account below. If you log in as the same account, field mappings will be restored. If you log in as another account, the previous mappings will be cleared when you create or connect a Notebase.
             loginAction: Log in
             connectedAccountLabel: Connected account
@@ -445,7 +444,7 @@ options:
             clearConnectionAction: Clear connection
             refreshAction: Refresh
             emptyTitle: No notebases yet
-            emptyDescription: Create a notebase on readfrog.app, then come back here to map fields.
+            emptyDescription: Create a notebase on translatebuff.com, then come back here to map fields.
             openNotebaseAction: Open Notebase
             accessDeniedTitle: Cannot access Notebase
             accessDeniedDescription: This account does not have permission to load Notebase data.
@@ -649,7 +648,7 @@ options:
       title: Personalized Prompts
       description: Customizing different types of Prompts allows you to adjust the Prompt type yourself during translation. A Prompt represents the text that the user sends to the LLM.
       communityPrompts: Get or share prompts from community
-      communityPromptsUrl: https://github.com/mengxi-ream/read-frog/discussions/821
+      communityPromptsUrl: https://www.translatebuff.com
       addPrompt: Add Prompt
       default: Default
       importSuccess: Import Success
@@ -818,7 +817,7 @@ options:
       fallback: Fallback
       selectPlaceholder: Select a voice
       noVoicesFound: No voices found
-      previewSample: Hello from Read Frog! This is how I will sound when reading aloud.
+      previewSample: Hello from Translatebuff! This is how I will sound when reading aloud.
     languageVoice:
       label: Language Voice
       reset: Reset
@@ -844,11 +843,11 @@ options:
     title: Config
     about:
       title: About
-      description: Read Frog was born in April 2025
-      mission: Read Frog aims to expand equal access to high-quality education in the AI era by making learning experiences that feel closer to a real teacher affordable across language learning, medicine, and other knowledge-heavy fields.
+      description: Translatebuff was born in April 2025
+      mission: Translatebuff aims to expand equal access to high-quality education in the AI era by making learning experiences that feel closer to a real teacher affordable across language learning, medicine, and other knowledge-heavy fields.
       analytics:
         title: Help improve user experience
-        tooltip: When enabled, Read Frog sends anonymous product usage signals so we can verify feature reliability, improve performance and UX polish, and prioritize future work.
+        tooltip: When enabled, Translatebuff sends anonymous product usage signals so we can verify feature reliability, improve performance and UX polish, and prioritize future work.
     sync:
       title: Manual Config Sync
       description: Manually import and export your configuration settings
@@ -857,7 +856,7 @@ options:
       importSuccess: Config imported successfully
       exportSuccess: Config exported successfully
       importError: Import failed
-      versionTooNew: The imported config version is newer, please upgrade Read Frog to the latest version
+      versionTooNew: The imported config version is newer, please upgrade Translatebuff to the latest version
       migrationError: Migration failed
       validationError: Config validation failed
       exportOptions:
@@ -900,7 +899,7 @@ options:
           progress: Resolved $1/$2 changes
           confirm: Confirm Sync
           cancel: Cancel
-          hasUnresolvedInChildren: ⚠ Contains unresolved changes
+          hasUnresolvedInChildren: Contains unresolved changes
           item: item
           items: items
           unresolvedPrompt: "[Unresolved - Please select]"
@@ -939,7 +938,7 @@ options:
         confirm: Restore
       delete:
         title: Delete backup?
-        description: Are you sure you want to delete this backup? This action cannot be undone.
+        description: Are you sure you want to delete this backupThis action cannot be undone.
         cancel: Cancel
         confirm: Delete
     resetConfig:
@@ -1080,7 +1079,7 @@ action:
   saveToNotebaseSaving: Saving...
   saveToNotebaseSuccess: Saved to Notebase
   saveToNotebaseFailed: Failed to save to Notebase
-  saveToNotebaseLoginRequired: Log in on readfrog.app to save to Notebase
+  saveToNotebaseLoginRequired: Log in on translatebuff.com to save to Notebase
   saveToNotebaseAccessDenied: This account cannot access the selected Notebase
   saveToNotebaseLimitExceeded: Upgrade is required to save more Notebase notes
   saveToNotebaseTableUnavailable: The selected Notebase is no longer available
@@ -1095,13 +1094,13 @@ action:
   saveToNotebaseConnectExisting: Connect existing Notebase
   saveToNotebaseGoConfigure: Configure
   saveToNotebaseLoginConnectedTitle: Log in to save?
-  saveToNotebaseLoginConnectedDescription: This Custom Action is connected to the account below. After login, Read Frog will save to the existing Notebase when possible, or create a new Notebase for the logged-in account.
+  saveToNotebaseLoginConnectedDescription: This Custom Action is connected to the account below. After login, Translatebuff will save to the existing Notebase when possible, or create a new Notebase for the logged-in account.
   saveToNotebaseConnectionUnavailableTitle: Notebase connection unavailable
   saveToNotebaseMissingNotebaseDescription: The old Notebase no longer exists or cannot be opened by this account. Create a new Notebase and save this result, or connect an existing Notebase in Custom AI Actions.
   saveToNotebaseAccountUnavailableDescription: The logged-in account does not match the connected account below. Creating and saving will replace the previous connection and field mappings. You can also connect an existing Notebase in Custom AI Actions.
   saveToNotebasePendingLogin: Log in to finish saving
-  saveToNotebasePendingLoginDescription: After login, Read Frog will create the Notebase and save this result automatically.
-  saveToNotebasePendingConnectedLoginDescription: After login, Read Frog will save to the connected Notebase when possible. If this account cannot use it, Read Frog will create a new Notebase and save this result.
+  saveToNotebasePendingLoginDescription: After login, Translatebuff will create the Notebase and save this result automatically.
+  saveToNotebasePendingConnectedLoginDescription: After login, Translatebuff will save to the connected Notebase when possible. If this account cannot use it, Translatebuff will create a new Notebase and save this result.
   upgrade: Upgrade
   openCustomActions: Open Custom AI Actions
   openNotebase: Open Notebase
@@ -1125,7 +1124,7 @@ subtitles:
     downloadTranslatedComplete: Translated subtitles downloaded
     downloadSource: Download source subtitles
   state:
-    loading: Read Frog loading captions
+    loading: Translatebuff loading captions
     error: Error occurred
   errors:
     http429: 429 Too many requests to youtube subtitle API, please try again later

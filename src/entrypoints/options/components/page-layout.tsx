@@ -15,17 +15,17 @@ export function PageLayout({
   innerClassName?: string
 }) {
   return (
-    <div className={cn("w-full pb-8", className)}>
-      <div className="border-b">
-        <Container>
-          <header className="-ml-1.5 flex h-14 shrink-0 items-center gap-2">
+    <main className={cn("w-full pb-12", className)}>
+      <div className="sticky top-0 z-20 border-b bg-background/88 backdrop-blur-xl">
+        <Container className="max-w-5xl">
+          <header className="-ml-1.5 flex h-16 shrink-0 items-center gap-2.5">
             <SidebarTrigger />
             <Separator orientation="vertical" className="my-auto mr-1.5 h-4!" />
-            <h1>{title}</h1>
+            <h1 className="text-xl font-semibold">{title}</h1>
           </header>
         </Container>
       </div>
-      <Container className={cn("@container", innerClassName)}>{children}</Container>
-    </div>
+      <Container className={cn("@container max-w-5xl pt-5", innerClassName)}>{children}</Container>
+    </main>
   )
 }

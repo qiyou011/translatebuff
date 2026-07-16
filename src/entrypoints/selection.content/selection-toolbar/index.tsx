@@ -461,18 +461,18 @@ export function SelectionToolbar() {
           ref={tooltipRef}
           inert={!isSelectionToolbarVisible}
           className={cn(
-            `group absolute ${SELECTION_CONTENT_OVERLAY_LAYERS.selectionOverlay} overflow-visible transition-opacity`,
+            `group absolute ${SELECTION_CONTENT_OVERLAY_LAYERS.selectionOverlay} overflow-visible transition-[opacity,transform] duration-200 ease-out`,
             isSelectionToolbarVisible
-              ? "pointer-events-auto opacity-100"
-              : "pointer-events-none opacity-0",
+              ? "pointer-events-auto translate-y-0 opacity-100"
+              : "pointer-events-none translate-y-1 opacity-0",
           )}
         >
           <div
             data-slot="selection-toolbar-surface"
-            className="flex items-center rounded-sm border border-border/50 bg-popover shadow-floating"
+            className="flex items-center rounded-xl bg-popover p-1 shadow-floating"
             style={{ opacity: "var(--rf-selection-opacity, 1)" }}
           >
-            <div className="no-scrollbar flex max-w-105 items-center overflow-x-auto overflow-y-hidden rounded-sm">
+            <div className="no-scrollbar flex max-w-105 items-center overflow-x-auto overflow-y-hidden rounded-xl">
               {features.translate.enabled && <TranslateButton />}
               {features.speak.enabled && <SpeakButton />}
               <SelectionToolbarCustomActionButtons />

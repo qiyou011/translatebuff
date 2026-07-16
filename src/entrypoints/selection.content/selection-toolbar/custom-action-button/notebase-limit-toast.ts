@@ -1,5 +1,5 @@
 import { toast } from "sonner"
-import { env } from "@/env"
+import { getWebsiteUrl } from "@/fork/website-url"
 import { i18n } from "@/utils/i18n"
 import { sendMessage } from "@/utils/message"
 
@@ -9,7 +9,7 @@ export function showNotebaseLimitExceededToast() {
       label: i18n.t("action.upgrade"),
       onClick: () => {
         void sendMessage("openPage", {
-          url: new URL("/pricing", env.WXT_WEBSITE_URL).toString(),
+          url: getWebsiteUrl("/pricing"),
           active: true,
         })
       },

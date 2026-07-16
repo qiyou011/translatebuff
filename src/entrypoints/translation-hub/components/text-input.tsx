@@ -33,25 +33,27 @@ export function TextInput() {
   }
 
   return (
-    <div className="relative">
+    <div className="flex h-full min-h-[28rem] flex-col">
       <Textarea
         value={value}
         onChange={(e) => setValue(e.target.value)}
         onKeyDown={handleKeyDown}
         placeholder={i18n.t("translationHub.inputPlaceholder")}
-        className="h-96 min-h-0 resize-none px-4 py-3 text-lg!"
+        className="max-h-[calc(100vh-18rem)] min-h-32 resize-none overflow-y-auto border-0 bg-transparent px-3 py-2 text-base! leading-7 shadow-none focus-visible:ring-0"
         style={{ userSelect: "text" }}
       />
 
-      <Button
-        onClick={handleTranslate}
-        disabled={!value.trim()}
-        size="sm"
-        className="absolute right-3 bottom-3"
-      >
-        {i18n.t("translationHub.translate")}
-        <span className="ml-1.5 text-xs">⌘↵</span>
-      </Button>
+      <div className="mt-4 px-3">
+        <Button
+          onClick={handleTranslate}
+          disabled={!value.trim()}
+          size="lg"
+          className="relative h-14 w-full rounded-xl text-base font-semibold shadow-control"
+        >
+          {i18n.t("translationHub.translate")}
+          <span className="absolute right-4 text-xs font-medium opacity-70">⌘↵</span>
+        </Button>
+      </div>
     </div>
   )
 }

@@ -3,6 +3,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { Button } from "@/components/ui/base-ui/button"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/base-ui/tooltip"
 import { env } from "@/env"
+import { getWebsiteUrl } from "@/fork/website-url"
 import {
   getBlogLocaleFromUILanguage,
   getLastViewedBlogDate,
@@ -34,9 +35,7 @@ export default function BlogNotification() {
     }
     // Open the latest blog post URL directly, or fallback to /blog if not available
     // Convert relative URL to absolute URL
-    const blogUrl = latestBlogPost?.url
-      ? `${env.WXT_WEBSITE_URL}${latestBlogPost.url}`
-      : `${env.WXT_WEBSITE_URL}/blog`
+    const blogUrl = getWebsiteUrl(latestBlogPost?.url ?? "/blog")
     window.open(blogUrl, "_blank")
   }
 

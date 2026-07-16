@@ -1,6 +1,6 @@
 <div align="center"><a name="readme-top"></a>
 
-[![Read Frog banner][image-banner]][website]
+[![Translatebuff][image-banner]][website]
 
 <p align="center">
   <a href="https://trendshift.io/repositories/22377" target="_blank"><img src="https://trendshift.io/api/badge/repositories/22377" alt="mengxi-ream%2Fread-frog | Trendshift" width="250" height="55" /></a>
@@ -19,7 +19,7 @@ Open-source расширение для браузера, помогающее �
 
 [![English][english-shield]](../README.md) [![简体中文][chinese-shield]](./README.zh-CN.md) [![繁體中文][traditional-chinese-shield]](./README.zh-TW.md) [![日本語][japanese-shield]](./README.ja.md) [![한국어][korean-shield]](./README.ko.md) [![Español][spanish-shield]](./README.es.md) [![Русский][russian-shield]](./README.ru.md) [![Türkçe][turkish-shield]](./README.tr.md) [![Tiếng Việt][vietnamese-shield]](./README.vi.md)
 
-[Официальный сайт](https://readfrog.app) · [Руководство](https://www.readfrog.app/docs) · [Релизы][github-release-link] · [Блог](https://www.readfrog.app/blog)
+[Официальный сайт](https://www.translatebuff.com) · [Руководство](https://www.translatebuff.com/docs) · [Релизы][github-release-link] · [Блог](https://www.translatebuff.com/blog)
 
 <!-- SHIELD GROUP -->
 
@@ -67,15 +67,15 @@ Open-source расширение для браузера, помогающее �
 ## 📺 Демо
 
 <div align="center">
-  <img src="../assets/node-translation-demo.gif" width="38%" alt="Интерфейс popup Read Frog" />
-  <img src="../assets/page-translation-demo.gif" width="60%" alt="Интерфейс перевода Read Frog" />
+  <img src="../assets/node-translation-demo.gif" width="38%" alt="Интерфейс popup Translatebuff" />
+  <img src="../assets/page-translation-demo.gif" width="60%" alt="Интерфейс перевода Translatebuff" />
 </div>
 
 ## 👋🏻 Начало работы и сообщество
 
-Цель Read Frog — дать изучающим языки удобный, интеллектуальный и персонализированный опыт обучения. В эпоху ИИ это стало возможным, но на рынке все еще мало продуктов, которые действительно закрывают эту потребность. Поэтому мы решили создать такой инструмент сами.
+Цель Translatebuff — дать изучающим языки удобный, интеллектуальный и персонализированный опыт обучения. В эпоху ИИ это стало возможным, но на рынке все еще мало продуктов, которые действительно закрывают эту потребность. Поэтому мы решили создать такой инструмент сами.
 
-Если вы пользователь или разработчик, Read Frog может стать важной частью этого пути. Проект активно развивается, и мы будем рады сообщениям о любых [проблемах][issues-link].
+Если вы пользователь или разработчик, Translatebuff может стать важной частью этого пути. Проект активно развивается, и мы будем рады сообщениям о любых [проблемах][issues-link].
 
 ### Скачать
 
@@ -95,7 +95,7 @@ Open-source расширение для браузера, помогающее �
 >
 > **⭐️ Поставьте звезду**, чтобы получать уведомления о релизах GitHub без задержек.
 
-[![Star Read Frog on GitHub][image-star]][github-star-link]
+[![Translatebuff][image-star]][website]
 
 <details>
 <summary>
@@ -114,7 +114,7 @@ Open-source расширение для браузера, помогающее �
 
 ## ✨ Возможности
 
-Read Frog превращает обычное чтение в интернете в иммерсивный процесс изучения языка.
+Translatebuff превращает обычное чтение в интернете в иммерсивный процесс изучения языка.
 
 ### 🪄 [Пользовательские AI-действия][docs-tutorial]
 
@@ -126,7 +126,7 @@ Read Frog превращает обычное чтение в интернете
 
 Сохраняйте слова, определения, примеры, переводы и заметки в Notebase, а затем создавайте карточки с помощью настраиваемых шаблонов. Найденный во время чтения материал становится учебным без отрыва от текста.
 
-Повторяйте доступные карточки онлайн и оценивайте их как **Снова**, **Трудно**, **Хорошо** или **Легко**. Планировщик интервального повторения Read Frog учитывает ответы и показывает каждую карточку снова незадолго до того, как вы можете ее забыть.
+Повторяйте доступные карточки онлайн и оценивайте их как **Снова**, **Трудно**, **Хорошо** или **Легко**. Планировщик интервального повторения Translatebuff учитывает ответы и показывает каждую карточку снова незадолго до того, как вы можете ее забыть.
 
 ### 🔄 [Двуязычный режим / Только перевод][docs-tutorial]
 
@@ -142,7 +142,7 @@ Read Frog превращает обычное чтение в интернете
 
 ### 🧠 [Перевод с учетом контекста][docs-tutorial]
 
-Позвольте ИИ понимать полный контекст читаемой страницы. Read Frog извлекает заголовок и краткую Markdown-версию содержимого, чтобы перевод был точнее и лучше соответствовал ситуации.
+Позвольте ИИ понимать полный контекст читаемой страницы. Translatebuff извлекает заголовок и краткую Markdown-версию содержимого, чтобы перевод был точнее и лучше соответствовал ситуации.
 
 Технические термины переводятся в рамках предметной области, литературные выражения сохраняют оттенки смысла, а неоднозначные фразы трактуются по окружающему тексту.
 
@@ -158,7 +158,7 @@ Read Frog превращает обычное чтение в интернете
 
 ### 📦 [Пакетные запросы][docs-tutorial]
 
-Снижайте расходы на API до 70% благодаря интеллектуальному объединению запросов. Read Frog группирует несколько переводов в один API-вызов, уменьшая накладные расходы и использование token без потери качества.
+Снижайте расходы на API до 70% благодаря интеллектуальному объединению запросов. Translatebuff группирует несколько переводов в один API-вызов, уменьшая накладные расходы и использование token без потери качества.
 
 Система включает повторы с экспоненциальной задержкой и автоматический fallback к одиночным запросам, если пакетная обработка не удалась.
 
@@ -178,7 +178,7 @@ Read Frog превращает обычное чтение в интернете
 
 Мы приветствуем любые виды вклада.
 
-1. Расскажите о Read Frog друзьям и семье.
+1. Расскажите о Translatebuff друзьям и семье.
 2. Сообщайте об [issues][issues-link] и оставляйте feedback.
 3. Помогайте с кодом.
 
@@ -188,7 +188,7 @@ Read Frog превращает обычное чтение в интернете
 
 Попросить ИИ изучить проект: [Dosu](https://app.dosu.dev/29569286-71ba-47dd-b038-c7ab1b9d0df7/documents)
 
-Подробнее см. [Contribution Guide](https://readfrog.app/en/docs/code-contribution/contribution-guide).
+Подробнее см. [Contribution Guide](https://www.translatebuff.com/en/docs/code-contribution/contribution-guide).
 
 ReadFrog распространяется по двойной лицензии: GPLv3 и коммерческой.
 
@@ -199,7 +199,7 @@ ReadFrog распространяется по двойной лицензии: 
     <tr>
       <th colspan="2">
         <br>
-        <img src="https://contrib.rocks/image?repo=mengxi-ream/read-frog" alt="Read Frog contributors"><br>
+        <img src="https://contrib.rocks/image?repo=mengxi-ream/read-frog" alt="Translatebuff contributors"><br>
         <br>
       </th>
     </tr>
@@ -245,8 +245,8 @@ ReadFrog распространяется по двойной лицензии: 
 [extension-release-shield]: https://img.shields.io/github/package-json/v/mengxi-ream/read-frog?filename=package.json&style=flat-square&label=Latest%20Version&color=brightgreen&labelColor=black
 [github-release-link]: https://github.com/mengxi-ream/read-frog/releases
 [github-star-link]: https://github.com/mengxi-ream/read-frog/stargazers
-[image-banner]: ../assets/banner.png
-[image-star]: ../assets/star.png
+[image-banner]: ../assets/renyimiao-icon.svg
+[image-star]: ../assets/renyimiao-icon.svg
 [issues-link]: https://github.com/mengxi-ream/read-frog/issues
 [issues-shield]: https://img.shields.io/github/issues/mengxi-ream/read-frog?style=flat-square&labelColor=black
 [japanese-shield]: https://img.shields.io/badge/%E6%97%A5%E6%9C%AC%E8%AA%9E-gray?style=flat-square
@@ -262,10 +262,10 @@ ReadFrog распространяется по двойной лицензии: 
 [traditional-chinese-shield]: https://img.shields.io/badge/%E7%B9%81%E9%AB%94%E4%B8%AD%E6%96%87-gray?style=flat-square
 [turkish-shield]: https://img.shields.io/badge/T%C3%BCrk%C3%A7e-gray?style=flat-square
 [vietnamese-shield]: https://img.shields.io/badge/Ti%E1%BA%BFng%20Vi%E1%BB%87t-gray?style=flat-square
-[website]: https://readfrog.app
-[wechat-link]: ../assets/wechat-account.jpg
+[website]: https://www.translatebuff.com
+[wechat-link]: https://www.translatebuff.com
 [wechat-shield-badge]: https://img.shields.io/badge/chat-WeChat-07C160?style=for-the-badge&logo=wechat&logoColor=white&labelColor=black
 
 <!-- Feature docs link -->
 
-[docs-tutorial]: https://readfrog.app/docs
+[docs-tutorial]: https://www.translatebuff.com/docs

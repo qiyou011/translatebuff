@@ -1,6 +1,6 @@
 <div align="center"><a name="readme-top"></a>
 
-[![Read Frog banner][image-banner]][website]
+[![Translatebuff][image-banner]][website]
 
 <p align="center">
   <a href="https://trendshift.io/repositories/22377" target="_blank"><img src="https://trendshift.io/api/badge/repositories/22377" alt="mengxi-ream%2Fread-frog | Trendshift" width="250" height="55" /></a>
@@ -19,7 +19,7 @@
 
 [![English][english-shield]](../README.md) [![简体中文][chinese-shield]](./README.zh-CN.md) [![繁體中文][traditional-chinese-shield]](./README.zh-TW.md) [![日本語][japanese-shield]](./README.ja.md) [![한국어][korean-shield]](./README.ko.md) [![Español][spanish-shield]](./README.es.md) [![Русский][russian-shield]](./README.ru.md) [![Türkçe][turkish-shield]](./README.tr.md) [![Tiếng Việt][vietnamese-shield]](./README.vi.md)
 
-[公式サイト](https://readfrog.app) · [チュートリアル](https://www.readfrog.app/docs) · [更新履歴][github-release-link] · [ブログ](https://www.readfrog.app/blog)
+[公式サイト](https://www.translatebuff.com) · [チュートリアル](https://www.translatebuff.com/docs) · [更新履歴][github-release-link] · [ブログ](https://www.translatebuff.com/blog)
 
 <!-- SHIELD GROUP -->
 
@@ -67,15 +67,15 @@
 ## 📺 デモ
 
 <div align="center">
-  <img src="../assets/node-translation-demo.gif" width="38%" alt="Read Frog ポップアップ画面" />
-  <img src="../assets/page-translation-demo.gif" width="60%" alt="Read Frog 翻訳画面" />
+  <img src="../assets/node-translation-demo.gif" width="38%" alt="Translatebuff ポップアップ画面" />
+  <img src="../assets/page-translation-demo.gif" width="60%" alt="Translatebuff 翻訳画面" />
 </div>
 
 ## 👋🏻 はじめに・コミュニティ
 
-Read Frog のビジョンは、あらゆるレベルの言語学習者に、使いやすく、賢く、個人に合わせた学習体験を届けることです。AI の時代になり、それは現実的になりましたが、市場にはこの需要を満たす製品がまだ多くありません。そこで私たちは自分たちで作ることにしました。
+Translatebuff のビジョンは、あらゆるレベルの言語学習者に、使いやすく、賢く、個人に合わせた学習体験を届けることです。AI の時代になり、それは現実的になりましたが、市場にはこの需要を満たす製品がまだ多くありません。そこで私たちは自分たちで作ることにしました。
 
-ユーザーであっても開発者であっても、Read Frog はこのビジョンに向かうための重要なツールになります。現在も活発に開発中のため、問題を見つけた場合はぜひ[Issue][issues-link]で知らせてください。
+ユーザーであっても開発者であっても、Translatebuff はこのビジョンに向かうための重要なツールになります。現在も活発に開発中のため、問題を見つけた場合はぜひ[Issue][issues-link]で知らせてください。
 
 ### ダウンロード
 
@@ -95,7 +95,7 @@ Read Frog のビジョンは、あらゆるレベルの言語学習者に、使�
 >
 > **⭐️ Star をお願いします**。GitHub のリリース通知をすぐに受け取れます。
 
-[![Star Read Frog on GitHub][image-star]][github-star-link]
+[![Translatebuff][image-star]][website]
 
 <details>
 <summary>
@@ -114,7 +114,7 @@ Read Frog のビジョンは、あらゆるレベルの言語学習者に、使�
 
 ## ✨ 機能
 
-Read Frog の機能で、毎日の Web 読書を没入型の言語学習体験に変えられます。
+Translatebuff の機能で、毎日の Web 読書を没入型の言語学習体験に変えられます。
 
 ### 🪄 [カスタムAIアクション][docs-tutorial]
 
@@ -126,7 +126,7 @@ Read Frog の機能で、毎日の Web 読書を没入型の言語学習体験�
 
 語彙、定義、例文、翻訳、読書メモを Notebase に保存し、カスタマイズ可能なカードテンプレートからフラッシュカードを作成できます。読書中に見つけた内容を、流れを止めずに学習教材へ変えられます。
 
-期限が来たカードをオンラインで復習し、**もう一度**、**難しい**、**良い**、**簡単**で評価します。Read Frog の間隔反復スケジューラーが評価をもとに、忘れそうになる直前の最適なタイミングでカードを再表示します。
+期限が来たカードをオンラインで復習し、**もう一度**、**難しい**、**良い**、**簡単**で評価します。Translatebuff の間隔反復スケジューラーが評価をもとに、忘れそうになる直前の最適なタイミングでカードを再表示します。
 
 ### 🔄 [バイリンガル / 翻訳のみ][docs-tutorial]
 
@@ -142,7 +142,7 @@ Web ページ上の任意のテキストを選択すると、便利なツール�
 
 ### 🧠 [文脈対応翻訳][docs-tutorial]
 
-読んでいる内容の文脈を AI に理解させます。有効にすると、Read Frog はページタイトルと簡潔な Markdown 版の本文を抽出し、より正確で文脈に合った翻訳のために AI へ渡します。
+読んでいる内容の文脈を AI に理解させます。有効にすると、Translatebuff はページタイトルと簡潔な Markdown 版の本文を抽出し、より正確で文脈に合った翻訳のために AI へ渡します。
 
 専門用語は分野に応じて正しく訳され、文学的表現はニュアンスを保ち、曖昧な表現も周囲の文脈に基づいて解釈されます。
 
@@ -178,7 +178,7 @@ Vercel AI SDK を通じて OpenAI、DeepSeek、Anthropic Claude、Google Gemini�
 
 あらゆる種類の貢献を歓迎します。
 
-1. Read Frog を友人や家族に紹介する。
+1. Translatebuff を友人や家族に紹介する。
 2. [Issue][issues-link] やフィードバックを報告する。
 3. コードを貢献する。
 
@@ -188,7 +188,7 @@ Vercel AI SDK を通じて OpenAI、DeepSeek、Anthropic Claude、Google Gemini�
 
 AI にプロジェクトを理解させる：[Dosu](https://app.dosu.dev/29569286-71ba-47dd-b038-c7ab1b9d0df7/documents)
 
-詳しくは [Contribution Guide](https://readfrog.app/en/docs/code-contribution/contribution-guide) を確認してください。
+詳しくは [Contribution Guide](https://www.translatebuff.com/en/docs/code-contribution/contribution-guide) を確認してください。
 
 ReadFrog は GPLv3 と商用ライセンスのデュアルライセンスです。
 
@@ -199,7 +199,7 @@ ReadFrog は GPLv3 と商用ライセンスのデュアルライセンスです�
     <tr>
       <th colspan="2">
         <br>
-        <img src="https://contrib.rocks/image?repo=mengxi-ream/read-frog" alt="Read Frog contributors"><br>
+        <img src="https://contrib.rocks/image?repo=mengxi-ream/read-frog" alt="Translatebuff contributors"><br>
         <br>
       </th>
     </tr>
@@ -245,8 +245,8 @@ ReadFrog は GPLv3 と商用ライセンスのデュアルライセンスです�
 [extension-release-shield]: https://img.shields.io/github/package-json/v/mengxi-ream/read-frog?filename=package.json&style=flat-square&label=Latest%20Version&color=brightgreen&labelColor=black
 [github-release-link]: https://github.com/mengxi-ream/read-frog/releases
 [github-star-link]: https://github.com/mengxi-ream/read-frog/stargazers
-[image-banner]: ../assets/banner.png
-[image-star]: ../assets/star.png
+[image-banner]: ../assets/renyimiao-icon.svg
+[image-star]: ../assets/renyimiao-icon.svg
 [issues-link]: https://github.com/mengxi-ream/read-frog/issues
 [issues-shield]: https://img.shields.io/github/issues/mengxi-ream/read-frog?style=flat-square&labelColor=black
 [japanese-shield]: https://img.shields.io/badge/%E6%97%A5%E6%9C%AC%E8%AA%9E-gray?style=flat-square
@@ -262,10 +262,10 @@ ReadFrog は GPLv3 と商用ライセンスのデュアルライセンスです�
 [traditional-chinese-shield]: https://img.shields.io/badge/%E7%B9%81%E9%AB%94%E4%B8%AD%E6%96%87-gray?style=flat-square
 [turkish-shield]: https://img.shields.io/badge/T%C3%BCrk%C3%A7e-gray?style=flat-square
 [vietnamese-shield]: https://img.shields.io/badge/Ti%E1%BA%BFng%20Vi%E1%BB%87t-gray?style=flat-square
-[website]: https://readfrog.app
-[wechat-link]: ../assets/wechat-account.jpg
+[website]: https://www.translatebuff.com
+[wechat-link]: https://www.translatebuff.com
 [wechat-shield-badge]: https://img.shields.io/badge/chat-WeChat-07C160?style=for-the-badge&logo=wechat&logoColor=white&labelColor=black
 
 <!-- Feature docs link -->
 
-[docs-tutorial]: https://readfrog.app/docs
+[docs-tutorial]: https://www.translatebuff.com/docs

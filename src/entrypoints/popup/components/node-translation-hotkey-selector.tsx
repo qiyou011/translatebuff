@@ -49,7 +49,7 @@ export default function NodeTranslationHotkeySelector() {
       >
         <SelectTrigger
           size="sm"
-          className="ring-none -mt-3.5 -mb-4 -ml-2 h-5! cursor-pointer truncate rounded-md border-none bg-transparent! px-2 pt-3.5 pb-4 text-[13px] font-medium shadow-none focus-visible:border-none focus-visible:ring-0"
+          className="ring-none -mt-3.5 -mb-4 -ml-2 h-5! cursor-pointer truncate rounded-md border-none bg-transparent! px-2 pt-3.5 pb-4 text-sm font-medium shadow-none focus-visible:border-none focus-visible:ring-0"
         >
           <div className="truncate">
             <HotkeyDisplay hotkey={translateConfig.node.hotkey} />

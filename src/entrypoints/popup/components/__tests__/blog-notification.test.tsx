@@ -4,6 +4,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { render, waitFor } from "@testing-library/react"
 import * as React from "react"
 import { afterEach, describe, expect, it, vi } from "vitest"
+import { env } from "@/env"
+import { version } from "../../../../../package.json"
 import BlogNotification from "../blog-notification"
 
 const getLastViewedBlogDateMock = vi.fn<(...args: any[]) => any>()
@@ -106,9 +108,9 @@ describe("blogNotification", () => {
 
     await waitFor(() => {
       expect(getLatestBlogDateMock).toHaveBeenCalledWith(
-        "https://www.readfrog.app/api/blog/latest",
+        `${env.WXT_WEBSITE_URL}/api/blog/latest`,
         "zh",
-        expect.stringMatching(/^\d+\.\d+\.\d+$/),
+        version,
       )
     })
   })

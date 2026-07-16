@@ -34,7 +34,7 @@ export default function TranslatePromptSelector() {
 
   return (
     <div className="flex items-center justify-between gap-2">
-      <span className="flex items-center gap-1.5 text-[13px] font-medium">
+      <span className="flex items-center gap-1.5 text-sm font-medium">
         {i18n.t("translatePrompt.title")}
         <HelpTooltip>{i18n.t("translatePrompt.description")}</HelpTooltip>
       </span>
@@ -50,7 +50,7 @@ export default function TranslatePromptSelector() {
           })
         }}
       >
-        <SelectTrigger className="h-7! w-31 pr-1.5 pl-2.5">
+        <SelectTrigger className="h-9! w-36 border-0 bg-muted/70 pr-2 pl-3 shadow-none">
           <SelectValue />
         </SelectTrigger>
         <SelectContent>

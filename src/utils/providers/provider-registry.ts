@@ -6,12 +6,12 @@ import type {
   ProviderSelectorItem,
   ProviderSelectorOption,
 } from "@/utils/providers/provider-display"
-import readFrogLogo from "@/assets/providers/read-frog-provider.png?url&no-inline"
+import translatebuffLogo from "@/assets/icons/renyimiao.svg?url&no-inline"
 import { isLLMProviderConfig, isTranslateProviderConfig } from "@/types/config/provider"
 import { i18n } from "@/utils/i18n"
 
 export const FREE_AI_PROVIDER_ID = "read-frog-free-ai"
-export const FREE_AI_PROVIDER_LOGO = readFrogLogo
+export const FREE_AI_PROVIDER_LOGO = translatebuffLogo
 
 const FREE_AI_PROVIDER_NAME_KEY = "options.apiProviders.providers.name.freeAi"
 const FREE_AI_PROVIDER_FALLBACK_NAME = "Free AI Service"

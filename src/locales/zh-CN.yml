@@ -1,7 +1,6 @@
-name: 陪读蛙
-extName: 陪读蛙 - 翻译与学习
-extDescription: 陪读蛙是一款开放源代码的浏览器插件，旨在帮助您从任何网站深入学习语言。
-uninstallSurveyUrl: https://tally.so/r/3E9XDL
+name: 任译喵
+extName: 任译喵 - 翻译与学习
+extDescription: 任译喵是一款开放源代码的浏览器插件，旨在帮助您从任何网站深入学习语言。
 account:
   login: 登录
   webApp: 网页应用
@@ -16,7 +15,7 @@ contextMenu:
   readAloudSelection: 朗读”%s”
   showOriginal: 显示原文
 sidePanel:
-  firefoxUserActionHint: 在 Firefox 中，请从浏览器侧边栏打开陪读蛙。
+  firefoxUserActionHint: 在 Firefox 中，请从浏览器侧边栏打开任译喵。
   firefoxUserActionHelpText: 查看 Firefox 侧边栏说明
   firefoxUserActionHelpUrl: https://support.mozilla.org/zh-CN/kb/use-sidebar-access-tools-and-vertical-tabs
 popup:
@@ -51,7 +50,7 @@ popup:
   discord:
     tooltip: 加入 Discord 与开发者交流，抢先体验新功能
   blog:
-    notification: 陪读蛙更新动态
+    notification: 任译喵更新动态
   aiSmartContext: AI 智能上下文
   aiSmartContextDescription: 结合网页上下文提升翻译效果。需要配置 LLM 翻译服务商。
   more:
@@ -316,7 +315,7 @@ options:
     floatingButton:
       globalToggle:
         title: 启用悬浮按钮
-        description: 在网页上显示悬浮按钮，快速访问陪读蛙功能
+        description: 在网页上显示悬浮按钮，快速访问任译喵功能
       closeMenu:
         disableForSite: 当前网站禁用
         disableGlobally: 全局禁用
@@ -433,7 +432,7 @@ options:
             title: 笔记库连接
             description: 将这个指令的结构化结果保存到远程笔记库。
             loginRequiredTitle: 登录后才能配置笔记库
-            loginRequiredDescription: 先在 readfrog.app 登录，然后再选择笔记库和编辑映射。
+            loginRequiredDescription: 先在 translatebuff.com 登录，然后再选择笔记库和编辑映射。
             loginRequiredConnectedDescription: 这个连接来自下面的账号。如果登录原账号，会恢复字段映射；如果登录其他账号，创建或连接笔记库时会清空之前的字段映射。
             loginAction: 去登录
             connectedAccountLabel: 已连接账号
@@ -445,7 +444,7 @@ options:
             clearConnectionAction: 清空连接
             refreshAction: 刷新
             emptyTitle: 还没有笔记库
-            emptyDescription: 先去 readfrog.app 创建一个笔记库，再回来映射字段。
+            emptyDescription: 先去 translatebuff.com 创建一个笔记库，再回来映射字段。
             openNotebaseAction: 打开笔记库
             accessDeniedTitle: 无法访问笔记库
             accessDeniedDescription: 当前账号没有权限加载笔记库数据。
@@ -649,7 +648,7 @@ options:
       title: 个性化 Prompt
       description: 自定义不同类型的 Prompt，可以在翻译时自行调整 Prompt 类型。Prompt 表示以用户身份发送给 LLM 的文本。
       communityPrompts: 获取或分享社区 Prompt
-      communityPromptsUrl: https://github.com/mengxi-ream/read-frog/discussions/820
+      communityPromptsUrl: https://www.translatebuff.com
       addPrompt: 添加 Prompt
       default: 通用
       importSuccess: 导入成功
@@ -818,7 +817,7 @@ options:
       fallback: 兜底
       selectPlaceholder: 请选择一个声音
       noVoicesFound: 未找到语音
-      previewSample: 来自 Read Frog 的问候！这是我朗读时的声音。
+      previewSample: 来自任译喵的问候！这是我朗读时的声音。
     languageVoice:
       label: 语言语音
       reset: 重置
@@ -844,11 +843,11 @@ options:
     title: 配置
     about:
       title: 关于
-      description: Read Frog 出生于 2025 年 4 月
-      mission: Read Frog 致力于在 AI 时代扩大高质量教育机会的平等可及性，通过更低成本地提供尽可能接近真人教师的学习体验，覆盖语言学习、医学以及其他知识密集型领域。
+      description: 任译喵出生于 2025 年 4 月
+      mission: 任译喵致力于在 AI 时代扩大高质量教育机会的平等可及性，通过更低成本地提供尽可能接近真人教师的学习体验，覆盖语言学习、医学以及其他知识密集型领域。
       analytics:
         title: 帮助改进用户体验
-        tooltip: 开启后，Read Frog 会发送匿名的产品使用信号，用于验证功能是否稳定、优化性能与交互细节，并帮助我们决定接下来优先投入的方向。
+        tooltip: 开启后，任译喵会发送匿名的产品使用信号，用于验证功能是否稳定、优化性能与交互细节，并帮助我们决定接下来优先投入的方向。
     sync:
       title: 手动配置同步
       description: 手动导入和导出您的配置设置
@@ -857,7 +856,7 @@ options:
       importSuccess: 配置导入成功
       exportSuccess: 配置导出成功
       importError: 导入失败
-      versionTooNew: 导入的配置版本较新，请升级 Read Frog 到最新版本
+      versionTooNew: 导入的配置版本较新，请升级任译喵到最新版本
       migrationError: 迁移失败
       validationError: 配置验证失败
       exportOptions:
@@ -900,7 +899,7 @@ options:
           progress: 已解决 $1/$2 个更改
           confirm: 确认同步
           cancel: 取消
-          hasUnresolvedInChildren: ⚠ 包含待解决项
+          hasUnresolvedInChildren: 包含待解决项
           item: 项
           items: 项
           unresolvedPrompt: "[待解决 - 请选择]"
@@ -1080,7 +1079,7 @@ action:
   saveToNotebaseSaving: 保存中...
   saveToNotebaseSuccess: 已保存到笔记库
   saveToNotebaseFailed: 保存到笔记库失败
-  saveToNotebaseLoginRequired: 请先在 readfrog.app 登录后再保存到笔记库
+  saveToNotebaseLoginRequired: 请先在 translatebuff.com 登录后再保存到笔记库
   saveToNotebaseAccessDenied: 当前账号无法访问选中的笔记库
   saveToNotebaseLimitExceeded: 需要升级后才能保存更多笔记库内容
   saveToNotebaseTableUnavailable: 选中的笔记库已不可用
@@ -1100,8 +1099,8 @@ action:
   saveToNotebaseMissingNotebaseDescription: 旧笔记库不存在或当前账号无法打开。可以创建新的笔记库并保存当前结果，或去 Custom AI Actions 连接已有笔记库。
   saveToNotebaseAccountUnavailableDescription: 当前登录账号和下方已连接账号不同。选择创建并保存会替换之前的连接配置和字段映射；也可以去 Custom AI Actions 连接已有笔记库。
   saveToNotebasePendingLogin: 登录后继续保存
-  saveToNotebasePendingLoginDescription: 登录完成后，Read Frog 会自动创建笔记库并保存当前结果。
-  saveToNotebasePendingConnectedLoginDescription: 登录完成后，Read Frog 会优先保存到已连接的笔记库；如果当前账号无法使用它，会创建新的笔记库并保存当前结果。
+  saveToNotebasePendingLoginDescription: 登录完成后，任译喵会自动创建笔记库并保存当前结果。
+  saveToNotebasePendingConnectedLoginDescription: 登录完成后，任译喵会优先保存到已连接的笔记库；如果当前账号无法使用它，会创建新的笔记库并保存当前结果。
   upgrade: 升级
   openCustomActions: 打开 Custom AI Actions
   openNotebase: 打开笔记库
@@ -1125,7 +1124,7 @@ subtitles:
     downloadTranslatedComplete: 翻译字幕已下载
     downloadSource: 下载原字幕
   state:
-    loading: Read Frog 字幕加载中
+    loading: 任译喵字幕加载中
     error: 发生错误
   errors:
     http429: 429 youtube 字幕接口请求次数过多，请稍后再试

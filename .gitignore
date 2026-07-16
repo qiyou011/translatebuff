@@ -8,6 +8,7 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
+.pnpm-store/
 .output
 stats.html
 stats-*.html
@@ -50,3 +51,6 @@ reference/
 
 # ai
 .claude
+.agents/
+.codex/
+.artifacts/

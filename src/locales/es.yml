@@ -1,7 +1,6 @@
-name: Read Frog
-extName: Read Frog - Traduce y aprende
-extDescription: Read Frog es una extensión de navegador de código abierto diseñada para ayudarte a aprender idiomas en profundidad desde cualquier sitio web.
-uninstallSurveyUrl: https://tally.so/r/nPK6Ob
+name: Translatebuff
+extName: Translatebuff - Traduce y aprende
+extDescription: Translatebuff es una extensión de navegador de código abierto diseñada para ayudarte a aprender idiomas en profundidad desde cualquier sitio web.
 account:
   login: Iniciar sesión
   webApp: Aplicación web
@@ -16,7 +15,7 @@ contextMenu:
   readAloudSelection: Leer en voz alta "%s"
   showOriginal: Mostrar original
 sidePanel:
-  firefoxUserActionHint: En Firefox, abre Read Frog desde la barra lateral del navegador.
+  firefoxUserActionHint: En Firefox, abre Translatebuff desde la barra lateral del navegador.
   firefoxUserActionHelpText: Aprende a abrir la barra lateral de Firefox
   firefoxUserActionHelpUrl: https://support.mozilla.org/en-US/kb/use-sidebar-access-tools-and-vertical-tabs
 popup:
@@ -51,7 +50,7 @@ popup:
   discord:
     tooltip: Únete a Discord para conectar con desarrolladores y obtener acceso anticipado a nuevas funciones
   blog:
-    notification: Novedades de Read Frog
+    notification: Novedades de Translatebuff
   aiSmartContext: Contexto inteligente de IA
   aiSmartContextDescription: Usa el contexto de la página web para mejorar la calidad de la traducción. Requiere un proveedor de traducción LLM.
   more:
@@ -316,7 +315,7 @@ options:
     floatingButton:
       globalToggle:
         title: Activar botón flotante
-        description: Muestra el botón flotante en páginas web para acceder rápidamente a las funciones de Read Frog
+        description: Muestra el botón flotante en páginas web para acceder rápidamente a las funciones de Translatebuff
       closeMenu:
         disableForSite: Desactivar para este sitio
         disableGlobally: Desactivar globalmente
@@ -433,7 +432,7 @@ options:
             title: Conexión de Notebase
             description: Guarda los resultados estructurados de esta acción en una Notebase remota.
             loginRequiredTitle: Inicia sesión para configurar Notebase
-            loginRequiredDescription: Inicia sesión en readfrog.app antes de elegir una Notebase o editar asignaciones.
+            loginRequiredDescription: Inicia sesión en translatebuff.com antes de elegir una Notebase o editar asignaciones.
             loginRequiredConnectedDescription: Esta conexión fue creada por la cuenta de abajo. Si inicias sesión con la misma cuenta, se restaurarán las asignaciones de campos. Si inicias sesión con otra cuenta, las asignaciones anteriores se borrarán al crear o conectar una Notebase.
             loginAction: Iniciar sesión
             connectedAccountLabel: Cuenta conectada
@@ -445,7 +444,7 @@ options:
             clearConnectionAction: Borrar conexión
             refreshAction: Actualizar
             emptyTitle: Aún no hay Notebases
-            emptyDescription: Crea una Notebase en readfrog.app y vuelve aquí para asignar campos.
+            emptyDescription: Crea una Notebase en translatebuff.com y vuelve aquí para asignar campos.
             openNotebaseAction: Abrir Notebase
             accessDeniedTitle: No se puede acceder a Notebase
             accessDeniedDescription: Esta cuenta no tiene permiso para cargar datos de Notebase.
@@ -649,7 +648,7 @@ options:
       title: Prompts personalizados
       description: Personalizar distintos tipos de Prompts te permite ajustar tú mismo el tipo de Prompt durante la traducción. Un Prompt representa el texto que el usuario envía al LLM.
       communityPrompts: Obtener o compartir prompts de la comunidad
-      communityPromptsUrl: https://github.com/mengxi-ream/read-frog/discussions/821
+      communityPromptsUrl: https://www.translatebuff.com
       addPrompt: Añadir Prompt
       default: Predeterminado
       importSuccess: Importación correcta
@@ -818,7 +817,7 @@ options:
       fallback: Alternativa
       selectPlaceholder: Selecciona una voz
       noVoicesFound: No se encontraron voces
-      previewSample: ¡Hola desde Read Frog! Así sonaré al leer en voz alta.
+      previewSample: ¡Hola desde Translatebuff! Así sonaré al leer en voz alta.
     languageVoice:
       label: Voz por idioma
       reset: Restablecer
@@ -844,11 +843,11 @@ options:
     title: Configuración
     about:
       title: Acerca de
-      description: Read Frog nació en abril de 2025
-      mission: Read Frog busca ampliar el acceso igualitario a educación de alta calidad en la era de la AI haciendo asequibles experiencias de aprendizaje que se sientan más cercanas a un profesor real, en el aprendizaje de idiomas, medicina y otros campos intensivos en conocimiento.
+      description: Translatebuff nació en abril de 2025
+      mission: Translatebuff busca ampliar el acceso igualitario a educación de alta calidad en la era de la AI haciendo asequibles experiencias de aprendizaje que se sientan más cercanas a un profesor real, en el aprendizaje de idiomas, medicina y otros campos intensivos en conocimiento.
       analytics:
         title: Ayuda a mejorar la experiencia de usuario
-        tooltip: Cuando está activado, Read Frog envía señales anónimas de uso del producto para que podamos verificar la fiabilidad de las funciones, mejorar el rendimiento y el acabado de la UX, y priorizar trabajos futuros.
+        tooltip: Cuando está activado, Translatebuff envía señales anónimas de uso del producto para que podamos verificar la fiabilidad de las funciones, mejorar el rendimiento y el acabado de la UX, y priorizar trabajos futuros.
     sync:
       title: Sincronización manual de configuración
       description: Importa y exporta manualmente tus ajustes de configuración
@@ -857,7 +856,7 @@ options:
       importSuccess: Configuración importada correctamente
       exportSuccess: Configuración exportada correctamente
       importError: Error al importar
-      versionTooNew: La versión de configuración importada es más reciente; actualiza Read Frog a la última versión
+      versionTooNew: La versión de configuración importada es más reciente; actualiza Translatebuff a la última versión
       migrationError: Error de migración
       validationError: Error de validación de configuración
       exportOptions:
@@ -900,7 +899,7 @@ options:
           progress: $1/$2 cambios resueltos
           confirm: Confirmar sincronización
           cancel: Cancelar
-          hasUnresolvedInChildren: ⚠ Contiene cambios sin resolver
+          hasUnresolvedInChildren: Contiene cambios sin resolver
           item: elemento
           items: elementos
           unresolvedPrompt: "[Unresolved - Please select]"
@@ -939,7 +938,7 @@ options:
         confirm: Restaurar
       delete:
         title: ¿Eliminar copia de seguridad?
-        description: ¿Seguro que quieres eliminar esta copia de seguridad? Esta acción no se puede deshacer.
+        description: ¿Seguro que quieres eliminar esta copia de seguridadEsta acción no se puede deshacer.
         cancel: Cancelar
         confirm: Eliminar
     resetConfig:
@@ -1080,7 +1079,7 @@ action:
   saveToNotebaseSaving: Guardando...
   saveToNotebaseSuccess: Guardado en Notebase
   saveToNotebaseFailed: No se pudo guardar en Notebase
-  saveToNotebaseLoginRequired: Inicia sesión en readfrog.app para guardar en Notebase
+  saveToNotebaseLoginRequired: Inicia sesión en translatebuff.com para guardar en Notebase
   saveToNotebaseAccessDenied: Esta cuenta no puede acceder a la Notebase seleccionada
   saveToNotebaseLimitExceeded: Se requiere una mejora para guardar más notas de Notebase
   saveToNotebaseTableUnavailable: La Notebase seleccionada ya no está disponible
@@ -1095,13 +1094,13 @@ action:
   saveToNotebaseConnectExisting: Conectar Notebase existente
   saveToNotebaseGoConfigure: Configurar
   saveToNotebaseLoginConnectedTitle: ¿Iniciar sesión para guardar?
-  saveToNotebaseLoginConnectedDescription: Esta Custom Action está conectada a la cuenta de abajo. Después de iniciar sesión, Read Frog guardará en la Notebase existente si es posible, o creará una nueva Notebase para la cuenta actual.
+  saveToNotebaseLoginConnectedDescription: Esta Custom Action está conectada a la cuenta de abajo. Después de iniciar sesión, Translatebuff guardará en la Notebase existente si es posible, o creará una nueva Notebase para la cuenta actual.
   saveToNotebaseConnectionUnavailableTitle: Conexión de Notebase no disponible
   saveToNotebaseMissingNotebaseDescription: La Notebase anterior ya no existe o esta cuenta no puede abrirla. Crea una nueva Notebase y guarda este resultado, o conecta una Notebase existente en Custom AI Actions.
   saveToNotebaseAccountUnavailableDescription: La cuenta actual no coincide con la cuenta conectada de abajo. Crear y guardar reemplazará la conexión anterior y los mapeos de campos. También puedes conectar una Notebase existente en Custom AI Actions.
   saveToNotebasePendingLogin: Inicia sesión para terminar de guardar
-  saveToNotebasePendingLoginDescription: Después de iniciar sesión, Read Frog creará la Notebase y guardará este resultado automáticamente.
-  saveToNotebasePendingConnectedLoginDescription: Después de iniciar sesión, Read Frog guardará en la Notebase conectada si es posible. Si esta cuenta no puede usarla, creará una nueva Notebase y guardará este resultado.
+  saveToNotebasePendingLoginDescription: Después de iniciar sesión, Translatebuff creará la Notebase y guardará este resultado automáticamente.
+  saveToNotebasePendingConnectedLoginDescription: Después de iniciar sesión, Translatebuff guardará en la Notebase conectada si es posible. Si esta cuenta no puede usarla, creará una nueva Notebase y guardará este resultado.
   upgrade: Mejorar plan
   openCustomActions: Abrir Custom AI Actions
   openNotebase: Abrir Notebase
@@ -1125,7 +1124,7 @@ subtitles:
     downloadTranslatedComplete: Subtítulos traducidos descargados
     downloadSource: Descargar subtítulos de origen
   state:
-    loading: Read Frog está cargando subtítulos
+    loading: Translatebuff está cargando subtítulos
     error: Se produjo un error
   errors:
     http429: 429 Demasiadas solicitudes a la API de subtítulos de youtube; inténtalo de nuevo más tarde

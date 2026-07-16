@@ -74,6 +74,7 @@ export function ContextDetailsButton({
                 type="button"
                 className={cn(
                   buttonVariants({ variant: "ghost-secondary", size: "icon-sm" }),
+                  "size-7",
                   className,
                 )}
                 onClick={handleClick}
@@ -136,7 +137,11 @@ export function RegenerateButton({
       render={
         <button
           type="button"
-          className={cn(buttonVariants({ variant: "ghost-secondary", size: "icon-sm" }), className)}
+          className={cn(
+            buttonVariants({ variant: "ghost-secondary", size: "icon-sm" }),
+            "size-7",
+            className,
+          )}
           onClick={handleClick}
           aria-label={i18n.t("action.regenerate")}
           title={i18n.t("action.regenerate")}

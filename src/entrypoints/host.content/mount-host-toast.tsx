@@ -1,6 +1,6 @@
 import ReactDOM from "react-dom/client"
 import themeCSS from "@/assets/styles/theme.css?inline"
-import FrogToast from "@/components/frog-toast"
+import BrandToast from "@/components/brand-toast"
 import { NOTRANSLATE_CLASS, REACT_SHADOW_HOST_CLASS } from "@/utils/constants/dom-labels"
 import { LocaleBoundary } from "@/utils/i18n/locale-boundary"
 import { ShadowHostBuilder } from "@/utils/react-shadow-host/shadow-host-builder"
@@ -32,7 +32,7 @@ export function mountHostToast(): () => void {
         translate-text.ts's toast.error(i18n.t(...)) — in the current UI language.
       */}
       <LocaleBoundary>
-        <FrogToast />
+        <BrandToast />
       </LocaleBoundary>
     </div>,
   )

@@ -37,7 +37,7 @@ export function CopyButton({ text }: { text: string | undefined }) {
       render={
         <button
           type="button"
-          className={cn(buttonVariants({ variant: "ghost-secondary", size: "icon-sm" }))}
+          className={cn(buttonVariants({ variant: "ghost-secondary", size: "icon-sm" }), "size-7")}
           onClick={handleCopy}
         />
       }
