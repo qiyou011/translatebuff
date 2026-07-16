@@ -2,14 +2,24 @@ import { execSync } from "node:child_process"
 import { readFileSync } from "node:fs"
 import { pathToFileURL } from "node:url"
 
+// fork 净新增/自有的根级 meta 文件：上游永不创建，属 fork 所有，放行不判越界
+const FORK_ROOT_FILES = new Set([
+  "FORK.md",
+  "FORK_GUIDE.md",
+  "CLAUDE.md",
+  ".env.production",
+  ".env",
+  ".gitignore",
+])
+
 // 判定改动文件是否越界：允许 src/fork/** 与 allowlist 内的上游文件
 export function classifyChangedFiles(changed, allowlist) {
   const allow = new Set(allowlist)
   const violations = changed.filter((f) => {
     if (f.startsWith("src/fork/")) return false
-    if (f.startsWith("scripts/") || f.startsWith("docs/") || f === "FORK.md") return false
+    if (f.startsWith("scripts/") || f.startsWith("docs/")) return false
     if (f.startsWith("openspec/") || f.startsWith(".github/")) return false
-    if (f === ".env.production" || f === ".env") return false
+    if (FORK_ROOT_FILES.has(f)) return false
     return !allow.has(f)
   })
   return { violations }

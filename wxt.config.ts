@@ -10,17 +10,27 @@ import {
   resolveExtensionEnv,
 } from "./src/env/shared"
 import { FORK_BRANDING } from "./src/fork/branding"
-import { computeForkVersion, readForkBuildNumber } from "./src/fork/identity/version"
+import {
+  computeForkVersion,
+  computeForkVersionName,
+  readForkBuildNumber,
+} from "./src/fork/identity/version"
 
 const WXT_API_KEY_PATTERN = /^WXT_.*API_KEY/
 const ALLOWED_BUNDLED_API_KEYS = new Set(["WXT_POSTHOG_API_KEY"])
 const useLocalPackages = isLocalPackagesEnabled(process.env)
 const shouldSkipEnvValidation = process.env.WXT_SKIP_ENV_VALIDATION === "true"
 
-// fork 身份：由上游 package.json 3 段版本派生 4 段 manifest 版本，独立发版
+// fork 身份：预发布阶段用 fork 自主 0.0.<forkBuild> 版本；version_name 保留上游基线溯源
 const pkgVersion = JSON.parse(readFileSync(path.resolve(__dirname, "package.json"), "utf8"))
   .version as string
-const forkVersion = computeForkVersion(pkgVersion, readForkBuildNumber())
+const forkBuildNumber = readForkBuildNumber()
+const forkVersion = computeForkVersion(forkBuildNumber)
+const forkVersionName = computeForkVersionName(
+  pkgVersion,
+  forkBuildNumber,
+  FORK_BRANDING.displayName,
+)
 
 // See https://wxt.dev/api/config.html
 export default defineConfig({
@@ -42,9 +52,9 @@ export default defineConfig({
       }
     : {},
   manifest: ({ mode, browser }) => ({
-    name: FORK_BRANDING.name,
+    name: FORK_BRANDING.displayName,
     version: forkVersion,
-    version_name: `${FORK_BRANDING.name} ${forkVersion}`,
+    version_name: forkVersionName,
     description: "__MSG_extDescription__",
     default_locale: "en",
     // Fixed extension ID for development

@@ -28,4 +28,14 @@ describe("classifyChangedFiles", () => {
     const { violations } = classifyChangedFiles([".env.production"], ALLOW)
     expect(violations).toEqual([])
   })
+
+  it("放行 fork 自有根文档 FORK_GUIDE.md / CLAUDE.md", () => {
+    const { violations } = classifyChangedFiles(["FORK_GUIDE.md", "CLAUDE.md"], ALLOW)
+    expect(violations).toEqual([])
+  })
+
+  it("放行 fork 修改的根配置 .gitignore", () => {
+    const { violations } = classifyChangedFiles([".gitignore"], ALLOW)
+    expect(violations).toEqual([])
+  })
 })
