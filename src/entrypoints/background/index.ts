@@ -1,8 +1,8 @@
 import "@/utils/zod-config"
 import type { Config, UiLanguage } from "@/types/config/config"
 import { browser, defineBackground } from "#imports"
-import { env } from "@/env"
 import { setupFork } from "@/fork/background"
+import { getWebsiteUrl } from "@/fork/website-url"
 import { storageAdapter } from "@/utils/atoms/storage-adapter"
 import { CONFIG_STORAGE_KEY } from "@/utils/constants/config"
 import { initI18n, setUiLanguage } from "@/utils/i18n"
@@ -48,7 +48,7 @@ export default defineBackground({
       // Open tutorial page when extension is installed
       if (details.reason === "install") {
         await browser.tabs.create({
-          url: `${env.WXT_WEBSITE_URL}/guide/step-1`,
+          url: getWebsiteUrl("/guide/step-1"),
         })
       }
 

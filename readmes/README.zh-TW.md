@@ -1,6 +1,6 @@
 <div align="center"><a name="readme-top"></a>
 
-[![Read Frog banner][image-banner]][website]
+[![任译喵][image-banner]][website]
 
 <p align="center">
   <a href="https://trendshift.io/repositories/22377" target="_blank"><img src="https://trendshift.io/api/badge/repositories/22377" alt="mengxi-ream%2Fread-frog | Trendshift" width="250" height="55" /></a>
@@ -19,7 +19,7 @@
 
 [![English][english-shield]](../README.md) [![简体中文][chinese-shield]](./README.zh-CN.md) [![繁體中文][traditional-chinese-shield]](./README.zh-TW.md) [![日本語][japanese-shield]](./README.ja.md) [![한국어][korean-shield]](./README.ko.md) [![Español][spanish-shield]](./README.es.md) [![Русский][russian-shield]](./README.ru.md) [![Türkçe][turkish-shield]](./README.tr.md) [![Tiếng Việt][vietnamese-shield]](./README.vi.md)
 
-[官方網站](https://readfrog.app) · [教學](https://www.readfrog.app/docs) · [更新紀錄][github-release-link] · [部落格](https://www.readfrog.app/blog)
+[官方網站](https://www.translatebuff.com) · [教學](https://www.translatebuff.com/docs) · [更新紀錄][github-release-link] · [部落格](https://www.translatebuff.com/blog)
 
 <!-- SHIELD GROUP -->
 
@@ -67,15 +67,15 @@
 ## 📺 示範
 
 <div align="center">
-  <img src="../assets/node-translation-demo.gif" width="38%" alt="Read Frog 彈出視窗介面" />
-  <img src="../assets/page-translation-demo.gif" width="60%" alt="Read Frog 翻譯介面" />
+  <img src="../assets/node-translation-demo.gif" width="38%" alt="任译喵 彈出視窗介面" />
+  <img src="../assets/page-translation-demo.gif" width="60%" alt="任译喵 翻譯介面" />
 </div>
 
 ## 👋🏻 快速開始與加入社群
 
-Read Frog 的願景，是為各種程度的語言學習者提供易用、智慧且個人化的學習體驗。在 AI 時代，這件事已經變得可行，但市場上仍很少有產品真正滿足這個需求。因此我們決定自己動手，讓世界最終不再依賴人類語言教師。
+任译喵 的願景，是為各種程度的語言學習者提供易用、智慧且個人化的學習體驗。在 AI 時代，這件事已經變得可行，但市場上仍很少有產品真正滿足這個需求。因此我們決定自己動手，讓世界最終不再依賴人類語言教師。
 
-無論你是使用者還是開發者，Read Frog 都會是你走向這個願景的重要工具。Read Frog 目前仍在積極開發中，歡迎針對遇到的任何[問題][issues-link]提供回饋。
+無論你是使用者還是開發者，任译喵 都會是你走向這個願景的重要工具。任译喵 目前仍在積極開發中，歡迎針對遇到的任何[問題][issues-link]提供回饋。
 
 ### 下載
 
@@ -95,7 +95,7 @@ Read Frog 的願景，是為各種程度的語言學習者提供易用、智慧�
 >
 > **⭐️ 幫我們加星**，你可以即時收到 GitHub 的所有發布通知。
 
-[![Star this repo][image-star]][github-star-link]
+[![任译喵][image-star]][website]
 
 <details>
 <summary>
@@ -120,7 +120,7 @@ Read Frog 的願景，是為各種程度的語言學習者提供易用、智慧�
 
 ## ✨ 功能
 
-透過 Read Frog 的強大功能，把日常網頁閱讀變成沉浸式語言學習旅程。
+透過 任译喵 的強大功能，把日常網頁閱讀變成沉浸式語言學習旅程。
 
 ### 🪄 [自訂 AI 指令][docs-tutorial]
 
@@ -132,7 +132,7 @@ Read Frog 的願景，是為各種程度的語言學習者提供易用、智慧�
 
 將閱讀時遇到的單字、定義、例句、翻譯和筆記儲存到 Notebase，再透過可自訂的卡片範本產生單字卡。閱讀中發現的內容可以自然變成學習材料，不會打斷閱讀流程。
 
-在線上複習到期卡片，並選擇**重來**、**困難**、**良好**或**簡單**。Read Frog 的間隔重複排程會根據你的回饋安排下次複習，讓卡片在你即將忘記之前再次出現。
+在線上複習到期卡片，並選擇**重來**、**困難**、**良好**或**簡單**。任译喵 的間隔重複排程會根據你的回饋安排下次複習，讓卡片在你即將忘記之前再次出現。
 
 ### 🔄 [雙語 / 僅譯文][docs-tutorial]
 
@@ -148,7 +148,7 @@ Read Frog 的願景，是為各種程度的語言學習者提供易用、智慧�
 
 ### 🧠 [上下文感知翻譯][docs-tutorial]
 
-讓 AI 理解你正在閱讀內容的完整上下文。啟用後，Read Frog 會擷取頁面標題與精簡的 Markdown 頁面內容，交給 AI 產生更準確、更貼合語境的翻譯。
+讓 AI 理解你正在閱讀內容的完整上下文。啟用後，任译喵 會擷取頁面標題與精簡的 Markdown 頁面內容，交給 AI 產生更準確、更貼合語境的翻譯。
 
 技術術語會依所屬領域正確翻譯，文學表達能保留細膩語感，歧義片語也會依上下文而不是孤立文字來解讀。
 
@@ -164,7 +164,7 @@ Read Frog 的願景，是為各種程度的語言學習者提供易用、智慧�
 
 ### 📦 [批次請求][docs-tutorial]
 
-透過智慧批次處理，最多可節省 70% API 成本。Read Frog 會把多個翻譯請求合併為一次 API 呼叫，在維持品質的同時降低開銷與 token 使用量。
+透過智慧批次處理，最多可節省 70% API 成本。任译喵 會把多個翻譯請求合併為一次 API 呼叫，在維持品質的同時降低開銷與 token 使用量。
 
 系統包含指數退避重試機制，並在批次失敗時自動退回單次請求，所有流程都會在背景透明處理。
 
@@ -184,7 +184,7 @@ Read Frog 的願景，是為各種程度的語言學習者提供易用、智慧�
 
 我們歡迎各種類型的貢獻。
 
-1. 向朋友和家人推薦 Read Frog。
+1. 向朋友和家人推薦 任译喵。
 2. 回報[問題][issues-link]並提供回饋。
 3. 貢獻程式碼。
 
@@ -194,7 +194,7 @@ Read Frog 的願景，是為各種程度的語言學習者提供易用、智慧�
 
 請 AI 理解專案：[Dosu](https://app.dosu.dev/29569286-71ba-47dd-b038-c7ab1b9d0df7/documents)
 
-更多詳情請參考[貢獻指南](https://readfrog.app/en/docs/code-contribution/contribution-guide)。
+更多詳情請參考[貢獻指南](https://www.translatebuff.com/en/docs/code-contribution/contribution-guide)。
 
 ReadFrog 採用 GPLv3 與商業授權雙重授權。
 
@@ -205,7 +205,7 @@ ReadFrog 採用 GPLv3 與商業授權雙重授權。
     <tr>
       <th colspan="2">
         <br>
-        <img src="https://contrib.rocks/image?repo=mengxi-ream/read-frog" alt="Read Frog contributors"><br>
+        <img src="https://contrib.rocks/image?repo=mengxi-ream/read-frog" alt="任译喵 contributors"><br>
         <br>
       </th>
     </tr>
@@ -263,8 +263,8 @@ ReadFrog 採用 GPLv3 與商業授權雙重授權。
 [extension-release-shield]: https://img.shields.io/github/package-json/v/mengxi-ream/read-frog?filename=package.json&style=flat-square&label=Latest%20Version&color=brightgreen&labelColor=black
 [github-release-link]: https://github.com/mengxi-ream/read-frog/releases
 [github-star-link]: https://github.com/mengxi-ream/read-frog/stargazers
-[image-banner]: ../assets/banner-zh.png
-[image-star]: ../assets/star.png
+[image-banner]: ../assets/renyimiao-icon.svg
+[image-star]: ../assets/renyimiao-icon.svg
 [issues-link]: https://github.com/mengxi-ream/read-frog/issues
 [issues-shield]: https://img.shields.io/github/issues/mengxi-ream/read-frog?style=flat-square&labelColor=black
 [japanese-shield]: https://img.shields.io/badge/%E6%97%A5%E6%9C%AC%E8%AA%9E-gray?style=flat-square
@@ -280,10 +280,10 @@ ReadFrog 採用 GPLv3 與商業授權雙重授權。
 [traditional-chinese-shield]: https://img.shields.io/badge/%E7%B9%81%E9%AB%94%E4%B8%AD%E6%96%87-gray?style=flat-square
 [turkish-shield]: https://img.shields.io/badge/T%C3%BCrk%C3%A7e-gray?style=flat-square
 [vietnamese-shield]: https://img.shields.io/badge/Ti%E1%BA%BFng%20Vi%E1%BB%87t-gray?style=flat-square
-[website]: https://readfrog.app
-[wechat-link]: ../assets/wechat-account.jpg
+[website]: https://www.translatebuff.com
+[wechat-link]: https://www.translatebuff.com
 [wechat-shield-badge]: https://img.shields.io/badge/chat-WeChat-07C160?style=for-the-badge&logo=wechat&logoColor=white&labelColor=black
 
 <!-- Feature docs link -->
 
-[docs-tutorial]: https://readfrog.app/docs
+[docs-tutorial]: https://www.translatebuff.com/docs

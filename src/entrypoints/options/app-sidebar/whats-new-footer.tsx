@@ -145,6 +145,8 @@ export function WhatsNewFooter() {
             <img
               src={imageUrl}
               alt={latestBlogPost.title}
+              width={1200}
+              height={630}
               className="aspect-[1200/630] w-full object-cover"
               loading="eager"
               referrerPolicy="strict-origin-when-cross-origin"

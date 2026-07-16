@@ -8,7 +8,7 @@ export default function FloatingButton() {
 
   return (
     <div className="flex items-center justify-between gap-2">
-      <span className="text-[13px] font-medium">{i18n.t("popup.enabledFloatingButton")}</span>
+      <span className="text-sm font-medium">{i18n.t("popup.enabledFloatingButton")}</span>
       <Switch
         checked={floatingButton.enabled}
         onCheckedChange={(checked) => {

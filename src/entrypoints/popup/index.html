@@ -3,12 +3,21 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Popup | Read Frog</title>
+    <title>Popup | Translatebuff</title>
     <meta name="manifest.type" content="browser_action" />
   </head>
-  <!-- fix this issue: https://github.com/mengxi-ream/read-frog/issues/265 -->
-  <body class="!mr-0">
-    <div id="root"></div>
+  <body class="!mr-0 min-w-[392px] bg-background">
+    <div id="root" class="min-h-72 w-[392px] bg-background text-foreground">
+      <div role="status" aria-live="polite" class="flex min-h-72 flex-col gap-3 px-4 py-3">
+        <div class="flex h-10 items-center gap-2 rounded-lg bg-card px-3">
+          <div class="size-5 rounded-md bg-muted"></div>
+          <span class="text-sm font-semibold">任译喵</span>
+        </div>
+        <div class="h-32 rounded-xl bg-card"></div>
+        <div class="h-13 rounded-lg bg-muted"></div>
+        <span class="sr-only">插件正在加载</span>
+      </div>
+    </div>
     <script type="module" src="./main.tsx"></script>
   </body>
 </html>

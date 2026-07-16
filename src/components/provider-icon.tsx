@@ -214,6 +214,8 @@ export default function ProviderIcon({
           <img
             src={resolvedLogo.src}
             alt={imgAlt}
+            width={40}
+            height={40}
             className={iconVariants({ size })}
             onError={() => setResolvedLogo(null)}
           />

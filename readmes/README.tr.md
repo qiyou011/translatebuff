@@ -1,6 +1,6 @@
 <div align="center"><a name="readme-top"></a>
 
-[![Read Frog banner][image-banner]][website]
+[![Translatebuff][image-banner]][website]
 
 <p align="center">
   <a href="https://trendshift.io/repositories/22377" target="_blank"><img src="https://trendshift.io/api/badge/repositories/22377" alt="mengxi-ream%2Fread-frog | Trendshift" width="250" height="55" /></a>
@@ -19,7 +19,7 @@ AI ile dilleri doğrudan tarayıcınızda daha kolay ve derin öğrenin.
 
 [![English][english-shield]](../README.md) [![简体中文][chinese-shield]](./README.zh-CN.md) [![繁體中文][traditional-chinese-shield]](./README.zh-TW.md) [![日本語][japanese-shield]](./README.ja.md) [![한국어][korean-shield]](./README.ko.md) [![Español][spanish-shield]](./README.es.md) [![Русский][russian-shield]](./README.ru.md) [![Türkçe][turkish-shield]](./README.tr.md) [![Tiếng Việt][vietnamese-shield]](./README.vi.md)
 
-[Resmi web sitesi](https://readfrog.app) · [Rehber](https://www.readfrog.app/docs) · [Sürümler][github-release-link] · [Blog](https://www.readfrog.app/blog)
+[Resmi web sitesi](https://www.translatebuff.com) · [Rehber](https://www.translatebuff.com/docs) · [Sürümler][github-release-link] · [Blog](https://www.translatebuff.com/blog)
 
 <!-- SHIELD GROUP -->
 
@@ -67,15 +67,15 @@ AI ile dilleri doğrudan tarayıcınızda daha kolay ve derin öğrenin.
 ## 📺 Demo
 
 <div align="center">
-  <img src="../assets/node-translation-demo.gif" width="38%" alt="Read Frog açılır pencere arayüzü" />
-  <img src="../assets/page-translation-demo.gif" width="60%" alt="Read Frog çeviri arayüzü" />
+  <img src="../assets/node-translation-demo.gif" width="38%" alt="Translatebuff açılır pencere arayüzü" />
+  <img src="../assets/page-translation-demo.gif" width="60%" alt="Translatebuff çeviri arayüzü" />
 </div>
 
 ## 👋🏻 Başlangıç ve topluluk
 
-Read Frog'un vizyonu, her seviyeden dil öğrenen kişiye kullanımı kolay, akıllı ve kişiselleştirilmiş bir öğrenme deneyimi sunmaktır. AI çağında bu mümkün hale geldi, ancak piyasada bu ihtiyacı iyi karşılayan ürün sayısı az. Bu yüzden kendi çözümümüzü geliştirmeye karar verdik.
+Translatebuff'un vizyonu, her seviyeden dil öğrenen kişiye kullanımı kolay, akıllı ve kişiselleştirilmiş bir öğrenme deneyimi sunmaktır. AI çağında bu mümkün hale geldi, ancak piyasada bu ihtiyacı iyi karşılayan ürün sayısı az. Bu yüzden kendi çözümümüzü geliştirmeye karar verdik.
 
-Kullanıcı ya da geliştirici olmanız fark etmez; Read Frog bu vizyona giden yolda önemli bir araç olabilir. Proje aktif olarak geliştiriliyor, bu yüzden karşılaştığınız [sorunları][issues-link] ve geri bildirimleri bekliyoruz.
+Kullanıcı ya da geliştirici olmanız fark etmez; Translatebuff bu vizyona giden yolda önemli bir araç olabilir. Proje aktif olarak geliştiriliyor, bu yüzden karşılaştığınız [sorunları][issues-link] ve geri bildirimleri bekliyoruz.
 
 ### İndir
 
@@ -95,7 +95,7 @@ Kullanıcı ya da geliştirici olmanız fark etmez; Read Frog bu vizyona giden y
 >
 > **⭐️ Bize yıldız verin**, GitHub sürüm bildirimlerini gecikmeden alın.
 
-[![Star Read Frog on GitHub][image-star]][github-star-link]
+[![Translatebuff][image-star]][website]
 
 <details>
 <summary>
@@ -114,7 +114,7 @@ Kullanıcı ya da geliştirici olmanız fark etmez; Read Frog bu vizyona giden y
 
 ## ✨ Özellikler
 
-Read Frog'un güçlü özellikleriyle günlük web okumalarınızı sürükleyici bir dil öğrenme deneyimine dönüştürün.
+Translatebuff'un güçlü özellikleriyle günlük web okumalarınızı sürükleyici bir dil öğrenme deneyimine dönüştürün.
 
 ### 🪄 [Özel AI Eylemleri][docs-tutorial]
 
@@ -126,7 +126,7 @@ Yerleşik **Sözlük** ve **Yazıyı İyileştir** şablonlarıyla başlayabilir
 
 Kelimeleri, tanımları, örnek cümleleri, çevirileri ve okuma notlarını Notebase'e kaydedin; ardından özelleştirilebilir kart şablonlarıyla bilgi kartlarına dönüştürün. Okurken keşfettiğiniz içerik, akışınızı bozmadan çalışma materyaline dönüşür.
 
-Zamanı gelen kartları çevrimiçi gözden geçirin ve her birini **Tekrar**, **Zor**, **İyi** veya **Kolay** olarak değerlendirin. Read Frog'un aralıklı tekrar planlayıcısı, geri bildiriminize göre her kartı unutmanızdan hemen önce yeniden gösterir.
+Zamanı gelen kartları çevrimiçi gözden geçirin ve her birini **Tekrar**, **Zor**, **İyi** veya **Kolay** olarak değerlendirin. Translatebuff'un aralıklı tekrar planlayıcısı, geri bildiriminize göre her kartı unutmanızdan hemen önce yeniden gösterir.
 
 ### 🔄 [İki dilli / Yalnızca çeviri][docs-tutorial]
 
@@ -142,7 +142,7 @@ Araç çubuğu görünüm alanı içinde kalacak şekilde konumlanır, sürükle
 
 ### 🧠 [Bağlama duyarlı çeviri][docs-tutorial]
 
-AI'nin okuduğunuz içeriğin tam bağlamını anlamasını sağlayın. Read Frog sayfa başlığını ve sayfa içeriğinin kısa bir Markdown sürümünü çıkarır, daha doğru ve bağlama uygun çeviri için AI'ye iletir.
+AI'nin okuduğunuz içeriğin tam bağlamını anlamasını sağlayın. Translatebuff sayfa başlığını ve sayfa içeriğinin kısa bir Markdown sürümünü çıkarır, daha doğru ve bağlama uygun çeviri için AI'ye iletir.
 
 Teknik terimler alanına göre doğru çevrilir, edebi ifadeler nüansını korur ve belirsiz ifadeler çevredeki içeriğe göre yorumlanır.
 
@@ -158,7 +158,7 @@ Otomatik dil algılama ve dile göre ses eşleme, her dil için doğru sesi seç
 
 ### 📦 [Toplu istekler][docs-tutorial]
 
-Akıllı istek toplama ile API maliyetlerinde %70'e kadar tasarruf edin. Read Frog birden çok çeviri isteğini tek API çağrısında birleştirerek kaliteyi korurken overhead ve token kullanımını azaltır.
+Akıllı istek toplama ile API maliyetlerinde %70'e kadar tasarruf edin. Translatebuff birden çok çeviri isteğini tek API çağrısında birleştirerek kaliteyi korurken overhead ve token kullanımını azaltır.
 
 Sistem üstel geri çekilmeli yeniden deneme ve toplu işlem başarısız olduğunda tekil isteklere otomatik dönüş içerir.
 
@@ -178,7 +178,7 @@ Ayrıca ücretsiz temel çeviri için Google Translate, Microsoft Translate ve D
 
 Her türlü katkıya açığız.
 
-1. Read Frog'u arkadaşlarınıza ve ailenize önerin.
+1. Translatebuff'u arkadaşlarınıza ve ailenize önerin.
 2. [Issue][issues-link] ve geri bildirim gönderin.
 3. Kod katkısı yapın.
 
@@ -188,7 +188,7 @@ Proje yapısı: [DeepWiki](https://deepwiki.com/mengxi-ream/read-frog)
 
 AI ile projeyi anlama: [Dosu](https://app.dosu.dev/29569286-71ba-47dd-b038-c7ab1b9d0df7/documents)
 
-Daha fazla bilgi için [Contribution Guide](https://readfrog.app/en/docs/code-contribution/contribution-guide) bölümüne bakın.
+Daha fazla bilgi için [Contribution Guide](https://www.translatebuff.com/en/docs/code-contribution/contribution-guide) bölümüne bakın.
 
 ReadFrog, GPLv3 ve ticari lisans ile çift lisanslıdır.
 
@@ -199,7 +199,7 @@ Katkıda bulunan lisans şartları için [CONTRIBUTING.md](../CONTRIBUTING.md) d
     <tr>
       <th colspan="2">
         <br>
-        <img src="https://contrib.rocks/image?repo=mengxi-ream/read-frog" alt="Read Frog contributors"><br>
+        <img src="https://contrib.rocks/image?repo=mengxi-ream/read-frog" alt="Translatebuff contributors"><br>
         <br>
       </th>
     </tr>
@@ -245,8 +245,8 @@ Her bağış daha iyi bir dil öğrenme deneyimi oluşturmamıza yardımcı olur
 [extension-release-shield]: https://img.shields.io/github/package-json/v/mengxi-ream/read-frog?filename=package.json&style=flat-square&label=Latest%20Version&color=brightgreen&labelColor=black
 [github-release-link]: https://github.com/mengxi-ream/read-frog/releases
 [github-star-link]: https://github.com/mengxi-ream/read-frog/stargazers
-[image-banner]: ../assets/banner.png
-[image-star]: ../assets/star.png
+[image-banner]: ../assets/renyimiao-icon.svg
+[image-star]: ../assets/renyimiao-icon.svg
 [issues-link]: https://github.com/mengxi-ream/read-frog/issues
 [issues-shield]: https://img.shields.io/github/issues/mengxi-ream/read-frog?style=flat-square&labelColor=black
 [japanese-shield]: https://img.shields.io/badge/%E6%97%A5%E6%9C%AC%E8%AA%9E-gray?style=flat-square
@@ -262,10 +262,10 @@ Her bağış daha iyi bir dil öğrenme deneyimi oluşturmamıza yardımcı olur
 [traditional-chinese-shield]: https://img.shields.io/badge/%E7%B9%81%E9%AB%94%E4%B8%AD%E6%96%87-gray?style=flat-square
 [turkish-shield]: https://img.shields.io/badge/T%C3%BCrk%C3%A7e-gray?style=flat-square
 [vietnamese-shield]: https://img.shields.io/badge/Ti%E1%BA%BFng%20Vi%E1%BB%87t-gray?style=flat-square
-[website]: https://readfrog.app
-[wechat-link]: ../assets/wechat-account.jpg
+[website]: https://www.translatebuff.com
+[wechat-link]: https://www.translatebuff.com
 [wechat-shield-badge]: https://img.shields.io/badge/chat-WeChat-07C160?style=for-the-badge&logo=wechat&logoColor=white&labelColor=black
 
 <!-- Feature docs link -->
 
-[docs-tutorial]: https://readfrog.app/docs
+[docs-tutorial]: https://www.translatebuff.com/docs

@@ -2,25 +2,23 @@ import { kebabCase } from "case-anything"
 import * as React from "react"
 import { Toaster } from "sonner"
 import { browser } from "#imports"
-import frogIcon from "@/assets/icons/read-frog.png?url&no-inline"
+import brandIcon from "@/assets/icons/renyimiao.svg?url&no-inline"
 import { APP_NAME } from "@/utils/constants/app"
 
-const frogIconUrl = new URL(frogIcon, browser.runtime.getURL("/")).href
+const brandIconUrl = new URL(brandIcon, browser.runtime.getURL("/")).href
 
-const frogIconElement = (
+const brandIconElement = (
   <img
-    src={frogIconUrl}
-    alt="🐸"
-    style={{
-      maxWidth: "100%",
-      height: "auto",
-      minHeight: "20px",
-      minWidth: "20px",
-    }}
+    src={brandIconUrl}
+    alt=""
+    aria-hidden="true"
+    width={20}
+    height={20}
+    style={{ display: "block", height: "20px", width: "20px" }}
   />
 )
 
-function FrogToast({
+function BrandToast({
   position = "bottom-left",
   toastOptions,
   ...props
@@ -31,11 +29,11 @@ function FrogToast({
       position={position}
       richColors
       icons={{
-        warning: frogIconElement,
-        success: frogIconElement,
-        error: frogIconElement,
-        info: frogIconElement,
-        loading: frogIconElement,
+        warning: brandIconElement,
+        success: brandIconElement,
+        error: brandIconElement,
+        info: brandIconElement,
+        loading: brandIconElement,
       }}
       toastOptions={{
         ...toastOptions,
@@ -48,4 +46,4 @@ function FrogToast({
   )
 }
 
-export default FrogToast
+export default BrandToast

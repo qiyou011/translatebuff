@@ -1,11 +1,11 @@
-import FrogToast from "@/components/frog-toast"
+import BrandToast from "@/components/brand-toast"
 import FloatingButton from "./components/floating-button"
 
 export default function App() {
   return (
     <>
       <FloatingButton />
-      <FrogToast />
+      <BrandToast />
     </>
   )
 }

@@ -1,5 +1,6 @@
 import { IconSearch } from "@tabler/icons-react"
 import { useSetAtom } from "jotai"
+import { BrandMark } from "@/components/brand-mark"
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/base-ui/input-group"
 import { Kbd } from "@/components/ui/base-ui/kbd"
 import {
@@ -21,10 +22,18 @@ export function AppSidebar() {
   const commandPaletteShortcutHint = getCommandPaletteShortcutHint()
 
   return (
-    <Sidebar collapsible="icon">
-      <SidebarHeader className="transition-all group-data-[state=expanded]:px-5 group-data-[state=expanded]:pt-4">
+    <Sidebar collapsible="icon" className="border-r border-sidebar-border">
+      <SidebarHeader className="transition-[padding] duration-200 group-data-[state=expanded]:px-4 group-data-[state=expanded]:pt-4">
+        <BrandMark
+          className="h-10 px-2 group-data-[state=collapsed]:justify-center group-data-[state=collapsed]:px-0"
+          iconClassName="size-7"
+          nameClassName="text-[15px] tracking-tight group-data-[state=collapsed]:hidden"
+        />
         <UserAccountMenuSidebar />
-        <InputGroup onClick={() => setCommandPaletteOpen(true)} className="bg-background">
+        <InputGroup
+          onClick={() => setCommandPaletteOpen(true)}
+          className="border-0 bg-card text-sidebar-foreground shadow-control transition-colors duration-200 hover:bg-muted"
+        >
           <InputGroupInput
             readOnly
             placeholder={i18n.t("options.commandPalette.placeholder")}
@@ -38,11 +47,11 @@ export function AppSidebar() {
           </InputGroupAddon>
         </InputGroup>
       </SidebarHeader>
-      <SidebarContent className="transition-all group-data-[state=expanded]:px-2">
+      <SidebarContent className="transition-[padding] duration-200 group-data-[state=expanded]:px-2">
         <SettingsNav />
         <ToolsNav />
       </SidebarContent>
-      <SidebarFooter className="transition-all group-data-[state=expanded]:px-2">
+      <SidebarFooter className="transition-[padding] duration-200 group-data-[state=expanded]:px-2">
         <WhatsNewFooter />
       </SidebarFooter>
     </Sidebar>

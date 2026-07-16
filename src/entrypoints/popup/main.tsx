@@ -2,11 +2,11 @@ import "@/utils/zod-config"
 import type { Config } from "@/types/config/config"
 import type { ThemeMode } from "@/types/config/theme"
 import { QueryClientProvider } from "@tanstack/react-query"
-import { Provider as JotaiProvider } from "jotai"
+import { Provider as JotaiProvider, useSetAtom } from "jotai"
 import { useHydrateAtoms } from "jotai/utils"
 import * as React from "react"
 import { browser } from "#imports"
-import FrogToast from "@/components/frog-toast"
+import BrandToast from "@/components/brand-toast"
 import { ThemeProvider } from "@/components/providers/theme-provider"
 import { RecoveryBoundary } from "@/components/recovery/recovery-boundary"
 import { TooltipProvider } from "@/components/ui/base-ui/tooltip"
@@ -16,13 +16,14 @@ import { getLocalConfig } from "@/utils/config/storage"
 import { DEFAULT_CONFIG } from "@/utils/constants/config"
 import { initI18n } from "@/utils/i18n"
 import { LocaleBoundary } from "@/utils/i18n/locale-boundary"
+import { logger } from "@/utils/logger"
 import { sendMessage } from "@/utils/message"
 import { renderPersistentReactRoot } from "@/utils/react-root"
 import { queryClient } from "@/utils/tanstack-query"
 import { getLocalThemeMode } from "@/utils/theme"
 import App from "./app"
 import {
-  getIsInPatterns,
+  isUrlInPatterns,
   isCurrentSiteInPatternsAtom,
   isPageTranslatedAtom,
 } from "./atoms/auto-translate"
@@ -55,9 +56,34 @@ function HydrateAtoms({
   return children
 }
 
+function PopupRuntimeSync({ tabId }: { tabId?: number }) {
+  const setIsPageTranslated = useSetAtom(isPageTranslatedAtom)
+
+  React.useEffect(() => {
+    if (!tabId) return () => {}
+
+    let isActive = true
+    void sendMessage("getEnablePageTranslationByTabId", { tabId })
+      .then((value) => {
+        if (isActive) {
+          setIsPageTranslated(value ?? false)
+        }
+      })
+      .catch((error) => {
+        logger.warn("Failed to load popup translation state", error)
+      })
+
+    return () => {
+      isActive = false
+    }
+  }, [setIsPageTranslated, tabId])
+
+  return null
+}
+
 async function initApp() {
   const root = document.getElementById("root")!
-  root.className = "text-base antialiased w-[320px] bg-background"
+  root.className = "text-[15px] antialiased w-[392px] bg-background"
 
   const [configValue, themeMode, activeTab] = await Promise.all([
     getLocalConfig(),
@@ -71,19 +97,10 @@ async function initApp() {
 
   await initI18n(config.uiLanguage)
 
-  const tabId = activeTab[0].id
-
-  let isPageTranslated: boolean = false
-  if (tabId) {
-    isPageTranslated =
-      (await sendMessage("getEnablePageTranslationByTabId", {
-        tabId,
-      })) ?? false
-  }
-
-  const isInPatterns = tabId ? await getIsInPatterns(config.translate) : false
-
-  const activeTabUrl = activeTab[0]?.url || ""
+  const currentTab = activeTab[0]
+  const tabId = currentTab?.id
+  const activeTabUrl = currentTab?.url || ""
+  const isInPatterns = activeTabUrl ? isUrlInPatterns(config.translate, activeTabUrl) : false
   const isIgnoreTab = isIgnoreUrl(activeTabUrl)
   const isInWhitelist = activeTabUrl
     ? isInSiteControlList(config.siteControl.whitelistPatterns, activeTabUrl)
@@ -100,7 +117,7 @@ async function initApp() {
           <HydrateAtoms
             initialValues={[
               [configAtom, config],
-              [isPageTranslatedAtom, isPageTranslated],
+              [isPageTranslatedAtom, false],
               [isCurrentSiteInPatternsAtom, isInPatterns],
               [isIgnoreTabAtom, isIgnoreTab],
               [isCurrentSiteInWhitelistAtom, isInWhitelist],
@@ -108,9 +125,10 @@ async function initApp() {
               [baseThemeModeAtom, themeMode],
             ]}
           >
+            <PopupRuntimeSync tabId={tabId} />
             <ThemeProvider>
               <TooltipProvider>
-                <FrogToast />
+                <BrandToast />
                 <LocaleBoundary>
                   <RecoveryBoundary>
                     <App />
@@ -125,4 +143,26 @@ async function initApp() {
   )
 }
 
-void initApp()
+void initApp().catch((error) => {
+  logger.error("Failed to initialize popup", error)
+
+  const root = document.getElementById("root")
+  if (!root) return
+
+  root.className =
+    "flex min-h-48 w-[392px] flex-col items-center justify-center gap-3 bg-background px-6 text-center text-foreground"
+  root.replaceChildren()
+
+  const message = document.createElement("p")
+  message.className = "text-sm text-muted-foreground"
+  message.textContent = "插件加载失败，请重试"
+
+  const retryButton = document.createElement("button")
+  retryButton.type = "button"
+  retryButton.className =
+    "h-9 rounded-lg bg-primary px-4 text-sm font-medium text-primary-foreground"
+  retryButton.textContent = "重新加载"
+  retryButton.addEventListener("click", () => window.location.reload())
+
+  root.append(message, retryButton)
+})

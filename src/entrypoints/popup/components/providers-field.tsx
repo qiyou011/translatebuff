@@ -20,15 +20,17 @@ const VISIBLE_PROVIDER_COUNT = 5
 
 function getSelectedProviderOptions(config: Config, providersConfig: ProvidersConfig) {
   const selectedProviders: ProviderSelectorOption[] = []
+  const selectedProviderIds = new Set<string>()
 
   const addProvider = (capability: ProviderCapability, providerId: string) => {
     const selectedProvider = getSelectableProvidersForCapability(capability, providersConfig).find(
       (providerOption) => providerOption.id === providerId,
     )
-    if (!selectedProvider) {
+    if (!selectedProvider || selectedProviderIds.has(selectedProvider.id)) {
       return
     }
 
+    selectedProviderIds.add(selectedProvider.id)
     selectedProviders.push(selectedProvider)
   }
 
@@ -50,18 +52,15 @@ function ProviderAvatarSummary({ providers }: { providers: ProviderSelectorOptio
   const { theme } = useTheme()
   const visibleProviders = providers.slice(0, VISIBLE_PROVIDER_COUNT)
   const remainingCount = providers.length - visibleProviders.length
-  const providerKeyCounts = new Map<string, number>()
 
   return (
     <AvatarGroup>
       {visibleProviders.map((provider) => {
         const name = getProviderName(provider)
-        const providerKeyCount = providerKeyCounts.get(provider.id) ?? 0
-        providerKeyCounts.set(provider.id, providerKeyCount + 1)
 
         return (
           <Avatar
-            key={`${provider.id}-${providerKeyCount}`}
+            key={provider.id}
             size="sm"
             className="items-center justify-center bg-white dark:bg-muted"
           >
@@ -89,14 +88,19 @@ export default function ProvidersField() {
 
   return (
     <Drawer>
-      <div className="flex items-center justify-between gap-2">
-        <span className="flex items-center gap-1.5 text-[13px] font-medium">
+      <div className="flex min-h-9 items-center justify-between gap-2">
+        <span className="flex items-center gap-1.5 text-sm font-medium">
           {i18n.t("popup.providers.title")}
           <HelpTooltip>{i18n.t("popup.providers.description")}</HelpTooltip>
         </span>
         <DrawerTrigger
           render={
-            <Button type="button" variant="ghost" aria-label={i18n.t("popup.providers.open")} />
+            <Button
+              type="button"
+              variant="secondary"
+              className="rounded-lg shadow-none"
+              aria-label={i18n.t("popup.providers.open")}
+            />
           }
         >
           <ProviderAvatarSummary providers={selectedProviders} />

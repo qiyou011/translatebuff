@@ -10,17 +10,16 @@ import { ConfigCard } from "../../components/config-card"
 
 export function AutoTranslateLanguages() {
   return (
-    <div className="flex flex-col gap-y-4 py-6">
-      <ConfigCard
-        id="auto-translate-languages"
-        title={i18n.t("options.translation.autoTranslateLanguages.title")}
-        description={i18n.t("options.translation.autoTranslateLanguages.description")}
-        className="py-0"
-      >
+    <ConfigCard
+      id="auto-translate-languages"
+      title={i18n.t("options.translation.autoTranslateLanguages.title")}
+      description={i18n.t("options.translation.autoTranslateLanguages.description")}
+    >
+      <div className="flex flex-col gap-4">
         <AutoTranslateLanguagesSelector />
-      </ConfigCard>
-      <SelectedLanguageCells />
-    </div>
+        <SelectedLanguageCells />
+      </div>
+    </ConfigCard>
   )
 }
 

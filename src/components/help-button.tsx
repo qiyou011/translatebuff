@@ -1,5 +1,7 @@
 import { Icon } from "@iconify/react"
 import { useCallback, useRef, useState } from "react"
+import { getWebsiteUrl } from "@/fork/website-url"
+import { i18n } from "@/utils/i18n"
 import { cn } from "@/utils/styles/utils"
 
 type Corner = "bottom-right" | "top-right"
@@ -31,6 +33,11 @@ export function HelpButton() {
   const [dragging, setDragging] = useState(false)
   const [dragPos, setDragPos] = useState<{ x: number; y: number } | null>(null)
   const hasDraggedRef = useRef(false)
+  const suppressClickRef = useRef(false)
+
+  const openSupport = useCallback(() => {
+    window.open(getWebsiteUrl(), "_blank", "noopener,noreferrer")
+  }, [])
 
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
     e.preventDefault()
@@ -54,14 +61,10 @@ export function HelpButton() {
       document.removeEventListener("mouseup", onMouseUp)
 
       if (hasDraggedRef.current) {
+        suppressClickRef.current = true
         const newCorner = getNearestCorner(ev.clientX, ev.clientY)
         setCorner(newCorner)
         localStorage.setItem(STORAGE_KEY, newCorner)
-      } else {
-        window.open(
-          "https://github.com/mengxi-ream/read-frog/issues?q=sort%3Aupdated-desc+is%3Aissue+is%3Aopen",
-          "_blank",
-        )
       }
       hasDraggedRef.current = false
       setDragging(false)
@@ -82,21 +85,33 @@ export function HelpButton() {
           bottom: "auto",
           transition: "none",
         }
-      : { position: "fixed", ...cornerStyles[corner], transition: "all 300ms ease" }
+      : {
+          position: "fixed",
+          ...cornerStyles[corner],
+          transition: "top 300ms ease, right 300ms ease, bottom 300ms ease, left 300ms ease",
+        }
 
   return (
     <button
       type="button"
       onMouseDown={handleMouseDown}
+      onClick={() => {
+        if (suppressClickRef.current) {
+          suppressClickRef.current = false
+          return
+        }
+        openSupport()
+      }}
+      aria-label={i18n.t("popup.more.tutorial")}
       className={cn(
         "z-50 flex size-10 cursor-grab items-center justify-center rounded-full",
         "bg-muted-foreground/20 text-muted-foreground shadow-md",
-        "opacity-60 hover:opacity-100",
+        "opacity-60 transition-[color,background-color,opacity,box-shadow] duration-200 hover:opacity-100 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
         dragging && "cursor-grabbing opacity-100",
       )}
       style={style}
     >
-      <Icon icon="tabler:message-2" className="size-5" />
+      <Icon icon="tabler:message-2" className="size-5" aria-hidden="true" />
     </button>
   )
 }

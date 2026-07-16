@@ -143,7 +143,7 @@ describe("floatingButton controls", () => {
     const closeTrigger = screen.getByRole("button", { name: "Close floating button" })
     const mainButton = getMainButton()
 
-    expect(mainButton).toHaveClass("transition-transform")
+    expect(mainButton).toHaveClass("transition-[transform,opacity,box-shadow]")
     expect(mainButton).toHaveClass("duration-300")
     expect(closeTrigger).toHaveClass("-top-1")
     expect(closeTrigger).toHaveClass("left-0")
@@ -178,7 +178,8 @@ describe("floatingButton controls", () => {
     expect(lockTrigger).toHaveClass("active:scale-90")
     expect(lockTrigger).toHaveClass("hover:text-neutral-500")
     expect(lockTrigger).toHaveClass("active:text-neutral-500")
-    expect(mainButton).toHaveClass("translate-x-6")
+    expect(mainButton).toHaveClass("translate-x-0")
+    expect(mainButton).toHaveClass("opacity-100")
 
     fireEvent.mouseEnter(mainButton)
 
@@ -200,7 +201,7 @@ describe("floatingButton controls", () => {
     fireEvent.mouseLeave(floatingButtonContainer)
 
     expect(mainButton).toHaveClass("translate-x-0")
-    expect(mainButton).toHaveClass("opacity-60")
+    expect(mainButton).toHaveClass("opacity-100")
 
     fireEvent.mouseEnter(mainButton)
 
@@ -317,12 +318,12 @@ describe("floatingButton controls", () => {
     )
   })
 
-  it("turns the frog into the only visible control after a long press", () => {
+  it("turns the brand button into the only visible control after a long press", () => {
     vi.useFakeTimers()
     renderFloatingButton()
 
     const mainButton = getMainButton()
-    expect(screen.getAllByRole("button")).toHaveLength(4)
+    expect(screen.getAllByRole("button")).toHaveLength(5)
 
     fireEvent.pointerDown(mainButton, {
       pointerId: 1,
@@ -336,7 +337,7 @@ describe("floatingButton controls", () => {
     })
 
     expect(mainButton).toHaveClass("rounded-full")
-    expect(screen.queryAllByRole("button")).toHaveLength(0)
+    expect(screen.queryAllByRole("button")).toEqual([mainButton])
 
     fireEvent.pointerUp(mainButton, {
       pointerId: 1,
@@ -370,7 +371,7 @@ describe("floatingButton controls", () => {
     })
 
     expect(mainButton).toHaveClass("rounded-full")
-    expect(screen.queryAllByRole("button")).toHaveLength(0)
+    expect(screen.queryAllByRole("button")).toEqual([mainButton])
 
     fireEvent.pointerUp(mainButton, {
       pointerId: 1,
@@ -468,10 +469,12 @@ describe("floatingButton controls", () => {
     const mainButton = getMainButton()
     const hiddenButtons = screen
       .getAllByRole("button")
-      .filter((button) => button !== closeTrigger && button !== lockTrigger)
+      .filter(
+        (button) => button !== closeTrigger && button !== lockTrigger && button !== mainButton,
+      )
 
     expect(mainButton).toHaveClass("rounded-r-full")
-    expect(mainButton).toHaveClass("-translate-x-6")
+    expect(mainButton).toHaveClass("translate-x-0")
     expect(closeTrigger).toHaveClass("right-0")
     expect(lockTrigger).toHaveClass("right-0")
     for (const hiddenButton of hiddenButtons) {

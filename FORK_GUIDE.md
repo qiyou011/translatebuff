@@ -206,6 +206,7 @@ src/fork/
 
 ```bash
 pnpm dev                      # 开发（自动开 Chrome 装载扩展）
+pnpm run preview:watch        # UI 预览：持续增量编译并自动刷新插件
 pnpm run test                 # 单元测试（vitest）
 pnpm run build                # chrome 构建
 pnpm run build:edge           # edge 构建

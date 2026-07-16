@@ -479,7 +479,7 @@ function SelectionPopoverHeader({
           <>
             <div
               className={cn(
-                "absolute top-0 left-1/2 -translate-x-1/2 p-1 transition-all duration-200",
+                "absolute top-0 left-1/2 -translate-x-1/2 p-1 transition-[color,background-color,opacity,transform] duration-200",
                 isDragging ? "opacity-100" : "opacity-0 group-hover:opacity-100",
               )}
             >

@@ -3,7 +3,7 @@ import { useMutation } from "@tanstack/react-query"
 import guest from "@/assets/icons/avatars/guest.svg"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/base-ui/avatar"
 import { DropdownMenuItem } from "@/components/ui/base-ui/dropdown-menu"
-import { env } from "@/env"
+import { getWebsiteUrl } from "@/fork/website-url"
 import { authClient } from "@/utils/auth/auth-client"
 import { i18n } from "@/utils/i18n"
 import { cn } from "@/utils/styles/utils"
@@ -31,11 +31,11 @@ function getUserInitials(name: string | null | undefined) {
 }
 
 export function openLogIn() {
-  window.open(`${env.WXT_WEBSITE_URL}/log-in`, "_blank")
+  window.open(getWebsiteUrl("/log-in"), "_blank")
 }
 
 export function openWebApp() {
-  window.open(`${env.WXT_WEBSITE_URL}/home`, "_blank")
+  window.open(getWebsiteUrl("/home"), "_blank")
 }
 
 export function useUserAccountMenu() {

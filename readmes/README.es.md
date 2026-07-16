@@ -1,6 +1,6 @@
 <div align="center"><a name="readme-top"></a>
 
-[![Read Frog banner][image-banner]][website]
+[![Translatebuff][image-banner]][website]
 
 <p align="center">
   <a href="https://trendshift.io/repositories/22377" target="_blank"><img src="https://trendshift.io/api/badge/repositories/22377" alt="mengxi-ream%2Fread-frog | Trendshift" width="250" height="55" /></a>
@@ -19,7 +19,7 @@ Domina idiomas con más facilidad y profundidad usando IA directamente en tu nav
 
 [![English][english-shield]](../README.md) [![简体中文][chinese-shield]](./README.zh-CN.md) [![繁體中文][traditional-chinese-shield]](./README.zh-TW.md) [![日本語][japanese-shield]](./README.ja.md) [![한국어][korean-shield]](./README.ko.md) [![Español][spanish-shield]](./README.es.md) [![Русский][russian-shield]](./README.ru.md) [![Türkçe][turkish-shield]](./README.tr.md) [![Tiếng Việt][vietnamese-shield]](./README.vi.md)
 
-[Sitio oficial](https://readfrog.app) · [Tutorial](https://www.readfrog.app/docs) · [Cambios][github-release-link] · [Blog](https://www.readfrog.app/blog)
+[Sitio oficial](https://www.translatebuff.com) · [Tutorial](https://www.translatebuff.com/docs) · [Cambios][github-release-link] · [Blog](https://www.translatebuff.com/blog)
 
 <!-- SHIELD GROUP -->
 
@@ -67,15 +67,15 @@ Domina idiomas con más facilidad y profundidad usando IA directamente en tu nav
 ## 📺 Demo
 
 <div align="center">
-  <img src="../assets/node-translation-demo.gif" width="38%" alt="Interfaz emergente de Read Frog" />
-  <img src="../assets/page-translation-demo.gif" width="60%" alt="Interfaz de traducción de Read Frog" />
+  <img src="../assets/node-translation-demo.gif" width="38%" alt="Interfaz emergente de Translatebuff" />
+  <img src="../assets/page-translation-demo.gif" width="60%" alt="Interfaz de traducción de Translatebuff" />
 </div>
 
 ## 👋🏻 Primeros pasos y comunidad
 
-La visión de Read Frog es ofrecer una experiencia de aprendizaje de idiomas fácil de usar, inteligente y personalizada para estudiantes de todos los niveles. En la era de la IA esto ya es posible, pero todavía hay pocos productos que cubran bien esta necesidad. Por eso decidimos construirlo nosotros mismos.
+La visión de Translatebuff es ofrecer una experiencia de aprendizaje de idiomas fácil de usar, inteligente y personalizada para estudiantes de todos los niveles. En la era de la IA esto ya es posible, pero todavía hay pocos productos que cubran bien esta necesidad. Por eso decidimos construirlo nosotros mismos.
 
-Tanto si eres usuario como desarrollador, Read Frog puede ser una parte importante de ese camino. El proyecto sigue en desarrollo activo y agradecemos cualquier comentario o [issue][issues-link].
+Tanto si eres usuario como desarrollador, Translatebuff puede ser una parte importante de ese camino. El proyecto sigue en desarrollo activo y agradecemos cualquier comentario o [issue][issues-link].
 
 ### Descarga
 
@@ -95,7 +95,7 @@ Tanto si eres usuario como desarrollador, Read Frog puede ser una parte importan
 >
 > **⭐️ Danos una estrella** para recibir notificaciones de cada lanzamiento en GitHub sin retraso.
 
-[![Star Read Frog on GitHub][image-star]][github-star-link]
+[![Translatebuff][image-star]][website]
 
 <details>
 <summary>
@@ -114,7 +114,7 @@ Tanto si eres usuario como desarrollador, Read Frog puede ser una parte importan
 
 ## ✨ Funciones
 
-Convierte tu lectura diaria en la web en una experiencia inmersiva de aprendizaje de idiomas con Read Frog.
+Convierte tu lectura diaria en la web en una experiencia inmersiva de aprendizaje de idiomas con Translatebuff.
 
 ### 🪄 [Acciones AI personalizadas][docs-tutorial]
 
@@ -126,7 +126,7 @@ Empieza con las plantillas integradas de **Diccionario** y **Mejorar escritura**
 
 Guarda vocabulario, definiciones, ejemplos, traducciones y notas de lectura en Notebase, y conviértelos en tarjetas con plantillas personalizables. Lo que descubres mientras lees se transforma en material de estudio sin interrumpir tu lectura.
 
-Repasa en línea las tarjetas pendientes y califica cada una como **Otra vez**, **Difícil**, **Bien** o **Fácil**. El planificador de repetición espaciada de Read Frog usa tus respuestas para mostrar cada tarjeta de nuevo justo antes de que la olvides.
+Repasa en línea las tarjetas pendientes y califica cada una como **Otra vez**, **Difícil**, **Bien** o **Fácil**. El planificador de repetición espaciada de Translatebuff usa tus respuestas para mostrar cada tarjeta de nuevo justo antes de que la olvides.
 
 ### 🔄 [Bilingüe / Solo traducción][docs-tutorial]
 
@@ -142,7 +142,7 @@ La barra se coloca automáticamente dentro de la ventana, se puede arrastrar y f
 
 ### 🧠 [Traducción con contexto][docs-tutorial]
 
-Permite que la IA entienda el contexto completo de lo que lees. Read Frog extrae el título de la página y una versión Markdown concisa del contenido para generar traducciones más precisas y adecuadas al contexto.
+Permite que la IA entienda el contexto completo de lo que lees. Translatebuff extrae el título de la página y una versión Markdown concisa del contenido para generar traducciones más precisas y adecuadas al contexto.
 
 Así los términos técnicos se traducen correctamente, las expresiones literarias conservan matices y las frases ambiguas se interpretan según el contenido que las rodea.
 
@@ -158,7 +158,7 @@ La detección automática de idioma y el mapeo de voces por idioma ayudan a eleg
 
 ### 📦 [Solicitudes por lotes][docs-tutorial]
 
-Ahorra hasta un 70% en costes de API con agrupación inteligente de solicitudes. Read Frog combina varias traducciones en una sola llamada, reduciendo overhead y uso de tokens sin sacrificar calidad.
+Ahorra hasta un 70% en costes de API con agrupación inteligente de solicitudes. Translatebuff combina varias traducciones en una sola llamada, reduciendo overhead y uso de tokens sin sacrificar calidad.
 
 Incluye reintentos con backoff exponencial y fallback automático a solicitudes individuales si falla el procesamiento por lotes.
 
@@ -178,7 +178,7 @@ También hay opciones gratuitas: Google Translate, Microsoft Translate y DeepLX 
 
 Toda contribución es bienvenida.
 
-1. Recomienda Read Frog a tus amigos y familiares.
+1. Recomienda Translatebuff a tus amigos y familiares.
 2. Reporta [issues][issues-link] y envía feedback.
 3. Contribuye con código.
 
@@ -188,7 +188,7 @@ Estructura del proyecto: [DeepWiki](https://deepwiki.com/mengxi-ream/read-frog)
 
 Pide a la IA que entienda el proyecto: [Dosu](https://app.dosu.dev/29569286-71ba-47dd-b038-c7ab1b9d0df7/documents)
 
-Consulta la [guía de contribución](https://readfrog.app/en/docs/code-contribution/contribution-guide) para más detalles.
+Consulta la [guía de contribución](https://www.translatebuff.com/en/docs/code-contribution/contribution-guide) para más detalles.
 
 ReadFrog tiene doble licencia: GPLv3 y licencia comercial.
 
@@ -199,7 +199,7 @@ Consulta [CONTRIBUTING.md](../CONTRIBUTING.md) para los términos de licencia de
     <tr>
       <th colspan="2">
         <br>
-        <img src="https://contrib.rocks/image?repo=mengxi-ream/read-frog" alt="Read Frog contributors"><br>
+        <img src="https://contrib.rocks/image?repo=mengxi-ream/read-frog" alt="Translatebuff contributors"><br>
         <br>
       </th>
     </tr>
@@ -245,8 +245,8 @@ Cada donación nos ayuda a crear una mejor experiencia de aprendizaje de idiomas
 [extension-release-shield]: https://img.shields.io/github/package-json/v/mengxi-ream/read-frog?filename=package.json&style=flat-square&label=Latest%20Version&color=brightgreen&labelColor=black
 [github-release-link]: https://github.com/mengxi-ream/read-frog/releases
 [github-star-link]: https://github.com/mengxi-ream/read-frog/stargazers
-[image-banner]: ../assets/banner.png
-[image-star]: ../assets/star.png
+[image-banner]: ../assets/renyimiao-icon.svg
+[image-star]: ../assets/renyimiao-icon.svg
 [issues-link]: https://github.com/mengxi-ream/read-frog/issues
 [issues-shield]: https://img.shields.io/github/issues/mengxi-ream/read-frog?style=flat-square&labelColor=black
 [japanese-shield]: https://img.shields.io/badge/%E6%97%A5%E6%9C%AC%E8%AA%9E-gray?style=flat-square
@@ -262,10 +262,10 @@ Cada donación nos ayuda a crear una mejor experiencia de aprendizaje de idiomas
 [traditional-chinese-shield]: https://img.shields.io/badge/%E7%B9%81%E9%AB%94%E4%B8%AD%E6%96%87-gray?style=flat-square
 [turkish-shield]: https://img.shields.io/badge/T%C3%BCrk%C3%A7e-gray?style=flat-square
 [vietnamese-shield]: https://img.shields.io/badge/Ti%E1%BA%BFng%20Vi%E1%BB%87t-gray?style=flat-square
-[website]: https://readfrog.app
-[wechat-link]: ../assets/wechat-account.jpg
+[website]: https://www.translatebuff.com
+[wechat-link]: https://www.translatebuff.com
 [wechat-shield-badge]: https://img.shields.io/badge/chat-WeChat-07C160?style=for-the-badge&logo=wechat&logoColor=white&labelColor=black
 
 <!-- Feature docs link -->
 
-[docs-tutorial]: https://readfrog.app/docs
+[docs-tutorial]: https://www.translatebuff.com/docs

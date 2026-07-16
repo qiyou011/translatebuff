@@ -2,7 +2,7 @@
   "name": "@read-frog/extension",
   "version": "1.41.0",
   "private": true,
-  "description": "Read Frog browser extension for language learning",
+  "description": "Translatebuff browser extension for translation and language learning",
   "type": "module",
   "scripts": {
     "build": "wxt build",
@@ -13,6 +13,7 @@
     "dev": "wxt",
     "dev:edge": "wxt -b edge",
     "dev:firefox": "wxt -b firefox --mv3",
+    "preview:watch": "node scripts/start-ui-preview.mjs",
     "fmt": "oxfmt --write .",
     "fmt:check": "oxfmt --check .",
     "lint": "oxlint --type-aware --type-check",

@@ -7,7 +7,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { act, fireEvent, render, screen, waitFor } from "@testing-library/react"
 import { createStore, Provider } from "jotai"
 import { beforeEach, describe, expect, it, vi } from "vitest"
-import { env } from "@/env"
+import { getWebsiteUrl } from "@/fork/website-url"
 import { configAtom } from "@/utils/atoms/config"
 import { DEFAULT_CONFIG } from "@/utils/constants/config"
 import { i18n } from "@/utils/i18n"
@@ -363,7 +363,7 @@ describe("saveToNotebaseButton notebase availability", () => {
     toastOptions?.action?.onClick?.()
 
     expect(sendMessage).toHaveBeenCalledWith("openPage", {
-      url: new URL("/pricing", env.WXT_WEBSITE_URL).toString(),
+      url: getWebsiteUrl("/pricing"),
       active: true,
     })
   })
@@ -655,7 +655,7 @@ describe("saveToNotebaseButton notebase availability", () => {
     toastOptions?.action?.onClick?.()
 
     expect(sendMessage).toHaveBeenCalledWith("openPage", {
-      url: new URL("/pricing", env.WXT_WEBSITE_URL).toString(),
+      url: getWebsiteUrl("/pricing"),
       active: true,
     })
   })

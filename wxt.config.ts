@@ -184,6 +184,11 @@ export default defineConfig({
       strictPort: false,
     },
   },
+  // Keep the dev server running for extensions loaded manually in the user's
+  // existing Chrome profile. WXT's temporary browser runner is not needed.
+  webExt: {
+    disabled: true,
+  },
   vite: (configEnv) => ({
     resolve: {
       // CodeMirror breaks with "Unrecognized extension value in extension set"

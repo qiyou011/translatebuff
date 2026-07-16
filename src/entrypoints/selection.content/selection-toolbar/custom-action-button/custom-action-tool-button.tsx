@@ -39,7 +39,11 @@ export function CustomActionToolButton({
       render={
         <button
           type="button"
-          className={cn(buttonVariants({ variant: "ghost-secondary", size: "icon-sm" }), className)}
+          className={cn(
+            buttonVariants({ variant: "ghost-secondary", size: "icon-sm" }),
+            "size-7",
+            className,
+          )}
           onClick={handleClick}
           aria-label={label}
           title={label}

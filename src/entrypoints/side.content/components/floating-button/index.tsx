@@ -4,7 +4,7 @@ import { useAtom, useAtomValue } from "jotai"
 import { useEffect, useRef, useState } from "react"
 import { toast } from "sonner"
 import { browser } from "#imports"
-import readFrogLogo from "@/assets/icons/read-frog.png?url&no-inline"
+import brandLogo from "@/assets/icons/renyimiao.svg?url&no-inline"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,7 +24,7 @@ import { shadowWrapper } from "../../index"
 import HiddenButton from "./components/hidden-button"
 import TranslateButton from "./translate-button"
 
-const readFrogLogoUrl = new URL(readFrogLogo, browser.runtime.getURL("/")).href
+const brandLogoUrl = new URL(brandLogo, browser.runtime.getURL("/")).href
 const LONG_PRESS_DELAY_MS = 350
 const DRAG_START_DISTANCE_PX = 6
 const MIN_FLOATING_CONTAINER_TOP_PX = 30
@@ -127,13 +127,11 @@ export default function FloatingButton() {
   const [isHitAreaExpanded, setIsHitAreaExpanded] = useState(false)
   const [dragPreviewPosition, setDragPreviewPosition] = useState<DragPoint | null>(null)
   const containerRef = useRef<HTMLDivElement | null>(null)
-  const mainButtonRef = useRef<HTMLDivElement | null>(null)
+  const mainButtonRef = useRef<HTMLButtonElement | null>(null)
   const pendingDragRef = useRef<PendingDragState | null>(null)
   const lastDragPreviewRef = useRef<DragPoint | null>(null)
-  const isFloatingButtonLocked = floatingButton.locked
   const floatingButtonSide = getFloatingButtonSide(floatingButton.side)
   const isFloatingButtonExpanded = isHitAreaExpanded || isDropdownOpen
-  const isMainButtonAttached = isFloatingButtonLocked || isFloatingButtonExpanded
 
   useEffect(() => {
     if (!isDraggingButton) return undefined
@@ -193,7 +191,7 @@ export default function FloatingButton() {
     setIsDraggingButton(true)
   }
 
-  const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+  const handlePointerDown = (e: React.PointerEvent<HTMLButtonElement>) => {
     if (e.pointerType === "mouse" && e.button !== 0) return
 
     const mainButton = mainButtonRef.current ?? e.currentTarget
@@ -222,7 +220,7 @@ export default function FloatingButton() {
     }
   }
 
-  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+  const handlePointerMove = (e: React.PointerEvent<HTMLButtonElement>) => {
     const pendingDrag = pendingDragRef.current
     if (!pendingDrag || pendingDrag.pointerId !== e.pointerId) return
 
@@ -249,7 +247,7 @@ export default function FloatingButton() {
   }
 
   const finishPointerInteraction = (
-    e: React.PointerEvent<HTMLDivElement>,
+    e: React.PointerEvent<HTMLButtonElement>,
     shouldTriggerClick: boolean,
   ) => {
     const pendingDrag = pendingDragRef.current
@@ -287,11 +285,11 @@ export default function FloatingButton() {
     }
   }
 
-  const handlePointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
+  const handlePointerUp = (e: React.PointerEvent<HTMLButtonElement>) => {
     finishPointerInteraction(e, true)
   }
 
-  const handlePointerCancel = (e: React.PointerEvent<HTMLDivElement>) => {
+  const handlePointerCancel = (e: React.PointerEvent<HTMLButtonElement>) => {
     finishPointerInteraction(e, false)
   }
 
@@ -352,23 +350,19 @@ export default function FloatingButton() {
         <TranslateButton side={floatingButtonSide} expanded={isFloatingButtonExpanded} />
       )}
       <div className="relative">
-        <div
+        <button
+          type="button"
+          aria-label={APP_NAME}
           ref={mainButtonRef}
           data-testid="floating-main-button"
           className={cn(
-            "relative flex h-10 items-center border-border bg-white shadow-lg transition-transform duration-300 dark:bg-neutral-900",
+            "relative flex h-10 items-center border-border bg-card shadow-lg transition-[transform,opacity,box-shadow] duration-300 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
             isDraggingButton
               ? "w-10 cursor-grabbing touch-none justify-center rounded-full border opacity-100"
               : floatingButtonSide === "right"
                 ? "w-11 justify-start rounded-l-full border border-r-0"
                 : "w-11 justify-end rounded-r-full border border-l-0",
-            !isDraggingButton &&
-              (isMainButtonAttached
-                ? "translate-x-0"
-                : floatingButtonSide === "right"
-                  ? "translate-x-6"
-                  : "-translate-x-6"),
-            !isDraggingButton && (isFloatingButtonExpanded ? "opacity-100" : "opacity-60"),
+            !isDraggingButton && "translate-x-0 opacity-100",
             !isDraggingButton && "cursor-pointer",
           )}
           onPointerDown={handlePointerDown}
@@ -376,16 +370,24 @@ export default function FloatingButton() {
           onPointerUp={handlePointerUp}
           onPointerCancel={handlePointerCancel}
           onMouseEnter={handleMouseEnter}
+          onKeyDown={(event) => {
+            if (event.key !== "Enter" && event.key !== " ") return
+            event.preventDefault()
+            handleFloatingButtonClick()
+          }}
         >
           <img
-            src={readFrogLogoUrl}
-            alt={APP_NAME}
+            src={brandLogoUrl}
+            alt=""
+            aria-hidden="true"
+            width={32}
+            height={32}
             className={cn(
               "h-8 w-8 rounded-full",
               !isDraggingButton && (floatingButtonSide === "right" ? "ml-1" : "mr-1"),
             )}
           />
-        </div>
+        </button>
 
         {!isDraggingButton && (
           <>
