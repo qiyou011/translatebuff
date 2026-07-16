@@ -34,7 +34,7 @@
 - [x] 6.3 `pnpm run build` + `build:edge` + `build:firefox` 三目标通过
 - [x] 6.4 `FORK_DIFF_BASE=origin/change/fork-foundation node scripts/check-fork-boundary.mjs` 通过（未编辑上游 composed UI 源文件）
 - [x] 6.5 `node scripts/assert-fork-build.mjs` 通过
-- [ ] 6.6 `pnpm dev` 实测：全局选择器只任译喵+普通翻译；选项页只任译喵、无添加、无内置；全新 profile 可靠 seed；词典走任译喵（待用户实测）
+- [x] 6.6 `pnpm dev` 实测：全局选择器只任译喵+普通翻译；选项页只任译喵、无添加、无内置；全新 profile 可靠 seed；词典走任译喵（用户已验收）
 
 ## 7. 任译喵多实例 + 选项页收成单块 +「更新模型」动态同步（追加优化）
 
@@ -47,4 +47,4 @@
 - [x] 7.5 选项页 `providers-config.tsx`：单块「任译喵 API」——API Key（改→广播全部实例）+ 检测按钮（探首个实例）；「更新模型」按钮（fetch→syncRenyimiaoModels 重建实例）；模型清单只读展示；Base URL 只读；修掉重复名（ProviderIcon 已渲染 name、删多余 span）、移除冗余编辑器头部
 - [x] 7.6 `provider-selector.tsx`：恢复 `getGroupedItemName`（任译喵组内剥「任译喵 」前缀，平铺展示模型名）
 - [x] 7.7 门禁复验：type-check 干净、全量测试 1824 passed、chrome 构建通过、边界 OK、assert-fork-build OK、三 fork 串（选项页/更新模型/连接检测）均在 api-providers chunk
-- [~] 7.8 `pnpm dev` 实测：**展示已通过用户验收**（选项页单块「任译喵 API」名字不重复、popup 任译喵组平铺模型）；功能流待验（填 key 后检测按钮探测通、点「更新模型」拉网关 /models 模型清单更新、每功能选不同模型翻译生效）
+- [x] 7.8 `pnpm dev` 实测（用户已验收）：选项页单块「任译喵 API」名字不重复；popup 任译喵组平铺模型；连接检测按钮探测通；点「更新模型」拉网关 /models、模型清单更新为 6 个真实模型；每功能可选不同模型
