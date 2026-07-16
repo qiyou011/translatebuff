@@ -6,61 +6,50 @@ import { DEFAULT_CONFIG } from "@/utils/constants/config"
 import {
   buildRenyimiaoProvider,
   computeForkConfigSync,
-  RENYIMIAO_MODELS,
+  renyimiaoApiKey,
   renyimiaoInstanceId,
+  renyimiaoModelIds,
+  setRenyimiaoApiKey,
+  syncRenyimiaoModels,
 } from "../renyimiao"
 
-const DEEPSEEK = RENYIMIAO_MODELS.find((model) => model.modelId === "Deepseek-V4-Flash")!
-const RENYIMIAO_DEEPSEEK_ID = renyimiaoInstanceId("Deepseek-V4-Flash")
+const DEEPSEEK_ID = renyimiaoInstanceId("Deepseek-V4-Flash")
 
 function applyPatch(config: Config, patch: Partial<Config>): Config {
   return mergeWithArrayOverwrite(config, patch)
 }
 
-describe("buildRenyimiaoProvider", () => {
+describe("buildRenyimiaoProvider（每模型一份实例）", () => {
   it("产物能通过上游 provider schema 校验", () => {
-    expect(providerConfigItemSchema.safeParse(buildRenyimiaoProvider(DEEPSEEK)).success).toBe(true)
+    expect(
+      providerConfigItemSchema.safeParse(buildRenyimiaoProvider("Deepseek-V4-Flash")).success,
+    ).toBe(true)
   })
 
-  it("缺 model:use-custom-model 时 schema 校验失败", () => {
-    const broken = {
-      ...buildRenyimiaoProvider(DEEPSEEK),
-      model: { isCustomModel: true, customModel: DEEPSEEK.modelId },
-    }
-    expect(providerConfigItemSchema.safeParse(broken).success).toBe(false)
-  })
-
-  it("id 按模型派生、customModel 为大小写敏感的网关别名", () => {
-    const provider = buildRenyimiaoProvider(DEEPSEEK)
-    expect(provider.id).toBe(RENYIMIAO_DEEPSEEK_ID)
-    expect(provider.model.customModel).toBe("Deepseek-V4-Flash")
+  it("id 按模型派生、customModel 为大小写敏感的网关别名、name 带任译喵、可注入共享 key", () => {
+    const provider = buildRenyimiaoProvider("GLM-5.2", "shared-key")
+    expect(provider.id).toBe(renyimiaoInstanceId("GLM-5.2"))
+    expect(provider.model.customModel).toBe("GLM-5.2")
+    expect(provider.name).toContain("任译喵")
+    expect(provider.apiKey).toBe("shared-key")
   })
 })
 
-describe("computeForkConfigSync", () => {
-  it("默认配置：隐藏 OpenAI/DeepSeek/Atlas、补齐任译喵实例", () => {
+describe("computeForkConfigSync（seed 内置可用模型 + repoint）", () => {
+  it("seed 内置可用模型（Deepseek-V4-Flash）、保留默认 provider", () => {
     const patch = computeForkConfigSync(DEFAULT_CONFIG)
     expect(patch).not.toBeNull()
     const ids = patch!.providersConfig!.map((provider) => provider.id)
-    expect(ids).not.toContain("openai-default")
-    expect(ids).not.toContain("deepseek-default")
-    expect(ids).not.toContain("atlascloud-default")
+    expect(ids).toContain(DEEPSEEK_ID)
+    expect(ids).toContain("openai-default")
     expect(ids).toContain("microsoft-translate-default")
-    expect(ids).toContain(RENYIMIAO_DEEPSEEK_ID)
   })
 
-  it("默认翻译源为微软（保留），不产生悬空重定向", () => {
+  it("指向免费AI的自定义动作（词典）repoint 到任译喵实例", () => {
     const patch = computeForkConfigSync(DEFAULT_CONFIG)
-    expect(patch!.translate).toBeUndefined()
-  })
-
-  it("功能指向被隐藏 provider 时，兜底到微软翻译", () => {
-    const config: Config = {
-      ...DEFAULT_CONFIG,
-      translate: { ...DEFAULT_CONFIG.translate, providerId: "openai-default" },
-    }
-    const patch = computeForkConfigSync(config)
-    expect(patch!.translate?.providerId).toBe("microsoft-translate-default")
+    const actions = patch!.selectionToolbar?.customActions
+    expect(actions!.some((action) => action.providerId === "read-frog-free-ai")).toBe(false)
+    expect(actions!.some((action) => action.providerId === DEEPSEEK_ID)).toBe(true)
   })
 
   it("同步后再次运行返回 null（幂等）", () => {
@@ -68,17 +57,59 @@ describe("computeForkConfigSync", () => {
     const synced = applyPatch(DEFAULT_CONFIG, patch!)
     expect(computeForkConfigSync(synced)).toBeNull()
   })
+})
 
-  it("保留已存在任译喵实例的 apiKey，不覆盖", () => {
+describe("syncRenyimiaoModels（以 fetch 结果为准重建实例集）", () => {
+  function seededConfig(): Config {
+    return applyPatch(DEFAULT_CONFIG, computeForkConfigSync(DEFAULT_CONFIG)!)
+  }
+
+  it("按 modelIds 重建任译喵实例集，非任译喵 provider 保留", () => {
+    const config = seededConfig()
+    const patch = syncRenyimiaoModels(config, ["Deepseek-V4-Pro", "GLM-5.2", "Kimi-k2.7"])
+    const next = applyPatch(config, patch)
+    expect(renyimiaoModelIds(next.providersConfig).sort()).toEqual(
+      ["Deepseek-V4-Pro", "GLM-5.2", "Kimi-k2.7"].sort(),
+    )
+    expect(next.providersConfig.some((provider) => provider.id === "openai-default")).toBe(true)
+  })
+
+  it("保留共享 apiKey：新实例带上已配置的 key", () => {
+    const withKey = applyPatch(seededConfig(), {
+      providersConfig: setRenyimiaoApiKey(seededConfig().providersConfig, "user-key"),
+    })
+    const patch = syncRenyimiaoModels(withKey, ["GLM-5.2"])
+    const next = applyPatch(withKey, patch)
+    const glm = next.providersConfig.find(
+      (provider) => provider.id === renyimiaoInstanceId("GLM-5.2"),
+    )
+    expect(glm && "apiKey" in glm ? glm.apiKey : undefined).toBe("user-key")
+  })
+
+  it("功能指向被移除的任译喵实例时 repoint 到存活实例", () => {
     const config: Config = {
-      ...DEFAULT_CONFIG,
-      providersConfig: [
-        ...DEFAULT_CONFIG.providersConfig,
-        { ...buildRenyimiaoProvider(DEEPSEEK), apiKey: "user-key" },
-      ],
+      ...seededConfig(),
+      translate: { ...DEFAULT_CONFIG.translate, providerId: DEEPSEEK_ID },
     }
-    const patch = computeForkConfigSync(config)
-    const kept = patch!.providersConfig!.find((provider) => provider.id === RENYIMIAO_DEEPSEEK_ID)
-    expect(kept && "apiKey" in kept ? kept.apiKey : undefined).toBe("user-key")
+    const patch = syncRenyimiaoModels(config, ["GLM-5.2"])
+    const next = applyPatch(config, patch)
+    expect(next.translate.providerId).toBe(renyimiaoInstanceId("GLM-5.2"))
+  })
+})
+
+describe("共享 API Key 读写", () => {
+  it("renyimiaoApiKey 读首个任译喵实例的 key；setRenyimiaoApiKey 广播到全部任译喵实例", () => {
+    const config = applyPatch(DEFAULT_CONFIG, computeForkConfigSync(DEFAULT_CONFIG)!)
+    const withModels = applyPatch(config, syncRenyimiaoModels(config, ["A-model", "B-model"]))
+    const broadcast = setRenyimiaoApiKey(withModels.providersConfig, "k-123")
+    const renyimiaoInstances = broadcast.filter((provider) => provider.id.startsWith("renyimiao-"))
+    expect(renyimiaoInstances.length).toBe(2)
+    expect(
+      renyimiaoInstances.every((provider) => "apiKey" in provider && provider.apiKey === "k-123"),
+    ).toBe(true)
+    expect(renyimiaoApiKey(broadcast)).toBe("k-123")
+    // 不动非任译喵 provider 的 key
+    const openai = broadcast.find((provider) => provider.id === "openai-default")
+    expect(openai && "apiKey" in openai ? openai.apiKey : undefined).not.toBe("k-123")
   })
 })
