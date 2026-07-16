@@ -1,4 +1,5 @@
-import { readFileSync } from "node:fs"
+import type { Plugin } from "vite"
+import { existsSync, readFileSync } from "node:fs"
 import path from "node:path"
 import process from "node:process"
 import ViteYaml from "@modyfi/vite-plugin-yaml"
@@ -31,6 +32,73 @@ const forkVersionName = computeForkVersionName(
   forkBuildNumber,
   FORK_BRANDING.displayName,
 )
+
+// fork「换皮」重定向：不编辑上游 composed UI 源文件，改由 resolve 插件按解析后的绝对路径
+// 把上游 provider 选择器 / 选项 provider 页重定向到 fork 版（相对/@ import 都拦得住）。
+const FORK_UI_REDIRECTS = [
+  {
+    from: path.resolve(__dirname, "src/components/llm-providers/provider-selector.tsx"),
+    to: path.resolve(__dirname, "src/fork/components/provider-selector.tsx"),
+  },
+  {
+    from: path.resolve(
+      __dirname,
+      "src/entrypoints/options/pages/api-providers/providers-config.tsx",
+    ),
+    to: path.resolve(__dirname, "src/fork/ui/options/providers-config.tsx"),
+  },
+]
+
+function normalizeModuleId(id: string): string {
+  return id
+    .replace(/\\/g, "/")
+    .split("?")[0]
+    .replace(/\.(t|j)sx?$/, "")
+}
+
+function forkUiRedirectPlugin(): Plugin {
+  const redirects = FORK_UI_REDIRECTS.map((redirect) => ({
+    from: normalizeModuleId(redirect.from),
+    to: redirect.to,
+  }))
+  // 预筛用：能命中重定向的 import，其 specifier 末段必为某个目标文件的 basename。
+  const targetBasenames = new Set(redirects.map((redirect) => redirect.from.split("/").pop()))
+  return {
+    name: "fork-ui-redirect",
+    enforce: "pre",
+    buildStart() {
+      // 构建期断言：上游一旦移动/重命名被换皮的文件，from 绝对路径失效 → resolveId 再不命中 →
+      // 上游原版 UI 被静默打包（无报错、CI 全绿、皮悄悄掉）。这里把静默失效变成响亮的构建失败，
+      // 与下方 check-api-key-env 的 buildStart 校验同构。
+      for (const redirect of FORK_UI_REDIRECTS) {
+        if (!existsSync(redirect.from)) {
+          throw new Error(
+            `\n\nfork-ui-redirect: 换皮目标源文件不存在，重定向将静默失效：\n` +
+              `   - ${redirect.from}\n\n` +
+              `上游可能已移动/重命名该文件，请同步更新 wxt.config 的 FORK_UI_REDIRECTS。\n`,
+          )
+        }
+      }
+    },
+    async resolveId(source, importer, options) {
+      if (!importer) {
+        return null
+      }
+      // basename 预筛：先按末段早退，跳过全图 ~99.9% 的 import，避免对每个 import 都跑 this.resolve
+      // （enforce:"pre" 下会给全项目模块解析翻倍）。命中重定向必然末段相等，故预筛安全且完整。
+      const sourceBasename = normalizeModuleId(source).split("/").pop()
+      if (!targetBasenames.has(sourceBasename)) {
+        return null
+      }
+      const resolved = await this.resolve(source, importer, { ...options, skipSelf: true })
+      if (!resolved) {
+        return null
+      }
+      const match = redirects.find((redirect) => normalizeModuleId(resolved.id) === redirect.from)
+      return match ? match.to : null
+    },
+  }
+}
 
 // See https://wxt.dev/api/config.html
 export default defineConfig({
@@ -132,6 +200,7 @@ export default defineConfig({
       ],
     },
     plugins: [
+      forkUiRedirectPlugin(),
       // Lets the runtime i18next facade (src/utils/i18n) `import` the `src/locales/*.yml`
       // files as JS objects so i18next can bundle them for runtime language switching.
       //
