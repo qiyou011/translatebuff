@@ -1,6 +1,6 @@
-name: Translatebuff
-extName: Translatebuff - Çevir ve Öğren
-extDescription: Translatebuff, herhangi bir web sitesinden dilleri derinlemesine öğrenmenize yardımcı olmak için tasarlanmış açık kaynaklı bir tarayıcı uzantısıdır.
+name: TranslateBuff
+extName: TranslateBuff - Çevir ve Öğren
+extDescription: TranslateBuff, herhangi bir web sitesinden dilleri derinlemesine öğrenmenize yardımcı olmak için tasarlanmış açık kaynaklı bir tarayıcı uzantısıdır.
 account:
   login: Giriş yap
   webApp: Web uygulaması
@@ -15,7 +15,7 @@ contextMenu:
   readAloudSelection: '"%s" Sesli oku'
   showOriginal: Orijinali Göster
 sidePanel:
-  firefoxUserActionHint: Firefox'ta Translatebuff'u tarayıcının kenar çubuğundan açın.
+  firefoxUserActionHint: Firefox'ta TranslateBuff'u tarayıcının kenar çubuğundan açın.
   firefoxUserActionHelpText: Firefox kenar çubuğunu açmayı öğrenin
   firefoxUserActionHelpUrl: https://support.mozilla.org/tr/kb/use-sidebar-access-tools-and-vertical-tabs
 popup:
@@ -50,7 +50,7 @@ popup:
   discord:
     tooltip: Geliştiricilerle bağlantı kurmak ve yeni özelliklere erken erişim sağlamak için Discord'a katılın
   blog:
-    notification: Translatebuff'da yenilikler
+    notification: TranslateBuff'da yenilikler
   aiSmartContext: AI Akıllı Bağlam
   aiSmartContextDescription: Çeviri kalitesini artırmak için web sayfası bağlamını kullanır. LLM çeviri sağlayıcısı gerektirir.
   more:
@@ -314,7 +314,7 @@ options:
     floatingButton:
       globalToggle:
         title: Yüzen Butonu Etkinleştir
-        description: Translatebuff özelliklerine hızlı erişim için web sayfalarında yüzen butonu görüntüle
+        description: TranslateBuff özelliklerine hızlı erişim için web sayfalarında yüzen butonu görüntüle
       closeMenu:
         disableForSite: Bu site için devre dışı bırak
         disableGlobally: Genel olarak devre dışı bırak
@@ -705,7 +705,7 @@ options:
       fallback: Yedek
       selectPlaceholder: Bir ses seçin
       noVoicesFound: Ses bulunamadı
-      previewSample: Translatebuff'dan merhaba! Yüksek sesle okurken böyle ses çıkaracağım.
+      previewSample: TranslateBuff'dan merhaba! Yüksek sesle okurken böyle ses çıkaracağım.
     languageVoice:
       label: Dil Sesi
       reset: Sıfırla
@@ -731,11 +731,11 @@ options:
     title: Yapılandırma
     about:
       title: Hakkında
-      description: Translatebuff Nisan 2025'te doğdu
-      mission: Translatebuff, yapay zeka çağında yüksek kaliteli eğitime daha eşit erişimi genişletmek için, dil öğrenimi, tıp ve bilgi yoğun diğer alanlarda gerçek bir öğretmene daha yakın hissettiren öğrenme deneyimlerini daha ulaşılabilir maliyetlerle sunmayı hedefler.
+      description: TranslateBuff Nisan 2025'te doğdu
+      mission: TranslateBuff, yapay zeka çağında yüksek kaliteli eğitime daha eşit erişimi genişletmek için, dil öğrenimi, tıp ve bilgi yoğun diğer alanlarda gerçek bir öğretmene daha yakın hissettiren öğrenme deneyimlerini daha ulaşılabilir maliyetlerle sunmayı hedefler.
       analytics:
         title: Kullanıcı deneyimini geliştirmemize yardımcı ol
-        tooltip: Açık olduğunda Translatebuff, özelliklerin güvenilir çalıştığını doğrulamak, performansı ve UX ayrıntılarını iyileştirmek ve sıradaki önceliklerimizi belirlemek için anonim kullanım sinyalleri gönderir.
+        tooltip: Açık olduğunda TranslateBuff, özelliklerin güvenilir çalıştığını doğrulamak, performansı ve UX ayrıntılarını iyileştirmek ve sıradaki önceliklerimizi belirlemek için anonim kullanım sinyalleri gönderir.
     sync:
       title: Manuel Yapılandırma Senkronizasyonu
       description: Yapılandırma ayarlarınızı manuel olarak içe ve dışa aktarın
@@ -744,7 +744,7 @@ options:
       importSuccess: Yapılandırma başarıyla içe aktarıldı
       exportSuccess: Yapılandırma başarıyla dışa aktarıldı
       importError: İçe aktarma başarısız
-      versionTooNew: İçe aktarılan yapılandırma sürümü daha yeni, lütfen Translatebuff'u en son sürüme yükseltin
+      versionTooNew: İçe aktarılan yapılandırma sürümü daha yeni, lütfen TranslateBuff'u en son sürüme yükseltin
       migrationError: Geçiş başarısız
       validationError: Yapılandırma doğrulaması başarısız
       exportOptions:
@@ -987,8 +987,8 @@ action:
   saveToNotebaseMissingNotebaseDescription: Eski Notebase artık yok veya bu hesapla açılamıyor. Yeni bir Notebase oluşturup kaydedin ya da Custom AI Actions içinde mevcut bir Notebase bağlayın.
   saveToNotebaseAccountUnavailableDescription: Giriş yapılan hesap aşağıdaki bağlı hesapla eşleşmiyor. Oluşturup kaydetmek önceki bağlantıyı ve alan eşlemelerini değiştirir. Custom AI Actions içinde mevcut bir Notebase de bağlayabilirsiniz.
   saveToNotebasePendingLogin: Kaydetmeyi tamamlamak için giriş yapın
-  saveToNotebasePendingLoginDescription: Giriş yaptıktan sonra Translatebuff Notebase'i oluşturur ve bu sonucu otomatik olarak kaydeder.
-  saveToNotebasePendingConnectedLoginDescription: Girişten sonra Translatebuff mümkünse bağlı Notebase'e kaydeder. Bu hesap onu kullanamazsa yeni bir Notebase oluşturup kaydeder.
+  saveToNotebasePendingLoginDescription: Giriş yaptıktan sonra TranslateBuff Notebase'i oluşturur ve bu sonucu otomatik olarak kaydeder.
+  saveToNotebasePendingConnectedLoginDescription: Girişten sonra TranslateBuff mümkünse bağlı Notebase'e kaydeder. Bu hesap onu kullanamazsa yeni bir Notebase oluşturup kaydeder.
   upgrade: Yükselt
   openCustomActions: Custom AI Actions'ı aç
   openNotebase: Notebase'i aç
@@ -1018,7 +1018,7 @@ subtitles:
     downloadTranslatedComplete: Çevrilmiş altyazılar indirildi
     downloadSource: Kaynak altyazıları indir
   state:
-    loading: Translatebuff altyazılar yükleniyor
+    loading: TranslateBuff altyazılar yükleniyor
     error: Bir hata oluştu
   errors:
     http429: 429 YouTube altyazı API'sine çok fazla istek gönderildi. Lütfen biraz bekleyip tekrar deneyin.
