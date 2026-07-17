@@ -1,6 +1,6 @@
-name: Translatebuff
-extName: Translatebuff - Переводи и учись
-extDescription: Translatebuff — расширение браузера с открытым исходным кодом, которое поможет вам глубоко изучать языки на любом веб-сайте.
+name: TranslateBuff
+extName: TranslateBuff - Переводи и учись
+extDescription: TranslateBuff — расширение браузера с открытым исходным кодом, которое поможет вам глубоко изучать языки на любом веб-сайте.
 account:
   login: Войти
   webApp: Веб-приложение
@@ -15,7 +15,7 @@ contextMenu:
   readAloudSelection: Прочитать вслух "%s"
   showOriginal: Показать оригинал
 sidePanel:
-  firefoxUserActionHint: В Firefox откройте Translatebuff из боковой панели браузера.
+  firefoxUserActionHint: В Firefox откройте TranslateBuff из боковой панели браузера.
   firefoxUserActionHelpText: Как открыть боковую панель Firefox
   firefoxUserActionHelpUrl: https://support.mozilla.org/ru/kb/ispolzovanije-bokovoi-paneli-dostup-instrumenty-i-vertikalnyje-vkladki
 popup:
@@ -50,7 +50,7 @@ popup:
   discord:
     tooltip: Присоединяйтесь к Discord, чтобы связаться с разработчиками и получить ранний доступ к новым функциям
   blog:
-    notification: Что нового в Translatebuff
+    notification: Что нового в TranslateBuff
   aiSmartContext: Умный контекст ИИ
   aiSmartContextDescription: Использует контекст веб-страницы для улучшения качества перевода. Требуется LLM-провайдер перевода.
   more:
@@ -314,7 +314,7 @@ options:
     floatingButton:
       globalToggle:
         title: Включить плавающую кнопку
-        description: Отображать плавающую кнопку на веб-страницах для быстрого доступа к функциям Translatebuff
+        description: Отображать плавающую кнопку на веб-страницах для быстрого доступа к функциям TranslateBuff
       closeMenu:
         disableForSite: Отключить для этого сайта
         disableGlobally: Отключить глобально
@@ -705,7 +705,7 @@ options:
       fallback: Резервный
       selectPlaceholder: Выберите голос
       noVoicesFound: Голоса не найдены
-      previewSample: Привет от Translatebuff! Так я буду звучать при чтении вслух.
+      previewSample: Привет от TranslateBuff! Так я буду звучать при чтении вслух.
     languageVoice:
       label: Голос для языка
       reset: Сброс
@@ -731,11 +731,11 @@ options:
     title: Конфигурация
     about:
       title: О приложении
-      description: Translatebuff появился в апреле 2025 года
-      mission: Translatebuff стремится расширить равный доступ к качественному образованию в эпоху ИИ, делая обучение, максимально похожее на занятия с настоящим преподавателем, доступным по цене в языках, медицине и других знанияемких областях.
+      description: TranslateBuff появился в апреле 2025 года
+      mission: TranslateBuff стремится расширить равный доступ к качественному образованию в эпоху ИИ, делая обучение, максимально похожее на занятия с настоящим преподавателем, доступным по цене в языках, медицине и других знанияемких областях.
       analytics:
         title: Помочь улучшить пользовательский опыт
-        tooltip: Когда параметр включен, Translatebuff отправляет анонимные сигналы об использовании продукта, чтобы мы могли проверять надежность функций, улучшать производительность и UX-детали, а также понимать, что развивать дальше в первую очередь.
+        tooltip: Когда параметр включен, TranslateBuff отправляет анонимные сигналы об использовании продукта, чтобы мы могли проверять надежность функций, улучшать производительность и UX-детали, а также понимать, что развивать дальше в первую очередь.
     sync:
       title: Ручная синхронизация конфигурации
       description: Ручной импорт и экспорт настроек конфигурации
@@ -744,7 +744,7 @@ options:
       importSuccess: Конфигурация успешно импортирована
       exportSuccess: Конфигурация успешно экспортирована
       importError: Ошибка импорта
-      versionTooNew: Версия импортированной конфигурации новее, пожалуйста, обновите Translatebuff до последней версии
+      versionTooNew: Версия импортированной конфигурации новее, пожалуйста, обновите TranslateBuff до последней версии
       migrationError: Ошибка миграции
       validationError: Ошибка валидации конфигурации
       exportOptions:
@@ -982,13 +982,13 @@ action:
   saveToNotebaseConnectExisting: Подключить существующую Notebase
   saveToNotebaseGoConfigure: Настроить
   saveToNotebaseLoginConnectedTitle: Войти и сохранить?
-  saveToNotebaseLoginConnectedDescription: Этот Custom Action подключён к аккаунту ниже. После входа Translatebuff сохранит в существующую Notebase, если это возможно, или создаст новую Notebase для текущего аккаунта.
+  saveToNotebaseLoginConnectedDescription: Этот Custom Action подключён к аккаунту ниже. После входа TranslateBuff сохранит в существующую Notebase, если это возможно, или создаст новую Notebase для текущего аккаунта.
   saveToNotebaseConnectionUnavailableTitle: Подключение Notebase недоступно
   saveToNotebaseMissingNotebaseDescription: Старая Notebase больше не существует или недоступна этому аккаунту. Создайте новую Notebase и сохраните результат либо подключите существующую Notebase в Custom AI Actions.
   saveToNotebaseAccountUnavailableDescription: Текущий аккаунт не совпадает с подключённым аккаунтом ниже. Создание и сохранение заменит прежнее подключение и сопоставления полей. Также можно подключить существующую Notebase в Custom AI Actions.
   saveToNotebasePendingLogin: Войдите, чтобы завершить сохранение
-  saveToNotebasePendingLoginDescription: После входа Translatebuff автоматически создаст Notebase и сохранит этот результат.
-  saveToNotebasePendingConnectedLoginDescription: После входа Translatebuff сохранит в подключённую Notebase, если это возможно. Если аккаунт не может её использовать, будет создана новая Notebase.
+  saveToNotebasePendingLoginDescription: После входа TranslateBuff автоматически создаст Notebase и сохранит этот результат.
+  saveToNotebasePendingConnectedLoginDescription: После входа TranslateBuff сохранит в подключённую Notebase, если это возможно. Если аккаунт не может её использовать, будет создана новая Notebase.
   upgrade: Повысить тариф
   openCustomActions: Открыть Custom AI Actions
   openNotebase: Открыть Notebase
@@ -1018,7 +1018,7 @@ subtitles:
     downloadTranslatedComplete: Переведённые субтитры скачаны
     downloadSource: Скачать исходные субтитры
   state:
-    loading: Translatebuff загрузка субтитров
+    loading: TranslateBuff загрузка субтитров
     error: Произошла ошибка
   errors:
     http429: 429 Слишком много запросов к API YouTube субтитров, пожалуйста, попробуйте снова позже
