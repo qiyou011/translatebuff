@@ -13,7 +13,8 @@ Translatebuff 是 read-frog 的软 fork（上游：mengxi-ream/read-frog）。
 6. `pnpm run test` 与 `wxt build` + `build:edge` + `build:firefox` 必须全绿
 7. `node scripts/assert-fork-build.mjs` 必须通过（fork 域名已进产物 = env 覆盖生效；残留上游域名仅告警）
 8. `FORK_DIFF_BASE=origin/main node scripts/check-fork-boundary.mjs` 必须通过（无 allowlist 外越界）
-9. 开 PR：sync/* -> main（CI `fork-guard.yml` 复跑 4/5/7/8）
+9. `node scripts/check-fork-brand.mjs` 必须通过（locale/入口标题无上游品牌残留、无小写 Translatebuff 漂移）。上游新增带 "Read Frog" 的串会在此被揪出——重刷成 fork 品牌（拉丁 TranslateBuff / 中文 任译喵·任譯喵）
+10. 开 PR：sync/* -> main（CI `fork-guard.yml` 复跑 4/5/7/8/9）
 
 ## 绝不编辑（每次同步 take-theirs）
 
@@ -57,7 +58,7 @@ Translatebuff 是 read-frog 的软 fork（上游：mengxi-ream/read-frog）。
 
 ### C 类 · fork 净新增（零冲突，上游永不碰）
 
-- src/fork/**、scripts/{check-fork-boundary,assert-fork-build}.mjs、scripts/fork-allowlist.json、FORK.md、.env.production、.github/workflows/fork-guard.yml、openspec/**
+- src/fork/**、scripts/{check-fork-boundary,assert-fork-build,check-fork-brand}.mjs、scripts/fork-allowlist.json、FORK.md、.env.production、.github/workflows/fork-guard.yml、openspec/**
 - **冲突解法**：不会有。
 
 ### D 类 · 直接从上游同步（其余全部 = 引擎，take upstream）

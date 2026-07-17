@@ -17,6 +17,8 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - name: Fork boundary check
         run: FORK_DIFF_BASE=origin/${{ github.base_ref }} node scripts/check-fork-boundary.mjs
+      - name: Fork brand check
+        run: node scripts/check-fork-brand.mjs
       - run: pnpm run test
       - run: pnpm run build
       - run: pnpm run build:edge

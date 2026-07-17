@@ -27,6 +27,7 @@ pnpm run build           # chrome 构建（另有 build:edge / build:firefox）
 pnpm run type-check      # oxlint 类型检查
 node scripts/assert-fork-build.mjs                                  # 断言产物内 fork 域名已生效
 FORK_DIFF_BASE=origin/main node scripts/check-fork-boundary.mjs     # 断言无越界改动
+node scripts/check-fork-brand.mjs                                  # 断言 locale/标题无上游残留 + 无小写 Translatebuff
 ```
 
 环境要求：Node ≥ 22.22.0、pnpm 10.30.2（corepack 自动装）。
