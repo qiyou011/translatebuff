@@ -92,14 +92,18 @@ export function setRenyimiaoApiKey(
   )
 }
 
-// 某 providerId 在 fork 选择器中是否可见：存在于 config 且（任译喵实例 或 纯翻译 provider）。
+// fork UI 可见性谓词：任译喵实例 或 纯翻译 provider（microsoft/google/deepl(x)）。
+// 其余（默认 OpenAI/DeepSeek/Atlas 等 LLM、免费AI）在各 fork UI 面判为隐藏。
+// 选择器分组、translation-hub 面板 / 下拉、repoint 判定共用同一条可见性定义。
+export function isForkVisibleProvider(provider: ProviderConfig): boolean {
+  return isRenyimiaoInstance(provider) || isPureTranslateProviderConfig(provider)
+}
+
+// 某 providerId 是否可见：存在于 config 且 fork 可见。
 // 用"实际存在"判断（而非仅前缀），使 seed 与 sync 都能把指向已移除实例的功能识别为需 repoint。
 function isVisibleProviderId(providerId: string, providersConfig: ProvidersConfig): boolean {
   const provider = providersConfig.find((item) => item.id === providerId)
-  if (!provider) {
-    return false
-  }
-  return isRenyimiaoInstance(provider) || isPureTranslateProviderConfig(provider)
+  return provider ? isForkVisibleProvider(provider) : false
 }
 
 interface RepointResult {

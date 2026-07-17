@@ -47,6 +47,18 @@ const FORK_UI_REDIRECTS = [
     ),
     to: path.resolve(__dirname, "src/fork/ui/options/providers-config.tsx"),
   },
+  {
+    from: path.resolve(
+      __dirname,
+      "src/entrypoints/translation-hub/components/translation-service-dropdown.tsx",
+    ),
+    to: path.resolve(__dirname, "src/fork/ui/translation-hub/translation-service-dropdown.tsx"),
+  },
+  {
+    // 共享选择状态 atom：默认全选会漏出默认 LLM，故换皮到 fork 版（只覆盖 2 个选择 atom）。
+    from: path.resolve(__dirname, "src/entrypoints/translation-hub/atoms.ts"),
+    to: path.resolve(__dirname, "src/fork/ui/translation-hub/atoms.ts"),
+  },
 ]
 
 function normalizeModuleId(id: string): string {
@@ -95,7 +107,15 @@ function forkUiRedirectPlugin(): Plugin {
         return null
       }
       const match = redirects.find((redirect) => normalizeModuleId(resolved.id) === redirect.from)
-      return match ? match.to : null
+      if (!match) {
+        return null
+      }
+      // 放行 fork 覆盖模块 import 它所替换的上游原版：否则 fork/*.ts 里 `export * from 上游`
+      // 会被重定向回自身，形成自引循环。仅当 importer 正是该重定向的目标文件时跳过。
+      if (importer && normalizeModuleId(importer) === normalizeModuleId(match.to)) {
+        return null
+      }
+      return match.to
     },
   }
 }
