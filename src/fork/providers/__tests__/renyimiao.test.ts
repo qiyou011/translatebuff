@@ -6,6 +6,7 @@ import { DEFAULT_CONFIG } from "@/utils/constants/config"
 import {
   buildRenyimiaoProvider,
   computeForkConfigSync,
+  isForkVisibleProvider,
   renyimiaoApiKey,
   renyimiaoInstanceId,
   renyimiaoModelIds,
@@ -14,6 +15,15 @@ import {
 } from "../renyimiao"
 
 const DEEPSEEK_ID = renyimiaoInstanceId("Deepseek-V4-Flash")
+
+// 从默认配置取真实 provider 作 fixture（默认 5 个：microsoft/google/openai/deepseek/atlascloud）。
+function defaultProvider(providerType: string) {
+  const provider = DEFAULT_CONFIG.providersConfig.find((item) => item.provider === providerType)
+  if (!provider) {
+    throw new Error(`默认配置缺 provider：${providerType}`)
+  }
+  return provider
+}
 
 function applyPatch(config: Config, patch: Partial<Config>): Config {
   return mergeWithArrayOverwrite(config, patch)
@@ -32,6 +42,23 @@ describe("buildRenyimiaoProvider（每模型一份实例）", () => {
     expect(provider.model.customModel).toBe("GLM-5.2")
     expect(provider.name).toContain("任译喵")
     expect(provider.apiKey).toBe("shared-key")
+  })
+})
+
+describe("isForkVisibleProvider（fork UI 可见性谓词）", () => {
+  it("放行任译喵实例", () => {
+    expect(isForkVisibleProvider(buildRenyimiaoProvider("GLM-5.2"))).toBe(true)
+  })
+
+  it("放行纯翻译 provider（microsoft / google）", () => {
+    expect(isForkVisibleProvider(defaultProvider("microsoft-translate"))).toBe(true)
+    expect(isForkVisibleProvider(defaultProvider("google-translate"))).toBe(true)
+  })
+
+  it("拦截默认大语言模型 provider（openai / deepseek / atlascloud）", () => {
+    expect(isForkVisibleProvider(defaultProvider("openai"))).toBe(false)
+    expect(isForkVisibleProvider(defaultProvider("deepseek"))).toBe(false)
+    expect(isForkVisibleProvider(defaultProvider("atlascloud"))).toBe(false)
   })
 })
 
