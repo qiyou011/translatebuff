@@ -1,0 +1,145 @@
+<!doctype html>
+<!--
+  任译喵 mock 登录页（dev-only）——替身官网登录成功页。
+  「模拟登录」按钮用 JS 写一个「非 HttpOnly、可读」的 Login-Credential cookie，
+  模拟官网真登录成功后在官网域写 cookie；插件后台的 cookies.onChanged 监听据此接管。
+  __MOCK_CREDENTIAL__ 由 server.mjs 注入，保证与后端校验的凭据一致。
+-->
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>任译喵 · 模拟登录（mock）</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family:
+          system-ui,
+          -apple-system,
+          "PingFang SC",
+          "Microsoft YaHei",
+          sans-serif;
+        background: #f4f5f7;
+        color: #1f2329;
+      }
+      .card {
+        width: 360px;
+        padding: 32px 28px;
+        background: #fff;
+        border-radius: 14px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+        text-align: center;
+      }
+      .badge {
+        display: inline-block;
+        margin-bottom: 12px;
+        padding: 2px 10px;
+        font-size: 12px;
+        border-radius: 999px;
+        background: #eef3ff;
+        color: #2f6bff;
+      }
+      h1 {
+        margin: 0 0 4px;
+        font-size: 20px;
+      }
+      p.sub {
+        margin: 0 0 24px;
+        font-size: 13px;
+        color: #8a9099;
+      }
+      button {
+        width: 100%;
+        padding: 12px 0;
+        font-size: 15px;
+        font-weight: 600;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: opacity 0.15s ease;
+      }
+      button:hover {
+        opacity: 0.88;
+      }
+      .primary {
+        background: #2f6bff;
+        color: #fff;
+        margin-bottom: 12px;
+      }
+      .ghost {
+        background: #f0f1f3;
+        color: #5a6068;
+      }
+      .status {
+        margin-top: 20px;
+        padding: 12px;
+        font-size: 12px;
+        line-height: 1.6;
+        border-radius: 8px;
+        text-align: left;
+        word-break: break-all;
+        display: none;
+      }
+      .status.ok {
+        display: block;
+        background: #eaf7ee;
+        color: #1a7f37;
+      }
+      .status.out {
+        display: block;
+        background: #fdecec;
+        color: #c0362c;
+      }
+      code {
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="card">
+      <span class="badge">MOCK · dev-only</span>
+      <h1>任译喵登录替身</h1>
+      <p class="sub">点「模拟登录」写入可读 Login-Credential cookie<br />（模拟官网真登录成功）</p>
+
+      <button class="primary" id="loginBtn">模拟登录</button>
+      <button class="ghost" id="logoutBtn">模拟登出（清除 cookie）</button>
+
+      <div class="status" id="status"></div>
+    </main>
+
+    <script>
+      // 后端注入的固定凭据；与 server.mjs 的 MOCK_CREDENTIAL 一致。
+      const MOCK_CREDENTIAL = "__MOCK_CREDENTIAL__"
+      const statusEl = document.getElementById("status")
+
+      document.getElementById("loginBtn").addEventListener("click", () => {
+        // 关键：不加 HttpOnly，document.cookie 可读可写 —— 模拟官网写可读凭据 cookie。
+        // Max-Age 30 天，对齐真态凭据有效期。
+        document.cookie = `Login-Credential=${MOCK_CREDENTIAL}; path=/; max-age=${30 * 24 * 60 * 60}`
+        statusEl.className = "status ok"
+        statusEl.innerHTML =
+          "已写入 cookie：<br /><code>Login-Credential=" +
+          MOCK_CREDENTIAL +
+          "</code><br />" +
+          "插件后台 cookies.onChanged 应已接管，可回插件查看登录态。"
+      })
+
+      document.getElementById("logoutBtn").addEventListener("click", () => {
+        // 过期时间置于过去 → 浏览器移除该 cookie，触发插件的 removed(登出) 清态。
+        document.cookie = "Login-Credential=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT"
+        statusEl.className = "status out"
+        statusEl.innerHTML = "已清除 Login-Credential cookie，插件应清空会话与 API Key。"
+      })
+    </script>
+  </body>
+</html>

@@ -1,19 +1,21 @@
+import type { ForkSession } from "@/fork/membership/session"
 import type { RenyimiaoProviderConfig } from "@/fork/providers/renyimiao"
-import { useAtom, useAtomValue, useSetAtom } from "jotai"
+import { useAtomValue, useSetAtom } from "jotai"
 import ProviderIcon from "@/components/provider-icon"
 import { useTheme } from "@/components/providers/theme-provider"
+import { Button } from "@/components/ui/base-ui/button"
 import { Field, FieldLabel } from "@/components/ui/base-ui/field"
 import { Input } from "@/components/ui/base-ui/input"
 import { ConfigCard } from "@/entrypoints/options/components/config-card"
 import { EntityEditorLayout } from "@/entrypoints/options/components/entity-editor-layout"
 import { EntityListRail } from "@/entrypoints/options/components/entity-list-rail"
 import { FORK_BRANDING } from "@/fork/branding"
+import { useForkSession, useOpenForkLogin } from "@/fork/membership/atoms"
 import {
   isRenyimiaoInstance,
   RENYIMIAO_GATEWAY_BASE_URL,
   renyimiaoApiKey,
   renyimiaoModelIds,
-  setRenyimiaoApiKey,
   syncRenyimiaoModels,
 } from "@/fork/providers/renyimiao"
 import { useEnsureRenyimiaoSeeded } from "@/fork/providers/use-ensure-renyimiao-seeded"
@@ -24,7 +26,8 @@ import { ConnectionTestButton } from "./connection-test-button"
 import { UpdateModelsButton } from "./update-models-button"
 
 // fork 换皮版选项页「API 提供商」：锁定为单个「任译喵 API」块——底层每模型一份实例，这里收成一块管理：
-// 改 API Key 广播到全部实例、点「更新模型」fetch 网关 /models 重建实例集、模型清单只读展示、Base URL 只读。
+// API Key 由登录单写（后台唯一写者注入），设置页只读掩码展示、无手填写入路径（消除并发写覆盖）；
+// 未登录显「登录后自动获取」并引导登录。点「更新模型」fetch 网关 /models 重建实例集、模型清单只读、Base URL 只读。
 // 复用通用布局(ConfigCard/EntityEditorLayout/EntityListRail) + base-ui 原语 + config atoms + fork 逻辑，
 // 不 import 上游 providers-config/ProviderConfigForm。经 wxt.config resolve 插件全局替换上游 ProvidersConfig。
 
@@ -34,13 +37,15 @@ function RenyimiaoApiEditor({
   apiKey,
   modelIds,
   primaryInstance,
-  onApiKeyChange,
+  session,
+  onLogin,
   onModelsFetched,
 }: {
   apiKey: string
   modelIds: string[]
   primaryInstance: RenyimiaoProviderConfig | null
-  onApiKeyChange: (apiKey: string) => void
+  session: ForkSession | null
+  onLogin: () => void
   onModelsFetched: (modelIds: string[]) => void
 }) {
   return (
@@ -48,14 +53,26 @@ function RenyimiaoApiEditor({
       <Field>
         <div className="flex items-center justify-between gap-2">
           <FieldLabel>API Key</FieldLabel>
-          {primaryInstance && <ConnectionTestButton providerConfig={primaryInstance} />}
+          {session && apiKey && primaryInstance && (
+            <ConnectionTestButton providerConfig={primaryInstance} />
+          )}
         </div>
-        <Input
-          type="password"
-          value={apiKey}
-          onChange={(event) => onApiKeyChange(event.target.value)}
-          placeholder="粘贴你的任译喵 API Key"
-        />
+        {/* 以登录态为准（未登录即便残留 stale key 也引导登录）：登录且已注入 → 只读掩码；登录待取 → 获取中；未登录 → 引导登录。 */}
+        {!session ? (
+          <div className="flex items-center justify-between gap-2 rounded-lg border border-border px-3 py-2">
+            <span className="text-sm text-muted-foreground">登录后自动获取</span>
+            <Button size="sm" variant="outline" onClick={onLogin}>
+              {i18n.t("account.login")}
+            </Button>
+          </div>
+        ) : apiKey ? (
+          // 登录单写、设置页只读掩码：值唯一来源为后台注入，无手填写入路径（消除并发写覆盖）。
+          <Input type="password" value={apiKey} readOnly disabled />
+        ) : (
+          <div className="rounded-lg border border-border px-3 py-2 text-sm text-muted-foreground">
+            正在获取任译喵密钥…
+          </div>
+        )}
       </Field>
 
       <Field>
@@ -90,12 +107,15 @@ function RenyimiaoApiEditor({
 
 export function ProvidersConfig() {
   const config = useAtomValue(configAtom)
-  const [providersConfig, setProvidersConfig] = useAtom(configFieldsAtomMap.providersConfig)
+  const providersConfig = useAtomValue(configFieldsAtomMap.providersConfig)
   const setConfig = useSetAtom(writeConfigAtom)
   const { theme } = useTheme()
 
   // 挂载时幂等 seed 任译喵（读 storage 最新值，post-init 避竞态）。
   useEnsureRenyimiaoSeeded()
+  // 会话响应式 + 挂载对账（R6：已登录但 key 空 → 补拉）。登录入口按界面语言跳官网。
+  const session = useForkSession()
+  const openLogin = useOpenForkLogin()
 
   const apiKey = renyimiaoApiKey(providersConfig)
   const modelIds = renyimiaoModelIds(providersConfig)
@@ -105,9 +125,6 @@ export function ProvidersConfig() {
         isRenyimiaoInstance(provider) && provider.provider === "openai-compatible",
     ) ?? null
 
-  const handleApiKeyChange = (nextApiKey: string) => {
-    void setProvidersConfig(setRenyimiaoApiKey(providersConfig, nextApiKey))
-  }
   const handleModelsFetched = (fetchedModelIds: string[]) => {
     void setConfig(syncRenyimiaoModels(config, fetchedModelIds))
   }
@@ -136,7 +153,8 @@ export function ProvidersConfig() {
             apiKey={apiKey}
             modelIds={modelIds}
             primaryInstance={primaryInstance}
-            onApiKeyChange={handleApiKeyChange}
+            session={session}
+            onLogin={openLogin}
             onModelsFetched={handleModelsFetched}
           />
         }

@@ -3,6 +3,7 @@ import type { ProvidersConfig } from "@/types/config/provider"
 import type { FeatureKey } from "@/utils/constants/feature-providers"
 import type { ProviderSelectorOption } from "@/utils/providers/provider-display"
 import type { ProviderCapability } from "@/utils/providers/provider-registry"
+import { IconLogin } from "@tabler/icons-react"
 import { useAtomValue, useSetAtom } from "jotai"
 import { useMemo } from "react"
 import { HelpTooltip } from "@/components/help-tooltip"
@@ -12,6 +13,8 @@ import { Button } from "@/components/ui/base-ui/button"
 import { Drawer, DrawerBody, DrawerContent, DrawerTrigger } from "@/components/ui/base-ui/drawer"
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/base-ui/field"
 import ForkProviderSelector from "@/fork/components/provider-selector"
+import { forkSessionAtom, useOpenForkLogin } from "@/fork/membership/atoms"
+import { renyimiaoApiKey } from "@/fork/providers/renyimiao"
 import { useEnsureRenyimiaoSeeded } from "@/fork/providers/use-ensure-renyimiao-seeded"
 import { configAtom, configFieldsAtomMap, writeConfigAtom } from "@/utils/atoms/config"
 import {
@@ -175,35 +178,53 @@ export default function ForkProvidersField() {
     () => getSelectedProviderOptions(config, providersConfig),
     [config, providersConfig],
   )
+  const openLogin = useOpenForkLogin()
+  // 只读会话态（生命周期由 ForkAccountMenu 的 useForkSession 持有并水合，本处只消费，避免重复订阅/补偿）。
+  const session = useAtomValue(forkSessionAtom)
 
   // 挂载时幂等 seed 任译喵（读 storage 最新值，post-init 避竞态）+ repoint 被隐藏 provider 的功能/词典。
   useEnsureRenyimiaoSeeded()
 
+  // 空 key 门禁：未登录或任译喵 key 空时，在引擎入口引导登录，不以空 key 触发翻译（必然失败）。
+  const needsLogin = !session || renyimiaoApiKey(providersConfig) === ""
+
   return (
-    <Drawer>
-      <div className="flex items-center justify-between gap-2">
-        <span className="flex items-center gap-1.5 text-[13px] font-medium">
-          {i18n.t("popup.providers.title")}
-          <HelpTooltip>{i18n.t("popup.providers.description")}</HelpTooltip>
-        </span>
-        <DrawerTrigger
-          render={
-            <Button type="button" variant="ghost" aria-label={i18n.t("popup.providers.open")} />
-          }
+    <>
+      {needsLogin && (
+        <button
+          type="button"
+          onClick={openLogin}
+          className="flex items-center gap-2 rounded-lg border border-border bg-muted/50 px-3 py-2 text-left text-[13px] text-muted-foreground transition-colors hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring/40 focus-visible:outline-none"
         >
-          <ProviderAvatarSummary providers={selectedProviders} />
-        </DrawerTrigger>
-      </div>
-      <DrawerContent>
-        <DrawerBody className="p-4" data-base-ui-swipe-ignore="">
-          <FieldGroup className="gap-4">
-            {FEATURE_KEYS.map((featureKey) => (
-              <FeatureRow key={featureKey} featureKey={featureKey} />
-            ))}
-            <CustomActionRows />
-          </FieldGroup>
-        </DrawerBody>
-      </DrawerContent>
-    </Drawer>
+          <IconLogin className="size-4 shrink-0" aria-hidden />
+          <span>登录后启用任译喵翻译</span>
+        </button>
+      )}
+      <Drawer>
+        <div className="flex items-center justify-between gap-2">
+          <span className="flex items-center gap-1.5 text-[13px] font-medium">
+            {i18n.t("popup.providers.title")}
+            <HelpTooltip>{i18n.t("popup.providers.description")}</HelpTooltip>
+          </span>
+          <DrawerTrigger
+            render={
+              <Button type="button" variant="ghost" aria-label={i18n.t("popup.providers.open")} />
+            }
+          >
+            <ProviderAvatarSummary providers={selectedProviders} />
+          </DrawerTrigger>
+        </div>
+        <DrawerContent>
+          <DrawerBody className="p-4" data-base-ui-swipe-ignore="">
+            <FieldGroup className="gap-4">
+              {FEATURE_KEYS.map((featureKey) => (
+                <FeatureRow key={featureKey} featureKey={featureKey} />
+              ))}
+              <CustomActionRows />
+            </FieldGroup>
+          </DrawerBody>
+        </DrawerContent>
+      </Drawer>
+    </>
   )
 }
