@@ -28,6 +28,30 @@ export function readForkDomainsFromEnv(envText) {
   return hosts
 }
 
+// 从本地 .env（gitignore、仅 dev）派生「测试后端域」——它们绝不该出现在生产产物里。
+// 读 dev 会用到的 URL 变量的 hostname；剔除 localhost/回环地址（通用、可能合法出现，且非敏感）。
+// 刻意不在本脚本硬编码任何真实测试域名（本仓公开），改由 gitignored 的 .env 派生。
+export function readTestDomainsFromEnv(envText) {
+  const hosts = []
+  const keys = ["WXT_RENYIMIAO_API_URL", "WXT_WEBSITE_URL", "WXT_OFFICIAL_SITE_ORIGINS"]
+  for (const key of keys) {
+    const match = envText.match(new RegExp(`^${key}=(.+)$`, "m"))
+    if (!match) continue
+    // 逗号分隔（如 WXT_OFFICIAL_SITE_ORIGINS 可含多个 origin）
+    for (const raw of match[1].trim().split(",")) {
+      try {
+        const host = new URL(raw.trim()).hostname
+        if (host !== "localhost" && host !== "127.0.0.1" && !hosts.includes(host)) {
+          hosts.push(host)
+        }
+      } catch {
+        // 忽略非法 URL
+      }
+    }
+  }
+  return hosts
+}
+
 // 登录后端域是否已在 .env.production 声明且非空。fork 直读 import.meta.env.WXT_RENYIMIAO_API_URL
 // （绕 t3-env schema），缺失即运行期取到 undefined、登录静默失效，故构建期据此 fail-fast。
 // 此域是「登录后端域」（common_bll/claw_bff），与翻译网关常量 RENYIMIAO_GATEWAY_BASE_URL
@@ -80,6 +104,23 @@ if (import.meta.url === pathToFileURL(process.argv[1]).href) {
   if (missing.length > 0) {
     console.error("Fork 域名在产物中缺失（env 覆盖未生效？shell 残留 WXT_*？）:")
     for (const d of missing) console.error(`  - ${d}`)
+    process.exit(1)
+  }
+
+  // 测试域泄漏守卫：本地 .env（gitignore、仅 dev）里的测试后端域绝不该进生产产物。
+  // .env 缺失（CI 干净构建）时无从泄漏、跳过；谁本地误带 .env 打 prod 包 / env 覆盖失效 → 在此 fail-fast。
+  let envDevText = ""
+  try {
+    envDevText = readFileSync(".env", "utf8")
+  } catch {
+    // .env 缺失：CI 干净构建，无测试域可泄漏
+  }
+  const testLeaks = findUpstreamDomainHits(bundleText, readTestDomainsFromEnv(envDevText))
+  if (testLeaks.length > 0) {
+    console.error(
+      "生产产物泄漏测试后端域（误带 .env 打 prod 包？env 覆盖未生效？）——构建 fail-fast:",
+    )
+    for (const d of testLeaks) console.error(`  - ${d}`)
     process.exit(1)
   }
 
