@@ -8,6 +8,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/base-ui/dropdown-menu"
 import { forkLogout, useForkSession, useOpenForkLogin } from "@/fork/membership/atoms"
+import { maskPhone } from "@/fork/membership/phone-mask"
 import { i18n } from "@/utils/i18n"
 
 // fork 自有账户菜单：替换上游 better-auth 的 UserAccountMenuPopup（换皮，不并列两套登录语义）。
@@ -39,11 +40,13 @@ export function ForkAccountMenu() {
         }
       >
         <IconUserCircle className="size-6 text-foreground" aria-hidden />
-        <span className="truncate text-sm font-medium tabular-nums">{session.phone}</span>
+        <span className="truncate text-sm font-medium tabular-nums">
+          {maskPhone(session.phone)}
+        </span>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" side="bottom" className="min-w-48">
         <div className="px-1.5 py-1.5 text-xs text-muted-foreground tabular-nums">
-          {session.phone}
+          {maskPhone(session.phone)}
         </div>
         <DropdownMenuSeparator />
         <DropdownMenuItem

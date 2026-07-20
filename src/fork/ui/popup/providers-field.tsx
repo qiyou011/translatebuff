@@ -14,7 +14,6 @@ import { Drawer, DrawerBody, DrawerContent, DrawerTrigger } from "@/components/u
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/base-ui/field"
 import ForkProviderSelector from "@/fork/components/provider-selector"
 import { forkSessionAtom, useOpenForkLogin } from "@/fork/membership/atoms"
-import { renyimiaoApiKey } from "@/fork/providers/renyimiao"
 import { useEnsureRenyimiaoSeeded } from "@/fork/providers/use-ensure-renyimiao-seeded"
 import { configAtom, configFieldsAtomMap, writeConfigAtom } from "@/utils/atoms/config"
 import {
@@ -185,8 +184,9 @@ export default function ForkProvidersField() {
   // 挂载时幂等 seed 任译喵（读 storage 最新值，post-init 避竞态）+ repoint 被隐藏 provider 的功能/词典。
   useEnsureRenyimiaoSeeded()
 
-  // 空 key 门禁：未登录或任译喵 key 空时，在引擎入口引导登录，不以空 key 触发翻译（必然失败）。
-  const needsLogin = !session || renyimiaoApiKey(providersConfig) === ""
+  // 登录引导条：仅未登录时展示（登录后即隐，不等 key 注入——避免"登录后仍显示登录引导"的矛盾）。
+  // 空 key 门禁仍由选择器侧承担 + R6 挂载补偿自愈，此处不再以空 key 为条件。
+  const needsLogin = !session
 
   return (
     <>

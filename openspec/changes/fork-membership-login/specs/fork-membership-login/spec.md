@@ -58,20 +58,34 @@
 - **THEN** 后台必须按 +3s 起、每 3s 一次、最多 3 次轮询重取，任一次拿到即停；轮询必须**不留裸 `setTimeout` 空闲空档**（事件处理器内连续 await 使 service worker 在轮询期（≤~9s）保持存活）。**不用 `chrome.alarms`**——其最小粒度 30s，无法满足 3s 节奏
 - **AND** service worker 仍被回收致后台流程中断时，popup/选项页挂载时若「已登录但 key 空」必须幂等补拉一次（挂载补偿兜底）
 
+#### Scenario: 会话不被开户轮询阻塞（时序解耦）
+
+- **GIVEN** `login_status` 秒回、`/v1/tokens` 因首登开户走轮询（可能 ~9s）
+- **WHEN** 后台接管凭据
+- **THEN** 后台必须先取 `login_status` 并立即写会话（手机号即时展示），再取 tokens——会话写入不得等待 tokens 轮询完成（禁用会让手机号陪等 tokens 的 `Promise.all` 并行等待）
+
 #### Scenario: 后端域缺失构建期失败
 
 - **WHEN** 构建时 `WXT_RENYIMIAO_API_URL` 缺失
 - **THEN** 构建必须 fail-fast（复用 `assert-fork-build` 断言先例），不得让运行时 fetch 到 undefined
 
-### Requirement: 密钥单写注入与设置页只读
+### Requirement: 密钥与网关地址单写注入、模型列表主动同步、设置页只读
 
-`[UI层][API层]` 登录得到的 `sk_key` 必须由后台作为唯一写者注入任译喵 provider 配置；设置页「任译喵 API Key」字段必须只读展示、不得提供手填写入路径（消除跨上下文并发写覆盖）。本迭代只写 `sk_key`，不写 `base_url`。
+`[UI层][API层]` 登录得到的 `sk_key` 与网关 `base_url` 必须由后台作为唯一写者注入任译喵 provider 配置；登录后必须主动拉一次模型列表重建实例集；设置页「任译喵 API Key」与「Base URL」字段必须只读展示、不得提供手填写入路径（消除跨上下文并发写覆盖）。
 
-#### Scenario: 登录单写 key
+#### Scenario: 登录单写 sk_key 与动态 base_url
 
 - **WHEN** 后台取到非空 `sk_key`
-- **THEN** 后台必须先确保任译喵实例已 seed，再以一次读-改-写把 `sk_key` 写入全部任译喵实例（值一致）；写前必须复读最新配置数组
-- **AND** 不得在本迭代写入 `/v1/tokens` 的 `base_url`（实例 baseURL 维持既有 fork 常量，本迭代不发翻译请求、不消费 baseURL）
+- **THEN** 后台必须先确保任译喵实例已 seed，再以一次读-改-写把 `sk_key` 与 `/v1/tokens` 的 `base_url`（归一到含 `/v1`）写入全部任译喵实例（值一致）；写前必须复读最新配置数组
+- **AND** `base_url` 为空时实例 `baseURL` 必须回落网关常量 `RENYIMIAO_GATEWAY_BASE_URL`（仅作登录前默认/缺失兜底）
+
+#### Scenario: 登录后主动拉一次模型列表重建实例集
+
+- **GIVEN** 已取到 `sk_key` 与 `base_url`
+- **WHEN** 后台完成 key/base_url 注入后
+- **THEN** 后台必须主动 `GET {base_url}/v1/models`（`Authorization: Bearer <sk_key>`——打翻译网关、非平台后端，不带 `Login-Credential`/Saas 头），以返回的 model id 集重建任译喵实例集（保留已有含 key、新增缺失、移除多余、repoint 失效指向）
+- **AND** 拉取失败或返回空列表时必须降级不阻断（保留既有静态 seed 实例、不清空），会话/key/base_url 注入不受影响
+- **AND** 选项页「更新模型」按钮与后台自动拉取必须共用同一拉取实现（`fetchGatewayModels`），不得各写一份
 
 #### Scenario: 设置页只读展示
 
@@ -113,15 +127,16 @@
 
 `[UI层]` popup 必须以 fork 自有账户菜单呈现登录态，替换上游 better-auth 账户菜单，不得并列两套登录语义。
 
-#### Scenario: 登录态呈现
+#### Scenario: 登录态呈现（手机号脱敏）
 
 - **WHEN** 存在有效 forkSession
-- **THEN** popup 必须显示已登录（含手机号），且不得再渲染上游 `UserAccountMenuPopup`（better-auth）
+- **THEN** popup 必须显示已登录，手机号必须脱敏展示（保留 `+86-` 前缀 + 首 1 位 + `****` + 后 4 位，如 `+86-16602836132` → `+86-1****6132`），且不得再渲染上游 `UserAccountMenuPopup`（better-auth）
 
-#### Scenario: 空 key 门禁
+#### Scenario: 登录引导条仅未登录显示
 
-- **WHEN** 未登录或 provider key 为空
-- **THEN** 任译喵翻译引擎入口必须引导登录，不得以空 key 触发翻译调用（避免必然失败）
+- **WHEN** 无有效 forkSession（未登录）
+- **THEN** `providers-field` 必须显示登录引导条；一旦登录（forkSession 存在）该条必须立即隐藏，不得因 sk_key 尚未注入而滞留（避免「已登录仍显示登录引导」的语义矛盾）
+- **AND** 空 key 的翻译门禁由选择器侧承担 + R6 挂载补偿自愈，不得以空 key 触发必然失败的翻译调用
 
 ### Requirement: 本地 mock 替身与切真
 

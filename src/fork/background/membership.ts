@@ -3,6 +3,7 @@ import type { Config } from "@/types/config/config"
 import { browser } from "#imports"
 import { env } from "@/env"
 import {
+  fetchGatewayModels,
   fetchLoginStatus,
   fetchTokensWithRetry,
   MembershipUnauthorizedError,
@@ -11,7 +12,11 @@ import { decideCookieAction } from "@/fork/membership/cookie-decision"
 import { computeLoginConfigPatch, computeLogoutConfigPatch } from "@/fork/membership/key-injection"
 import { clearForkSession, loadForkSession, saveForkSession } from "@/fork/membership/session"
 import { onForkMessage } from "@/fork/message"
-import { renyimiaoApiKey } from "@/fork/providers/renyimiao"
+import {
+  normalizeGatewayBaseUrl,
+  renyimiaoApiKey,
+  syncRenyimiaoModels,
+} from "@/fork/providers/renyimiao"
 import { configSchema } from "@/types/config/config"
 import { mergeWithArrayOverwrite } from "@/utils/atoms/config"
 import { storageAdapter } from "@/utils/atoms/storage-adapter"
@@ -43,23 +48,44 @@ export async function clearMembership(): Promise<void> {
   await applyConfigPatch(computeLogoutConfigPatch)
 }
 
-// 接管凭据编排：并行取用户信息 + sk_key → 存会话 + 单写 key。
-// 终写前比对清态代次：期间若发生登出/清态则丢弃迟到结果，绝不复活已清的会话/key。
+// 登录/补偿后主动拉一次网关可用模型 → 以结果重建任译喵实例集（对齐选项页「更新模型」按钮）。
+// base_url 先归一到含 /v1 再拉；失败降级不阻断（syncRenyimiaoModels 空列表本就 no-op，保留静态 seed 实例）；
+// 终写前比对清态代次，防登出竞态。
+async function syncGatewayModels(baseUrl: string, skKey: string, gen: number): Promise<void> {
+  try {
+    const modelIds = await fetchGatewayModels(normalizeGatewayBaseUrl(baseUrl), skKey)
+    if (gen === clearGeneration) {
+      await applyConfigPatch((config) => syncRenyimiaoModels(config, modelIds))
+    }
+  } catch (error) {
+    logger.warn("[Fork][membership] 拉网关模型失败，降级保留静态实例:", error)
+  }
+}
+
+// 接管凭据编排（顺序两段，非并行）：先取用户信息立即写会话 → 再取 sk_key + base_url 单写 → 主动拉一次模型。
+// 顺序化的意义：① 手机号（login_status 秒回）先写会话、登录态即时展示，不被 tokens 开户轮询（最多 ~9s）阻塞；
+//   ② 天然串行避开「tokens 迟到写与登出清态交错复活 key」的并行竞态。
+// 各终写前比对清态代次：期间若登出/清态则丢弃迟到结果，绝不复活已清的会话/key。
 // tokens 为空（开户仍异步）→ 会话已存，key 留待 R6 挂载补偿补拉。任一接口 401 → 走清态。
 export async function adoptCredential(loginCredential: string): Promise<void> {
   const gen = clearGeneration
   try {
-    const [{ phone, user }, tokens] = await Promise.all([
-      fetchLoginStatus(loginCredential),
-      fetchTokensWithRetry(loginCredential),
-    ])
+    // ① 用户信息 → 立即写会话（手机号秒显，不等 tokens 轮询）。
+    const { phone, user } = await fetchLoginStatus(loginCredential)
     if (gen !== clearGeneration) {
-      return // 期间已清态（如登录轮询中途登出），丢弃迟到结果
+      return
     }
     await saveForkSession({ loginCredential, phone, user })
-    if (tokens) {
-      await applyConfigPatch((config) => computeLoginConfigPatch(config, tokens.skKey))
+    // ② sk_key + 网关 base_url（可能走开户轮询，此时会话已展示、不阻塞登录态）。
+    const tokens = await fetchTokensWithRetry(loginCredential)
+    if (!tokens || gen !== clearGeneration) {
+      return
     }
+    await applyConfigPatch((config) =>
+      computeLoginConfigPatch(config, tokens.skKey, tokens.baseUrl),
+    )
+    // ③ 主动拉一次模型 → 重建实例集（失败降级不阻断）。
+    await syncGatewayModels(tokens.baseUrl, tokens.skKey, gen)
   } catch (error) {
     if (error instanceof MembershipUnauthorizedError) {
       await clearMembership()
@@ -83,7 +109,10 @@ export async function ensureMembershipKey(): Promise<void> {
   try {
     const tokens = await fetchTokensWithRetry(session.loginCredential)
     if (tokens && gen === clearGeneration) {
-      await applyConfigPatch((current) => computeLoginConfigPatch(current, tokens.skKey))
+      await applyConfigPatch((current) =>
+        computeLoginConfigPatch(current, tokens.skKey, tokens.baseUrl),
+      )
+      await syncGatewayModels(tokens.baseUrl, tokens.skKey, gen)
     }
   } catch (error) {
     if (error instanceof MembershipUnauthorizedError) {

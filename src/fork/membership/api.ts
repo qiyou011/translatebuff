@@ -5,19 +5,23 @@
 //   · API 基址直读 `import.meta.env.WXT_RENYIMIAO_API_URL`（绕 t3-env、不改 src/env，保 fork 边界，设计 D4）。
 //     用函数读取（非模块顶层快照）：生产由 Vite 编译期注入，单测用 vi.stubEnv 运行期改它，函数读保证读到当前值。
 
+import { extractErrorMessage } from "@/utils/error/extract-message"
+
 // ── 平台标识常量（固定值）──
 const SAAS_PRODUCT_LINE = "AITRANS"
 const SAAS_APP_ID = "aitrans-pc" // 亦即 7 段 UA 的 client_name 段（对齐参考 SAAS_APP_ID）
 const CLIENT_LANGUAGE = "zh-cn" // 全小写（对齐参考 CLIENT_LANGUAGE）
 
-// ── 7 段 Useragent 占位常量（格式：browser/{os}/{osVersion}/{channel}/aitrans-pc/{appVersion}/{sn}）──
-// 参考站桌面端由原生层注入真实 os/版本/sn；浏览器扩展无原生层，先用占位常量。
-const UA_DEVICE_NAME = "browser" // 段1：浏览器扩展环境固定 browser（对齐参考 web 端 UA 首段）
-const UA_OS = "unknown" // 段2：os —— Open Question 待定（扩展无可信 OS 源，navigator.userAgent 不可信）
-const UA_OS_VERSION = "unknown" // 段3：osVersion —— Open Question 待定
-const UA_CHANNEL = "8188" // 段4：渠道号 —— 参考站 8188/8189，任译喵渠道号 Open Question 待定
-const UA_APP_VERSION = "0.0.0" // 段6：appVersion —— Open Question 待定（后续可接 identity 版本派生）
-const UA_SN = "000000000000" // 段7：sn 设备唯一标识 —— Open Question 待定（扩展无硬件 ID，回落参考占位值）
+// ── 7 段 Useragent 常量（格式：browser/{os}/{osVersion}/{channel}/aitrans-pc/{appVersion}/{sn}）──
+// 取值对齐官网确认的跨仓契约（translatebuff-web src/lib/service/const.ts 的 UA_STRING / CHANNEL_KEY，
+// 后端 curl 示例已验证）。扩展无原生层拿真实 os/sn，故镜像官网 web 端的已知可用值；
+// 未来接真实 per-device os/版本/identity 版本可作精化，不影响本迭代对接。
+const UA_DEVICE_NAME = "browser" // 段1：固定 browser（对齐官网 web 端 UA 首段）
+const UA_OS = "Windows" // 段2：os —— 镜像官网确认值
+const UA_OS_VERSION = "windows10.0.22621.2792x64" // 段3：osVersion —— 镜像官网确认值
+const UA_CHANNEL = "18790" // 段4：渠道号 —— 官网确认真值（后端 curl 示例已验证）
+const UA_APP_VERSION = "1.0.0" // 段6：appVersion —— 镜像官网确认值
+const UA_SN = "000000000000" // 段7：sn 设备唯一标识 —— 扩展无硬件 ID，回落官网占位值
 
 // 组装 7 段 UA。各段均不含 `/`，保证后端按 `/` split 恒得 7 段。
 function buildUserAgent(): string {
@@ -94,16 +98,37 @@ export async function fetchLoginStatus(loginCredential: string): Promise<LoginSt
 
 export interface TokensResult {
   skKey: string
+  /** oneapi 翻译网关地址（与 sk_key 同一 /v1/tokens 响应返回）。空则上层回落网关常量。 */
+  baseUrl: string
 }
 
-// 取 one-api sk_key（一用户一 token，取首个 token 的 sk_key）。空→null；401 抛 MembershipUnauthorizedError。
-// 本迭代只取 sk_key，不消费 base_url（设计 D5：base_url 留到翻译调用迭代）。
+// 取 one-api sk_key + 网关 base_url（一用户一 token，取首个 token 的 sk_key）。空 key→null；401 抛错。
+// base_url 与 sk_key 同源（同一 /v1/tokens 响应），供动态注入 provider baseURL 与拉 /models 用。
 export async function fetchTokens(loginCredential: string): Promise<TokensResult | null> {
   const data = await authedGet("/api/claw_bff/v1/tokens", loginCredential)
   // 参考 TokensResponse：{ base_url, tokens: [{ sk_key, ... }] }。
   const tokens = Array.isArray(data.tokens) ? (data.tokens as Array<Record<string, unknown>>) : []
   const skKey = tokens[0]?.sk_key
-  return typeof skKey === "string" && skKey !== "" ? { skKey } : null
+  const baseUrl = typeof data.base_url === "string" ? data.base_url : ""
+  return typeof skKey === "string" && skKey !== "" ? { skKey, baseUrl } : null
+}
+
+// 拉网关可用模型（openai 兼容 GET {baseUrl}/models）。
+// 【注意鉴权不同】这是打「翻译网关」(base_url，来自 /v1/tokens)，非平台后端(WXT_RENYIMIAO_API_URL)——
+// 故用 Authorization: Bearer <sk_key>，不带 Login-Credential/Saas 头（不同域、不同鉴权）。
+// 选项页「更新模型」按钮与登录后台自动拉取共用此函数（单一 fetch 逻辑）。失败抛错，供上层降级捕获。
+export async function fetchGatewayModels(baseUrl: string, skKey: string): Promise<string[]> {
+  const res = await fetch(`${baseUrl}/models`, {
+    headers: { Authorization: `Bearer ${skKey}` },
+  })
+  if (res.status < 200 || res.status >= 300) {
+    throw new Error(await extractErrorMessage(res))
+  }
+  const data = (await res.json()) as { data?: Array<{ id?: unknown }> }
+  const list = Array.isArray(data.data) ? data.data : []
+  return list
+    .map((model) => (typeof model.id === "string" ? model.id : ""))
+    .filter((id) => id !== "")
 }
 
 export interface FetchTokensRetryOptions {

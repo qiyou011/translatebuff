@@ -17,13 +17,15 @@ translatebuff-app 是 read-frog 的软 fork（WXT + MV3 + React）。任译喵�
 
 - 打通「popup 点登录 → 跳官网登录 → 插件接管凭据 → 取用户信息与 sk_key → 注入设置页 provider」。
 - 登录得到的 sk_key 自动填入设置页「任译喵 API Key」（只读），登出/失效清空。
+- 登录后动态注入网关 base_url（与 sk_key 同源 `/v1/tokens`）+ 主动拉一次模型列表（`GET /v1/models`）重建任译喵实例集——对齐 aimanager 薄凭据两段式，使 provider 开箱可翻译。
+- 时序：手机号（login_status 秒回）先写会话、登录态即时展示，不被 tokens 开户轮询阻塞；手机号脱敏展示。
 - 因官网真登录与后端测试域未就绪，先以本地 mock 替身跑通插件侧；真态仅切 env。
 - 全部落 `src/fork` / `scripts` / `.env`，零 allowlist 增长。
 
 **Non-Goals（坚决不做，防蔓延）:**
 
 - 付费/下单/扫码支付（跳官网完成）。
-- 用 sk_key 调模型翻译（下一迭代）——故本迭代**不写 base_url**、不接翻译请求。
+- 主动发起翻译请求 / DOM 双语回渲——由 read-frog 既有引擎在 provider 配好后自行完成（本迭代注入 base_url + sk_key + models 使其可用，不新写翻译代码）。
 - `temp_token` 反向 SSO（跳官网付费保持登录）。
 - 极验人机校验（留在官网侧，不进 popup）。
 - 官网 `translatebuff-web` 的真登录实现（官网团队负责，本变更只定契约）。
@@ -45,14 +47,23 @@ translatebuff-app 是 read-frog 的软 fork（WXT + MV3 + React）。任译喵�
 **D4. 薄凭据两段式：插件自调 `/v1/tokens` 取 sk_key（对齐参考）。**
 登录只给凭据；用户信息调 `login_status`、密钥调 `/v1/tokens`。API 基址由 fork **直读 `import.meta.env.WXT_RENYIMIAO_API_URL`**（绕 t3-env、不改 `src/env/shared.ts` 以保边界），构建期断言其存在。**此登录后端域 ≠ `RENYIMIAO_GATEWAY_BASE_URL` 翻译网关常量**，二者勿混。
 
-**D5. sk_key 后台单写 + 设置页只读（消除并发写覆盖）。**
-任译喵 key 由登录单一下发，用户无从手打。故：① 后台作为唯一写者，一次读-改-写（写前复读最新配置、对全部实例写同一值）；② 设置页「任译喵 API Key」改只读掩码、**移除手填写者** `handleApiKeyChange`。本迭代**只写 sk_key、不写 base_url**（不发翻译请求、baseURL 未被消费；base_url 单一真源留到翻译迭代，避免为假想需求预留+静默不一致）。
+**D5. sk_key + 动态 base_url 后台单写 + 设置页只读（消除并发写覆盖）。**
+任译喵 key/base_url 由登录单一下发，用户无从手打。故：① 后台作为唯一写者，一次读-改-写（写前复读最新配置、对全部实例写同一值）；② 设置页「任译喵 API Key」与「Base URL」改只读展示、**移除手填写者** `handleApiKeyChange`。base_url 与 sk_key 同源（同一 `/v1/tokens` 响应），归一到含 `/v1` 后广播进全部实例（`setRenyimiaoBaseUrl`）；空则回落网关常量 `RENYIMIAO_GATEWAY_BASE_URL`（仅作登录前默认/缺失兜底）。
 
 **D6. 开户轮询：连续 await 有界重试 + 挂载补偿（应对 MV3 SW 回收）。**
 `/v1/tokens` 首登可能空（异步开户），轮询 +3s 起、每 3s、最多 3 次。**不用 `chrome.alarms`**——实测其最小粒度 30s（`delayInMinutes` 最小 0.5），无法满足 3s 节奏。改为事件处理器内连续 await（≤~9s 使 SW 在轮询期保持存活，不留裸 setTimeout 空闲空档）；SW 仍被回收时由 popup/选项页挂载补偿性幂等重拉兜底（经 `forkEnsureMembershipKey` 消息）。（`alarms` 权限上游 manifest 已具备，本迭代不需为此新增。）
 
 **D7. 双存储职责切分。**
-`forkSession`（fork 独立 storage）= 身份（loginCredential/phone/user）；sk_key 的 SSOT = providersConfig（设置页/引擎真消费方）。挂载对账自愈错配。
+`forkSession`（fork 独立 storage）= 身份（loginCredential/phone/user）；sk_key / base_url 的 SSOT = providersConfig（设置页/引擎真消费方）。挂载对账自愈错配。
+
+**D8. 登录后主动拉一次模型列表（对齐 aimanager）。**
+拿到 sk_key + base_url 后，后台主动 `GET {base_url}/v1/models`（`Authorization: Bearer <sk_key>`——打**翻译网关**、非平台后端，鉴权与平台接口不同域不同头）→ 以返回 model id 集经 `syncRenyimiaoModels` 重建任译喵实例集（保留已有含 key、新增、删缺失、repoint；空列表 no-op 防误清）。失败降级不阻断（保留静态 seed 实例）。选项页「更新模型」按钮与后台自动拉取共用同一 `fetchGatewayModels`（单一 fetch 实现，不重复）。
+
+**D9. 接管时序：顺序两段而非并行（会话不被 tokens 轮询阻塞）。**
+`adoptCredential` 先 `fetchLoginStatus` → 立即 `saveForkSession`（手机号秒显），再 `fetchTokensWithRetry`（首登开户可能 ~9s 轮询）→ 写 key/base_url → 拉模型。顺序化两重收益：① 登录态即时反映、不等 tokens 轮询（原 `Promise.all` 让手机号陪等 tokens 轮询、面板滞后数秒）；② 天然串行避开「tokens 迟到写与登出清态交错复活 key」的并行竞态。
+
+**D10. UI 收尾：手机号脱敏 + 登录引导条仅未登录显示。**
+账户菜单手机号经 `maskPhone` 脱敏展示（`+86-16602836132` → `+86-1****6132`）。`providers-field` 登录引导条条件由「未登录 || key 空」收敛为「仅未登录」——登录后即隐，去掉「已登录仍显示登录引导」的语义矛盾；空 key 门禁仍由选择器侧 + R6 挂载补偿承担。
 
 ## 模块划分与接口契约
 

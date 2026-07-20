@@ -1,27 +1,23 @@
 import type { ForkSession } from "@/fork/membership/session"
 import type { RenyimiaoProviderConfig } from "@/fork/providers/renyimiao"
 import { useAtomValue, useSetAtom } from "jotai"
-import ProviderIcon from "@/components/provider-icon"
-import { useTheme } from "@/components/providers/theme-provider"
 import { Button } from "@/components/ui/base-ui/button"
 import { Field, FieldLabel } from "@/components/ui/base-ui/field"
 import { Input } from "@/components/ui/base-ui/input"
 import { ConfigCard } from "@/entrypoints/options/components/config-card"
-import { EntityEditorLayout } from "@/entrypoints/options/components/entity-editor-layout"
-import { EntityListRail } from "@/entrypoints/options/components/entity-list-rail"
 import { FORK_BRANDING } from "@/fork/branding"
 import { useForkSession, useOpenForkLogin } from "@/fork/membership/atoms"
 import {
   isRenyimiaoInstance,
   RENYIMIAO_GATEWAY_BASE_URL,
   renyimiaoApiKey,
+  renyimiaoBaseUrl,
   renyimiaoModelIds,
   syncRenyimiaoModels,
 } from "@/fork/providers/renyimiao"
 import { useEnsureRenyimiaoSeeded } from "@/fork/providers/use-ensure-renyimiao-seeded"
 import { configAtom, configFieldsAtomMap, writeConfigAtom } from "@/utils/atoms/config"
 import { i18n } from "@/utils/i18n"
-import { getProviderLogo } from "@/utils/providers/provider-display"
 import { ConnectionTestButton } from "./connection-test-button"
 import { UpdateModelsButton } from "./update-models-button"
 
@@ -35,6 +31,7 @@ const RENYIMIAO_API_LABEL = `${FORK_BRANDING.displayName} API`
 
 function RenyimiaoApiEditor({
   apiKey,
+  baseUrl,
   modelIds,
   primaryInstance,
   session,
@@ -42,6 +39,7 @@ function RenyimiaoApiEditor({
   onModelsFetched,
 }: {
   apiKey: string
+  baseUrl: string
   modelIds: string[]
   primaryInstance: RenyimiaoProviderConfig | null
   session: ForkSession | null
@@ -78,11 +76,7 @@ function RenyimiaoApiEditor({
       <Field>
         <div className="flex items-center justify-between gap-2">
           <FieldLabel>模型</FieldLabel>
-          <UpdateModelsButton
-            baseURL={RENYIMIAO_GATEWAY_BASE_URL}
-            apiKey={apiKey}
-            onModelsFetched={onModelsFetched}
-          />
+          <UpdateModelsButton baseURL={baseUrl} apiKey={apiKey} onModelsFetched={onModelsFetched} />
         </div>
         {modelIds.length > 0 ? (
           <div className="flex flex-col gap-1 rounded-lg border border-border p-2">
@@ -99,7 +93,7 @@ function RenyimiaoApiEditor({
 
       <Field>
         <FieldLabel>Base URL</FieldLabel>
-        <Input value={RENYIMIAO_GATEWAY_BASE_URL} readOnly disabled />
+        <Input value={baseUrl} readOnly disabled />
       </Field>
     </div>
   )
@@ -109,7 +103,6 @@ export function ProvidersConfig() {
   const config = useAtomValue(configAtom)
   const providersConfig = useAtomValue(configFieldsAtomMap.providersConfig)
   const setConfig = useSetAtom(writeConfigAtom)
-  const { theme } = useTheme()
 
   // 挂载时幂等 seed 任译喵（读 storage 最新值，post-init 避竞态）。
   useEnsureRenyimiaoSeeded()
@@ -118,6 +111,8 @@ export function ProvidersConfig() {
   const openLogin = useOpenForkLogin()
 
   const apiKey = renyimiaoApiKey(providersConfig)
+  // 动态网关地址：登录后由 /v1/tokens 写入实例；未登录/缺失回落网关常量。
+  const baseUrl = renyimiaoBaseUrl(providersConfig) || RENYIMIAO_GATEWAY_BASE_URL
   const modelIds = renyimiaoModelIds(providersConfig)
   const primaryInstance =
     providersConfig.find(
@@ -129,35 +124,22 @@ export function ProvidersConfig() {
     void setConfig(syncRenyimiaoModels(config, fetchedModelIds))
   }
 
+  // 单一「任译喵 API」provider，无需实体列表侧栏（设计冗余），编辑器直接铺满内容区。
   return (
     <ConfigCard
       id="api-providers"
-      title={i18n.t("options.apiProviders.title")}
-      description={i18n.t("options.apiProviders.description")}
+      title={RENYIMIAO_API_LABEL}
+      description="用于翻译和词汇解析功能"
       className="lg:flex-col"
     >
-      <EntityEditorLayout
-        list={
-          <EntityListRail>
-            <div className="flex items-center gap-2 rounded-lg border border-primary bg-muted px-3 py-2">
-              <ProviderIcon
-                logo={primaryInstance ? getProviderLogo(primaryInstance, theme) : ""}
-                name={RENYIMIAO_API_LABEL}
-                size="sm"
-              />
-            </div>
-          </EntityListRail>
-        }
-        editor={
-          <RenyimiaoApiEditor
-            apiKey={apiKey}
-            modelIds={modelIds}
-            primaryInstance={primaryInstance}
-            session={session}
-            onLogin={openLogin}
-            onModelsFetched={handleModelsFetched}
-          />
-        }
+      <RenyimiaoApiEditor
+        apiKey={apiKey}
+        baseUrl={baseUrl}
+        modelIds={modelIds}
+        primaryInstance={primaryInstance}
+        session={session}
+        onLogin={openLogin}
+        onModelsFetched={handleModelsFetched}
       />
     </ConfigCard>
   )

@@ -2,15 +2,11 @@ import { Icon } from "@iconify/react"
 import { useMutation } from "@tanstack/react-query"
 import LoadingDots from "@/components/loading-dots"
 import { Button } from "@/components/ui/base-ui/button"
-import { extractErrorMessage } from "@/utils/error/extract-message"
+import { fetchGatewayModels } from "@/fork/membership/api"
 import { i18n } from "@/utils/i18n"
 
-// fork 换皮版「更新模型」按钮：复刻陪读蛙的 /models 拉取逻辑，但把结果整份回给选项页做实例集同步
-// （而非 Combobox 选一个）。复用 extractErrorMessage + base-ui Button，不引用上游 composed UI。
-
-interface ModelsResponse {
-  data: Array<{ id: string }>
-}
+// fork 换皮版「更新模型」按钮：/models 拉取逻辑抽在 fetchGatewayModels（与登录后台自动拉取共用同一实现），
+// 本组件只管交互态 + 把结果整份回给选项页做实例集同步（而非 Combobox 选一个）。不引用上游 composed UI。
 
 export function UpdateModelsButton({
   baseURL,
@@ -30,14 +26,7 @@ export function UpdateModelsButton({
       if (!apiKey) {
         throw new Error(i18n.t("options.apiProviders.form.models.apiKeyRequired"))
       }
-      const response = await fetch(`${baseURL}/models`, {
-        headers: { Authorization: `Bearer ${apiKey}` },
-      })
-      if (!response.ok) {
-        throw new Error(await extractErrorMessage(response))
-      }
-      const data: ModelsResponse = await response.json()
-      return data.data.map((model) => model.id)
+      return fetchGatewayModels(baseURL, apiKey)
     },
   })
 

@@ -44,5 +44,15 @@
 
 - [x] 7.1 `SKIP_FREE_API=true pnpm run test` 全绿（1960 passed）；`pnpm run type-check` 退出 0
 - [x] 7.2 边界核对：改动全在 `src/fork` / `scripts` / `.env`，wxt.config 未改，零 allowlist 增长
-- [ ] 7.3 端到端手验（mock 态·待用户）：起 mock → 装 dev 扩展 → popup 登录→跳 mock→回插件→设置页任译喵 API Key 自动填充只读；登出→清空
-- [ ] 7.4 切真演练（文档化·待官网+后端就绪）：仅换 env 的官网域 + `WXT_RENYIMIAO_API_URL`，确认插件代码零改动
+- [x] 7.3 端到端手验：官网 3000 真登录（真手机号+短信）→ 插件 popup 更新为已登录、脱敏手机号展示（用户已验证登录态回传）
+- [x] 7.4 切真：`WXT_RENYIMIAO_API_URL` 由 mock 4173 切真测试后端域（值见本地 `.env`，gitignore 不入库）；UA 渠道号由占位 `8188` 对齐官网确认真值 `18790`（`const.ts` CHANNEL_KEY），插件其余代码零改动
+
+## 8. base_url 动态 + 模型列表 + 时序/UI 收尾（迭代扩展）
+
+- [x] 8.1 `api.ts`：`fetchTokens` 补返 `baseUrl`（读顶层 `data.base_url`）；新增 `fetchGatewayModels(baseUrl, skKey)`（`GET {baseUrl}/models` + `Authorization: Bearer <sk_key>`，抽 `UpdateModelsButton` 逻辑复用）
+- [x] 8.2 `renyimiao.ts`：`normalizeGatewayBaseUrl`（去尾斜杠 + 幂等补 `/v1`）；`renyimiaoBaseUrl`/`setRenyimiaoBaseUrl`（仿 apiKey 广播）；`buildRenyimiaoProvider`/`syncRenyimiaoModels`/`computeForkConfigSync` 用共享 base_url（回落常量）
+- [x] 8.3 `key-injection.ts`：`computeLoginConfigPatch(config, skKey, baseUrl)` 补写 base_url（`setRenyimiaoBaseUrl`）
+- [x] 8.4 `background/membership.ts`：`adoptCredential` 顺序两段（先 login_status 写会话、再 tokens 写 key/base_url），新增 `syncGatewayModels` 登录后主动拉一次 `/v1/models`→`syncRenyimiaoModels`（失败降级不阻断）；R6 `ensureMembershipKey` 同步补 base_url + 模型
+- [x] 8.5 `ui/options/providers-config.tsx`：`UpdateModelsButton` 与「Base URL」只读框改用动态 base_url（`renyimiaoBaseUrl` 回落常量）
+- [x] 8.6 UI 收尾：新增 `phone-mask.ts`（+单测）手机号脱敏、account-menu 套用；`providers-field` 登录引导条条件收敛为「仅未登录」
+- [x] 8.7 全 fork 测试绿（13 文件 / 89 测试）+ `pnpm run type-check` 退出 0；改动全在 `src/fork`，零 allowlist 增长

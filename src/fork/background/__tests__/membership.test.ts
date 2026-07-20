@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 import { fakeBrowser } from "wxt/testing"
 import { adoptCredential, clearMembership, ensureMembershipKey } from "@/fork/background/membership"
 import { loadForkSession, saveForkSession } from "@/fork/membership/session"
-import { renyimiaoApiKey } from "@/fork/providers/renyimiao"
+import { renyimiaoApiKey, renyimiaoBaseUrl, renyimiaoModelIds } from "@/fork/providers/renyimiao"
 import { configSchema } from "@/types/config/config"
 import { storageAdapter } from "@/utils/atoms/storage-adapter"
 import { CONFIG_STORAGE_KEY, DEFAULT_CONFIG } from "@/utils/constants/config"
@@ -27,6 +27,9 @@ function routeOk() {
     }
     if (url.includes("tokens")) {
       return Promise.resolve(jsonResponse(200, { data: { tokens: [{ sk_key: SK }] } }))
+    }
+    if (url.includes("/models")) {
+      return Promise.resolve(jsonResponse(200, { data: [] })) // 空 → syncRenyimiaoModels no-op，实例集不变
     }
     return Promise.resolve(jsonResponse(404, {}))
   })
@@ -74,6 +77,57 @@ describe("adoptCredential（接管编排）", () => {
 
     expect(await loadForkSession()).toBeNull()
     expect(await readKey()).toBe("")
+  })
+
+  it("登录后写动态 base_url + 主动拉一次模型重建实例集", async () => {
+    fetchMock.mockImplementation((url: string) => {
+      if (url.includes("login_status")) {
+        return Promise.resolve(jsonResponse(200, { data: { member: { mobile: "13800000000" } } }))
+      }
+      if (url.includes("tokens")) {
+        return Promise.resolve(
+          jsonResponse(200, { data: { base_url: "https://dyn.gw", tokens: [{ sk_key: SK }] } }),
+        )
+      }
+      if (url.includes("/models")) {
+        return Promise.resolve(
+          jsonResponse(200, { data: [{ id: "GLM-5.2" }, { id: "Kimi-k2.7" }] }),
+        )
+      }
+      return Promise.resolve(jsonResponse(404, {}))
+    })
+
+    await adoptCredential(CRED)
+
+    const config = await storageAdapter.get(CONFIG_STORAGE_KEY, DEFAULT_CONFIG, configSchema)
+    expect(renyimiaoApiKey(config.providersConfig)).toBe(SK)
+    expect(renyimiaoBaseUrl(config.providersConfig)).toBe("https://dyn.gw/v1")
+    expect(renyimiaoModelIds(config.providersConfig).sort()).toEqual(["GLM-5.2", "Kimi-k2.7"])
+  })
+
+  it("拉模型失败 → 降级不阻断：会话/key/base_url 仍写入、保留静态实例", async () => {
+    fetchMock.mockImplementation((url: string) => {
+      if (url.includes("login_status")) {
+        return Promise.resolve(jsonResponse(200, { data: { member: { mobile: "13800000000" } } }))
+      }
+      if (url.includes("tokens")) {
+        return Promise.resolve(
+          jsonResponse(200, { data: { base_url: "https://dyn.gw", tokens: [{ sk_key: SK }] } }),
+        )
+      }
+      if (url.includes("/models")) {
+        return Promise.resolve({ status: 500, statusText: "err", text: () => Promise.resolve("") })
+      }
+      return Promise.resolve(jsonResponse(404, {}))
+    })
+
+    await adoptCredential(CRED)
+
+    const config = await storageAdapter.get(CONFIG_STORAGE_KEY, DEFAULT_CONFIG, configSchema)
+    expect(renyimiaoApiKey(config.providersConfig)).toBe(SK)
+    expect(renyimiaoBaseUrl(config.providersConfig)).toBe("https://dyn.gw/v1")
+    expect(renyimiaoModelIds(config.providersConfig).length).toBeGreaterThan(0) // 静态 seed 仍在
+    expect((await loadForkSession())?.phone).toBe("13800000000")
   })
 })
 

@@ -22,8 +22,9 @@ const PORT = Number.parseInt(process.env.MOCK_RENYIMIAO_PORT ?? "4173", 10)
 // 登录页写进 cookie 的固定凭据值；后端只校验 Login-Credential 头「存在且非空」，不强绑此字面量。
 const MOCK_CREDENTIAL = "mock-login-credential-aitrans"
 
-// 固定 sk_key（对齐 tasks.md 1.4 / spec「mock 强校验凭据头」场景）。
-const MOCK_SK_KEY = "sk-mock-renyimiao-0000000000000000000000"
+// mock sk_key：默认占位（绝不硬编码真 key）；本地自测可用环境变量注入真值（不进仓库）：
+//   MOCK_SK_KEY=<你的真key> node scripts/mock-renyimiao/server.mjs
+const MOCK_SK_KEY = process.env.MOCK_SK_KEY ?? "sk-mock-renyimiao-0000000000000000000000"
 
 // 平台标识头的固定期望值（任译喵 = AITRANS 产品线、aitrans-pc 应用）。
 const EXPECT_PRODUCT_LINE = "AITRANS"

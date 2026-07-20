@@ -19,8 +19,19 @@ import {
 
 export const RENYIMIAO_ID_PREFIX = "renyimiao-"
 
-// oneapi 翻译网关地址：与 env.WXT_API_URL（better-auth 后端）不同域，是独立翻译网关，故存 fork 常量。
+// oneapi 翻译网关地址：与 env.WXT_API_URL（better-auth 后端）不同域，是独立翻译网关。
+// 作为「登录前默认 / base_url 缺失回落」的占位常量——登录后由 /v1/tokens 返回的动态 base_url 覆盖。
 export const RENYIMIAO_GATEWAY_BASE_URL = "https://open-ai.baomiao.cn/v1"
+
+// 网关 base_url 归一：去尾斜杠 + 幂等补 /v1（openai 兼容端点约定）。空串回落网关常量。
+// /v1/tokens 返回的 base_url 可能不含 /v1；实例 baseURL 统一存含 /v1 形态，拉 /models 时直接补 /models。
+export function normalizeGatewayBaseUrl(baseUrl: string): string {
+  if (baseUrl === "") {
+    return RENYIMIAO_GATEWAY_BASE_URL
+  }
+  const trimmed = baseUrl.replace(/\/+$/, "")
+  return trimmed.endsWith("/v1") ? trimmed : `${trimmed}/v1`
+}
 
 export interface RenyimiaoModel {
   /** 提交给网关的模型 id：大小写敏感，逐字匹配 oneapi 后台别名 */
@@ -52,14 +63,19 @@ function isRenyimiaoProviderConfig(provider: ProviderConfig): provider is Renyim
 }
 
 // 某模型对应的实例。model.model 必须为字面量 "use-custom-model"（openai-compatible 必填枚举），
-// 真实模型 id 存 model.customModel。apiKey 共享（同一网关同一登录 key）。
-export function buildRenyimiaoProvider(modelId: string, apiKey = ""): RenyimiaoProviderConfig {
+// 真实模型 id 存 model.customModel。apiKey / baseURL 共享（同一网关同一登录 key）；
+// baseURL 默认网关常量，登录后由调用方传入 /v1/tokens 的动态 base_url。
+export function buildRenyimiaoProvider(
+  modelId: string,
+  apiKey = "",
+  baseURL: string = RENYIMIAO_GATEWAY_BASE_URL,
+): RenyimiaoProviderConfig {
   return {
     id: renyimiaoInstanceId(modelId),
     name: `${FORK_BRANDING.displayName} ${modelId}`,
     enabled: true,
     provider: "openai-compatible",
-    baseURL: RENYIMIAO_GATEWAY_BASE_URL,
+    baseURL,
     apiKey,
     model: {
       model: "use-custom-model",
@@ -89,6 +105,22 @@ export function setRenyimiaoApiKey(
 ): ProvidersConfig {
   return providersConfig.map((provider) =>
     isRenyimiaoProviderConfig(provider) ? { ...provider, apiKey } : provider,
+  )
+}
+
+// 共享网关 base_url：读首个任译喵实例的 baseURL（同网关共享）。无实例 → 空串。
+export function renyimiaoBaseUrl(providersConfig: ProvidersConfig): string {
+  return providersConfig.find(isRenyimiaoProviderConfig)?.baseURL ?? ""
+}
+
+// 广播网关 base_url（归一到含 /v1）：写进全部任译喵实例，非任译喵 provider 不动。返回新 providersConfig。
+export function setRenyimiaoBaseUrl(
+  providersConfig: ProvidersConfig,
+  baseUrl: string,
+): ProvidersConfig {
+  const normalized = normalizeGatewayBaseUrl(baseUrl)
+  return providersConfig.map((provider) =>
+    isRenyimiaoProviderConfig(provider) ? { ...provider, baseURL: normalized } : provider,
   )
 }
 
@@ -156,11 +188,14 @@ function buildRepointPatch(
 export function computeForkConfigSync(config: Config): Partial<Config> | null {
   const { providersConfig } = config
   const sharedKey = renyimiaoApiKey(providersConfig)
-  const existingIds = new Set(providersConfig.map((provider) => provider.id))
-  const toAppend = RENYIMIAO_MODELS.filter((model) => model.available)
-    .map((model) => model.modelId)
-    .filter((modelId) => !existingIds.has(renyimiaoInstanceId(modelId)))
-    .map((modelId) => buildRenyimiaoProvider(modelId, sharedKey))
+  const sharedBaseUrl = renyimiaoBaseUrl(providersConfig) || RENYIMIAO_GATEWAY_BASE_URL
+  // 静态模型仅作「首装兜底」：当前无任何任译喵实例时才补齐可用模型（装完即可用 + repoint 有目标）。
+  // 一旦已 seed 过或 /v1/models 动态同步过（已有实例），绝不再补静态——否则会把动态列表移除的静态模型加回、污染真实清单。
+  const toAppend = providersConfig.some(isRenyimiaoInstance)
+    ? []
+    : RENYIMIAO_MODELS.filter((model) => model.available).map((model) =>
+        buildRenyimiaoProvider(model.modelId, sharedKey, sharedBaseUrl),
+      )
   const hasNewProviders = toAppend.length > 0
   const nextProviders = hasNewProviders ? [...providersConfig, ...toAppend] : providersConfig
 
@@ -190,6 +225,7 @@ export function syncRenyimiaoModels(config: Config, modelIds: string[]): Partial
     return {}
   }
   const sharedKey = renyimiaoApiKey(config.providersConfig)
+  const sharedBaseUrl = renyimiaoBaseUrl(config.providersConfig) || RENYIMIAO_GATEWAY_BASE_URL
   const existingById = new Map(
     config.providersConfig
       .filter(isRenyimiaoProviderConfig)
@@ -198,7 +234,8 @@ export function syncRenyimiaoModels(config: Config, modelIds: string[]): Partial
   const nonRenyimiao = config.providersConfig.filter((provider) => !isRenyimiaoInstance(provider))
   const desired = modelIds.map(
     (modelId) =>
-      existingById.get(renyimiaoInstanceId(modelId)) ?? buildRenyimiaoProvider(modelId, sharedKey),
+      existingById.get(renyimiaoInstanceId(modelId)) ??
+      buildRenyimiaoProvider(modelId, sharedKey, sharedBaseUrl),
   )
   const nextProviders = [...nonRenyimiao, ...desired]
 

@@ -7,10 +7,14 @@ import {
   buildRenyimiaoProvider,
   computeForkConfigSync,
   isForkVisibleProvider,
+  normalizeGatewayBaseUrl,
+  RENYIMIAO_GATEWAY_BASE_URL,
   renyimiaoApiKey,
+  renyimiaoBaseUrl,
   renyimiaoInstanceId,
   renyimiaoModelIds,
   setRenyimiaoApiKey,
+  setRenyimiaoBaseUrl,
   syncRenyimiaoModels,
 } from "../renyimiao"
 
@@ -84,6 +88,17 @@ describe("computeForkConfigSync（seed 内置可用模型 + repoint）", () => {
     const synced = applyPatch(DEFAULT_CONFIG, patch!)
     expect(computeForkConfigSync(synced)).toBeNull()
   })
+
+  it("已动态同步过实例后，seed 不再补静态模型（防静态残留污染动态列表）", () => {
+    const seeded = applyPatch(DEFAULT_CONFIG, computeForkConfigSync(DEFAULT_CONFIG)!)
+    // 模拟登录后 /v1/models 动态同步：换成一批全新 id，静态 Deepseek-V4-Flash 被移除
+    const synced = applyPatch(seeded, syncRenyimiaoModels(seeded, ["dyn-model-a", "dyn-model-b"]))
+    expect(renyimiaoModelIds(synced.providersConfig).sort()).toEqual(["dyn-model-a", "dyn-model-b"])
+    // 再跑 seed：不得把静态 Deepseek-V4-Flash 加回来
+    const patch = computeForkConfigSync(synced)
+    const after = patch ? applyPatch(synced, patch) : synced
+    expect(renyimiaoModelIds(after.providersConfig).sort()).toEqual(["dyn-model-a", "dyn-model-b"])
+  })
 })
 
 describe("syncRenyimiaoModels（以 fetch 结果为准重建实例集）", () => {
@@ -138,5 +153,55 @@ describe("共享 API Key 读写", () => {
     // 不动非任译喵 provider 的 key
     const openai = broadcast.find((provider) => provider.id === "openai-default")
     expect(openai && "apiKey" in openai ? openai.apiKey : undefined).not.toBe("k-123")
+  })
+})
+
+describe("normalizeGatewayBaseUrl（归一到含 /v1）", () => {
+  it("不含 /v1 → 补 /v1", () => {
+    expect(normalizeGatewayBaseUrl("https://gw.example.com")).toBe("https://gw.example.com/v1")
+  })
+
+  it("已含 /v1 → 幂等不重复补", () => {
+    expect(normalizeGatewayBaseUrl("https://gw.example.com/v1")).toBe("https://gw.example.com/v1")
+  })
+
+  it("去尾斜杠后再补 /v1", () => {
+    expect(normalizeGatewayBaseUrl("https://gw.example.com/")).toBe("https://gw.example.com/v1")
+  })
+
+  it("空串 → 回落网关常量", () => {
+    expect(normalizeGatewayBaseUrl("")).toBe(RENYIMIAO_GATEWAY_BASE_URL)
+  })
+})
+
+describe("共享网关 base_url 读写", () => {
+  it("setRenyimiaoBaseUrl 广播归一后的 base_url 到全部任译喵实例；renyimiaoBaseUrl 读首个", () => {
+    const config = applyPatch(DEFAULT_CONFIG, computeForkConfigSync(DEFAULT_CONFIG)!)
+    const withModels = applyPatch(config, syncRenyimiaoModels(config, ["A-model", "B-model"]))
+    const broadcast = setRenyimiaoBaseUrl(withModels.providersConfig, "https://dyn.gw")
+    const instances = broadcast.filter((provider) => provider.id.startsWith("renyimiao-"))
+    expect(instances.length).toBe(2)
+    expect(
+      instances.every(
+        (provider) => "baseURL" in provider && provider.baseURL === "https://dyn.gw/v1",
+      ),
+    ).toBe(true)
+    expect(renyimiaoBaseUrl(broadcast)).toBe("https://dyn.gw/v1")
+    // 不动非任译喵 provider
+    const openai = broadcast.find((provider) => provider.id === "openai-default")
+    expect(openai && "baseURL" in openai ? openai.baseURL : undefined).not.toBe("https://dyn.gw/v1")
+  })
+
+  it("syncRenyimiaoModels 新建实例沿用已配置的共享 base_url", () => {
+    const config = applyPatch(DEFAULT_CONFIG, computeForkConfigSync(DEFAULT_CONFIG)!)
+    const withBase = applyPatch(config, {
+      providersConfig: setRenyimiaoBaseUrl(config.providersConfig, "https://dyn.gw"),
+    })
+    const patch = syncRenyimiaoModels(withBase, ["New-Model"])
+    const next = applyPatch(withBase, patch)
+    const created = next.providersConfig.find(
+      (provider) => provider.id === renyimiaoInstanceId("New-Model"),
+    )
+    expect(created && "baseURL" in created ? created.baseURL : undefined).toBe("https://dyn.gw/v1")
   })
 })
