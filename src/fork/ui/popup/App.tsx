@@ -4,7 +4,6 @@ import { AISmartContext } from "@/entrypoints/popup/components/ai-smart-context"
 import { AlwaysTranslate } from "@/entrypoints/popup/components/always-translate"
 import BlogNotification from "@/entrypoints/popup/components/blog-notification"
 import LanguageOptionsSelector from "@/entrypoints/popup/components/language-options-selector"
-import { MoreMenu } from "@/entrypoints/popup/components/more-menu"
 import Hotkey from "@/entrypoints/popup/components/node-translation-hotkey-selector"
 import { SiteControlToggle } from "@/entrypoints/popup/components/site-control-toggle"
 import TranslateButton from "@/entrypoints/popup/components/translate-button"
@@ -63,7 +62,6 @@ function App() {
           <span aria-hidden="true">·</span>
           <span className="tabular-nums">{EXTENSION_VERSION}</span>
         </span>
-        <MoreMenu />
       </div>
     </>
   )

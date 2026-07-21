@@ -5,6 +5,7 @@
     "src/utils/constants/app.ts",
     "src/entrypoints/popup/app.tsx",
     "src/entrypoints/options/app.tsx",
+    "src/entrypoints/options/app-sidebar/index.tsx",
     "src/entrypoints/sidepanel/app.tsx",
     "src/entrypoints/translation-hub/app.tsx",
     "src/entrypoints/side.content/app.tsx",

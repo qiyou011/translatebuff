@@ -60,10 +60,12 @@ const FORK_UI_REDIRECTS = [
     to: path.resolve(__dirname, "src/fork/ui/translation-hub/atoms.ts"),
   },
   {
-    // 选项页侧边栏账户菜单：上游走 better-auth，重定向到 fork 版接任译喵会话（index.ts 再导出此叶子文件，
-    // app-sidebar/index.tsx 无感、零 allowlist 增长）。
-    from: path.resolve(__dirname, "src/components/user-account-menu/sidebar.tsx"),
-    to: path.resolve(__dirname, "src/fork/ui/options/account-menu-sidebar.tsx"),
+    // 自定义 AI 指令编辑器的「笔记库连接」区块：远程笔记库是上游功能，任译喵不提供 → 重定向到 fork 空组件。
+    from: path.resolve(
+      __dirname,
+      "src/entrypoints/options/pages/custom-actions/action-config-form/notebase-connection-field.tsx",
+    ),
+    to: path.resolve(__dirname, "src/fork/ui/options/notebase-connection-field.tsx"),
   },
 ]
 
