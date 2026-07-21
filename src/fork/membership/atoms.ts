@@ -34,6 +34,8 @@ export function useForkSession(): ForkSession | null {
       })
     }
     hydrate()
+    // 挂载即请后台主动读官网现存 cookie 补同步（确定性唤醒 SW）：覆盖「官网已登录但插件未接管」。有会话则后台短路。
+    void sendForkMessage("forkSyncMembership")
     const unwatch = storage.watch(`local:${FORK_SESSION_STORAGE_KEY}`, hydrate)
     return () => {
       active = false
