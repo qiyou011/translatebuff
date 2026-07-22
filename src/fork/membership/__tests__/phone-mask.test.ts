@@ -3,7 +3,7 @@ import { maskPhone } from "../phone-mask"
 
 describe("maskPhone（手机号脱敏展示，对齐官网风格）", () => {
   it("带 +86- 前缀：区号（去连字符）+ **** + 后 4 位，不露首位", () => {
-    expect(maskPhone("+86-16602836132")).toBe("+86****6132")
+    expect(maskPhone("+86-13800138000")).toBe("+86****8000")
   })
 
   it("无前缀纯号码：**** + 后 4 位", () => {

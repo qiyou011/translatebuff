@@ -19,9 +19,11 @@ import {
 
 export const RENYIMIAO_ID_PREFIX = "renyimiao-"
 
-// oneapi 翻译网关地址：与 env.WXT_API_URL（better-auth 后端）不同域，是独立翻译网关。
-// 作为「登录前默认 / base_url 缺失回落」的占位常量——登录后由 /v1/tokens 返回的动态 base_url 覆盖。
-export const RENYIMIAO_GATEWAY_BASE_URL = "https://open-ai.baomiao.cn/v1"
+// oneapi 翻译网关地址：从 env 读取（真实域不硬编码进公开源码），独立翻译网关、≠ 登录后端域（WXT_RENYIMIAO_API_URL）。
+// 作为「登录前默认 / base_url 缺失回落」——登录后由 /v1/tokens 返回的动态 base_url 覆盖。
+// `.invalid` 兜底仅用于 env 缺失场景（如单测未注入）；真实值由 .env(.production) 提供、构建期 Vite 内联。
+export const RENYIMIAO_GATEWAY_BASE_URL =
+  (import.meta.env.WXT_RENYIMIAO_GATEWAY_URL as string) || "https://gateway.invalid/v1"
 
 // 网关 base_url 归一：去尾斜杠 + 幂等补 /v1（openai 兼容端点约定）。空串回落网关常量。
 // /v1/tokens 返回的 base_url 可能不含 /v1；实例 baseURL 统一存含 /v1 形态，拉 /models 时直接补 /models。

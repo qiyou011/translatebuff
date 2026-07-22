@@ -33,7 +33,12 @@ export function readForkDomainsFromEnv(envText) {
 // 刻意不在本脚本硬编码任何真实测试域名（本仓公开），改由 gitignored 的 .env 派生。
 export function readTestDomainsFromEnv(envText) {
   const hosts = []
-  const keys = ["WXT_RENYIMIAO_API_URL", "WXT_WEBSITE_URL", "WXT_OFFICIAL_SITE_ORIGINS"]
+  const keys = [
+    "WXT_RENYIMIAO_API_URL",
+    "WXT_RENYIMIAO_GATEWAY_URL",
+    "WXT_WEBSITE_URL",
+    "WXT_OFFICIAL_SITE_ORIGINS",
+  ]
   for (const key of keys) {
     const match = envText.match(new RegExp(`^${key}=(.+)$`, "m"))
     if (!match) continue
@@ -54,8 +59,8 @@ export function readTestDomainsFromEnv(envText) {
 
 // 登录后端域是否已在 .env.production 声明且非空。fork 直读 import.meta.env.WXT_RENYIMIAO_API_URL
 // （绕 t3-env schema），缺失即运行期取到 undefined、登录静默失效，故构建期据此 fail-fast。
-// 此域是「登录后端域」（common_bll/claw_bff），与翻译网关常量 RENYIMIAO_GATEWAY_BASE_URL
-// （open-ai.baomiao.cn）是两个不同域、不同性质，勿混。
+// 此域是「登录后端域」（common_bll/claw_bff），与翻译网关域（WXT_RENYIMIAO_GATEWAY_URL）
+// 是两个不同域、不同性质，勿混。
 function hasRenyimiaoApiUrl(envText) {
   const match = envText.match(/^WXT_RENYIMIAO_API_URL=(.+)$/m)
   return Boolean(match && match[1].trim() !== "")

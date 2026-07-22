@@ -63,7 +63,7 @@ translatebuff-app 是 read-frog 的软 fork（WXT + MV3 + React）。任译喵�
 `adoptCredential` 先 `fetchLoginStatus` → 立即 `saveForkSession`（手机号秒显），再 `fetchTokensWithRetry`（首登开户可能 ~9s 轮询）→ 写 key/base_url → 拉模型。顺序化两重收益：① 登录态即时反映、不等 tokens 轮询（原 `Promise.all` 让手机号陪等 tokens 轮询、面板滞后数秒）；② 天然串行避开「tokens 迟到写与登出清态交错复活 key」的并行竞态。
 
 **D10. UI 收尾：手机号脱敏 + 登录引导条仅未登录显示。**
-账户菜单手机号经 `maskPhone` 脱敏展示（`+86-16602836132` → `+86-1****6132`）。`providers-field` 登录引导条条件由「未登录 || key 空」收敛为「仅未登录」——登录后即隐，去掉「已登录仍显示登录引导」的语义矛盾；空 key 门禁仍由选择器侧 + R6 挂载补偿承担。
+账户菜单手机号经 `maskPhone` 脱敏展示（`+86-13800138000` → `+86-1****8000`）。`providers-field` 登录引导条条件由「未登录 || key 空」收敛为「仅未登录」——登录后即隐，去掉「已登录仍显示登录引导」的语义矛盾；空 key 门禁仍由选择器侧 + R6 挂载补偿承担。
 
 ## 模块划分与接口契约
 
