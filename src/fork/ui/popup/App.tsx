@@ -1,17 +1,16 @@
 import { Icon } from "@iconify/react"
 import { BrandMark } from "@/components/brand-mark"
-import { UserAccountMenuPopup } from "@/components/user-account-menu"
 import { AISmartContext } from "@/entrypoints/popup/components/ai-smart-context"
 import { AlwaysTranslate } from "@/entrypoints/popup/components/always-translate"
 import BlogNotification from "@/entrypoints/popup/components/blog-notification"
 import LanguageOptionsSelector from "@/entrypoints/popup/components/language-options-selector"
-import { MoreMenu } from "@/entrypoints/popup/components/more-menu"
 import Hotkey from "@/entrypoints/popup/components/node-translation-hotkey-selector"
 import { SiteControlToggle } from "@/entrypoints/popup/components/site-control-toggle"
 import TranslateButton from "@/entrypoints/popup/components/translate-button"
 import TranslatePromptSelector from "@/entrypoints/popup/components/translate-prompt-selector"
 import { TranslationHubButton } from "@/entrypoints/popup/components/translation-hub-button"
 import TranslationModeSelector from "@/entrypoints/popup/components/translation-mode-selector"
+import { ForkAccountMenu } from "@/fork/ui/popup/account-menu"
 import ProvidersField from "@/fork/ui/popup/providers-field"
 import { EXTENSION_VERSION } from "@/utils/constants/app"
 import { i18n } from "@/utils/i18n"
@@ -25,7 +24,7 @@ function App() {
     <>
       <div className="flex flex-col gap-2.5 bg-background px-4 pt-3 pb-3">
         <div className="flex items-center justify-between rounded-lg bg-card px-2 py-1.5">
-          <UserAccountMenuPopup />
+          <ForkAccountMenu />
           <div className="flex items-center">
             <TranslationHubButton />
             <BlogNotification />
@@ -63,7 +62,6 @@ function App() {
           <span aria-hidden="true">·</span>
           <span className="tabular-nums">{EXTENSION_VERSION}</span>
         </span>
-        <MoreMenu />
       </div>
     </>
   )

@@ -55,7 +55,7 @@ translatebuff-app 是 read-frog 的软 fork，靠 merge-only 同步上游翻译�
 
 ### D4：模型清单硬编码 fork 常量；`baseURL` 用 fork 独立常量
 
-模型清单（`label` / 网关 `modelId` / `available`）硬编码于 `src/fork/providers/renyimiao.ts`，仅 `available` 的模型 seed 出实例。网关 `baseURL = "https://open-ai.baomiao.cn/v1"`——它与 `env.WXT_API_URL`（`api.translatebuff.com`，better-auth 后端）**不同域**（oneapi 翻译网关是独立服务），故用 fork 独立常量并注释"不随环境切换"；不改上游 `src/env`（新增 env var 需改 schema，越界）。该常量是公开网关 URL、非密钥。
+模型清单（`label` / 网关 `modelId` / `available`）硬编码于 `src/fork/providers/renyimiao.ts`，仅 `available` 的模型 seed 出实例。网关 `baseURL` 从 `import.meta.env.WXT_RENYIMIAO_GATEWAY_URL` 直读（绕 t3-env schema、不改上游 `src/env`），真实域不硬编码进公开源码；它与 `env.WXT_API_URL`（better-auth 后端）**不同域**，是独立 oneapi 翻译网关服务。
 
 模型可用性（后台现状）：`Deepseek-V4-Flash`（**大小写敏感，须逐字匹配后台别名**）确认可用；`gpt-5.5`、`qwen3.5-plus` 后台未配置，标 `available:false`（暂不 seed），配好后改一行即启用。
 
@@ -105,7 +105,7 @@ translatebuff-app 是 read-frog 的软 fork，靠 merge-only 同步上游翻译�
 
 ```
 { id:"renyimiao-managed", name:"任译喵 API", provider:"openai-compatible",
-  enabled:true, baseURL:"https://open-ai.baomiao.cn/v1", apiKey:"",
+  enabled:true, baseURL:"<env WXT_RENYIMIAO_GATEWAY_URL>", apiKey:"",
   model:{ model:"use-custom-model", isCustomModel:true, customModel:"Deepseek-V4-Flash" } }
 ```
 
@@ -119,6 +119,6 @@ translatebuff-app 是 read-frog 的软 fork，靠 merge-only 同步上游翻译�
 
 ## Open Questions
 
-- ~~网关 `baseURL`~~ 已定：`https://open-ai.baomiao.cn/v1`（fork 独立常量，与 `WXT_API_URL` 不同域）。
+- ~~网关 `baseURL`~~ 已定：从 env `WXT_RENYIMIAO_GATEWAY_URL` 读取（真实域不入库，与 `WXT_API_URL` 不同域）。
 - ~~模型别名~~ 部分定：`Deepseek-V4-Flash` 可用（默认，**大小写敏感**）；`gpt-5-mini`、`qwen3.5-plus` 待后台配置后补确切别名。
 - 正式版发布时的版本方案（`1.0.0`？恢复上游派生？）待后续决定，本变更仅定预发布 `0.0.x`。

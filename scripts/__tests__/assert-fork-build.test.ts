@@ -3,6 +3,7 @@ import {
   findMissingForkDomains,
   findUpstreamDomainHits,
   readForkDomainsFromEnv,
+  readTestDomainsFromEnv,
 } from "../assert-fork-build.mjs"
 
 describe("findUpstreamDomainHits", () => {
@@ -52,5 +53,26 @@ describe("readForkDomainsFromEnv", () => {
 
   it("缺失这两个键时返回空数组", () => {
     expect(readForkDomainsFromEnv("WXT_AUTH_COOKIE_DOMAINS=translatebuff.com")).toEqual([])
+  })
+})
+
+describe("readTestDomainsFromEnv（从 .env 派生测试后端域，用于泄漏守卫）", () => {
+  it("派生 hostname，剔除 localhost/回环", () => {
+    const envText = [
+      "WXT_RENYIMIAO_API_URL=https://cbs-test.example.com",
+      "WXT_WEBSITE_URL=http://localhost:3000",
+      "WXT_OFFICIAL_SITE_ORIGINS=http://localhost:3000",
+    ].join("\n")
+    expect(readTestDomainsFromEnv(envText)).toEqual(["cbs-test.example.com"])
+  })
+
+  it("逗号分隔多 origin 全解析、去重、剔除回环", () => {
+    const envText =
+      "WXT_OFFICIAL_SITE_ORIGINS=https://a.example.com,http://127.0.0.1:3000,https://a.example.com"
+    expect(readTestDomainsFromEnv(envText)).toEqual(["a.example.com"])
+  })
+
+  it(".env 为空 → 空数组（CI 干净构建无测试域可泄漏、守卫跳过）", () => {
+    expect(readTestDomainsFromEnv("")).toEqual([])
   })
 })

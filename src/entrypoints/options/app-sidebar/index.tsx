@@ -9,7 +9,7 @@ import {
   SidebarFooter,
   SidebarHeader,
 } from "@/components/ui/base-ui/sidebar"
-import { UserAccountMenuSidebar } from "@/components/user-account-menu"
+import { UserAccountMenuSidebar } from "@/fork/ui/options/account-menu-sidebar"
 import { i18n } from "@/utils/i18n"
 import { getCommandPaletteShortcutHint } from "@/utils/os"
 import { commandPaletteOpenAtom } from "../command-palette/atoms"

@@ -61,12 +61,12 @@
 
 ### Requirement: 网关地址来源
 
-系统 SHALL 用 fork 独立常量 `RENYIMIAO_GATEWAY_BASE_URL = "https://open-ai.baomiao.cn/v1"` 作为任译喵实例 `baseURL`——它与 `env.WXT_API_URL`（`api.translatebuff.com`，better-auth 后端）不同域，是独立翻译网关，MUST 注释标明"不随环境切换"。MUST NOT 为此改动上游 `src/env`。
+系统 SHALL 用 fork 常量 `RENYIMIAO_GATEWAY_BASE_URL`（从 `import.meta.env.WXT_RENYIMIAO_GATEWAY_URL` 直读、真实域不硬编码进公开源码）作为任译喵实例 `baseURL`——它与 `env.WXT_API_URL`（better-auth 后端）不同域，是独立翻译网关。直读 `import.meta.env`（绕 t3-env schema），MUST NOT 为此改动上游 `src/env`。
 
 #### Scenario: baseURL 取 fork 常量
 
 - **WHEN** 构建任译喵实例
-- **THEN** `baseURL` 为 `"https://open-ai.baomiao.cn/v1"`，非从 `env` 派生
+- **THEN** `baseURL` 从 `env.WXT_RENYIMIAO_GATEWAY_URL` 读取（缺失回落占位、真实域不入库）
 
 ### Requirement: key 与模型走上游原流程
 

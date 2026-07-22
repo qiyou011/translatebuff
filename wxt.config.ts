@@ -59,6 +59,30 @@ const FORK_UI_REDIRECTS = [
     from: path.resolve(__dirname, "src/entrypoints/translation-hub/atoms.ts"),
     to: path.resolve(__dirname, "src/fork/ui/translation-hub/atoms.ts"),
   },
+  {
+    // 自定义 AI 指令编辑器的「笔记库连接」区块：远程笔记库是上游功能，任译喵不提供 → 重定向到 fork 空组件。
+    from: path.resolve(
+      __dirname,
+      "src/entrypoints/options/pages/custom-actions/action-config-form/notebase-connection-field.tsx",
+    ),
+    to: path.resolve(__dirname, "src/fork/ui/options/notebase-connection-field.tsx"),
+  },
+  {
+    // 翻译浮窗「猜你想存」推荐卡（save-to-notebase 建议）：上游功能，任译喵不展示 → 重定向到 fork 空组件。
+    from: path.resolve(
+      __dirname,
+      "src/entrypoints/selection.content/selection-toolbar/save-suggestion/save-suggestion-card.tsx",
+    ),
+    to: path.resolve(__dirname, "src/fork/ui/selection-toolbar/save-suggestion-card.tsx"),
+  },
+  {
+    // 选项页「保存建议」开关：功能 UI 已隐藏，开关留着会误导 → 重定向到 fork 空组件。
+    from: path.resolve(
+      __dirname,
+      "src/entrypoints/options/pages/selection-toolbar/selection-toolbar-save-suggestion-toggle.tsx",
+    ),
+    to: path.resolve(__dirname, "src/fork/ui/selection-toolbar/save-suggestion-toggle.tsx"),
+  },
 ]
 
 function normalizeModuleId(id: string): string {
