@@ -10,7 +10,6 @@
     "src/entrypoints/translation-hub/app.tsx",
     "src/entrypoints/side.content/app.tsx",
     "src/entrypoints/selection.content/app.tsx",
-    "src/entrypoints/selection.content/index.tsx",
     "src/utils/auth/auth-client.ts",
     "src/utils/auth/background-auth-client.ts",
     "src/utils/orpc/client.ts",
