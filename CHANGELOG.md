@@ -1,5 +1,71 @@
 # @read-frog/extension
 
+## 1.42.2
+
+### Patch Changes
+
+- [#1924](https://github.com/mengxi-ream/read-frog/pull/1924) [`54be927`](https://github.com/mengxi-ream/read-frog/commit/54be927e5a7143b88063344ddf850641f089a34a) Thanks [@mengxi-ream](https://github.com/mengxi-ream)! - fix(selection-toolbar): keep selection tools above page stacking contexts
+
+- [#1924](https://github.com/mengxi-ream/read-frog/pull/1924) [`54be927`](https://github.com/mengxi-ream/read-frog/commit/54be927e5a7143b88063344ddf850641f089a34a) Thanks [@mengxi-ream](https://github.com/mengxi-ream)! - fix(selection-toolbar): keep selection tools interactive in modal dialogs
+
+- [#1920](https://github.com/mengxi-ream/read-frog/pull/1920) [`46b40da`](https://github.com/mengxi-ream/read-frog/commit/46b40da86607e2c27b6573b08a09bd76562b33bf) Thanks [@mengxi-ream](https://github.com/mengxi-ream)! - fix(translate): recover bilingual translations when sites rewrite wrapper content, and unclamp CNBC card titles
+
+- [#1922](https://github.com/mengxi-ream/read-frog/pull/1922) [`9860788`](https://github.com/mengxi-ream/read-frog/commit/98607883b432931ddd39d33705cff42351ebe1a2) Thanks [@mengxi-ream](https://github.com/mengxi-ream)! - fix(translate): reduce the default request burst capacity to 20
+
+## 1.42.1
+
+### Patch Changes
+
+- [#1915](https://github.com/mengxi-ream/read-frog/pull/1915) [`e5464f3`](https://github.com/mengxi-ream/read-frog/commit/e5464f35285168193f1bcafd27896a5557ff2e8b) Thanks [@mengxi-ream](https://github.com/mengxi-ream)! - fix(translate): restore ChatGPT assistant response translation
+
+- [#1913](https://github.com/mengxi-ream/read-frog/pull/1913) [`6a6900a`](https://github.com/mengxi-ream/read-frog/commit/6a6900aa46957725d375335d5e52d28415140a97) Thanks [@mengxi-ream](https://github.com/mengxi-ream)! - fix(providers): remove the Atlas Cloud credential workaround after the upstream fix
+
+## 1.42.0
+
+### Minor Changes
+
+- [#1897](https://github.com/mengxi-ream/read-frog/pull/1897) [`04b04ac`](https://github.com/mengxi-ream/read-frog/commit/04b04acadae24b0f4f30c69c756d1b8cbcd1c523) Thanks [@mengxi-ream](https://github.com/mengxi-ream)! - feat(translation): add a four-variant new-user default prompt experiment
+
+- [#1900](https://github.com/mengxi-ream/read-frog/pull/1900) [`8dfacda`](https://github.com/mengxi-ream/read-frog/commit/8dfacdac66c742e40c79e078fdfe3f73145f48d2) Thanks [@mengxi-ream](https://github.com/mengxi-ream)! - fix(translate): stop a single 429 from failing the whole page and make rate limiting actually hold
+
+  - A 429 now pauses the queue (honoring `Retry-After`) and retries in place instead of instantly rejecting every pending paragraph — one transient rate limit no longer paints hundreds of errors or kills the session
+  - Batches now keep filling up to the configured size while the rate limiter has no free slot, so low request rates send few full batches instead of many tiny ones
+  - Queue config is applied reliably: handlers register synchronously at SW startup, `storage.watch` replaces droppable per-field messages, and capacity edits no longer grant a free burst
+  - Batch request timeouts scale with batch size; summary generation is abortable and no longer performs hidden ai-sdk retries
+
+### Patch Changes
+
+- [#1906](https://github.com/mengxi-ream/read-frog/pull/1906) [`5ded459`](https://github.com/mengxi-ream/read-frog/commit/5ded4592cb263d27ad1221d763f10af21f64af6f) Thanks [@mengxi-ream](https://github.com/mengxi-ream)! - fix(selection): keep shadow-root popups anchored to the viewport
+
+- [#1908](https://github.com/mengxi-ream/read-frog/pull/1908) [`b9f4a48`](https://github.com/mengxi-ream/read-frog/commit/b9f4a485255f0d93aabea5a44610248c2d925e31) Thanks [@mengxi-ream](https://github.com/mengxi-ream)! - fix(providers): omit Atlas Cloud website credentials from API requests
+
+## 1.41.2
+
+### Patch Changes
+
+- [#1887](https://github.com/mengxi-ream/read-frog/pull/1887) [`b14bd0a`](https://github.com/mengxi-ream/read-frog/commit/b14bd0a612909e8cc70932b97b5123a80467faca) Thanks [@mengxi-ream](https://github.com/mengxi-ream)! - fix(custom-actions): add a link to open the connected notebase
+
+- [#1888](https://github.com/mengxi-ream/read-frog/pull/1888) [`92a2142`](https://github.com/mengxi-ream/read-frog/commit/92a214221aa1129794deb361b2fde839254ffa16) Thanks [@ananaBMaster](https://github.com/ananaBMaster)! - fix(selection): prevent shadow overlays from covering pages after refresh
+
+- [#1884](https://github.com/mengxi-ream/read-frog/pull/1884) [`18e8901`](https://github.com/mengxi-ream/read-frog/commit/18e8901ff97cc9ef682bbe387014018fd768af8b) Thanks [@ananaBMaster](https://github.com/ananaBMaster)! - fix(translate): stop long-page freezes and drain cancelled translation queues ([#1881](https://github.com/mengxi-ream/read-frog/issues/1881))
+
+  - Split giant observed paragraphs (e.g. a flat 185k-px article labeled as one paragraph) into their descendant paragraphs so viewport-lazy translation actually applies instead of enqueueing the whole page at once
+  - Cap concurrent spinner animations and cancel them via stored handles — thousands of live WAAPI animations were driving continuous full-page style recalcs
+  - Cancel a page-translation session's queued/in-flight background requests on toggle-off, tab close, or restart (scoped per tab + session, dedup-shared requests are refcounted)
+  - Time-slice the initial DOM labeling walk and pace subtree translation so the main thread stays responsive on huge pages
+
+- [#1889](https://github.com/mengxi-ream/read-frog/pull/1889) [`5b03d64`](https://github.com/mengxi-ream/read-frog/commit/5b03d6476dbe12f56e5651627f4dc869a4ef81cf) Thanks [@ananaBMaster](https://github.com/ananaBMaster)! - feat(toast): migrate notifications to Base UI and add contextual anchored feedback
+
+## 1.41.1
+
+### Patch Changes
+
+- [#1875](https://github.com/mengxi-ream/read-frog/pull/1875) [`40643ec`](https://github.com/mengxi-ream/read-frog/commit/40643ecfd35fe29f00f9d5eca8295022a2c4e962) Thanks [@mengxi-ream](https://github.com/mengxi-ream)! - fix(i18n): open Traditional Chinese website links under the zh-TW locale
+
+- [#1777](https://github.com/mengxi-ream/read-frog/pull/1777) [`2040a72`](https://github.com/mengxi-ream/read-frog/commit/2040a72ffd5004651c31c6abce53264defcd7c2b) Thanks [@lovewave02](https://github.com/lovewave02)! - fix(extension): open settings via the runtime options-page API
+
+- [#1860](https://github.com/mengxi-ream/read-frog/pull/1860) [`5b8f549`](https://github.com/mengxi-ream/read-frog/commit/5b8f549106f91394d9e84138857571429ea3bea9) Thanks [@T0MYYY](https://github.com/T0MYYY)! - fix(subtitles): bound AI segmentation to the look-ahead window
+
 ## 1.41.0
 
 ### Minor Changes

@@ -1,16 +1,24 @@
 // @vitest-environment jsdom
 
-import { beforeEach, describe, expect, it, vi } from "vitest"
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 import { DEFAULT_CONFIG } from "@/utils/constants/config"
 import { NO_TRANSLATION_SENTINEL } from "@/utils/constants/prompt"
 import { detectLanguage } from "@/utils/content/language"
 import { executeTranslate } from "@/utils/host/translate/execute-translate"
+import { translateTextCore } from "@/utils/host/translate/translate-text"
 import {
   translateTextForInput,
   translateTextForPage,
   translateTextForPageTitle,
 } from "@/utils/host/translate/translate-variants"
+import {
+  beginPageTranslationSession,
+  endPageTranslationSession,
+} from "@/utils/host/translate/translation-session"
 import { getTranslatePrompt } from "@/utils/prompts/translate"
+import { isTranslationCancelledError } from "@/utils/request/cancellation"
+
+type TranslatePromptOptions = NonNullable<Parameters<typeof getTranslatePrompt>[2]>
 
 // Mock dependencies
 vi.mock("@/utils/config/storage", () => ({
@@ -115,6 +123,98 @@ describe("translate-text", () => {
   })
 
   describe("translateTextForPage", () => {
+    it("rebuilds the variant-specific prompt hash when background flags changed", async () => {
+      const llmProvider = DEFAULT_CONFIG.providersConfig.find(
+        (provider) => provider.provider === "openai",
+      )!
+      mockGetTranslatePrompt.mockImplementation(
+        async (_target: string, _input: string, options: TranslatePromptOptions) => ({
+          systemPrompt: `system:${options.promptExperimentVariant ?? "control"}`,
+          prompt: `prompt:${options.promptExperimentVariant ?? "control"}`,
+        }),
+      )
+      let enqueueCount = 0
+      mockSendMessage.mockImplementation(async (type: string) => {
+        if (type === "resolvePromptExperimentVariant") return "precision-rewrite"
+        enqueueCount += 1
+        return enqueueCount === 1
+          ? { retryWithPromptExperimentVariant: "rewrite-after-understanding" }
+          : "translated text"
+      })
+
+      await expect(
+        translateTextCore({
+          text: "hello",
+          langConfig: DEFAULT_CONFIG.language,
+          providerConfig: llmProvider,
+          configuredPrompt: "default",
+          translationActionContext: {
+            actionId: "action-1",
+            feature: "page_translation",
+            surface: "popup",
+          },
+        }),
+      ).resolves.toBe("translated text")
+
+      expect(
+        mockSendMessage.mock.calls.filter(
+          ([type]: [string]) => type === "resolvePromptExperimentVariant",
+        ),
+      ).toHaveLength(1)
+      const enqueueCalls = mockSendMessage.mock.calls.filter(
+        ([type]: [string]) => type === "enqueueTranslateRequest",
+      )
+      expect(enqueueCalls).toHaveLength(2)
+      expect(enqueueCalls[0][1].promptExperimentVariant).toBe("precision-rewrite")
+      expect(enqueueCalls[1][1].promptExperimentVariant).toBe("rewrite-after-understanding")
+      expect(enqueueCalls[0][1].hash).not.toBe(enqueueCalls[1][1].hash)
+    })
+
+    it("rebuilds the current default prompt hash when the experiment becomes unavailable", async () => {
+      const llmProvider = DEFAULT_CONFIG.providersConfig.find(
+        (provider) => provider.provider === "openai",
+      )!
+      mockGetTranslatePrompt.mockImplementation(
+        async (_target: string, _input: string, options: TranslatePromptOptions) => ({
+          systemPrompt: `system:${options.promptExperimentVariant ?? "control"}`,
+          prompt: `prompt:${options.promptExperimentVariant ?? "control"}`,
+        }),
+      )
+      let enqueueCount = 0
+      mockSendMessage.mockImplementation(async (type: string) => {
+        if (type === "resolvePromptExperimentVariant") return "precision-rewrite"
+        enqueueCount += 1
+        return enqueueCount === 1 ? { retryWithoutPromptExperiment: true } : "translated text"
+      })
+
+      await expect(
+        translateTextCore({
+          text: "hello",
+          langConfig: DEFAULT_CONFIG.language,
+          providerConfig: llmProvider,
+          configuredPrompt: "default",
+          translationActionContext: {
+            actionId: "action-1",
+            feature: "page_translation",
+            surface: "popup",
+          },
+        }),
+      ).resolves.toBe("translated text")
+
+      expect(
+        mockSendMessage.mock.calls.filter(
+          ([type]: [string]) => type === "resolvePromptExperimentVariant",
+        ),
+      ).toHaveLength(1)
+      const enqueueCalls = mockSendMessage.mock.calls.filter(
+        ([type]: [string]) => type === "enqueueTranslateRequest",
+      )
+      expect(enqueueCalls).toHaveLength(2)
+      expect(enqueueCalls[0][1].promptExperimentVariant).toBe("precision-rewrite")
+      expect(enqueueCalls[1][1].promptExperimentVariant).toBeUndefined()
+      expect(enqueueCalls[0][1].hash).not.toBe(enqueueCalls[1][1].hash)
+    })
+
     it("should send message with correct parameters", async () => {
       mockSendMessage.mockResolvedValue("translated text")
 
@@ -220,6 +320,81 @@ describe("translate-text", () => {
         enableLLM: false,
       })
       expect(mockSendMessage).not.toHaveBeenCalled()
+    })
+
+    // #1881: the session id is captured at pipeline ENTRY, but requests race
+    // the awaits below (config, summary). If the user cancels mid-request the
+    // request must NOT be dispatched — otherwise it lands unscoped (or after
+    // the session's cancel drain) and becomes permanently uncancellable.
+    describe("session cancellation gate", () => {
+      afterEach(() => {
+        endPageTranslationSession()
+      })
+
+      it("sends with the captured sessionId while the session stays active", async () => {
+        mockSendMessage.mockResolvedValue("translated text")
+        const sessionId = beginPageTranslationSession()
+
+        await translateTextForPage("test text")
+
+        expect(mockSendMessage).toHaveBeenCalledWith(
+          "enqueueTranslateRequest",
+          expect.objectContaining({ sessionId }),
+        )
+      })
+
+      it("aborts without dispatching when the session ends mid-request", async () => {
+        mockSendMessage.mockResolvedValue("translated text")
+        beginPageTranslationSession()
+        // getLocalConfig is awaited after the session id is captured; ending the
+        // session here mimics a user cancel landing mid-request.
+        mockGetConfigFromStorage.mockImplementation(async () => {
+          endPageTranslationSession()
+          return DEFAULT_CONFIG
+        })
+
+        let caught: unknown
+        try {
+          await translateTextForPage("test text")
+        } catch (error) {
+          caught = error
+        }
+
+        expect(isTranslationCancelledError(caught)).toBe(true)
+        expect(mockSendMessage).not.toHaveBeenCalled()
+      })
+
+      it("aborts when a new session replaces the captured one mid-request", async () => {
+        mockSendMessage.mockResolvedValue("translated text")
+        beginPageTranslationSession()
+        mockGetConfigFromStorage.mockImplementation(async () => {
+          // restart(): old session ends, a new one begins.
+          endPageTranslationSession()
+          beginPageTranslationSession()
+          return DEFAULT_CONFIG
+        })
+
+        let caught: unknown
+        try {
+          await translateTextForPage("test text")
+        } catch (error) {
+          caught = error
+        }
+
+        expect(isTranslationCancelledError(caught)).toBe(true)
+        expect(mockSendMessage).not.toHaveBeenCalled()
+      })
+
+      it("does not gate input translation (no session id)", async () => {
+        mockSendMessage.mockResolvedValue("translated text")
+        beginPageTranslationSession()
+        endPageTranslationSession()
+
+        const result = await translateTextForInput("hello", "eng", "cmn")
+
+        expect(result).toBe("translated text")
+        expect(mockSendMessage).toHaveBeenCalled()
+      })
     })
   })
 

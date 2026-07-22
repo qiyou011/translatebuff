@@ -7,7 +7,7 @@ import { configFieldsAtomMap } from "@/utils/atoms/config"
 import { sendMessage } from "@/utils/message"
 import FloatingButton from ".."
 
-const toastInfoMock = vi.fn<(...args: any[]) => any>()
+const toastAddMock = vi.fn<(...args: any[]) => any>()
 
 vi.mock("#imports", () => ({
   browser: {
@@ -61,9 +61,9 @@ vi.mock("@/utils/message", () => ({
   sendMessage: vi.fn<(...args: any[]) => any>(),
 }))
 
-vi.mock("sonner", () => ({
-  toast: {
-    info: (...args: unknown[]) => toastInfoMock(...args),
+vi.mock("@/components/ui/base-ui/toast", () => ({
+  anchoredToastManager: {
+    add: (...args: unknown[]) => toastAddMock(...args),
   },
 }))
 
@@ -81,7 +81,7 @@ afterEach(() => {
   vi.useRealTimers()
   vi.restoreAllMocks()
   vi.mocked(sendMessage).mockReset()
-  toastInfoMock.mockReset()
+  toastAddMock.mockReset()
   setViewport(1024, 768)
 })
 
@@ -279,7 +279,18 @@ describe("floatingButton controls", () => {
       await Promise.resolve()
     })
 
-    const toastContent = toastInfoMock.mock.calls[0]?.[0]
+    expect(toastAddMock).toHaveBeenCalledWith({
+      id: "firefox-sidebar-user-action",
+      positionerProps: {
+        anchor: mainButton,
+        side: "left",
+        sideOffset: 8,
+      },
+      type: "info",
+      title: expect.anything(),
+    })
+
+    const toastContent = toastAddMock.mock.calls[0]?.[0]?.title
     expect(toastContent).toBeDefined()
     render(<>{toastContent}</>)
 
@@ -288,6 +299,47 @@ describe("floatingButton controls", () => {
     expect(link).toHaveAttribute("href", "sidePanel.firefoxUserActionHelpUrl")
     expect(link).toHaveAttribute("target", "_blank")
     expect(link).toHaveAttribute("rel", "noopener noreferrer")
+  })
+
+  it("places Firefox sidebar help to the right of a left-side floating button", async () => {
+    vi.useFakeTimers()
+    vi.mocked(sendMessage).mockResolvedValue({
+      ok: false,
+      reason: "requires-extension-user-action",
+    })
+    renderFloatingButton({ clickAction: "panel", side: "left" })
+
+    const mainButton = getMainButton()
+
+    fireEvent.pointerDown(mainButton, {
+      pointerId: 1,
+      pointerType: "mouse",
+      button: 0,
+      clientX: 20,
+      clientY: 500,
+    })
+    vi.advanceTimersByTime(349)
+    fireEvent.pointerUp(mainButton, {
+      pointerId: 1,
+      pointerType: "mouse",
+      button: 0,
+      clientX: 20,
+      clientY: 500,
+    })
+
+    await act(async () => {
+      await Promise.resolve()
+    })
+
+    expect(toastAddMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        positionerProps: {
+          anchor: mainButton,
+          side: "right",
+          sideOffset: 8,
+        },
+      }),
+    )
   })
 
   it("keeps translate as a normal click action", () => {

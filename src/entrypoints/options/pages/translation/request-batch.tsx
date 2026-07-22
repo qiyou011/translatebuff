@@ -2,17 +2,16 @@ import type { BatchQueueConfig } from "@/types/config/translate"
 import { Icon } from "@iconify/react"
 import { useAtom } from "jotai"
 import { Link } from "react-router"
-import { toast } from "sonner"
 import { HelpTooltip } from "@/components/help-tooltip"
 import { Field, FieldContent, FieldGroup, FieldLabel } from "@/components/ui/base-ui/field"
 import { Input } from "@/components/ui/base-ui/input"
+import { toastManager } from "@/components/ui/base-ui/toast"
 import { useBatchRequestRecords } from "@/hooks/use-batch-request-record"
 import { batchQueueConfigSchema } from "@/types/config/translate"
 import { configFieldsAtomMap } from "@/utils/atoms/config"
 import { calculateAverageSavePercentage } from "@/utils/batch-request-record"
 import { MIN_BATCH_CHARACTERS, MIN_BATCH_ITEMS } from "@/utils/constants/translate"
 import { i18n } from "@/utils/i18n"
-import { sendMessage } from "@/utils/message"
 import { ConfigCard } from "../../components/config-card"
 
 type KeyOfBatchQueueConfig = keyof BatchQueueConfig
@@ -102,6 +101,8 @@ function BatchNumberSelector({ property }: { property: KeyOfBatchQueueConfig }) 
             .partial()
             .safeParse({ [property]: newConfigValue })
           if (configParseResult.success) {
+            // Persisting is enough: the background watches the stored config
+            // and applies queue changes itself (no droppable message).
             void setTranslateConfig({
               ...translateConfig,
               batchQueueConfig: {
@@ -109,11 +110,11 @@ function BatchNumberSelector({ property }: { property: KeyOfBatchQueueConfig }) 
                 [property]: newConfigValue,
               },
             })
-            void sendMessage("setTranslateBatchQueueConfig", {
-              [property]: newConfigValue,
-            })
           } else {
-            toast.error(configParseResult.error?.issues[0].message)
+            toastManager.add({
+              type: "error",
+              title: configParseResult.error?.issues[0].message,
+            })
           }
         }}
       />

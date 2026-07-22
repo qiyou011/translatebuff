@@ -1,17 +1,20 @@
 import type { LangCodeISO6393 } from "@read-frog/definitions"
 import type { GuideDictionaryNotebaseCompletionInput } from "./guide/dictionary-notebase"
-import type { FeatureUsageContext, FeatureUsedEventProperties } from "@/types/analytics"
+import type {
+  FeatureUsageContext,
+  FeatureUsedEventProperties,
+  PromptExperimentVariant,
+  TranslationActionContext,
+  TranslationConfiguredPrompt,
+  TranslationRequestedInput,
+} from "@/types/analytics"
 import type {
   BackgroundGenerateTextPayload,
   BackgroundGenerateTextResponse,
 } from "@/types/background-generate-text"
 import type { Config } from "@/types/config/config"
 import type { ProviderConfig } from "@/types/config/provider"
-import type {
-  BatchQueueConfig,
-  RequestQueueConfig,
-  TranslationTextFormat,
-} from "@/types/config/translate"
+import type { TranslationTextFormat } from "@/types/config/translate"
 import type {
   EdgeTTSHealthStatus,
   EdgeTTSSynthesizeRequest,
@@ -82,6 +85,15 @@ interface ProtocolMap {
   readAloudSelectionFromContextMenu: (data: { selectionText: string }) => void
   // analytics
   trackFeatureUsedEvent: (data: FeatureUsedEventProperties) => void
+  trackTranslationRequestedEvent: (data: TranslationRequestedInput) => void
+  resolvePromptExperimentVariant: (data: {
+    configuredPrompt: TranslationConfiguredPrompt
+  }) => PromptExperimentVariant | null
+  exposePromptExperiment: (data: {
+    actionContext: TranslationActionContext
+    expectedVariant: PromptExperimentVariant
+  }) => boolean
+  clearPromptExperimentAction: (data: { actionId: string }) => void
   // user guide
   pinStateChanged: (data: { isPinned: boolean }) => void
   getPinState: () => boolean
@@ -100,7 +112,25 @@ interface ProtocolMap {
     webDescription?: string | null
     webContent?: string | null
     webSummary?: string | null
-  }) => Promise<string>
+    // Page-translation session this request belongs to; scopes the request
+    // for cancelPageTranslationRequests. Absent for non-page requests
+    // (input/selection translation), which are never cancellable.
+    sessionId?: string
+    promptExperimentVariant?: PromptExperimentVariant
+    translationActionContext?: TranslationActionContext
+  }) => Promise<
+    | string
+    | {
+        retryWithPromptExperimentVariant: PromptExperimentVariant
+      }
+    | {
+        retryWithoutPromptExperiment: true
+      }
+  >
+  // Drain queued/in-flight page-translation requests of one session (#1881).
+  // The background composes the scope as `${sender.tab.id}:${sessionId}`, so a
+  // tab can only ever cancel its own requests.
+  cancelPageTranslationRequests: (data: { sessionId: string }) => void
   getOrGenerateWebPageSummary: (data: {
     webTitle: string
     webContent: string
@@ -126,11 +156,6 @@ interface ProtocolMap {
   ) => Promise<BackgroundGenerateTextResponse>
   // AI subtitle segmentation
   aiSegmentSubtitles: (data: { jsonContent: string; providerId: string }) => Promise<string>
-  setTranslateRequestQueueConfig: (data: Partial<RequestQueueConfig>) => void
-  setTranslateBatchQueueConfig: (data: Partial<BatchQueueConfig>) => void
-  // Subtitle-specific queue config messages
-  setSubtitlesRequestQueueConfig: (data: Partial<RequestQueueConfig>) => void
-  setSubtitlesBatchQueueConfig: (data: Partial<BatchQueueConfig>) => void
   // microsoft batch translation
   microsoftBatchTranslate: (data: {
     texts: string[]

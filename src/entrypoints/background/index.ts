@@ -11,7 +11,11 @@ import { onMessage } from "@/utils/message"
 import { openOptionsPage } from "@/utils/navigation"
 import { SessionCacheGroupRegistry } from "@/utils/session-cache/session-cache-group-registry"
 import { runAiSegmentSubtitles } from "./ai-segmentation"
-import { setupAnalyticsMessageHandlers } from "./analytics"
+import {
+  enrollPromptExperimentInstall,
+  preloadPromptExperimentFeatureFlags,
+  setupAnalyticsMessageHandlers,
+} from "./analytics"
 import { dispatchBackgroundStreamPort } from "./background-stream"
 import { initializeActionIcons, registerActionIconListeners } from "./browser-action-icon"
 import { ensureInitializedConfig } from "./config"
@@ -47,6 +51,7 @@ export default defineBackground({
 
       // Open tutorial page when extension is installed
       if (details.reason === "install") {
+        await enrollPromptExperimentInstall()
         await browser.tabs.create({
           url: getWebsiteUrl("/guide/step-1"),
         })
@@ -100,6 +105,7 @@ export default defineBackground({
 
     newUserGuide()
     setupAnalyticsMessageHandlers()
+    void preloadPromptExperimentFeatureFlags()
     translationMessage()
     registerActionIconListeners()
 
@@ -110,8 +116,10 @@ export default defineBackground({
     // Initialize action icons asynchronously
     void initializeActionIcons()
 
-    void setUpWebPageTranslationQueue()
-    void setUpSubtitlesTranslationQueue()
+    // Synchronous: all queue message handlers register in the first turn of
+    // the SW so wake-triggering messages are never dropped during init.
+    setUpWebPageTranslationQueue()
+    setUpSubtitlesTranslationQueue()
     void setUpDatabaseCleanup()
     setUpConfigBackup()
 
