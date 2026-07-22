@@ -1,12 +1,19 @@
+import type { PromptExperimentVariant, TranslationActionContext } from "@/types/analytics"
 import type { Config } from "@/types/config/config"
 import type { LLMProviderConfig, ProviderConfig } from "@/types/config/provider"
 import type { BatchQueueConfig, RequestQueueConfig } from "@/types/config/translate"
 import type { SubtitlePromptContext, WebPagePromptContext } from "@/types/content"
 import type { PromptResolver } from "@/utils/host/translate/api/ai"
+import { browser, storage } from "#imports"
 import { isLLMProviderConfig } from "@/types/config/provider"
 import { putBatchRequestRecord } from "@/utils/batch-request-record"
-import { DEFAULT_CONFIG } from "@/utils/constants/config"
+import { CONFIG_STORAGE_KEY, DEFAULT_CONFIG } from "@/utils/constants/config"
 import { BATCH_SEPARATOR, BATCH_SEPARATOR_LINE_PATTERN } from "@/utils/constants/prompt"
+import {
+  BATCH_TIMEOUT_BASE_MS,
+  BATCH_TIMEOUT_PER_CHAR_MS,
+  MAX_BATCH_TIMEOUT_MS,
+} from "@/utils/constants/translate"
 import { generateArticleSummary } from "@/utils/content/summary"
 import { cleanText } from "@/utils/content/utils"
 import { db } from "@/utils/db/dexie/db"
@@ -24,7 +31,15 @@ import { onMessage } from "@/utils/message"
 import { getSubtitlesTranslatePrompt } from "@/utils/prompts/subtitles"
 import { getTranslatePrompt } from "@/utils/prompts/translate"
 import { BatchQueue } from "@/utils/request/batch-queue"
+import { CancelledScopeRegistry, TranslationCancelledError } from "@/utils/request/cancellation"
 import { RequestQueue } from "@/utils/request/request-queue"
+import { attachRequestErrorMeta } from "@/utils/request/retry-policy"
+import {
+  clearPromptExperimentAction,
+  clearPromptExperimentActionsByPrefix,
+  exposePromptExperiment,
+  resolvePromptExperimentVariant,
+} from "./analytics"
 import { ensureInitializedConfig } from "./config"
 
 export function parseBatchResult(result: string): string[] {
@@ -36,6 +51,14 @@ export function parseBatchResult(result: string): string[] {
 
 export function shouldUseBatchQueue(providerConfig: ProviderConfig): boolean {
   return isLLMProviderConfig(providerConfig)
+}
+
+class PromptExperimentDispatchChangedError extends Error {
+  constructor(readonly latestVariant: PromptExperimentVariant | null) {
+    super("Prompt experiment variant changed before dispatch")
+    this.name = "PromptExperimentDispatchChangedError"
+    attachRequestErrorMeta(this, { isRetryable: false })
+  }
 }
 
 async function getValidatedCachedTranslation(
@@ -96,13 +119,13 @@ async function getOrGenerateWebPageSummary(
     return cached.summary
   }
 
-  const thunk = async () => {
+  const thunk = async (signal?: AbortSignal) => {
     const cachedAgain = await db.articleSummaryCache.get(cacheKey)
     if (cachedAgain) {
       return cachedAgain.summary
     }
 
-    const summary = await generateArticleSummary(webTitle, webContent, providerConfig)
+    const summary = await generateArticleSummary(webTitle, webContent, providerConfig, { signal })
     if (!summary) {
       return ""
     }
@@ -146,13 +169,15 @@ async function getOrGenerateSubtitleSummary(
     return cached.summary
   }
 
-  const thunk = async () => {
+  const thunk = async (signal?: AbortSignal) => {
     const cachedAgain = await db.articleSummaryCache.get(cacheKey)
     if (cachedAgain) {
       return cachedAgain.summary
     }
 
-    const summary = await generateArticleSummary(videoTitle, subtitlesContext, providerConfig)
+    const summary = await generateArticleSummary(videoTitle, subtitlesContext, providerConfig, {
+      signal,
+    })
     if (!summary) {
       return ""
     }
@@ -183,18 +208,57 @@ export interface TranslateBatchData<TContext = unknown> {
   hash: string
   scheduleAt: number
   context?: TContext
+  // Cancellation scope (`${tabId}:${sessionId}`); absent = uncancellable.
+  scope?: string
+  promptExperimentVariant?: PromptExperimentVariant
+  translationActionContext?: TranslationActionContext
+  actionDedupeKey?: string
+}
+
+/**
+ * Compose the cancellation scope from the message sender and the content
+ * script's session id. Building it background-side from `sender.tab.id` makes
+ * cross-tab cancellation impossible by construction.
+ */
+export function buildTranslationScopeKey(
+  sender: { tab?: { id?: number } } | undefined,
+  sessionId: string | undefined,
+): string | undefined {
+  const tabId = sender?.tab?.id
+  return typeof tabId === "number" && sessionId ? `${tabId}:${sessionId}` : undefined
 }
 
 interface TranslationQueueSetupConfig<TContext = unknown> {
   requestQueueConfig: RequestQueueConfig
   batchQueueConfig: BatchQueueConfig
   promptResolver: PromptResolver<TContext>
+  // Present only for queues whose requests carry cancellation scopes.
+  isScopeCancelled?: (scopeKey: string) => boolean
+  queueName: "webpage" | "subtitles"
+  // "default" means the user's stored config could not be loaded — the queue
+  // is running on DEFAULT_CONFIG values (rate 8 / capacity 60), NOT what the
+  // options page shows. Logged loudly so support reports are diagnosable.
+  configSource: "user" | "default"
+  beforeDispatch?: (dataList: TranslateBatchData<TContext>[]) => Promise<void>
 }
 
 async function createTranslationQueues<TContext>(config: TranslationQueueSetupConfig<TContext>) {
   const { rate, capacity } = config.requestQueueConfig
   const { maxCharactersPerBatch, maxItemsPerBatch } = config.batchQueueConfig
-  const { promptResolver } = config
+  const { promptResolver, isScopeCancelled, queueName, configSource, beforeDispatch } = config
+
+  logger.info(`[translation-queues] ${queueName} queue init`, {
+    rate,
+    capacity,
+    maxCharactersPerBatch,
+    maxItemsPerBatch,
+    configSource,
+  })
+  if (configSource === "default") {
+    logger.error(
+      `[translation-queues] ${queueName} queue running on DEFAULT config (rate ${rate}, capacity ${capacity}) — user config unavailable at init`,
+    )
+  }
 
   const requestQueue = new RequestQueue({
     rate,
@@ -210,6 +274,10 @@ async function createTranslationQueues<TContext>(config: TranslationQueueSetupCo
     batchDelay: 100,
     maxRetries: 3,
     enableFallbackToIndividual: true,
+    // Narrow port, not the whole queue: while the rate limiter has no free
+    // slot, pending batches keep filling to maxItems/maxChars instead of
+    // flushing tiny every batchDelay (they'd only freeze in the queue).
+    dispatchGate: { nextDispatchEtaMs: () => requestQueue.nextDispatchEtaMs() },
     getBatchKey: (data) => {
       return Sha256Hex(
         `${data.langConfig.sourceCode}-${data.langConfig.targetCode}-${data.providerConfig.id}`,
@@ -218,28 +286,37 @@ async function createTranslationQueues<TContext>(config: TranslationQueueSetupCo
     },
     getCharacters: (data) => data.text.length,
     getDedupKey: (data) => data.hash,
-    executeBatch: async (dataList) => {
+    getScope: (data) => data.scope,
+    isScopeCancelled,
+    executeBatch: async (dataList, meta) => {
       const { providerConfig } = dataList[0]
       const hash = Sha256Hex(...dataList.map((d) => d.hash))
       const earliestScheduleAt = Math.min(...dataList.map((d) => d.scheduleAt))
+      const totalCharacters = dataList.reduce((sum, d) => sum + d.text.length, 0)
+      const timeoutMs = Math.min(
+        BATCH_TIMEOUT_BASE_MS + totalCharacters * BATCH_TIMEOUT_PER_CHAR_MS,
+        MAX_BATCH_TIMEOUT_MS,
+      )
 
       const batchThunk = async (signal?: AbortSignal): Promise<string[]> => {
         await putBatchRequestRecord({ originalRequestCount: dataList.length, providerConfig })
+        await beforeDispatch?.(dataList)
         return await executeBatchTranslation(dataList, promptResolver, signal)
       }
 
-      return requestQueue.enqueue(batchThunk, earliestScheduleAt, hash)
+      return requestQueue.enqueue(batchThunk, earliestScheduleAt, hash, meta.scopes, { timeoutMs })
     },
     executeIndividual: async (data) => {
-      const { text, langConfig, providerConfig, hash, scheduleAt, context } = data
+      const { text, langConfig, providerConfig, hash, scheduleAt, context, scope } = data
       const thunk = async (signal?: AbortSignal) => {
         await putBatchRequestRecord({ originalRequestCount: 1, providerConfig })
+        await beforeDispatch?.([data])
         return executeTranslate(text, langConfig, providerConfig, promptResolver, {
           context,
           signal,
         })
       }
-      return requestQueue.enqueue(thunk, scheduleAt, hash)
+      return requestQueue.enqueue(thunk, scheduleAt, hash, scope ? [scope] : undefined)
     },
     onError: (error, context) => {
       const errorType = context.isFallback ? "Individual request" : "Batch request"
@@ -253,20 +330,137 @@ async function createTranslationQueues<TContext>(config: TranslationQueueSetupCo
   return { requestQueue, batchQueue }
 }
 
-export async function setUpWebPageTranslationQueue() {
-  const config = await ensureInitializedConfig()
+/**
+ * Load the persisted config and build the queues. Never rejects: a broken
+ * storage layer degrades to DEFAULT_CONFIG (loudly logged) instead of leaving
+ * every translation message rejected.
+ */
+async function loadQueueSetupConfig(
+  queueName: "webpage" | "subtitles",
+  selectConfig: (config: Config) => {
+    requestQueueConfig: RequestQueueConfig
+    batchQueueConfig: BatchQueueConfig
+  },
+): Promise<{
+  requestQueueConfig: RequestQueueConfig
+  batchQueueConfig: BatchQueueConfig
+  configSource: "user" | "default"
+}> {
+  let config: Config | null = null
+  try {
+    config = await ensureInitializedConfig()
+  } catch (error) {
+    logger.error(`[translation-queues] failed to load config for ${queueName} queue`, error)
+  }
+  return {
+    ...selectConfig(config ?? DEFAULT_CONFIG),
+    configSource: config ? "user" : "default",
+  }
+}
 
-  const {
-    translate: { requestQueueConfig, batchQueueConfig },
-  } = config ?? DEFAULT_CONFIG
-
-  const { requestQueue, batchQueue } = await createTranslationQueues({
-    requestQueueConfig,
-    batchQueueConfig,
-    promptResolver: getTranslatePrompt,
+/**
+ * Re-apply queue config from storage on every persisted change. This replaces
+ * the per-field set*QueueConfig messages: those could be dropped while the SW
+ * was cold-starting (handlers used to register only after awaits), silently
+ * leaving the live queue on stale values.
+ */
+function watchQueueConfig(
+  queueName: "webpage" | "subtitles",
+  queuesPromise: Promise<{
+    requestQueue: RequestQueue
+    batchQueue: { setBatchConfig: (config: Partial<BatchQueueConfig>) => void }
+  }>,
+  selectConfig: (config: Config) => {
+    requestQueueConfig: RequestQueueConfig
+    batchQueueConfig: BatchQueueConfig
+  },
+) {
+  let lastAppliedJson: string | null = null
+  storage.watch<Config>(`local:${CONFIG_STORAGE_KEY}`, (newConfig) => {
+    if (!newConfig) return
+    void queuesPromise.then(({ requestQueue, batchQueue }) => {
+      try {
+        const selected = selectConfig(newConfig)
+        const json = JSON.stringify(selected)
+        if (json === lastAppliedJson) return
+        requestQueue.setQueueOptions(selected.requestQueueConfig)
+        batchQueue.setBatchConfig(selected.batchQueueConfig)
+        lastAppliedJson = json
+        logger.info(`[translation-queues] ${queueName} queue config updated`, selected)
+      } catch (error) {
+        logger.error(`[translation-queues] failed to apply ${queueName} queue config change`, error)
+      }
+    })
   })
+}
+
+const selectWebPageQueueConfig = (config: Config) => ({
+  requestQueueConfig: config.translate.requestQueueConfig,
+  batchQueueConfig: config.translate.batchQueueConfig,
+})
+
+export function setUpWebPageTranslationQueue(): void {
+  // Scopes whose cancel already drained the queues. Consulted by (a) the
+  // enqueue handler after its cache-lookup await and (b) the batch queue's
+  // retry/fallback path after its backoff sleep — both are windows where a
+  // request lives in NO cancellable structure, so a cancel arriving there
+  // would otherwise be lost (#1881).
+  const cancelledScopes = new CancelledScopeRegistry()
+
+  type WebTranslationPromptContext = WebPagePromptContext & {
+    promptExperimentVariant?: PromptExperimentVariant
+  }
+
+  const webPromptResolver: PromptResolver<WebTranslationPromptContext> = (
+    targetLang,
+    input,
+    options,
+  ) =>
+    getTranslatePrompt(targetLang, input, {
+      ...options,
+      promptExperimentVariant: options?.context?.promptExperimentVariant,
+    })
+
+  const queuesPromise = loadQueueSetupConfig("webpage", selectWebPageQueueConfig).then(
+    ({ requestQueueConfig, batchQueueConfig, configSource }) =>
+      createTranslationQueues<WebTranslationPromptContext>({
+        requestQueueConfig,
+        batchQueueConfig,
+        promptResolver: webPromptResolver,
+        isScopeCancelled: (scopeKey) => cancelledScopes.has(scopeKey),
+        queueName: "webpage",
+        configSource,
+        beforeDispatch: async (dataList) => {
+          const uniqueActions = new Map<
+            string,
+            { actionContext: TranslationActionContext; variant: PromptExperimentVariant }
+          >()
+          for (const data of dataList) {
+            if (!data.promptExperimentVariant || !data.translationActionContext) continue
+            const dedupeKey = data.actionDedupeKey ?? data.translationActionContext.actionId
+            uniqueActions.set(dedupeKey, {
+              actionContext: data.translationActionContext,
+              variant: data.promptExperimentVariant,
+            })
+          }
+
+          for (const [dedupeKey, { actionContext, variant }] of uniqueActions) {
+            const exposed = await exposePromptExperiment(actionContext, variant, dedupeKey)
+            if (!exposed) {
+              const latestVariant = await resolvePromptExperimentVariant("default")
+              throw new PromptExperimentDispatchChangedError(latestVariant)
+            }
+          }
+        },
+      }),
+  )
+
+  // Everything below registers in the FIRST synchronous turn of the SW: an
+  // MV3 wake-triggering message can no longer be dropped while init awaits.
+  watchQueueConfig("webpage", queuesPromise, selectWebPageQueueConfig)
 
   onMessage("enqueueTranslateRequest", async (message) => {
+    const { requestQueue, batchQueue } = await queuesPromise
     const {
       data: {
         text,
@@ -279,8 +473,12 @@ export async function setUpWebPageTranslationQueue() {
         webDescription,
         webContent,
         webSummary,
+        sessionId,
+        promptExperimentVariant,
+        translationActionContext,
       },
     } = message
+    const scope = buildTranslationScopeKey(message.sender, sessionId)
 
     const validateHtmlAttributeMarkers =
       textFormat === "html" && hasHtmlAttributeMarkerProtocol(text)
@@ -298,17 +496,66 @@ export async function setUpWebPageTranslationQueue() {
       if (cachedTranslation !== undefined) return cachedTranslation
     }
 
+    // The cache lookup above yielded — the session's cancel may have drained
+    // the queues while this handler was suspended. Enqueueing now would park
+    // an undraininable task on a dead scope, so abort instead (the content
+    // side swallows this error).
+    if (scope && cancelledScopes.has(scope)) {
+      throw new TranslationCancelledError(scope)
+    }
+
+    let effectivePromptExperimentVariant = promptExperimentVariant
+    let cacheUnderRequestedHash = true
+    if (promptExperimentVariant) {
+      const latestVariant = await resolvePromptExperimentVariant("default")
+      if (latestVariant && latestVariant !== promptExperimentVariant) {
+        return { retryWithPromptExperimentVariant: latestVariant }
+      }
+      if (!latestVariant) {
+        effectivePromptExperimentVariant = undefined
+        cacheUnderRequestedHash = false
+      }
+    }
+
     let result: string
-    const context: WebPagePromptContext = {
+    const context: WebTranslationPromptContext = {
       webTitle: normalizePromptContextValue(webTitle),
       webDescription: normalizePromptContextValue(webDescription),
       webContent: normalizePromptContextValue(webContent),
       webSummary: normalizePromptContextValue(webSummary),
+      promptExperimentVariant: effectivePromptExperimentVariant,
     }
 
     if (shouldUseBatchQueue(providerConfig)) {
-      const data = { text, langConfig, providerConfig, hash, scheduleAt, context }
-      result = await batchQueue.enqueue(data)
+      const data = {
+        text,
+        langConfig,
+        providerConfig,
+        hash,
+        scheduleAt,
+        context,
+        scope,
+        promptExperimentVariant: effectivePromptExperimentVariant,
+        translationActionContext,
+        actionDedupeKey:
+          translationActionContext?.feature === "page_translation"
+            ? (scope ?? translationActionContext.actionId)
+            : translationActionContext?.actionId,
+      }
+      try {
+        result = await batchQueue.enqueue(data)
+      } catch (error) {
+        if (error instanceof PromptExperimentDispatchChangedError) {
+          if (error.latestVariant) {
+            return { retryWithPromptExperimentVariant: error.latestVariant }
+          }
+          const retryResponse: { retryWithoutPromptExperiment: true } = {
+            retryWithoutPromptExperiment: true,
+          }
+          return retryResponse
+        }
+        throw error
+      }
     } else {
       // Create thunk based on type and params
       const thunk = (signal?: AbortSignal) =>
@@ -316,7 +563,7 @@ export async function setUpWebPageTranslationQueue() {
           textFormat,
           signal,
         })
-      result = await requestQueue.enqueue(thunk, scheduleAt, hash)
+      result = await requestQueue.enqueue(thunk, scheduleAt, hash, scope ? [scope] : undefined)
     }
 
     if (validateHtmlAttributeMarkers) {
@@ -324,7 +571,7 @@ export async function setUpWebPageTranslationQueue() {
     }
 
     // Cache the translation result if successful
-    if (result && hash) {
+    if (result && hash && cacheUnderRequestedHash) {
       await db.translationCache.put({
         key: hash,
         translation: result,
@@ -336,6 +583,7 @@ export async function setUpWebPageTranslationQueue() {
   })
 
   onMessage("getOrGenerateWebPageSummary", async (message) => {
+    const { requestQueue } = await queuesPromise
     const { webTitle, webContent, providerConfig } = message.data
 
     if (!isLLMProviderConfig(providerConfig) || !webTitle || !webContent) {
@@ -345,33 +593,62 @@ export async function setUpWebPageTranslationQueue() {
     return await getOrGenerateWebPageSummary(webTitle, webContent, providerConfig, requestQueue)
   })
 
-  onMessage("setTranslateRequestQueueConfig", (message) => {
-    const { data } = message
-    requestQueue.setQueueOptions(data)
+  onMessage("cancelPageTranslationRequests", async (message) => {
+    const scope = buildTranslationScopeKey(message.sender, message.data.sessionId)
+    if (!scope) return
+    // Remember the scope BEFORE any await so enqueue handlers suspended on
+    // the cache lookup refuse to enqueue after this drain.
+    cancelledScopes.markScope(scope)
+    clearPromptExperimentAction(scope)
+    const { requestQueue, batchQueue } = await queuesPromise
+    // Batch queue first so pending batches cannot flush new request-queue
+    // tasks between the two drains.
+    const cancelledBatch = batchQueue.cancelByScope(scope)
+    const cancelledRequests = requestQueue.cancelByScope(scope)
+    if (cancelledBatch + cancelledRequests > 0) {
+      logger.info(
+        `Cancelled ${cancelledBatch + cancelledRequests} page-translation requests (scope: ${scope})`,
+      )
+    }
   })
 
-  onMessage("setTranslateBatchQueueConfig", (message) => {
-    const { data } = message
-    batchQueue.setBatchConfig(data)
+  // A closed tab can never send its cancel message — sweep every scope the
+  // tab ever registered (#1881).
+  browser.tabs.onRemoved.addListener((tabId) => {
+    const prefix = `${tabId}:`
+    cancelledScopes.markPrefix(prefix)
+    clearPromptExperimentActionsByPrefix(prefix)
+    void queuesPromise.then(({ requestQueue, batchQueue }) => {
+      batchQueue.cancelWhere((scope) => scope.startsWith(prefix))
+      requestQueue.cancelWhere((scope) => scope.startsWith(prefix))
+    })
   })
 }
+
+const selectSubtitlesQueueConfig = (config: Config) => ({
+  requestQueueConfig: config.videoSubtitles.requestQueueConfig,
+  batchQueueConfig: config.videoSubtitles.batchQueueConfig,
+})
 
 /**
  * Set up subtitles translation queue and message handlers
  */
-export async function setUpSubtitlesTranslationQueue() {
-  const config = await ensureInitializedConfig()
-  const {
-    videoSubtitles: { requestQueueConfig, batchQueueConfig },
-  } = config ?? DEFAULT_CONFIG
+export function setUpSubtitlesTranslationQueue(): void {
+  const queuesPromise = loadQueueSetupConfig("subtitles", selectSubtitlesQueueConfig).then(
+    ({ requestQueueConfig, batchQueueConfig, configSource }) =>
+      createTranslationQueues({
+        requestQueueConfig,
+        batchQueueConfig,
+        promptResolver: getSubtitlesTranslatePrompt,
+        queueName: "subtitles",
+        configSource,
+      }),
+  )
 
-  const { requestQueue, batchQueue } = await createTranslationQueues({
-    requestQueueConfig,
-    batchQueueConfig,
-    promptResolver: getSubtitlesTranslatePrompt,
-  })
+  watchQueueConfig("subtitles", queuesPromise, selectSubtitlesQueueConfig)
 
   onMessage("enqueueSubtitlesTranslateRequest", async (message) => {
+    const { requestQueue, batchQueue } = await queuesPromise
     const {
       data: {
         text,
@@ -420,6 +697,7 @@ export async function setUpSubtitlesTranslationQueue() {
   })
 
   onMessage("getSubtitlesSummary", async (message) => {
+    const { requestQueue } = await queuesPromise
     const { videoTitle, subtitlesContext, providerConfig } = message.data
 
     if (!isLLMProviderConfig(providerConfig) || !videoTitle || !subtitlesContext) {
@@ -435,19 +713,10 @@ export async function setUpSubtitlesTranslationQueue() {
   })
 
   onMessage("microsoftBatchTranslate", async (message) => {
+    const { requestQueue } = await queuesPromise
     const { texts, fromLang, toLang } = message.data
     const hash = Sha256Hex("ms-batch", fromLang, toLang, ...texts)
     const thunk = (signal?: AbortSignal) => microsoftTranslate(texts, fromLang, toLang, { signal })
     return requestQueue.enqueue(thunk, Date.now(), hash)
-  })
-
-  onMessage("setSubtitlesRequestQueueConfig", (message) => {
-    const { data } = message
-    requestQueue.setQueueOptions(data)
-  })
-
-  onMessage("setSubtitlesBatchQueueConfig", (message) => {
-    const { data } = message
-    batchQueue.setBatchConfig(data)
   })
 }

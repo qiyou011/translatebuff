@@ -3,6 +3,8 @@ import { beforeEach, describe, expect, it, vi } from "vitest"
 import { DEFAULT_CONFIG } from "@/utils/constants/config"
 import { NO_TRANSLATION_SENTINEL } from "@/utils/constants/prompt"
 
+type BackgroundAnalyticsModule = typeof import("../analytics")
+
 const onMessageMock = vi.fn<(...args: any[]) => any>()
 const ensureInitializedConfigMock = vi.fn<(...args: any[]) => any>()
 const executeTranslateMock = vi.fn<(...args: any[]) => any>()
@@ -13,6 +15,13 @@ const articleSummaryCachePutMock = vi.fn<(...args: any[]) => any>()
 const translationCacheGetMock = vi.fn<(...args: any[]) => any>()
 const translationCachePutMock = vi.fn<(...args: any[]) => any>()
 const translationCacheDeleteMock = vi.fn<(...args: any[]) => any>()
+const resolvePromptExperimentVariantMock =
+  vi.fn<BackgroundAnalyticsModule["resolvePromptExperimentVariant"]>()
+const exposePromptExperimentMock = vi.fn<BackgroundAnalyticsModule["exposePromptExperiment"]>()
+const clearPromptExperimentActionMock =
+  vi.fn<BackgroundAnalyticsModule["clearPromptExperimentAction"]>()
+const clearPromptExperimentActionsByPrefixMock =
+  vi.fn<BackgroundAnalyticsModule["clearPromptExperimentActionsByPrefix"]>()
 
 vi.mock("@/utils/message", () => ({
   onMessage: onMessageMock,
@@ -48,12 +57,27 @@ vi.mock("@/utils/db/dexie/db", () => ({
   },
 }))
 
+vi.mock("../analytics", () => ({
+  clearPromptExperimentAction: clearPromptExperimentActionMock,
+  clearPromptExperimentActionsByPrefix: clearPromptExperimentActionsByPrefixMock,
+  exposePromptExperiment: exposePromptExperimentMock,
+  resolvePromptExperimentVariant: resolvePromptExperimentVariantMock,
+}))
+
 function getRegisteredMessageHandler(name: string) {
   const registration = onMessageMock.mock.calls.find((call) => call[0] === name)
   if (!registration) {
     throw new Error(`Message handler not registered: ${name}`)
   }
-  return registration[1] as (message: { data: Record<string, unknown> }) => Promise<unknown>
+  const handler: unknown = registration[1]
+  if (typeof handler !== "function") {
+    throw new Error(`Registered message handler is not callable: ${name}`)
+  }
+
+  return async (message: {
+    data: Record<string, unknown>
+    sender?: { tab?: { id?: number } }
+  }): Promise<unknown> => await handler(message)
 }
 
 const llmProvider: ProviderConfig = {
@@ -112,6 +136,8 @@ describe("translation queue helpers", () => {
     translationCacheGetMock.mockResolvedValue(undefined)
     translationCachePutMock.mockResolvedValue(undefined)
     translationCacheDeleteMock.mockResolvedValue(undefined)
+    resolvePromptExperimentVariantMock.mockResolvedValue("precision-rewrite")
+    exposePromptExperimentMock.mockResolvedValue(true)
   })
 
   it("routes only llm providers through the batch queue", async () => {
@@ -155,7 +181,7 @@ describe("translation queue helpers", () => {
     )
 
     const { setUpWebPageTranslationQueue } = await import("../translation-queues")
-    await setUpWebPageTranslationQueue()
+    setUpWebPageTranslationQueue()
     const handler = getRegisteredMessageHandler("enqueueTranslateRequest")
 
     const results = await Promise.all([
@@ -199,7 +225,7 @@ describe("translation queue helpers", () => {
     executeTranslateMock.mockResolvedValue("translated")
 
     const { setUpWebPageTranslationQueue } = await import("../translation-queues")
-    await setUpWebPageTranslationQueue()
+    setUpWebPageTranslationQueue()
     const handler = getRegisteredMessageHandler("enqueueTranslateRequest")
 
     const makeRequest = () =>
@@ -222,9 +248,187 @@ describe("translation queue helpers", () => {
     expect(executeTranslateMock.mock.calls[0][0]).toBe("hello")
   })
 
+  it("does not expose an experiment prompt when the variant-specific cache hits", async () => {
+    translationCacheGetMock.mockResolvedValueOnce({
+      key: "variant-cache-hit",
+      translation: "cached treatment translation",
+    })
+    const { setUpWebPageTranslationQueue } = await import("../translation-queues")
+    setUpWebPageTranslationQueue()
+    const handler = getRegisteredMessageHandler("enqueueTranslateRequest")
+
+    await expect(
+      handler({
+        data: {
+          text: "hello",
+          langConfig: DEFAULT_CONFIG.language,
+          providerConfig: llmProvider,
+          scheduleAt: Date.now(),
+          hash: "variant-cache-hit",
+          promptExperimentVariant: "precision-rewrite",
+          translationActionContext: {
+            actionId: "page-action",
+            feature: "page_translation",
+            surface: "popup",
+          },
+          sessionId: "page-action",
+        },
+        sender: { tab: { id: 42 } },
+      }),
+    ).resolves.toBe("cached treatment translation")
+
+    expect(resolvePromptExperimentVariantMock).not.toHaveBeenCalled()
+    expect(exposePromptExperimentMock).not.toHaveBeenCalled()
+    expect(executeTranslateMock).not.toHaveBeenCalled()
+  })
+
+  it("revalidates silently after a miss and exposes each unique action immediately before dispatch", async () => {
+    ensureInitializedConfigMock.mockResolvedValue({
+      ...DEFAULT_CONFIG,
+      translate: {
+        ...DEFAULT_CONFIG.translate,
+        providerId: llmProvider.id,
+        batchQueueConfig: {
+          maxCharactersPerBatch: 1000,
+          maxItemsPerBatch: 10,
+        },
+      },
+    })
+    executeTranslateMock.mockResolvedValueOnce("one\n\n%%\n\ntwo")
+    const { setUpWebPageTranslationQueue } = await import("../translation-queues")
+    setUpWebPageTranslationQueue()
+    const handler = getRegisteredMessageHandler("enqueueTranslateRequest")
+
+    const makeRequest = (hash: string, actionId: string) =>
+      handler({
+        data: {
+          text: hash,
+          langConfig: DEFAULT_CONFIG.language,
+          providerConfig: llmProvider,
+          scheduleAt: Date.now(),
+          hash,
+          promptExperimentVariant: "precision-rewrite",
+          translationActionContext: {
+            actionId,
+            feature: "hover_translation",
+            surface: "shortcut",
+          },
+        },
+      })
+
+    await expect(
+      Promise.all([makeRequest("first", "hover-1"), makeRequest("second", "hover-2")]),
+    ).resolves.toEqual(["one", "two"])
+
+    expect(resolvePromptExperimentVariantMock).toHaveBeenCalledTimes(2)
+    expect(exposePromptExperimentMock).toHaveBeenCalledTimes(2)
+    expect(exposePromptExperimentMock).toHaveBeenNthCalledWith(
+      1,
+      expect.objectContaining({ actionId: "hover-1" }),
+      "precision-rewrite",
+      "hover-1",
+    )
+    expect(executeTranslateMock).toHaveBeenCalledTimes(1)
+    expect(exposePromptExperimentMock.mock.invocationCallOrder[1]).toBeLessThan(
+      executeTranslateMock.mock.invocationCallOrder[0],
+    )
+  })
+
+  it("asks the content side to rebuild its hash when the post-cache variant changed", async () => {
+    resolvePromptExperimentVariantMock.mockResolvedValueOnce("rewrite-after-understanding")
+    const { setUpWebPageTranslationQueue } = await import("../translation-queues")
+    setUpWebPageTranslationQueue()
+    const handler = getRegisteredMessageHandler("enqueueTranslateRequest")
+
+    await expect(
+      handler({
+        data: {
+          text: "hello",
+          langConfig: DEFAULT_CONFIG.language,
+          providerConfig: llmProvider,
+          scheduleAt: Date.now(),
+          hash: "old-variant-hash",
+          promptExperimentVariant: "precision-rewrite",
+          translationActionContext: {
+            actionId: "action-1",
+            feature: "page_translation",
+            surface: "popup",
+          },
+        },
+      }),
+    ).resolves.toEqual({
+      retryWithPromptExperimentVariant: "rewrite-after-understanding",
+    })
+    expect(exposePromptExperimentMock).not.toHaveBeenCalled()
+    expect(executeTranslateMock).not.toHaveBeenCalled()
+    expect(translationCachePutMock).not.toHaveBeenCalled()
+  })
+
+  it("aborts dispatch and retries with the latest variant when exposure revalidation changes", async () => {
+    resolvePromptExperimentVariantMock
+      .mockResolvedValueOnce("precision-rewrite")
+      .mockResolvedValueOnce("rewrite-after-understanding")
+    exposePromptExperimentMock.mockResolvedValueOnce(false)
+    const { setUpWebPageTranslationQueue } = await import("../translation-queues")
+    setUpWebPageTranslationQueue()
+    const handler = getRegisteredMessageHandler("enqueueTranslateRequest")
+
+    await expect(
+      handler({
+        data: {
+          text: "hello",
+          langConfig: DEFAULT_CONFIG.language,
+          providerConfig: llmProvider,
+          scheduleAt: Date.now(),
+          hash: "dispatch-race-hash",
+          promptExperimentVariant: "precision-rewrite",
+          translationActionContext: {
+            actionId: "action-1",
+            feature: "page_translation",
+            surface: "popup",
+          },
+        },
+      }),
+    ).resolves.toEqual({
+      retryWithPromptExperimentVariant: "rewrite-after-understanding",
+    })
+    expect(executeTranslateMock).not.toHaveBeenCalled()
+    expect(translationCachePutMock).not.toHaveBeenCalled()
+  })
+
+  it("aborts dispatch and retries without the experiment when the flag becomes unavailable", async () => {
+    resolvePromptExperimentVariantMock
+      .mockResolvedValueOnce("precision-rewrite")
+      .mockResolvedValueOnce(null)
+    exposePromptExperimentMock.mockResolvedValueOnce(false)
+    const { setUpWebPageTranslationQueue } = await import("../translation-queues")
+    setUpWebPageTranslationQueue()
+    const handler = getRegisteredMessageHandler("enqueueTranslateRequest")
+
+    await expect(
+      handler({
+        data: {
+          text: "hello",
+          langConfig: DEFAULT_CONFIG.language,
+          providerConfig: llmProvider,
+          scheduleAt: Date.now(),
+          hash: "dispatch-unavailable-hash",
+          promptExperimentVariant: "precision-rewrite",
+          translationActionContext: {
+            actionId: "action-1",
+            feature: "page_translation",
+            surface: "popup",
+          },
+        },
+      }),
+    ).resolves.toEqual({ retryWithoutPromptExperiment: true })
+    expect(executeTranslateMock).not.toHaveBeenCalled()
+    expect(translationCachePutMock).not.toHaveBeenCalled()
+  })
+
   it("passes subtitle summary through the translation queue without generating a new summary", async () => {
     const { setUpSubtitlesTranslationQueue } = await import("../translation-queues")
-    await setUpSubtitlesTranslationQueue()
+    setUpSubtitlesTranslationQueue()
 
     const handler = getRegisteredMessageHandler("enqueueSubtitlesTranslateRequest")
     const result = await handler({
@@ -280,7 +484,7 @@ describe("translation queue helpers", () => {
     })
 
     const { setUpSubtitlesTranslationQueue } = await import("../translation-queues")
-    await setUpSubtitlesTranslationQueue()
+    setUpSubtitlesTranslationQueue()
 
     const handler = getRegisteredMessageHandler("enqueueSubtitlesTranslateRequest")
     const requests = [
@@ -345,7 +549,7 @@ describe("translation queue helpers", () => {
 
   it("passes webpage context through the translation queue without generating a new summary", async () => {
     const { setUpWebPageTranslationQueue } = await import("../translation-queues")
-    await setUpWebPageTranslationQueue()
+    setUpWebPageTranslationQueue()
 
     const handler = getRegisteredMessageHandler("enqueueTranslateRequest")
     const result = await handler({
@@ -391,7 +595,7 @@ describe("translation queue helpers", () => {
     })
 
     const { setUpWebPageTranslationQueue } = await import("../translation-queues")
-    await setUpWebPageTranslationQueue()
+    setUpWebPageTranslationQueue()
 
     const handler = getRegisteredMessageHandler("enqueueTranslateRequest")
     const result = await handler({
@@ -413,7 +617,7 @@ describe("translation queue helpers", () => {
     executeTranslateMock.mockResolvedValue("write &amp; for ampersand — It's fine")
 
     const { setUpWebPageTranslationQueue } = await import("../translation-queues")
-    await setUpWebPageTranslationQueue()
+    setUpWebPageTranslationQueue()
 
     const handler = getRegisteredMessageHandler("enqueueTranslateRequest")
     const result = await handler({
@@ -442,7 +646,7 @@ describe("translation queue helpers", () => {
     })
 
     const { setUpWebPageTranslationQueue } = await import("../translation-queues")
-    await setUpWebPageTranslationQueue()
+    setUpWebPageTranslationQueue()
 
     const handler = getRegisteredMessageHandler("enqueueTranslateRequest")
     const result = await handler({
@@ -469,7 +673,7 @@ describe("translation queue helpers", () => {
     executeTranslateMock.mockResolvedValueOnce(`<span data-rf-attr="0">Bonjour</span>`)
 
     const { setUpWebPageTranslationQueue } = await import("../translation-queues")
-    await setUpWebPageTranslationQueue()
+    setUpWebPageTranslationQueue()
 
     const handler = getRegisteredMessageHandler("enqueueTranslateRequest")
     const result = await handler({
@@ -504,7 +708,7 @@ describe("translation queue helpers", () => {
     )
 
     const { setUpWebPageTranslationQueue } = await import("../translation-queues")
-    await setUpWebPageTranslationQueue()
+    setUpWebPageTranslationQueue()
 
     const handler = getRegisteredMessageHandler("enqueueTranslateRequest")
     const result = await handler({
@@ -532,7 +736,7 @@ describe("translation queue helpers", () => {
     executeTranslateMock.mockResolvedValueOnce(`<div data-rf-attr="0">Bonjour</div>`)
 
     const { setUpWebPageTranslationQueue } = await import("../translation-queues")
-    await setUpWebPageTranslationQueue()
+    setUpWebPageTranslationQueue()
 
     const handler = getRegisteredMessageHandler("enqueueTranslateRequest")
     const request = handler({
@@ -557,7 +761,7 @@ describe("translation queue helpers", () => {
     executeTranslateMock.mockResolvedValueOnce("")
 
     const { setUpWebPageTranslationQueue } = await import("../translation-queues")
-    await setUpWebPageTranslationQueue()
+    setUpWebPageTranslationQueue()
 
     const handler = getRegisteredMessageHandler("enqueueTranslateRequest")
     const request = handler({
@@ -580,7 +784,7 @@ describe("translation queue helpers", () => {
 
   it("rejects duplicate input marker IDs before reading the cache or translating", async () => {
     const { setUpWebPageTranslationQueue } = await import("../translation-queues")
-    await setUpWebPageTranslationQueue()
+    setUpWebPageTranslationQueue()
 
     const handler = getRegisteredMessageHandler("enqueueTranslateRequest")
     const request = handler({
@@ -608,7 +812,7 @@ describe("translation queue helpers", () => {
     executeTranslateMock.mockResolvedValueOnce("translated plain text")
 
     const { setUpWebPageTranslationQueue } = await import("../translation-queues")
-    await setUpWebPageTranslationQueue()
+    setUpWebPageTranslationQueue()
 
     const handler = getRegisteredMessageHandler("enqueueTranslateRequest")
     const result = await handler({
@@ -635,7 +839,7 @@ describe("translation queue helpers", () => {
     executeTranslateMock.mockResolvedValue(NO_TRANSLATION_SENTINEL)
 
     const { setUpWebPageTranslationQueue } = await import("../translation-queues")
-    await setUpWebPageTranslationQueue()
+    setUpWebPageTranslationQueue()
 
     const handler = getRegisteredMessageHandler("enqueueTranslateRequest")
     const result = await handler({
@@ -661,7 +865,7 @@ describe("translation queue helpers", () => {
 
   it("forwards the textFormat to executeTranslate for non-batch providers", async () => {
     const { setUpWebPageTranslationQueue } = await import("../translation-queues")
-    await setUpWebPageTranslationQueue()
+    setUpWebPageTranslationQueue()
 
     const handler = getRegisteredMessageHandler("enqueueTranslateRequest")
     await handler({
@@ -691,7 +895,7 @@ describe("translation queue helpers", () => {
     })
 
     const { setUpSubtitlesTranslationQueue } = await import("../translation-queues")
-    await setUpSubtitlesTranslationQueue()
+    setUpSubtitlesTranslationQueue()
 
     const handler = getRegisteredMessageHandler("enqueueSubtitlesTranslateRequest")
     const result = await handler({
@@ -713,7 +917,7 @@ describe("translation queue helpers", () => {
     executeTranslateMock.mockResolvedValue("write &amp; for ampersand — It's a subtitle")
 
     const { setUpSubtitlesTranslationQueue } = await import("../translation-queues")
-    await setUpSubtitlesTranslationQueue()
+    setUpSubtitlesTranslationQueue()
 
     const handler = getRegisteredMessageHandler("enqueueSubtitlesTranslateRequest")
     const result = await handler({
@@ -742,7 +946,7 @@ describe("translation queue helpers", () => {
     })
 
     const { setUpWebPageTranslationQueue } = await import("../translation-queues")
-    await setUpWebPageTranslationQueue()
+    setUpWebPageTranslationQueue()
 
     const handler = getRegisteredMessageHandler("enqueueTranslateRequest")
     const result = await handler({
@@ -762,7 +966,7 @@ describe("translation queue helpers", () => {
 
   it("exposes webpage summary generation as a separate background handler", async () => {
     const { setUpWebPageTranslationQueue } = await import("../translation-queues")
-    await setUpWebPageTranslationQueue()
+    setUpWebPageTranslationQueue()
 
     const handler = getRegisteredMessageHandler("getOrGenerateWebPageSummary")
     const result = await handler({
@@ -774,12 +978,19 @@ describe("translation queue helpers", () => {
     })
 
     expect(result).toBe("Generated summary")
-    expect(generateArticleSummaryMock).toHaveBeenCalledWith("Page title", "page body", llmProvider)
+    expect(generateArticleSummaryMock).toHaveBeenCalledWith(
+      "Page title",
+      "page body",
+      llmProvider,
+      {
+        signal: expect.any(AbortSignal),
+      },
+    )
   })
 
   it("exposes subtitle summary generation as a separate background handler", async () => {
     const { setUpSubtitlesTranslationQueue } = await import("../translation-queues")
-    await setUpSubtitlesTranslationQueue()
+    setUpSubtitlesTranslationQueue()
 
     const handler = getRegisteredMessageHandler("getSubtitlesSummary")
     const result = await handler({
@@ -795,12 +1006,13 @@ describe("translation queue helpers", () => {
       "Video title",
       "subtitle transcript",
       llmProvider,
+      { signal: expect.any(AbortSignal) },
     )
   })
 
   it("returns null for invalid subtitle summary requests", async () => {
     const { setUpSubtitlesTranslationQueue } = await import("../translation-queues")
-    await setUpSubtitlesTranslationQueue()
+    setUpSubtitlesTranslationQueue()
 
     const handler = getRegisteredMessageHandler("getSubtitlesSummary")
     const result = await handler({
@@ -819,7 +1031,7 @@ describe("translation queue helpers", () => {
     generateArticleSummaryMock.mockResolvedValue(null)
 
     const { setUpSubtitlesTranslationQueue } = await import("../translation-queues")
-    await setUpSubtitlesTranslationQueue()
+    setUpSubtitlesTranslationQueue()
 
     const handler = getRegisteredMessageHandler("getSubtitlesSummary")
     const result = await handler({
@@ -834,7 +1046,7 @@ describe("translation queue helpers", () => {
   })
 
   it("deduplicates concurrent subtitle summary generation requests", async () => {
-    let resolveSummary!: (summary: string) => void
+    let resolveSummary: ((summary: string) => void) | undefined
     generateArticleSummaryMock.mockImplementation(
       () =>
         new Promise((resolve: (summary: string) => void) => {
@@ -843,7 +1055,7 @@ describe("translation queue helpers", () => {
     )
 
     const { setUpSubtitlesTranslationQueue } = await import("../translation-queues")
-    await setUpSubtitlesTranslationQueue()
+    setUpSubtitlesTranslationQueue()
 
     const handler = getRegisteredMessageHandler("getSubtitlesSummary")
     const firstRequest = handler({
@@ -861,9 +1073,13 @@ describe("translation queue helpers", () => {
       },
     })
 
-    await Promise.resolve()
-    await Promise.resolve()
-    resolveSummary("Generated summary")
+    // The handler chain awaits queue init + cache lookups before the summary
+    // thunk runs; poll until the mock's resolver is captured.
+    for (let i = 0; i < 100; i++) {
+      if (resolveSummary) break
+      await Promise.resolve()
+    }
+    resolveSummary!("Generated summary")
 
     await expect(Promise.all([firstRequest, secondRequest])).resolves.toEqual([
       "Generated summary",

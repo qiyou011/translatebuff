@@ -26,6 +26,7 @@ const {
   mockTranslateWalkedElement,
   mockValidateTranslationConfigAndToast,
   mockWalkAndLabelElement,
+  mockWalkAndLabelElementChunked,
 } = vi.hoisted(() => ({
   mockGetDetectedCodeFromStorage: vi.fn<(...args: any[]) => any>(),
   mockGetRandomUUID: vi.fn<(...args: any[]) => any>(),
@@ -36,6 +37,7 @@ const {
   mockIsDontWalkIntoAndDontTranslateAsChildElement: vi.fn<(...args: any[]) => any>(),
   mockIsDontWalkIntoButTranslateAsChildElement: vi.fn<(...args: any[]) => any>(),
   mockWalkAndLabelElement: vi.fn<(...args: any[]) => any>(),
+  mockWalkAndLabelElementChunked: vi.fn<(...args: any[]) => any>(),
   mockRemoveAllTranslatedWrapperNodes: vi.fn<(...args: any[]) => any>(),
   mockTranslateWalkedElement: vi.fn<(...args: any[]) => any>(),
   mockTranslateTextForPageTitle: vi.fn<(...args: any[]) => any>(),
@@ -60,6 +62,9 @@ vi.mock("@/utils/host/dom/filter", () => ({
   hasNoWalkAncestor: mockHasNoWalkAncestor,
   isDontWalkIntoAndDontTranslateAsChildElement: mockIsDontWalkIntoAndDontTranslateAsChildElement,
   isDontWalkIntoButTranslateAsChildElement: mockIsDontWalkIntoButTranslateAsChildElement,
+  isWalkBlockedElement: (element: HTMLElement, config: unknown) =>
+    mockIsDontWalkIntoButTranslateAsChildElement(element, config) ||
+    mockIsDontWalkIntoAndDontTranslateAsChildElement(element, config),
   isHTMLElement: (node: unknown) => node instanceof HTMLElement,
   isTranslatedWrapperNode: (node: unknown) =>
     node instanceof HTMLElement && node.classList.contains("read-frog-translated-content-wrapper"),
@@ -71,6 +76,7 @@ vi.mock("@/utils/host/dom/find", () => ({
 
 vi.mock("@/utils/host/dom/traversal", () => ({
   walkAndLabelElement: mockWalkAndLabelElement,
+  walkAndLabelElementChunked: mockWalkAndLabelElementChunked,
 }))
 
 vi.mock("@/utils/host/translate/node-manipulation", () => ({
@@ -181,8 +187,13 @@ function isBlockedForTraversal(element: HTMLElement): boolean {
   )
 }
 
-function walkAndLabelVisibleParagraphs(element: HTMLElement, walkId: string) {
+function walkAndLabelVisibleParagraphs(
+  element: HTMLElement,
+  walkId: string,
+  onBlockedElement?: (blocked: HTMLElement) => void,
+) {
   if (isBlockedForTraversal(element)) {
+    onBlockedElement?.(element)
     return {
       forceBlock: false,
       isInlineNode: false,
@@ -193,7 +204,7 @@ function walkAndLabelVisibleParagraphs(element: HTMLElement, walkId: string) {
 
   for (const child of element.children) {
     if (child instanceof HTMLElement) {
-      walkAndLabelVisibleParagraphs(child, walkId)
+      walkAndLabelVisibleParagraphs(child, walkId, onBlockedElement)
     }
   }
 
@@ -232,8 +243,21 @@ describe("pageTranslationManager mutation re-walk", () => {
       isBlockedForTraversal(element),
     )
     mockDeepQueryTopLevelSelector.mockImplementation(deepQueryTopLevelSelectorImpl)
-    mockWalkAndLabelElement.mockImplementation((element: HTMLElement, walkId: string) =>
-      walkAndLabelVisibleParagraphs(element, walkId),
+    mockWalkAndLabelElement.mockImplementation(
+      (
+        element: HTMLElement,
+        walkId: string,
+        _config: unknown,
+        callbacks?: { onBlockedElement?: (blocked: HTMLElement) => void },
+      ) => walkAndLabelVisibleParagraphs(element, walkId, callbacks?.onBlockedElement),
+    )
+    mockWalkAndLabelElementChunked.mockImplementation(
+      async (
+        element: HTMLElement,
+        walkId: string,
+        _config: unknown,
+        options?: { onBlockedElement?: (blocked: HTMLElement) => void },
+      ) => walkAndLabelVisibleParagraphs(element, walkId, options?.onBlockedElement),
     )
     mockTranslateTextForPageTitle.mockResolvedValue("")
     mockTranslateNodesBilingualMode.mockReset().mockResolvedValue(undefined)
@@ -266,7 +290,14 @@ describe("pageTranslationManager mutation re-walk", () => {
     await observer.triggerIntersect(panel)
     await flushDomUpdates()
 
-    expect(mockTranslateWalkedElement).toHaveBeenCalledWith(panel, "walk-id", DEFAULT_CONFIG)
+    expect(mockTranslateWalkedElement).toHaveBeenCalledWith(
+      panel,
+      "walk-id",
+      DEFAULT_CONFIG,
+      false,
+      expect.anything(),
+      expect.anything(),
+    )
 
     manager.stop()
   })
@@ -296,7 +327,14 @@ describe("pageTranslationManager mutation re-walk", () => {
     await observer.triggerIntersect(panel)
     await flushDomUpdates()
 
-    expect(mockTranslateWalkedElement).toHaveBeenCalledWith(panel, "walk-id", DEFAULT_CONFIG)
+    expect(mockTranslateWalkedElement).toHaveBeenCalledWith(
+      panel,
+      "walk-id",
+      DEFAULT_CONFIG,
+      false,
+      expect.anything(),
+      expect.anything(),
+    )
 
     manager.stop()
   })
@@ -326,7 +364,14 @@ describe("pageTranslationManager mutation re-walk", () => {
     await observer.triggerIntersect(panel)
     await flushDomUpdates()
 
-    expect(mockTranslateWalkedElement).toHaveBeenCalledWith(panel, "walk-id", DEFAULT_CONFIG)
+    expect(mockTranslateWalkedElement).toHaveBeenCalledWith(
+      panel,
+      "walk-id",
+      DEFAULT_CONFIG,
+      false,
+      expect.anything(),
+      expect.anything(),
+    )
 
     manager.stop()
   })
@@ -352,6 +397,7 @@ describe("pageTranslationManager mutation re-walk", () => {
       status: "active",
       walkId: "walk-id",
       wrapper,
+      wrapperTextContent: null,
     }
     registerBilingualTranslationState(state)
     mockTranslateNodesBilingualMode.mockImplementation(async () => {
@@ -391,6 +437,7 @@ describe("pageTranslationManager mutation re-walk", () => {
         status: "active",
         walkId: "walk-id",
         wrapper,
+        wrapperTextContent: null,
       }
       tweet.append(wrapper)
       registerBilingualTranslationState(state)
@@ -451,6 +498,7 @@ describe("pageTranslationManager mutation re-walk", () => {
         status: "active",
         walkId,
         wrapper,
+        wrapperTextContent: null,
       }
       tweet.append(wrapper)
       registerBilingualTranslationState(state)
@@ -545,6 +593,7 @@ describe("pageTranslationManager mutation re-walk", () => {
       status: "active",
       walkId: "walk-id",
       wrapper,
+      wrapperTextContent: null,
     }
     registerBilingualTranslationState(state)
     await flushDomUpdates()
@@ -591,6 +640,7 @@ describe("pageTranslationManager mutation re-walk", () => {
         status: "active",
         walkId: "walk-id",
         wrapper,
+        wrapperTextContent: null,
       }
       registerBilingualTranslationState(state)
       return state
@@ -648,6 +698,7 @@ describe("pageTranslationManager mutation re-walk", () => {
       status: "active",
       walkId: "walk-id",
       wrapper,
+      wrapperTextContent: null,
     }
     registerBilingualTranslationState(state)
     await flushDomUpdates()
@@ -664,6 +715,199 @@ describe("pageTranslationManager mutation re-walk", () => {
     expect(mockTranslateNodesBilingualMode).toHaveBeenCalledWith([tweet], "walk-id", DEFAULT_CONFIG)
 
     manager.stop()
+  })
+
+  it("retranslates when the site rewrites text inside our wrapper (#1918)", async () => {
+    document.body.innerHTML = `
+      <p id="tweet"><span id="source">English title</span></p>
+    `
+
+    const manager = new PageTranslationManager()
+    await manager.start()
+    await flushDomUpdates()
+
+    const tweet = document.getElementById("tweet") as HTMLElement
+    const wrapper = document.createElement("span")
+    wrapper.className = "notranslate read-frog-translated-content-wrapper"
+    wrapper.setAttribute("data-read-frog-translation-mode", "bilingual")
+    wrapper.append("中文译文")
+    tweet.append(wrapper)
+    const state: BilingualTranslationState = {
+      layoutSource: tweet,
+      sourceTextContent: "English title",
+      status: "active",
+      walkId: "walk-id",
+      wrapper,
+      wrapperTextContent: wrapper.textContent,
+    }
+    registerBilingualTranslationState(state)
+    await flushDomUpdates()
+    mockTranslateNodesBilingualMode.mockClear()
+    mockTranslateNodesBilingualMode.mockImplementation(async () => {
+      unregisterBilingualTranslationState(state)
+    })
+
+    // CNBC-style truncation script: a characterData write on the text node
+    // INSIDE our wrapper, replacing the translation with clipped English.
+    const translatedTextNode = wrapper.firstChild as Text
+    translatedTextNode.data = "English title…"
+    await flushDomUpdates()
+
+    expect(mockWalkAndLabelElement).toHaveBeenCalledWith(tweet, "walk-id", DEFAULT_CONFIG)
+    expect(mockTranslateNodesBilingualMode).toHaveBeenCalledTimes(1)
+    expect(mockTranslateNodesBilingualMode).toHaveBeenCalledWith([tweet], "walk-id", DEFAULT_CONFIG)
+
+    manager.stop()
+  })
+
+  it("retranslates when the site replaces our translated node inside the wrapper (#1918)", async () => {
+    document.body.innerHTML = `
+      <p id="tweet"><span id="source">English title</span></p>
+    `
+
+    const manager = new PageTranslationManager()
+    await manager.start()
+    await flushDomUpdates()
+
+    const tweet = document.getElementById("tweet") as HTMLElement
+    const wrapper = document.createElement("span")
+    wrapper.className = "notranslate read-frog-translated-content-wrapper"
+    wrapper.setAttribute("data-read-frog-translation-mode", "bilingual")
+    wrapper.append("中文译文")
+    tweet.append(wrapper)
+    const state: BilingualTranslationState = {
+      layoutSource: tweet,
+      sourceTextContent: "English title",
+      status: "active",
+      walkId: "walk-id",
+      wrapper,
+      wrapperTextContent: wrapper.textContent,
+    }
+    registerBilingualTranslationState(state)
+    await flushDomUpdates()
+    mockTranslateNodesBilingualMode.mockClear()
+    mockTranslateNodesBilingualMode.mockImplementation(async () => {
+      unregisterBilingualTranslationState(state)
+    })
+
+    // Framework-style childList tamper: our text node swapped for a site span.
+    const siteSpan = document.createElement("span")
+    siteSpan.textContent = "English title…"
+    wrapper.replaceChildren(siteSpan)
+    await flushDomUpdates()
+
+    expect(mockTranslateNodesBilingualMode).toHaveBeenCalledTimes(1)
+    expect(mockTranslateNodesBilingualMode).toHaveBeenCalledWith([tweet], "walk-id", DEFAULT_CONFIG)
+
+    manager.stop()
+  })
+
+  it("ignores in-wrapper mutations that leave the wrapper text unchanged (#1918)", async () => {
+    document.body.innerHTML = `
+      <p id="tweet"><span id="source">English title</span></p>
+    `
+
+    const manager = new PageTranslationManager()
+    await manager.start()
+    await flushDomUpdates()
+
+    const tweet = document.getElementById("tweet") as HTMLElement
+    const wrapper = document.createElement("span")
+    wrapper.className = "notranslate read-frog-translated-content-wrapper"
+    wrapper.setAttribute("data-read-frog-translation-mode", "bilingual")
+    wrapper.append("中文译文")
+    tweet.append(wrapper)
+    const state: BilingualTranslationState = {
+      layoutSource: tweet,
+      sourceTextContent: "English title",
+      status: "active",
+      walkId: "walk-id",
+      wrapper,
+      wrapperTextContent: wrapper.textContent,
+    }
+    registerBilingualTranslationState(state)
+    await flushDomUpdates()
+    mockWalkAndLabelElement.mockClear()
+    mockTranslateNodesBilingualMode.mockClear()
+
+    // Node identity churn with identical text (React re-render writing the
+    // same content) must stay classified as self-inflicted noise.
+    wrapper.replaceChildren(document.createTextNode("中文译文"))
+    await flushDomUpdates()
+
+    expect(mockWalkAndLabelElement).not.toHaveBeenCalled()
+    expect(mockTranslateNodesBilingualMode).not.toHaveBeenCalled()
+
+    unregisterBilingualTranslationState(state)
+    manager.stop()
+  })
+
+  it("caps tamper-driven retranslation passes behind the budget (#1918)", async () => {
+    vi.useFakeTimers()
+    const flushWithFakeTimers = async (rounds = 4) => {
+      for (let i = 0; i < rounds; i++) {
+        await Promise.resolve()
+        await vi.advanceTimersByTimeAsync(0)
+        await Promise.resolve()
+      }
+    }
+
+    try {
+      document.body.innerHTML = `
+        <p id="tweet"><span id="source">English title</span></p>
+      `
+
+      const manager = new PageTranslationManager()
+      await manager.start()
+      await flushWithFakeTimers()
+
+      const tweet = document.getElementById("tweet") as HTMLElement
+      const wrapper = document.createElement("span")
+      wrapper.className = "notranslate read-frog-translated-content-wrapper"
+      wrapper.setAttribute("data-read-frog-translation-mode", "bilingual")
+      wrapper.append("译文 0")
+      tweet.append(wrapper)
+      const translatedTextNode = wrapper.firstChild as Text
+      // Snapshot never matches the wrapper, so every in-wrapper rewrite marks
+      // the source stale — a site truncation script fighting our repairs.
+      const state: BilingualTranslationState = {
+        layoutSource: tweet,
+        sourceTextContent: "English title",
+        status: "active",
+        walkId: "walk-id",
+        wrapper,
+        wrapperTextContent: "expected 译文",
+      }
+      registerBilingualTranslationState(state)
+      await flushWithFakeTimers()
+      mockTranslateNodesBilingualMode.mockClear()
+
+      let churn = 0
+      mockTranslateNodesBilingualMode.mockImplementation(async () => {
+        churn += 1
+        translatedTextNode.data = `译文 ${churn}`
+        await flushWithFakeTimers(2)
+      })
+
+      translatedTextNode.data = "译文 start"
+      await flushWithFakeTimers(8)
+
+      // Same #1831 protections, new record class: per-invocation pass cap…
+      expect(mockTranslateNodesBilingualMode).toHaveBeenCalledTimes(3)
+      expect((manager as any).pendingRetranslateRetries.size).toBe(1)
+
+      // …then the debounced retry burns the rest of the per-window budget.
+      await vi.advanceTimersByTimeAsync(1000)
+      await flushWithFakeTimers()
+      expect(mockTranslateNodesBilingualMode).toHaveBeenCalledTimes(6)
+
+      manager.stop()
+      expect((manager as any).pendingRetranslateRetries.size).toBe(0)
+
+      unregisterBilingualTranslationState(state)
+    } finally {
+      vi.useRealTimers()
+    }
   })
 
   it("caps retranslation passes and defers perpetual churn behind a debounced retry (#1831)", async () => {
@@ -699,6 +943,7 @@ describe("pageTranslationManager mutation re-walk", () => {
         status: "active",
         walkId: "walk-id",
         wrapper,
+        wrapperTextContent: null,
       }
       registerBilingualTranslationState(state)
       await flushWithFakeTimers()
@@ -800,6 +1045,48 @@ describe("pageTranslationManager mutation re-walk", () => {
     }
 
     expect((manager as any).mutationObservers.length).toBe(observerCountAfterStart)
+
+    manager.stop()
+  })
+
+  it("splits a giant paragraph into its descendant paragraphs for observation (#1881)", async () => {
+    // docs.docker.com regression shape: one flat container labeled as a
+    // paragraph spanning the whole document, with real paragraphs nested
+    // inside. Built via DOM APIs — the HTML parser refuses nested <p>.
+    const giant = document.createElement("p")
+    giant.id = "giant"
+    giant.append("direct inline text of the giant")
+    const inner1 = document.createElement("p")
+    inner1.id = "inner1"
+    inner1.textContent = "Nested paragraph one"
+    const inner2 = document.createElement("p")
+    inner2.id = "inner2"
+    inner2.textContent = "Nested paragraph two"
+    giant.append(inner1, inner2)
+
+    const unsplittable = document.createElement("p")
+    unsplittable.id = "unsplittable"
+    unsplittable.textContent = "One enormous paragraph without nested paragraphs"
+
+    document.body.append(giant, unsplittable)
+    // jsdom rects default to 0 — mark only the giants as taller than the
+    // split cap (3 viewports).
+    const tall = { height: 200_000 } as DOMRect
+    giant.getBoundingClientRect = () => tall
+    unsplittable.getBoundingClientRect = () => tall
+
+    const manager = new PageTranslationManager()
+    await manager.start()
+    await flushDomUpdates()
+
+    const observer = intersectionObservers[0]
+    const observed = observer.observe.mock.calls.map((call) => call[0])
+    // The giant is split: its nested paragraphs are observed individually.
+    expect(observed).toContain(inner1)
+    expect(observed).toContain(inner2)
+    expect(observed).not.toContain(giant)
+    // A giant with no nested paragraphs cannot be split — observed whole.
+    expect(observed).toContain(unsplittable)
 
     manager.stop()
   })

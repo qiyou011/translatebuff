@@ -184,6 +184,11 @@ src/fork/
 - 内容脚本只换 shadow-host 内层 React，DOM/注入逻辑留上游。
 - `main.tsx` **不是**纯骨架（popup/main.tsx 带页面 atoms）——改每页 `main.tsx` 或抽 `src/fork` helper，二选一。
 
+> ⚠️ **反冲突铁律（2026-07-22 同步教训）**：重度定制的**整块 surface**（popup ✓、翻译浮窗、被重刷的选项页）一律走「re-export shim + fork 壳（C 类）」，**绝不在 churning 共享文件上原地改**（`main.tsx` / `app.tsx` / `theme.css` / 共享组件都是上游高频文件，原地改 = 上游每次动它就冲突）。
+>
+> - **禁改名共享上游组件做品牌化**：品牌化要「fork 包一层」，绝不重命名上游组件。曾把 `frog-toast` → `brand-toast`，上游随后用 base-ui toast 重构该组件 → 正面冲突、fork 改名白做（该次同步 9 个冲突全源于此）。
+> - **藏 vs 定制**：只想**藏**单个上游叶子组件 → `FORK_UI_REDIRECTS` 重定向到 fork 空组件（一次性够用）；想**定制整块** → fork 壳里「按需渲染、不要的不渲染」，比逐个重定向更省、更抗冲突（翻译浮窗即按此规划）。
+
 ---
 
 ## 5. 常见任务速查

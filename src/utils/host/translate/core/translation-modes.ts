@@ -1,3 +1,4 @@
+import type { TranslationActionContext } from "@/types/analytics"
 import type { Config } from "@/types/config/config"
 import type { TranslationMode } from "@/types/config/translate"
 import type { TransNode } from "@/types/dom"
@@ -51,17 +52,21 @@ import { isNumericContent } from "../ui/translation-utils"
 import {
   attachBilingualTranslationWrapper,
   collectSourceTextExcludingWrappers,
+  countWrapperTamperRepair,
   getBilingualTranslationStateForSource,
   getTranslationOnlyAnchorState,
   getVirtualParagraphGroupForSource,
   isBilingualTranslationStateCurrent,
+  isBilingualWrapperContentTampered,
   isVirtualParagraphGroupCurrent,
   markExtensionDrivenNodeRemoval,
   markVirtualParagraphGroupInserted,
+  MAX_WRAPPER_TAMPER_REPAIRS,
   registerBilingualTranslationState,
   registerTranslationOnlyOriginals,
   registerVirtualParagraphGroup,
   registerVirtualParagraphWrapper,
+  resetWrapperTamperRepairs,
   translatingNodes,
   unregisterBilingualTranslationState,
   type BilingualTranslationState,
@@ -78,6 +83,16 @@ interface DeepLXHtmlAttributeProbe {
   resolve: (result: DeepLXHtmlAttributeProbeResult) => void
 }
 const deepLXHtmlAttributeProbes = new Map<string, DeepLXHtmlAttributeProbe>()
+
+function translateTextForAction(
+  text: string,
+  textFormat: "plain" | "html",
+  actionContext?: TranslationActionContext,
+): Promise<string> {
+  return actionContext
+    ? translateTextForPage(text, textFormat, actionContext)
+    : translateTextForPage(text, textFormat)
+}
 
 function createDeepLXHtmlAttributeProbe(): DeepLXHtmlAttributeProbe {
   let resolve!: (result: DeepLXHtmlAttributeProbeResult) => void
@@ -183,6 +198,7 @@ async function translateVirtualParagraph(
   nodes: ChildNode[],
   config: Config,
   forceBlockTranslation: boolean,
+  actionContext?: TranslationActionContext,
 ): Promise<void> {
   const { flowSource, unit, wrapper } = entry
   const isCurrent = () => isVirtualParagraphGroupCurrent(group, wrapper)
@@ -194,6 +210,8 @@ async function translateVirtualParagraph(
     spinner,
     wrapper,
     isCurrent,
+    "plain",
+    actionContext ? () => translateTextForPage(unit.text, "plain", actionContext) : undefined,
   )
   if (!isCurrent()) {
     disposeVirtualParagraphGroup(group)
@@ -231,6 +249,7 @@ async function translateVirtualParagraphs(
   walkId: string,
   config: Config,
   forceBlockTranslation: boolean,
+  actionContext?: TranslationActionContext,
 ): Promise<void> {
   const group: VirtualParagraphGroup = {
     id: `${walkId}:${virtualParagraphGroupSequence++}`,
@@ -303,6 +322,7 @@ async function translateVirtualParagraphs(
         nodes,
         config,
         forceBlockTranslation,
+        actionContext,
       ),
     ),
   )
@@ -314,12 +334,20 @@ export async function translateNodes(
   toggle: boolean = false,
   config: Config,
   forceBlockTranslation: boolean = false,
+  actionContext?: TranslationActionContext,
 ): Promise<void> {
   const translationMode = config.translate.mode
   if (translationMode === "translationOnly") {
-    await translateNodeTranslationOnlyMode(nodes, walkId, config, toggle)
+    await translateNodeTranslationOnlyMode(nodes, walkId, config, toggle, actionContext)
   } else if (translationMode === "bilingual") {
-    await translateNodesBilingualMode(nodes, walkId, config, toggle, forceBlockTranslation)
+    await translateNodesBilingualMode(
+      nodes,
+      walkId,
+      config,
+      toggle,
+      forceBlockTranslation,
+      actionContext,
+    )
   }
 }
 
@@ -329,6 +357,7 @@ export async function translateNodesBilingualMode(
   config: Config,
   toggle: boolean = false,
   forceBlockTranslation: boolean = false,
+  actionContext?: TranslationActionContext,
 ): Promise<void> {
   const transNodes = nodes.filter((node) => isTransNode(node))
   if (transNodes.length === 0) {
@@ -367,6 +396,24 @@ export async function translateNodesBilingualMode(
         isBilingualTranslationStateCurrent(existingBilingualState)
       if (!toggle && isSameActiveWalk) return
 
+      if (!toggle && isBilingualWrapperContentTampered(existingBilingualState)) {
+        // The site rewrote our wrapper content while the host text is intact
+        // (#1918). Repair by retranslating — but a script that rewrites
+        // deterministically would fight forever (the retranslation budget
+        // bounds rate, not duration), so after MAX_WRAPPER_TAMPER_REPAIRS
+        // losses adopt the site's version as the expected content: the
+        // pre-#1918 terminal state, reached after real repair attempts.
+        if (countWrapperTamperRepair(layoutSource) > MAX_WRAPPER_TAMPER_REPAIRS) {
+          existingBilingualState.wrapperTextContent =
+            existingBilingualState.wrapper?.textContent ?? null
+          return
+        }
+      } else {
+        // Genuine host change, toggle, or new session: the fight (if any) is
+        // over — re-arm the capitulation budget.
+        resetWrapperTamperRepairs(layoutSource)
+      }
+
       if (existingBilingualState.wrapper) {
         removeTranslatedWrapperWithRestore(existingBilingualState.wrapper)
       } else {
@@ -397,6 +444,7 @@ export async function translateNodesBilingualMode(
           walkId,
           config,
           true,
+          actionContext,
         )
         return
       }
@@ -414,7 +462,14 @@ export async function translateNodesBilingualMode(
         return
       }
       nodes.forEach((node) => translatingNodes.delete(node))
-      return translateNodesBilingualMode(nodes, walkId, config, toggle, forceBlockTranslation)
+      return translateNodesBilingualMode(
+        nodes,
+        walkId,
+        config,
+        toggle,
+        forceBlockTranslation,
+        actionContext,
+      )
     }
 
     // After a translationOnly session, an in-place-swapped paragraph has no
@@ -448,6 +503,7 @@ export async function translateNodesBilingualMode(
         status: "active",
         walkId,
         wrapper: null,
+        wrapperTextContent: null,
       }
       registerBilingualTranslationState(bilingualState)
     }
@@ -471,7 +527,14 @@ export async function translateNodesBilingualMode(
       unregisterBilingualTranslationState(bilingualState)
       if (shouldRetry) {
         nodes.forEach((node) => translatingNodes.delete(node))
-        return translateNodesBilingualMode(nodes, walkId, config, toggle, forceBlockTranslation)
+        return translateNodesBilingualMode(
+          nodes,
+          walkId,
+          config,
+          toggle,
+          forceBlockTranslation,
+          actionContext,
+        )
       }
       return
     }
@@ -529,6 +592,8 @@ export async function translateNodesBilingualMode(
       spinner,
       translatedWrapperNode,
       isCurrent,
+      "plain",
+      actionContext ? () => translateTextForPage(textContent, "plain", actionContext) : undefined,
     )
 
     if (!isCurrent()) {
@@ -551,7 +616,18 @@ export async function translateNodesBilingualMode(
 
     await insertTranslatedNodeIntoWrapper(
       translatedWrapperNode,
-      { flowSource: insertionTarget, isCurrent, layoutSource, sourceText: textContent },
+      {
+        flowSource: insertionTarget,
+        isCurrent,
+        layoutSource,
+        // Wrapper-content integrity snapshot (#1918): armed synchronously at
+        // append time so a site rewrite landing during the decorate await can
+        // never be canonized as the expected content.
+        onContentInserted: (wrapper) => {
+          if (bilingualState) bilingualState.wrapperTextContent = wrapper.textContent
+        },
+        sourceText: textContent,
+      },
       translatedText,
       config.translate.translationNodeStyle,
       config,
@@ -595,6 +671,7 @@ export async function translateNodeTranslationOnlyMode(
   walkId: string,
   config: Config,
   toggle: boolean = false,
+  actionContext?: TranslationActionContext,
 ): Promise<void> {
   const isTransNodeAndNotTranslatedWrapper = (node: Node): node is TransNode => {
     if (isHTMLElement(node) && node.classList.contains(CONTENT_WRAPPER_CLASS)) return false
@@ -637,7 +714,7 @@ export async function translateNodeTranslationOnlyMode(
     if (!toggle) {
       const retryNodes = restored.filter((node) => node.isConnected)
       if (retryNodes.length > 0) {
-        void translateNodeTranslationOnlyMode(retryNodes, walkId, config, toggle)
+        void translateNodeTranslationOnlyMode(retryNodes, walkId, config, toggle, actionContext)
       }
     }
     return
@@ -698,7 +775,7 @@ export async function translateNodeTranslationOnlyMode(
         ? nodes
         : restoredNodes.filter((node) => node.isConnected)
       if (retryNodes.length > 0) {
-        void translateNodeTranslationOnlyMode(retryNodes, walkId, config, toggle)
+        void translateNodeTranslationOnlyMode(retryNodes, walkId, config, toggle, actionContext)
       }
       return
     }
@@ -752,7 +829,11 @@ export async function translateNodeTranslationOnlyMode(
     // its tags intact.
     const deepLXProviderKey = getDeepLXHtmlAttributeProviderKey(config)
     const translateLegacyHtml = async () => {
-      const translatedHtml = await translateTextForPage(protectedHtml.legacyRequestHtml, "html")
+      const translatedHtml = await translateTextForAction(
+        protectedHtml.legacyRequestHtml,
+        "html",
+        actionContext,
+      )
       return translatedHtml ? protectedHtml.restoreLegacy(translatedHtml) : translatedHtml
     }
     const translateRequest = async () => {
@@ -766,7 +847,11 @@ export async function translateNodeTranslationOnlyMode(
       }
 
       try {
-        const translatedHtml = await translateTextForPage(protectedHtml.requestHtml, "html")
+        const translatedHtml = await translateTextForAction(
+          protectedHtml.requestHtml,
+          "html",
+          actionContext,
+        )
         if (!translatedHtml) {
           if (deepLXProviderKey) {
             finishDeepLXHtmlAttributeProbe(deepLXProviderKey, ownedDeepLXProbe, "unknown")
