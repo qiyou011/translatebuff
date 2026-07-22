@@ -33,6 +33,7 @@ import { MARGIN } from "@/utils/constants/selection"
 import { cn } from "@/utils/styles/utils"
 import { matchDomainPattern } from "@/utils/url"
 import { CustomActionTrigger } from "./CustomActionTrigger"
+import { SelectionToolbarSettingsButton } from "./SettingsButton"
 import { TranslateButton } from "./TranslateButton"
 
 // fork 药丸 Toolbar。选区检测/定位机制忠实镜像上游 selection-toolbar/index.tsx（component body
@@ -536,9 +537,14 @@ export function SelectionToolbar() {
             <div className="no-scrollbar flex max-w-105 items-center overflow-x-auto overflow-y-hidden rounded-xl">
               {features.translate.enabled && <TranslateButton />}
               {features.speak.enabled && <SpeakButton />}
-              {enabledCustomActions.map((action) => (
-                <CustomActionTrigger key={action.id} action={action} />
-              ))}
+              {enabledCustomActions.map((action) =>
+                // fork redesign：默认词典动作（结构化输出在任译喵模型上不支持）替换为设置齿轮，点开选项页。
+                action.id === "default-dictionary" ? (
+                  <SelectionToolbarSettingsButton key={action.id} />
+                ) : (
+                  <CustomActionTrigger key={action.id} action={action} />
+                ),
+              )}
             </div>
             <CloseButton />
           </div>
