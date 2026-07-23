@@ -16,6 +16,7 @@ import {
 import { createSelectionToolbarPrecheckError } from "@/entrypoints/selection.content/selection-toolbar/inline-error"
 import { useSelectionOpenRequestResolver } from "@/entrypoints/selection.content/selection-toolbar/use-selection-open-request"
 import { normalizeSelectedText } from "@/entrypoints/selection.content/utils"
+import { withRenyimiaoJsonObjectFormat } from "@/fork/providers/custom-action-response-format"
 import { ANALYTICS_FEATURE, ANALYTICS_SURFACE } from "@/types/analytics"
 import { createFeatureUsageContext, trackFeatureUsed } from "@/utils/analytics"
 import { configFieldsAtomMap, writeConfigAtom } from "@/utils/atoms/config"
@@ -85,11 +86,15 @@ export function useSelectionCustomActionController() {
     () => ({
       language,
       action: activeAction,
+      // fork：词典 provider 引用过降级 helper——把结构化输出的 response_format 从 json_schema 降到
+      // json_object（任译喵网关支持），只作用于本瞬时引用、不落 config，普通翻译不受影响。
       provider: activeAction
-        ? resolveProviderRefForCapability(
-            "selectionToolbar.customAction",
-            providersConfig,
-            activeAction.providerId,
+        ? withRenyimiaoJsonObjectFormat(
+            resolveProviderRefForCapability(
+              "selectionToolbar.customAction",
+              providersConfig,
+              activeAction.providerId,
+            ),
           )
         : null,
     }),
