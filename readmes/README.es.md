@@ -28,7 +28,7 @@ Domina idiomas con más facilidad y profundidad usando IA directamente en tu nav
   - [🎬 Traducción de subtítulos](#-traducción-de-subtítulos)
   - [🔊 Texto a voz (TTS)](#-texto-a-voz-tts)
   - [📦 Solicitudes por lotes](#-solicitudes-por-lotes)
-  - [🤖 Más de 20 proveedores de IA](#-más-de-20-proveedores-de-ia)
+  - [🤖 Traducción con IA integrada](#-traducción-con-ia-integrada)
 - [🤝 Contribuir](#-contribuir)
 
 <br/>
@@ -71,13 +71,7 @@ Convierte tu lectura diaria en la web en una experiencia inmersiva de aprendizaj
 
 Convierte el texto seleccionado en herramientas de IA reutilizables que se adapten a tu forma de leer y aprender. Define tus propios prompts y campos de salida estructurados, elige proveedor, modelo e icono, y ejecuta la acción desde la barra de selección para consultar palabras, reescribir, resumir, explicar o crear cualquier flujo de trabajo.
 
-Empieza con las plantillas integradas de **Diccionario** y **Mejorar escritura**, o crea una acción desde cero. También puedes asignar y guardar los resultados estructurados en Notebase para estudiarlos después.
-
-### 🧠 [Tarjetas y repetición espaciada][docs-tutorial]
-
-Guarda vocabulario, definiciones, ejemplos, traducciones y notas de lectura en Notebase, y conviértelos en tarjetas con plantillas personalizables. Lo que descubres mientras lees se transforma en material de estudio sin interrumpir tu lectura.
-
-Repasa en línea las tarjetas pendientes y califica cada una como **Otra vez**, **Difícil**, **Bien** o **Fácil**. El planificador de repetición espaciada de Translatebuff usa tus respuestas para mostrar cada tarjeta de nuevo justo antes de que la olvides.
+Empieza con las plantillas integradas de **Diccionario** y **Mejorar escritura**, o crea una acción desde cero.
 
 ### 🔄 [Bilingüe / Solo traducción][docs-tutorial]
 
@@ -113,11 +107,11 @@ Ahorra hasta un 70% en costes de API con agrupación inteligente de solicitudes.
 
 Incluye reintentos con backoff exponencial y fallback automático a solicitudes individuales si falla el procesamiento por lotes.
 
-### 🤖 [Más de 20 proveedores de IA][docs-tutorial]
+### 🤖 [Traducción con IA integrada][docs-tutorial]
 
-Conecta con más de 20 proveedores mediante Vercel AI SDK: OpenAI, DeepSeek, Anthropic Claude, Google Gemini, xAI Grok, Groq, Mistral, Ollama y muchos más. Configura endpoints, API keys y modelos por proveedor.
+Inicia sesión y traduce al instante, sin necesidad de tu propia clave API. El servicio de traducción con IA integrado de Translatebuff emite tu clave automáticamente y ofrece varios modelos de IA, para que elijas el modelo adecuado para cada función.
 
-También hay opciones gratuitas: Google Translate, Microsoft Translate y DeepLX para traducciones básicas sin coste.
+También dispones de traducción estándar con Google Translate y Microsoft Translate.
 
 <div align="right">
 

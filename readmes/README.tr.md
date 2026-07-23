@@ -28,7 +28,7 @@ AI ile dilleri doğrudan tarayıcınızda daha kolay ve derin öğrenin.
   - [🎬 Altyazı çevirisi](#-altyazı-çevirisi)
   - [🔊 Metinden sese (TTS)](#-metinden-sese-tts)
   - [📦 Toplu istekler](#-toplu-istekler)
-  - [🤖 20+ AI sağlayıcısı](#-20-ai-sağlayıcısı)
+  - [🤖 Yerleşik Yapay Zeka Çevirisi](#-yerleşik-yapay-zeka-çevirisi)
 - [🤝 Katkıda bulun](#-katkıda-bulun)
 
 <br/>
@@ -71,13 +71,7 @@ Translatebuff'un güçlü özellikleriyle günlük web okumalarınızı sürükl
 
 Seçtiğiniz metni okuma ve öğrenme biçiminize uygun, yeniden kullanılabilir AI araçlarına dönüştürün. Kendi istemlerinizi ve yapılandırılmış çıktı alanlarınızı tanımlayın; sağlayıcı, model ve simgeyi seçin; ardından sözlük arama, yeniden yazma, özetleme, açıklama veya tasarladığınız herhangi bir iş akışını seçim araç çubuğundan çalıştırın.
 
-Yerleşik **Sözlük** ve **Yazıyı İyileştir** şablonlarıyla başlayabilir ya da sıfırdan bir eylem oluşturabilirsiniz. Yapılandırılmış sonuçları daha sonra çalışmak üzere Notebase alanlarına eşleyip kaydedebilirsiniz.
-
-### 🧠 [Bilgi kartları ve aralıklı tekrar][docs-tutorial]
-
-Kelimeleri, tanımları, örnek cümleleri, çevirileri ve okuma notlarını Notebase'e kaydedin; ardından özelleştirilebilir kart şablonlarıyla bilgi kartlarına dönüştürün. Okurken keşfettiğiniz içerik, akışınızı bozmadan çalışma materyaline dönüşür.
-
-Zamanı gelen kartları çevrimiçi gözden geçirin ve her birini **Tekrar**, **Zor**, **İyi** veya **Kolay** olarak değerlendirin. Translatebuff'un aralıklı tekrar planlayıcısı, geri bildiriminize göre her kartı unutmanızdan hemen önce yeniden gösterir.
+Yerleşik **Sözlük** ve **Yazıyı İyileştir** şablonlarıyla başlayabilir ya da sıfırdan bir eylem oluşturabilirsiniz.
 
 ### 🔄 [İki dilli / Yalnızca çeviri][docs-tutorial]
 
@@ -113,11 +107,11 @@ Akıllı istek toplama ile API maliyetlerinde %70'e kadar tasarruf edin. Transla
 
 Sistem üstel geri çekilmeli yeniden deneme ve toplu işlem başarısız olduğunda tekil isteklere otomatik dönüş içerir.
 
-### 🤖 [20+ AI sağlayıcısı][docs-tutorial]
+### 🤖 [Yerleşik Yapay Zeka Çevirisi][docs-tutorial]
 
-Vercel AI SDK üzerinden OpenAI, DeepSeek, Anthropic Claude, Google Gemini, xAI Grok, Groq, Mistral, Ollama ve daha fazlası dahil 20+ AI sağlayıcısına bağlanın. Her sağlayıcı için özel endpoint, API key ve model ayarları yapılandırabilirsiniz.
+Giriş yapın ve hemen çevirmeye başlayın — kendi API anahtarınızı getirmenize gerek yok. Translatebuff'ın yerleşik yapay zeka çeviri hizmeti anahtarınızı otomatik olarak verir ve birden çok yapay zeka modeli sunar, böylece her özellik için doğru modeli seçebilirsiniz.
 
-Ayrıca ücretsiz temel çeviri için Google Translate, Microsoft Translate ve DeepLX seçenekleri de vardır.
+Ayrıca Google Translate ve Microsoft Translate ile standart çeviri de mevcuttur.
 
 <div align="right">
 

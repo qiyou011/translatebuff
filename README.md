@@ -23,14 +23,13 @@ Master languages effortlessly and deeply with AI, right in your browser.
   - [Community](#community)
 - [✨ Features](#-features)
   - [🪄 Custom AI Actions](#-custom-ai-actions)
-  - [🧠 Flashcards \& Spaced Repetition](#-flashcards--spaced-repetition)
   - [🔄 Bilingual / Translation Only](#-bilingual--translation-only)
   - [✨ Selection Translation](#-selection-translation)
   - [🧠 Context-Aware Translation](#-context-aware-translation)
   - [🎬 Subtitle Translation](#-subtitle-translation)
   - [🔊 Text-to-Speech (TTS)](#-text-to-speech-tts)
   - [📦 Batch Requests](#-batch-requests)
-  - [🤖 20+ AI Providers](#-20-ai-providers)
+  - [🤖 Built-in AI Translation](#-built-in-ai-translation)
 - [🤝 Contribute](#-contribute)
   - [Contribute Code](#contribute-code)
 
@@ -75,18 +74,6 @@ Transform your everyday web reading into an immersive language learning journey 
 Turn selected text into reusable AI tools that match the way you read and learn. Define your own prompts and structured output fields, choose a provider, model, and icon, then run the action directly from the selection toolbar for dictionary lookups, rewriting, summaries, explanations, or any workflow you design.
 
 Start with the built-in **Dictionary** and **Improve Writing** templates, or build an action from scratch.
-
-<div align="right">
-
-[![Back to top][back-to-top]](#readme-top)
-
-</div>
-
-### 🧠 [Flashcards & Spaced Repetition][docs-tutorial]
-
-Save vocabulary, definitions, example sentences, translations, and reading notes, then turn them into flashcards with customizable card templates. Content you discover while reading becomes study material without interrupting your flow.
-
-Review due cards online and rate each one **Again**, **Hard**, **Good**, or **Easy**. Translatebuff's spaced-repetition scheduler uses your feedback to decide when each card should appear again—right before you are likely to forget it.
 
 <div align="right">
 
@@ -164,11 +151,11 @@ The system includes smart retry logic with exponential backoff and automatic fal
 
 </div>
 
-### 🤖 [20+ AI Providers][docs-tutorial]
+### 🤖 [Built-in AI Translation][docs-tutorial]
 
-Connect to 20+ AI providers through Vercel AI SDK: OpenAI, DeepSeek, Anthropic Claude, Google Gemini, xAI Grok, Groq, Mistral, Ollama, and many more. Configure custom endpoints, API keys, and model settings for each provider.
+Sign in and start translating right away—no need to bring your own API key. Translatebuff's built-in AI translation service issues your key automatically and offers multiple AI models, so you can pick the right model for each feature.
 
-Plus free translation options: Google Translate, Microsoft Translate, and DeepLX for cost-free basic translations.
+Prefer something lightweight? Standard translation via Google Translate and Microsoft Translate is available too.
 
 <div align="right">
 

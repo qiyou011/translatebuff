@@ -23,14 +23,13 @@ Học ngôn ngữ dễ hơn và sâu hơn ngay trong trình duyệt của bạn.
   - [Cộng đồng](#cộng-đồng)
 - [✨ Tính năng](#-tính-năng)
   - [🪄 Hành động AI tùy chỉnh](#-hành-động-ai-tùy-chỉnh)
-  - [🧠 Thẻ ghi nhớ và lặp lại ngắt quãng](#-thẻ-ghi-nhớ-và-lặp-lại-ngắt-quãng)
   - [🔄 Song ngữ / Chỉ bản dịch](#-song-ngữ--chỉ-bản-dịch)
   - [✨ Dịch văn bản đã chọn](#-dịch-văn-bản-đã-chọn)
   - [🧠 Dịch theo ngữ cảnh](#-dịch-theo-ngữ-cảnh)
   - [🎬 Dịch phụ đề](#-dịch-phụ-đề)
   - [🔊 Chuyển văn bản thành giọng nói (TTS)](#-chuyển-văn-bản-thành-giọng-nói-tts)
   - [📦 Yêu cầu theo lô](#-yêu-cầu-theo-lô)
-  - [🤖 Hơn 20 nhà cung cấp AI](#-hơn-20-nhà-cung-cấp-ai)
+  - [🤖 Dịch AI tích hợp](#-dịch-ai-tích-hợp)
 - [🤝 Đóng góp](#-đóng-góp)
   - [Đóng góp mã nguồn](#đóng-góp-mã-nguồn)
 
@@ -74,13 +73,7 @@ Biến việc đọc web hằng ngày thành trải nghiệm học ngôn ngữ n
 
 Biến văn bản đã chọn thành công cụ AI có thể tái sử dụng, phù hợp với cách bạn đọc và học. Tự định nghĩa prompt và các trường đầu ra có cấu trúc, chọn nhà cung cấp, mô hình và biểu tượng, rồi chạy tác vụ ngay từ thanh công cụ để tra từ, viết lại, tóm tắt, giải thích hoặc thực hiện quy trình riêng.
 
-Bắt đầu với mẫu **Từ điển** và **Cải thiện bài viết** có sẵn, hoặc tạo tác vụ từ đầu. Bạn cũng có thể ánh xạ và lưu kết quả có cấu trúc vào Notebase để học sau.
-
-### 🧠 [Thẻ ghi nhớ và lặp lại ngắt quãng][docs-tutorial]
-
-Lưu từ vựng, định nghĩa, câu ví dụ, bản dịch và ghi chú đọc vào Notebase, sau đó biến chúng thành thẻ ghi nhớ bằng các mẫu thẻ có thể tùy chỉnh. Nội dung bạn bắt gặp khi đọc trở thành tài liệu học mà không làm gián đoạn mạch đọc.
-
-Ôn các thẻ đến hạn trực tuyến và đánh giá từng thẻ là **Lại**, **Khó**, **Tốt** hoặc **Dễ**. Bộ lập lịch lặp lại ngắt quãng của Translatebuff dùng phản hồi này để đưa mỗi thẻ trở lại ngay trước khi bạn có thể quên.
+Bắt đầu với mẫu **Từ điển** và **Cải thiện bài viết** có sẵn, hoặc tạo tác vụ từ đầu.
 
 ### 🔄 [Song ngữ / Chỉ bản dịch][docs-tutorial]
 
@@ -116,11 +109,11 @@ Tiết kiệm tới 70% chi phí API bằng cách gom yêu cầu thông minh. Tr
 
 Hệ thống có cơ chế retry với exponential backoff và tự động fallback về yêu cầu riêng lẻ nếu xử lý theo lô thất bại.
 
-### 🤖 [Hơn 20 nhà cung cấp AI][docs-tutorial]
+### 🤖 [Dịch AI tích hợp][docs-tutorial]
 
-Kết nối với hơn 20 nhà cung cấp AI qua Vercel AI SDK: OpenAI, DeepSeek, Anthropic Claude, Google Gemini, xAI Grok, Groq, Mistral, Ollama và nhiều hơn nữa. Bạn có thể cấu hình endpoint, API key và model cho từng nhà cung cấp.
+Đăng nhập và dịch ngay — không cần mang theo khóa API của riêng bạn. Dịch vụ dịch AI tích hợp của Translatebuff tự động cấp khóa cho bạn và cung cấp nhiều mô hình AI, để bạn chọn mô hình phù hợp cho từng tính năng.
 
-Ngoài ra còn có các lựa chọn dịch miễn phí như Google Translate, Microsoft Translate và DeepLX cho nhu cầu dịch cơ bản.
+Cũng có sẵn dịch tiêu chuẩn qua Google Translate và Microsoft Translate.
 
 <div align="right">
 
