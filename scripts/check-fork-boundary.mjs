@@ -19,6 +19,8 @@ export function classifyChangedFiles(changed, allowlist) {
     if (f.startsWith("src/fork/")) return false
     if (f.startsWith("scripts/") || f.startsWith("docs/")) return false
     if (f.startsWith("openspec/") || f.startsWith(".github/")) return false
+    // fork 接管的 README（去品牌化后 fork 独占、同步 take-ours）：上游有同名文件但内容归 fork
+    if (f === "README.md" || f.startsWith("readmes/")) return false
     if (FORK_ROOT_FILES.has(f)) return false
     return !allow.has(f)
   })

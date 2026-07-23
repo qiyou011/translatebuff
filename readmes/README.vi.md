@@ -2,40 +2,13 @@
 
 [![Translatebuff][image-banner]][website]
 
-<p align="center">
-  <a href="https://trendshift.io/repositories/22377" target="_blank"><img src="https://trendshift.io/api/badge/repositories/22377" alt="mengxi-ream%2Fread-frog | Trendshift" width="250" height="55" /></a>
-  <a href="https://www.star-history.com/mengxi-ream/read-frog">
-    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/badge?repo=mengxi-ream/read-frog&theme=dark" />
-      <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/badge?repo=mengxi-ream/read-frog" />
-      <img alt="Star History Rank" src="https://api.star-history.com/badge?repo=mengxi-ream/read-frog" width="260" height="55" />
-    </picture>
-  </a>
-</p>
-
 Một tiện ích mở rộng trình duyệt mã nguồn mở hỗ trợ học ngôn ngữ bằng AI.<br/>
 Hỗ trợ dịch nhập vai, phân tích bài viết, nhiều mô hình AI và nhiều tính năng khác.<br/>
 Học ngôn ngữ dễ hơn và sâu hơn ngay trong trình duyệt của bạn.
 
 [![English][english-shield]](../README.md) [![简体中文][chinese-shield]](./README.zh-CN.md) [![繁體中文][traditional-chinese-shield]](./README.zh-TW.md) [![日本語][japanese-shield]](./README.ja.md) [![한국어][korean-shield]](./README.ko.md) [![Español][spanish-shield]](./README.es.md) [![Русский][russian-shield]](./README.ru.md) [![Türkçe][turkish-shield]](./README.tr.md) [![Tiếng Việt][vietnamese-shield]](./README.vi.md)
 
-[Trang chính thức](https://www.translatebuff.com) · [Hướng dẫn](https://www.translatebuff.com/docs) · [Nhật ký phát hành][github-release-link] · [Blog](https://www.translatebuff.com/blog)
-
-<!-- SHIELD GROUP -->
-
-[![Latest Version badge][extension-release-shield]][github-release-link]
-[![Chrome Version badge][chrome-version-shield]][chrome-store-link]
-[![Edge Version badge][edge-version-shield]][edge-store-link]
-[![Firefox Version badge][firefox-version-shield]][firefox-store-link]<br/>
-[![Discord badge][discord-shield]][discord-link]
-[![Chrome Users badge][chrome-users-shield]][chrome-store-link]
-[![Edge Users badge][edge-users-shield]][edge-store-link]
-[![Firefox Users badge][firefox-users-shield]][firefox-store-link]<br/>
-[![Stars badge][star-history-shield]][star-history-link]
-[![Contributors badge][contributors-shield]][contributors-link]
-![Last Commit badge][last-commit-shield]
-[![Issues badge][issues-shield]][issues-link]<br/>
-[![Sponsor badge][sponsor-shield]][sponsor-link]
+[Trang chính thức][website] · [Hướng dẫn][docs-tutorial] · [Blog][blog]
 
 </div>
 
@@ -49,6 +22,8 @@ Học ngôn ngữ dễ hơn và sâu hơn ngay trong trình duyệt của bạn.
   - [Tải xuống](#tải-xuống)
   - [Cộng đồng](#cộng-đồng)
 - [✨ Tính năng](#-tính-năng)
+  - [🪄 Hành động AI tùy chỉnh](#-hành-động-ai-tùy-chỉnh)
+  - [🧠 Thẻ ghi nhớ và lặp lại ngắt quãng](#-thẻ-ghi-nhớ-và-lặp-lại-ngắt-quãng)
   - [🔄 Song ngữ / Chỉ bản dịch](#-song-ngữ--chỉ-bản-dịch)
   - [✨ Dịch văn bản đã chọn](#-dịch-văn-bản-đã-chọn)
   - [🧠 Dịch theo ngữ cảnh](#-dịch-theo-ngữ-cảnh)
@@ -57,8 +32,7 @@ Học ngôn ngữ dễ hơn và sâu hơn ngay trong trình duyệt của bạn.
   - [📦 Yêu cầu theo lô](#-yêu-cầu-theo-lô)
   - [🤖 Hơn 20 nhà cung cấp AI](#-hơn-20-nhà-cung-cấp-ai)
 - [🤝 Đóng góp](#-đóng-góp)
-- [📜 Cấp phép thương mại](#-cấp-phép-thương-mại)
-- [❤️ Nhà tài trợ](#️-nhà-tài-trợ)
+  - [Đóng góp mã nguồn](#đóng-góp-mã-nguồn)
 
 <br/>
 
@@ -75,42 +49,22 @@ Học ngôn ngữ dễ hơn và sâu hơn ngay trong trình duyệt của bạn.
 
 Tầm nhìn của Translatebuff là mang đến trải nghiệm học ngôn ngữ dễ dùng, thông minh và cá nhân hóa cho người học ở mọi trình độ. Trong thời đại AI, điều này đã trở nên khả thi, nhưng vẫn chưa có nhiều sản phẩm đáp ứng tốt nhu cầu đó. Vì vậy chúng tôi quyết định tự xây dựng.
 
-Dù bạn là người dùng hay nhà phát triển, Translatebuff có thể là một phần quan trọng trong hành trình này. Dự án đang được phát triển tích cực, và mọi phản hồi hoặc [vấn đề][issues-link] đều được hoan nghênh.
+Dù bạn là người dùng hay nhà phát triển, Translatebuff có thể là một phần quan trọng trong hành trình này. Dự án đang được phát triển tích cực, và mọi phản hồi hoặc vấn đề đều được hoan nghênh.
 
 ### Tải xuống
 
-| Trình duyệt | Phiên bản                                                              | Tải xuống                                                                    |
-| ----------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
-| Chrome      | [![Chrome Version badge][chrome-version-shield]][chrome-store-link]    | [Chrome Web Store][chrome-store-link] hoặc [mirror Trung Quốc][crxsoso-link] |
-| Edge        | [![Edge Version badge][edge-version-shield]][edge-store-link]          | [Microsoft Edge Addons][edge-store-link]                                     |
-| Firefox     | [![Firefox Version badge][firefox-version-shield]][firefox-store-link] | [Firefox Add-ons][firefox-store-link]                                        |
+> Danh sách trên các cửa hàng trình duyệt sắp ra mắt. Hiện tại, hãy tải Translatebuff từ trang chính thức: **[translatebuff.cn][website]**
+
+| Trình duyệt | Tải xuống                   |
+| ----------- | --------------------------- |
+| Chrome      | [Trang chính thức][website] |
+| Edge        | [Trang chính thức][website] |
+| Firefox     | [Trang chính thức][website] |
 
 ### Cộng đồng
 
-| [![Discord badge][discord-shield-badge]][discord-link] | Đặt câu hỏi và kết nối với nhà phát triển trên Discord.             |
-| :----------------------------------------------------- | :------------------------------------------------------------------ |
-| [![WeChat badge][wechat-shield-badge]][wechat-link]    | Nếu bạn ở Trung Quốc đại lục, bạn cũng có thể tham gia nhóm WeChat. |
-
-> \[!IMPORTANT]
->
-> **⭐️ Hãy star dự án**, bạn sẽ nhận thông báo phát hành từ GitHub mà không bị chậm trễ.
-
-[![Translatebuff][image-star]][website]
-
-<details>
-<summary>
-  <kbd>Lịch sử star</kbd>
-</summary>
-
-<a href="https://www.star-history.com/?type=timeline&repos=mengxi-ream%2Fread-frog">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=mengxi-ream/read-frog&type=timeline&theme=dark&legend=top-left&sealed_token=vUW24BwE2sgnq-CzlWEAT6gnzZqNrXl9ai4A05Pc3CQcPGdBqbts3tq5VRWEerfrqVdonsJasb04WcKd5AKSSCjlsdj_TwyI3j9xytMG4FQNw7yXDe9IUA" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=mengxi-ream/read-frog&type=timeline&legend=top-left&sealed_token=vUW24BwE2sgnq-CzlWEAT6gnzZqNrXl9ai4A05Pc3CQcPGdBqbts3tq5VRWEerfrqVdonsJasb04WcKd5AKSSCjlsdj_TwyI3j9xytMG4FQNw7yXDe9IUA" />
-   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=mengxi-ream/read-frog&type=timeline&legend=top-left&sealed_token=vUW24BwE2sgnq-CzlWEAT6gnzZqNrXl9ai4A05Pc3CQcPGdBqbts3tq5VRWEerfrqVdonsJasb04WcKd5AKSSCjlsdj_TwyI3j9xytMG4FQNw7yXDe9IUA" />
- </picture>
-</a>
-
-</details>
+| [![WeChat badge][wechat-shield-badge]][wechat-link] | Nếu bạn ở Trung Quốc đại lục, bạn cũng có thể tham gia nhóm WeChat. |
+| :-------------------------------------------------- | :------------------------------------------------------------------ |
 
 ## ✨ Tính năng
 
@@ -179,42 +133,14 @@ Ngoài ra còn có các lựa chọn dịch miễn phí như Google Translate, M
 Mọi hình thức đóng góp đều được hoan nghênh.
 
 1. Giới thiệu Translatebuff cho bạn bè và gia đình.
-2. Báo cáo [issue][issues-link] và gửi phản hồi.
+2. Báo cáo issue và gửi phản hồi.
 3. Đóng góp mã nguồn.
 
 ### Đóng góp mã nguồn
 
-Cấu trúc dự án: [DeepWiki](https://deepwiki.com/mengxi-ream/read-frog)
-
-Yêu cầu AI hiểu dự án: [Dosu](https://app.dosu.dev/29569286-71ba-47dd-b038-c7ab1b9d0df7/documents)
-
-Xem [Contribution Guide](https://www.translatebuff.com/en/docs/code-contribution/contribution-guide) để biết thêm chi tiết.
-
-ReadFrog được cấp phép kép theo GPLv3 và giấy phép thương mại.
+Xem [Contribution Guide][docs-tutorial] để biết thêm chi tiết.
 
 Điều khoản cấp phép cho người đóng góp nằm trong [CONTRIBUTING.md](../CONTRIBUTING.md).
-
-<a href="https://github.com/mengxi-ream/read-frog/graphs/contributors">
-  <table>
-    <tr>
-      <th colspan="2">
-        <br>
-        <img src="https://contrib.rocks/image?repo=mengxi-ream/read-frog" alt="Translatebuff contributors"><br>
-        <br>
-      </th>
-    </tr>
-  </table>
-</a>
-
-## 📜 Cấp phép thương mại
-
-<img src="../assets/tabbit.avif" alt="Tabbit" height="20" /> **Meituan Tabbit Browser Team**: giấy phép miễn phí cho sử dụng thương mại mã nguồn đóng, giới hạn ở v1.21.3 và các phiên bản trước đó (commit [`724863f`](https://github.com/mengxi-ream/read-frog/commit/724863fdbc2d777766cada6c111235534ee03ca0)). Được cấp vào 9:00 sáng ngày 3 tháng 3 năm 2026, giờ Vancouver (UTC-8).
-
-## ❤️ Nhà tài trợ
-
-Mỗi khoản đóng góp giúp chúng tôi xây dựng trải nghiệm học ngôn ngữ tốt hơn. Cảm ơn bạn đã ủng hộ sứ mệnh của chúng tôi.
-
-[![Sponsors][sponsor-image]][sponsor-link]
 
 <div align="right">
 
@@ -225,47 +151,21 @@ Mỗi khoản đóng góp giúp chúng tôi xây dựng trải nghiệm học ng
 <!-- LINK GROUP -->
 
 [back-to-top]: https://img.shields.io/badge/-BACK_TO_TOP-151515?style=flat-square
-[chrome-store-link]: https://chromewebstore.google.com/detail/read-frog-open-source-ai/modkelfkcfjpgbfmnbnllalkiogfofhb
-[chrome-users-shield]: https://img.shields.io/chrome-web-store/users/modkelfkcfjpgbfmnbnllalkiogfofhb?style=flat-square&label=Chrome%20Users&color=yellow&labelColor=black
-[chrome-version-shield]: https://img.shields.io/chrome-web-store/v/modkelfkcfjpgbfmnbnllalkiogfofhb?style=flat-square&label=Chrome%20Version&labelColor=black&color=yellow
-[contributors-link]: https://github.com/mengxi-ream/read-frog/graphs/contributors
-[contributors-shield]: https://img.shields.io/github/contributors/mengxi-ream/read-frog?style=flat-square&labelColor=black
-[crxsoso-link]: https://www.crxsoso.com/webstore/detail/modkelfkcfjpgbfmnbnllalkiogfofhb
 [chinese-shield]: https://img.shields.io/badge/%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87-gray?style=flat-square
-[discord-link]: https://discord.gg/ej45e3PezJ
-[discord-shield]: https://img.shields.io/discord/1371229720942874646?style=flat-square&label=Discord&logo=discord&logoColor=white&color=5865F2&labelColor=black
-[discord-shield-badge]: https://img.shields.io/badge/chat-Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white&labelColor=black
-[edge-store-link]: https://microsoftedge.microsoft.com/addons/detail/read-frog-open-source-a/cbcbomlgikfbdnoaohcjfledcoklcjbo
 [english-shield]: https://img.shields.io/badge/English-gray?style=flat-square
-[firefox-store-link]: https://addons.mozilla.org/firefox/addon/read-frog-open-ai-translator/
-[firefox-version-shield]: https://img.shields.io/amo/v/read-frog-open-ai-translator?style=flat-square&label=Firefox%20Version&labelColor=black&color=orange
-[firefox-users-shield]: https://img.shields.io/amo/users/read-frog-open-ai-translator?style=flat-square&label=Firefox%20Users&color=orange&labelColor=black
-[edge-users-shield]: https://img.shields.io/badge/dynamic/json?style=flat-square&logo=microsoft-edge&label=Edge%20Users&query=%24.activeInstallCount&url=https%3A%2F%2Fmicrosoftedge.microsoft.com%2Faddons%2Fgetproductdetailsbycrxid%2Fcbcbomlgikfbdnoaohcjfledcoklcjbo&labelColor=black
-[edge-version-shield]: https://img.shields.io/badge/dynamic/json?style=flat-square&logo=microsoft-edge&label=Edge%20Version&query=%24.version&url=https%3A%2F%2Fmicrosoftedge.microsoft.com%2Faddons%2Fgetproductdetailsbycrxid%2Fcbcbomlgikfbdnoaohcjfledcoklcjbo&labelColor=black&prefix=v
-[extension-release-shield]: https://img.shields.io/github/package-json/v/mengxi-ream/read-frog?filename=package.json&style=flat-square&label=Latest%20Version&color=brightgreen&labelColor=black
-[github-release-link]: https://github.com/mengxi-ream/read-frog/releases
-[github-star-link]: https://github.com/mengxi-ream/read-frog/stargazers
 [image-banner]: ../assets/renyimiao-icon.svg
-[image-star]: ../assets/renyimiao-icon.svg
-[issues-link]: https://github.com/mengxi-ream/read-frog/issues
-[issues-shield]: https://img.shields.io/github/issues/mengxi-ream/read-frog?style=flat-square&labelColor=black
 [japanese-shield]: https://img.shields.io/badge/%E6%97%A5%E6%9C%AC%E8%AA%9E-gray?style=flat-square
 [korean-shield]: https://img.shields.io/badge/%ED%95%9C%EA%B5%AD%EC%96%B4-gray?style=flat-square
-[last-commit-shield]: https://img.shields.io/github/last-commit/mengxi-ream/read-frog?style=flat-square&label=commit&labelColor=black
 [russian-shield]: https://img.shields.io/badge/%D0%A0%D1%83%D1%81%D1%81%D0%BA%D0%B8%D0%B9-gray?style=flat-square
-[sponsor-image]: https://cdn.jsdelivr.net/gh/mengxi-ream/static/sponsorkit/sponsors.svg
-[sponsor-link]: https://github.com/sponsors/mengxi-ream
-[sponsor-shield]: https://img.shields.io/github/sponsors/mengxi-ream?style=flat-square&label=Sponsor&color=EA4AAA&labelColor=black
 [spanish-shield]: https://img.shields.io/badge/Espa%C3%B1ol-gray?style=flat-square
-[star-history-link]: https://www.star-history.com/#mengxi-ream/read-frog&Timeline
-[star-history-shield]: https://img.shields.io/github/stars/mengxi-ream/read-frog?style=flat-square&label=stars&color=yellow&labelColor=black
 [traditional-chinese-shield]: https://img.shields.io/badge/%E7%B9%81%E9%AB%94%E4%B8%AD%E6%96%87-gray?style=flat-square
 [turkish-shield]: https://img.shields.io/badge/T%C3%BCrk%C3%A7e-gray?style=flat-square
 [vietnamese-shield]: https://img.shields.io/badge/Ti%E1%BA%BFng%20Vi%E1%BB%87t-gray?style=flat-square
-[website]: https://www.translatebuff.com
-[wechat-link]: https://www.translatebuff.com
+[wechat-link]: https://translatebuff.cn
 [wechat-shield-badge]: https://img.shields.io/badge/chat-WeChat-07C160?style=for-the-badge&logo=wechat&logoColor=white&labelColor=black
+[website]: https://translatebuff.cn
 
 <!-- Feature docs link -->
 
-[docs-tutorial]: https://www.translatebuff.com/docs
+[docs-tutorial]: https://translatebuff.cn/docs
+[blog]: https://translatebuff.cn/blog

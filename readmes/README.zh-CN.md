@@ -2,40 +2,13 @@
 
 [![任译喵][image-banner]][website]
 
-<p align="center">
-  <a href="https://trendshift.io/repositories/22377" target="_blank"><img src="https://trendshift.io/api/badge/repositories/22377" alt="mengxi-ream%2Fread-frog | Trendshift" width="250" height="55" /></a>
-  <a href="https://www.star-history.com/mengxi-ream/read-frog">
-    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/badge?repo=mengxi-ream/read-frog&theme=dark" />
-      <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/badge?repo=mengxi-ream/read-frog" />
-      <img alt="Star History Rank" src="https://api.star-history.com/badge?repo=mengxi-ream/read-frog" width="260" height="55" />
-    </picture>
-  </a>
-</p>
-
 一款开源的 AI 驱动的浏览器语言学习扩展。<br/>
 支持沉浸式翻译、文章分析、多种 AI 模型等功能。<br/>
 在浏览器中利用 AI 轻松深入地掌握语言。
 
 [![English][english-shield]](../README.md) [![简体中文][chinese-shield]](./README.zh-CN.md) [![繁體中文][traditional-chinese-shield]](./README.zh-TW.md) [![日本語][japanese-shield]](./README.ja.md) [![한국어][korean-shield]](./README.ko.md) [![Español][spanish-shield]](./README.es.md) [![Русский][russian-shield]](./README.ru.md) [![Türkçe][turkish-shield]](./README.tr.md) [![Tiếng Việt][vietnamese-shield]](./README.vi.md)
 
-[官方网站](https://www.translatebuff.com) · [教程](https://www.translatebuff.com/zh/docs) · [更新日志][github-release-link] · [博客](https://www.translatebuff.com/zh/blog)
-
-<!-- SHIELD GROUP -->
-
-[![Release version badge][extension-release-shield]][github-release-link]
-[![Chrome version badge][chrome-version-shield]][chrome-store-link]
-[![Edge version badge][edge-version-shield]][edge-store-link]
-[![Firefox version badge][firefox-version-shield]][firefox-store-link]<br/>
-[![Discord badge][discord-shield]][discord-link]
-[![Chrome users badge][chrome-users-shield]][chrome-store-link]
-[![Edge users badge][edge-users-shield]][edge-store-link]
-[![Firefox users badge][firefox-users-shield]][firefox-store-link]<br/>
-[![Stars badge][star-history-shield]][star-history-link]
-[![Contributors badge][contributors-shield]][contributors-link]
-![Last commit badge][last-commit-shield]
-[![Issues badge][issues-shield]][issues-link]<br/>
-[![Sponsor badge][sponsor-shield]][sponsor-link]
+[官方网站][website] · [教程][docs-tutorial] · [博客][blog]
 
 </div>
 
@@ -58,8 +31,6 @@
   - [🤖 20+ AI 服务商](#-20-ai-服务商)
 - [🤝 贡献](#-贡献)
   - [贡献代码](#贡献代码)
-- [📜 商业授权](#-商业授权)
-- [❤️ 赞助者](#️-赞助者)
 
 <br/>
 
@@ -76,48 +47,22 @@
 
 任译喵 的愿景是为各个级别的语言学习者提供易于使用、智能化和个性化的语言学习体验。这在 AI 时代已成为可能，但市场上很少有产品满足这一需求。因此，我们决定自己动手，最终让世界不再依赖人类语言教师。
 
-无论您是用户还是开发者，任译喵 都将是您实现这一愿景的方式。请注意，任译喵 目前正在积极开发中，欢迎对遇到的任何[问题][issues-link]提供反馈。
+无论您是用户还是开发者，任译喵 都将是您实现这一愿景的方式。请注意，任译喵 目前正在积极开发中，欢迎对遇到的任何问题提供反馈。
 
 ### 下载
 
-| 浏览器  | 版本                                                                   | 下载                                                             |
-| ------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------- |
-| Chrome  | [![Chrome version badge][chrome-version-shield]][chrome-store-link]    | [Chrome 应用商店][chrome-store-link] 或 [中国镜像][crxsoso-link] |
-| Edge    | [![Edge version badge][edge-version-shield]][edge-store-link]          | [Microsoft Edge 插件商店][edge-store-link]                       |
-| Firefox | [![Firefox version badge][firefox-version-shield]][firefox-store-link] | [Firefox 附加组件][firefox-store-link]                           |
+> 浏览器商店正在上架中。目前请从官方网站获取 任译喵：**[translatebuff.cn][website]**
+
+| 浏览器  | 下载                |
+| ------- | ------------------- |
+| Chrome  | [官方网站][website] |
+| Edge    | [官方网站][website] |
+| Firefox | [官方网站][website] |
 
 ### 社区
 
-| [![Discord badge][discord-shield-badge]][discord-link] | 在 Discord 中提问，与开发者交流。              |
-| :----------------------------------------------------- | :--------------------------------------------- |
-| [![WeChat badge][wechat-shield-badge]][wechat-link]    | 如果您在中国大陆，可以添加微信账号加入微信群。 |
-
-> \[!IMPORTANT]
->
-> **⭐️ 给我们点星**, 您将及时收到来自 GitHub 的所有发布通知 \~
-
-[![任译喵][image-star]][website]
-
-<details>
-<summary>
-  <kbd>Star 历史</kbd>
-</summary>
-
-<a href="https://www.star-history.com/?type=timeline&repos=mengxi-ream%2Fread-frog">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=mengxi-ream/read-frog&type=timeline&theme=dark&legend=top-left&sealed_token=vUW24BwE2sgnq-CzlWEAT6gnzZqNrXl9ai4A05Pc3CQcPGdBqbts3tq5VRWEerfrqVdonsJasb04WcKd5AKSSCjlsdj_TwyI3j9xytMG4FQNw7yXDe9IUA" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=mengxi-ream/read-frog&type=timeline&legend=top-left&sealed_token=vUW24BwE2sgnq-CzlWEAT6gnzZqNrXl9ai4A05Pc3CQcPGdBqbts3tq5VRWEerfrqVdonsJasb04WcKd5AKSSCjlsdj_TwyI3j9xytMG4FQNw7yXDe9IUA" />
-   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=mengxi-ream/read-frog&type=timeline&legend=top-left&sealed_token=vUW24BwE2sgnq-CzlWEAT6gnzZqNrXl9ai4A05Pc3CQcPGdBqbts3tq5VRWEerfrqVdonsJasb04WcKd5AKSSCjlsdj_TwyI3j9xytMG4FQNw7yXDe9IUA" />
- </picture>
-</a>
-
-</details>
-
-<div align="right">
-
-[![Back to top][back-to-top]](#readme-top)
-
-</div>
+| [![WeChat badge][wechat-shield-badge]][wechat-link] | 如果您在中国大陆，可以添加微信账号加入微信群。 |
+| :-------------------------------------------------- | :--------------------------------------------- |
 
 ## ✨ 功能
 
@@ -248,66 +193,14 @@
 我们欢迎各种类型的贡献。
 
 1. 向您的朋友和家人推广 任译喵。
-2. 报告[问题][issues-link]和反馈。
+2. 报告问题和反馈。
 3. 贡献代码。
 
 ### 贡献代码
 
-通过 AI 了解项目：[DeepWiki](https://deepwiki.com/mengxi-ream/read-frog)
-
-查看[贡献指南](https://www.translatebuff.com/zh/docs/code-contribution/contribution-guide)了解更多详情。
-
-ReadFrog 采用 GPLv3 和商业许可双重授权。
+查看[贡献指南](https://translatebuff.cn/zh/docs/code-contribution/contribution-guide)了解更多详情。
 
 贡献者许可条款请参阅 [CONTRIBUTING.md](../CONTRIBUTING.md)。
-
-<a href="https://github.com/mengxi-ream/read-frog/graphs/contributors">
-  <table>
-    <tr>
-      <th colspan="2">
-        <br>
-        <img src="https://contrib.rocks/image?repo=mengxi-ream/read-frog" alt="Contributors"><br>
-        <br>
-      </th>
-    </tr>
-    <!-- <tr>
-      <td>
-        <picture>
-          <source media="(prefers-color-scheme: dark)" srcset="https://next.ossinsight.io/widgets/official/compose-recent-top-contributors/thumbnail.png?repo_id=967738751&image_size=auto&color_scheme=dark" width="373" height="auto">
-          <img alt="Top Contributors of mengxi-ream/read-frog - Last 28 days" src="https://next.ossinsight.io/widgets/official/compose-recent-top-contributors/thumbnail.png?repo_id=967738751&image_size=auto&color_scheme=light" width="373" height="auto">
-        </picture>
-      </td>
-      <td rowspan="2">
-        <picture>
-          <source media="(prefers-color-scheme: dark)" srcset="https://next.ossinsight.io/widgets/official/compose-last-28-days-stats/thumbnail.png?repo_id=967738751&image_size=4x7&color_scheme=dark" width="655" height="auto">
-          <img alt="Performance Stats of mengxi-ream/read-frog - Last 28 days" src="https://next.ossinsight.io/widgets/official/compose-last-28-days-stats/thumbnail.png?repo_id=967738751&image_size=auto&color_scheme=light" width="655" height="auto">
-        </picture>
-      </td>
-    </tr> -->
-  </table>
-</a>
-
-<div align="right">
-
-[![Back to top][back-to-top]](#readme-top)
-
-</div>
-
-## 📜 商业授权
-
-<img src="../assets/tabbit.avif" alt="Tabbit" height="20" /> **美团 Tabbit 浏览器团队**：**免费**授权闭源商业使用，授权范围限于 v1.21.3 及之前的版本（commit [`724863f`](https://github.com/mengxi-ream/read-frog/commit/724863fdbc2d777766cada6c111235534ee03ca0)）。授权日期：2026 年 3 月 3 日上午 9:00（温哥华时间，UTC-8）。
-
-<div align="right">
-
-[![Back to top][back-to-top]](#readme-top)
-
-</div>
-
-## ❤️ 赞助者
-
-每一笔捐赠都帮助我们构建更好的语言学习体验。感谢您支持我们的使命！
-
-[![Sponsors][sponsor-image]][sponsor-link]
 
 <div align="right">
 
@@ -318,47 +211,21 @@ ReadFrog 采用 GPLv3 和商业许可双重授权。
 <!-- LINK GROUP -->
 
 [back-to-top]: https://img.shields.io/badge/-回到顶部-151515?style=flat-square
-[chrome-store-link]: https://chromewebstore.google.com/detail/read-frog-open-source-ai/modkelfkcfjpgbfmnbnllalkiogfofhb
-[chrome-users-shield]: https://img.shields.io/chrome-web-store/users/modkelfkcfjpgbfmnbnllalkiogfofhb?style=flat-square&label=Chrome%20用户&color=yellow&labelColor=black
-[chrome-version-shield]: https://img.shields.io/chrome-web-store/v/modkelfkcfjpgbfmnbnllalkiogfofhb?style=flat-square&label=Chrome%20版本&labelColor=black&color=yellow
-[contributors-link]: https://github.com/mengxi-ream/read-frog/graphs/contributors
-[contributors-shield]: https://img.shields.io/github/contributors/mengxi-ream/read-frog?style=flat-square&labelColor=black
-[crxsoso-link]: https://www.crxsoso.com/webstore/detail/modkelfkcfjpgbfmnbnllalkiogfofhb
 [chinese-shield]: https://img.shields.io/badge/%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87-gray?style=flat-square
-[discord-link]: https://discord.gg/ej45e3PezJ
-[discord-shield]: https://img.shields.io/discord/1371229720942874646?style=flat-square&label=Discord&logo=discord&logoColor=white&color=5865F2&labelColor=black
-[discord-shield-badge]: https://img.shields.io/badge/聊天-Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white&labelColor=black
-[edge-store-link]: https://microsoftedge.microsoft.com/addons/detail/read-frog-open-source-a/cbcbomlgikfbdnoaohcjfledcoklcjbo
 [english-shield]: https://img.shields.io/badge/English-gray?style=flat-square
-[firefox-store-link]: https://addons.mozilla.org/firefox/addon/read-frog-open-ai-translator/
-[firefox-version-shield]: https://img.shields.io/amo/v/read-frog-open-ai-translator?style=flat-square&label=Firefox%20版本&labelColor=black&color=orange
-[firefox-users-shield]: https://img.shields.io/amo/users/read-frog-open-ai-translator?style=flat-square&label=Firefox%20用户&color=orange&labelColor=black
-[edge-users-shield]: https://img.shields.io/badge/dynamic/json?style=flat-square&logo=microsoft-edge&label=Edge%20用户&query=%24.activeInstallCount&url=https%3A%2F%2Fmicrosoftedge.microsoft.com%2Faddons%2Fgetproductdetailsbycrxid%2Fcbcbomlgikfbdnoaohcjfledcoklcjbo&labelColor=black
-[edge-version-shield]: https://img.shields.io/badge/dynamic/json?style=flat-square&logo=microsoft-edge&label=Edge%20版本&query=%24.version&url=https%3A%2F%2Fmicrosoftedge.microsoft.com%2Faddons%2Fgetproductdetailsbycrxid%2Fcbcbomlgikfbdnoaohcjfledcoklcjbo&labelColor=black&prefix=v
-[extension-release-shield]: https://img.shields.io/github/package-json/v/mengxi-ream/read-frog?filename=package.json&style=flat-square&label=最新版本&color=brightgreen&labelColor=black
-[github-release-link]: https://github.com/mengxi-ream/read-frog/releases
-[github-star-link]: https://github.com/mengxi-ream/read-frog/stargazers
 [image-banner]: ../assets/renyimiao-icon.svg
-[sponsor-image]: https://cdn.jsdelivr.net/gh/mengxi-ream/static/sponsorkit/sponsors.svg
-[image-star]: ../assets/renyimiao-icon.svg
-[issues-link]: https://github.com/mengxi-ream/read-frog/issues
-[issues-shield]: https://img.shields.io/github/issues/mengxi-ream/read-frog?style=flat-square&labelColor=black
 [japanese-shield]: https://img.shields.io/badge/%E6%97%A5%E6%9C%AC%E8%AA%9E-gray?style=flat-square
 [korean-shield]: https://img.shields.io/badge/%ED%95%9C%EA%B5%AD%EC%96%B4-gray?style=flat-square
-[last-commit-shield]: https://img.shields.io/github/last-commit/mengxi-ream/read-frog?style=flat-square&label=commit&labelColor=black
 [russian-shield]: https://img.shields.io/badge/%D0%A0%D1%83%D1%81%D1%81%D0%BA%D0%B8%D0%B9-gray?style=flat-square
-[sponsor-link]: https://github.com/sponsors/mengxi-ream
-[sponsor-shield]: https://img.shields.io/github/sponsors/mengxi-ream?style=flat-square&label=赞助&color=EA4AAA&labelColor=black
 [spanish-shield]: https://img.shields.io/badge/Espa%C3%B1ol-gray?style=flat-square
-[star-history-link]: https://www.star-history.com/#mengxi-ream/read-frog&Timeline
-[star-history-shield]: https://img.shields.io/github/stars/mengxi-ream/read-frog?style=flat-square&label=stars&color=yellow&labelColor=black
 [traditional-chinese-shield]: https://img.shields.io/badge/%E7%B9%81%E9%AB%94%E4%B8%AD%E6%96%87-gray?style=flat-square
 [turkish-shield]: https://img.shields.io/badge/T%C3%BCrk%C3%A7e-gray?style=flat-square
 [vietnamese-shield]: https://img.shields.io/badge/Ti%E1%BA%BFng%20Vi%E1%BB%87t-gray?style=flat-square
-[website]: https://www.translatebuff.com
-[wechat-link]: https://www.translatebuff.com
+[wechat-link]: https://translatebuff.cn
 [wechat-shield-badge]: https://img.shields.io/badge/聊天-微信-07C160?style=for-the-badge&logo=wechat&logoColor=white&labelColor=black
+[website]: https://translatebuff.cn
 
 <!-- Feature docs link -->
 
-[docs-tutorial]: https://www.translatebuff.com/zh/docs
+[docs-tutorial]: https://translatebuff.cn/zh/docs
+[blog]: https://translatebuff.cn/zh/blog
