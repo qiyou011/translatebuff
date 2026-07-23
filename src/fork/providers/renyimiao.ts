@@ -178,7 +178,15 @@ function buildRepointPatch(
 ): Partial<Config> {
   const patch: Partial<Config> = { ...buildFeatureProviderPatch(reassignments) }
   if (customActionsChanged) {
-    patch.selectionToolbar = { ...config.selectionToolbar, customActions: nextCustomActions }
+    // 只合入 customActions delta，保留 buildFeatureProviderPatch 已写入 patch.selectionToolbar.features
+    // 的 repoint；绝不用 { ...config.selectionToolbar } 整体覆盖——那会把 selectionToolbar.translate
+    // 的 repoint 盖回旧值（指向已移除实例），与自定义动作同时 repoint 时静默丢掉划词翻译的 repoint。
+    // 深 partial 补丁（同 buildFeatureProviderPatch 约定）：仅 features repoint + customActions，
+    // 由写入时的 mergeWithArrayOverwrite 深合并落地（features.speak / translate.enabled 等原样保留）。
+    patch.selectionToolbar = {
+      ...patch.selectionToolbar,
+      customActions: nextCustomActions,
+    } as Config["selectionToolbar"]
   }
   return patch
 }

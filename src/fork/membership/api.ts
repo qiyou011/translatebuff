@@ -84,6 +84,11 @@ async function authedGet(
   if (res.status === 401) {
     throw new MembershipUnauthorizedError()
   }
+  // 非 2xx（401 之外的 500/403/429…）不得当成功解析：否则 login_status 的服务器错误被误判为登录成功、
+  // 写出空手机号幽灵会话；/v1/tokens 被当成「开户未完成」静默卡「正在获取密钥」。与 fetchGatewayModels 状态守卫同构。
+  if (res.status < 200 || res.status >= 300) {
+    throw new Error(await extractErrorMessage(res))
+  }
   return unwrap(await res.json())
 }
 

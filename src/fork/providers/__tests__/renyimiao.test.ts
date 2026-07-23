@@ -137,6 +137,29 @@ describe("syncRenyimiaoModels（以 fetch 结果为准重建实例集）", () =>
     const next = applyPatch(config, patch)
     expect(next.translate.providerId).toBe(renyimiaoInstanceId("GLM-5.2"))
   })
+
+  it("划词工具栏翻译功能与自定义动作同时指向被移除实例：翻译 repoint 不被自定义动作补丁覆盖", () => {
+    // seed 后词典自定义动作已指向 DEEPSEEK_ID；再让划词工具栏翻译功能也指向它 → 构造共现（两者同触发 repoint）。
+    const seeded = seededConfig()
+    const config: Config = {
+      ...seeded,
+      selectionToolbar: {
+        ...seeded.selectionToolbar,
+        features: {
+          ...seeded.selectionToolbar.features,
+          translate: { ...seeded.selectionToolbar.features.translate, providerId: DEEPSEEK_ID },
+        },
+      },
+    }
+    const survivor = renyimiaoInstanceId("GLM-5.2")
+    const next = applyPatch(config, syncRenyimiaoModels(config, ["GLM-5.2"]))
+    // 划词翻译 repoint 到存活实例（bug 时被 { ...config.selectionToolbar } 覆盖盖回被移除的 DEEPSEEK_ID）。
+    expect(next.selectionToolbar.features.translate.providerId).toBe(survivor)
+    // 共现的另一半：自定义动作也已 repoint，不再指向被移除实例。
+    expect(
+      next.selectionToolbar.customActions.every((action) => action.providerId !== DEEPSEEK_ID),
+    ).toBe(true)
+  })
 })
 
 describe("共享 API Key 读写", () => {

@@ -79,6 +79,17 @@ describe("fetchLoginStatus（取用户信息）", () => {
     fetchMock.mockResolvedValue(jsonResponse(401, {}))
     await expect(fetchLoginStatus(CRED)).rejects.toBeInstanceOf(MembershipUnauthorizedError)
   })
+
+  it("非 2xx(如 500) 抛错、不误判为成功（防写出空手机号幽灵会话）", async () => {
+    // 服务端出错但回 JSON 错误信封：修前会被当成功解析成 {phone:"",user:错误体} 幽灵会话；修后应抛错。
+    fetchMock.mockResolvedValue({
+      status: 500,
+      statusText: "Server Error",
+      json: () => Promise.resolve({ data: null, error_msg: "boom" }),
+      text: () => Promise.resolve(""),
+    })
+    await expect(fetchLoginStatus(CRED)).rejects.toThrow(/500/)
+  })
 })
 
 describe("fetchTokens（取 sk_key）", () => {
@@ -106,6 +117,17 @@ describe("fetchTokens（取 sk_key）", () => {
   it("401 抛 MembershipUnauthorizedError", async () => {
     fetchMock.mockResolvedValue(jsonResponse(401, {}))
     await expect(fetchTokens(CRED)).rejects.toBeInstanceOf(MembershipUnauthorizedError)
+  })
+
+  it("非 2xx(如 503) 抛错、不当成 tokens 空（防静默卡「正在获取密钥」）", async () => {
+    // 修前 503 错误信封被 unwrap 成无 tokens 字段 → 当成「开户未完成」返回 null；修后应抛错。
+    fetchMock.mockResolvedValue({
+      status: 503,
+      statusText: "Unavailable",
+      json: () => Promise.resolve({ data: null, error_msg: "boom" }),
+      text: () => Promise.resolve(""),
+    })
+    await expect(fetchTokens(CRED)).rejects.toThrow(/503/)
   })
 })
 
