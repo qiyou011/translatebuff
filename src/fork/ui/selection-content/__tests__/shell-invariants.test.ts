@@ -63,3 +63,33 @@ describe("fork 翻译浮窗壳 · 不变量②：D4 三元组绑定（读 fork c
     })
   }
 })
+
+// 词典恢复（fork-dictionary-restore）：撤销临时齿轮、词典按钮回归；
+// 并要求词典 provider 引用过 fork 降级 helper（结构化输出 json_schema → json_object，适配任译喵网关）。
+describe("fork 翻译浮窗壳 · 词典入口回归（撤齿轮）", () => {
+  it("SelectionToolbar.tsx 不再含 default-dictionary 齿轮特例分支", () => {
+    const src = readShell("SelectionToolbar.tsx")
+    expect(src, "词典入口应回归、不再按 default-dictionary 特判换齿轮").not.toContain(
+      "default-dictionary",
+    )
+  })
+
+  it("SelectionToolbar.tsx 不再 import/使用齿轮组件", () => {
+    const src = readShell("SelectionToolbar.tsx")
+    expect(src).not.toContain("SettingsButton")
+  })
+
+  it("齿轮组件文件 SettingsButton.tsx 已删除", () => {
+    expect(existsSync(join(SHELL_DIR, "SettingsButton.tsx"))).toBe(false)
+  })
+})
+
+describe("fork 翻译浮窗壳 · 词典结构化降级接入", () => {
+  it("use-custom-action-controller.ts 已接入 withRenyimiaoJsonObjectFormat 降级 helper", () => {
+    const src = readShell("use-custom-action-controller.ts")
+    expect(
+      src,
+      "词典 provider 引用应过 fork 降级 helper（json_object），否则 deepseek 网关报 json_schema unavailable",
+    ).toContain("withRenyimiaoJsonObjectFormat")
+  })
+})
