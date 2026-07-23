@@ -34,6 +34,14 @@ describe("classifyChangedFiles", () => {
     expect(violations).toEqual([])
   })
 
+  it("放行 fork 接管的 README（去品牌化后 take-ours）——根 + readmes/ 本地化版", () => {
+    const { violations } = classifyChangedFiles(
+      ["README.md", "readmes/README.zh-CN.md", "readmes/README.ja.md"],
+      ALLOW,
+    )
+    expect(violations).toEqual([])
+  })
+
   it("放行 fork 修改的根配置 .gitignore", () => {
     const { violations } = classifyChangedFiles([".gitignore"], ALLOW)
     expect(violations).toEqual([])

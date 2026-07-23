@@ -2,40 +2,13 @@
 
 [![Translatebuff][image-banner]][website]
 
-<p align="center">
-  <a href="https://trendshift.io/repositories/22377" target="_blank"><img src="https://trendshift.io/api/badge/repositories/22377" alt="mengxi-ream%2Fread-frog | Trendshift" width="250" height="55" /></a>
-  <a href="https://www.star-history.com/mengxi-ream/read-frog">
-    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/badge?repo=mengxi-ream/read-frog&theme=dark" />
-      <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/badge?repo=mengxi-ream/read-frog" />
-      <img alt="Star History Rank" src="https://api.star-history.com/badge?repo=mengxi-ream/read-frog" width="260" height="55" />
-    </picture>
-  </a>
-</p>
-
 브라우저용 오픈소스 AI 언어 학습 확장 프로그램입니다.<br/>
 몰입형 번역, 문서 분석, 여러 AI 모델 등을 지원합니다.<br/>
 브라우저에서 AI와 함께 더 쉽고 깊게 언어를 학습하세요.
 
 [![English][english-shield]](../README.md) [![简体中文][chinese-shield]](./README.zh-CN.md) [![繁體中文][traditional-chinese-shield]](./README.zh-TW.md) [![日本語][japanese-shield]](./README.ja.md) [![한국어][korean-shield]](./README.ko.md) [![Español][spanish-shield]](./README.es.md) [![Русский][russian-shield]](./README.ru.md) [![Türkçe][turkish-shield]](./README.tr.md) [![Tiếng Việt][vietnamese-shield]](./README.vi.md)
 
-[공식 웹사이트](https://www.translatebuff.com) · [튜토리얼](https://www.translatebuff.com/docs) · [변경 내역][github-release-link] · [블로그](https://www.translatebuff.com/blog)
-
-<!-- SHIELD GROUP -->
-
-[![Latest Version badge][extension-release-shield]][github-release-link]
-[![Chrome Version badge][chrome-version-shield]][chrome-store-link]
-[![Edge Version badge][edge-version-shield]][edge-store-link]
-[![Firefox Version badge][firefox-version-shield]][firefox-store-link]<br/>
-[![Discord badge][discord-shield]][discord-link]
-[![Chrome Users badge][chrome-users-shield]][chrome-store-link]
-[![Edge Users badge][edge-users-shield]][edge-store-link]
-[![Firefox Users badge][firefox-users-shield]][firefox-store-link]<br/>
-[![Stars badge][star-history-shield]][star-history-link]
-[![Contributors badge][contributors-shield]][contributors-link]
-![Last Commit badge][last-commit-shield]
-[![Issues badge][issues-shield]][issues-link]<br/>
-[![Sponsor badge][sponsor-shield]][sponsor-link]
+[공식 웹사이트][website] · [튜토리얼][docs-tutorial] · [블로그][blog]
 
 </div>
 
@@ -49,16 +22,16 @@
   - [다운로드](#다운로드)
   - [커뮤니티](#커뮤니티)
 - [✨ 기능](#-기능)
+  - [🪄 사용자 정의 AI 액션](#-사용자-정의-ai-액션)
   - [🔄 이중 언어 / 번역만 보기](#-이중-언어--번역만-보기)
   - [✨ 선택 번역](#-선택-번역)
   - [🧠 문맥 인식 번역](#-문맥-인식-번역)
   - [🎬 자막 번역](#-자막-번역)
   - [🔊 텍스트 음성 변환 (TTS)](#-텍스트-음성-변환-tts)
   - [📦 배치 요청](#-배치-요청)
-  - [🤖 20+ AI 제공업체](#-20-ai-제공업체)
+  - [🤖 내장 AI 번역](#-내장-ai-번역)
 - [🤝 기여](#-기여)
-- [📜 상업 라이선스 부여](#-상업-라이선스-부여)
-- [❤️ 스폰서](#️-스폰서)
+  - [코드 기여](#코드-기여)
 
 <br/>
 
@@ -75,42 +48,22 @@
 
 Translatebuff의 목표는 모든 수준의 언어 학습자에게 쉽고 지능적이며 개인화된 학습 경험을 제공하는 것입니다. AI 시대에는 이것이 가능해졌지만, 아직 시장에는 이 요구를 제대로 만족시키는 제품이 많지 않습니다. 그래서 우리는 직접 만들기로 했습니다.
 
-사용자이든 개발자이든 Translatebuff는 이 비전을 향한 여정에서 중요한 도구가 될 것입니다. Translatebuff는 현재 활발히 개발 중이며, 문제가 있다면 언제든지 [이슈][issues-link]로 알려주세요.
+사용자이든 개발자이든 Translatebuff는 이 비전을 향한 여정에서 중요한 도구가 될 것입니다. Translatebuff는 현재 활발히 개발 중이며, 피드백은 언제든 환영합니다.
 
 ### 다운로드
 
-| 브라우저 | 버전                                                                   | 다운로드                                                             |
-| -------- | ---------------------------------------------------------------------- | -------------------------------------------------------------------- |
-| Chrome   | [![Chrome Version badge][chrome-version-shield]][chrome-store-link]    | [Chrome Web Store][chrome-store-link] 또는 [중국 미러][crxsoso-link] |
-| Edge     | [![Edge Version badge][edge-version-shield]][edge-store-link]          | [Microsoft Edge Addons][edge-store-link]                             |
-| Firefox  | [![Firefox Version badge][firefox-version-shield]][firefox-store-link] | [Firefox Add-ons][firefox-store-link]                                |
+> 브라우저 스토어 등록이 진행 중입니다. 지금은 공식 웹사이트에서 Translatebuff를 받으세요: **[translatebuff.cn][website]**
+
+| 브라우저 | 다운로드                 |
+| -------- | ------------------------ |
+| Chrome   | [공식 웹사이트][website] |
+| Edge     | [공식 웹사이트][website] |
+| Firefox  | [공식 웹사이트][website] |
 
 ### 커뮤니티
 
-| [![Discord badge][discord-shield-badge]][discord-link] | Discord에서 질문하고 개발자와 소통하세요.              |
-| :----------------------------------------------------- | :----------------------------------------------------- |
-| [![WeChat badge][wechat-shield-badge]][wechat-link]    | 중국 본토에 있다면 WeChat 그룹에도 참여할 수 있습니다. |
-
-> \[!IMPORTANT]
->
-> **⭐️ Star를 눌러 주세요.** GitHub 릴리스 알림을 지연 없이 받을 수 있습니다.
-
-[![Translatebuff][image-star]][website]
-
-<details>
-<summary>
-  <kbd>Star 기록</kbd>
-</summary>
-
-<a href="https://www.star-history.com/?type=timeline&repos=mengxi-ream%2Fread-frog">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=mengxi-ream/read-frog&type=timeline&theme=dark&legend=top-left&sealed_token=vUW24BwE2sgnq-CzlWEAT6gnzZqNrXl9ai4A05Pc3CQcPGdBqbts3tq5VRWEerfrqVdonsJasb04WcKd5AKSSCjlsdj_TwyI3j9xytMG4FQNw7yXDe9IUA" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=mengxi-ream/read-frog&type=timeline&legend=top-left&sealed_token=vUW24BwE2sgnq-CzlWEAT6gnzZqNrXl9ai4A05Pc3CQcPGdBqbts3tq5VRWEerfrqVdonsJasb04WcKd5AKSSCjlsdj_TwyI3j9xytMG4FQNw7yXDe9IUA" />
-   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=mengxi-ream/read-frog&type=timeline&legend=top-left&sealed_token=vUW24BwE2sgnq-CzlWEAT6gnzZqNrXl9ai4A05Pc3CQcPGdBqbts3tq5VRWEerfrqVdonsJasb04WcKd5AKSSCjlsdj_TwyI3j9xytMG4FQNw7yXDe9IUA" />
- </picture>
-</a>
-
-</details>
+| [![WeChat badge][wechat-shield-badge]][wechat-link] | 중국 본토에 있다면 WeChat 그룹에도 참여할 수 있습니다. |
+| :-------------------------------------------------- | :----------------------------------------------------- |
 
 ## ✨ 기능
 
@@ -120,13 +73,7 @@ Translatebuff의 강력한 기능으로 일상적인 웹 읽기를 몰입형 언
 
 선택한 텍스트를 자신의 읽기와 학습 방식에 맞는 재사용 가능한 AI 도구로 만들 수 있습니다. 프롬프트와 구조화된 출력 필드를 정의하고 제공자, 모델, 아이콘을 선택한 뒤 사전 검색, 다시 쓰기, 요약, 설명 등 원하는 작업을 선택 도구 모음에서 바로 실행하세요.
 
-기본 제공되는 **사전** 및 **글쓰기 개선** 템플릿으로 시작하거나 처음부터 직접 만들 수 있습니다. 구조화된 결과를 Notebase에 매핑해 저장하고 나중에 학습할 수도 있습니다.
-
-### 🧠 [플래시카드와 간격 반복][docs-tutorial]
-
-어휘, 정의, 예문, 번역, 읽기 노트를 Notebase에 저장한 뒤 맞춤형 카드 템플릿으로 플래시카드를 만드세요. 읽는 중에 발견한 내용을 흐름을 끊지 않고 학습 자료로 바꿀 수 있습니다.
-
-온라인에서 복습할 카드를 확인하고 **다시**, **어려움**, **좋음**, **쉬움**으로 평가하세요. Translatebuff의 간격 반복 스케줄러가 피드백을 바탕으로 각 카드가 잊힐 무렵 다시 나타나도록 일정을 정합니다.
+기본 제공되는 **사전** 및 **글쓰기 개선** 템플릿으로 시작하거나 처음부터 직접 만들 수 있습니다.
 
 ### 🔄 [이중 언어 / 번역만 보기][docs-tutorial]
 
@@ -162,11 +109,11 @@ YouTube 자막을 동영상 플레이어 안에서 직접 번역합니다. 외�
 
 시스템은 지수 백오프 재시도와 배치 실패 시 개별 요청으로 자동 전환하는 기능을 포함합니다.
 
-### 🤖 [20+ AI 제공업체][docs-tutorial]
+### 🤖 [내장 AI 번역][docs-tutorial]
 
-Vercel AI SDK를 통해 OpenAI, DeepSeek, Anthropic Claude, Google Gemini, xAI Grok, Groq, Mistral, Ollama 등 20+ AI 제공업체에 연결할 수 있습니다. 각 제공업체별로 커스텀 엔드포인트, API 키, 모델 설정을 구성할 수 있습니다.
+로그인하면 바로 번역을 시작할 수 있어 자체 API 키가 필요 없습니다. Translatebuff의 내장 AI 번역 서비스가 키를 자동으로 발급하고 여러 AI 모델을 제공하므로 기능별로 알맞은 모델을 선택할 수 있습니다.
 
-Google Translate, Microsoft Translate, DeepLX 같은 무료 기본 번역 옵션도 제공합니다.
+가볍게 사용하고 싶으신가요? Google Translate와 Microsoft Translate를 통한 표준 번역도 이용할 수 있습니다.
 
 <div align="right">
 
@@ -179,42 +126,14 @@ Google Translate, Microsoft Translate, DeepLX 같은 무료 기본 번역 옵션
 모든 종류의 기여를 환영합니다.
 
 1. Translatebuff를 친구와 가족에게 소개하세요.
-2. [이슈][issues-link]와 피드백을 보내 주세요.
+2. 이슈와 피드백을 보내 주세요.
 3. 코드를 기여하세요.
 
 ### 코드 기여
 
-프로젝트 구조: [DeepWiki](https://deepwiki.com/mengxi-ream/read-frog)
-
-AI로 프로젝트 이해하기: [Dosu](https://app.dosu.dev/29569286-71ba-47dd-b038-c7ab1b9d0df7/documents)
-
-자세한 내용은 [Contribution Guide](https://www.translatebuff.com/en/docs/code-contribution/contribution-guide)를 확인하세요.
-
-ReadFrog는 GPLv3와 상업 라이선스의 듀얼 라이선스를 사용합니다.
+자세한 내용은 [Contribution Guide][docs-tutorial]를 확인하세요.
 
 기여자 라이선스 조건은 [CONTRIBUTING.md](../CONTRIBUTING.md)를 참조하세요.
-
-<a href="https://github.com/mengxi-ream/read-frog/graphs/contributors">
-  <table>
-    <tr>
-      <th colspan="2">
-        <br>
-        <img src="https://contrib.rocks/image?repo=mengxi-ream/read-frog" alt="Translatebuff contributors"><br>
-        <br>
-      </th>
-    </tr>
-  </table>
-</a>
-
-## 📜 상업 라이선스 부여
-
-<img src="../assets/tabbit.avif" alt="Tabbit" height="20" /> **Meituan Tabbit Browser Team**: 비공개 소스 상업적 사용을 위한 무료 라이선스입니다. 범위는 v1.21.3 및 이전 버전(commit [`724863f`](https://github.com/mengxi-ream/read-frog/commit/724863fdbc2d777766cada6c111235534ee03ca0))으로 제한됩니다. 2026년 3월 3일 오전 9시(밴쿠버 시간, UTC-8)에 부여되었습니다.
-
-## ❤️ 스폰서
-
-모든 후원은 더 나은 언어 학습 경험을 만드는 데 도움이 됩니다. 우리의 미션을 지원해 주셔서 감사합니다.
-
-[![Sponsors][sponsor-image]][sponsor-link]
 
 <div align="right">
 
@@ -225,47 +144,21 @@ ReadFrog는 GPLv3와 상업 라이선스의 듀얼 라이선스를 사용합니�
 <!-- LINK GROUP -->
 
 [back-to-top]: https://img.shields.io/badge/-BACK_TO_TOP-151515?style=flat-square
-[chrome-store-link]: https://chromewebstore.google.com/detail/read-frog-open-source-ai/modkelfkcfjpgbfmnbnllalkiogfofhb
-[chrome-users-shield]: https://img.shields.io/chrome-web-store/users/modkelfkcfjpgbfmnbnllalkiogfofhb?style=flat-square&label=Chrome%20Users&color=yellow&labelColor=black
-[chrome-version-shield]: https://img.shields.io/chrome-web-store/v/modkelfkcfjpgbfmnbnllalkiogfofhb?style=flat-square&label=Chrome%20Version&labelColor=black&color=yellow
-[contributors-link]: https://github.com/mengxi-ream/read-frog/graphs/contributors
-[contributors-shield]: https://img.shields.io/github/contributors/mengxi-ream/read-frog?style=flat-square&labelColor=black
-[crxsoso-link]: https://www.crxsoso.com/webstore/detail/modkelfkcfjpgbfmnbnllalkiogfofhb
 [chinese-shield]: https://img.shields.io/badge/%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87-gray?style=flat-square
-[discord-link]: https://discord.gg/ej45e3PezJ
-[discord-shield]: https://img.shields.io/discord/1371229720942874646?style=flat-square&label=Discord&logo=discord&logoColor=white&color=5865F2&labelColor=black
-[discord-shield-badge]: https://img.shields.io/badge/chat-Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white&labelColor=black
-[edge-store-link]: https://microsoftedge.microsoft.com/addons/detail/read-frog-open-source-a/cbcbomlgikfbdnoaohcjfledcoklcjbo
 [english-shield]: https://img.shields.io/badge/English-gray?style=flat-square
-[firefox-store-link]: https://addons.mozilla.org/firefox/addon/read-frog-open-ai-translator/
-[firefox-version-shield]: https://img.shields.io/amo/v/read-frog-open-ai-translator?style=flat-square&label=Firefox%20Version&labelColor=black&color=orange
-[firefox-users-shield]: https://img.shields.io/amo/users/read-frog-open-ai-translator?style=flat-square&label=Firefox%20Users&color=orange&labelColor=black
-[edge-users-shield]: https://img.shields.io/badge/dynamic/json?style=flat-square&logo=microsoft-edge&label=Edge%20Users&query=%24.activeInstallCount&url=https%3A%2F%2Fmicrosoftedge.microsoft.com%2Faddons%2Fgetproductdetailsbycrxid%2Fcbcbomlgikfbdnoaohcjfledcoklcjbo&labelColor=black
-[edge-version-shield]: https://img.shields.io/badge/dynamic/json?style=flat-square&logo=microsoft-edge&label=Edge%20Version&query=%24.version&url=https%3A%2F%2Fmicrosoftedge.microsoft.com%2Faddons%2Fgetproductdetailsbycrxid%2Fcbcbomlgikfbdnoaohcjfledcoklcjbo&labelColor=black&prefix=v
-[extension-release-shield]: https://img.shields.io/github/package-json/v/mengxi-ream/read-frog?filename=package.json&style=flat-square&label=Latest%20Version&color=brightgreen&labelColor=black
-[github-release-link]: https://github.com/mengxi-ream/read-frog/releases
-[github-star-link]: https://github.com/mengxi-ream/read-frog/stargazers
 [image-banner]: ../assets/renyimiao-icon.svg
-[image-star]: ../assets/renyimiao-icon.svg
-[issues-link]: https://github.com/mengxi-ream/read-frog/issues
-[issues-shield]: https://img.shields.io/github/issues/mengxi-ream/read-frog?style=flat-square&labelColor=black
 [japanese-shield]: https://img.shields.io/badge/%E6%97%A5%E6%9C%AC%E8%AA%9E-gray?style=flat-square
 [korean-shield]: https://img.shields.io/badge/%ED%95%9C%EA%B5%AD%EC%96%B4-gray?style=flat-square
-[last-commit-shield]: https://img.shields.io/github/last-commit/mengxi-ream/read-frog?style=flat-square&label=commit&labelColor=black
 [russian-shield]: https://img.shields.io/badge/%D0%A0%D1%83%D1%81%D1%81%D0%BA%D0%B8%D0%B9-gray?style=flat-square
-[sponsor-image]: https://cdn.jsdelivr.net/gh/mengxi-ream/static/sponsorkit/sponsors.svg
-[sponsor-link]: https://github.com/sponsors/mengxi-ream
-[sponsor-shield]: https://img.shields.io/github/sponsors/mengxi-ream?style=flat-square&label=Sponsor&color=EA4AAA&labelColor=black
 [spanish-shield]: https://img.shields.io/badge/Espa%C3%B1ol-gray?style=flat-square
-[star-history-link]: https://www.star-history.com/#mengxi-ream/read-frog&Timeline
-[star-history-shield]: https://img.shields.io/github/stars/mengxi-ream/read-frog?style=flat-square&label=stars&color=yellow&labelColor=black
 [traditional-chinese-shield]: https://img.shields.io/badge/%E7%B9%81%E9%AB%94%E4%B8%AD%E6%96%87-gray?style=flat-square
 [turkish-shield]: https://img.shields.io/badge/T%C3%BCrk%C3%A7e-gray?style=flat-square
 [vietnamese-shield]: https://img.shields.io/badge/Ti%E1%BA%BFng%20Vi%E1%BB%87t-gray?style=flat-square
-[website]: https://www.translatebuff.com
-[wechat-link]: https://www.translatebuff.com
+[wechat-link]: https://translatebuff.cn
 [wechat-shield-badge]: https://img.shields.io/badge/chat-WeChat-07C160?style=for-the-badge&logo=wechat&logoColor=white&labelColor=black
+[website]: https://translatebuff.cn
 
 <!-- Feature docs link -->
 
-[docs-tutorial]: https://www.translatebuff.com/docs
+[docs-tutorial]: https://translatebuff.cn/docs
+[blog]: https://translatebuff.cn/blog
