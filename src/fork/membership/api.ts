@@ -20,7 +20,7 @@ const CLIENT_LANGUAGE = "zh-cn" // 全小写（对齐参考 CLIENT_LANGUAGE）
 const UA_DEVICE_NAME = "browser" // 段1：固定 browser（对齐官网 web 端 UA 首段）
 const UA_OS = "Windows" // 段2：os —— 镜像官网确认值
 const UA_OS_VERSION = "windows10.0.22621.2792x64" // 段3：osVersion —— 镜像官网确认值
-const UA_CHANNEL = "18790" // 段4：渠道号 —— 官网确认真值（后端 curl 示例已验证）
+const UA_CHANNEL = "7100" // 段4：渠道号
 const UA_APP_VERSION = "1.0.0" // 段6：appVersion —— 镜像官网确认值
 const UA_SN = "000000000000" // 段7：sn 设备唯一标识 —— 扩展无硬件 ID，回落官网占位值
 

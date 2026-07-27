@@ -46,7 +46,7 @@ describe("buildAuthHeaders（显式请求头装配）", () => {
     const segments = buildAuthHeaders(CRED).Useragent.split("/")
     expect(segments).toHaveLength(7)
     expect(segments[0]).toBe("browser")
-    expect(segments[3]).toBe("18790") // 渠道号：官网确认真值（后端 curl 示例已验证）
+    expect(segments[3]).toBe("7100") // 渠道号
     expect(segments[4]).toBe("aitrans-pc")
   })
 
