@@ -6,6 +6,12 @@ account:
   webApp: 網頁應用程式
   logout: 退出登入
   logoutError: 退出登入失敗，請重試
+forkMembership:
+  tierFree: 免費
+  tierPro: PRO
+  expiry: 會員到期
+  remainingTokens: 本月剩餘 $1 Token
+  myOrder: 我的訂單
 dataTypes:
   string: 文字
   number: 數字

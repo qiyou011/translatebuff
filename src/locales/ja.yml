@@ -6,6 +6,12 @@ account:
   webApp: ウェブアプリ
   logout: ログアウト
   logoutError: ログアウトに失敗しました。もう一度お試しください。
+forkMembership:
+  tierFree: 無料
+  tierPro: PRO
+  expiry: 有効期限
+  remainingTokens: 今月の残り $1 トークン
+  myOrder: 注文履歴
 dataTypes:
   string: テキスト
   number: 数値

@@ -9,6 +9,8 @@ interface ForkProtocolMap {
   forkSyncMembership: () => void
   // 本地登出：请后台确定性清态（清 session + key），不依赖 cookie 移除事件是否触发。
   forkClearMembership: () => void
+  // 会员信息刷新：popup/选项页挂载时请后台用会话凭据重拉 tokens 重派生会员信息（用量动态，保证实时）。
+  forkRefreshMembershipInfo: () => void
 }
 
 export const { sendMessage: sendForkMessage, onMessage: onForkMessage } =

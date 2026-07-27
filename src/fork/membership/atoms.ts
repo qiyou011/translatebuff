@@ -9,7 +9,7 @@ import { configFieldsAtomMap } from "@/utils/atoms/config"
 import { resolveUiLocale } from "@/utils/i18n/locale-map"
 import { CREDENTIAL_COOKIE_NAME } from "./cookie-decision"
 import { clearForkSession, FORK_SESSION_STORAGE_KEY, loadForkSession } from "./session"
-import { websiteLoginPath } from "./website-locale"
+import { websiteLocalePath } from "./website-locale"
 
 // 任译喵会员会话的响应式载体：popup / 选项页共享同一份登录态。
 // 初值 null（未登录）；由 useForkSession 挂载时水合 + 订阅 storage 变化写入。
@@ -84,6 +84,19 @@ export function useOpenForkLogin(): () => void {
   const uiLanguage = useAtomValue(configFieldsAtomMap.uiLanguage)
   return useCallback(() => {
     const locale = resolveUiLocale(uiLanguage)
-    void browser.tabs.create({ url: `${env.WXT_WEBSITE_URL}${websiteLoginPath(locale)}` })
+    void browser.tabs.create({
+      url: `${env.WXT_WEBSITE_URL}${websiteLocalePath(locale, "/login")}`,
+    })
+  }, [uiLanguage])
+}
+
+// 打开官网订单页（按当前界面语言映射多语言路径），新开标签页。与 useOpenForkLogin 同通路、同不用 getWebsiteUrl 的原因。
+export function useOpenForkOrders(): () => void {
+  const uiLanguage = useAtomValue(configFieldsAtomMap.uiLanguage)
+  return useCallback(() => {
+    const locale = resolveUiLocale(uiLanguage)
+    void browser.tabs.create({
+      url: `${env.WXT_WEBSITE_URL}${websiteLocalePath(locale, "/orders")}`,
+    })
   }, [uiLanguage])
 }

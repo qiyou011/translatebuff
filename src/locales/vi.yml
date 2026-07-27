@@ -6,6 +6,12 @@ account:
   webApp: Ứng dụng web
   logout: Đăng xuất
   logoutError: Đăng xuất thất bại. Vui lòng thử lại.
+forkMembership:
+  tierFree: Miễn phí
+  tierPro: PRO
+  expiry: Hết hạn
+  remainingTokens: Còn $1 Token trong tháng này
+  myOrder: Đơn hàng của tôi
 dataTypes:
   string: Văn bản
   number: Số

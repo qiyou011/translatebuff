@@ -6,6 +6,12 @@ account:
   webApp: Web app
   logout: Log out
   logoutError: Failed to log out. Please try again.
+forkMembership:
+  tierFree: Free
+  tierPro: PRO
+  expiry: Expires
+  remainingTokens: $1 Tokens left this month
+  myOrder: My Orders
 dataTypes:
   string: Text
   number: Number
