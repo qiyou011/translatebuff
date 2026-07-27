@@ -5,12 +5,15 @@ import { env } from "@/env"
 import {
   fetchGatewayModels,
   fetchLoginStatus,
+  fetchTokens,
   fetchTokensWithRetry,
   MembershipUnauthorizedError,
 } from "@/fork/membership/api"
 import { CREDENTIAL_COOKIE_NAME, decideCookieAction } from "@/fork/membership/cookie-decision"
 import { computeLoginConfigPatch, computeLogoutConfigPatch } from "@/fork/membership/key-injection"
+import { clearMembershipInfo, saveMembershipInfo } from "@/fork/membership/membership-info"
 import { clearForkSession, loadForkSession, saveForkSession } from "@/fork/membership/session"
+import { deriveMembershipInfo } from "@/fork/membership/tier"
 import { onForkMessage } from "@/fork/message"
 import {
   normalizeGatewayBaseUrl,
@@ -49,6 +52,7 @@ async function applyConfigPatch(computePatch: (config: Config) => Partial<Config
 export async function clearMembership(): Promise<void> {
   clearGeneration += 1 // 作废任何在途接管的终写
   await clearForkSession()
+  await clearMembershipInfo() // 清会员信息（独立键不被 clearForkSession 带走），防登出后残留上一用户 PRO/用量幽灵态
   await applyConfigPatch(computeLogoutConfigPatch)
 }
 
@@ -89,6 +93,8 @@ export async function adoptCredential(loginCredential: string): Promise<void> {
     if (!tokens || gen !== clearGeneration) {
       return
     }
+    // 会员信息（类型/到期/剩余额度）从 tokens 主档派生，写独立键（用量后续由 popup 刷新更新）。
+    await saveMembershipInfo(deriveMembershipInfo(tokens.tokens))
     await applyConfigPatch((config) =>
       computeLoginConfigPatch(config, tokens.skKey, tokens.baseUrl),
     )
@@ -153,6 +159,29 @@ export async function ensureMembershipKey(): Promise<void> {
   }
 }
 
+// 会员信息刷新（popup/选项页挂载触发）：用会话凭据重拉 tokens 重派生写入。用量是动态值，
+// 借此保证展示实时（避免纯登录快照陈旧）。无会话跳过；401 走清态；tokens 空 → 派生 free 默认。
+export async function refreshMembershipInfo(): Promise<void> {
+  const session = await loadForkSession()
+  if (!session) {
+    return
+  }
+  const gen = clearGeneration
+  try {
+    const tokens = await fetchTokens(session.loginCredential)
+    if (gen !== clearGeneration) {
+      return
+    }
+    await saveMembershipInfo(deriveMembershipInfo(tokens?.tokens))
+  } catch (error) {
+    if (error instanceof MembershipUnauthorizedError) {
+      await clearMembership()
+      return
+    }
+    logger.error("[Fork][membership] refresh membership info failed:", error)
+  }
+}
+
 // cookie watcher 接线（强浏览器依赖，最小化；判定逻辑由已测纯函数 decideCookieAction 承担）。
 function registerCookieWatcher(): void {
   if (!browser.cookies?.onChanged) {
@@ -190,6 +219,10 @@ export function setupMembership(): void {
   // 本地登出的确定性清态：即便 cookie 已不存在（remove 不触发 onChanged），也保证清 session + key。
   onForkMessage("forkClearMembership", () => {
     void clearMembership()
+  })
+  // 会员信息刷新：popup/选项页挂载发此消息，后台用会话凭据重拉 tokens 重派生（用量实时）。
+  onForkMessage("forkRefreshMembershipInfo", () => {
+    void refreshMembershipInfo()
   })
   logger.info("[Fork][membership] setupMembership ready")
 }

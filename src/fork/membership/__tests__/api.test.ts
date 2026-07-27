@@ -93,11 +93,12 @@ describe("fetchLoginStatus（取用户信息）", () => {
 })
 
 describe("fetchTokens（取 sk_key）", () => {
-  it("取首个 token 的 sk_key", async () => {
+  it("取首个 token 的 sk_key，并携带完整原始 tokens 数组（供会员信息派生）", async () => {
+    const rawTokens = [{ sk_key: SK, token_name: "subscription", priority: 50 }]
     fetchMock.mockResolvedValue(
-      jsonResponse(200, { data: { base_url: "https://gw", tokens: [{ sk_key: SK }] } }),
+      jsonResponse(200, { data: { base_url: "https://gw", tokens: rawTokens } }),
     )
-    expect(await fetchTokens(CRED)).toEqual({ skKey: SK, baseUrl: "https://gw" })
+    expect(await fetchTokens(CRED)).toEqual({ skKey: SK, baseUrl: "https://gw", tokens: rawTokens })
   })
 
   it("tokens 为空 → null（开户未完成）", async () => {
@@ -137,7 +138,7 @@ describe("fetchTokensWithRetry（开户轮询）", () => {
   it("首次即得 → 不轮询", async () => {
     fetchMock.mockResolvedValue(jsonResponse(200, { data: { tokens: [{ sk_key: SK }] } }))
     const result = await fetchTokensWithRetry(CRED, { sleep: noSleep })
-    expect(result).toEqual({ skKey: SK, baseUrl: "" })
+    expect(result).toMatchObject({ skKey: SK, baseUrl: "" })
     expect(fetchMock).toHaveBeenCalledTimes(1)
   })
 
@@ -147,7 +148,7 @@ describe("fetchTokensWithRetry（开户轮询）", () => {
       .mockResolvedValueOnce(jsonResponse(200, { data: { tokens: [] } }))
       .mockResolvedValueOnce(jsonResponse(200, { data: { tokens: [{ sk_key: SK }] } }))
     const result = await fetchTokensWithRetry(CRED, { sleep: noSleep })
-    expect(result).toEqual({ skKey: SK, baseUrl: "" })
+    expect(result).toMatchObject({ skKey: SK, baseUrl: "" })
     expect(fetchMock).toHaveBeenCalledTimes(3)
   })
 

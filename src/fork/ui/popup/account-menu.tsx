@@ -1,22 +1,24 @@
-import { IconLogout, IconUserCircle } from "@tabler/icons-react"
+import { IconUserCircle } from "@tabler/icons-react"
 import { Button } from "@/components/ui/base-ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/base-ui/dropdown-menu"
-import { forkLogout, useForkSession, useOpenForkLogin } from "@/fork/membership/atoms"
+import { useForkSession, useOpenForkLogin, useOpenForkOrders } from "@/fork/membership/atoms"
+import { useForkMembershipInfo } from "@/fork/membership/membership-info"
 import { maskPhone } from "@/fork/membership/phone-mask"
+import { ForkAccountMenuBody, TierBadge } from "@/fork/ui/account-menu-body"
 import { i18n } from "@/utils/i18n"
 
 // fork 自有账户菜单：替换上游 better-auth 的 UserAccountMenuPopup（换皮，不并列两套登录语义）。
 // 复用上游逻辑基座（会话 hook + base-ui 原语），不引用上游 composed UI 组件。
-// 未登录 → 登录入口（跳官网）；已登录 → 手机号 + 登出（删官网 cookie 触发后台完整清态）。
+// 未登录 → 登录入口；已登录 → 入口 trigger 显手机号 + 会员徽章，二级菜单显会员信息 + 我的订单 + 登出。
 export function ForkAccountMenu() {
   const session = useForkSession()
+  const membershipInfo = useForkMembershipInfo()
   const openLogin = useOpenForkLogin()
+  const openOrders = useOpenForkOrders()
 
   if (!session) {
     return (
@@ -29,6 +31,8 @@ export function ForkAccountMenu() {
     )
   }
 
+  const maskedPhone = maskPhone(session.phone)
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
@@ -40,23 +44,11 @@ export function ForkAccountMenu() {
         }
       >
         <IconUserCircle className="size-6 text-foreground" aria-hidden />
-        <span className="truncate text-sm font-medium tabular-nums">
-          {maskPhone(session.phone)}
-        </span>
+        <span className="truncate text-sm font-medium tabular-nums">{maskedPhone}</span>
+        <TierBadge tier={membershipInfo?.tier} />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" side="bottom" className="min-w-48">
-        <div className="px-1.5 py-1.5 text-xs text-muted-foreground tabular-nums">
-          {maskPhone(session.phone)}
-        </div>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem
-          variant="destructive"
-          onClick={() => void forkLogout()}
-          className="cursor-pointer transition-colors"
-        >
-          <IconLogout aria-hidden />
-          {i18n.t("account.logout")}
-        </DropdownMenuItem>
+        <ForkAccountMenuBody membershipInfo={membershipInfo} onOpenOrders={openOrders} />
       </DropdownMenuContent>
     </DropdownMenu>
   )

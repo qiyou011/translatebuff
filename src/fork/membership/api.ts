@@ -5,6 +5,7 @@
 //   · API 基址直读 `import.meta.env.WXT_RENYIMIAO_API_URL`（绕 t3-env、不改 src/env，保 fork 边界，设计 D4）。
 //     用函数读取（非模块顶层快照）：生产由 Vite 编译期注入，单测用 vi.stubEnv 运行期改它，函数读保证读到当前值。
 
+import type { RawToken } from "./tier"
 import { extractErrorMessage } from "@/utils/error/extract-message"
 
 // ── 平台标识常量（固定值）──
@@ -105,17 +106,20 @@ export interface TokensResult {
   skKey: string
   /** oneapi 翻译网关地址（与 sk_key 同一 /v1/tokens 响应返回）。空则上层回落网关常量。 */
   baseUrl: string
+  /** 完整原始 tokens 数组（加性字段，供会员信息按 priority 选主档派生 tier/到期/用量）。 */
+  tokens: RawToken[]
 }
 
 // 取 one-api sk_key + 网关 base_url（一用户一 token，取首个 token 的 sk_key）。空 key→null；401 抛错。
 // base_url 与 sk_key 同源（同一 /v1/tokens 响应），供动态注入 provider baseURL 与拉 /models 用。
 export async function fetchTokens(loginCredential: string): Promise<TokensResult | null> {
   const data = await authedGet("/api/claw_bff/v1/tokens", loginCredential)
-  // 参考 TokensResponse：{ base_url, tokens: [{ sk_key, ... }] }。
-  const tokens = Array.isArray(data.tokens) ? (data.tokens as Array<Record<string, unknown>>) : []
+  // 参考 TokensResponse：{ base_url, tokens: [{ sk_key, token_name, priority, expired_time, ... }] }。
+  const tokens = Array.isArray(data.tokens) ? (data.tokens as RawToken[]) : []
   const skKey = tokens[0]?.sk_key
   const baseUrl = typeof data.base_url === "string" ? data.base_url : ""
-  return typeof skKey === "string" && skKey !== "" ? { skKey, baseUrl } : null
+  // 加性：非 null 时一并带回完整 tokens 供会员派生（skKey 空→null 语义不变，供轮询）。
+  return typeof skKey === "string" && skKey !== "" ? { skKey, baseUrl, tokens } : null
 }
 
 // 拉网关可用模型（openai 兼容 GET {baseUrl}/models）。

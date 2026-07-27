@@ -6,6 +6,12 @@ account:
   webApp: 웹 앱
   logout: 로그아웃
   logoutError: 로그아웃하지 못했습니다. 다시 시도해 주세요.
+forkMembership:
+  tierFree: 무료
+  tierPro: PRO
+  expiry: 만료일
+  remainingTokens: 이번 달 남은 $1 토큰
+  myOrder: 주문 내역
 dataTypes:
   string: 텍스트
   number: 숫자

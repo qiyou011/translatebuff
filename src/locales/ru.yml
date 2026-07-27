@@ -6,6 +6,12 @@ account:
   webApp: Веб-приложение
   logout: Выйти
   logoutError: Не удалось выйти. Попробуйте ещё раз.
+forkMembership:
+  tierFree: Бесплатный
+  tierPro: PRO
+  expiry: Действует до
+  remainingTokens: Осталось $1 токенов в этом месяце
+  myOrder: Мои заказы
 dataTypes:
   string: Текст
   number: Число

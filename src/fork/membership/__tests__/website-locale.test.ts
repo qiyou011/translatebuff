@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest"
-import { uiLanguageToWebsiteLocale, websiteLoginPath } from "../website-locale"
+import { uiLanguageToWebsiteLocale, websiteLocalePath } from "../website-locale"
 
 describe("uiLanguageToWebsiteLocale（扩展界面语言 → 官网 locale 段）", () => {
   it("中文映射到官网 zh-hans / zh-hant", () => {
@@ -30,16 +30,29 @@ describe("uiLanguageToWebsiteLocale（扩展界面语言 → 官网 locale 段�
   })
 })
 
-describe("websiteLoginPath（官网登录路径拼装）", () => {
-  it("有 locale 段 → /{locale}/login", () => {
-    expect(websiteLoginPath("zh-CN")).toBe("/zh-hans/login")
-    expect(websiteLoginPath("zh-TW")).toBe("/zh-hant/login")
-    expect(websiteLoginPath("ja")).toBe("/ja/login")
+describe("websiteLocalePath（官网多语言路径拼装，登录/订单共用）", () => {
+  it("订单路径 /orders：有 locale 段 → /{locale}/orders", () => {
+    expect(websiteLocalePath("zh-CN", "/orders")).toBe("/zh-hans/orders")
+    expect(websiteLocalePath("zh-TW", "/orders")).toBe("/zh-hant/orders")
+    expect(websiteLocalePath("ja", "/orders")).toBe("/ja/orders")
+    expect(websiteLocalePath("ko", "/orders")).toBe("/ko/orders")
+    expect(websiteLocalePath("es", "/orders")).toBe("/es/orders")
+    expect(websiteLocalePath("ru", "/orders")).toBe("/ru/orders")
+    expect(websiteLocalePath("tr", "/orders")).toBe("/tr/orders")
   })
 
-  it("默认语言 / 回退 → /login（无 locale 前缀）", () => {
-    expect(websiteLoginPath("en")).toBe("/login")
-    expect(websiteLoginPath("vi")).toBe("/login")
-    expect(websiteLoginPath("auto")).toBe("/login")
+  it("订单路径 /orders：默认语言 en / 未映射 vi → 无前缀 /orders", () => {
+    expect(websiteLocalePath("en", "/orders")).toBe("/orders")
+    expect(websiteLocalePath("vi", "/orders")).toBe("/orders")
+    expect(websiteLocalePath("auto", "/orders")).toBe("/orders")
+  })
+
+  it("登录路径等价不变量：websiteLocalePath(l, '/login') 等于原 websiteLoginPath 行为", () => {
+    expect(websiteLocalePath("zh-CN", "/login")).toBe("/zh-hans/login")
+    expect(websiteLocalePath("zh-TW", "/login")).toBe("/zh-hant/login")
+    expect(websiteLocalePath("ja", "/login")).toBe("/ja/login")
+    expect(websiteLocalePath("en", "/login")).toBe("/login")
+    expect(websiteLocalePath("vi", "/login")).toBe("/login")
+    expect(websiteLocalePath("auto", "/login")).toBe("/login")
   })
 })

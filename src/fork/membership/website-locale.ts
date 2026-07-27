@@ -20,8 +20,9 @@ export function uiLanguageToWebsiteLocale(uiLanguage: string): string {
   return UI_LOCALE_TO_WEBSITE_LOCALE[uiLanguage] ?? ""
 }
 
-// 官网登录路径：/{locale}/login；默认语言（en，空段）为 /login。
-export function websiteLoginPath(uiLanguage: string): string {
+// 官网多语言路径拼装：/{locale}{path}；默认语言（en，空段）无前缀，直接 {path}。
+// 登录（/login）与订单（/orders）等共用同一前缀逻辑；path 以 "/" 起。
+export function websiteLocalePath(uiLanguage: string, path: string): string {
   const locale = uiLanguageToWebsiteLocale(uiLanguage)
-  return locale ? `/${locale}/login` : "/login"
+  return locale ? `/${locale}${path}` : path
 }

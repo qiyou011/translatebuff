@@ -6,6 +6,12 @@ account:
   webApp: Aplicación web
   logout: Cerrar sesión
   logoutError: No se pudo cerrar sesión. Inténtalo de nuevo.
+forkMembership:
+  tierFree: Gratis
+  tierPro: PRO
+  expiry: Vence
+  remainingTokens: $1 Tokens restantes este mes
+  myOrder: Mis pedidos
 dataTypes:
   string: Texto
   number: Número

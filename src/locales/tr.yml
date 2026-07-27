@@ -6,6 +6,12 @@ account:
   webApp: Web uygulaması
   logout: Çıkış yap
   logoutError: Çıkış yapılamadı. Lütfen tekrar deneyin.
+forkMembership:
+  tierFree: Ücretsiz
+  tierPro: PRO
+  expiry: Bitiş
+  remainingTokens: Bu ay kalan $1 Token
+  myOrder: Siparişlerim
 dataTypes:
   string: Metin
   number: Sayı
