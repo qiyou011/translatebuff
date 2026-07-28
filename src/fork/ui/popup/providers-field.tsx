@@ -1,33 +1,27 @@
 import type { Config } from "@/types/config/config"
 import type { ProvidersConfig } from "@/types/config/provider"
-import type { FeatureKey } from "@/utils/constants/feature-providers"
 import type { ProviderSelectorOption } from "@/utils/providers/provider-display"
 import type { ProviderCapability } from "@/utils/providers/provider-registry"
 import { IconLogin } from "@tabler/icons-react"
-import { useAtomValue, useSetAtom } from "jotai"
+import { useAtomValue } from "jotai"
 import { useMemo } from "react"
 import { HelpTooltip } from "@/components/help-tooltip"
 import { useTheme } from "@/components/providers/theme-provider"
 import { Avatar, AvatarGroup, AvatarGroupCount, AvatarImage } from "@/components/ui/base-ui/avatar"
 import { Button } from "@/components/ui/base-ui/button"
 import { Drawer, DrawerBody, DrawerContent, DrawerTrigger } from "@/components/ui/base-ui/drawer"
-import { Field, FieldGroup, FieldLabel } from "@/components/ui/base-ui/field"
-import ForkProviderSelector from "@/fork/components/provider-selector"
 import { forkSessionAtom, useOpenForkLogin } from "@/fork/membership/atoms"
 import { useEnsureRenyimiaoSeeded } from "@/fork/providers/use-ensure-renyimiao-seeded"
-import { configAtom, configFieldsAtomMap, writeConfigAtom } from "@/utils/atoms/config"
-import {
-  buildFeatureProviderPatch,
-  FEATURE_KEYS,
-  FEATURE_PROVIDER_DEFS,
-  getFeatureLabelI18nKey,
-} from "@/utils/constants/feature-providers"
+import { FeatureProviderSelectorList } from "@/fork/ui/options/feature-provider-selector-list"
+import { configAtom, configFieldsAtomMap } from "@/utils/atoms/config"
+import { FEATURE_KEYS, FEATURE_PROVIDER_DEFS } from "@/utils/constants/feature-providers"
 import { i18n } from "@/utils/i18n"
 import { getProviderLogo, getProviderName } from "@/utils/providers/provider-display"
 import { getSelectableProvidersForCapability } from "@/utils/providers/provider-registry"
 
-// fork 换皮版 popup provider 块：忠实复刻上游 providers-field（summary + Drawer + 功能行 + 自定义动作行），
-// 用 fork ProviderSelector + 逻辑函数 + base-ui 原语，不引用上游 composed UI。对齐现状：popup 不显示 api-key 警告。
+// fork 换皮版 popup provider 块：抽屉体直接复用已门禁的 fork FeatureProviderSelectorList（隐藏不可用任译喵 +
+// 无可选/选中即任译喵时改显登录引导），与选项页「通用」页共用同一份门禁宿主、单点维护。popup 特有的只有
+// 折叠态头像 summary + Drawer + 顶部登录横幅。对齐现状：不传 renderApiKeyWarning，故 popup 不显 api-key 警告。
 
 const VISIBLE_PROVIDER_COUNT = 5
 
@@ -92,84 +86,6 @@ function ProviderAvatarSummary({ providers }: { providers: ProviderSelectorOptio
   )
 }
 
-function FeatureRow({ featureKey }: { featureKey: FeatureKey }) {
-  const config = useAtomValue(configAtom)
-  const setConfig = useSetAtom(writeConfigAtom)
-  const providersConfig = useAtomValue(configFieldsAtomMap.providersConfig)
-  const providerId = FEATURE_PROVIDER_DEFS[featureKey].getProviderId(config)
-  const providers = useMemo(
-    () => getSelectableProvidersForCapability(featureKey, providersConfig),
-    [providersConfig, featureKey],
-  )
-
-  return (
-    <Field>
-      <FieldLabel nativeLabel={false} render={<div className="flex flex-wrap" />}>
-        {i18n.t(getFeatureLabelI18nKey(featureKey))}
-      </FieldLabel>
-      <ForkProviderSelector
-        providers={providers}
-        value={providerId}
-        onChange={(id) => void setConfig(buildFeatureProviderPatch({ [featureKey]: id }))}
-        className="w-full"
-        triggerSize="sm"
-      />
-    </Field>
-  )
-}
-
-function CustomActionRows() {
-  const config = useAtomValue(configAtom)
-  const setConfig = useSetAtom(writeConfigAtom)
-  const providersConfig = useAtomValue(configFieldsAtomMap.providersConfig)
-  const customActionProviders = useMemo(
-    () => getSelectableProvidersForCapability("selectionToolbar.customAction", providersConfig),
-    [providersConfig],
-  )
-  const customActions = config.selectionToolbar.customActions.filter(
-    (action) => action.enabled !== false,
-  )
-
-  if (customActions.length === 0) {
-    return null
-  }
-
-  return (
-    <>
-      <p className="text-sm font-medium text-muted-foreground">
-        {i18n.t("options.general.featureProviders.customActions")}
-      </p>
-      {customActions.map((action) => (
-        <Field key={action.id}>
-          <FieldLabel nativeLabel={false} render={<div />}>
-            {action.name}
-          </FieldLabel>
-          <ForkProviderSelector
-            providers={customActionProviders}
-            value={action.providerId}
-            onChange={(id) => {
-              const updatedCustomActions = config.selectionToolbar.customActions.map((item) =>
-                item.id === action.id ? { ...item, providerId: id } : item,
-              )
-              void setConfig({
-                selectionToolbar: {
-                  ...config.selectionToolbar,
-                  customActions: updatedCustomActions,
-                },
-              })
-            }}
-            className="w-full"
-            triggerSize="sm"
-            placeholder={i18n.t(
-              "options.floatingButtonAndToolbar.selectionToolbar.customActions.form.selectProvider",
-            )}
-          />
-        </Field>
-      ))}
-    </>
-  )
-}
-
 export default function ForkProvidersField() {
   const config = useAtomValue(configAtom)
   const providersConfig = useAtomValue(configFieldsAtomMap.providersConfig)
@@ -182,10 +98,10 @@ export default function ForkProvidersField() {
   const session = useAtomValue(forkSessionAtom)
 
   // 挂载时幂等 seed 任译喵（读 storage 最新值，post-init 避竞态）+ repoint 被隐藏 provider 的功能/词典。
+  // 抽屉体的 FeatureProviderSelectorList 亦会 seed，但那随抽屉挂载、可能晚于头像 summary，故此处保留 popup 挂载时的 seed。
   useEnsureRenyimiaoSeeded()
 
   // 登录引导条：仅未登录时展示（登录后即隐，不等 key 注入——避免"登录后仍显示登录引导"的矛盾）。
-  // 空 key 门禁仍由选择器侧承担 + R6 挂载补偿自愈，此处不再以空 key 为条件。
   const needsLogin = !session
 
   return (
@@ -216,12 +132,7 @@ export default function ForkProvidersField() {
         </div>
         <DrawerContent>
           <DrawerBody className="p-4" data-base-ui-swipe-ignore="">
-            <FieldGroup className="gap-4">
-              {FEATURE_KEYS.map((featureKey) => (
-                <FeatureRow key={featureKey} featureKey={featureKey} />
-              ))}
-              <CustomActionRows />
-            </FieldGroup>
+            <FeatureProviderSelectorList providerSelectorTriggerSize="sm" />
           </DrawerBody>
         </DrawerContent>
       </Drawer>

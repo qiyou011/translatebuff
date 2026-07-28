@@ -77,6 +77,14 @@ const FORK_UI_REDIRECTS = [
     ),
     to: path.resolve(__dirname, "src/fork/ui/selection-toolbar/save-suggestion-toggle.tsx"),
   },
+  {
+    // 选项页「通用」页功能提供商宿主：未登录/无 key 时对任译喵门禁（隐藏 + 登录引导），换皮到 fork 版。
+    from: path.resolve(
+      __dirname,
+      "src/components/llm-providers/feature-provider-selector-list.tsx",
+    ),
+    to: path.resolve(__dirname, "src/fork/ui/options/feature-provider-selector-list.tsx"),
+  },
 ]
 
 function normalizeModuleId(id: string): string {

@@ -76,9 +76,27 @@ function RenyimiaoApiEditor({
       <Field>
         <div className="flex items-center justify-between gap-2">
           <FieldLabel>模型</FieldLabel>
-          <UpdateModelsButton baseURL={baseUrl} apiKey={apiKey} onModelsFetched={onModelsFetched} />
+          {session && apiKey && (
+            <UpdateModelsButton
+              baseURL={baseUrl}
+              apiKey={apiKey}
+              onModelsFetched={onModelsFetched}
+            />
+          )}
         </div>
-        {modelIds.length > 0 ? (
+        {/* 空 key 门禁（对齐上方 API Key 三态）：未登录引导登录、登录待取显获取中、已注入才列真实模型——不把 seed 裸露给未登录用户。 */}
+        {!session ? (
+          <div className="flex items-center justify-between gap-2 rounded-lg border border-border px-3 py-2">
+            <span className="text-sm text-muted-foreground">登录后自动获取模型</span>
+            <Button size="sm" variant="outline" onClick={onLogin}>
+              {i18n.t("account.login")}
+            </Button>
+          </div>
+        ) : !apiKey ? (
+          <div className="rounded-lg border border-border px-3 py-2 text-sm text-muted-foreground">
+            正在获取任译喵模型…
+          </div>
+        ) : modelIds.length > 0 ? (
           <div className="flex flex-col gap-1 rounded-lg border border-border p-2">
             {modelIds.map((modelId) => (
               <span key={modelId} className="truncate text-sm">
