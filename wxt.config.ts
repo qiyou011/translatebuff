@@ -1,5 +1,4 @@
-import type { Plugin } from "vite"
-import { existsSync, readFileSync } from "node:fs"
+import { readFileSync } from "node:fs"
 import path from "node:path"
 import process from "node:process"
 import ViteYaml from "@modyfi/vite-plugin-yaml"
@@ -16,6 +15,7 @@ import {
   computeForkVersionName,
   readForkVersion,
 } from "./src/fork/identity/version"
+import { forkUiRedirectPlugin } from "./src/fork/ui-redirect-plugin"
 
 const WXT_API_KEY_PATTERN = /^WXT_.*API_KEY/
 const ALLOWED_BUNDLED_API_KEYS = new Set(["WXT_POSTHOG_API_KEY"])
@@ -85,66 +85,17 @@ const FORK_UI_REDIRECTS = [
     ),
     to: path.resolve(__dirname, "src/fork/ui/options/feature-provider-selector-list.tsx"),
   },
+  {
+    // 选项页「配置」页「Google Drive 云端同步」卡片：上游功能，任译喵不提供 → 重定向到 fork 空组件。
+    // 目录桶导入（config/index.tsx `import { GoogleDriveSyncCard } from "./google-drive-sync"`），
+    // from 指向桶真身 index.tsx；预筛已修复支持桶导入（见 src/fork/ui-redirect-plugin.ts）。
+    from: path.resolve(
+      __dirname,
+      "src/entrypoints/options/pages/config/google-drive-sync/index.tsx",
+    ),
+    to: path.resolve(__dirname, "src/fork/ui/options/google-drive-sync-card.tsx"),
+  },
 ]
-
-function normalizeModuleId(id: string): string {
-  return id
-    .replace(/\\/g, "/")
-    .split("?")[0]
-    .replace(/\.(t|j)sx?$/, "")
-}
-
-function forkUiRedirectPlugin(): Plugin {
-  const redirects = FORK_UI_REDIRECTS.map((redirect) => ({
-    from: normalizeModuleId(redirect.from),
-    to: redirect.to,
-  }))
-  // 预筛用：能命中重定向的 import，其 specifier 末段必为某个目标文件的 basename。
-  const targetBasenames = new Set(redirects.map((redirect) => redirect.from.split("/").pop()))
-  return {
-    name: "fork-ui-redirect",
-    enforce: "pre",
-    buildStart() {
-      // 构建期断言：上游一旦移动/重命名被换皮的文件，from 绝对路径失效 → resolveId 再不命中 →
-      // 上游原版 UI 被静默打包（无报错、CI 全绿、皮悄悄掉）。这里把静默失效变成响亮的构建失败，
-      // 与下方 check-api-key-env 的 buildStart 校验同构。
-      for (const redirect of FORK_UI_REDIRECTS) {
-        if (!existsSync(redirect.from)) {
-          throw new Error(
-            `\n\nfork-ui-redirect: 换皮目标源文件不存在，重定向将静默失效：\n` +
-              `   - ${redirect.from}\n\n` +
-              `上游可能已移动/重命名该文件，请同步更新 wxt.config 的 FORK_UI_REDIRECTS。\n`,
-          )
-        }
-      }
-    },
-    async resolveId(source, importer, options) {
-      if (!importer) {
-        return null
-      }
-      // basename 预筛：先按末段早退，跳过全图 ~99.9% 的 import，避免对每个 import 都跑 this.resolve
-      // （enforce:"pre" 下会给全项目模块解析翻倍）。命中重定向必然末段相等，故预筛安全且完整。
-      const sourceBasename = normalizeModuleId(source).split("/").pop()
-      if (!targetBasenames.has(sourceBasename)) {
-        return null
-      }
-      const resolved = await this.resolve(source, importer, { ...options, skipSelf: true })
-      if (!resolved) {
-        return null
-      }
-      const match = redirects.find((redirect) => normalizeModuleId(resolved.id) === redirect.from)
-      if (!match) {
-        return null
-      }
-      // 放行 fork 覆盖模块 import 它所替换的上游原版：否则 fork/*.ts 里 `export * from 上游`
-      // 会被重定向回自身，形成自引循环。仅当 importer 正是该重定向的目标文件时跳过。
-      if (importer && normalizeModuleId(importer) === normalizeModuleId(match.to)) {
-        return null
-      }
-      return match.to
-    },
-  }
-}
 
 // See https://wxt.dev/api/config.html
 export default defineConfig({
@@ -257,7 +208,7 @@ export default defineConfig({
       ],
     },
     plugins: [
-      forkUiRedirectPlugin(),
+      forkUiRedirectPlugin(FORK_UI_REDIRECTS),
       // Lets the runtime i18next facade (src/utils/i18n) `import` the `src/locales/*.yml`
       // files as JS objects so i18next can bundle them for runtime language switching.
       //
