@@ -67,13 +67,17 @@ export default function ForkProviderSelector({
   const trigger = (
     <SelectTrigger className={className} size={triggerSize}>
       <SelectValue placeholder={placeholder}>
-        {(provider: ProviderSelectorOption) => (
-          <ProviderIcon
-            logo={getProviderLogo(provider, theme)}
-            name={getProviderName(provider)}
-            size="sm"
-          />
-        )}
+        {/* 选中值不在当前列表（如被过滤掉的任译喵）时 base-ui 用 null 调本 render；
+            守卫 null 退化成 placeholder，避免 getProviderLogo(null) → 'kind' in null 崩。 */}
+        {(provider: ProviderSelectorOption | null) =>
+          provider ? (
+            <ProviderIcon
+              logo={getProviderLogo(provider, theme)}
+              name={getProviderName(provider)}
+              size="sm"
+            />
+          ) : null
+        }
       </SelectValue>
     </SelectTrigger>
   )
