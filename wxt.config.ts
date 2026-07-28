@@ -14,7 +14,7 @@ import { FORK_BRANDING } from "./src/fork/branding"
 import {
   computeForkVersion,
   computeForkVersionName,
-  readForkBuildNumber,
+  readForkVersion,
 } from "./src/fork/identity/version"
 
 const WXT_API_KEY_PATTERN = /^WXT_.*API_KEY/
@@ -22,16 +22,18 @@ const ALLOWED_BUNDLED_API_KEYS = new Set(["WXT_POSTHOG_API_KEY"])
 const useLocalPackages = isLocalPackagesEnabled(process.env)
 const shouldSkipEnvValidation = process.env.WXT_SKIP_ENV_VALIDATION === "true"
 
-// fork 身份：预发布阶段用 fork 自主 0.0.<forkBuild> 版本；version_name 保留上游基线溯源
+// fork 身份：正式发布版本（fork 自主 semver）；version_name 保留上游基线溯源
 const pkgVersion = JSON.parse(readFileSync(path.resolve(__dirname, "package.json"), "utf8"))
   .version as string
-const forkBuildNumber = readForkBuildNumber()
-const forkVersion = computeForkVersion(forkBuildNumber)
+const forkReleaseVersion = readForkVersion()
+const forkVersion = computeForkVersion(forkReleaseVersion)
 const forkVersionName = computeForkVersionName(
   pkgVersion,
-  forkBuildNumber,
+  forkReleaseVersion,
   FORK_BRANDING.displayName,
 )
+// 打包意图（由 scripts/pack.mjs 注入）：FORK_PACK=test → 产物加 -test 后缀，区分测试包 / 正式包。
+const forkPackSuffix = process.env.FORK_PACK === "test" ? "-test" : ""
 
 // fork「换皮」重定向：不编辑上游 composed UI 源文件，改由 resolve 插件按解析后的绝对路径
 // 把上游 provider 选择器 / 选项 provider 页重定向到 fork 版（相对/@ import 都拦得住）。
@@ -209,6 +211,12 @@ export default defineConfig({
     }),
   }),
   zip: {
+    // fork 品牌命名：translatebuff-<版本>[-test]-<浏览器>.zip。artifactTemplate 才是 WXT 真·文件名模板；
+    // 刻意不用 {{version}}（它取的是中文全角 version_name、会产出丑名），干净版本号从 forkVersion 注入。
+    // -test 后缀由 FORK_PACK env 驱动（scripts/pack.mjs 打测试包时置 FORK_PACK=test）。sourcesTemplate 同步改，
+    // 否则 firefox 的 sources 包文件名仍走默认丑名。
+    artifactTemplate: `${FORK_BRANDING.name.toLowerCase()}-${forkVersion}${forkPackSuffix}-{{browser}}.zip`,
+    sourcesTemplate: `${FORK_BRANDING.name.toLowerCase()}-${forkVersion}${forkPackSuffix}-sources.zip`,
     includeSources: [".env.production"],
     excludeSources: ["docs/**/*", "assets/**/*", "repos/**/*", "readmes/**/*"],
   },
