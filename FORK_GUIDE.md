@@ -143,7 +143,7 @@ src/fork/
 ├── message.ts            # 独立 ForkProtocolMap（fork 专属消息，绝不进上游 message.ts）
 ├── branding.ts           # 品牌名 + 站点 URL（域名占位，后续换）
 ├── background/index.ts   # setupFork()：fork 所有后台接线的唯一入口
-├── identity/             # 4 段版本派生（version.ts + fork-build.json）
+├── identity/             # fork 自主 semver（version.ts + fork-version.json）
 ├── config/               # fork 专属配置：独立 storage key + schema + 迁移链
 ├── membership/           # ← 会员/登录客户端（待建）
 ├── providers/            # ← fork 侧 provider 展示覆盖（待建，可选）
@@ -203,7 +203,7 @@ src/fork/
 
 **改品牌** → 改 `src/fork/branding.ts`（name / websiteUrl）。`APP_NAME` 与 manifest 名已从这里派生。
 
-**fork 自己发一个版本**（上游没动时）→ 改 `src/fork/identity/fork-build.json` 的 `forkBuildNumber`（如 `0`→`1`）。manifest 版本自动变成 `<上游版本>.<forkBuild>`（如 `1.40.2.1`）。跟进新上游版本时把它归零。**绝不**在 fork 上跑 `changeset version`。
+**fork 发版** → 改 `src/fork/identity/fork-version.json` 的 `version`（fork 自主 semver，如 `1.0.0`→`1.0.1`）。manifest version 直接取它、与上游版本解耦；version_name 保留上游溯源「任译喵 1.0.0（rf <上游版本>）」。打测试 / 正式包见 FORK.md B1（`node scripts/pack.mjs test|store`）。**绝不**在 fork 上跑 `changeset version`。
 
 ---
 

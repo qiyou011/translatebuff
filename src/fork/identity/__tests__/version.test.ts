@@ -2,21 +2,27 @@ import { describe, expect, it } from "vitest"
 import { computeForkVersion, computeForkVersionName } from "../version"
 
 describe("computeForkVersion", () => {
-  it("预发布用 0.0.<forkBuild> 三段版本", () => {
-    expect(computeForkVersion(1)).toBe("0.0.1")
+  it("正式版本原样返回 3 段 semver", () => {
+    expect(computeForkVersion("1.0.0")).toBe("1.0.0")
   })
 
-  it("fork build 号递增反映在第 3 段", () => {
-    expect(computeForkVersion(2)).toBe("0.0.2")
+  it("非 3 段数字版本号抛错", () => {
+    expect(() => computeForkVersion("1.0")).toThrow("意外的 fork 版本号")
   })
 })
 
 describe("computeForkVersionName", () => {
-  it("拼中文品牌 + 预发布版本 + 上游基线溯源", () => {
-    expect(computeForkVersionName("1.40.2", 1, "任译喵")).toBe("任译喵 0.0.1（rf 1.40.2）")
+  it("拼中文品牌 + 正式版本 + 上游基线溯源", () => {
+    expect(computeForkVersionName("1.42.2", "1.0.0", "任译喵")).toBe("任译喵 1.0.0（rf 1.42.2）")
   })
 
-  it("上游版本号非 3 段时抛错", () => {
-    expect(() => computeForkVersionName("1.40", 1, "任译喵")).toThrow("意外的上游版本号")
+  it("上游版本串异常也不抛错、原样透传（不拖垮构建）", () => {
+    expect(computeForkVersionName("1.43.0-beta.1", "1.0.0", "任译喵")).toBe(
+      "任译喵 1.0.0（rf 1.43.0-beta.1）",
+    )
+  })
+
+  it("fork 自身版本非法仍抛错", () => {
+    expect(() => computeForkVersionName("1.42.2", "1.0", "任译喵")).toThrow("意外的 fork 版本号")
   })
 })

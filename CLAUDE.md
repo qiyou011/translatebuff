@@ -47,7 +47,7 @@ OpenSpec 在 `openspec/`：`specs/` 是已归档能力规格，`changes/` 是进
 branding.ts        品牌名 + 站点 URL
 message.ts         独立 ForkProtocolMap（fork 专属消息，绝不进上游 message.ts）
 background/        setupFork()：fork 后台接线唯一入口
-identity/          4 段 manifest 版本派生
+identity/          fork 自主 semver（fork-version.json）
 config/            fork 专属配置（独立 storage key + schema + 迁移链）
 ui/<page>/App.tsx  各页面 fork 界面（popup 已有壳层参考页）
 ```
