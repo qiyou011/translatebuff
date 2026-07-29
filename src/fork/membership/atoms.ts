@@ -3,6 +3,7 @@ import { atom, useAtom, useAtomValue } from "jotai"
 import { useCallback, useEffect, useRef } from "react"
 import { browser, storage } from "#imports"
 import { env } from "@/env"
+import { appendChannelId } from "@/fork/identity/channel"
 import { sendForkMessage } from "@/fork/message"
 import { renyimiaoApiKey } from "@/fork/providers/renyimiao"
 import { configFieldsAtomMap } from "@/utils/atoms/config"
@@ -85,7 +86,8 @@ export function useOpenForkLogin(): () => void {
   return useCallback(() => {
     const locale = resolveUiLocale(uiLanguage)
     void browser.tabs.create({
-      url: `${env.WXT_WEBSITE_URL}${websiteLocalePath(locale, "/login")}`,
+      // 追加 ?cid=<渠道号> 供官网按渠道归因（与 UA 段4 同源）。
+      url: appendChannelId(`${env.WXT_WEBSITE_URL}${websiteLocalePath(locale, "/login")}`),
     })
   }, [uiLanguage])
 }
@@ -96,7 +98,8 @@ export function useOpenForkOrders(): () => void {
   return useCallback(() => {
     const locale = resolveUiLocale(uiLanguage)
     void browser.tabs.create({
-      url: `${env.WXT_WEBSITE_URL}${websiteLocalePath(locale, "/orders")}`,
+      // 追加 ?cid=<渠道号> 供官网按渠道归因转化/支付（与登录/卸载同源）。
+      url: appendChannelId(`${env.WXT_WEBSITE_URL}${websiteLocalePath(locale, "/orders")}`),
     })
   }, [uiLanguage])
 }

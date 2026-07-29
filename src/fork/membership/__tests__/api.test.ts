@@ -54,6 +54,18 @@ describe("buildAuthHeaders（显式请求头装配）", () => {
     const headers = buildAuthHeaders(CRED)
     expect("credentials" in headers).toBe(false)
   })
+
+  it("段4 渠道号取自 resolveChannelNumber：stubEnv=zip → 仍为 7100", () => {
+    vi.stubEnv("WXT_FORK_CHANNEL", "zip")
+    const segments = buildAuthHeaders(CRED).Useragent.split("/")
+    expect(segments[3]).toBe("7100")
+  })
+
+  it("段4 随渠道解析：stubEnv=chrome-store → 段4=7101（随渠道变，不再恒为 7100）", () => {
+    vi.stubEnv("WXT_FORK_CHANNEL", "chrome-store")
+    const segments = buildAuthHeaders(CRED).Useragent.split("/")
+    expect(segments[3]).toBe("7101")
+  })
 })
 
 describe("fetchLoginStatus（取用户信息）", () => {

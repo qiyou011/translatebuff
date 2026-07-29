@@ -1,4 +1,5 @@
 import { browser } from "#imports"
+import { appendChannelId } from "@/fork/identity/channel"
 import { getWebsiteUrl } from "@/fork/website-url"
 
 /**
@@ -9,5 +10,6 @@ import { getWebsiteUrl } from "@/fork/website-url"
  * 真逻辑净新增在本文件（C 类，零 allowlist）。上游 background/index.ts 的 import 契约不变。
  */
 export async function setupUninstallSurvey() {
-  await browser.runtime.setUninstallURL(getWebsiteUrl("/uninstall-survey"))
+  // 追加 ?cid=<渠道号> 供官网按渠道归因（与 UA 段4 / 登录跳转同源）。
+  await browser.runtime.setUninstallURL(appendChannelId(getWebsiteUrl("/uninstall-survey")))
 }
