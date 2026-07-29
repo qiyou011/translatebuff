@@ -10,6 +10,7 @@ import {
   resolveExtensionEnv,
 } from "./src/env/shared"
 import { FORK_BRANDING } from "./src/fork/branding"
+import { resolveChannelNumber } from "./src/fork/identity/channel"
 import {
   computeForkVersion,
   computeForkVersionName,
@@ -34,6 +35,11 @@ const forkVersionName = computeForkVersionName(
 )
 // 打包意图（由 scripts/pack.mjs 注入）：FORK_PACK=test → 产物加 -test 后缀，区分测试包 / 正式包。
 const forkPackSuffix = process.env.FORK_PACK === "test" ? "-test" : ""
+
+// 渠道 id（由 scripts/pack.mjs 注入 WXT_FORK_CHANNEL）。设了则产物名以渠道 id 命名（同浏览器双渠道不撞车），
+// 未设则回退 {{browser}}（dev 裸 `wxt zip` 行为不变）。号码校验借 bundle 侧 resolveChannelNumber（单一真源）。
+const forkChannelId = process.env.WXT_FORK_CHANNEL
+const forkChannelSuffix = forkChannelId ? `-${forkChannelId}` : "-{{browser}}"
 
 // fork「换皮」重定向：不编辑上游 composed UI 源文件，改由 resolve 插件按解析后的绝对路径
 // 把上游 provider 选择器 / 选项 provider 页重定向到 fork 版（相对/@ import 都拦得住）。
@@ -174,7 +180,7 @@ export default defineConfig({
     // 刻意不用 {{version}}（它取的是中文全角 version_name、会产出丑名），干净版本号从 forkVersion 注入。
     // -test 后缀由 FORK_PACK env 驱动（scripts/pack.mjs 打测试包时置 FORK_PACK=test）。sourcesTemplate 同步改，
     // 否则 firefox 的 sources 包文件名仍走默认丑名。
-    artifactTemplate: `${FORK_BRANDING.name.toLowerCase()}-${forkVersion}${forkPackSuffix}-{{browser}}.zip`,
+    artifactTemplate: `${FORK_BRANDING.name.toLowerCase()}-${forkVersion}${forkPackSuffix}${forkChannelSuffix}.zip`,
     sourcesTemplate: `${FORK_BRANDING.name.toLowerCase()}-${forkVersion}${forkPackSuffix}-sources.zip`,
     includeSources: [".env.production"],
     excludeSources: ["docs/**/*", "assets/**/*", "repos/**/*", "readmes/**/*"],
@@ -225,6 +231,16 @@ export default defineConfig({
       ViteYaml(),
       ...(configEnv.mode === "production"
         ? [
+            {
+              // 渠道号构建期护栏：若注入了渠道 id（WXT_FORK_CHANNEL），其号码必须已分配。把「运行期首个
+              // 请求才崩」前移到构建期，封死绕过 pack.mjs 直接 `wxt zip` 打出运行期崩包的旁路。
+              name: "check-fork-channel",
+              buildStart() {
+                // 借 resolveChannelNumber 的「未知 id / 号码未分配」校验（与 bundle 侧同一真源）：
+                // 设了渠道即校验、只借它抛错，未知/未分配 → 构建 fail-fast。未设 → dev/默认 zip(7100) 不检查。
+                if (forkChannelId) resolveChannelNumber(forkChannelId)
+              },
+            },
             {
               name: "check-api-key-env",
               buildStart() {

@@ -6,6 +6,7 @@
 //     用函数读取（非模块顶层快照）：生产由 Vite 编译期注入，单测用 vi.stubEnv 运行期改它，函数读保证读到当前值。
 
 import type { RawToken } from "./tier"
+import { resolveChannelNumber } from "@/fork/identity/channel"
 import { extractErrorMessage } from "@/utils/error/extract-message"
 
 // ── 平台标识常量（固定值）──
@@ -17,16 +18,16 @@ const CLIENT_LANGUAGE = "zh-cn" // 全小写（对齐参考 CLIENT_LANGUAGE）
 // 取值对齐官网确认的跨仓契约（translatebuff-web src/lib/service/const.ts 的 UA_STRING / CHANNEL_KEY，
 // 后端 curl 示例已验证）。扩展无原生层拿真实 os/sn，故镜像官网 web 端的已知可用值；
 // 未来接真实 per-device os/版本/identity 版本可作精化，不影响本迭代对接。
+// 段4 渠道号不再硬编码：由 resolveChannelNumber() 按构建期渠道解析（多渠道归因，见 fork/identity/channel）。
 const UA_DEVICE_NAME = "browser" // 段1：固定 browser（对齐官网 web 端 UA 首段）
 const UA_OS = "Windows" // 段2：os —— 镜像官网确认值
 const UA_OS_VERSION = "windows10.0.22621.2792x64" // 段3：osVersion —— 镜像官网确认值
-const UA_CHANNEL = "7100" // 段4：渠道号
 const UA_APP_VERSION = "1.0.0" // 段6：appVersion —— 镜像官网确认值
 const UA_SN = "000000000000" // 段7：sn 设备唯一标识 —— 扩展无硬件 ID，回落官网占位值
 
-// 组装 7 段 UA。各段均不含 `/`，保证后端按 `/` split 恒得 7 段。
+// 组装 7 段 UA。各段均不含 `/`，保证后端按 `/` split 恒得 7 段。段4 渠道号函数内解析（非模块顶层快照）。
 function buildUserAgent(): string {
-  return `${UA_DEVICE_NAME}/${UA_OS}/${UA_OS_VERSION}/${UA_CHANNEL}/${SAAS_APP_ID}/${UA_APP_VERSION}/${UA_SN}`
+  return `${UA_DEVICE_NAME}/${UA_OS}/${UA_OS_VERSION}/${resolveChannelNumber()}/${SAAS_APP_ID}/${UA_APP_VERSION}/${UA_SN}`
 }
 
 // 显式请求头装配（纯函数）：凭据 + 平台标识 + 7 段 UA + 语言。绝不含 credentials（由调用方保证不 include）。

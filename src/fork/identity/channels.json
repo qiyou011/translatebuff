@@ -1,0 +1,6 @@
+{
+  "zip": { "number": "7100", "browser": "chrome" },
+  "chrome-store": { "number": "7101", "browser": "chrome" },
+  "edge": { "number": "7102", "browser": "edge" },
+  "firefox": { "number": "7103", "browser": "firefox" }
+}

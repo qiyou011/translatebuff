@@ -1,0 +1,19 @@
+schema: jy-spec
+
+context: |
+  语言：中文（简体）
+  所有产出物必须用简体中文撰写。
+
+  # [在此处添加项目的全局上下文，例如：]
+  # Tech stack: TypeScript, React, Node.js
+  # We use conventional commits
+
+# Per-artifact rules (optional)
+# Add custom rules for specific artifacts.
+# Example:
+#   rules:
+#     proposal:
+#       - Keep proposals under 500 words
+#       - Always include a "Non-goals" section
+#     tasks:
+#       - Break tasks into chunks of max 2 hours
