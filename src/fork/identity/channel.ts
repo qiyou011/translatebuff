@@ -16,6 +16,7 @@ interface ChannelEntry {
 
 // 渠道 id → 后端渠道（渠道供应商名称 / 号码）映射，供溯源：
 //   zip=7100 任译喵-OFFICIAL_WEB · chrome-store=7101 任译喵-Google · edge=7102 任译喵-Edge · firefox=7103 任译喵-FireFox
+//   360=7104 任译喵-360 · quark=7105 任译喵-夸克 · qq=7106 任译喵-QQ · sogou=7107 任译喵-搜狗
 // 号码是后端「渠道标识(ID)」，id 是本仓构建期内部键。新增渠道若号码待分配，先以 number:null 占位（护栏拦截）。
 const CHANNELS = channels as Record<string, ChannelEntry>
 
