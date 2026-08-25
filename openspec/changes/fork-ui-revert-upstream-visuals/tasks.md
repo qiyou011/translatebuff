@@ -209,8 +209,8 @@ src/entrypoints/translation-hub/components/translation-panel.tsx
 
 ## 6. 收尾验收
 
-- [ ] 6.1 干跑合并复测：`git merge-tree --write-tree --name-only HEAD fe2957c8` 冲突数应为 12（9 个 locales + `wxt.config.ts` + `src/utils/constants/app.ts` + `src/entrypoints/popup/app.tsx`），命令原文与输出贴进 PR
-- [ ] 6.2 人工冒烟：popup 打开、网页翻译、划词翻译、字幕按钮、选项页各 tab、登录入口——确认视觉是上游样式但品牌 logo 与站点链接仍指向任译喵
-- [ ] 6.3 确认 Discord / GitHub issues / 上游商店评价三个入口仍不可见
-- [ ] 6.4 更新 `FORK_GUIDE.md` §3、§6 与 `FORK.md`：登记新增重定向条目与 `redirect-baseline.json` 内容指纹机制、把「禁止原地改上游 UI」写成红线、记录两种边界检查模式的用法
-- [ ] 6.5 提 PR 到 `change/fork-foundation`，等人工审核
+- [x] 6.1 干跑合并复测：`git merge-tree --write-tree --name-only HEAD fe2957c8` 冲突数应为 12（9 个 locales + `wxt.config.ts` + `src/utils/constants/app.ts` + `src/entrypoints/popup/app.tsx`），命令原文与输出贴进 PR
+- [ ] 6.2 ⏸ **人工检查点，需用户执行** 人工冒烟：popup 打开、网页翻译、划词翻译、字幕按钮、选项页各 tab、登录入口——确认视觉是上游样式但品牌 logo 与站点链接仍指向任译喵
+- [ ] 6.3 ⏸ **人工检查点，需用户执行** 确认 Discord / GitHub issues / 上游商店评价三个入口仍不可见
+- [x] 6.4 更新 `FORK_GUIDE.md` §3、§6 与 `FORK.md`：登记新增重定向条目与 `redirect-baseline.json` 内容指纹机制、把「禁止原地改上游 UI」写成红线、记录两种边界检查模式的用法
+- [ ] 6.5 ⏸ **待用户同意推分支** 提 PR 到 `change/fork-foundation`，等人工审核
