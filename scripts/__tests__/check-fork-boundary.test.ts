@@ -114,3 +114,20 @@ describe("fork 自有根文件", () => {
     expect(violations).toEqual([])
   })
 })
+
+describe("fork 品牌资源替换", () => {
+  it("逐条登记的资源被放行", () => {
+    const allow = ["public/icon/128.png", "assets/banner.png", "src/assets/demo/context-menu.png"]
+    const { violations } = classifyChangedFiles(allow, allow)
+    expect(violations).toEqual([])
+  })
+
+  it("同目录下的源文件不因资源登记而被放行", () => {
+    // 刻意不用目录前缀放行：前缀会让日后往 src/assets/ 丢一个 .ts 被静默放过
+    const { violations } = classifyChangedFiles(
+      ["src/assets/styles/theme.css"],
+      ["src/assets/demo/context-menu.png"],
+    )
+    expect(violations).toEqual(["src/assets/styles/theme.css"])
+  })
+})

@@ -1,4 +1,4 @@
-import brandIcon from "@/assets/icons/renyimiao.svg?url&no-inline"
+import brandIcon from "@/fork/assets/renyimiao.svg?url&no-inline"
 import { i18n } from "@/utils/i18n"
 import { cn } from "@/utils/styles/utils"
 

@@ -3,7 +3,6 @@ import { IconLock, IconLockOpen, IconSettings, IconX } from "@tabler/icons-react
 import { useAtom, useAtomValue } from "jotai"
 import { useEffect, useRef, useState } from "react"
 import { browser } from "#imports"
-import brandLogo from "@/assets/icons/renyimiao.svg?url&no-inline"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,6 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/base-ui/dropdown-menu"
 import { anchoredToastManager } from "@/components/ui/base-ui/toast"
+import brandLogo from "@/fork/assets/renyimiao.svg?url&no-inline"
 import { ANALYTICS_FEATURE, ANALYTICS_SURFACE } from "@/types/analytics"
 import { createFeatureUsageContext } from "@/utils/analytics"
 import { configFieldsAtomMap } from "@/utils/atoms/config"

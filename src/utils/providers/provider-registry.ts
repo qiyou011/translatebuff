@@ -6,7 +6,7 @@ import type {
   ProviderSelectorItem,
   ProviderSelectorOption,
 } from "@/utils/providers/provider-display"
-import translatebuffLogo from "@/assets/icons/renyimiao.svg?url&no-inline"
+import translatebuffLogo from "@/fork/assets/renyimiao.svg?url&no-inline"
 import { isLLMProviderConfig, isTranslateProviderConfig } from "@/types/config/provider"
 import { i18n } from "@/utils/i18n"
 

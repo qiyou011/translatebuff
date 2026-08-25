@@ -33,9 +33,9 @@ pnpm vitest run --config vitest.fork.config.ts src/fork                         
 
 ## 2. 资源档：fork 身份资源（32 个）
 
-- [ ] 2.1 3 个 fork 净新增迁进 fork 领地：`src/assets/icons/renyimiao.svg` → `src/fork/assets/renyimiao.svg`；`assets/renyimiao-icon.svg` → `src/fork/assets/renyimiao-icon.svg`；`.gitattributes` 补进脚本的 `FORK_ROOT_FILES` 集合
-- [ ] 2.2 全仓更新这两个 svg 的 import 路径，`pnpm run build` 确认资源仍进产物
-- [ ] 2.3 把以下 29 个上游素材/配置替换**逐条**追加进 `scripts/fork-allowlist.json` 的 `files` 数组（不用前缀）。同步模式的差集正是「fork 相对上游的自有改动」，这些必然出现在里面，不登记就判红：
+- [x] 2.1 3 个 fork 净新增迁进 fork 领地：`src/assets/icons/renyimiao.svg` → `src/fork/assets/renyimiao.svg`；`assets/renyimiao-icon.svg` → `src/fork/assets/renyimiao-icon.svg`；`.gitattributes` 补进脚本的 `FORK_ROOT_FILES` 集合
+- [x] 2.2 全仓更新这两个 svg 的 import 路径，`pnpm run build` 确认资源仍进产物
+- [x] 2.3 把以下 29 个上游素材/配置替换**逐条**追加进 `scripts/fork-allowlist.json` 的 `files` 数组（不用前缀）。同步模式的差集正是「fork 相对上游的自有改动」，这些必然出现在里面，不登记就判红：
 
 ```
 .env.example
@@ -69,8 +69,10 @@ src/assets/icons/read-frog.png
 src/assets/providers/read-frog-provider.png
 ```
 
-- [ ] 2.4 `FORK_SCAN_ALL=1 node scripts/check-fork-boundary.mjs` 确认这 29 条不再出现在 violations 里
-- [ ] 2.5 提交
+- [x] 2.4 `FORK_SCAN_ALL=1 node scripts/check-fork-boundary.mjs` 确认这 29 条不再出现在 violations 里
+- [x] 2.5 提交
+
+> 📌 **实施偏离（2026-08-25）**：`assets/renyimiao-icon.svg` 未迁入 `src/fork/assets/`。它只被 9 个 README 引用、无任何代码 import，属文档素材而非代码；迁走要改 9 处 markdown 链接并把 README 配图放进 `src/`，反而更别扭。改为与其余 29 条一样逐条登记进 allowlist。
 
 ## 3. 清除档：丢弃与 take-theirs（8 个）
 
