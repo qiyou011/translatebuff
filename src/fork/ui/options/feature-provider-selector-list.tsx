@@ -5,6 +5,7 @@ import type { FeatureKey } from "@/utils/constants/feature-providers"
 import { useAtomValue, useSetAtom } from "jotai"
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/base-ui/field"
 import ForkProviderSelector from "@/fork/components/provider-selector"
+import { providerSupportsTranslationOnlyMode } from "@/fork/providers/translation-only-gate"
 import { useEnsureRenyimiaoSeeded } from "@/fork/providers/use-ensure-renyimiao-seeded"
 import {
   RenyimiaoGatedFallback,
@@ -19,6 +20,7 @@ import {
   getFeatureLabelI18nKey,
 } from "@/utils/constants/feature-providers"
 import { i18n } from "@/utils/i18n"
+import { isProviderSelectorItem } from "@/utils/providers/provider-display"
 import { cn } from "@/utils/styles/utils"
 
 // fork 换皮版选项页「功能提供商」宿主：由 wxt.config resolve 重定向顶替上游 feature-provider-selector-list。
@@ -56,6 +58,19 @@ function FeatureProviderField({
   const providerId = FEATURE_PROVIDER_DEFS[featureKey].getProviderId(config)
   const providerConfig = getProviderConfigById(providersConfig, providerId) ?? null
   const { providers, showFallback } = useRenyimiaoGatedProviders(featureKey, providerId)
+  // 微软的免鉴权端点无保留标记模式，与仅译文组合会损坏页面（见 fork/providers/translation-only-gate）。
+  // 判定放在这里而不是 ForkProviderSelector 内部：那个组件被 4 个上游 importer 共用，
+  // 在里面按 mode 置灰会连带灰掉语言检测 / 自定义动作 / 划词工具栏的微软。
+  const disabledProviderIds =
+    featureKey === "translate" && config.translate.mode === "translationOnly"
+      ? providers
+          .filter(
+            (provider) =>
+              !isProviderSelectorItem(provider) &&
+              !providerSupportsTranslationOnlyMode(provider.provider),
+          )
+          .map((provider) => provider.id)
+      : undefined
 
   return (
     <Field>
@@ -73,6 +88,7 @@ function FeatureProviderField({
           onChange={(id) => void setConfig(buildFeatureProviderPatch({ [featureKey]: id }))}
           className={providerSelectorClassName}
           triggerSize={providerSelectorTriggerSize}
+          disabledProviderIds={disabledProviderIds}
         />
       )}
     </Field>

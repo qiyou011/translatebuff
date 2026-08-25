@@ -45,6 +45,28 @@ const forkChannelSuffix = forkChannelId ? `-${forkChannelId}` : "-{{browser}}"
 // 把上游 provider 选择器 / 选项 provider 页重定向到 fork 版（相对/@ import 都拦得住）。
 const FORK_UI_REDIRECTS = [
   {
+    // 微软翻译适配器：上游旧鉴权端点已下线（404），修复后的免鉴权实现放在 fork 侧。
+    // 三个 importer（execute-translate、api/index 桶导出、background/translation-queues）
+    // 都解析到同一绝对路径，一条重定向全部接管。
+    from: path.resolve(__dirname, "src/utils/host/translate/api/microsoft.ts"),
+    to: path.resolve(__dirname, "src/fork/providers/microsoft-translate.ts"),
+  },
+  {
+    // 选项页「翻译模式」卡片：上游版本对模式毫无门禁，切进仅译文后微软适配器会硬抛错。
+    // fork 版禁用该选项并就地说明原因；具名导出与 ConfigCard id 保持不变。
+    from: path.resolve(__dirname, "src/entrypoints/options/pages/translation/translation-mode.tsx"),
+    to: path.resolve(__dirname, "src/fork/ui/options/translation-mode.tsx"),
+  },
+  {
+    // 模式切换快捷键：同为 config.translate.mode 的写入口，微软激活时拦住并弹 toast 说明。
+    // importer 是上游 host.content/runtime.ts，故必须走重定向（不像 popup 那个能直接改 import）。
+    from: path.resolve(
+      __dirname,
+      "src/entrypoints/host.content/translation-control/bind-translation-mode-shortcut.ts",
+    ),
+    to: path.resolve(__dirname, "src/fork/ui/host-content/bind-translation-mode-shortcut.ts"),
+  },
+  {
     from: path.resolve(__dirname, "src/components/llm-providers/provider-selector.tsx"),
     to: path.resolve(__dirname, "src/fork/components/provider-selector.tsx"),
   },

@@ -727,6 +727,7 @@ options:
     translationMode:
       title: 翻译模式
       description: 选择翻译文本的显示方式：双语对照或仅显示翻译
+      microsoftNotSupported: 微软翻译不支持「仅显示翻译」模式，请改用其他翻译服务
       mode:
         bilingual: 双语对照
         translationOnly: 仅显示翻译

@@ -26,6 +26,12 @@ interface ForkProviderSelectorProps {
   providers: ProviderSelectorOption[]
   value: string
   onChange: (id: string) => void
+  /**
+   * 需要置灰的 provider id。本组件被 4 个上游 importer 共用（语言检测 / 自定义动作 /
+   * 划词工具栏 / 功能列表），故这里只负责渲染禁用态，**不做任何判定**——谁该置灰由
+   * 持有 featureKey 的调用方决定，避免一处判定误伤其他功能。
+   */
+  disabledProviderIds?: readonly string[]
   placeholder?: string
   className?: string
   triggerSize?: TriggerSize
@@ -55,6 +61,7 @@ export default function ForkProviderSelector({
   providers,
   value,
   onChange,
+  disabledProviderIds,
   placeholder,
   className,
   triggerSize = "default",
@@ -63,6 +70,7 @@ export default function ForkProviderSelector({
   const { theme } = useTheme()
   const currentProvider = providers.find((provider) => provider.id === value)
   const groups = getForkProviderSelectorGroups(providers)
+  const isDisabled = (id: string) => disabledProviderIds?.includes(id) ?? false
 
   const trigger = (
     <SelectTrigger className={className} size={triggerSize}>
@@ -97,7 +105,7 @@ export default function ForkProviderSelector({
         <SelectContent className="min-w-fit" {...selectContentProps}>
           <SelectGroup>
             {(groups[0]?.providers ?? []).map((provider) => (
-              <SelectItem key={provider.id} value={provider}>
+              <SelectItem key={provider.id} value={provider} disabled={isDisabled(provider.id)}>
                 <ProviderIcon
                   logo={getProviderLogo(provider, theme)}
                   name={getProviderName(provider)}
@@ -125,7 +133,7 @@ export default function ForkProviderSelector({
           <SelectGroup key={group.key}>
             <SelectLabel>{getGroupLabel(group.key)}</SelectLabel>
             {group.providers.map((provider) => (
-              <SelectItem key={provider.id} value={provider}>
+              <SelectItem key={provider.id} value={provider} disabled={isDisabled(provider.id)}>
                 <ProviderIcon
                   logo={getProviderLogo(provider, theme)}
                   name={getGroupedItemName(provider, group.key)}

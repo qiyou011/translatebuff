@@ -727,6 +727,7 @@ options:
     translationMode:
       title: Translation Mode
       description: "Choose how the translated text is displayed: bilingual or translation only."
+      microsoftNotSupported: Microsoft Translator does not support translation-only mode. Please choose another translation service.
       mode:
         bilingual: Bilingual
         translationOnly: Translation Only

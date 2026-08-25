@@ -612,6 +612,7 @@ options:
     translationMode:
       title: Chế độ dịch
       description: "Chọn cách hiển thị văn bản đã dịch: song ngữ hoặc chỉ bản dịch."
+      microsoftNotSupported: Trình dịch Microsoft không hỗ trợ chế độ chỉ hiển thị bản dịch. Vui lòng chọn dịch vụ dịch khác.
       mode:
         bilingual: Song ngữ
         translationOnly: Chỉ bản dịch

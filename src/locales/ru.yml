@@ -612,6 +612,7 @@ options:
     translationMode:
       title: Режим перевода
       description: "Выберите способ отображения переведённого текста: двуязычный или только перевод."
+      microsoftNotSupported: Переводчик Microsoft не поддерживает режим «только перевод». Выберите другой сервис перевода.
       mode:
         bilingual: Двуязычный
         translationOnly: Только перевод

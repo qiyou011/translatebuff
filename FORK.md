@@ -25,6 +25,35 @@ Translatebuff 是 read-frog 的软 fork（上游：mengxi-ream/read-frog）。
 - package.json `version`、CHANGELOG.md、pnpm-lock.yaml
 - .changeset/（保留 take-theirs、休眠；**fork 永不运行 `changeset version`/`release`**，避免删除目录导致每次同步 modify/delete 冲突）
 
+## 被 fork 影子接管的上游文件（每次同步必须手工对账）
+
+这些上游文件**仍在仓库里、仍会被 merge 更新，但运行时不再执行**——`wxt.config.ts` 的
+`FORK_UI_REDIRECTS` 把模块解析重定向到了 `src/fork/` 副本。它们不会产生 merge 冲突
+（fork 没改过原文件），代价是**上游对它们的后续修复不会自动生效**，而
+`forkUiRedirectPlugin` 的 buildStart **只断言路径存在、不比对内容**——上游改了内容，
+构建照样绿，没人会知道。
+
+| 上游文件                                                                           | fork 副本                                                  | 同步时要留意什么                                                                                               |
+| ---------------------------------------------------------------------------------- | ---------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| src/utils/host/translate/api/microsoft.ts                                          | src/fork/providers/microsoft-translate.ts                  | 端点/请求形状变更；上游改动频率最高                                                                            |
+| src/entrypoints/host.content/translation-control/bind-translation-mode-shortcut.ts | src/fork/ui/host-content/bind-translation-mode-shortcut.ts | 上游已把 `config.translate` 改名为 `config.pageTranslation`、i18n key 也重组                                   |
+| src/entrypoints/options/pages/translation/translation-mode.tsx                     | src/fork/ui/options/translation-mode.tsx                   | 必须保留具名导出 `TranslationMode` 与 `ConfigCard id="translation-mode"`（命令面板靠该 id 跳转，改了静默断链） |
+
+（其余 8 条重定向是纯换皮 UI，本表只列「上游会继续演进、漏看会出功能问题」的三个。）
+
+**每次 merge 完上游，除常规门禁另加三步：**
+
+1. `git diff <上次同步的上游 commit>..upstream/main -- <上表三个路径>`，逐条判断上游改动要不要手工搬进 fork 副本。
+2. 看漂移哨兵 `src/fork/providers/__tests__/upstream-decode-drift.test.ts` 是否变红。红了 =
+   上游把 `microsoft-translate` 加进了 `normalizeTranslationOutput` 的解码集合，**此时必须删掉
+   fork 适配器里的 `decodeHTMLStrict`**，否则双重解码会把 `&amp;` 静默塌成 `&`——不冲突、不报错、极难查。
+3. 若同步到了上游 `config.translate` → `config.pageTranslation` 改名的那一版，
+   `src/fork/providers/translation-only-gate.ts` 的 featureKey 与三个 fork 副本读的字段要一起改。
+
+**注意**：重定向在 vitest 下**不生效**（`vitest.config.ts` 只注册 `WxtVitest()`，它不转发
+`wxt.config.ts` 的 `vite()` 钩子）。所以上游原版测试会继续绿但测的是休眠代码；fork 副本的逻辑
+必须在 `src/fork/**/__tests__/` 里直接 import fork 模块补测，别指望继承上游测试。
+
 ## 发版号与打包（B1）
 
 - manifest `version` 走 fork 自主 semver，存 `src/fork/identity/fork-version.json` 的 `version`（当前 `1.0.0`），
