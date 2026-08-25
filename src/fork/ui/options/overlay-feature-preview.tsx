@@ -20,7 +20,7 @@ export function OverlayFeaturePreview({
       data-fork-overlay-preview
       role="img"
       aria-label={`${title}: ${description}`}
-      className="relative h-44 w-full max-w-2xl overflow-hidden rounded-xl border border-border/80 bg-background shadow-control"
+      className="shadow-control relative h-44 w-full max-w-2xl overflow-hidden rounded-xl border border-border/80 bg-background"
     >
       <BrowserChrome />
       {feature === "floating-button" && <FloatingButtonScene />}

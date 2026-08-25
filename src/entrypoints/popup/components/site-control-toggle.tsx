@@ -24,7 +24,7 @@ export function SiteControlToggle() {
 
   return (
     <div className="flex items-center justify-between gap-2">
-      <span className="text-sm font-medium">{label}</span>
+      <span className="text-[13px] font-medium">{label}</span>
       <Switch checked={isInList} onCheckedChange={toggleSite} disabled={isIgnoreTab} />
     </div>
   )

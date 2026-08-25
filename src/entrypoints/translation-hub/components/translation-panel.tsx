@@ -18,7 +18,7 @@ export function TranslationPanel() {
 
   if (selectedProviderIds.length === 0) {
     return (
-      <Empty className="min-h-[28rem] rounded-lg bg-card/75 py-16">
+      <Empty className="py-16">
         <EmptyHeader>
           <EmptyMedia variant="icon">
             <Icon icon="tabler:language-off" className="size-6" />

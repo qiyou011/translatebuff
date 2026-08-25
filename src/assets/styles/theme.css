@@ -11,10 +11,6 @@
   /* Use read-frog-prefixed theme tokens to avoid collisions with host-page custom properties inside shadow roots. */
   --font-sans: var(--rf-font-sans);
   --font-mono: var(--rf-font-mono);
-  --text-xs: 0.8125rem;
-  --text-xs--line-height: 1.125rem;
-  --text-sm: 0.9375rem;
-  --text-sm--line-height: 1.375rem;
   --color-background: var(--rf-background);
   --color-foreground: var(--rf-foreground);
   --color-card: var(--rf-card);
@@ -64,8 +60,6 @@
   --color-toast-warning: var(--rf-toast-warning);
   --color-link: var(--rf-link);
   --shadow-floating: var(--rf-elevation-floating);
-  --shadow-control: var(--rf-elevation-control);
-  --shadow-panel: var(--rf-elevation-panel);
   --animate-toast-success-odd: toast-success-odd 0.32s cubic-bezier(0.5, 1, 0.89, 1);
   --animate-toast-success-even: toast-success-even 0.32s cubic-bezier(0.5, 1, 0.89, 1);
   --animate-toast-error-odd: toast-error-odd 0.28s cubic-bezier(0.5, 1, 0.89, 1);
@@ -150,15 +144,15 @@
   --rf-card-foreground: oklch(0.141 0.005 285.823);
   --rf-popover: oklch(1 0 0);
   --rf-popover-foreground: oklch(0.141 0.005 285.823);
-  --rf-primary: oklch(0.29 0.006 285.885);
+  --rf-primary: oklch(0.205 0 0);
   --rf-primary-foreground: oklch(0.985 0 0);
-  --rf-brand: oklch(0.29 0.006 285.885);
+  --rf-brand: oklch(76.034% 0.12361 82.191);
   --rf-brand-foreground: oklch(0.985 0 0);
-  --rf-secondary: oklch(0.945 0.003 286.32);
-  --rf-secondary-foreground: oklch(0.36 0.006 285.885);
-  --rf-muted: oklch(0.952 0.003 286.32);
-  --rf-muted-foreground: oklch(0.49 0.012 285.938);
-  --rf-accent: oklch(0.925 0.004 286.32);
+  --rf-secondary: oklch(0.967 0.001 286.375);
+  --rf-secondary-foreground: oklch(0.47 0.006 285.885);
+  --rf-muted: oklch(0.967 0.001 286.375);
+  --rf-muted-foreground: oklch(0.552 0.016 285.938);
+  --rf-accent: oklch(0.967 0.001 286.375);
   --rf-accent-foreground: oklch(0.21 0.006 285.885);
   --rf-destructive: oklch(0.577 0.245 27.325);
   --rf-border: oklch(0.92 0.004 286.32);
@@ -170,23 +164,21 @@
   --rf-chart-4: oklch(57.026% 0.09271 82.191);
   --rf-chart-5: oklch(38.017% 0.06181 82.191);
   --rf-radius: 0.625rem;
-  --rf-sidebar: oklch(0.965 0.003 286.32);
-  --rf-sidebar-foreground: oklch(0.31 0.006 285.885);
-  --rf-sidebar-primary: oklch(0.29 0.006 285.885);
+  --rf-sidebar: oklch(0.985 0 0);
+  --rf-sidebar-foreground: oklch(0.141 0.005 285.823);
+  --rf-sidebar-primary: oklch(0.205 0 0);
   --rf-sidebar-primary-foreground: oklch(0.985 0 0);
-  --rf-sidebar-accent: oklch(0.89 0.006 286.32);
-  --rf-sidebar-accent-foreground: oklch(0.22 0.006 285.885);
-  --rf-sidebar-border: oklch(0.89 0.004 286.32);
-  --rf-sidebar-ring: oklch(0.56 0.012 285.938);
+  --rf-sidebar-accent: oklch(0.967 0.001 286.375);
+  --rf-sidebar-accent-foreground: oklch(0.21 0.006 285.885);
+  --rf-sidebar-border: oklch(0.92 0.004 286.32);
+  --rf-sidebar-ring: oklch(0.705 0.015 286.067);
   /* Additional theme variables */
   --rf-warning: oklch(97.3% 0.071 103.193);
   --rf-toast-info: var(--color-blue-500);
   --rf-toast-success: var(--color-emerald-500);
   --rf-toast-warning: var(--color-amber-500);
   --rf-link: oklch(54.6% 0.245 262.881);
-  --rf-elevation-control: 0 1px 2px rgb(0 0 0 / 0.04), 0 0 0 1px rgb(0 0 0 / 0.02);
-  --rf-elevation-panel: 0 12px 30px rgb(39 39 42 / 0.08), 0 2px 7px rgb(39 39 42 / 0.04);
-  --rf-elevation-floating: 0 16px 40px rgb(39 39 42 / 0.12), 0 2px 9px rgb(39 39 42 / 0.06);
+  --rf-elevation-floating: 0 8px 40px 0 rgb(0 0 0 / 0.08), 0 0 1px 0 rgb(0 0 0 / 0.08);
 }
 
 .dark {
@@ -230,8 +222,6 @@
   --rf-toast-warning: var(--color-amber-500);
   --rf-link: oklch(70.7% 0.165 254.624);
   --rf-elevation-floating: 0 8px 40px 0 rgb(0 0 0 / 0.28), 0 0 1px 0 rgb(0 0 0 / 0.28);
-  --rf-elevation-control: 0 1px 2px rgb(0 0 0 / 0.32), 0 0 0 1px rgb(255 255 255 / 0.03);
-  --rf-elevation-panel: 0 18px 44px rgb(0 0 0 / 0.38), 0 2px 10px rgb(0 0 0 / 0.24);
 }
 
 @layer base {
@@ -241,47 +231,6 @@
   body {
     @apply bg-background text-foreground antialiased;
   }
-  button,
-  [role="button"],
-  a,
-  input,
-  textarea,
-  select {
-    -webkit-tap-highlight-color: transparent;
-  }
-  ::selection {
-    color: var(--rf-primary-foreground);
-    background: var(--rf-primary);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    scroll-behavior: auto !important;
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-
-@keyframes rf-completion-ring {
-  0% {
-    opacity: 0.45;
-    transform: scale(0.72);
-  }
-  65% {
-    opacity: 0.16;
-  }
-  100% {
-    opacity: 0;
-    transform: scale(1.35);
-  }
-}
-
-.rf-completion-ring {
-  animation: rf-completion-ring 850ms ease-out both;
 }
 
 /* Chromium injects `body { font-family: system-ui, … }` (extension_fonts.css)

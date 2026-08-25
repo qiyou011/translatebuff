@@ -127,10 +127,10 @@ export function TranslationCard({
   const hasContent = mutation.isError || (mutation.data !== undefined && mutation.data !== "")
 
   return (
-    <div className="overflow-hidden rounded-lg bg-card shadow-control">
+    <div className="rounded-lg border bg-card">
       <div
         className={cn(
-          "flex min-h-12 items-center justify-between px-3.5 py-2",
+          "flex items-center justify-between px-3 py-2",
           hasContent && isExpanded && "border-b",
         )}
       >
@@ -203,7 +203,7 @@ export function TranslationCard({
       </div>
 
       {hasContent && isExpanded && (
-        <div className="p-4">
+        <div className="p-3">
           {mutation.isError ? (
             <div>
               <div className="mb-1 flex items-center space-x-2 text-destructive">

@@ -32,7 +32,7 @@ export function AppSidebar() {
         <UserAccountMenuSidebar />
         <InputGroup
           onClick={() => setCommandPaletteOpen(true)}
-          className="border-0 bg-card text-sidebar-foreground shadow-control transition-colors duration-200 hover:bg-muted"
+          className="shadow-control border-0 bg-card text-sidebar-foreground transition-colors duration-200 hover:bg-muted"
         >
           <InputGroupInput
             readOnly

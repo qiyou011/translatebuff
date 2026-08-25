@@ -30,11 +30,19 @@ function createLanguageItem(code: LangCodeISO6393): LanguageItem<LangCodeISO6393
 }
 
 const langSelectorTriggerClasses =
-  "!h-12 w-[145px] justify-between gap-2 rounded-lg border-0 bg-muted/70 px-3 shadow-none hover:bg-muted"
+  "!h-14 w-30 rounded-lg shadow-xs pr-2 gap-1 justify-between bg-transparent"
 
-const langSelectorContentClasses = "flex min-w-0 flex-1 items-center text-base font-medium"
+const langSelectorContentClasses = "flex flex-col items-start text-base font-medium min-w-0 flex-1"
 
-function LanguageComboboxTrigger({ label, ariaLabel }: { label: string; ariaLabel: string }) {
+function LanguageComboboxTrigger({
+  label,
+  subtitle,
+  ariaLabel,
+}: {
+  label: string
+  subtitle: string
+  ariaLabel: string
+}) {
   return (
     <ComboboxPrimitive.Trigger
       render={
@@ -49,6 +57,7 @@ function LanguageComboboxTrigger({ label, ariaLabel }: { label: string; ariaLabe
     >
       <div className={langSelectorContentClasses}>
         <span className="w-full truncate text-left">{label}</span>
+        <span className="text-sm text-neutral-500">{subtitle}</span>
       </div>
       <IconChevronDown className="size-4 text-muted-foreground" />
     </ComboboxPrimitive.Trigger>
@@ -97,13 +106,13 @@ export default function LanguageOptionsSelector() {
 
   const sourceLangLabel =
     language.sourceCode === "auto"
-      ? `${i18n.t("popup.autoLang")} · ${currentSourceItem?.label ?? getLanguageLabel(detectedCode)}`
+      ? `${currentSourceItem?.label ?? getLanguageLabel(detectedCode)} (auto)`
       : (currentSourceItem?.label ?? getLanguageLabel(language.sourceCode))
 
   const targetLangLabel = currentTargetItem?.label ?? getLanguageLabel(language.targetCode)
 
   return (
-    <div className="flex items-center justify-between gap-2">
+    <div className="flex items-center justify-between">
       <Combobox
         value={currentSourceItem}
         onValueChange={handleSourceLangChange}
@@ -111,7 +120,13 @@ export default function LanguageOptionsSelector() {
         filter={filterLanguage}
         autoHighlight
       >
-        <LanguageComboboxTrigger label={sourceLangLabel} ariaLabel={i18n.t("popup.sourceLang")} />
+        <LanguageComboboxTrigger
+          label={sourceLangLabel}
+          subtitle={
+            language.sourceCode === "auto" ? i18n.t("popup.autoLang") : i18n.t("popup.sourceLang")
+          }
+          ariaLabel={i18n.t("popup.sourceLang")}
+        />
         <ComboboxContent className="w-72 rounded-lg shadow-md">
           <ComboboxInput
             showTrigger={false}
@@ -128,10 +143,7 @@ export default function LanguageOptionsSelector() {
           <ComboboxEmpty>{i18n.t("translationHub.noLanguagesFound")}</ComboboxEmpty>
         </ComboboxContent>
       </Combobox>
-      <Icon
-        icon="tabler:arrow-right"
-        className="h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200"
-      />
+      <Icon icon="tabler:arrow-right" className="h-4 w-4 text-neutral-500" />
       <Combobox
         value={currentTargetItem}
         onValueChange={handleTargetLangChange}
@@ -139,7 +151,11 @@ export default function LanguageOptionsSelector() {
         filter={filterLanguage}
         autoHighlight
       >
-        <LanguageComboboxTrigger label={targetLangLabel} ariaLabel={i18n.t("popup.targetLang")} />
+        <LanguageComboboxTrigger
+          label={targetLangLabel}
+          subtitle={i18n.t("popup.targetLang")}
+          ariaLabel={i18n.t("popup.targetLang")}
+        />
         <ComboboxContent className="w-72 rounded-lg shadow-md">
           <ComboboxInput
             showTrigger={false}

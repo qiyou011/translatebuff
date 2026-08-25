@@ -21,7 +21,7 @@ export default function App() {
       </header>
 
       <main className="mx-auto max-w-7xl p-4 md:p-6 lg:p-8">
-        <section className="overflow-hidden rounded-xl bg-card shadow-control">
+        <section className="shadow-control overflow-hidden rounded-xl bg-card">
           <div className="grid grid-cols-1 border-b lg:grid-cols-2">
             <div className="border-b p-4 lg:border-r lg:border-b-0">
               <LanguageControlPanel />

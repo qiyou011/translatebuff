@@ -20,6 +20,6 @@
     "entrypoints/options/pages/custom-actions/action-config-form/notebase-connection-field.tsx": "f167113aa7c3e032",
     "entrypoints/options/pages/selection-toolbar/selection-toolbar-save-suggestion-toggle.tsx": "fe4c4aa985d3b1ea",
     "components/llm-providers/feature-provider-selector-list.tsx": "475d1edc6cbfcdb6",
-    "entrypoints/options/pages/config/google-drive-sync/index.tsx": "ccaf909d8d077af8"
+    "entrypoints/options/pages/config/google-drive-sync/index.tsx": "b125f77477045921"
   }
 }

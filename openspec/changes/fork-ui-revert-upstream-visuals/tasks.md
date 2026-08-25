@@ -156,7 +156,7 @@ src/utils/utils.ts
 
 ## 5. 回退档：纯视觉整体回退（41 个）
 
-- [ ] 5.1 对以下文件执行 `git checkout $FORK_POINT -- <file>`：
+- [x] 5.1 对以下文件执行 `git checkout $FORK_POINT -- <file>`：
 
 ```
 src/assets/styles/theme.css
@@ -202,10 +202,10 @@ src/entrypoints/translation-hub/components/translation-card.tsx
 src/entrypoints/translation-hub/components/translation-panel.tsx
 ```
 
-- [ ] 5.2 `pnpm run test`——跟随视觉改过的断言会一起回退；若有测试失败说明该文件其实属于搬迁档，退回第 4 节处理
-- [ ] 5.3 三浏览器构建全绿
-- [ ] 5.4 `FORK_SCAN_ALL=1 node scripts/check-fork-boundary.mjs` 的输出里不再有任何 `.ts`/`.tsx`/`.css` 条目
-- [ ] 5.5 提交
+- [x] 5.2 `pnpm run test`——跟随视觉改过的断言会一起回退；若有测试失败说明该文件其实属于搬迁档，退回第 4 节处理
+- [x] 5.3 三浏览器构建全绿
+- [x] 5.4 `FORK_SCAN_ALL=1 node scripts/check-fork-boundary.mjs` 的输出里不再有任何 `.ts`/`.tsx`/`.css` 条目
+- [x] 5.5 提交
 
 ## 6. 收尾验收
 

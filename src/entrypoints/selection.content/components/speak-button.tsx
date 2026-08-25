@@ -51,7 +51,7 @@ export function SpeakButton({ text }: { text: string | undefined }) {
       render={
         <button
           type="button"
-          className={cn(buttonVariants({ variant: "ghost-secondary", size: "icon-sm" }), "size-7")}
+          className={cn(buttonVariants({ variant: "ghost-secondary", size: "icon-sm" }))}
           onClick={handleClick}
         />
       }
