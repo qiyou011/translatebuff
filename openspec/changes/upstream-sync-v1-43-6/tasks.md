@@ -61,19 +61,25 @@
 
 ## 6. 人工冒烟（WXT 大版本升级必做，单测覆盖不到）
 
-- [ ] 6.1 `node scripts/pack.mjs test` 打测试包，Chrome load unpacked 装载
-- [ ] 6.2 网页翻译：任选一篇长文，双语模式译全文
-- [ ] 6.3 划词翻译：选中文本，浮窗出现且译文正确
-- [ ] 6.4 字幕：YouTube 视频开字幕翻译
-- [ ] 6.5 popup：品牌名、provider 选择器、翻译模式切换
-- [ ] 6.6 options：各 tab 可达，任译喵 API 块的连接检测与更新模型可用
-- [ ] 6.7 登录：走一次登录流程，确认会员态读取正常（验证 3.1 的契约结论）
-- [ ] 6.8 上游引擎修复抽验：同源导航切页不闪烁（#1982）、含图标字体的页面不被误译（#1986）
-- [ ] 6.9 把冒烟结果逐条记进 PR
+- [x] 6.1 `node scripts/pack.mjs test` 打测试包，Chrome load unpacked 装载
+- [x] 6.2 网页翻译：任选一篇长文，双语模式译全文
+- [x] 6.3 划词翻译：选中文本，浮窗出现且译文正确
+- [x] 6.4 字幕：YouTube 视频开字幕翻译
+- [x] 6.5 popup：品牌名、provider 选择器、翻译模式切换
+- [x] 6.6 options：各 tab 可达，任译喵 API 块的连接检测与更新模型可用
+- [x] 6.7 登录：走一次登录流程，确认会员态读取正常（验证 3.1 的契约结论）
+- [x] 6.8 上游引擎修复抽验：同源导航切页不闪烁（#1982）、含图标字体的页面不被误译（#1986）
+- [x] 6.9 把冒烟结果逐条记进 PR
+
+> **冒烟记录（2026-08-25，用户执行，通过）**
+>
+> 发现并修复 3 处：内置词典按钮消失（上游把它移出 `customActions`，fork 工具栏与控制器仍读老字段）；
+> 反馈入口仍指向上游 `feedback.readfrog.app`；options 侧边栏残留上游的路线图入口。
+> 其余（网页翻译、字幕、popup、options 各 tab、登录与会员态）未见异常。
 
 ## 7. 收尾
 
-- [ ] 7.1 `src/fork/identity/fork-version.json` 版本号递增，`version_name` 的上游溯源更新为 `rf 1.43.6`
-- [ ] 7.2 更新 `src/fork/identity/upstream-baseline.json`：`lastSyncedSha` = `53b54d68`、`lastSyncedVersion` = `1.43.6`。**这一步漏了，阶段 2 的同步模式与前置门禁都会用错基准**
-- [ ] 7.3 `FORK.md` 记录本次落脚点 SHA，供下次 `git diff <上次同步SHA>..upstream/main` 用
-- [ ] 7.4 提 PR 到 `change/fork-foundation`，等人工审核
+- [x] 7.1 `src/fork/identity/fork-version.json` 版本号递增，`version_name` 的上游溯源更新为 `rf 1.43.6`
+- [x] 7.2 更新 `src/fork/identity/upstream-baseline.json`：`lastSyncedSha` = `53b54d68`、`lastSyncedVersion` = `1.43.6`。**这一步漏了，阶段 2 的同步模式与前置门禁都会用错基准**
+- [x] 7.3 `FORK.md` 记录本次落脚点 SHA，供下次 `git diff <上次同步SHA>..upstream/main` 用
+- [x] 7.4 提 PR 到 `change/fork-foundation`，等人工审核
