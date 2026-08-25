@@ -27,7 +27,7 @@ pnpm vitest run --config vitest.fork.config.ts src/fork                         
 - [x] 1.5 跑绿 1.2 的四条测试
 - [x] 1.6 `.github/workflows/fork-guard.yml`：去掉 `on.pull_request.branches: [main]`；checkout 加 `ref: ${{ github.event.pull_request.head.sha }}`（保留 `fetch-depth: 0`），让 HEAD 就是分支 tip、不必从合成 merge 绕一层；按分支名分流，`feat/upstream-sync-*` 走 `FORK_SYNC_MODE=1`，其余走增量模式
 - [x] 1.7 新建 `vitest.fork.config.ts`（决策 10）：`mergeConfig` 根配置后追加 `forkUiRedirectPlugin(FORK_UI_REDIRECTS)`，并补进脚本的 `FORK_ROOT_FILES`。**根 `vitest.config.ts` 一个字不改、不进 allowlist**——全局注册会让上游自己的测试也解析到 fork 影子（`providers-config.test.tsx`、`feature-provider-selector-list.test.tsx`、`beta-gating.test.tsx`、`translate-text.test.tsx`），上游断言必然落空、`pnpm run test` 判红，修它只能改上游测试文件、又成越界。第 4 节所有「先红后绿」都依赖这一步
-- [ ] 1.8 用一个只改 `src/utils/message.ts` 一行的临时分支提 PR 到 `change/fork-foundation`，确认 `fork-guard` 这次真被触发且判红；验完关 PR、删分支
+- [x] 1.8 已验证（2026-08-25，PR #19，验完已关闭并删分支）。临时分支只改 `src/utils/message.ts` 一行，提 PR 到 `change/fork-foundation`：- `boundary` job **确实被触发**——修改前该工作流只在 `branches: [main]` 生效，这类 PR 上根本不运行 - 分支名分流按预期走增量模式：`FORK_DIFF_BASE=origin/change/fork-foundation node scripts/check-fork-boundary.mjs` - CI 输出 `Fork boundary violations: - src/utils/message.ts`，`Process completed with exit code 1`，PR 判红
 - [ ] 1.9 ⏸ **由用户自行配置（2026-08-25：你不管）** · 人工检查点：在 GitHub 给 `main` 与 `change/*` 开分支保护（要求 PR 合入 + `fork-guard` 为必需检查），以 `gh api repos/qiyou011/translatebuff/branches/main/protection` 的输出为证贴进 PR。扩大触发面只覆盖「走 PR」的路径，直接本地 merge 这条路只有分支保护能堵——这是 109 个越界的真实来路，不闭环等于核心目标没达成
 - [x] 1.10 提交（`4235b0d6`）
 
