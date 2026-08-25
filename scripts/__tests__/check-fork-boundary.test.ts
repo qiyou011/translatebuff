@@ -62,7 +62,7 @@ function fakeGit(table: Record<string, string>) {
     if (!(key in table)) {
       throw new Error(`git ${key} failed`)
     }
-    return table[key]
+    return table[key]!
   }
 }
 

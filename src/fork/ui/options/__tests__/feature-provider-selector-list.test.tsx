@@ -53,7 +53,7 @@ function renderWith(config: Config) {
 
 /** 打开第 index 个功能行的下拉，返回其中微软那一项。FEATURE_KEYS 顺序：translate 在首位。 */
 function openRowAndFindMicrosoft(index: number): HTMLElement {
-  fireEvent.click(screen.getAllByRole("combobox")[index])
+  fireEvent.click(screen.getAllByRole("combobox")[index]!)
   return screen.getByRole("option", { name: new RegExp(MICROSOFT_NAME, "i") })
 }
 

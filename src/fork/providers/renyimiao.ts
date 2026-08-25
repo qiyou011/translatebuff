@@ -144,6 +144,7 @@ interface RepointResult {
   reassignments: Partial<Record<FeatureKey, string>>
   nextCustomActions: Config["selectionToolbar"]["customActions"]
   customActionsChanged: boolean
+  nextDictionaryProviderId?: string
 }
 
 // 把指向"在 nextProviders 里不可见"的功能 / 自定义动作 repoint 到 fallbackId（存活的任译喵实例）。
@@ -169,14 +170,40 @@ function repointHidden(
     return action
   })
 
-  return { reassignments, nextCustomActions, customActionsChanged }
+  // 上游 v1.43.6（#1954 一线）把内置「词典」从 customActions 挪进了
+  // selectionToolbar.builtInActions.dictionary，默认仍指向免费AI —— 那个 provider 在 fork
+  // 选择器里不可见。不跟到新位置的话，词典会静默指向一个用户根本选不到的 provider。
+  const dictionary = config.selectionToolbar.builtInActions?.dictionary
+  const nextDictionaryProviderId =
+    dictionary?.enabled && !isVisibleProviderId(dictionary.providerId, nextProviders)
+      ? fallbackId
+      : undefined
+
+  return { reassignments, nextCustomActions, customActionsChanged, nextDictionaryProviderId }
 }
 
 function buildRepointPatch(
   config: Config,
-  { reassignments, nextCustomActions, customActionsChanged }: RepointResult,
+  {
+    reassignments,
+    nextCustomActions,
+    customActionsChanged,
+    nextDictionaryProviderId,
+  }: RepointResult,
 ): Partial<Config> {
   const patch: Partial<Config> = { ...buildFeatureProviderPatch(reassignments) }
+  if (nextDictionaryProviderId) {
+    patch.selectionToolbar = {
+      ...patch.selectionToolbar,
+      builtInActions: {
+        ...config.selectionToolbar.builtInActions,
+        dictionary: {
+          ...config.selectionToolbar.builtInActions.dictionary,
+          providerId: nextDictionaryProviderId,
+        },
+      },
+    } as Config["selectionToolbar"]
+  }
   if (customActionsChanged) {
     // 只合入 customActions delta，保留 buildFeatureProviderPatch 已写入 patch.selectionToolbar.features
     // 的 repoint；绝不用 { ...config.selectionToolbar } 整体覆盖——那会把 selectionToolbar.translate
@@ -249,7 +276,7 @@ export function syncRenyimiaoModels(config: Config, modelIds: string[]): Partial
   )
   const nextProviders = [...nonRenyimiao, ...desired]
 
-  const repoint = repointHidden(config, nextProviders, renyimiaoInstanceId(modelIds[0]))
+  const repoint = repointHidden(config, nextProviders, renyimiaoInstanceId(modelIds[0]!))
   const patch = buildRepointPatch(config, repoint)
   patch.providersConfig = nextProviders
   return patch

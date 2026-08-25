@@ -19,6 +19,7 @@ import { normalizeSelectedText } from "@/entrypoints/selection.content/utils"
 import { withRenyimiaoJsonObjectFormat } from "@/fork/providers/custom-action-response-format"
 import { ANALYTICS_FEATURE, ANALYTICS_SURFACE } from "@/types/analytics"
 import { createFeatureUsageContext, trackFeatureUsed } from "@/utils/analytics"
+import { UNKNOWN_FEATURE_PROVIDER } from "@/utils/analytics-provider"
 import { configFieldsAtomMap, writeConfigAtom } from "@/utils/atoms/config"
 import { onMessage } from "@/utils/message"
 import {
@@ -239,6 +240,8 @@ export function useSelectionCustomActionController() {
               action_id: actionId,
             },
           ),
+          // 前置校验失败，provider 尚未解析，按上游约定回落 UNKNOWN
+          ...UNKNOWN_FEATURE_PROVIDER,
           outcome: "failure",
         })
         toastManager.add({ type: "error", title: nextError.description })
@@ -258,6 +261,8 @@ export function useSelectionCustomActionController() {
               action_name: action.name,
             },
           ),
+          // 前置校验失败，provider 尚未解析，按上游约定回落 UNKNOWN
+          ...UNKNOWN_FEATURE_PROVIDER,
           outcome: "failure",
         })
         toastManager.add({ type: "error", title: nextError.description })
@@ -340,6 +345,8 @@ export function useSelectionCustomActionController() {
 
     void trackFeatureUsed({
       ...analyticsContext,
+      // 前置校验失败，provider 尚未解析，按上游约定回落 UNKNOWN
+      ...UNKNOWN_FEATURE_PROVIDER,
       outcome: "failure",
     })
   }, [

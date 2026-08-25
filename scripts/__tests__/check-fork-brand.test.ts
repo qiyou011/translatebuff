@@ -6,7 +6,7 @@ describe("findResidualBrand", () => {
     const content = ["name: Read Frog", "notification: What's new in Read Frog"].join("\n")
     const v = findResidualBrand([{ path: "src/locales/x.yml", content }])
     expect(v.map((x) => x.line)).toEqual([1, 2])
-    expect(v[0].token).toBe("Read Frog")
+    expect(v[0]!.token).toBe("Read Frog")
   })
 
   it("覆盖中文与日语意译品牌 token", () => {
@@ -19,7 +19,7 @@ describe("findResidualBrand", () => {
     const content = ["name: Translatebuff", "desc: about Translatebuff here"].join("\n")
     const v = findResidualBrand([{ path: "src/locales/x.yml", content }])
     expect(v.map((x) => x.line)).toEqual([1, 2])
-    expect(v[0].token).toBe("Translatebuff")
+    expect(v[0]!.token).toBe("Translatebuff")
   })
 
   it("放行正确大写 TranslateBuff", () => {
@@ -40,7 +40,7 @@ describe("findResidualBrand", () => {
     const content = "<head>\n    <title>Options | Translatebuff</title>\n</head>"
     const v = findResidualBrand([{ path: "src/entrypoints/options/index.html", content }])
     expect(v).toHaveLength(1)
-    expect(v[0].line).toBe(2)
+    expect(v[0]!.line).toBe(2)
   })
 
   it("干净输入无违规", () => {

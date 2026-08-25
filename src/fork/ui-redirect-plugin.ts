@@ -9,7 +9,7 @@ import { existsSync, readFileSync } from "node:fs"
 export function normalizeModuleId(id: string): string {
   return id
     .replace(/\\/g, "/")
-    .split("?")[0]
+    .split("?")[0]!
     .replace(/\.(t|j)sx?$/, "")
 }
 

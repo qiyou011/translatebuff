@@ -72,7 +72,7 @@ describe("fork 模式切换快捷键", () => {
     await pressShortcutWith(buildConfig("google-translate-default", "bilingual"))
 
     expect(setLocalConfig).toHaveBeenCalledTimes(1)
-    expect(setLocalConfig.mock.calls[0][0].translate.mode).toBe("translationOnly")
+    expect(setLocalConfig.mock.calls[0]![0].translate.mode).toBe("translationOnly")
     expect(toastAdd).toHaveBeenCalledWith(expect.objectContaining({ title: SWITCHED_KEY }))
   })
 
@@ -80,6 +80,6 @@ describe("fork 模式切换快捷键", () => {
     await pressShortcutWith(buildConfig("microsoft-translate-default", "translationOnly"))
 
     expect(setLocalConfig).toHaveBeenCalledTimes(1)
-    expect(setLocalConfig.mock.calls[0][0].translate.mode).toBe("bilingual")
+    expect(setLocalConfig.mock.calls[0]![0].translate.mode).toBe("bilingual")
   })
 })
