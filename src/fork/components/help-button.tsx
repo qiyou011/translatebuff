@@ -1,5 +1,10 @@
+// 换皮：上游 src/components/help-button.tsx 的精确副本，只改一处——点击目标。
+//
+// 上游把 read-frog 的 GitHub issues 链接硬编码在 mouseup 回调里，没有可注入的接缝，
+// 只能整份换皮。除下面这一行外与上游逐字一致；每次同步须按 FORK.md 的对账表比对上游改动。
 import { Icon } from "@iconify/react"
 import { useCallback, useRef, useState } from "react"
+import { openSupportSite } from "@/fork/components/help-button-target"
 import { cn } from "@/utils/styles/utils"
 
 type Corner = "bottom-right" | "top-right"
@@ -58,10 +63,7 @@ export function HelpButton() {
         setCorner(newCorner)
         localStorage.setItem(STORAGE_KEY, newCorner)
       } else {
-        window.open(
-          "https://github.com/mengxi-ream/read-frog/issues?q=sort%3Aupdated-desc+is%3Aissue+is%3Aopen",
-          "_blank",
-        )
+        openSupportSite()
       }
       hasDraggedRef.current = false
       setDragging(false)

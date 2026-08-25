@@ -6,13 +6,13 @@ import type {
   ProviderSelectorItem,
   ProviderSelectorOption,
 } from "@/utils/providers/provider-display"
-import translatebuffLogo from "@/fork/assets/renyimiao.svg?url&no-inline"
+import readFrogLogo from "@/assets/providers/read-frog-provider.png?url&no-inline"
 import { isLLMProviderConfig, isTranslateProviderConfig } from "@/types/config/provider"
 import { i18n } from "@/utils/i18n"
 
 // Keep the persisted provider ID stable so existing user configurations continue to work.
 export const BUILT_IN_AI_PROVIDER_ID = "read-frog-free-ai"
-export const BUILT_IN_AI_PROVIDER_LOGO = translatebuffLogo
+export const BUILT_IN_AI_PROVIDER_LOGO = readFrogLogo
 
 const BUILT_IN_AI_PROVIDER_NAME_KEY = "options.apiProviders.providers.name.builtInAi"
 const BUILT_IN_AI_PROVIDER_FALLBACK_NAME = "Built-in AI"

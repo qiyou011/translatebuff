@@ -1,7 +1,6 @@
 import type { Config } from "@/types/config/config"
 import type { SelectionToolbarCustomAction } from "@/types/config/selection-toolbar"
 import { describe, expect, it } from "vitest"
-import { getWebsiteUrl } from "@/fork/website-url"
 import { DEFAULT_CONFIG } from "@/utils/constants/config"
 import {
   applyCreatedNotebaseConnectionToConfig,
@@ -162,7 +161,9 @@ describe("notebase pending save", () => {
 
   it("builds the website detail URL from the pending notebase id", () => {
     const notebaseId = "11111111-1111-4111-8111-111111111111"
-    expect(getNotebaseDetailUrl(notebaseId)).toBe(getWebsiteUrl(`/notebase/${notebaseId}`))
+    const url = new URL(getNotebaseDetailUrl(notebaseId))
+
+    expect(url.pathname).toBe(`/notebase/${notebaseId}`)
   })
 
   it("writes a notebase connection into the matching action config", () => {

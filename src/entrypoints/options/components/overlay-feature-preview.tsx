@@ -1,6 +1,6 @@
 import type { ReactNode } from "react"
 import { Icon } from "@iconify/react"
-import { BrandMark } from "@/components/brand-mark"
+import { BrandMark } from "@/fork/components/brand-mark"
 import { i18n } from "@/utils/i18n"
 import { cn } from "@/utils/styles/utils"
 

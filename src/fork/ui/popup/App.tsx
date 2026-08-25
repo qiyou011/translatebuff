@@ -1,5 +1,4 @@
 import { Icon } from "@iconify/react"
-import { BrandMark } from "@/components/brand-mark"
 import { AISmartContext } from "@/entrypoints/popup/components/ai-smart-context"
 import { AlwaysTranslate } from "@/entrypoints/popup/components/always-translate"
 import BlogNotification from "@/entrypoints/popup/components/blog-notification"
@@ -9,6 +8,7 @@ import { SiteControlToggle } from "@/entrypoints/popup/components/site-control-t
 import TranslateButton from "@/entrypoints/popup/components/translate-button"
 import TranslatePromptSelector from "@/entrypoints/popup/components/translate-prompt-selector"
 import { TranslationHubButton } from "@/entrypoints/popup/components/translation-hub-button"
+import { BrandMark } from "@/fork/components/brand-mark"
 import { ForkAccountMenu } from "@/fork/ui/popup/account-menu"
 import ProvidersField from "@/fork/ui/popup/providers-field"
 import TranslationModeSelector from "@/fork/ui/popup/translation-mode-selector"

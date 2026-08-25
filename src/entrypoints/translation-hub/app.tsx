@@ -1,4 +1,4 @@
-import { BrandMark } from "@/components/brand-mark"
+import { BrandMark } from "@/fork/components/brand-mark"
 import { i18n } from "@/utils/i18n"
 import { LanguageControlPanel } from "./components/language-control-panel"
 import { PromptSelector } from "./components/prompt-selector"

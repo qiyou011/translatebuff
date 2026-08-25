@@ -1,6 +1,5 @@
 import type { ProviderConfig } from "@/types/config/provider"
 import type { Theme } from "@/types/config/theme"
-import { getForkModelLogo } from "@/fork/ui/provider-logo"
 import { PROVIDER_ITEMS } from "@/utils/constants/providers"
 
 export interface ProviderSelectorItem {
@@ -19,11 +18,9 @@ export function isProviderSelectorItem(
 }
 
 export function getProviderLogo(provider: ProviderSelectorOption, theme: Theme): string {
-  if (isProviderSelectorItem(provider)) {
-    return provider.logo(theme)
-  }
-
-  return getForkModelLogo(provider, theme) ?? PROVIDER_ITEMS[provider.provider].logo(theme)
+  return isProviderSelectorItem(provider)
+    ? provider.logo(theme)
+    : PROVIDER_ITEMS[provider.provider].logo(theme)
 }
 
 export function getProviderName(provider: ProviderSelectorOption): string {

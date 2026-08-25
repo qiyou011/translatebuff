@@ -9,7 +9,7 @@ import type {
 } from "@/types/config/selection-toolbar"
 import { z as zod } from "zod"
 import { storage } from "#imports"
-import { getWebsiteUrl } from "@/fork/website-url"
+import { env } from "@/env"
 import { selectionToolbarCustomActionNotebaseConnectionSchema } from "@/types/config/selection-toolbar"
 import { getRandomUUID } from "@/utils/crypto-polyfill"
 import { guideDictionaryNotebaseTrackingSchema } from "@/utils/guide/dictionary-notebase"
@@ -216,7 +216,7 @@ export function buildNotebaseCreateInputFromPending(
 }
 
 export function getNotebaseDetailUrl(notebaseId: string) {
-  return getWebsiteUrl(`/notebase/${encodeURIComponent(notebaseId)}`)
+  return new URL(`/notebase/${encodeURIComponent(notebaseId)}`, env.WXT_WEBSITE_URL).toString()
 }
 
 export function buildNotebaseConnectionFromPending(

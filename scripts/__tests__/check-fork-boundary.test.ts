@@ -131,3 +131,29 @@ describe("fork 品牌资源替换", () => {
     expect(violations).toEqual(["src/assets/styles/theme.css"])
   })
 })
+
+// ── 回退到上游不算越界 ──────────────────────────────────────────────────────
+// 护栏原本只问「这次改动碰了哪些文件」，于是「把 fork 的原地改动退回上游版本」也被判越界——
+// 清理历史欠债的 PR 注定过不了自己的门禁。判定应看**与上游是否还有分歧**：
+// 改完之后内容与上游一致 = fork 在该文件上零分歧 = 不是越界。
+describe("classifyChangedFiles 的分歧判定", () => {
+  it("回退到上游版本的文件不判越界", () => {
+    const { violations } = classifyChangedFiles(
+      ["src/utils/message.ts"],
+      [],
+      // 该文件改完后与上游一致
+      (file) => file !== "src/utils/message.ts",
+    )
+    expect(violations).toEqual([])
+  })
+
+  it("仍与上游有分歧的文件照判越界", () => {
+    const { violations } = classifyChangedFiles(["src/utils/message.ts"], [], () => true)
+    expect(violations).toEqual(["src/utils/message.ts"])
+  })
+
+  it("不传分歧判定时行为不变（默认一律视为有分歧）", () => {
+    const { violations } = classifyChangedFiles(["src/utils/message.ts"], [])
+    expect(violations).toEqual(["src/utils/message.ts"])
+  })
+})

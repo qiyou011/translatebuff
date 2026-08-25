@@ -14,8 +14,15 @@ const FORK_ROOT_FILES = new Set([
   "vitest.fork.config.ts",
 ])
 
-// 判定改动文件是否越界：允许 src/fork/** 与 allowlist 内的上游文件
-export function classifyChangedFiles(changed, allowlist) {
+/**
+ * 判定改动文件是否越界：允许 src/fork/** 与 allowlist 内的上游文件。
+ *
+ * @param divergesFromUpstream 可选。判断某文件改完之后是否**仍与上游有分歧**。
+ *   不传时一律视为有分歧（保持旧行为）。传了的话，把 fork 的原地改动退回上游版本
+ *   就不再判越界——否则清理历史欠债的 PR 会被自己的门禁拦死：它做的正是「消除分歧」，
+ *   而旧判定只问「碰没碰过这个文件」。
+ */
+export function classifyChangedFiles(changed, allowlist, divergesFromUpstream) {
   const allow = new Set(allowlist)
   const violations = changed.filter((f) => {
     if (f.startsWith("src/fork/")) return false
@@ -24,7 +31,9 @@ export function classifyChangedFiles(changed, allowlist) {
     // fork 接管的 README（去品牌化后 fork 独占、同步 take-ours）：上游有同名文件但内容归 fork
     if (f === "README.md" || f.startsWith("readmes/")) return false
     if (FORK_ROOT_FILES.has(f)) return false
-    return !allow.has(f)
+    if (allow.has(f)) return false
+    // 改完与上游一致 = fork 在该文件上零分歧，不是越界
+    return divergesFromUpstream ? divergesFromUpstream(f) : true
   })
   return { violations }
 }
@@ -118,7 +127,22 @@ if (import.meta.url === pathToFileURL(process.argv[1]).href) {
     .map((s) => s.trim())
     .filter(Boolean)
   const allowlist = JSON.parse(readFileSync("scripts/fork-allowlist.json", "utf8")).files
-  const { violations } = classifyChangedFiles(changed, allowlist)
+
+  // 分歧基准取上游落脚点：排查/同步模式下 base 本身就是上游提交；增量模式下 base 是 fork
+  // 的长期分支，得另取 upstream-baseline.json 的 lastSyncedSha。
+  const upstreamRef =
+    process.env.FORK_SCAN_ALL === "1" || process.env.FORK_SYNC_MODE === "1"
+      ? base
+      : JSON.parse(readFileSync("src/fork/identity/upstream-baseline.json", "utf8")).lastSyncedSha
+  const divergesFromUpstream = (file) => {
+    const diff = execFileSync("git", ["diff", "--name-only", upstreamRef, "HEAD", "--", file], {
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "ignore"],
+    })
+    return diff.trim() !== ""
+  }
+
+  const { violations } = classifyChangedFiles(changed, allowlist, divergesFromUpstream)
   if (violations.length > 0) {
     console.error("Fork boundary violations (edit src/fork/** or add to allowlist after review):")
     for (const v of violations) console.error(`  - ${v}`)
