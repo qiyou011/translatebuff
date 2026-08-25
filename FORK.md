@@ -56,7 +56,7 @@ Translatebuff 是 read-frog 的软 fork（上游：mengxi-ream/read-frog）。
 
 ## 发版号与打包（B1）
 
-- manifest `version` 走 fork 自主 semver，存 `src/fork/identity/fork-version.json` 的 `version`（当前 `1.0.0`），
+- manifest `version` 走 fork 自主 semver，存 `src/fork/identity/fork-version.json` 的 `version`（当前 `1.0.1`），
   与上游 `package.json` 版本解耦；version_name 保留上游溯源，如「任译喵 1.0.0（rf 1.42.2）」。
 - 发新版：直接改 `fork-version.json` 的 `version`（1.0.0 → 1.0.1 → 1.1.0 → 2.0.0 全自由）。Chrome 要求
   manifest version 为纯数字段，故测试包与正式包**同版本号**，靠后端 + 文件名区分。
