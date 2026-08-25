@@ -35,11 +35,16 @@ export class TranslatedSubtitlesDownloader {
   private isDownloading = false
   private operationId = 0
   private successTimeout: ReturnType<typeof setTimeout> | null = null
+  private snapshotFetcher: SubtitlesFetcher | null = null
 
   constructor(
-    private fetcher: SubtitlesFetcher,
+    private getFetcher: () => SubtitlesFetcher,
     private config: PlatformConfig,
   ) {}
+
+  private get fetcher(): SubtitlesFetcher {
+    return this.snapshotFetcher ?? this.getFetcher()
+  }
 
   download = async (): Promise<void> => {
     if (this.isDownloading) {
@@ -48,6 +53,7 @@ export class TranslatedSubtitlesDownloader {
 
     this.clearSuccessTimeout()
     this.isDownloading = true
+    this.snapshotFetcher = this.getFetcher()
     const operationId = ++this.operationId
     const pageTitle = document.title || ""
     const videoId = this.config.getVideoId?.()
@@ -112,6 +118,7 @@ export class TranslatedSubtitlesDownloader {
     } finally {
       if (this.isActive(operationId)) {
         this.isDownloading = false
+        this.snapshotFetcher = null
       }
     }
   }
@@ -119,6 +126,7 @@ export class TranslatedSubtitlesDownloader {
   dispose(): void {
     this.operationId++
     this.isDownloading = false
+    this.snapshotFetcher = null
     this.clearSuccessTimeout()
     this.setStatus(TranslatedDownloadPhase.Idle, null)
   }
@@ -326,12 +334,12 @@ export class TranslatedSubtitlesDownloader {
     let index = 0
 
     while (index < subtitles.length) {
-      const chunkStart = subtitles[index].start
+      const chunkStart = subtitles[index]!.start
       const chunkEnd = chunkStart + maxDurationMs
       const chunk: SubtitlesFragment[] = []
 
-      while (index < subtitles.length && subtitles[index].start < chunkEnd) {
-        chunk.push(subtitles[index])
+      while (index < subtitles.length && subtitles[index]!.start < chunkEnd) {
+        chunk.push(subtitles[index]!)
         index++
       }
 
@@ -390,17 +398,17 @@ export class TranslatedSubtitlesDownloader {
     for (let index = 0; index < sortedCandidates.length; index++) {
       const fragment = sortedCandidates[index]
       if (
-        !Number.isFinite(fragment.start) ||
-        !Number.isFinite(fragment.end) ||
-        fragment.end - fragment.start <= MAX_COLLAPSED_AI_SEGMENT_DURATION_MS ||
-        fragment.start < sourceStart ||
-        fragment.end > sourceEnd
+        !Number.isFinite(fragment!.start) ||
+        !Number.isFinite(fragment!.end) ||
+        fragment!.end - fragment!.start <= MAX_COLLAPSED_AI_SEGMENT_DURATION_MS ||
+        fragment!.start < sourceStart ||
+        fragment!.end > sourceEnd
       ) {
         return true
       }
 
       const previous = sortedCandidates[index - 1]
-      if (previous && previous.end > fragment.start) {
+      if (previous && previous.end > fragment!.start) {
         return true
       }
     }

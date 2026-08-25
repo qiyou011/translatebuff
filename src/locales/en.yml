@@ -95,6 +95,9 @@ options:
     product: Product
   tools:
     translationHub: Translation Hub
+  product:
+    roadmap: Roadmap
+    feedback: Feedback
   setAPIKeyWarning:
     please: Please set API Key on
     page: page
@@ -325,6 +328,13 @@ options:
       closeMenu:
         disableForSite: Disable for this site
         disableGlobally: Disable globally
+      tooltips:
+        togglePageTranslation: Toggle page translation
+        floatingButtonOptions: Floating button options
+        lockPosition: Lock position
+        unlockPosition: Unlock position
+        settings: Settings
+        feedback: Send feedback
       disabledSites:
         title: Floating Button Disabled Sites
         description: Configure websites where the floating button should be disabled
@@ -354,7 +364,8 @@ options:
         speak: Speak
       saveSuggestion:
         title: Save Suggestions
-        description: After selection translation, suggest words to save to your Notebase
+        description: After selection translation with an AI provider, suggest words to save to your Notebase
+        action: Action
       shortcut:
         title: Selection Translation Shortcut
         description: Customize the shortcut key for translating selected text
@@ -388,6 +399,7 @@ options:
       customActions:
         title: Custom AI Actions
         description: Add your own structured AI actions for selected text
+        builtIn: Built-in
         add: Add AI Action
         edit: Edit AI Action
         empty: No custom AI actions yet
@@ -399,6 +411,8 @@ options:
           actions: Actions
         form:
           name: Name
+          customize: Customize
+          customizeTooltip: Built-in instructions do not allow prompt changes. Click here to create an editable copy and modify the prompts.
           icon: Icon
           iconField:
             chooseAriaLabel: Choose icon
@@ -510,25 +524,26 @@ options:
               1. Focus on the meaning that best matches the provided paragraphs.
               2. Normalize Term to its base/canonical form.
               3. Keep Definition precise and learner-friendly.
-              4. Keep Paragraphs exactly as provided in the prompt.
-              5. Phonetic must use the standard notation for the term's language (e.g., IPA for English, pinyin for Mandarin, romaji for Japanese).
-              6. Part of Speech in English (noun, verb, adjective, etc.).
-              7. Difficulty must be a CEFR level (A1, A2, B1, B2, C1, or C2).
-              8. If a field is unknown, return an empty string instead of guessing.
-              9. Respond in {{targetLanguage}} for all textual fields unless source-form text is required for clarity.
+              4. For Sentence, extract only the complete sentence from the provided paragraphs that contains the selected term. Do not include surrounding sentences.
+              5. Sentence Translation must translate only the extracted Sentence.
+              6. Phonetic must use the standard notation for the term's language (e.g., IPA for English, pinyin for Mandarin, romaji for Japanese).
+              7. Part of Speech in English (noun, verb, adjective, etc.).
+              8. Difficulty must be a CEFR level (A1, A2, B1, B2, C1, or C2).
+              9. If a field is unknown, return an empty string instead of guessing.
+              10. Respond in {{targetLanguage}} for all textual fields unless source-form text is required for clarity.
 
               ## Examples
 
               ### Example 1
-              Input: Selection="blossoms", Paragraphs="The ephemeral beauty of cherry blossoms reminds us to cherish each moment.", Target language=Chinese
+              Input: Selection="blossoms", Paragraphs="Spring arrives quietly in the park. The ephemeral beauty of cherry blossoms reminds us to cherish each moment. Families and friends gather beneath the trees.", Target language=Chinese
 
               Output:
               - Term: blossom
               - Phonetic: /ˈblɒs.əm/
               - Part of Speech: noun
-              - Paragraphs: The ephemeral beauty of cherry blossoms reminds us to cherish each moment.
+              - Sentence: The ephemeral beauty of cherry blossoms reminds us to cherish each moment.
               - Definition: 花；花朵（尤指果树的花）
-              - Paragraphs Translation: 樱花短暂的美丽提醒我们珍惜每一刻。
+              - Sentence Translation: 樱花短暂的美丽提醒我们珍惜每一刻。
               - Difficulty: B2
 
               ### Example 2
@@ -538,9 +553,9 @@ options:
               - Term: 感動
               - Phonetic: kandou
               - Part of Speech: noun
-              - Paragraphs: この映画はつまらないと思ったけど、最後は感動した。
+              - Sentence: この映画はつまらないと思ったけど、最後は感動した。
               - Definition: Being deeply moved; emotional touch
-              - Paragraphs Translation: I thought this movie was boring, but the ending was moving.
+              - Sentence Translation: I thought this movie was boring, but the ending was moving.
               - Difficulty: B1
             prompt: |-
               ## Input
@@ -553,12 +568,12 @@ options:
             fieldPhoneticDescription: Standard phonetic transcription for the term's language (e.g., IPA for English, pinyin for Mandarin, romaji for Japanese).
             fieldPartOfSpeech: Part of Speech
             fieldPartOfSpeechDescription: Grammatical category (e.g., noun, verb, adjective).
-            fieldParagraphs: Paragraphs
-            fieldParagraphsDescription: The paragraphs from the prompt above. Do not rewrite them.
+            fieldSentence: Sentence
+            fieldSentenceDescription: The complete sentence from the paragraphs above that contains the selected term. Do not include surrounding sentences.
             fieldDefinition: Definition
             fieldDefinitionDescription: One concise definition for the contextual sense.
-            fieldParagraphsTranslation: Paragraphs Translation
-            fieldParagraphsTranslationDescription: The translation of the paragraphs.
+            fieldSentenceTranslation: Sentence Translation
+            fieldSentenceTranslationDescription: The translation of Sentence only.
             fieldDifficulty: Difficulty
             fieldDifficultyDescription: Estimated CEFR difficulty level A1, A2, B1, B2, C1, or C2.
           improveWriting:
@@ -1034,6 +1049,15 @@ options:
           webTitle: Webpage title
           webDescription: Webpage description from page metadata
           videoSummary: Video summary (requires AI Smart Context)
+    aiQuota:
+      title: AI Subtitles Quota
+      description: Monthly usage of your AI subtitle transcription quota
+      loginRequired: Log in to view your AI subtitles quota
+      logIn: Log In
+      betaRequired: AI subtitles are in beta and not yet enabled for your account
+      betaApply: Apply for access
+      loadError: Unable to load your quota. Please try again later.
+      summary: Used $1 of $2 minutes, $3 remaining
   whatsNew:
     title: What's New
   rateUs:
@@ -1125,6 +1149,7 @@ saveSuggestion:
   save: Save
   saved: Saved
   staleSuggestion: This suggestion is out of date
+  toggleLabel: Show save suggestions
 thinking:
   label: Thinking
   complete: Thinking complete
@@ -1133,6 +1158,9 @@ thinking:
 shortcutKeySelector:
   placeholder: Please enter the shortcut
 subtitles:
+  loadingAiSubtitles: Loading AI subtitles… (estimated 3 min)
+  requestAiSubtitles: Request AI subtitles (Beta)
+  usingAiSubtitles: Using AI subtitles
   actions:
     downloadTranslated: Download translated subtitles
     downloadTranslatedPreparing: Preparing subtitles, longer videos may take a while
@@ -1158,6 +1186,8 @@ subtitles:
     aiRateLimited: Too many requests, please try again later
     aiAuthFailed: API authentication failed, please check your API key
     aiServiceUnavailable: Translation service temporarily unavailable
+    aiQuotaExceeded: Monthly AI subtitle quota used up
+    aiRequestFailed: AI subtitle request failed, please try again later
     aiNoResponse: AI service did not respond, using original text
     translatedExportFailed: Failed to generate translated subtitles
     translatedExportIncomplete: Failed to translate all subtitle lines

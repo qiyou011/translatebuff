@@ -1,8 +1,10 @@
-import { useAtom } from "jotai"
+import { useAtomValue } from "jotai"
 import { useCallback, useEffect, useRef } from "react"
 import { ANALYTICS_FEATURE, ANALYTICS_SURFACE } from "@/types/analytics"
 import { createFeatureUsageContext, trackFeatureAttempt } from "@/utils/analytics"
+import { classifyProviderConfig } from "@/utils/analytics-provider"
 import { configFieldsAtomMap } from "@/utils/atoms/config"
+import { getProviderConfigById } from "@/utils/config/helpers"
 import { INPUT_REPLACE_REQUEST_TYPE } from "@/utils/constants/input-injector"
 import { translateTextForInput } from "@/utils/host/translate/translate-variants"
 
@@ -120,7 +122,8 @@ function setTextWithUndo(
 }
 
 export function useInputTranslation() {
-  const [inputTranslationConfig] = useAtom(configFieldsAtomMap.inputTranslation)
+  const inputTranslationConfig = useAtomValue(configFieldsAtomMap.inputTranslation)
+  const providersConfig = useAtomValue(configFieldsAtomMap.providersConfig)
   const spaceTimestampsRef = useRef<number[]>([])
   const isTranslatingRef = useRef(false)
 
@@ -183,10 +186,15 @@ export function useInputTranslation() {
 
       try {
         const translatedText = await trackFeatureAttempt(
-          createFeatureUsageContext(
-            ANALYTICS_FEATURE.INPUT_TRANSLATION,
-            ANALYTICS_SURFACE.INPUT_TRANSLATION,
-          ),
+          {
+            ...createFeatureUsageContext(
+              ANALYTICS_FEATURE.INPUT_TRANSLATION,
+              ANALYTICS_SURFACE.INPUT_TRANSLATION,
+            ),
+            ...classifyProviderConfig(
+              getProviderConfigById(providersConfig, inputTranslationConfig.providerId),
+            ),
+          },
           () => translateTextForInput(text, fromLang, toLang),
         )
 
@@ -215,6 +223,8 @@ export function useInputTranslation() {
       inputTranslationConfig.fromLang,
       inputTranslationConfig.toLang,
       inputTranslationConfig.enableCycle,
+      inputTranslationConfig.providerId,
+      providersConfig,
     ],
   )
 
@@ -246,7 +256,7 @@ export function useInputTranslation() {
 
       // Remove timestamps older than threshold
       const timeThreshold = inputTranslationConfig.timeThreshold
-      while (timestamps.length > 0 && now - timestamps[0] > timeThreshold * (TRIGGER_COUNT - 1)) {
+      while (timestamps.length > 0 && now - timestamps[0]! > timeThreshold * (TRIGGER_COUNT - 1)) {
         timestamps.shift()
       }
 
@@ -258,7 +268,7 @@ export function useInputTranslation() {
         // Check if all presses are within the time threshold
         const allWithinThreshold = timestamps.every((ts, i) => {
           if (i === 0) return true
-          return ts - timestamps[i - 1] <= timeThreshold
+          return ts - timestamps[i - 1]! <= timeThreshold
         })
 
         if (allWithinThreshold) {

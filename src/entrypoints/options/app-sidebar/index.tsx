@@ -13,6 +13,7 @@ import { UserAccountMenuSidebar } from "@/fork/ui/options/account-menu-sidebar"
 import { i18n } from "@/utils/i18n"
 import { getCommandPaletteShortcutHint } from "@/utils/os"
 import { commandPaletteOpenAtom } from "../command-palette/atoms"
+import { ProductNav } from "./product-nav"
 import { SettingsNav } from "./settings-nav"
 import { ToolsNav } from "./tools-nav"
 import { WhatsNewFooter } from "./whats-new-footer"
@@ -50,6 +51,7 @@ export function AppSidebar() {
       <SidebarContent className="transition-[padding] duration-200 group-data-[state=expanded]:px-2">
         <SettingsNav />
         <ToolsNav />
+        <ProductNav />
       </SidebarContent>
       <SidebarFooter className="transition-[padding] duration-200 group-data-[state=expanded]:px-2">
         <WhatsNewFooter />

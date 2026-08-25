@@ -95,6 +95,9 @@ options:
     product: 产品
   tools:
     translationHub: 翻译中心
+  product:
+    roadmap: 路线图
+    feedback: 反馈
   setAPIKeyWarning:
     please: 请在
     page: 页设置 API Key
@@ -325,6 +328,13 @@ options:
       closeMenu:
         disableForSite: 当前网站禁用
         disableGlobally: 全局禁用
+      tooltips:
+        togglePageTranslation: 切换页面翻译
+        floatingButtonOptions: 悬浮按钮选项
+        lockPosition: 锁定位置
+        unlockPosition: 解锁位置
+        settings: 设置
+        feedback: 发送反馈
       disabledSites:
         title: 悬浮按钮禁用网站
         description: 配置需要禁用悬浮按钮的网站
@@ -354,7 +364,8 @@ options:
         speak: 朗读
       saveSuggestion:
         title: 保存建议
-        description: 划词翻译后，推荐可存入笔记库的词条
+        description: 使用 AI 提供商进行划词翻译后，推荐可存入笔记库的词条
+        action: 指令
       shortcut:
         title: 划词翻译快捷键
         description: 自定义翻译选中文本的快捷键
@@ -388,6 +399,7 @@ options:
       customActions:
         title: 自定义 AI 指令
         description: 为划词添加你自己的结构化 AI 操作
+        builtIn: 内置
         add: 添加 AI 指令
         edit: 编辑 AI 指令
         empty: 暂无自定义 AI 指令
@@ -399,6 +411,8 @@ options:
           actions: 操作
         form:
           name: 名称
+          customize: 定制化
+          customizeTooltip: 内置指令不允许更改提示词，点此按钮来修改指令提示词
           icon: 图标
           iconField:
             chooseAriaLabel: 选择图标
@@ -510,25 +524,26 @@ options:
               1. 聚焦于最匹配所提供段落内容的含义。
               2. 将词条规范化为其基本/标准形式。
               3. 保持释义精确且适合学习者。
-              4. 保持段落内容与提示词一致，不要改写。
-              5. 音标必须使用该语言的标准标注（如英语用 IPA，中文用拼音，日语用罗马字）。
-              6. 词性使用英文（noun, verb, adjective 等）。
-              7. 难度必须是 CEFR 等级（A1, A2, B1, B2, C1, 或 C2）。
-              8. 如果某个字段未知，返回空字符串而非猜测。
-              9. 除非需要保留原文形式，所有文本字段均使用 {{targetLanguage}} 作答。
+              4. “句子”字段只提取所提供段落中包含选中词语的完整句子，不要包含前后句。
+              5. “句子翻译”字段只翻译所提取的句子。
+              6. 音标必须使用该语言的标准标注（如英语用 IPA，中文用拼音，日语用罗马字）。
+              7. 词性使用英文（noun, verb, adjective 等）。
+              8. 难度必须是 CEFR 等级（A1, A2, B1, B2, C1, 或 C2）。
+              9. 如果某个字段未知，返回空字符串而非猜测。
+              10. 除非需要保留原文形式，所有文本字段均使用 {{targetLanguage}} 作答。
 
               ## 示例
 
               ### 示例 1
-              输入：Selection="blossoms", Paragraphs="The ephemeral beauty of cherry blossoms reminds us to cherish each moment.", 目标语言=中文
+              输入：Selection="blossoms", Paragraphs="Spring arrives quietly in the park. The ephemeral beauty of cherry blossoms reminds us to cherish each moment. Families and friends gather beneath the trees.", 目标语言=中文
 
               输出：
               - 词条：blossom
               - 音标：/ˈblɒs.əm/
               - 词性：noun
-              - 段落内容：The ephemeral beauty of cherry blossoms reminds us to cherish each moment.
+              - 句子：The ephemeral beauty of cherry blossoms reminds us to cherish each moment.
               - 释义：花；花朵（尤指果树的花）
-              - 段落翻译：樱花短暂的美丽提醒我们珍惜每一刻。
+              - 句子翻译：樱花短暂的美丽提醒我们珍惜每一刻。
               - 难度：B2
 
               ### 示例 2
@@ -538,9 +553,9 @@ options:
               - 词条：感動
               - 音标：kandou
               - 词性：noun
-              - 段落内容：この映画はつまらないと思ったけど、最後は感動した。
+              - 句子：この映画はつまらないと思ったけど、最後は感動した。
               - 释义：Being deeply moved; emotional touch
-              - 段落翻译：I thought this movie was boring, but the ending was moving.
+              - 句子翻译：I thought this movie was boring, but the ending was moving.
               - 难度：B1
             prompt: |-
               ## 输入
@@ -553,12 +568,12 @@ options:
             fieldPhoneticDescription: 该语言的标准音标（如英语用 IPA，中文用拼音，日语用罗马字）。
             fieldPartOfSpeech: 词性
             fieldPartOfSpeechDescription: 语法类别（如 noun、verb、adjective）。
-            fieldParagraphs: 段落内容
-            fieldParagraphsDescription: 使用上方提示词中的原始段落内容，不要改写。
+            fieldSentence: 句子
+            fieldSentenceDescription: 提取上方段落中包含选中词语的完整句子，不要包含前后句。
             fieldDefinition: 释义
             fieldDefinitionDescription: 针对语境含义的一条简洁释义。
-            fieldParagraphsTranslation: 段落翻译
-            fieldParagraphsTranslationDescription: 段落内容的翻译。
+            fieldSentenceTranslation: 句子翻译
+            fieldSentenceTranslationDescription: 只翻译提取出的句子。
             fieldDifficulty: 难度
             fieldDifficultyDescription: 预估 CEFR 难度等级：A1、A2、B1、B2、C1 或 C2。
           improveWriting:
@@ -1034,6 +1049,15 @@ options:
           webTitle: 网页标题
           webDescription: 页面元信息中的网页描述
           videoSummary: 视频摘要（需启用 AI 智能上下文）
+    aiQuota:
+      title: AI 字幕额度
+      description: 你账户本月的 AI 字幕转写额度使用情况
+      loginRequired: 登录后查看你的 AI 字幕额度
+      logIn: 登录
+      betaRequired: AI 字幕内测中，你的账号暂未获得使用资格
+      betaApply: 申请资格
+      loadError: 无法加载额度，请稍后重试。
+      summary: 已用 $1 分钟 / 共 $2 分钟，剩余 $3 分钟
   whatsNew:
     title: 最近更新
   rateUs:
@@ -1125,6 +1149,7 @@ saveSuggestion:
   save: 保存
   saved: 已保存
   staleSuggestion: 该建议已过期
+  toggleLabel: 显示保存建议
 thinking:
   label: 思考中
   complete: 思考完成
@@ -1133,6 +1158,9 @@ thinking:
 shortcutKeySelector:
   placeholder: 请输入快捷键
 subtitles:
+  loadingAiSubtitles: 正在加载 AI 字幕中（预计 3 分钟）
+  requestAiSubtitles: 请求 AI 字幕（Beta）
+  usingAiSubtitles: 正在使用 AI 字幕中
   actions:
     downloadTranslated: 下载翻译字幕
     downloadTranslatedPreparing: 正在准备字幕，长视频可能需要更久
@@ -1158,6 +1186,8 @@ subtitles:
     aiRateLimited: 请求过于频繁，请稍后再试
     aiAuthFailed: API 认证失败，请检查您的 API 密钥
     aiServiceUnavailable: 翻译服务暂时不可用
+    aiQuotaExceeded: 本月 AI 字幕额度已用完
+    aiRequestFailed: AI 字幕请求失败，请稍后重试
     aiNoResponse: AI 服务未响应，使用原文显示
     translatedExportFailed: 生成翻译字幕失败
     translatedExportIncomplete: 未能翻译所有字幕行

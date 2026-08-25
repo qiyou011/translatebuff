@@ -178,20 +178,20 @@ describe("background-stream", () => {
       {
         output: { score: 97 },
         thinking: {
-          status: "thinking",
+          status: "complete",
           text: "",
         },
       },
       {
         output: { score: 97, summary: "Strong argument structure" },
         thinking: {
-          status: "thinking",
+          status: "complete",
           text: "",
         },
       },
     ])
 
-    const schemaArg = outputObjectMock.mock.calls[0][0].schema as {
+    const schemaArg = outputObjectMock.mock.calls[0]![0].schema as {
       safeParse: (value: unknown) => { success: boolean }
     }
     expect(
@@ -413,7 +413,7 @@ describe("background-stream", () => {
       data: {
         output: "Hello",
         thinking: {
-          status: "thinking",
+          status: "complete",
           text: "",
         },
       },
@@ -424,7 +424,7 @@ describe("background-stream", () => {
       data: {
         output: "Hello world",
         thinking: {
-          status: "thinking",
+          status: "complete",
           text: "",
         },
       },
@@ -488,6 +488,66 @@ describe("background-stream", () => {
       },
     })
     expect(chunkSnapshots.at(-1)).toEqual(result)
+  })
+
+  it("ends the thinking phase at the first output delta when no reasoning is emitted", async () => {
+    hostedStreamTextMock.mockResolvedValue(
+      (async function* () {
+        yield { type: "start" }
+        yield { type: "text-delta", id: "text-1", text: "Hola" }
+        yield { type: "text-delta", id: "text-1", text: " mundo" }
+        yield { type: "finish", finishReason: "stop" }
+      })(),
+    )
+
+    const chunkSnapshots: BackgroundTextStreamSnapshot[] = []
+    const { runStreamTextInBackground } = await import("../background-stream")
+    await runStreamTextInBackground(
+      {
+        providerId: "read-frog-free-ai",
+        instructions: "Translate text",
+        prompt: "Hello world",
+      },
+      {
+        onChunk: (snapshot) => {
+          chunkSnapshots.push(snapshot)
+        },
+      },
+    )
+
+    expect(chunkSnapshots[0]).toEqual({
+      output: "Hola",
+      thinking: { status: "complete", text: "" },
+    })
+  })
+
+  it("reopens the thinking phase when reasoning arrives after output", async () => {
+    hostedStreamTextMock.mockResolvedValue(
+      (async function* () {
+        yield { type: "start" }
+        yield { type: "text-delta", id: "text-1", text: "Hola" }
+        yield { type: "reasoning-delta", id: "reasoning-1", text: "second guess" }
+        yield { type: "text-delta", id: "text-1", text: " mundo" }
+        yield { type: "finish", finishReason: "stop" }
+      })(),
+    )
+
+    const chunkSnapshots: BackgroundTextStreamSnapshot[] = []
+    const { runStreamTextInBackground } = await import("../background-stream")
+    await runStreamTextInBackground(
+      { providerId: "read-frog-free-ai", instructions: "Translate text", prompt: "Hello world" },
+      {
+        onChunk: (snapshot) => {
+          chunkSnapshots.push(snapshot)
+        },
+      },
+    )
+
+    expect(chunkSnapshots.map((snapshot) => snapshot.thinking)).toEqual([
+      { status: "complete", text: "" },
+      { status: "thinking", text: "second guess" },
+      { status: "complete", text: "second guess" },
+    ])
   })
 
   it("prefers stream onError root cause and posts error once", async () => {
@@ -707,5 +767,72 @@ describe("background-stream", () => {
 
     expect(mockPort.postMessage).not.toHaveBeenCalled()
     expect(mockPort.disconnect).not.toHaveBeenCalled()
+  })
+
+  it("streams note suggestions from the user's local provider", async () => {
+    const envelope = {
+      summaryFieldName: null,
+      notes: [{ fields: [{ name: "Word", value: "ephemeral" }] }],
+    }
+    getModelByIdMock.mockResolvedValue("mock-model")
+    streamTextMock.mockReturnValue({
+      stream: (async function* () {
+        yield { type: "text-delta", text: JSON.stringify(envelope) }
+        yield { type: "finish", finishReason: "stop" }
+      })(),
+    })
+
+    const { runNoteSuggestionStreamInBackground } = await import("../background-stream")
+    const { saveSuggestionEnvelopeSchema } = await import("@/utils/save-suggestion/types")
+    const result = await runNoteSuggestionStreamInBackground({
+      providerId: "openai-default",
+      instructions: "Suggest words",
+      prompt: "Selection context",
+    })
+
+    expect(getModelByIdMock).toHaveBeenCalledWith("openai-default")
+    expect(streamTextMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        model: "mock-model",
+        instructions: "Suggest words",
+        prompt: "Selection context",
+      }),
+    )
+    expect(outputObjectMock).toHaveBeenCalledWith({ schema: saveSuggestionEnvelopeSchema })
+    expect(result).toEqual({
+      output: envelope,
+      thinking: { status: "complete", text: "" },
+    })
+    expect(hostedStreamTextMock).not.toHaveBeenCalled()
+    expect(hostedStreamStructuredObjectMock).not.toHaveBeenCalled()
+  })
+
+  it("rejects note suggestions on the built-in hosted provider", async () => {
+    const { runNoteSuggestionStreamInBackground } = await import("../background-stream")
+
+    await expect(
+      runNoteSuggestionStreamInBackground({
+        providerId: "read-frog-free-ai",
+        instructions: "Suggest words",
+        prompt: "Selection context",
+      }),
+    ).rejects.toThrow("Note suggestion requires a user-configured LLM provider")
+    expect(streamTextMock).not.toHaveBeenCalled()
+    expect(getModelByIdMock).not.toHaveBeenCalled()
+  })
+
+  it("propagates provider resolution failures for note suggestions", async () => {
+    getModelByIdMock.mockRejectedValue(new Error("Provider missing-provider not found"))
+
+    const { runNoteSuggestionStreamInBackground } = await import("../background-stream")
+
+    await expect(
+      runNoteSuggestionStreamInBackground({
+        providerId: "missing-provider",
+        instructions: "Suggest words",
+        prompt: "Selection context",
+      }),
+    ).rejects.toThrow("Provider missing-provider not found")
+    expect(streamTextMock).not.toHaveBeenCalled()
   })
 })

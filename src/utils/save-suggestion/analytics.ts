@@ -1,11 +1,17 @@
+import type { FeatureProviderAnalytics } from "@/types/analytics"
 import { ANALYTICS_FEATURE, ANALYTICS_SURFACE } from "@/types/analytics"
 import { createFeatureUsageContext, trackFeatureUsed } from "@/utils/analytics"
+import { UNKNOWN_FEATURE_PROVIDER } from "@/utils/analytics-provider"
 
 export type SaveSuggestionAnalyticsAction = "suggestion_shown" | "suggestion_accepted"
 
 export function trackSaveSuggestionEvent(
   actionId: SaveSuggestionAnalyticsAction,
-  options: { startedAt?: number; actionName?: string } = {},
+  options: {
+    startedAt?: number
+    actionName?: string
+    provider?: FeatureProviderAnalytics
+  } = {},
 ) {
   void trackFeatureUsed({
     ...createFeatureUsageContext(
@@ -17,6 +23,7 @@ export function trackSaveSuggestionEvent(
         ...(options.actionName !== undefined ? { action_name: options.actionName } : {}),
       },
     ),
+    ...(options.provider ?? UNKNOWN_FEATURE_PROVIDER),
     outcome: "success",
   })
 }

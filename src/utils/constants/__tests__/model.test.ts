@@ -62,6 +62,39 @@ describe("getProviderOptions", () => {
         thinkingLevel: "minimal",
         includeThoughts: false,
       })
+
+      const thinkingLevel35FlashLiteOptions = getProviderOptions("gemini-3.5-flash-lite", "google")
+      expect(thinkingLevel35FlashLiteOptions.google?.thinkingConfig).toMatchObject({
+        thinkingLevel: "minimal",
+        includeThoughts: false,
+      })
+
+      const thinkingLevel36FlashOptions = getProviderOptions("gemini-3.6-flash", "google")
+      expect(thinkingLevel36FlashOptions.google?.thinkingConfig).toMatchObject({
+        thinkingLevel: "minimal",
+        includeThoughts: false,
+      })
+
+      const thinkingLevelFlashLatestOptions = getProviderOptions("gemini-flash-latest", "google")
+      expect(thinkingLevelFlashLatestOptions.google?.thinkingConfig).toMatchObject({
+        thinkingLevel: "minimal",
+        includeThoughts: false,
+      })
+
+      const thinkingLevelFlashLiteLatestOptions = getProviderOptions(
+        "gemini-flash-lite-latest",
+        "google",
+      )
+      expect(thinkingLevelFlashLiteLatestOptions.google?.thinkingConfig).toMatchObject({
+        thinkingLevel: "minimal",
+        includeThoughts: false,
+      })
+
+      const thinkingLevelProLatestOptions = getProviderOptions("gemini-pro-latest", "google")
+      expect(thinkingLevelProLatestOptions.google?.thinkingConfig).toMatchObject({
+        thinkingLevel: "low",
+        includeThoughts: false,
+      })
     })
 
     it("should return options for claude models", () => {
@@ -386,10 +419,10 @@ describe("getProviderOptions", () => {
   describe("glm model pattern matching", () => {
     it("should match GLM-* models (case-insensitive)", () => {
       const uppercase = getProviderOptions("GLM-4-Plus", "openai-compatible")
-      expect(uppercase["openai-compatible"].thinking).toEqual({ type: "disabled" })
+      expect(uppercase["openai-compatible"]!.thinking).toEqual({ type: "disabled" })
 
       const lowercase = getProviderOptions("glm-4-flash", "openai-compatible")
-      expect(lowercase["openai-compatible"].thinking).toEqual({ type: "disabled" })
+      expect(lowercase["openai-compatible"]!.thinking).toEqual({ type: "disabled" })
 
       const mixed = getProviderOptions("GlM-3-Turbo", "tensdaq")
       expect(mixed.tensdaq?.thinking).toEqual({ type: "disabled" })

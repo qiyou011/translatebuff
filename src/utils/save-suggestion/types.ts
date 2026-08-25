@@ -12,36 +12,27 @@ export const saveSuggestionNoteSchema = z.strictObject({
 })
 
 /**
- * Mirrors the fixed server-side structured-output schema of
- * `hostedAi.noteSuggestion.streamStructuredObject`
- * (HostedAiNoteSuggestionObjectSchema in @read-frog/api-contract).
+ * Client-owned structured-output schema of the note suggestion, passed to
+ * `Output.object` when streaming from the user's selection-translate LLM
+ * provider (the nested shape cannot go through the flat structured-object
+ * port schema).
  */
 export const saveSuggestionEnvelopeSchema = z.strictObject({
-  action: z.strictObject({
-    createNewDictionaryAction: z.boolean(),
-    targetActionId: z.string().nullable(),
-    /**
-     * Display hint: which schema field's value best explains the term in one
-     * line. Optional client-side so a not-yet-redeployed server (whose fixed
-     * schema predates the field) still parses; required nullable server-side.
-     */
-    summaryFieldName: z.string().nullable().optional(),
-  }),
+  /**
+   * Display hint: which schema field's value best explains the term in one
+   * line. Optional for tolerance of models that omit the field entirely.
+   */
+  summaryFieldName: z.string().nullable().optional(),
   notes: z.array(saveSuggestionNoteSchema).max(SAVE_SUGGESTION_MAX_NOTES),
 })
 
 export type SaveSuggestionEnvelope = z.infer<typeof saveSuggestionEnvelopeSchema>
 export type SaveSuggestionNote = z.infer<typeof saveSuggestionNoteSchema>
 
-export type SaveSuggestionTarget =
-  | { kind: "existing"; actionId: string }
-  | { kind: "create_dictionary" }
-
 export type SaveSuggestionNoteRecord = Record<string, string | number | null>
 
 export interface ValidatedSaveSuggestion {
-  target: SaveSuggestionTarget
-  /** Notes keyed by output-field name, validated against the target action's schema. */
+  /** Notes keyed by output-field name, validated against the selected action's schema. */
   notes: SaveSuggestionNoteRecord[]
   /**
    * Sanitized display hint: a non-primary field name of the target action

@@ -22,6 +22,12 @@ const WXT_API_KEY_PATTERN = /^WXT_.*API_KEY/
 const ALLOWED_BUNDLED_API_KEYS = new Set(["WXT_POSTHOG_API_KEY"])
 const useLocalPackages = isLocalPackagesEnabled(process.env)
 const shouldSkipEnvValidation = process.env.WXT_SKIP_ENV_VALIDATION === "true"
+// Root of the read-frog monorepo whose source is aliased in when developing
+// with local packages. Defaults to the sibling checkout; override with
+// WXT_MONOREPO_PATH to point at a git worktree (relative or absolute).
+const monorepoRoot = process.env.WXT_MONOREPO_PATH
+  ? path.resolve(process.env.WXT_MONOREPO_PATH)
+  : path.resolve(__dirname, "../read-frog-monorepo")
 
 // fork 身份：正式发布版本（fork 自主 semver）；version_name 保留上游基线溯源
 const pkgVersion = JSON.parse(readFileSync(path.resolve(__dirname, "package.json"), "utf8"))
@@ -188,14 +194,8 @@ export default defineConfig({
   // WXT top level alias - will be automatically synced to tsconfig.json paths and Vite alias
   alias: useLocalPackages
     ? {
-        "@read-frog/definitions": path.resolve(
-          __dirname,
-          "../read-frog-monorepo/packages/definitions/src",
-        ),
-        "@read-frog/api-contract": path.resolve(
-          __dirname,
-          "../read-frog-monorepo/packages/api-contract/src",
-        ),
+        "@read-frog/definitions": path.resolve(monorepoRoot, "packages/definitions/src"),
+        "@read-frog/api-contract": path.resolve(monorepoRoot, "packages/api-contract/src"),
       }
     : {},
   manifest: ({ mode, browser }) => ({
@@ -258,8 +258,24 @@ export default defineConfig({
     // 否则 firefox 的 sources 包文件名仍走默认丑名。
     artifactTemplate: `${FORK_BRANDING.name.toLowerCase()}-${forkVersion}${forkPackSuffix}${forkChannelSuffix}.zip`,
     sourcesTemplate: `${FORK_BRANDING.name.toLowerCase()}-${forkVersion}${forkPackSuffix}-sources.zip`,
-    includeSources: [".env.production"],
+    includeSources: ["**/*", ".env.production"],
     excludeSources: ["docs/**/*", "assets/**/*", "repos/**/*", "readmes/**/*"],
+  },
+  hooks: {
+    "vite:build:extendConfig": (entrypoints, viteConfig) => {
+      const entrypoint = entrypoints.length === 1 ? entrypoints[0] : undefined
+      if (entrypoint?.type !== "content-script") return
+
+      const output = viteConfig.build?.rollupOptions?.output
+      if (!output) return
+
+      for (const outputOptions of Array.isArray(output) ? output : [output]) {
+        outputOptions.assetFileNames = (assetInfo) =>
+          assetInfo.names.some((name) => name.endsWith(".css"))
+            ? `content-scripts/${entrypoint.name}.[ext]`
+            : "assets/[name]-[hash].[ext]"
+      }
+    },
   },
   dev: {
     server: {

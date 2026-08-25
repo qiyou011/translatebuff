@@ -95,6 +95,9 @@ options:
     product: 제품
   tools:
     translationHub: 번역 허브
+  product:
+    roadmap: 로드맵
+    feedback: 피드백
   setAPIKeyWarning:
     please: API Key를 설정해 주세요
     page: 페이지에서
@@ -324,6 +327,13 @@ options:
       closeMenu:
         disableForSite: 이 사이트에서 비활성화
         disableGlobally: 전역 비활성화
+      tooltips:
+        togglePageTranslation: 페이지 번역 전환
+        floatingButtonOptions: 플로팅 버튼 옵션
+        lockPosition: 위치 잠금
+        unlockPosition: 위치 잠금 해제
+        settings: 설정
+        feedback: 피드백 보내기
       disabledSites:
         title: 플로팅 버튼 비활성화 사이트
         description: 플로팅 버튼을 비활성화할 웹사이트를 설정합니다
@@ -353,7 +363,8 @@ options:
         speak: 읽기
       saveSuggestion:
         title: 저장 제안
-        description: 선택 번역 후 Notebase에 저장할 단어를 추천합니다
+        description: AI 제공자로 선택 번역 후 Notebase에 저장할 단어를 추천합니다
+        action: 작업
       shortcut:
         title: Selection Translation Shortcut
         description: Customize the shortcut key for translating selected text
@@ -387,6 +398,7 @@ options:
       customActions:
         title: 커스텀 AI 액션
         description: 선택한 텍스트에 대한 구조화된 AI 작업을 직접 추가하세요
+        builtIn: 기본 제공
         add: AI 액션 추가
         edit: AI 액션 편집
         empty: 아직 커스텀 AI 액션이 없습니다
@@ -398,6 +410,8 @@ options:
           actions: 작업
         form:
           name: 이름
+          customize: 사용자 지정
+          customizeTooltip: 기본 제공 작업의 프롬프트는 변경할 수 없습니다. 이 버튼을 클릭하여 편집 가능한 복사본을 만들고 프롬프트를 수정하세요.
           icon: 아이콘
           iconField:
             chooseAriaLabel: 아이콘 선택
@@ -919,6 +933,15 @@ options:
           webTitle: 웹페이지 제목
           webDescription: 페이지 메타데이터의 웹페이지 설명
           videoSummary: 동영상 요약 (AI 스마트 컨텍스트 필요)
+    aiQuota:
+      title: AI 자막 사용량
+      description: 이번 달 AI 자막 전사 사용량 현황
+      loginRequired: 로그인하여 AI 자막 사용량 확인
+      logIn: 로그인
+      betaRequired: AI 자막은 베타 기능이며 아직 계정에 활성화되지 않았습니다
+      betaApply: 사용 신청
+      loadError: 사용량을 불러올 수 없습니다. 잠시 후 다시 시도해 주세요.
+      summary: $2분 중 $1분 사용, $3분 남음
   whatsNew:
     title: 새로운 기능
   rateUs:
@@ -1010,6 +1033,7 @@ saveSuggestion:
   save: 저장
   saved: 저장됨
   staleSuggestion: 이 제안은 더 이상 유효하지 않습니다
+  toggleLabel: 저장 제안 표시
 thinking:
   label: 사고 중
   complete: 사고 완료
@@ -1018,6 +1042,9 @@ thinking:
 shortcutKeySelector:
   placeholder: 단축키를 입력해 주세요
 subtitles:
+  loadingAiSubtitles: AI 자막 불러오는 중… (예상 3분)
+  requestAiSubtitles: AI 자막 요청 (Beta)
+  usingAiSubtitles: AI 자막 사용 중
   actions:
     downloadTranslated: 번역 자막 다운로드
     downloadTranslatedPreparing: 자막 준비 중, 긴 동영상은 시간이 더 걸릴 수 있습니다
@@ -1043,6 +1070,8 @@ subtitles:
     aiRateLimited: 요청이 너무 많습니다. 나중에 다시 시도해 주세요
     aiAuthFailed: API 인증에 실패했습니다. API 키를 확인해 주세요
     aiServiceUnavailable: 번역 서비스를 일시적으로 사용할 수 없습니다
+    aiQuotaExceeded: 이번 달 AI 자막 사용량을 모두 사용했습니다
+    aiRequestFailed: AI 자막 요청에 실패했습니다. 잠시 후 다시 시도해 주세요
     aiNoResponse: AI 서비스가 응답하지 않았습니다. 원문을 표시합니다
     translatedExportFailed: 번역 자막 생성에 실패했습니다
     translatedExportIncomplete: 모든 자막 줄을 번역하지 못했습니다

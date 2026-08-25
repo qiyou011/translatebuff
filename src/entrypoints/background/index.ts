@@ -4,6 +4,7 @@ import { browser, defineBackground } from "#imports"
 import { setupFork } from "@/fork/background"
 import { getWebsiteUrl } from "@/fork/website-url"
 import { storageAdapter } from "@/utils/atoms/storage-adapter"
+import { promoteGoogleTranslateDefaultIfReachable } from "@/utils/config/default-translate-provider"
 import { CONFIG_STORAGE_KEY } from "@/utils/constants/config"
 import { initI18n, setUiLanguage } from "@/utils/i18n"
 import { logger } from "@/utils/logger"
@@ -18,7 +19,7 @@ import {
 } from "./analytics"
 import { dispatchBackgroundStreamPort } from "./background-stream"
 import { initializeActionIcons, registerActionIconListeners } from "./browser-action-icon"
-import { ensureInitializedConfig } from "./config"
+import { ensureInitializedConfig, isFreshInstalledConfig } from "./config"
 import { setUpConfigBackup } from "./config-backup"
 import { initializeContextMenu, registerContextMenuListeners } from "./context-menu"
 import {
@@ -55,6 +56,15 @@ export default defineBackground({
         await browser.tabs.create({
           url: getWebsiteUrl("/guide/step-1"),
         })
+
+        // Deliberately last: probing Google Translate can hang for seconds on networks that
+        // block it, and nothing above should wait for that. Awaiting inside the listener
+        // keeps the service worker alive until the probe settles. Guarded by the config
+        // actually being new, because reloading an unpacked extension also reports
+        // "install" while the developer's own provider choice is still in storage.
+        if (await isFreshInstalledConfig()) {
+          await promoteGoogleTranslateDefaultIfReachable()
+        }
       }
 
       // Clear blog cache on extension update to fetch latest blog posts
@@ -123,8 +133,18 @@ export default defineBackground({
     void setUpDatabaseCleanup()
     setUpConfigBackup()
 
+    // Start config and i18n initialization without delaying synchronous listener
+    // registration. Consumers that materialize localized config-derived data await
+    // this shared barrier before reading it.
+    let currentUiLanguage: UiLanguage | undefined
+    const backgroundReady = (async () => {
+      const config = await ensureInitializedConfig()
+      currentUiLanguage = config?.uiLanguage ?? "auto"
+      await initI18n(currentUiLanguage)
+    })()
+
     proxyFetch()
-    setupNotebasePendingSaveProcessor()
+    setupNotebasePendingSaveProcessor(() => backgroundReady)
     setupEdgeTTSMessageHandlers()
     setupLLMGenerateTextMessageHandlers()
     setupTTSPlaybackMessageHandlers()
@@ -137,11 +157,8 @@ export default defineBackground({
     // listener registration above (MV3 requires listeners before the first await). The
     // context menu and the uninstall-survey URL both resolve i18n.t at registration time,
     // so they must be created AFTER initI18n or they freeze in the wrong language.
-    let currentUiLanguage: UiLanguage | undefined
     void (async () => {
-      const config = await ensureInitializedConfig()
-      currentUiLanguage = config?.uiLanguage ?? "auto"
-      await initI18n(currentUiLanguage)
+      await backgroundReady
       void initializeContextMenu()
       await setupUninstallSurvey()
     })()
@@ -151,9 +168,10 @@ export default defineBackground({
     // (registerContextMenuListeners), so here we only drive the i18next singleton and
     // re-set the frozen (localized) uninstall-survey URL.
     storageAdapter.watch<Config>(CONFIG_STORAGE_KEY, (newConfig) => {
-      if (newConfig.uiLanguage === currentUiLanguage) return
-      currentUiLanguage = newConfig.uiLanguage
       void (async () => {
+        await backgroundReady
+        if (newConfig.uiLanguage === currentUiLanguage) return
+        currentUiLanguage = newConfig.uiLanguage
         await setUiLanguage(newConfig.uiLanguage)
         await setupUninstallSurvey()
       })()

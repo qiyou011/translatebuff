@@ -95,6 +95,9 @@ options:
     product: Producto
   tools:
     translationHub: Centro de traducción
+  product:
+    roadmap: Hoja de ruta
+    feedback: Comentarios
   setAPIKeyWarning:
     please: Configura la clave API en
     page: página
@@ -325,6 +328,13 @@ options:
       closeMenu:
         disableForSite: Desactivar para este sitio
         disableGlobally: Desactivar globalmente
+      tooltips:
+        togglePageTranslation: Alternar traducción de página
+        floatingButtonOptions: Opciones del botón flotante
+        lockPosition: Bloquear posición
+        unlockPosition: Desbloquear posición
+        settings: Ajustes
+        feedback: Enviar comentarios
       disabledSites:
         title: Sitios con botón flotante desactivado
         description: Configura los sitios web donde se debe desactivar el botón flotante
@@ -354,7 +364,8 @@ options:
         speak: Leer en voz alta
       saveSuggestion:
         title: Sugerencias de guardado
-        description: Después de traducir una selección, sugerir palabras para guardar en tu Notebase
+        description: Después de traducir una selección con un proveedor de IA, sugerir palabras para guardar en tu Notebase
+        action: Acción
       shortcut:
         title: Selection Translation Shortcut
         description: Customize the shortcut key for translating selected text
@@ -388,6 +399,7 @@ options:
       customActions:
         title: Acciones AI personalizadas
         description: Añade tus propias acciones AI estructuradas para texto seleccionado
+        builtIn: Integrada
         add: Añadir acción AI
         edit: Editar acción AI
         empty: Aún no hay acciones AI personalizadas
@@ -399,6 +411,8 @@ options:
           actions: Acciones
         form:
           name: Nombre
+          customize: Personalizar
+          customizeTooltip: Las instrucciones integradas no permiten cambiar los prompts. Haz clic aquí para crear una copia editable y modificar los prompts.
           icon: Icono
           iconField:
             chooseAriaLabel: Elegir icono
@@ -510,25 +524,26 @@ options:
               1. Céntrate en el significado que mejor coincida con los párrafos proporcionados.
               2. Normaliza Término a su forma base/canónica.
               3. Mantén Definición precisa y fácil para estudiantes.
-              4. Mantén Párrafos exactamente como se proporcionan en el prompt.
-              5. Fonética debe usar la notación estándar del idioma del término (p. ej., IPA para inglés, pinyin para mandarín, romaji para japonés).
-              6. Categoría gramatical en inglés (noun, verb, adjective, etc.).
-              7. Dificultad debe ser un nivel CEFR (A1, A2, B1, B2, C1 o C2).
-              8. Si un campo es desconocido, devuelve una cadena vacía en lugar de adivinar.
-              9. Responde en {{targetLanguage}} para todos los campos textuales, salvo que se requiera texto en la forma de origen para mayor claridad.
+              4. Para Oración, extrae únicamente la oración completa de los párrafos proporcionados que contenga el término seleccionado. No incluyas las oraciones anteriores ni posteriores.
+              5. Traducción de la oración debe traducir únicamente la Oración extraída.
+              6. Fonética debe usar la notación estándar del idioma del término (p. ej., IPA para inglés, pinyin para mandarín, romaji para japonés).
+              7. Categoría gramatical en inglés (noun, verb, adjective, etc.).
+              8. Dificultad debe ser un nivel CEFR (A1, A2, B1, B2, C1 o C2).
+              9. Si un campo es desconocido, devuelve una cadena vacía en lugar de adivinar.
+              10. Responde en {{targetLanguage}} para todos los campos textuales, salvo que se requiera texto en la forma de origen para mayor claridad.
 
               ## Ejemplos
 
               ### Ejemplo 1
-              Entrada: Selección="blossoms", Párrafos="The ephemeral beauty of cherry blossoms reminds us to cherish each moment.", Idioma de destino=chino
+              Entrada: Selección="blossoms", Párrafos="Spring arrives quietly in the park. The ephemeral beauty of cherry blossoms reminds us to cherish each moment. Families and friends gather beneath the trees.", Idioma de destino=chino
 
               Salida:
               - Término: blossom
               - Fonética: /ˈblɒs.əm/
               - Categoría gramatical: noun
-              - Párrafos: The ephemeral beauty of cherry blossoms reminds us to cherish each moment.
+              - Oración: The ephemeral beauty of cherry blossoms reminds us to cherish each moment.
               - Definición: 花；花朵（尤指果树的花）
-              - Traducción de párrafos: 樱花短暂的美丽提醒我们珍惜每一刻。
+              - Traducción de la oración: 樱花短暂的美丽提醒我们珍惜每一刻。
               - Dificultad: B2
 
               ### Ejemplo 2
@@ -538,9 +553,9 @@ options:
               - Término: 感動
               - Fonética: kandou
               - Categoría gramatical: noun
-              - Párrafos: この映画はつまらないと思ったけど、最後は感動した。
+              - Oración: この映画はつまらないと思ったけど、最後は感動した。
               - Definición: Being deeply moved; emotional touch
-              - Traducción de párrafos: I thought this movie was boring, but the ending was moving.
+              - Traducción de la oración: I thought this movie was boring, but the ending was moving.
               - Dificultad: B1
             prompt: |-
               ## Entrada
@@ -553,12 +568,12 @@ options:
             fieldPhoneticDescription: Transcripción fonética estándar para el idioma del término (p. ej., IPA para inglés, pinyin para mandarín, romaji para japonés).
             fieldPartOfSpeech: Categoría gramatical
             fieldPartOfSpeechDescription: Categoría gramatical (p. ej., noun, verb, adjective).
-            fieldParagraphs: Párrafos
-            fieldParagraphsDescription: Los párrafos del prompt anterior. No los reescribas.
+            fieldSentence: Oración
+            fieldSentenceDescription: La oración completa de los párrafos anteriores que contiene el término seleccionado. No incluyas las oraciones anteriores ni posteriores.
             fieldDefinition: Definición
             fieldDefinitionDescription: Una definición concisa para el sentido contextual.
-            fieldParagraphsTranslation: Traducción de párrafos
-            fieldParagraphsTranslationDescription: La traducción de los párrafos.
+            fieldSentenceTranslation: Traducción de la oración
+            fieldSentenceTranslationDescription: La traducción únicamente de la Oración.
             fieldDifficulty: Dificultad
             fieldDifficultyDescription: Nivel de dificultad CEFR estimado A1, A2, B1, B2, C1 o C2.
           improveWriting:
@@ -1034,6 +1049,15 @@ options:
           webTitle: Título de la página web
           webDescription: Descripción de la página web desde los metadatos
           videoSummary: Resumen del video (requiere contexto inteligente de IA)
+    aiQuota:
+      title: Cuota de subtítulos con IA
+      description: Uso mensual de tu cuota de transcripción de subtítulos con IA
+      loginRequired: Inicia sesión para ver tu cuota de subtítulos con IA
+      logIn: Iniciar sesión
+      betaRequired: Los subtítulos con IA están en beta y aún no están habilitados para tu cuenta
+      betaApply: Solicitar acceso
+      loadError: No se pudo cargar tu cuota. Inténtalo de nuevo más tarde.
+      summary: Usados $1 de $2 minutos, quedan $3
   whatsNew:
     title: Novedades
   rateUs:
@@ -1125,6 +1149,7 @@ saveSuggestion:
   save: Guardar
   saved: Guardado
   staleSuggestion: Esta sugerencia está desactualizada
+  toggleLabel: Mostrar sugerencias de guardado
 thinking:
   label: Pensando
   complete: Razonamiento completo
@@ -1133,6 +1158,9 @@ thinking:
 shortcutKeySelector:
   placeholder: Introduce el atajo
 subtitles:
+  loadingAiSubtitles: Cargando subtítulos con IA… (estimado 3 min)
+  requestAiSubtitles: Solicitar subtítulos con IA (Beta)
+  usingAiSubtitles: Usando subtítulos con IA
   actions:
     downloadTranslated: Descargar subtítulos traducidos
     downloadTranslatedPreparing: Preparando subtítulos, los videos largos pueden tardar más
@@ -1158,6 +1186,8 @@ subtitles:
     aiRateLimited: Demasiadas solicitudes, inténtalo de nuevo más tarde
     aiAuthFailed: Error de autenticación de API; revisa tu clave API
     aiServiceUnavailable: Servicio de traducción temporalmente no disponible
+    aiQuotaExceeded: Cuota mensual de subtítulos con IA agotada
+    aiRequestFailed: Error al solicitar subtítulos con IA, inténtalo de nuevo más tarde
     aiNoResponse: El servicio AI no respondió; se usa el texto original
     translatedExportFailed: No se pudieron generar los subtítulos traducidos
     translatedExportIncomplete: No se pudieron traducir todas las líneas de subtítulos
