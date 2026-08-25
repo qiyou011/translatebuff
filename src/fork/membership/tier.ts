@@ -49,7 +49,7 @@ export function derivePrimaryExpiry(tokens: RawToken[] | undefined): { date: str
   if (typeof finalExpireAt !== "string" || finalExpireAt.trim() === "") {
     return null
   }
-  return { date: finalExpireAt.split(" ")[0] }
+  return { date: finalExpireAt.split(" ")[0]! }
 }
 
 // 档位：主档为「有效订阅」才 PRO——token_name 为 subscription 且未过期（-1 视为永不过期）；

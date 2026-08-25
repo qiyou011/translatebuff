@@ -36,7 +36,7 @@ describe("存量「微软 + 仅译文」配置纠正", () => {
     await expect(correctLegacyTranslationMode()).resolves.toBe(true)
 
     expect(setLocalConfig).toHaveBeenCalledTimes(1)
-    const written = setLocalConfig.mock.calls[0][0]
+    const written = setLocalConfig.mock.calls[0]![0]
     expect(written.translate.mode).toBe("bilingual")
     expect(written.translate.providerId).toBe("microsoft-translate-default")
     expect({ ...written, translate: stored.translate }).toEqual(stored)

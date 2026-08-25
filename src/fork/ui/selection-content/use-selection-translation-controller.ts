@@ -5,6 +5,7 @@ import type {
 } from "@/entrypoints/selection.content/selection-toolbar/atoms"
 import type { SelectionToolbarInlineError } from "@/entrypoints/selection.content/selection-toolbar/inline-error"
 import type { TranslationActionContext } from "@/types/analytics"
+import type { FeatureProviderAnalytics } from "@/types/analytics"
 import type { BackgroundTextStreamSnapshot, ThinkingSnapshot } from "@/types/background-stream"
 import type { LLMProviderConfig, ProviderConfig } from "@/types/config/provider"
 import { LANG_CODE_TO_EN_NAME } from "@read-frog/definitions"
@@ -35,6 +36,7 @@ import {
   trackFeatureUsed,
   trackTranslationRequested,
 } from "@/utils/analytics"
+import { classifyProviderConfig, UNKNOWN_FEATURE_PROVIDER } from "@/utils/analytics-provider"
 import { configFieldsAtomMap, writeConfigAtom } from "@/utils/atoms/config"
 import { buildFeatureProviderPatch } from "@/utils/constants/feature-providers"
 import { streamBackgroundText } from "@/utils/content-script/background-stream-client"
@@ -321,6 +323,9 @@ export function useSelectionTranslationController() {
         ANALYTICS_FEATURE.SELECTION_TRANSLATION,
         sourceSurface,
       )
+      // 上游 v1.43.6 给 feature_used 事件加了 provider / backend_kind 必填项。provider 要到
+      // 下面解析出 providerConfig 才知道，而失败分支可能在那之前就上报，故先置未知、解析后再覆盖。
+      let analyticsProvider: FeatureProviderAnalytics = UNKNOWN_FEATURE_PROVIDER
       const actionContext: TranslationActionContext = {
         actionId: `selection-${activeSession?.id ?? "unknown"}-${runId}`,
         feature: TRANSLATION_REQUESTED_FEATURE.SELECTION_TRANSLATION,
@@ -351,6 +356,7 @@ export function useSelectionTranslationController() {
         }
         void trackFeatureUsed({
           ...analyticsContext,
+          ...analyticsProvider,
           outcome: "failure",
         })
         return
@@ -363,6 +369,7 @@ export function useSelectionTranslationController() {
         }
         void trackFeatureUsed({
           ...analyticsContext,
+          ...analyticsProvider,
           outcome: "failure",
         })
         return
@@ -376,12 +383,14 @@ export function useSelectionTranslationController() {
           }
           void trackFeatureUsed({
             ...analyticsContext,
+            ...analyticsProvider,
             outcome: "failure",
           })
           return
         }
 
         const providerConfig = provider.config
+        analyticsProvider = classifyProviderConfig(providerConfig)
         if (!isTranslateProviderConfig(providerConfig)) {
           if (runIdRef.current === runId) {
             setIsTranslating(false)
@@ -389,6 +398,7 @@ export function useSelectionTranslationController() {
           }
           void trackFeatureUsed({
             ...analyticsContext,
+            ...analyticsProvider,
             outcome: "failure",
           })
           return
@@ -438,6 +448,7 @@ export function useSelectionTranslationController() {
 
         void trackFeatureUsed({
           ...analyticsContext,
+          ...analyticsProvider,
           outcome: "success",
         })
       } catch (caughtError) {
@@ -449,6 +460,7 @@ export function useSelectionTranslationController() {
         if (!isAbortError(caughtError)) {
           void trackFeatureUsed({
             ...analyticsContext,
+            ...analyticsProvider,
             outcome: "failure",
           })
         }

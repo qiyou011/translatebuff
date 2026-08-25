@@ -6,7 +6,9 @@ import { toastManager } from "@/components/ui/base-ui/toast"
 import { SelectionPopover } from "@/components/ui/selection-popover"
 import { ANALYTICS_FEATURE, ANALYTICS_SURFACE } from "@/types/analytics"
 import { createFeatureUsageContext, trackFeatureUsed } from "@/utils/analytics"
+import { classifyResolvedProvider, UNKNOWN_FEATURE_PROVIDER } from "@/utils/analytics-provider"
 import { configFieldsAtomMap, writeConfigAtom } from "@/utils/atoms/config"
+import { findSelectionToolbarAction, patchSelectionToolbarAction } from "@/utils/custom-actions"
 import { onMessage } from "@/utils/message"
 import {
   getSelectableProvidersForCapability,
@@ -100,13 +102,13 @@ export function SelectionCustomActionProvider({ children }: { children: ReactNod
   }, [activeSession?.contextSnapshot.text, cleanSelection])
   const webPageContext = useCustomActionWebPageContext(isOpen, popoverSessionKey)
   const titleText = (webPageContext?.webTitle ?? document.title) || null
-  const activeAction = useMemo(
-    () =>
-      selectionToolbarConfig.customActions.find(
-        (action) => action.enabled !== false && action.id === activeActionId,
-      ) ?? null,
-    [activeActionId, selectionToolbarConfig.customActions],
-  )
+  const activeAction = useMemo(() => {
+    if (!activeActionId) {
+      return null
+    }
+    const action = findSelectionToolbarAction(selectionToolbarConfig, activeActionId)
+    return action && action.enabled !== false ? action : null
+  }, [activeActionId, selectionToolbarConfig])
   const customActionRequest = useMemo(
     () => ({
       language,
@@ -246,10 +248,8 @@ export function SelectionCustomActionProvider({ children }: { children: ReactNod
 
   const openContextMenuCustomAction = useCallback(
     (actionId: string) => {
-      const action = selectionToolbarConfig.customActions.find(
-        (candidate) => candidate.enabled !== false && candidate.id === actionId,
-      )
-      if (!action) {
+      const action = findSelectionToolbarAction(selectionToolbarConfig, actionId)
+      if (!action || action.enabled === false) {
         const nextError = createSelectionToolbarPrecheckError("customAction", "actionUnavailable")
         void trackFeatureUsed({
           ...createFeatureUsageContext(
@@ -260,6 +260,7 @@ export function SelectionCustomActionProvider({ children }: { children: ReactNod
               action_id: actionId,
             },
           ),
+          ...UNKNOWN_FEATURE_PROVIDER,
           outcome: "failure",
         })
         toastManager.add({ type: "error", title: nextError.description })
@@ -279,6 +280,13 @@ export function SelectionCustomActionProvider({ children }: { children: ReactNod
               action_name: action.name,
             },
           ),
+          ...classifyResolvedProvider(
+            resolveProviderRefForCapability(
+              "selectionToolbar.customAction",
+              providersConfig,
+              action.providerId,
+            ),
+          ),
           outcome: "failure",
         })
         toastManager.add({ type: "error", title: nextError.description })
@@ -292,7 +300,7 @@ export function SelectionCustomActionProvider({ children }: { children: ReactNod
         surface: ANALYTICS_SURFACE.CONTEXT_MENU,
       })
     },
-    [openActionRequest, resolveContextMenuOpenRequest, selectionToolbarConfig.customActions],
+    [openActionRequest, providersConfig, resolveContextMenuOpenRequest, selectionToolbarConfig],
   )
 
   const handleProviderChange = useCallback(
@@ -301,15 +309,10 @@ export function SelectionCustomActionProvider({ children }: { children: ReactNod
         return
       }
 
-      const updatedCustomActions = selectionToolbarConfig.customActions.map((action) =>
-        action.id === activeActionId ? { ...action, providerId } : action,
-      )
-
       void setConfig({
-        selectionToolbar: {
-          ...selectionToolbarConfig,
-          customActions: updatedCustomActions,
-        },
+        selectionToolbar: patchSelectionToolbarAction(selectionToolbarConfig, activeActionId, {
+          providerId,
+        }),
       })
     },
     [activeActionId, selectionToolbarConfig, setConfig],
@@ -361,6 +364,7 @@ export function SelectionCustomActionProvider({ children }: { children: ReactNod
 
     void trackFeatureUsed({
       ...analyticsContext,
+      ...classifyResolvedProvider(customActionRequest.provider),
       outcome: "failure",
     })
   }, [
@@ -370,6 +374,7 @@ export function SelectionCustomActionProvider({ children }: { children: ReactNod
     executionPlan.executionContext,
     isOpen,
     popoverSessionKey,
+    customActionRequest.provider,
     sourceSurface,
   ])
 

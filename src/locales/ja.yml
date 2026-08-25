@@ -95,6 +95,9 @@ options:
     product: 製品
   tools:
     translationHub: 翻訳ハブ
+  product:
+    roadmap: ロードマップ
+    feedback: フィードバック
   setAPIKeyWarning:
     please: 設定ページで
     page: APIキーを設定してください
@@ -324,6 +327,13 @@ options:
       closeMenu:
         disableForSite: このサイトで無効化
         disableGlobally: グローバルで無効化
+      tooltips:
+        togglePageTranslation: ページ翻訳を切り替え
+        floatingButtonOptions: フローティングボタンのオプション
+        lockPosition: 位置を固定
+        unlockPosition: 位置の固定を解除
+        settings: 設定
+        feedback: フィードバックを送信
       disabledSites:
         title: フローティングボタン無効化サイト
         description: フローティングボタンを無効化するウェブサイトを設定します
@@ -353,7 +363,8 @@ options:
         speak: 読み上げ
       saveSuggestion:
         title: 保存の提案
-        description: 選択テキストの翻訳後、Notebase に保存する単語を提案します
+        description: AI プロバイダーで選択テキストを翻訳した後、Notebase に保存する単語を提案します
+        action: アクション
       shortcut:
         title: Selection Translation Shortcut
         description: Customize the shortcut key for translating selected text
@@ -387,6 +398,7 @@ options:
       customActions:
         title: カスタム AI アクション
         description: 選択テキスト向けに独自の構造化 AI アクションを追加
+        builtIn: 組み込み
         add: AI アクションを追加
         edit: AI アクションを編集
         empty: カスタム AI アクションはまだありません
@@ -398,6 +410,8 @@ options:
           actions: 操作
         form:
           name: 名前
+          customize: カスタマイズ
+          customizeTooltip: 組み込みアクションのプロンプトは変更できません。このボタンをクリックして編集可能なコピーを作成し、プロンプトを変更します。
           icon: アイコン
           iconField:
             chooseAriaLabel: アイコンを選択
@@ -919,6 +933,15 @@ options:
           webTitle: ウェブページタイトル
           webDescription: ページメタデータのウェブページ説明
           videoSummary: 動画要約（AI スマートコンテキストが必要）
+    aiQuota:
+      title: AI字幕の利用枠
+      description: 今月のAI字幕文字起こし利用枠の使用状況
+      loginRequired: ログインしてAI字幕の利用枠を確認
+      logIn: ログイン
+      betaRequired: AI字幕はベータ版で、まだあなたのアカウントでは利用できません
+      betaApply: 利用を申請
+      loadError: 利用枠を読み込めませんでした。しばらくしてから再試行してください。
+      summary: $2 分中 $1 分を使用、残り $3 分
   whatsNew:
     title: 新機能
   rateUs:
@@ -1010,6 +1033,7 @@ saveSuggestion:
   save: 保存
   saved: 保存済み
   staleSuggestion: この提案は古くなっています
+  toggleLabel: 保存の提案を表示
 thinking:
   label: 思考中
   complete: 思考完了
@@ -1018,6 +1042,9 @@ thinking:
 shortcutKeySelector:
   placeholder: ショートカットを入力してください
 subtitles:
+  loadingAiSubtitles: AI字幕を読み込み中…（推定3分）
+  requestAiSubtitles: AI字幕をリクエスト（Beta）
+  usingAiSubtitles: AI字幕を使用中
   actions:
     downloadTranslated: 翻訳字幕をダウンロード
     downloadTranslatedPreparing: 字幕を準備中。長い動画は時間がかかる場合があります
@@ -1043,6 +1070,8 @@ subtitles:
     aiRateLimited: リクエストが多すぎます。後でもう一度お試しください
     aiAuthFailed: API認証に失敗しました。APIキーを確認してください
     aiServiceUnavailable: 翻訳サービスは一時的に利用できません
+    aiQuotaExceeded: 今月のAI字幕の利用枠を使い切りました
+    aiRequestFailed: AI字幕のリクエストに失敗しました。しばらくしてから再試行してください
     aiNoResponse: AIサービスが応答しませんでした。原文を表示します
     translatedExportFailed: 翻訳字幕の生成に失敗しました
     translatedExportIncomplete: すべての字幕行を翻訳できませんでした

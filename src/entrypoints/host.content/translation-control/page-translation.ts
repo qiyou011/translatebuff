@@ -13,6 +13,7 @@ import {
   trackFeatureUsed,
   trackTranslationRequested,
 } from "@/utils/analytics"
+import { classifyProviderConfig, UNKNOWN_FEATURE_PROVIDER } from "@/utils/analytics-provider"
 import { getLocalConfig } from "@/utils/config/storage"
 import {
   CONTENT_WRAPPER_CLASS,
@@ -95,10 +96,17 @@ interface IPageTranslationManager {
   stop: () => void
 
   /**
-   * Refreshes translation after an in-document route change without disabling
-   * the tab-level page translation session.
+   * Re-resolves the site rule for the current URL and swaps injected CSS in
+   * place. Called on same-origin in-document route changes, where the live
+   * session and wrappers stay mounted and the MutationObserver walks the new
+   * route's DOM under the new URL's rule.
+   *
+   * Known tradeoff: site rules are path-scoped in more than CSS (selectors,
+   * thresholds), and DOM that persists unchanged across the route keeps the
+   * walk decisions made under the previous URL's rule. Accepted — the
+   * alternative is the tear-down/re-walk flash this method exists to avoid.
    */
-  restart: () => Promise<void>
+  refreshSiteRuleCSS: () => Promise<void>
 
   /**
    * Registers page translation triggers
@@ -182,6 +190,7 @@ export class PageTranslationManager implements IPageTranslationManager {
         }
         void trackFeatureUsed({
           ...trackedContext,
+          ...UNKNOWN_FEATURE_PROVIDER,
           outcome: "failure",
         })
       }
@@ -189,6 +198,7 @@ export class PageTranslationManager implements IPageTranslationManager {
     }
 
     const requestedProviderConfig = resolveProviderConfigOrNull(config, "translate")
+    const providerAnalytics = classifyProviderConfig(requestedProviderConfig)
     if (trackedContext && trackedContext.surface !== ANALYTICS_SURFACE.PAGE_AUTO) {
       await trackTranslationRequested({
         feature: TRANSLATION_REQUESTED_FEATURE.PAGE_TRANSLATION,
@@ -210,6 +220,7 @@ export class PageTranslationManager implements IPageTranslationManager {
       if (trackedContext) {
         void trackFeatureUsed({
           ...trackedContext,
+          ...providerAnalytics,
           outcome: "failure",
         })
       }
@@ -286,7 +297,15 @@ export class PageTranslationManager implements IPageTranslationManager {
       // slices, and records emitted meanwhile must not be lost. The walk only
       // writes data-read-frog-* attributes, which this observer's
       // attributeFilter never reports, so this creates no feedback loop.
-      this.observeMutations(document.body)
+      //
+      // Root the observer at documentElement, NOT body: routers like Turbo
+      // Drive replace the body NODE itself on every visit, and an observer
+      // bound to the old body goes permanently blind — the soft URL-change
+      // path (refreshSiteRuleCSS) intentionally never re-attaches observers.
+      // On documentElement the swap itself surfaces as a childList record
+      // with addedNodes=[newBody], which walks the new body like any other
+      // inserted subtree.
+      this.observeMutations(document.documentElement)
 
       // Label existing elements in time-sliced chunks (walkability caching is
       // handled by the walk's onBlockedElement callback).
@@ -295,7 +314,7 @@ export class PageTranslationManager implements IPageTranslationManager {
       try {
         await initialWalk
       } finally {
-        // restart() may already have installed a newer walk's promise.
+        // A newer start() may already have installed a newer walk's promise.
         if (this.initialWalkDone === initialWalk) {
           this.initialWalkDone = null
         }
@@ -304,6 +323,7 @@ export class PageTranslationManager implements IPageTranslationManager {
       if (trackedContext) {
         void trackFeatureUsed({
           ...trackedContext,
+          ...providerAnalytics,
           outcome: "success",
         })
       }
@@ -311,6 +331,7 @@ export class PageTranslationManager implements IPageTranslationManager {
       if (trackedContext) {
         void trackFeatureUsed({
           ...trackedContext,
+          ...providerAnalytics,
           outcome: "failure",
         })
       }
@@ -322,14 +343,26 @@ export class PageTranslationManager implements IPageTranslationManager {
     this.stopInternal({ notify: true })
   }
 
-  async restart(): Promise<void> {
-    if (!this.isPageTranslating) {
-      await this.start()
-      return
-    }
+  async refreshSiteRuleCSS(): Promise<void> {
+    // Never tear down wrappers / observers on a route change. A full
+    // stop→start flash is what users see as "translations disappear then
+    // reappear" on SPA clicks — and both Navigation API events fire
+    // synchronously inside pushState, BEFORE the router swaps the DOM, so a
+    // teardown here always hits the still-visible previous page. New route
+    // content is walked via the existing MutationObserver instead.
+    if (!this.isPageTranslating) return
+    const config = await getLocalConfig()
+    if (!config || !this.isPageTranslating) return
 
-    this.stopInternal({ notify: false })
-    await this.start()
+    const siteRule = getEffectiveSiteRule(config, window.location.href)
+    if (siteRule.injectedCss) {
+      // ensureSiteRuleCSS replaces the existing sheet's contents in place —
+      // no remove-first, which would leave a gap with no site CSS applied
+      // and flash layout on rules that exist to pin it (e.g. cnbc.com).
+      void ensureSiteRuleCSS(document, siteRule.injectedCss)
+    } else {
+      removeSiteRuleCSS(document)
+    }
   }
 
   private stopInternal({ notify }: { notify: boolean }): void {
@@ -403,8 +436,8 @@ export class PageTranslationManager implements IPageTranslationManager {
       if (e.touches.length !== 4) return reset()
 
       for (let i = 0; i < 4; i++) {
-        const dx = e.touches[i].clientX - startTouches[i].clientX
-        const dy = e.touches[i].clientY - startTouches[i].clientY
+        const dx = e.touches[i]!.clientX - startTouches[i]!.clientX
+        const dy = e.touches[i]!.clientY - startTouches[i]!.clientY
         if (dx * dx + dy * dy > PageTranslationManager.MOVE_THRESHOLD) return reset()
       }
     }

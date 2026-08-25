@@ -32,6 +32,7 @@ import {
   trackFeatureUsed,
   trackTranslationRequested,
 } from "@/utils/analytics"
+import { classifyProviderConfig } from "@/utils/analytics-provider"
 import { configFieldsAtomMap, writeConfigAtom } from "@/utils/atoms/config"
 import { buildFeatureProviderPatch } from "@/utils/constants/feature-providers"
 import { streamBackgroundText } from "@/utils/content-script/background-stream-client"
@@ -307,15 +308,19 @@ export function SelectionTranslationProvider({ children }: { children: ReactNode
   // stale old-language suggestion rendered after the new translation.
   const saveSuggestionSessionKey = `${popoverSessionKey}:${translateRequestKey}:${rerunNonce}`
 
-  const fireSaveSuggestion = useEffectEvent((preparedText: string) => {
-    maybeFireSaveSuggestion({
-      sessionKey: saveSuggestionSessionKey,
-      selectionText: preparedText,
-      paragraphsText: paragraphsText ?? preparedText,
-      targetLangName: LANG_CODE_TO_EN_NAME[translateRequest.language.targetCode],
-      webTitle: titleText ?? "",
-    })
-  })
+  const fireSaveSuggestion = useEffectEvent(
+    (preparedText: string, providerId: string, providerConfig: LLMProviderConfig) => {
+      maybeFireSaveSuggestion({
+        sessionKey: saveSuggestionSessionKey,
+        selectionText: preparedText,
+        paragraphsText: paragraphsText ?? preparedText,
+        targetLangName: LANG_CODE_TO_EN_NAME[translateRequest.language.targetCode],
+        webTitle: titleText ?? "",
+        providerId,
+        providerConfig,
+      })
+    },
+  )
 
   const resetPopoverSession = useCallback((options?: { clearAnchor?: boolean }) => {
     setActiveSession(null)
@@ -387,6 +392,7 @@ export function SelectionTranslationProvider({ children }: { children: ReactNode
 
       const requestedProvider =
         translateRequest.provider?.kind === "local" ? translateRequest.provider.config : null
+      const providerAnalytics = classifyProviderConfig(requestedProvider)
       const translationRequestedPromise = trackTranslationRequested({
         feature: TRANSLATION_REQUESTED_FEATURE.SELECTION_TRANSLATION,
         surface: sourceSurface,
@@ -409,6 +415,7 @@ export function SelectionTranslationProvider({ children }: { children: ReactNode
         }
         void trackFeatureUsed({
           ...analyticsContext,
+          ...providerAnalytics,
           outcome: "failure",
         })
         return
@@ -421,6 +428,7 @@ export function SelectionTranslationProvider({ children }: { children: ReactNode
         }
         void trackFeatureUsed({
           ...analyticsContext,
+          ...providerAnalytics,
           outcome: "failure",
         })
         return
@@ -434,6 +442,7 @@ export function SelectionTranslationProvider({ children }: { children: ReactNode
           }
           void trackFeatureUsed({
             ...analyticsContext,
+            ...providerAnalytics,
             outcome: "failure",
           })
           return
@@ -447,6 +456,7 @@ export function SelectionTranslationProvider({ children }: { children: ReactNode
           }
           void trackFeatureUsed({
             ...analyticsContext,
+            ...providerAnalytics,
             outcome: "failure",
           })
           return
@@ -496,6 +506,7 @@ export function SelectionTranslationProvider({ children }: { children: ReactNode
 
         void trackFeatureUsed({
           ...analyticsContext,
+          ...providerAnalytics,
           outcome: "success",
         })
       } catch (caughtError) {
@@ -507,6 +518,7 @@ export function SelectionTranslationProvider({ children }: { children: ReactNode
         if (!isAbortError(caughtError)) {
           void trackFeatureUsed({
             ...analyticsContext,
+            ...providerAnalytics,
             outcome: "failure",
           })
         }
@@ -528,17 +540,19 @@ export function SelectionTranslationProvider({ children }: { children: ReactNode
   const startTranslation = useEffectEvent((runId: number) => {
     // Kick off the save suggestion together with a translation run that will
     // actually start (mirrors runTranslation's prechecks so a run that only
-    // surfaces an error never spends hosted-AI quota). Its card renders only
-    // after the translation stream finishes.
+    // surfaces an error never fires a suggestion). Suggestions run on the
+    // user's selection-translate provider, so they only fire for LLM
+    // providers. The card renders only after the translation stream finishes.
     const preparedText = prepareTranslationText(selectionText)
     const provider = translateRequest.provider
     if (
       preparedText !== "" &&
       provider?.kind === "local" &&
       provider.config.enabled &&
-      isTranslateProviderConfig(provider.config)
+      isTranslateProviderConfig(provider.config) &&
+      isLLMProviderConfig(provider.config)
     ) {
-      fireSaveSuggestion(preparedText)
+      fireSaveSuggestion(preparedText, provider.id, provider.config)
     }
 
     void runTranslation(runId)

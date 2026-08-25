@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
-import { fakeBrowser } from "wxt/testing"
+import { fakeBrowser } from "wxt/testing/fake-browser"
 import { env } from "@/env"
 import {
   adoptCredential,
@@ -47,6 +47,12 @@ async function readKey(): Promise<string> {
   return renyimiaoApiKey(config.providersConfig)
 }
 
+// WXT 0.21 起 fakeBrowser 把 cookies.get 的返回类型标成了 Promise<void>（与运行时行为不符），
+// 直接 mockResolvedValue 会类型不通。这里定向转型，只影响类型、不改行为。
+function mockCookieGet(value: unknown) {
+  return vi.spyOn(fakeBrowser.cookies, "get").mockResolvedValue(value as never)
+}
+
 beforeEach(() => {
   fakeBrowser.reset()
   fetchMock.mockReset()
@@ -55,7 +61,10 @@ beforeEach(() => {
 })
 
 afterEach(() => {
-  vi.unstubAllGlobals()
+  // 不用 vi.unstubAllGlobals()：WXT 0.21 起 fakeBrowser 通过 vi.stubGlobal 安装 chrome 全局，
+  // 一刀切 unstub 会把它一起清掉，而 fakeBrowser.reset() 不重装全局 —— 后续用例里
+  // @webext-core/messaging 就会 ReferenceError: chrome is not defined。
+  // 本文件唯一 stub 的全局是 fetch，每个 beforeEach 都会重新 stub，无需在此清理。
   vi.unstubAllEnvs()
   vi.restoreAllMocks()
 })
@@ -189,7 +198,7 @@ describe("adoptCredential 在途去重（防主动探测 + 被动监听并发双
 describe("syncMembershipFromWebsite（冷启动/挂载主动同步）", () => {
   it("无会话 + 官网 cookie 存在 → 读 WXT_WEBSITE_URL 的 cookie 并接管", async () => {
     routeOk()
-    const getSpy = vi.spyOn(fakeBrowser.cookies, "get").mockResolvedValue({ value: CRED })
+    const getSpy = mockCookieGet({ value: CRED })
 
     await syncMembershipFromWebsite()
 
@@ -203,7 +212,7 @@ describe("syncMembershipFromWebsite（冷启动/挂载主动同步）", () => {
 
   it("已有会话 → 短路：不读 cookie、不发请求", async () => {
     await saveForkSession({ loginCredential: CRED, phone: "13800000000", user: {} })
-    const getSpy = vi.spyOn(fakeBrowser.cookies, "get").mockResolvedValue({ value: CRED })
+    const getSpy = mockCookieGet({ value: CRED })
 
     await syncMembershipFromWebsite()
 
@@ -213,7 +222,7 @@ describe("syncMembershipFromWebsite（冷启动/挂载主动同步）", () => {
 
   it("无 cookie → 不接管、不发请求", async () => {
     routeOk()
-    vi.spyOn(fakeBrowser.cookies, "get").mockResolvedValue(null)
+    mockCookieGet(null)
 
     await syncMembershipFromWebsite()
 
@@ -234,7 +243,7 @@ describe("setupMembership 冷启接线", () => {
   it("冷启即主动探测：cookie 在则接管", async () => {
     routeOk()
     vi.spyOn(fakeBrowser.cookies.onChanged, "addListener").mockImplementation(() => {})
-    vi.spyOn(fakeBrowser.cookies, "get").mockResolvedValue({ value: CRED })
+    mockCookieGet({ value: CRED })
 
     setupMembership()
 

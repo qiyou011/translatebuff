@@ -95,6 +95,9 @@ options:
     product: Ürün
   tools:
     translationHub: Çeviri Merkezi
+  product:
+    roadmap: Yol Haritası
+    feedback: Geri Bildirim
   setAPIKeyWarning:
     please: Lütfen API Anahtarını
     page: sayfasında ayarlayın
@@ -324,6 +327,13 @@ options:
       closeMenu:
         disableForSite: Bu site için devre dışı bırak
         disableGlobally: Genel olarak devre dışı bırak
+      tooltips:
+        togglePageTranslation: Sayfa çevirisini aç/kapat
+        floatingButtonOptions: Kayan düğme seçenekleri
+        lockPosition: Konumu kilitle
+        unlockPosition: Konum kilidini aç
+        settings: Ayarlar
+        feedback: Geri bildirim gönder
       disabledSites:
         title: Yüzen Buton Devre Dışı Siteler
         description: Yüzen butonun devre dışı bırakılması gereken web sitelerini yapılandırın
@@ -353,7 +363,8 @@ options:
         speak: Sesli Okuma
       saveSuggestion:
         title: Kaydetme Önerileri
-        description: Seçim çevirisinden sonra Notebase'inize kaydedilecek kelimeler önerilir
+        description: Bir yapay zeka sağlayıcısıyla seçim çevirisinden sonra Notebase'inize kaydedilecek kelimeler önerilir
+        action: Eylem
       shortcut:
         title: Selection Translation Shortcut
         description: Customize the shortcut key for translating selected text
@@ -387,6 +398,7 @@ options:
       customActions:
         title: Özel AI Eylemleri
         description: Seçilen metin için kendi yapılandırılmış AI eylemlerinizi ekleyin
+        builtIn: Yerleşik
         add: AI Eylemi Ekle
         edit: AI Eylemini Düzenle
         empty: Henüz özel AI eylemi yok
@@ -398,6 +410,8 @@ options:
           actions: İşlemler
         form:
           name: Ad
+          customize: Özelleştir
+          customizeTooltip: Yerleşik eylemin istemleri değiştirilemez. Düzenlenebilir bir kopya oluşturup istemleri değiştirmek için bu düğmeye tıklayın.
           icon: Simge
           iconField:
             chooseAriaLabel: Simge seç
@@ -919,6 +933,15 @@ options:
           webTitle: Web sayfası başlığı
           webDescription: Sayfa meta verilerinden web sayfası açıklaması
           videoSummary: Video özeti (AI Akıllı Bağlam gerektirir)
+    aiQuota:
+      title: Yapay Zeka Altyazı Kotası
+      description: Yapay zeka altyazı deşifre kotanızın aylık kullanımı
+      loginRequired: Yapay zeka altyazı kotanızı görmek için giriş yapın
+      logIn: Giriş Yap
+      betaRequired: Yapay zeka altyazıları beta aşamasında ve hesabınız için henüz etkin değil
+      betaApply: Erişim başvurusu yap
+      loadError: Kotanız yüklenemedi. Lütfen daha sonra tekrar deneyin.
+      summary: $2 dakikanın $1 dakikası kullanıldı, $3 kaldı
   whatsNew:
     title: Yenilikler
   rateUs:
@@ -1010,6 +1033,7 @@ saveSuggestion:
   save: Kaydet
   saved: Kaydedildi
   staleSuggestion: Bu öneri güncelliğini yitirdi
+  toggleLabel: Kaydetme önerilerini göster
 thinking:
   label: Düşünüyor
   complete: Düşünme tamamlandı
@@ -1018,6 +1042,9 @@ thinking:
 shortcutKeySelector:
   placeholder: Lütfen kısayolu girin
 subtitles:
+  loadingAiSubtitles: Yapay zeka altyazıları yükleniyor… (tahmini 3 dk)
+  requestAiSubtitles: Yapay zeka altyazısı iste (Beta)
+  usingAiSubtitles: Yapay zeka altyazısı kullanılıyor
   actions:
     downloadTranslated: Çevrilmiş altyazıları indir
     downloadTranslatedPreparing: Altyazılar hazırlanıyor, uzun videolar daha uzun sürebilir
@@ -1043,6 +1070,8 @@ subtitles:
     aiRateLimited: Çok fazla istek, lütfen daha sonra tekrar deneyin
     aiAuthFailed: API kimlik doğrulaması başarısız, lütfen API anahtarınızı kontrol edin
     aiServiceUnavailable: Çeviri hizmeti geçici olarak kullanılamıyor
+    aiQuotaExceeded: Aylık yapay zeka altyazı kotanız doldu
+    aiRequestFailed: Yapay zeka altyazı isteği başarısız oldu, lütfen daha sonra tekrar deneyin
     aiNoResponse: AI hizmeti yanıt vermedi, orijinal metin gösteriliyor
     translatedExportFailed: Çevrilmiş altyazılar oluşturulamadı
     translatedExportIncomplete: Tüm altyazı satırları çevrilemedi

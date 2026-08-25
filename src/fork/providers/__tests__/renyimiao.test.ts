@@ -78,9 +78,13 @@ describe("computeForkConfigSync（seed 内置可用模型 + repoint）", () => {
 
   it("指向免费AI的自定义动作（词典）repoint 到任译喵实例", () => {
     const patch = computeForkConfigSync(DEFAULT_CONFIG)
-    const actions = patch!.selectionToolbar?.customActions
-    expect(actions!.some((action) => action.providerId === "read-frog-free-ai")).toBe(false)
-    expect(actions!.some((action) => action.providerId === DEEPSEEK_ID)).toBe(true)
+    // 上游 v1.43.6 把内置词典从 customActions 挪进了 selectionToolbar.builtInActions.dictionary，
+    // 默认仍指向 fork 里不可见的免费AI，所以 repoint 必须跟到新位置。
+    const dictionary = patch!.selectionToolbar?.builtInActions?.dictionary
+    expect(dictionary?.providerId).not.toBe("read-frog-free-ai")
+    expect(dictionary?.providerId).toBe(DEEPSEEK_ID)
+    const actions = patch!.selectionToolbar?.customActions ?? []
+    expect(actions.some((action) => action.providerId === "read-frog-free-ai")).toBe(false)
   })
 
   it("同步后再次运行返回 null（幂等）", () => {

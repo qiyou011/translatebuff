@@ -18,7 +18,7 @@ describe("validateUserRulesDocument", () => {
     }
     expect(result.kind).toBe("syntax")
     expect(result.issues).toHaveLength(1)
-    expect(result.issues[0].message.length).toBeGreaterThan(0)
+    expect(result.issues[0]!.message.length).toBeGreaterThan(0)
   })
 
   it("rejects a non-array top-level value", () => {
@@ -75,8 +75,8 @@ describe("validateUserRulesDocument", () => {
     }
     expect(result.kind).toBe("duplicateIds")
     expect(result.issues).toHaveLength(1)
-    expect(result.issues[0].path).toBe("rules[1].id")
-    expect(result.issues[0].message).toContain("dup")
+    expect(result.issues[0]!.path).toBe("rules[1].id")
+    expect(result.issues[0]!.message).toContain("dup")
   })
 
   it("formats schema issue paths as rules[n].field", () => {
@@ -92,11 +92,54 @@ describe("validateUserRulesDocument", () => {
       return
     }
     expect(result.kind).toBe("schema")
-    expect(result.issues[0].path).toBe("rules[1].matches")
+    expect(result.issues[0]!.path).toBe("rules[1].matches")
     // The editor renders each issue as `${path}: ${message}`.
     expect(
-      `${result.issues[0].path}: ${result.issues[0].message}`.startsWith("rules[1].matches: "),
+      `${result.issues[0]!.path}: ${result.issues[0]!.message}`.startsWith("rules[1].matches: "),
     ).toBe(true)
+  })
+
+  it("rejects unknown rule fields instead of silently stripping them", () => {
+    const result = validateUserRulesDocument(
+      JSON.stringify([
+        {
+          id: "typo",
+          matches: "example.com",
+          forceBlockStyleSelectros: [".typo"],
+        },
+      ]),
+    )
+
+    expect(result.ok).toBe(false)
+    if (result.ok) {
+      return
+    }
+    expect(result.kind).toBe("schema")
+    expect(result.issues).toEqual([
+      {
+        path: "rules[0].forceBlockStyleSelectros",
+        message: 'Unrecognized field "forceBlockStyleSelectros"',
+      },
+    ])
+  })
+
+  it("reports invalid legacy selector values at their legacy field paths", () => {
+    const result = validateUserRulesDocument(
+      JSON.stringify([
+        {
+          id: "invalid-legacy",
+          matches: "example.com",
+          forceBlockSelectors: ".not-an-array",
+        },
+      ]),
+    )
+
+    expect(result.ok).toBe(false)
+    if (result.ok) {
+      return
+    }
+    expect(result.kind).toBe("schema")
+    expect(result.issues[0]!.path).toBe("rules[0].forceBlockSelectors")
   })
 
   it("round-trips a valid rules document", () => {
@@ -115,5 +158,88 @@ describe("validateUserRulesDocument", () => {
     const result = validateUserRulesDocument(JSON.stringify(rules, null, 2))
 
     expect(result).toEqual({ ok: true, rules })
+  })
+
+  it("migrates legacy force selector fields to canonical editor output", () => {
+    const result = validateUserRulesDocument(
+      JSON.stringify([
+        {
+          id: "legacy",
+          matches: "example.com",
+          forceBlockSelectors: [".block"],
+          "forceBlockSelectors.add": [".block-added"],
+          "forceBlockSelectors.remove": [".block-removed"],
+          forceInlineSelectors: [".inline"],
+          "forceInlineSelectors.add": [".inline-added"],
+          "forceInlineSelectors.remove": [".inline-removed"],
+        },
+      ]),
+    )
+
+    expect(result).toEqual({
+      ok: true,
+      rules: [
+        {
+          id: "legacy",
+          matches: "example.com",
+          forceBlockNodeSelectors: [".block"],
+          "forceBlockNodeSelectors.add": [".block-added"],
+          "forceBlockNodeSelectors.remove": [".block-removed"],
+          forceBlockStyleSelectors: [".block"],
+          "forceBlockStyleSelectors.add": [".block-added"],
+          "forceBlockStyleSelectors.remove": [".block-removed"],
+          forceInlineStyleSelectors: [".inline"],
+          "forceInlineStyleSelectors.add": [".inline-added"],
+          "forceInlineStyleSelectors.remove": [".inline-removed"],
+        },
+      ],
+    })
+    if (!result.ok) {
+      return
+    }
+    expect(validateUserRulesDocument(JSON.stringify(result.rules))).toEqual(result)
+  })
+
+  it("keeps explicitly authored canonical selector values per corresponding key", () => {
+    const result = validateUserRulesDocument(
+      JSON.stringify([
+        {
+          id: "mixed",
+          matches: "example.com",
+          forceBlockSelectors: [".old-block"],
+          "forceBlockSelectors.add": [".old-block-add"],
+          "forceBlockSelectors.remove": [".old-block-remove"],
+          forceBlockNodeSelectors: [".new-block-node"],
+          "forceBlockNodeSelectors.remove": [".new-block-node-remove"],
+          "forceBlockStyleSelectors.add": [".new-block-style-add"],
+          forceInlineSelectors: [".old-inline"],
+          "forceInlineSelectors.add": [".old-inline-add"],
+          "forceInlineSelectors.remove": [".old-inline-remove"],
+          forceInlineNodeSelectors: [".new-inline-node"],
+          forceInlineStyleSelectors: [".new-inline-style"],
+          "forceInlineStyleSelectors.remove": [".new-inline-style-remove"],
+        },
+      ]),
+    )
+
+    expect(result).toEqual({
+      ok: true,
+      rules: [
+        {
+          id: "mixed",
+          matches: "example.com",
+          forceBlockNodeSelectors: [".new-block-node"],
+          "forceBlockNodeSelectors.add": [".old-block-add"],
+          "forceBlockNodeSelectors.remove": [".new-block-node-remove"],
+          forceBlockStyleSelectors: [".old-block"],
+          "forceBlockStyleSelectors.add": [".new-block-style-add"],
+          "forceBlockStyleSelectors.remove": [".old-block-remove"],
+          forceInlineNodeSelectors: [".new-inline-node"],
+          forceInlineStyleSelectors: [".new-inline-style"],
+          "forceInlineStyleSelectors.add": [".old-inline-add"],
+          "forceInlineStyleSelectors.remove": [".new-inline-style-remove"],
+        },
+      ],
+    })
   })
 })

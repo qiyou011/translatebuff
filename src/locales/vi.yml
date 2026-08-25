@@ -95,6 +95,9 @@ options:
     product: Sản phẩm
   tools:
     translationHub: Trung tâm Dịch thuật
+  product:
+    roadmap: Lộ trình
+    feedback: Phản hồi
   setAPIKeyWarning:
     please: Vui lòng đặt API Key trên trang
     page: cài đặt
@@ -324,6 +327,13 @@ options:
       closeMenu:
         disableForSite: Tắt cho trang web này
         disableGlobally: Tắt toàn cục
+      tooltips:
+        togglePageTranslation: Bật/tắt dịch trang
+        floatingButtonOptions: Tùy chọn nút nổi
+        lockPosition: Khóa vị trí
+        unlockPosition: Mở khóa vị trí
+        settings: Cài đặt
+        feedback: Gửi phản hồi
       disabledSites:
         title: Các trang web đã tắt nút nổi
         description: Cấu hình các trang web mà nút nổi nên bị tắt
@@ -353,7 +363,8 @@ options:
         speak: Đọc
       saveSuggestion:
         title: Gợi ý lưu
-        description: Sau khi dịch vùng chọn, gợi ý các từ để lưu vào Notebase
+        description: Sau khi dịch vùng chọn bằng nhà cung cấp AI, gợi ý các từ để lưu vào Notebase
+        action: Hành động
       shortcut:
         title: Selection Translation Shortcut
         description: Customize the shortcut key for translating selected text
@@ -387,6 +398,7 @@ options:
       customActions:
         title: Hành động AI tùy chỉnh
         description: Thêm các hành động AI có cấu trúc của riêng bạn cho văn bản được chọn
+        builtIn: Tích hợp
         add: Thêm hành động AI
         edit: Chỉnh sửa hành động AI
         empty: Chưa có hành động AI tùy chỉnh
@@ -398,6 +410,8 @@ options:
           actions: Thao tác
         form:
           name: Tên
+          customize: Tùy chỉnh
+          customizeTooltip: Không thể thay đổi prompt của tác vụ tích hợp. Nhấp vào nút này để tạo bản sao có thể chỉnh sửa và thay đổi prompt.
           icon: Biểu tượng
           iconField:
             chooseAriaLabel: Chọn biểu tượng
@@ -919,6 +933,15 @@ options:
           webTitle: Tiêu đề trang web
           webDescription: Mô tả trang web từ siêu dữ liệu trang
           videoSummary: Tóm tắt video (yêu cầu Ngữ cảnh thông minh AI)
+    aiQuota:
+      title: Hạn mức phụ đề AI
+      description: Mức sử dụng hạn mức chuyển lời phụ đề AI trong tháng của bạn
+      loginRequired: Đăng nhập để xem hạn mức phụ đề AI của bạn
+      logIn: Đăng nhập
+      betaRequired: Phụ đề AI đang ở giai đoạn beta và chưa được bật cho tài khoản của bạn
+      betaApply: Đăng ký sử dụng
+      loadError: Không thể tải hạn mức. Vui lòng thử lại sau.
+      summary: Đã dùng $1 trong $2 phút, còn lại $3
   whatsNew:
     title: Có gì mới
   rateUs:
@@ -1010,6 +1033,7 @@ saveSuggestion:
   save: Lưu
   saved: Đã lưu
   staleSuggestion: Gợi ý này đã cũ
+  toggleLabel: Hiện gợi ý lưu
 thinking:
   label: Đang suy luận
   complete: Suy luận hoàn tất
@@ -1018,6 +1042,9 @@ thinking:
 shortcutKeySelector:
   placeholder: Vui lòng nhập phím tắt
 subtitles:
+  loadingAiSubtitles: Đang tải phụ đề AI… (dự kiến 3 phút)
+  requestAiSubtitles: Yêu cầu phụ đề AI (Beta)
+  usingAiSubtitles: Đang dùng phụ đề AI
   actions:
     downloadTranslated: Tải phụ đề đã dịch
     downloadTranslatedPreparing: Đang chuẩn bị phụ đề, video dài có thể mất nhiều thời gian hơn
@@ -1043,6 +1070,8 @@ subtitles:
     aiRateLimited: Quá nhiều yêu cầu, vui lòng thử lại sau
     aiAuthFailed: Xác thực API thất bại, vui lòng kiểm tra API key của bạn
     aiServiceUnavailable: Dịch vụ dịch thuật tạm thời không khả dụng
+    aiQuotaExceeded: Đã dùng hết hạn mức phụ đề AI trong tháng
+    aiRequestFailed: Yêu cầu phụ đề AI thất bại, vui lòng thử lại sau
     aiNoResponse: Dịch vụ AI không phản hồi, hiển thị văn bản gốc
     translatedExportFailed: Không thể tạo phụ đề đã dịch
     translatedExportIncomplete: Không thể dịch tất cả các dòng phụ đề

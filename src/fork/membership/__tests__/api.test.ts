@@ -43,7 +43,7 @@ describe("buildAuthHeaders（显式请求头装配）", () => {
   })
 
   it("Useragent 恰为 7 段，首段 browser、第 5 段 client_name=aitrans-pc", () => {
-    const segments = buildAuthHeaders(CRED).Useragent.split("/")
+    const segments = buildAuthHeaders(CRED).Useragent!.split("/")
     expect(segments).toHaveLength(7)
     expect(segments[0]).toBe("browser")
     expect(segments[3]).toBe("7100") // 渠道号
@@ -57,13 +57,13 @@ describe("buildAuthHeaders（显式请求头装配）", () => {
 
   it("段4 渠道号取自 resolveChannelNumber：stubEnv=zip → 仍为 7100", () => {
     vi.stubEnv("WXT_FORK_CHANNEL", "zip")
-    const segments = buildAuthHeaders(CRED).Useragent.split("/")
+    const segments = buildAuthHeaders(CRED).Useragent!.split("/")
     expect(segments[3]).toBe("7100")
   })
 
   it("段4 随渠道解析：stubEnv=chrome-store → 段4=7101（随渠道变，不再恒为 7100）", () => {
     vi.stubEnv("WXT_FORK_CHANNEL", "chrome-store")
-    const segments = buildAuthHeaders(CRED).Useragent.split("/")
+    const segments = buildAuthHeaders(CRED).Useragent!.split("/")
     expect(segments[3]).toBe("7101")
   })
 })
@@ -81,7 +81,7 @@ describe("fetchLoginStatus（取用户信息）", () => {
   it("显式带 Login-Credential 头、且不带 credentials:include", async () => {
     fetchMock.mockResolvedValue(jsonResponse(200, { data: { member: { mobile: "138" } } }))
     await fetchLoginStatus(CRED)
-    const [url, init] = fetchMock.mock.calls[0]
+    const [url, init] = fetchMock.mock.calls[0]!
     expect(url).toBe(`${API_BASE}/api/common_bll/v2/member/login_status`)
     expect(init.headers["Login-Credential"]).toBe(CRED)
     expect(init.credentials).toBeUndefined()
@@ -121,7 +121,7 @@ describe("fetchTokens（取 sk_key）", () => {
   it("命中 claw_bff/v1/tokens 端点、显式带头", async () => {
     fetchMock.mockResolvedValue(jsonResponse(200, { data: { tokens: [{ sk_key: SK }] } }))
     await fetchTokens(CRED)
-    const [url, init] = fetchMock.mock.calls[0]
+    const [url, init] = fetchMock.mock.calls[0]!
     expect(url).toBe(`${API_BASE}/api/claw_bff/v1/tokens`)
     expect(init.headers["Login-Credential"]).toBe(CRED)
     expect(init.credentials).toBeUndefined()
@@ -189,7 +189,7 @@ describe("fetchGatewayModels（拉网关可用模型）", () => {
     )
     const ids = await fetchGatewayModels("https://gw/v1", SK)
     expect(ids).toEqual(["Deepseek-V4-Pro", "GLM-5.2"])
-    const [url, init] = fetchMock.mock.calls[0]
+    const [url, init] = fetchMock.mock.calls[0]!
     expect(url).toBe("https://gw/v1/models")
     expect(init.headers.Authorization).toBe(`Bearer ${SK}`)
   })

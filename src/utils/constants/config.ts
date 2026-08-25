@@ -3,9 +3,14 @@ import type { FloatingButtonSide } from "@/types/config/floating-button"
 import type { SelectionToolbarCustomAction } from "@/types/config/selection-toolbar"
 import type { PageTranslateRange } from "@/types/config/translate"
 import { BUILT_IN_AI_PROVIDER_ID } from "@/utils/providers/provider-registry"
+import { BUILT_IN_DICTIONARY_ACTION_ID } from "./custom-action"
 import { CUSTOM_ACTION_TEMPLATES } from "./custom-action-templates"
 import { DEFAULT_TRANSLATE_PROMPTS_CONFIG } from "./prompt"
-import { buildDefaultProviderConfigList, DEFAULT_PROVIDER_CONFIG_LIST } from "./providers"
+import {
+  buildDefaultProviderConfigList,
+  DEFAULT_PROVIDER_CONFIG_LIST,
+  MICROSOFT_TRANSLATE_PROVIDER_ID,
+} from "./providers"
 import { DEFAULT_SELECTION_OVERLAY_OPACITY } from "./selection"
 import { DEFAULT_SIDE_CONTENT_WIDTH } from "./side"
 import {
@@ -39,21 +44,15 @@ export const GOOGLE_DRIVE_TOKEN_STORAGE_KEY = "__googleDriveToken"
 
 export const THEME_STORAGE_KEY = "theme"
 export const DEFAULT_DETECTED_CODE = "eng" as const
-export const CONFIG_SCHEMA_VERSION = 86
+export const CONFIG_SCHEMA_VERSION = 88
 
 export const DEFAULT_FLOATING_BUTTON_POSITION = 0.66
 export const DEFAULT_FLOATING_BUTTON_SIDE: FloatingButtonSide = "right"
 
 /**
- * Build the default "Dictionary" custom action. Its `name`/`systemPrompt`/`prompt`/output
- * field labels are resolved via `i18n.t` and, once written to a user's config, become
- * frozen user data. To persist them in the user's chosen `uiLanguage` (not whatever the
- * i18next singleton defaulted to at module-import time), `initializeConfig` calls this
- * again after `initI18n` for the config it actually writes on a fresh install.
- *
- * The module-scope `defaultDictionaryAction` below stays (DEFAULT_CONFIG must expose a
- * populated `customActions` for in-memory fallbacks and tests); its strings are only ever
- * a transient fallback, never the persisted value.
+ * Build the code-owned Dictionary action definition in the current UI locale.
+ * Only enabled/provider/Notebase state is persisted; callers merge those mutable
+ * fields onto this definition at read time.
  */
 export function createDefaultDictionaryAction(): SelectionToolbarCustomAction | null {
   const template = CUSTOM_ACTION_TEMPLATES.find((t) => t.id === "dictionary")
@@ -62,7 +61,7 @@ export function createDefaultDictionaryAction(): SelectionToolbarCustomAction | 
   const action = template.createAction(BUILT_IN_AI_PROVIDER_ID)
   return {
     ...action,
-    id: "default-dictionary",
+    id: BUILT_IN_DICTIONARY_ACTION_ID,
     outputSchema: action.outputSchema.map((field) => ({
       ...field,
       id: field.id.startsWith("dictionary-")
@@ -72,14 +71,6 @@ export function createDefaultDictionaryAction(): SelectionToolbarCustomAction | 
   }
 }
 
-/** Default custom actions for a fresh install, resolved against the current i18next language. */
-export function buildDefaultCustomActions(): SelectionToolbarCustomAction[] {
-  const dictionaryAction = createDefaultDictionaryAction()
-  return dictionaryAction ? [dictionaryAction] : []
-}
-
-const defaultDictionaryAction = createDefaultDictionaryAction()
-
 export const DEFAULT_CONFIG: Config = {
   language: {
     sourceCode: "auto",
@@ -88,7 +79,7 @@ export const DEFAULT_CONFIG: Config = {
   },
   providersConfig: DEFAULT_PROVIDER_CONFIG_LIST,
   translate: {
-    providerId: "microsoft-translate-default",
+    providerId: MICROSOFT_TRANSLATE_PROVIDER_ID,
     mode: "bilingual",
     modeShortcut: DEFAULT_TRANSLATION_MODE_SHORTCUT_KEY,
     node: {
@@ -145,16 +136,23 @@ export const DEFAULT_CONFIG: Config = {
     features: {
       translate: {
         enabled: true,
-        providerId: "microsoft-translate-default",
+        providerId: MICROSOFT_TRANSLATE_PROVIDER_ID,
         shortcut: DEFAULT_SELECTION_TRANSLATION_SHORTCUT_KEY,
       },
       speak: {
         enabled: true,
       },
     },
-    customActions: defaultDictionaryAction ? [defaultDictionaryAction] : [],
+    builtInActions: {
+      dictionary: {
+        enabled: true,
+        providerId: BUILT_IN_AI_PROVIDER_ID,
+      },
+    },
+    customActions: [],
     saveSuggestion: {
       enabled: true,
+      actionId: BUILT_IN_DICTIONARY_ACTION_ID,
     },
   },
   sideContent: {
@@ -168,7 +166,7 @@ export const DEFAULT_CONFIG: Config = {
   },
   inputTranslation: {
     enabled: true,
-    providerId: "microsoft-translate-default",
+    providerId: MICROSOFT_TRANSLATE_PROVIDER_ID,
     fromLang: "targetCode",
     toLang: "sourceCode",
     enableCycle: false,
@@ -177,7 +175,7 @@ export const DEFAULT_CONFIG: Config = {
   videoSubtitles: {
     enabled: true,
     autoStart: false,
-    providerId: "microsoft-translate-default",
+    providerId: MICROSOFT_TRANSLATE_PROVIDER_ID,
     style: {
       displayMode: DEFAULT_DISPLAY_MODE,
       translationPosition: DEFAULT_TRANSLATION_POSITION,
@@ -222,8 +220,9 @@ export const DEFAULT_CONFIG: Config = {
 }
 
 /**
- * Build a default config whose persisted custom-action strings use the initialized UI locale.
- * Callers must initialize i18n before calling this function.
+ * Translate features start on Microsoft Translate, which is reachable everywhere; a fresh
+ * install is moved onto Google Translate afterwards where that endpoint answers — see
+ * `promoteGoogleTranslateDefaultIfReachable`.
  */
 export function buildFreshDefaultConfig(): Config {
   return {
@@ -231,7 +230,13 @@ export function buildFreshDefaultConfig(): Config {
     providersConfig: buildDefaultProviderConfigList(),
     selectionToolbar: {
       ...DEFAULT_CONFIG.selectionToolbar,
-      customActions: buildDefaultCustomActions(),
+      builtInActions: {
+        dictionary: {
+          enabled: true,
+          providerId: BUILT_IN_AI_PROVIDER_ID,
+        },
+      },
+      customActions: [],
     },
   }
 }

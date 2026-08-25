@@ -1,26 +1,28 @@
 {
   "_comment": "每条换皮重定向的 from 文件内容指纹（LF 归一化后 sha256）。buildStart 比对失配即硬失败——上游改了被换皮文件的内容时，光断言路径存在不会报警，皮会悄悄掉。失配后必须先对账上游改动、再更新指纹，不要直接刷新了事。",
   "entries": {
+    "utils/featurebase.ts": "a5932048148f36ac",
+    "entrypoints/options/app-sidebar/product-nav.tsx": "f13895c5e0edb8f0",
     "entrypoints/popup/components/language-options-selector.tsx": "e0a99b444b42de92",
     "entrypoints/popup/components/blog-notification.tsx": "46215ae77e9fb63c",
     "assets/icons/read-frog.png": "cae393aac6c39f01",
     "entrypoints/options/pages/context-menu/index.tsx": "e2f0d8443582106a",
     "entrypoints/options/pages/floating-button/index.tsx": "7c64a4b25790dc00",
     "entrypoints/options/pages/selection-toolbar/index.tsx": "f7b9b3f059aec255",
-    "utils/notebase/pending-save.ts": "7fa7dee370b5236a",
+    "utils/notebase/pending-save.ts": "3962dcc2b7092038",
     "utils/providers/provider-display.ts": "03452fb4e7cad07d",
     "components/help-button.tsx": "f89a26447c2ea824",
     "components/user-account-menu/shared.tsx": "5df23b74e3300615",
-    "utils/host/translate/api/microsoft.ts": "823dfac2e9f7f453",
+    "utils/host/translate/api/microsoft.ts": "586cd803b66983db",
     "entrypoints/options/pages/translation/translation-mode.tsx": "9da5fd1f7fe60874",
     "entrypoints/host.content/translation-control/bind-translation-mode-shortcut.ts": "082820650b4a2e1f",
     "components/llm-providers/provider-selector.tsx": "947595afe78fb5dd",
-    "entrypoints/options/pages/api-providers/providers-config.tsx": "8dcb208eed2f6887",
+    "entrypoints/options/pages/api-providers/providers-config.tsx": "0a3314d70ce625cc",
     "entrypoints/translation-hub/components/translation-service-dropdown.tsx": "28556b6b27abcc50",
     "entrypoints/translation-hub/atoms.ts": "a0c0a5a242eca004",
     "entrypoints/options/pages/custom-actions/action-config-form/notebase-connection-field.tsx": "f167113aa7c3e032",
-    "entrypoints/options/pages/selection-toolbar/selection-toolbar-save-suggestion-toggle.tsx": "fe4c4aa985d3b1ea",
-    "components/llm-providers/feature-provider-selector-list.tsx": "475d1edc6cbfcdb6",
+    "entrypoints/options/pages/selection-toolbar/selection-toolbar-save-suggestion-toggle.tsx": "c8b85f88d069c84b",
+    "components/llm-providers/feature-provider-selector-list.tsx": "91956f62a792bce3",
     "entrypoints/options/pages/config/google-drive-sync/index.tsx": "b125f77477045921"
   }
 }

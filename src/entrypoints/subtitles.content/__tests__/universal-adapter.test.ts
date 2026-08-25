@@ -1,4 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest"
+import { SUBTITLES_SOURCE } from "@/utils/constants/subtitles"
+import { subtitlesSourceAtom, subtitlesStore } from "../atoms"
 import { UniversalVideoAdapter } from "../universal-adapter"
 
 const mocks = vi.hoisted(() => ({
@@ -32,7 +34,9 @@ function createAdapter(fetchResult: Array<{ text: string; start: number; end: nu
       },
       events: {},
     },
-    subtitlesFetcher,
+    fetchers: {
+      native: () => subtitlesFetcher,
+    },
   })
 
   return { adapter, subtitlesFetcher }
@@ -151,6 +155,59 @@ describe("universalVideoAdapter", () => {
     await adapter.downloadTranslatedSubtitles()
 
     expect(downloader.download).toHaveBeenCalledTimes(1)
+  })
+
+  it("returns false from startTranslation when the fetcher fails", async () => {
+    const { adapter, subtitlesFetcher } = createAdapter([{ text: "x", start: 0, end: 1 }])
+    subtitlesFetcher.fetch.mockRejectedValue(new Error("boom"))
+    attachScheduler(adapter, true)
+
+    await expect((adapter as any).startTranslation()).resolves.toBe(false)
+  })
+
+  it("reverts the source back to native so a failed AI switch can be retried", () => {
+    const { adapter, subtitlesFetcher } = createAdapter([])
+    const aiFetcher = { cleanup: vi.fn<(...args: any[]) => any>() }
+    ;(adapter as any).fetcher = aiFetcher
+    ;(adapter as any).source = SUBTITLES_SOURCE.AI
+    subtitlesStore.set(subtitlesSourceAtom, SUBTITLES_SOURCE.AI)
+
+    ;(adapter as any).revertToNativeSource()
+
+    expect(aiFetcher.cleanup).toHaveBeenCalledTimes(1)
+    expect((adapter as any).source).toBe(SUBTITLES_SOURCE.NATIVE)
+    expect(subtitlesStore.get(subtitlesSourceAtom)).toBe(SUBTITLES_SOURCE.NATIVE)
+    expect((adapter as any).fetcher).toBe(subtitlesFetcher)
+  })
+
+  it("does not revert to native when a newer switch supersedes the in-flight one", async () => {
+    const { adapter } = createAdapter([])
+    const aiFetcher = { cleanup: vi.fn<(...args: any[]) => any>() }
+    ;(adapter as any).fetchers = {
+      native: (adapter as any).fetchers.native,
+      ai: () => aiFetcher,
+    }
+    const scheduler = attachScheduler(adapter, true)
+    ;(scheduler as any).start = vi.fn<(...args: any[]) => any>()
+    ;(scheduler as any).show = vi.fn<(...args: any[]) => any>()
+    vi.spyOn(adapter as any, "hideNativeSubtitles").mockImplementation(() => {})
+    vi.spyOn(adapter as any, "showNativeSubtitles").mockImplementation(() => {})
+
+    let resolveStart: (value: boolean) => void = () => {}
+    vi.spyOn(adapter as any, "startTranslation").mockImplementation(
+      () =>
+        new Promise<boolean>((resolve) => {
+          resolveStart = resolve
+        }),
+    )
+    const revertSpy = vi.spyOn(adapter as any, "revertToNativeSource").mockImplementation(() => {})
+
+    const pending = (adapter as any).switchSubtitlesFetcher(SUBTITLES_SOURCE.AI)
+    ;(adapter as any).resetForNavigation()
+    resolveStart(false)
+    await pending
+
+    expect(revertSpy).not.toHaveBeenCalled()
   })
 
   it("disposes translated subtitle download state when navigation starts", () => {

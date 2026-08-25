@@ -1,4 +1,5 @@
 import type { SaveToNotebaseAnalyticsSource } from "./save-to-notebase-dialog-atom"
+import type { FeatureProviderAnalytics } from "@/types/analytics"
 import type {
   SelectionToolbarCustomAction,
   SelectionToolbarCustomActionNotebaseAccount,
@@ -10,6 +11,7 @@ import { useRef, useState } from "react"
 import { toastManager } from "@/components/ui/base-ui/toast"
 import { configFieldsAtomMap } from "@/utils/atoms/config"
 import { authClient } from "@/utils/auth/auth-client"
+import { patchSelectionToolbarAction } from "@/utils/custom-actions"
 import {
   canUseGuideDictionaryNotebaseTracking,
   getActiveGuideDictionaryNotebaseTrackingForAction,
@@ -53,6 +55,8 @@ export interface SaveToNotebaseRequest {
    */
   actionDraft?: SelectionToolbarCustomAction
   analyticsSource?: SaveToNotebaseAnalyticsSource
+  /** Provider classification carried into dialog-confirm analytics. */
+  analyticsProvider?: FeatureProviderAnalytics
 }
 
 /**
@@ -200,7 +204,7 @@ export function useSaveToNotebase() {
   }
 
   const save = async (request: SaveToNotebaseRequest): Promise<SaveToNotebaseOutcome> => {
-    const { action, results, actionDraft, analyticsSource } = request
+    const { action, results, actionDraft, analyticsSource, analyticsProvider } = request
     if (results.length === 0) {
       return "failed"
     }
@@ -216,6 +220,7 @@ export function useSaveToNotebase() {
         }),
         ...(actionDraft ? { pendingActionDraft: actionDraft } : {}),
         ...(analyticsSource ? { analyticsSource } : {}),
+        ...(analyticsProvider ? { analyticsProvider } : {}),
       })
       return "dialog_opened" as const
     }
@@ -233,6 +238,7 @@ export function useSaveToNotebase() {
         }),
         connectedAccount,
         ...(analyticsSource ? { analyticsSource } : {}),
+        ...(analyticsProvider ? { analyticsProvider } : {}),
       })
       return "dialog_opened" as const
     }
@@ -263,6 +269,7 @@ export function useSaveToNotebase() {
         pendingNotebaseSave,
         connectedAccount: pendingNotebaseSave.connectionSnapshot.connectedAccount,
         ...(analyticsSource ? { analyticsSource } : {}),
+        ...(analyticsProvider ? { analyticsProvider } : {}),
       })
       return "dialog_opened"
     }
@@ -296,10 +303,9 @@ export function useSaveToNotebase() {
         schema.name,
       )
       await setSelectionToolbarConfig({
-        ...selectionToolbarConfig,
-        customActions: selectionToolbarConfig.customActions.map((item) =>
-          item.id === action.id ? { ...item, notebaseConnection: refreshedConnection } : item,
-        ),
+        ...patchSelectionToolbarAction(selectionToolbarConfig, action.id, {
+          notebaseConnection: refreshedConnection,
+        }),
       })
 
       const actionWithRefreshedConnection = {

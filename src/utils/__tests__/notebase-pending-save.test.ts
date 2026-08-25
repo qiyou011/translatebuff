@@ -2,6 +2,7 @@ import type { Config } from "@/types/config/config"
 import type { SelectionToolbarCustomAction } from "@/types/config/selection-toolbar"
 import { describe, expect, it } from "vitest"
 import { DEFAULT_CONFIG } from "@/utils/constants/config"
+import { getBuiltInDictionaryAction } from "@/utils/custom-actions"
 import {
   applyCreatedNotebaseConnectionToConfig,
   buildNotebaseCreateInputFromPending,
@@ -92,9 +93,9 @@ describe("notebase pending save", () => {
       },
     ])
     expect(pending.rows).toHaveLength(1)
-    expect(pending.rows[0].cells).toEqual({
-      [pending.columns[0].notebaseColumnId]: "A short summary",
-      [pending.columns[1].notebaseColumnId]: 9,
+    expect(pending.rows[0]!.cells).toEqual({
+      [pending.columns[0]!.notebaseColumnId]: "A short summary",
+      [pending.columns[1]!.notebaseColumnId]: 9,
     })
 
     expect(buildNotebaseCreateInputFromPending(pending)).toEqual({
@@ -103,19 +104,19 @@ describe("notebase pending save", () => {
       options: {
         initialColumns: [
           {
-            id: pending.columns[0].notebaseColumnId,
+            id: pending.columns[0]!.notebaseColumnId,
             name: "summary",
             config: { type: "string" },
           },
           {
-            id: pending.columns[1].notebaseColumnId,
+            id: pending.columns[1]!.notebaseColumnId,
             name: "score",
             config: { type: "number", decimal: 0, format: "number" },
           },
         ],
         initialRow: {
-          id: pending.rows[0].id,
-          cells: pending.rows[0].cells,
+          id: pending.rows[0]!.id,
+          cells: pending.rows[0]!.cells,
         },
       },
     })
@@ -132,9 +133,9 @@ describe("notebase pending save", () => {
     )
 
     expect(pending.rows).toHaveLength(2)
-    expect(pending.rows[0].cells[pending.columns[0].notebaseColumnId]).toBe("First")
-    expect(pending.rows[1].cells[pending.columns[0].notebaseColumnId]).toBe("Second")
-    expect(pending.rows[0].id).not.toBe(pending.rows[1].id)
+    expect(pending.rows[0]!.cells[pending.columns[0]!.notebaseColumnId]).toBe("First")
+    expect(pending.rows[1]!.cells[pending.columns[0]!.notebaseColumnId]).toBe("Second")
+    expect(pending.rows[0]!.id).not.toBe(pending.rows[1]!.id)
 
     const createInput = buildNotebaseCreateInputFromPending(pending)
     expect(createInput.options?.initialRow).toBeUndefined()
@@ -150,12 +151,12 @@ describe("notebase pending save", () => {
     const { rows, ...legacyBase } = pending
     const legacyValue = {
       ...legacyBase,
-      rowId: rows[0].id,
-      cells: rows[0].cells,
+      rowId: rows[0]!.id,
+      cells: rows[0]!.cells,
     }
 
     const parsed = pendingCreateNotebaseSaveSchema.parse(legacyValue)
-    expect(parsed.rows).toEqual([{ id: rows[0].id, cells: rows[0].cells }])
+    expect(parsed.rows).toEqual([{ id: rows[0]!.id, cells: rows[0]!.cells }])
     expect(pendingCreateNotebaseSaveSchema.parse(pending)).toEqual(pending)
   })
 
@@ -192,16 +193,39 @@ describe("notebase pending save", () => {
       mappings: [
         {
           localFieldId: "field-summary",
-          notebaseColumnId: pending.columns[0].notebaseColumnId,
+          notebaseColumnId: pending.columns[0]!.notebaseColumnId,
           notebaseColumnNameSnapshot: "summary",
         },
         {
           localFieldId: "field-score",
-          notebaseColumnId: pending.columns[1].notebaseColumnId,
+          notebaseColumnId: pending.columns[1]!.notebaseColumnId,
           notebaseColumnNameSnapshot: "score",
         },
       ],
     })
+  })
+
+  it("writes a notebase connection into built-in Dictionary state", () => {
+    const config = cloneConfig(DEFAULT_CONFIG)
+    const action = getBuiltInDictionaryAction(config.selectionToolbar)
+    const pending = createPendingNotebaseSave(action, [{ Term: "frog" }], 1_000)
+    const connectedAccount = {
+      id: "user-1",
+      name: "Reader",
+      email: "reader@example.com",
+      image: null,
+    }
+
+    const result = applyCreatedNotebaseConnectionToConfig(config, pending, { connectedAccount })
+
+    expect(result.status).toBe("valid")
+    expect(
+      result.config?.selectionToolbar.builtInActions.dictionary.notebaseConnection,
+    ).toMatchObject({
+      notebaseId: pending.notebaseId,
+      connectedAccount,
+    })
+    expect(result.config?.selectionToolbar.customActions).toEqual([])
   })
 
   it("detects changed schemas before applying pending work", () => {
@@ -212,10 +236,10 @@ describe("notebase pending save", () => {
         ...action,
         outputSchema: [
           {
-            ...action.outputSchema[0],
+            ...action.outputSchema[0]!,
             name: "changed",
           },
-          action.outputSchema[1],
+          action.outputSchema[1]!,
         ],
       },
     ]

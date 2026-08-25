@@ -22,6 +22,12 @@ const WXT_API_KEY_PATTERN = /^WXT_.*API_KEY/
 const ALLOWED_BUNDLED_API_KEYS = new Set(["WXT_POSTHOG_API_KEY"])
 const useLocalPackages = isLocalPackagesEnabled(process.env)
 const shouldSkipEnvValidation = process.env.WXT_SKIP_ENV_VALIDATION === "true"
+// Root of the read-frog monorepo whose source is aliased in when developing
+// with local packages. Defaults to the sibling checkout; override with
+// WXT_MONOREPO_PATH to point at a git worktree (relative or absolute).
+const monorepoRoot = process.env.WXT_MONOREPO_PATH
+  ? path.resolve(process.env.WXT_MONOREPO_PATH)
+  : path.resolve(__dirname, "../read-frog-monorepo")
 
 // fork 身份：正式发布版本（fork 自主 semver）；version_name 保留上游基线溯源
 const pkgVersion = JSON.parse(readFileSync(path.resolve(__dirname, "package.json"), "utf8"))
@@ -44,6 +50,18 @@ const forkChannelSuffix = forkChannelId ? `-${forkChannelId}` : "-{{browser}}"
 // fork「换皮」重定向：不编辑上游 composed UI 源文件，改由 resolve 插件按解析后的绝对路径
 // 把上游 provider 选择器 / 选项 provider 页重定向到 fork 版（相对/@ import 都拦得住）。
 export const FORK_UI_REDIRECTS = [
+  {
+    // 反馈门户地址：上游指向自家 feedback.readfrog.app，任译喵走自己的反馈页。
+    // 换皮构造器一处覆盖两个入口（options 侧边栏、网页悬浮球）。
+    from: path.resolve(__dirname, "src/utils/featurebase.ts"),
+    to: path.resolve(__dirname, "src/fork/ui/options/featurebase.ts"),
+  },
+  {
+    // options 侧边栏「产品」组：上游是路线图 + 反馈、都指向它自家 Featurebase 门户；
+    // 任译喵没有路线图页，反馈走自己的站点。
+    from: path.resolve(__dirname, "src/entrypoints/options/app-sidebar/product-nav.tsx"),
+    to: path.resolve(__dirname, "src/fork/ui/options/product-nav.tsx"),
+  },
   {
     // popup 语言选择器：上游写死 w-30，popup 加宽后中间留白过大，改成 flex-1 均分。
     from: path.resolve(__dirname, "src/entrypoints/popup/components/language-options-selector.tsx"),
@@ -188,14 +206,8 @@ export default defineConfig({
   // WXT top level alias - will be automatically synced to tsconfig.json paths and Vite alias
   alias: useLocalPackages
     ? {
-        "@read-frog/definitions": path.resolve(
-          __dirname,
-          "../read-frog-monorepo/packages/definitions/src",
-        ),
-        "@read-frog/api-contract": path.resolve(
-          __dirname,
-          "../read-frog-monorepo/packages/api-contract/src",
-        ),
+        "@read-frog/definitions": path.resolve(monorepoRoot, "packages/definitions/src"),
+        "@read-frog/api-contract": path.resolve(monorepoRoot, "packages/api-contract/src"),
       }
     : {},
   manifest: ({ mode, browser }) => ({
@@ -258,8 +270,24 @@ export default defineConfig({
     // 否则 firefox 的 sources 包文件名仍走默认丑名。
     artifactTemplate: `${FORK_BRANDING.name.toLowerCase()}-${forkVersion}${forkPackSuffix}${forkChannelSuffix}.zip`,
     sourcesTemplate: `${FORK_BRANDING.name.toLowerCase()}-${forkVersion}${forkPackSuffix}-sources.zip`,
-    includeSources: [".env.production"],
+    includeSources: ["**/*", ".env.production"],
     excludeSources: ["docs/**/*", "assets/**/*", "repos/**/*", "readmes/**/*"],
+  },
+  hooks: {
+    "vite:build:extendConfig": (entrypoints, viteConfig) => {
+      const entrypoint = entrypoints.length === 1 ? entrypoints[0] : undefined
+      if (entrypoint?.type !== "content-script") return
+
+      const output = viteConfig.build?.rollupOptions?.output
+      if (!output) return
+
+      for (const outputOptions of Array.isArray(output) ? output : [output]) {
+        outputOptions.assetFileNames = (assetInfo) =>
+          assetInfo.names.some((name) => name.endsWith(".css"))
+            ? `content-scripts/${entrypoint.name}.[ext]`
+            : "assets/[name]-[hash].[ext]"
+      }
+    },
   },
   dev: {
     server: {
