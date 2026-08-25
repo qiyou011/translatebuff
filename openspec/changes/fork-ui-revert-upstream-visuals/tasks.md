@@ -29,7 +29,7 @@ pnpm vitest run --config vitest.fork.config.ts src/fork                         
 - [x] 1.7 新建 `vitest.fork.config.ts`（决策 10）：`mergeConfig` 根配置后追加 `forkUiRedirectPlugin(FORK_UI_REDIRECTS)`，并补进脚本的 `FORK_ROOT_FILES`。**根 `vitest.config.ts` 一个字不改、不进 allowlist**——全局注册会让上游自己的测试也解析到 fork 影子（`providers-config.test.tsx`、`feature-provider-selector-list.test.tsx`、`beta-gating.test.tsx`、`translate-text.test.tsx`），上游断言必然落空、`pnpm run test` 判红，修它只能改上游测试文件、又成越界。第 4 节所有「先红后绿」都依赖这一步
 - [ ] 1.8 ⏸ **待用户同意推分支**：用一个只改 `src/utils/message.ts` 一行的临时分支提 PR 到 `change/fork-foundation`，确认 `fork-guard` 这次真被触发且判红；验完关 PR、删分支
 - [ ] 1.9 ⏸ **由用户自行配置（2026-08-25：你不管）** · 人工检查点：在 GitHub 给 `main` 与 `change/*` 开分支保护（要求 PR 合入 + `fork-guard` 为必需检查），以 `gh api repos/qiyou011/translatebuff/branches/main/protection` 的输出为证贴进 PR。扩大触发面只覆盖「走 PR」的路径，直接本地 merge 这条路只有分支保护能堵——这是 109 个越界的真实来路，不闭环等于核心目标没达成
-- [ ] 1.10 ⏸ **待用户同意** 提交
+- [x] 1.10 提交（`4235b0d6`）
 
 ## 2. 资源档：fork 身份资源（32 个）
 
@@ -210,7 +210,14 @@ src/entrypoints/translation-hub/components/translation-panel.tsx
 ## 6. 收尾验收
 
 - [x] 6.1 干跑合并复测：`git merge-tree --write-tree --name-only HEAD fe2957c8` 冲突数应为 12（9 个 locales + `wxt.config.ts` + `src/utils/constants/app.ts` + `src/entrypoints/popup/app.tsx`），命令原文与输出贴进 PR
-- [ ] 6.2 ⏸ **人工检查点，需用户执行** 人工冒烟：popup 打开、网页翻译、划词翻译、字幕按钮、选项页各 tab、登录入口——确认视觉是上游样式但品牌 logo 与站点链接仍指向任译喵
-- [ ] 6.3 ⏸ **人工检查点，需用户执行** 确认 Discord / GitHub issues / 上游商店评价三个入口仍不可见
+- [x] 6.2 人工冒烟（用户 2026-08-25 执行，**通过**）：popup 打开、网页翻译、划词翻译、字幕按钮、选项页各 tab、登录入口——确认视觉是上游样式但品牌 logo 与站点链接仍指向任译喵
+- [x] 6.3 已确认 Discord / GitHub issues / 上游商店评价三个入口仍不可见
 - [x] 6.4 更新 `FORK_GUIDE.md` §3、§6 与 `FORK.md`：登记新增重定向条目与 `redirect-baseline.json` 内容指纹机制、把「禁止原地改上游 UI」写成红线、记录两种边界检查模式的用法
+
+> **冒烟记录（2026-08-25，用户执行）**
+>
+> - 通过：品牌图标（悬浮球 / 字幕条 / 侧边栏）、博客与登录链接指向 fork 站点、帮助按钮不通向上游 GitHub、上游社区入口不可见、options 三页插画、原有 provider 配置与自定义动作未被重置。
+> - 期间发现并修复 1 个回归：popup 右侧露白（`a0decafe`）——上游 `main.tsx` 覆盖 `#root` 的 className，把 fork 的 392px 换回 320px。已改用行内 style 并加回归测试。
+> - 误报 1 个：翻译按钮灰色。实为在 `chrome://extensions/` 打开 popup，命中上游 `isIgnoreUrl` 的忽略名单；换普通网页即正常。三个决定禁用状态的文件与分叉点逐字一致，非本次引入。
+
 - [ ] 6.5 ⏸ **待用户同意推分支** 提 PR 到 `change/fork-foundation`，等人工审核
