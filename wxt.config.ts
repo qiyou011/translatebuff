@@ -45,6 +45,11 @@ const forkChannelSuffix = forkChannelId ? `-${forkChannelId}` : "-{{browser}}"
 // 把上游 provider 选择器 / 选项 provider 页重定向到 fork 版（相对/@ import 都拦得住）。
 export const FORK_UI_REDIRECTS = [
   {
+    // popup 语言选择器：上游写死 w-30，popup 加宽后中间留白过大，改成 flex-1 均分。
+    from: path.resolve(__dirname, "src/entrypoints/popup/components/language-options-selector.tsx"),
+    to: path.resolve(__dirname, "src/fork/ui/popup/language-options-selector.tsx"),
+  },
+  {
     // popup 博客入口：上游直拼博客地址，本地预览下丢 hash 路由前缀。
     from: path.resolve(__dirname, "src/entrypoints/popup/components/blog-notification.tsx"),
     to: path.resolve(__dirname, "src/fork/ui/popup/blog-notification.tsx"),
