@@ -1,5 +1,3 @@
-import type { TranslationActionContext } from "@/types/analytics"
-
 /**
  * Identity of the current page-translation session in this frame. Module
  * scope is correct: exactly one PageTranslationManager exists per frame.
@@ -14,27 +12,32 @@ import type { TranslationActionContext } from "@/types/analytics"
  * ids. The random component keeps ids unique across frames of the same tab
  * (the background scopes by tab id + session id only).
  */
+import type { SerializableProviderRef } from "@/utils/providers/provider-ref"
+
 let currentPageTranslationSessionId: string | null = null
-let currentPageTranslationActionContext: TranslationActionContext | null = null
 let sessionCounter = 0
 
-export function beginPageTranslationSession(
-  action?: Omit<TranslationActionContext, "actionId">,
-): string {
+/**
+ * Provider ref resolved once by start()'s availability gate and reused for
+ * every request of the session: per-paragraph serialization must not re-read
+ * hosted status mid-page (a status blip would fail in-flight paragraphs, and
+ * the model revision used for cache identity must stay stable per session).
+ */
+let currentSessionProviderRef: SerializableProviderRef | null = null
+
+export function beginPageTranslationSession(): string {
   sessionCounter += 1
+  currentSessionProviderRef = null
   currentPageTranslationSessionId = `${Date.now().toString(36)}-${Math.random()
     .toString(36)
     .slice(2, 10)}-${sessionCounter}`
-  currentPageTranslationActionContext = action
-    ? { ...action, actionId: currentPageTranslationSessionId }
-    : null
   return currentPageTranslationSessionId
 }
 
 export function endPageTranslationSession(): string | null {
   const endedSessionId = currentPageTranslationSessionId
   currentPageTranslationSessionId = null
-  currentPageTranslationActionContext = null
+  currentSessionProviderRef = null
   return endedSessionId
 }
 
@@ -42,6 +45,10 @@ export function getPageTranslationSessionId(): string | null {
   return currentPageTranslationSessionId
 }
 
-export function getPageTranslationActionContext(): TranslationActionContext | null {
-  return currentPageTranslationActionContext
+export function setPageTranslationSessionProviderRef(providerRef: SerializableProviderRef): void {
+  currentSessionProviderRef = providerRef
+}
+
+export function getPageTranslationSessionProviderRef(): SerializableProviderRef | null {
+  return currentSessionProviderRef
 }

@@ -2,7 +2,8 @@ import type { SelectionToolbarCustomAction } from "@/types/config/selection-tool
 import { useAtomValue } from "jotai"
 import { useMemo } from "react"
 import ProviderSelector from "@/components/llm-providers/provider-selector"
-import { Field, FieldLabel } from "@/components/ui/base-ui/field"
+import { useHostedAiProviderOptions } from "@/components/llm-providers/use-hosted-ai-provider-options"
+import { Field, FieldTitle } from "@/components/ui/base-ui/field"
 import { configFieldsAtomMap } from "@/utils/atoms/config"
 import { i18n } from "@/utils/i18n"
 import {
@@ -16,13 +17,17 @@ export const ProviderField = withForm({
   render: function Render({ form }) {
     const providersConfig = useAtomValue(configFieldsAtomMap.providersConfig)
 
-    const customActionProviders = useMemo(
-      () => getSelectableProvidersForCapability("selectionToolbar.customAction", providersConfig),
+    const baseCustomActionProviders = useMemo(
+      () => getSelectableProvidersForCapability("customAction", providersConfig),
       [providersConfig],
+    )
+    const customActionProviders = useHostedAiProviderOptions(
+      "customAction",
+      baseCustomActionProviders,
     )
     const customActionProviderIds = useMemo(
       () =>
-        getProviderIdsForCapability("selectionToolbar.customAction", providersConfig, {
+        getProviderIdsForCapability("customAction", providersConfig, {
           requireEnable: true,
         }),
       [providersConfig],
@@ -34,9 +39,7 @@ export const ProviderField = withForm({
         validators={{
           onChange: ({ value }) => {
             if (!customActionProviderIds.includes(value)) {
-              return i18n.t(
-                "options.floatingButtonAndToolbar.selectionToolbar.customActions.errors.providerRequired",
-              )
+              return i18n.t("options.selectionToolbar.customActions.errors.providerRequired")
             }
             return undefined
           },
@@ -44,11 +47,9 @@ export const ProviderField = withForm({
       >
         {(field) => (
           <Field>
-            <FieldLabel nativeLabel={false} render={<div />}>
-              {i18n.t(
-                "options.floatingButtonAndToolbar.selectionToolbar.customActions.form.provider",
-              )}
-            </FieldLabel>
+            <FieldTitle>
+              {i18n.t("options.selectionToolbar.customActions.form.provider")}
+            </FieldTitle>
             <ProviderSelector
               providers={customActionProviders}
               value={field.state.value}
@@ -56,9 +57,7 @@ export const ProviderField = withForm({
                 field.handleChange(id)
                 void form.handleSubmit()
               }}
-              placeholder={i18n.t(
-                "options.floatingButtonAndToolbar.selectionToolbar.customActions.form.selectProvider",
-              )}
+              placeholder={i18n.t("options.selectionToolbar.customActions.form.selectProvider")}
             />
             {field.state.meta.errors.length > 0 && (
               <span className="text-sm font-normal text-destructive">

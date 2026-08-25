@@ -1,16 +1,23 @@
 import type { LangCodeISO6393 } from "@read-frog/definitions"
-import type { TranslationActionContext } from "@/types/analytics"
+import type { HostedAiTextStreamRoute } from "@/types/background-stream"
 import type { Config, InputTranslationLang } from "@/types/config/config"
 import type { TranslationTextFormat } from "@/types/config/translate"
 import { isLLMProviderConfig } from "@/types/config/provider"
 import { getDetectedCodeFromStorage, getFinalSourceCode } from "@/utils/config/languages"
-import { resolveProviderConfig } from "@/utils/constants/feature-providers"
 import { logger } from "@/utils/logger"
+import {
+  HostedAiProviderUnavailableError,
+  isSystemProviderRef,
+  resolvePageTranslationProvider,
+  type UnwrappedProviderRef,
+} from "@/utils/providers/provider-ref"
+import { resolveProviderRefForCapability } from "@/utils/providers/provider-registry"
 import { getLocalConfig } from "../../config/storage"
 import { shouldSkipAsTargetLanguage } from "./target-language-skip"
 import { prepareTranslationText } from "./text-preparation"
 import {
-  MIN_LENGTH_FOR_SKIP_LLM_DETECTION,
+  MIN_LENGTH_FOR_SKIP_LANGUAGE_DETECTION,
+  resolvePageProviderRef,
   shouldSkipByLanguage,
   translateTextCore,
 } from "./translate-text"
@@ -27,13 +34,16 @@ async function getConfigOrThrow(): Promise<Config> {
 }
 
 async function getWebPagePromptContext(
-  providerConfig: ReturnType<typeof resolveProviderConfig>,
+  providerConfig: UnwrappedProviderRef,
   enableAIContentAware: boolean,
   includeSummary: boolean,
+  hostedFeature: HostedAiTextStreamRoute,
 ): Promise<
   { webTitle: string; webDescription?: string; webContent: string; webSummary?: string } | undefined
 > {
-  if (!isLLMProviderConfig(providerConfig)) {
+  // Pure translate providers (Google, Microsoft, DeepLX) take no prompt
+  // context. Built-in AI does, and generates its summary hosted.
+  if (!isSystemProviderRef(providerConfig) && !isLLMProviderConfig(providerConfig)) {
     return undefined
   }
 
@@ -42,9 +52,31 @@ async function getWebPagePromptContext(
     return undefined
   }
 
-  const webSummary = includeSummary
-    ? await getOrGenerateWebPageSummary(webPageContext, providerConfig, enableAIContentAware)
-    : undefined
+  // Reuse the page run's provider-ref resolution so a hosted summary and the
+  // paragraphs that follow it share one hostedAi.status fetch. Resolve only
+  // when a summary will actually be requested — with smart context off, a
+  // hosted ref must not cost a status round trip just to be discarded.
+  let webSummary: string | null | undefined
+  if (includeSummary && enableAIContentAware) {
+    try {
+      webSummary = await getOrGenerateWebPageSummary(
+        webPageContext,
+        await resolvePageProviderRef(providerConfig, undefined, hostedFeature),
+        enableAIContentAware,
+        hostedFeature,
+      )
+    } catch (error) {
+      // The summary is optional context, so a hosted denial must not abort the
+      // run from inside it. Routes with no page-translation session (input
+      // translation) always resolve here first, so rethrowing would kill the
+      // request before the translation itself — which resolves the same ref —
+      // could surface the error against the feature the user actually invoked.
+      if (!(error instanceof HostedAiProviderUnavailableError)) {
+        throw error
+      }
+      webSummary = undefined
+    }
+  }
 
   return {
     webTitle: webPageContext.webTitle,
@@ -66,10 +98,10 @@ async function translateTextUsingPageConfig(
       webSummary?: string | null
     }
     textFormat?: TranslationTextFormat
+    preserveLineBreaks?: boolean
     // Session captured at pipeline entry by the caller; see translateTextForPage.
     sessionId?: string
-    configuredPrompt?: "default" | "custom"
-    translationActionContext?: TranslationActionContext
+    forceRetranslation?: boolean
   } = {},
 ): Promise<string> {
   const preparedText = prepareTranslationText(text)
@@ -77,7 +109,7 @@ async function translateTextUsingPageConfig(
     return ""
   }
 
-  const providerConfig = resolveProviderConfig(config, "translate")
+  const providerConfig = resolvePageTranslationProvider(config)
 
   // Backstop only: the page modes hoist this check before DOM insertion, but
   // other callers (e.g. the page title) still rely on it here.
@@ -89,13 +121,9 @@ async function translateTextUsingPageConfig(
   }
 
   // Skip translation if text is in skipLanguages list (page translation only)
-  const { skipLanguages } = config.translate.page
-  if (skipLanguages.length > 0 && preparedText.length >= MIN_LENGTH_FOR_SKIP_LLM_DETECTION) {
-    const shouldSkip = await shouldSkipByLanguage(
-      preparedText,
-      skipLanguages,
-      config.languageDetection.mode === "llm",
-    )
+  const { skipLanguages } = config.pageTranslation.page
+  if (skipLanguages.length > 0 && preparedText.length >= MIN_LENGTH_FOR_SKIP_LANGUAGE_DETECTION) {
+    const shouldSkip = await shouldSkipByLanguage(preparedText, skipLanguages)
     if (shouldSkip) {
       logger.info(
         `translateTextForPage: skipping translation because text is in skip language list. text: ${preparedText}`,
@@ -108,14 +136,20 @@ async function translateTextUsingPageConfig(
     text: preparedText,
     langConfig: config.language,
     providerConfig,
-    enableAIContentAware: config.translate.enableAIContentAware,
+    hostedFeature: "pageTranslation",
+    enableAIContentAware: config.pageTranslation.enableAIContentAware,
     extraHashTags: options.extraHashTags,
     webPageContext: options.webPageContext,
     textFormat: options.textFormat,
+    preserveLineBreaks: options.preserveLineBreaks,
     sessionId: options.sessionId,
-    configuredPrompt: options.configuredPrompt,
-    translationActionContext: options.translationActionContext,
+    forceRetranslation: options.forceRetranslation,
   })
+}
+
+export interface PageTranslationRequestOptions {
+  preserveLineBreaks?: boolean
+  forceRetranslation?: boolean
 }
 
 /**
@@ -125,7 +159,7 @@ async function translateTextUsingPageConfig(
 export async function translateTextForPage(
   text: string,
   textFormat: TranslationTextFormat = "plain",
-  translationActionContext?: TranslationActionContext,
+  options?: PageTranslationRequestOptions,
 ): Promise<string> {
   // Capture the session id synchronously at pipeline entry. Reading it later
   // (after the awaits below, e.g. the network-backed page summary) could see
@@ -133,19 +167,20 @@ export async function translateTextForPage(
   // unscoped and stay permanently uncancellable, re-creating #1881.
   const sessionId = getPageTranslationSessionId() ?? undefined
   const config = await getConfigOrThrow()
-  const providerConfig = resolveProviderConfig(config, "translate")
+  const providerConfig = resolvePageTranslationProvider(config)
   const webPageContext = await getWebPagePromptContext(
     providerConfig,
-    config.translate.enableAIContentAware,
+    config.pageTranslation.enableAIContentAware,
     true,
+    "pageTranslation",
   )
 
   return translateTextUsingPageConfig(config, text, {
     webPageContext,
     textFormat,
+    preserveLineBreaks: options?.preserveLineBreaks,
     sessionId,
-    configuredPrompt: config.translate.customPromptsConfig.promptId === null ? "default" : "custom",
-    translationActionContext,
+    forceRetranslation: options?.forceRetranslation,
   })
 }
 
@@ -156,9 +191,9 @@ export async function translateTextForPage(
 export async function translateTextForPageTitle(text: string): Promise<string> {
   const sessionId = getPageTranslationSessionId() ?? undefined
   const config = await getConfigOrThrow()
-  const providerConfig = resolveProviderConfig(config, "translate")
-  const webPageContext = config.translate.enableAIContentAware
-    ? await getWebPagePromptContext(providerConfig, true, false)
+  const providerConfig = resolvePageTranslationProvider(config)
+  const webPageContext = config.pageTranslation.enableAIContentAware
+    ? await getWebPagePromptContext(providerConfig, true, false, "pageTranslation")
     : undefined
 
   return translateTextUsingPageConfig(config, text, {
@@ -170,7 +205,6 @@ export async function translateTextForPageTitle(text: string): Promise<string> {
       webSummary: webPageContext?.webSummary,
     },
     sessionId,
-    configuredPrompt: config.translate.customPromptsConfig.promptId === null ? "default" : "custom",
   })
 }
 
@@ -197,7 +231,18 @@ export async function translateTextForInput(
   toLang: InputTranslationLang,
 ): Promise<string> {
   const config = await getConfigOrThrow()
-  const providerConfig = resolveProviderConfig(config, "inputTranslation")
+  // Capability-based, not resolveProviderConfig: that helper looks the id up in
+  // providersConfig and throws for a built-in provider, which is never a row
+  // there.
+  const resolved = resolveProviderRefForCapability(
+    "inputTranslation",
+    config.providersConfig,
+    config.inputTranslation.providerId,
+  )
+  if (!resolved) {
+    throw new Error(`No input translation provider for id "${config.inputTranslation.providerId}"`)
+  }
+  const providerConfig = resolved.kind === "local" ? resolved.config : resolved
 
   const resolvedFromLang = await resolveInputLang(fromLang, config.language)
   const resolvedToLang = await resolveInputLang(toLang, config.language)
@@ -208,8 +253,9 @@ export async function translateTextForInput(
 
   const webPageContext = await getWebPagePromptContext(
     providerConfig,
-    config.translate.enableAIContentAware,
+    config.pageTranslation.enableAIContentAware,
     true,
+    "inputTranslation",
   )
 
   return translateTextCore({
@@ -221,7 +267,10 @@ export async function translateTextForInput(
     },
     extraHashTags: [`inputTranslation:${fromLang}->${toLang}`],
     providerConfig,
-    enableAIContentAware: config.translate.enableAIContentAware,
+    hostedFeature: "inputTranslation",
+    enableAIContentAware: config.pageTranslation.enableAIContentAware,
     webPageContext,
+    // User-typed newlines are always meaningful.
+    preserveLineBreaks: true,
   })
 }

@@ -155,6 +155,10 @@ describe("getProviderOptions", () => {
       ])
     })
 
+    it("should prioritize the Jalapeno Cloud GLM models", () => {
+      expect(LLM_PROVIDER_MODELS.jalapenocloud.slice(0, 2)).toEqual(["GLM-5.2", "GLM-5.1"])
+    })
+
     it("should expose current Ollama recommended model ids", () => {
       expect(LLM_PROVIDER_MODELS.ollama).toEqual([
         "gemma4:e2b",
@@ -167,6 +171,19 @@ describe("getProviderOptions", () => {
     it("should expose the supported Anthropic Fable model ids", () => {
       expect(LLM_PROVIDER_MODELS.anthropic).toContain("claude-fable-5")
       expect(LLM_PROVIDER_MODELS.bedrock).toContain("us.anthropic.claude-fable-5")
+    })
+
+    it("should expose the live Cohere Command model ids and none of the retired ones", () => {
+      expect(LLM_PROVIDER_MODELS.cohere).toEqual([
+        "command-a-plus-05-2026",
+        "command-a-03-2025",
+        "command-a-reasoning-08-2025",
+        "command-a-vision-07-2025",
+        "command-a-translate-08-2025",
+        "command-r-plus-08-2024",
+        "command-r-08-2024",
+        "command-r7b-12-2024",
+      ])
     })
 
     it("should return the documented floor for GPT-5 model-specific reasoning", () => {
@@ -500,6 +517,28 @@ describe("getProviderOptions", () => {
           reasoningEffort: "minimal",
           textVerbosity: "low",
         },
+      })
+    })
+
+    it("should preserve Open Responses option names exactly as entered", () => {
+      const options = getProviderOptionsWithOverride("gpt-5-mini", "open-responses", {
+        reasoning_effort: "minimal",
+        verbosity: "low",
+      })
+
+      expect(options).toEqual({
+        "open-responses": {
+          reasoning_effort: "minimal",
+          verbosity: "low",
+        },
+      })
+    })
+
+    it("should continue recommending provider options for Open Responses", () => {
+      const options = getProviderOptionsWithOverride("qwen3-max", "open-responses")
+
+      expect(options).toEqual({
+        "open-responses": { enableThinking: false },
       })
     })
   })

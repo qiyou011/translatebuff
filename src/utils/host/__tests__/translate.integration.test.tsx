@@ -40,18 +40,27 @@ vi.mock("@/utils/host/translate/translate-variants", () => ({
   translateTextForPage: vi.fn<(...args: any[]) => any>(() => Promise.resolve(MOCK_TRANSLATION)),
 }))
 
+const DEFAULT_PAGE_TRANSLATION_OPTIONS = {
+  preserveLineBreaks: false,
+  forceRetranslation: false,
+}
+const PRESERVE_LINE_BREAKS_TRANSLATION_OPTIONS = {
+  preserveLineBreaks: true,
+  forceRetranslation: false,
+}
+
 const BILINGUAL_CONFIG: Config = {
   ...DEFAULT_CONFIG,
-  translate: {
-    ...DEFAULT_CONFIG.translate,
+  pageTranslation: {
+    ...DEFAULT_CONFIG.pageTranslation,
     mode: "bilingual" as const,
   },
 }
 
 const TRANSLATION_ONLY_CONFIG: Config = {
   ...DEFAULT_CONFIG,
-  translate: {
-    ...DEFAULT_CONFIG.translate,
+  pageTranslation: {
+    ...DEFAULT_CONFIG.pageTranslation,
     mode: "translationOnly" as const,
   },
 }
@@ -623,7 +632,11 @@ describe("translate", () => {
           await removeOrShowPageTranslation("bilingual", true)
 
           expect(translateTextForPage).toHaveBeenCalledTimes(1)
-          expect(translateTextForPage).toHaveBeenCalledWith(sourceText, "plain")
+          expect(translateTextForPage).toHaveBeenCalledWith(
+            sourceText,
+            "plain",
+            DEFAULT_PAGE_TRANSLATION_OPTIONS,
+          )
           const wrapper = expectTranslationWrapper(deepestSpan, "bilingual")
           expect(wrapper).toBe(deepestSpan.lastChild)
           expectTranslatedContent(wrapper, BLOCK_CONTENT_CLASS)
@@ -656,7 +669,11 @@ describe("translate", () => {
           await removeOrShowPageTranslation("bilingual", true)
 
           expect(translateTextForPage).toHaveBeenCalledTimes(1)
-          expect(translateTextForPage).toHaveBeenCalledWith(sourceText, "plain")
+          expect(translateTextForPage).toHaveBeenCalledWith(
+            sourceText,
+            "plain",
+            DEFAULT_PAGE_TRANSLATION_OPTIONS,
+          )
           const [wrapper] = expectBlockTranslations(tweet, [translatedText])
           expect(sourceSpan.querySelector(`.${CONTENT_WRAPPER_CLASS}`)).toBeFalsy()
           expect([...tweet.children]).toEqual([sourceSpan, ...emojiImages, wrapper])
@@ -694,7 +711,9 @@ describe("translate", () => {
           await removeOrShowPageTranslation("translationOnly", true)
 
           expect(translateTextForPage).toHaveBeenCalledTimes(1)
-          expect(translateTextForPage).toHaveBeenCalledWith(sourceText, "html")
+          expect(translateTextForPage).toHaveBeenCalledWith(sourceText, "html", {
+            forceRetranslation: false,
+          })
           expectInPlaceTranslation(sourceSpan, translatedText)
           expect(sourceSpan.firstChild).toBe(sourceTextNode)
           expect([...tweet.children]).toEqual([sourceSpan, ...emojiImages])
@@ -748,7 +767,12 @@ describe("translate", () => {
 
           expect(translateTextForPage).toHaveBeenCalledTimes(2)
           paragraphs.forEach((paragraph, index) => {
-            expect(translateTextForPage).toHaveBeenNthCalledWith(index + 1, paragraph, "plain")
+            expect(translateTextForPage).toHaveBeenNthCalledWith(
+              index + 1,
+              paragraph,
+              "plain",
+              PRESERVE_LINE_BREAKS_TRANSLATION_OPTIONS,
+            )
           })
           const wrappers = expectBlockTranslations(tweet, translations)
           expect(wrappers[0]!.previousSibling).toBe(emojiImages[1])
@@ -844,9 +868,24 @@ describe("translate", () => {
           })
 
           expect(translateTextForPage).toHaveBeenCalledTimes(3)
-          expect(translateTextForPage).toHaveBeenNthCalledWith(1, truncatedRequestText, "plain")
-          expect(translateTextForPage).toHaveBeenNthCalledWith(2, expandedFirstParagraph, "plain")
-          expect(translateTextForPage).toHaveBeenNthCalledWith(3, hashtagParagraph, "plain")
+          expect(translateTextForPage).toHaveBeenNthCalledWith(
+            1,
+            truncatedRequestText,
+            "plain",
+            PRESERVE_LINE_BREAKS_TRANSLATION_OPTIONS,
+          )
+          expect(translateTextForPage).toHaveBeenNthCalledWith(
+            2,
+            expandedFirstParagraph,
+            "plain",
+            PRESERVE_LINE_BREAKS_TRANSLATION_OPTIONS,
+          )
+          expect(translateTextForPage).toHaveBeenNthCalledWith(
+            3,
+            hashtagParagraph,
+            "plain",
+            PRESERVE_LINE_BREAKS_TRANSLATION_OPTIONS,
+          )
           expectBlockTranslations(tweet, [translations.expanded, translations.hashtags])
           expect(tweet).not.toHaveTextContent(translations.truncated)
           expectTextInDocumentOrder(tweet, [
@@ -958,8 +997,18 @@ describe("translate", () => {
           resolveFirst(translations[0]!)
           await translationPromise
 
-          expect(translateTextForPage).toHaveBeenNthCalledWith(1, paragraphs[0], "plain")
-          expect(translateTextForPage).toHaveBeenNthCalledWith(2, paragraphs[1], "plain")
+          expect(translateTextForPage).toHaveBeenNthCalledWith(
+            1,
+            paragraphs[0],
+            "plain",
+            PRESERVE_LINE_BREAKS_TRANSLATION_OPTIONS,
+          )
+          expect(translateTextForPage).toHaveBeenNthCalledWith(
+            2,
+            paragraphs[1],
+            "plain",
+            PRESERVE_LINE_BREAKS_TRANSLATION_OPTIONS,
+          )
           expectBlockTranslations(tweet, translations)
           expectTextInDocumentOrder(tweet, [
             paragraphs[0]!,
@@ -1173,7 +1222,12 @@ describe("translate", () => {
 
           expect(translateTextForPage).toHaveBeenCalledTimes(5)
           paragraphs.forEach((paragraph, index) => {
-            expect(translateTextForPage).toHaveBeenNthCalledWith(index + 1, paragraph, "plain")
+            expect(translateTextForPage).toHaveBeenNthCalledWith(
+              index + 1,
+              paragraph,
+              "plain",
+              PRESERVE_LINE_BREAKS_TRANSLATION_OPTIONS,
+            )
           })
           expectBlockTranslations(tweet, translations)
           expectTextInDocumentOrder(
@@ -1231,7 +1285,12 @@ describe("translate", () => {
 
           expect(translateTextForPage).toHaveBeenCalledTimes(3)
           paragraphs.forEach((paragraph, index) => {
-            expect(translateTextForPage).toHaveBeenNthCalledWith(index + 1, paragraph, "plain")
+            expect(translateTextForPage).toHaveBeenNthCalledWith(
+              index + 1,
+              paragraph,
+              "plain",
+              PRESERVE_LINE_BREAKS_TRANSLATION_OPTIONS,
+            )
           })
           expectBlockTranslations(tweet, translations)
           expectTextInDocumentOrder(
@@ -1262,7 +1321,11 @@ describe("translate", () => {
             await removeOrShowPageTranslation("bilingual", true)
 
             expect(translateTextForPage).toHaveBeenCalledTimes(1)
-            expect(translateTextForPage).toHaveBeenCalledWith(sourceText, "plain")
+            expect(translateTextForPage).toHaveBeenCalledWith(
+              sourceText,
+              "plain",
+              DEFAULT_PAGE_TRANSLATION_OPTIONS,
+            )
             expectBlockTranslations(tweet, ["【整段译文】"])
           })
         },
@@ -1282,7 +1345,11 @@ describe("translate", () => {
           await removeOrShowPageTranslation("bilingual", true)
 
           expect(translateTextForPage).toHaveBeenCalledTimes(1)
-          expect(translateTextForPage).toHaveBeenCalledWith(sourceText, "plain")
+          expect(translateTextForPage).toHaveBeenCalledWith(
+            sourceText,
+            "plain",
+            PRESERVE_LINE_BREAKS_TRANSLATION_OPTIONS,
+          )
           expectBlockTranslations(tweet, ["【标签整段译文】"])
         })
       })
@@ -1303,7 +1370,11 @@ describe("translate", () => {
           await removeOrShowPageTranslation("bilingual", true)
 
           expect(translateTextForPage).toHaveBeenCalledTimes(1)
-          expect(translateTextForPage).toHaveBeenCalledWith("Translate this paragraph.", "plain")
+          expect(translateTextForPage).toHaveBeenCalledWith(
+            "Translate this paragraph.",
+            "plain",
+            PRESERVE_LINE_BREAKS_TRANSLATION_OPTIONS,
+          )
           expectBlockTranslations(tweet, ["【唯一译文】"])
           expectTextInDocumentOrder(tweet, [
             "Translate this paragraph.",
@@ -1395,8 +1466,16 @@ describe("translate", () => {
         await removeOrShowPageTranslation("bilingual", true)
 
         expect(translateTextForPage).toHaveBeenCalledTimes(2)
-        expect(translateTextForPage).toHaveBeenCalledWith(nestedText, "plain")
-        expect(translateTextForPage).toHaveBeenCalledWith(mixedText, "plain")
+        expect(translateTextForPage).toHaveBeenCalledWith(
+          nestedText,
+          "plain",
+          DEFAULT_PAGE_TRANSLATION_OPTIONS,
+        )
+        expect(translateTextForPage).toHaveBeenCalledWith(
+          mixedText,
+          "plain",
+          DEFAULT_PAGE_TRANSLATION_OPTIONS,
+        )
 
         const nestedWrapper = expectTranslationWrapper(deepestSpan, "bilingual")
         expect(nestedWrapper).toBe(deepestSpan.lastChild)
@@ -1755,8 +1834,38 @@ describe("translate", () => {
           expectNodeLabels(node.children[1]!, [BLOCK_ATTRIBUTE, PARAGRAPH_ATTRIBUTE])
         })
       })
-      describe("block translations beside floated siblings", () => {
-        it("bilingual mode: marks block translation for float wrap when inline-block would drop below the float", async () => {
+      describe("block translations displaced below a float", () => {
+        // The translation is an inline-block: a float can push the whole box
+        // below itself instead of wrapping text beside it. Detection is by
+        // measurement, so these tests drive the two rects it reads — the source
+        // text preceding the wrapper (a Range) and the translated node.
+        function mockLayout({
+          sourceBottom,
+          translatedTop,
+        }: {
+          sourceBottom: number
+          translatedTop: number
+        }) {
+          const rangeSpy = vi
+            .spyOn(Range.prototype, "getBoundingClientRect")
+            .mockImplementation(() =>
+              createRect({ top: sourceBottom - 20, left: 0, width: 600, height: 20 }),
+            )
+          const rectSpy = vi
+            .spyOn(HTMLElement.prototype, "getBoundingClientRect")
+            .mockImplementation(function (this: HTMLElement) {
+              if (this.classList.contains(BLOCK_CONTENT_CLASS)) {
+                return createRect({ top: translatedTop, left: 0, width: 500, height: 40 })
+              }
+              return createRect({ top: 0, left: 0, width: 200, height: 20 })
+            })
+          return () => {
+            rangeSpy.mockRestore()
+            rectSpy.mockRestore()
+          }
+        }
+
+        it("bilingual mode: marks block translation for float wrap when it drops below the float", async () => {
           render(
             <div data-testid="test-node">
               <figure data-testid="float-node" style={{ float: "right" }}>
@@ -1767,27 +1876,14 @@ describe("translate", () => {
           )
           const node = screen.getByTestId("test-node")
           const paragraph = screen.getByTestId("paragraph")
-          const floatNode = screen.getByTestId("float-node")
 
-          const rectSpy = vi
-            .spyOn(HTMLElement.prototype, "getBoundingClientRect")
-            .mockImplementation(function (this: HTMLElement) {
-              if (this === floatNode) {
-                return createRect({ top: 80, left: 600, width: 200, height: 320 })
-              }
-              if (this === paragraph) {
-                return createRect({ top: 100, left: 0, width: 600, height: 60 })
-              }
-              if (this.classList.contains(BLOCK_CONTENT_CLASS)) {
-                return createRect({ top: 420, left: 0, width: 500, height: 40 })
-              }
-              return createRect({ top: 0, left: 0, width: 200, height: 20 })
-            })
-
+          // Source text ends at 160, translation lands at 420 — far past the
+          // float, well beyond one line of normal spacing.
+          const restore = mockLayout({ sourceBottom: 160, translatedTop: 420 })
           try {
             await removeOrShowPageTranslation("bilingual", true)
           } finally {
-            rectSpy.mockRestore()
+            restore()
           }
 
           expectNodeLabels(node, [BLOCK_ATTRIBUTE])
@@ -1797,7 +1893,7 @@ describe("translate", () => {
           expect(translatedContent).toHaveAttribute(FLOAT_WRAP_ATTRIBUTE, "true")
         })
 
-        it("bilingual mode: leaves block translation unchanged when the translated node stays beside the float", async () => {
+        it("bilingual mode: leaves block translation unchanged when it stays on the next line", async () => {
           render(
             <div data-testid="test-node">
               <figure data-testid="float-node" style={{ float: "right" }}>
@@ -1807,27 +1903,14 @@ describe("translate", () => {
             </div>,
           )
           const paragraph = screen.getByTestId("paragraph")
-          const floatNode = screen.getByTestId("float-node")
 
-          const rectSpy = vi
-            .spyOn(HTMLElement.prototype, "getBoundingClientRect")
-            .mockImplementation(function (this: HTMLElement) {
-              if (this === floatNode) {
-                return createRect({ top: 80, left: 600, width: 200, height: 320 })
-              }
-              if (this === paragraph) {
-                return createRect({ top: 420, left: 0, width: 600, height: 60 })
-              }
-              if (this.classList.contains(BLOCK_CONTENT_CLASS)) {
-                return createRect({ top: 500, left: 0, width: 500, height: 40 })
-              }
-              return createRect({ top: 0, left: 0, width: 200, height: 20 })
-            })
-
+          // Translation opens the line right after the source text: an
+          // ordinary top-margin gap, not a float drop.
+          const restore = mockLayout({ sourceBottom: 160, translatedTop: 168 })
           try {
             await removeOrShowPageTranslation("bilingual", true)
           } finally {
-            rectSpy.mockRestore()
+            restore()
           }
 
           const wrapper = expectTranslationWrapper(paragraph, "bilingual")
@@ -2574,8 +2657,8 @@ describe("translate", () => {
             baseURL: "https://deeplx.example/translate",
           },
         ],
-        translate: {
-          ...TRANSLATION_ONLY_CONFIG.translate,
+        pageTranslation: {
+          ...TRANSLATION_ONLY_CONFIG.pageTranslation,
           providerId: "deeplx-default",
         },
       }
@@ -2619,8 +2702,8 @@ describe("translate", () => {
             baseURL: "https://deeplx-concurrent.example/translate",
           },
         ],
-        translate: {
-          ...TRANSLATION_ONLY_CONFIG.translate,
+        pageTranslation: {
+          ...TRANSLATION_ONLY_CONFIG.pageTranslation,
           providerId: "deeplx-concurrent",
         },
       }
@@ -2690,8 +2773,8 @@ describe("translate", () => {
             baseURL: "https://deeplx-empty-probe.example/translate",
           },
         ],
-        translate: {
-          ...TRANSLATION_ONLY_CONFIG.translate,
+        pageTranslation: {
+          ...TRANSLATION_ONLY_CONFIG.pageTranslation,
           providerId: "deeplx-empty-probe",
         },
       }
@@ -2789,6 +2872,205 @@ describe("translate", () => {
       })
     })
 
+    describe("plain-text document viewer", () => {
+      // A text/plain URL (nifty.org stories, RFC mirrors, raw logs) reaches the
+      // page as one browser-generated <pre> holding the whole file, with
+      // Chrome's own `white-space: pre-wrap` inline style. It is the only
+      // content such a page has, so the blanket PRE block left it untranslated.
+      const paragraphs = [
+        "Archive header lines describe the collection, the author\ncontact address and the posting date of the chapter.",
+        "The first paragraph of the story is hard wrapped across\nseveral short lines the way a usenet posting would be.",
+        "The closing paragraph of the fixture ends the story here.",
+      ]
+      const storyText = paragraphs.join("\n\n")
+      const translations = ["【存档头译文】", "【第一段译文】", "【结尾段译文】"]
+
+      function renderPlainTextViewer() {
+        Object.defineProperty(document, "contentType", {
+          value: "text/plain",
+          configurable: true,
+        })
+        render(
+          <pre data-testid="viewer" style={{ whiteSpace: "pre-wrap", wordWrap: "break-word" }}>
+            {storyText}
+          </pre>,
+        )
+        return screen.getByTestId("viewer")
+      }
+
+      afterEach(() => {
+        Reflect.deleteProperty(document, "contentType")
+        vi.mocked(translateTextForPage).mockReset().mockResolvedValue(MOCK_TRANSLATION)
+      })
+
+      it("bilingual mode: translates a text/plain page one blank-line paragraph at a time", async () => {
+        const translationByParagraph = new Map(
+          paragraphs.map((paragraph, index) => [paragraph, translations[index]!]),
+        )
+        vi.mocked(translateTextForPage).mockImplementation(async (text) => {
+          const translated = translationByParagraph.get(text)
+          if (!translated) throw new Error(`Unexpected paragraph: ${JSON.stringify(text)}`)
+          return translated
+        })
+
+        const viewer = renderPlainTextViewer()
+        await removeOrShowPageTranslation("bilingual", true)
+
+        // One request per blank-line paragraph, never one request for the file.
+        expect(translateTextForPage).toHaveBeenCalledTimes(paragraphs.length)
+        paragraphs.forEach((paragraph) => {
+          expect(translateTextForPage).toHaveBeenCalledWith(
+            paragraph,
+            "plain",
+            PRESERVE_LINE_BREAKS_TRANSLATION_OPTIONS,
+          )
+        })
+
+        const wrappers = [...viewer.querySelectorAll(`.${CONTENT_WRAPPER_CLASS}`)]
+        expect(wrappers).toHaveLength(paragraphs.length)
+
+        // Each translation lands directly after its own paragraph, and the
+        // host text is never rewritten.
+        const renderedText = viewer.textContent ?? ""
+        let cursor = -1
+        paragraphs.forEach((paragraph, index) => {
+          const sourceIndex = renderedText.indexOf(paragraph, cursor + 1)
+          expect(sourceIndex, `paragraph ${index + 1} kept intact`).toBeGreaterThan(cursor)
+          const translationIndex = renderedText.indexOf(translations[index]!, sourceIndex)
+          expect(translationIndex, `translation ${index + 1} follows it`).toBeGreaterThan(
+            sourceIndex,
+          )
+          cursor = translationIndex
+        })
+      })
+
+      it("keeps the same page untranslated when it is served as html", async () => {
+        render(
+          <pre data-testid="html-viewer" style={{ whiteSpace: "pre-wrap" }}>
+            {storyText}
+          </pre>,
+        )
+        const viewer = screen.getByTestId("html-viewer")
+
+        await removeOrShowPageTranslation("bilingual", true)
+
+        expect(translateTextForPage).not.toHaveBeenCalled()
+        expect(viewer.querySelector(`.${CONTENT_WRAPPER_CLASS}`)).toBeFalsy()
+        expect(viewer.textContent).toBe(storyText)
+      })
+
+      function mockPerParagraphTranslations() {
+        const translationByParagraph = new Map(
+          paragraphs.map((paragraph, index) => [paragraph, translations[index]!]),
+        )
+        vi.mocked(translateTextForPage).mockImplementation(async (text) => {
+          const translated = translationByParagraph.get(text)
+          if (!translated) throw new Error(`Unexpected paragraph: ${JSON.stringify(text)}`)
+          return translated
+        })
+      }
+
+      it("translation only mode: swaps one blank-line paragraph at a time", async () => {
+        mockPerParagraphTranslations()
+        const viewer = renderPlainTextViewer()
+
+        await removeOrShowPageTranslation("translationOnly", true)
+
+        // One request per paragraph — never the whole file in one payload.
+        expect(translateTextForPage).toHaveBeenCalledTimes(paragraphs.length)
+        expect(viewer.querySelector(`.${CONTENT_WRAPPER_CLASS}`)).toBeFalsy()
+        expect(viewer.textContent).toBe(translations.join("\n\n"))
+        expect(viewer).toHaveAttribute(TRANSLATION_ONLY_ATTRIBUTE)
+      })
+
+      it("translation only mode: restores the original single text node on toggle", async () => {
+        mockPerParagraphTranslations()
+        const viewer = renderPlainTextViewer()
+
+        await removeOrShowPageTranslation("translationOnly", true)
+        expect(viewer.childNodes.length).toBeGreaterThan(1)
+
+        await removeOrShowPageTranslation("translationOnly", true)
+
+        // Cuts rejoined: the viewer is one Text node holding the file again.
+        expect(viewer.textContent).toBe(storyText)
+        expect(viewer.childNodes).toHaveLength(1)
+        expect(viewer).not.toHaveAttribute(TRANSLATION_ONLY_ATTRIBUTE)
+      })
+
+      it("translation only mode: toggles off a generation that needed no text cuts", async () => {
+        // Both paragraphs are whole elements, so the units are carved out
+        // without a single splitText. Nothing about the container's own swaps
+        // or split records then records that it was segmented at all — and a
+        // toggle that cannot tell would translate its own output.
+        const elementParagraphs = ["First paragraph.", "Second paragraph."]
+        const elementTranslations = ["【第一段】", "【第二段】"]
+        vi.mocked(translateTextForPage).mockImplementation(async (text) => {
+          const index = elementParagraphs.indexOf(text)
+          if (index === -1) throw new Error(`Unexpected paragraph: ${JSON.stringify(text)}`)
+          return elementTranslations[index]!
+        })
+
+        Object.defineProperty(document, "contentType", {
+          value: "text/plain",
+          configurable: true,
+        })
+        render(
+          <pre data-testid="element-units" style={{ whiteSpace: "pre-wrap" }}>
+            <span>{elementParagraphs[0]}</span>
+            {"\n\n"}
+            <span>{elementParagraphs[1]}</span>
+          </pre>,
+        )
+        const viewer = screen.getByTestId("element-units")
+        const spans = [...viewer.querySelectorAll("span")]
+
+        await removeOrShowPageTranslation("translationOnly", true)
+
+        expect(translateTextForPage).toHaveBeenCalledTimes(2)
+        expect(viewer.textContent).toBe(elementTranslations.join("\n\n"))
+
+        await removeOrShowPageTranslation("translationOnly", true)
+
+        // Back to the source text, with no extra request spent on translating
+        // the translation, and every marker gone.
+        expect(translateTextForPage).toHaveBeenCalledTimes(2)
+        expect(viewer.textContent).toBe(elementParagraphs.join("\n\n"))
+        expect(viewer.querySelectorAll(`[${TRANSLATION_ONLY_ATTRIBUTE}]`)).toHaveLength(0)
+        expect(viewer).not.toHaveAttribute(TRANSLATION_ONLY_ATTRIBUTE)
+        expect(viewer.querySelector(`.${CONTENT_WRAPPER_CLASS}`)).toBeFalsy()
+        expect([...viewer.querySelectorAll("span")]).toEqual(spans)
+      })
+
+      it("translation only mode: leaves no trace when every paragraph echoes its source", async () => {
+        vi.mocked(translateTextForPage).mockImplementation(async (text) => text)
+        const viewer = renderPlainTextViewer()
+
+        await removeOrShowPageTranslation("translationOnly", true)
+
+        expect(viewer.textContent).toBe(storyText)
+        expect(viewer.childNodes).toHaveLength(1)
+        expect(viewer).not.toHaveAttribute(TRANSLATION_ONLY_ATTRIBUTE)
+      })
+
+      it("translation only mode: keeps a failing paragraph from taking the others down", async () => {
+        vi.mocked(translateTextForPage).mockImplementation(async (text) => {
+          if (text === paragraphs[1]) throw new Error("provider exploded")
+          const index = paragraphs.indexOf(text)
+          return translations[index]!
+        })
+        const viewer = renderPlainTextViewer()
+
+        await removeOrShowPageTranslation("translationOnly", true)
+
+        expect(viewer.textContent).toContain(translations[0])
+        expect(viewer.textContent).toContain(translations[2])
+        // The failed unit keeps its own source text and its error UI.
+        expect(viewer.textContent).toContain(paragraphs[1])
+        await waitForTranslationError(viewer)
+      })
+    })
+
     describe("github diff table - should not translate review code snippets", () => {
       it("bilingual mode: should keep github release attribution in translation source", async () => {
         const originalLocation = window.location
@@ -2826,6 +3108,7 @@ describe("translate", () => {
           expect(translateTextForPage).toHaveBeenCalledWith(
             "perf(main): drop localhost label routes when a worktree is removed by @taiiiyang in #7557",
             "plain",
+            DEFAULT_PAGE_TRANSLATION_OPTIONS,
           )
           expect(document.querySelector(".user-mention")!.hasAttribute(PARAGRAPH_ATTRIBUTE)).toBe(
             false,
@@ -2875,6 +3158,7 @@ describe("translate", () => {
           expect(translateTextForPage).toHaveBeenCalledWith(
             "#1837 feat(translate): return a NO_TRANSLATION_NEEDED sentinel",
             "plain",
+            DEFAULT_PAGE_TRANSLATION_OPTIONS,
           )
           // Preserved as source text, not promoted to its own paragraph/walked node.
           const prLink = document.querySelector("a[data-hovercard-type='pull_request']")!
@@ -3614,6 +3898,7 @@ describe("translate", () => {
         expect(translateTextForPage).toHaveBeenCalledWith(
           `${MOCK_ORIGINAL_TEXT} ${MOCK_ORIGINAL_TEXT}`,
           "plain",
+          DEFAULT_PAGE_TRANSLATION_OPTIONS,
         )
       })
     })
@@ -3632,6 +3917,7 @@ describe("translate", () => {
         expect(translateTextForPage).toHaveBeenCalledWith(
           `${MOCK_ORIGINAL_TEXT} ${MOCK_ORIGINAL_TEXT}`,
           "plain",
+          DEFAULT_PAGE_TRANSLATION_OPTIONS,
         )
       })
     })
@@ -3644,7 +3930,11 @@ describe("translate", () => {
         render(<div data-testid="test-node">{`\n${MOCK_ORIGINAL_TEXT} \n`}</div>)
         await removeOrShowPageTranslation("bilingual", true)
 
-        expect(translateTextForPage).toHaveBeenCalledWith(MOCK_ORIGINAL_TEXT, "plain")
+        expect(translateTextForPage).toHaveBeenCalledWith(
+          MOCK_ORIGINAL_TEXT,
+          "plain",
+          DEFAULT_PAGE_TRANSLATION_OPTIONS,
+        )
       })
 
       it("bilingual mode: space leading/trailing is trimmed before translation", async () => {
@@ -3654,7 +3944,11 @@ describe("translate", () => {
         await removeOrShowPageTranslation("bilingual", true)
 
         // Final text is trimmed before translation
-        expect(translateTextForPage).toHaveBeenCalledWith(MOCK_ORIGINAL_TEXT, "plain")
+        expect(translateTextForPage).toHaveBeenCalledWith(
+          MOCK_ORIGINAL_TEXT,
+          "plain",
+          DEFAULT_PAGE_TRANSLATION_OPTIONS,
+        )
       })
     })
 
@@ -3674,6 +3968,7 @@ describe("translate", () => {
         expect(translateTextForPage).toHaveBeenCalledWith(
           `${MOCK_ORIGINAL_TEXT} ${MOCK_ORIGINAL_TEXT}`,
           "plain",
+          DEFAULT_PAGE_TRANSLATION_OPTIONS,
         )
       })
 
@@ -3690,6 +3985,7 @@ describe("translate", () => {
         expect(translateTextForPage).toHaveBeenCalledWith(
           `${MOCK_ORIGINAL_TEXT} ${MOCK_ORIGINAL_TEXT}`,
           "plain",
+          DEFAULT_PAGE_TRANSLATION_OPTIONS,
         )
       })
     })
@@ -3708,8 +4004,18 @@ describe("translate", () => {
 
         // BR elements are handled as paragraph separators, each paragraph translated separately
         expect(translateTextForPage).toHaveBeenCalledTimes(2)
-        expect(translateTextForPage).toHaveBeenNthCalledWith(1, MOCK_ORIGINAL_TEXT, "plain")
-        expect(translateTextForPage).toHaveBeenNthCalledWith(2, MOCK_ORIGINAL_TEXT, "plain")
+        expect(translateTextForPage).toHaveBeenNthCalledWith(
+          1,
+          MOCK_ORIGINAL_TEXT,
+          "plain",
+          DEFAULT_PAGE_TRANSLATION_OPTIONS,
+        )
+        expect(translateTextForPage).toHaveBeenNthCalledWith(
+          2,
+          MOCK_ORIGINAL_TEXT,
+          "plain",
+          DEFAULT_PAGE_TRANSLATION_OPTIONS,
+        )
       })
 
       it("translationOnly mode: should handle BR elements as paragraph separators", async () => {
@@ -3724,8 +4030,12 @@ describe("translate", () => {
         await removeOrShowPageTranslation("translationOnly", true)
 
         expect(translateTextForPage).toHaveBeenCalledTimes(2)
-        expect(translateTextForPage).toHaveBeenNthCalledWith(1, MOCK_ORIGINAL_TEXT, "html")
-        expect(translateTextForPage).toHaveBeenNthCalledWith(2, MOCK_ORIGINAL_TEXT, "html")
+        expect(translateTextForPage).toHaveBeenNthCalledWith(1, MOCK_ORIGINAL_TEXT, "html", {
+          forceRetranslation: false,
+        })
+        expect(translateTextForPage).toHaveBeenNthCalledWith(2, MOCK_ORIGINAL_TEXT, "html", {
+          forceRetranslation: false,
+        })
       })
     })
   })
@@ -3736,11 +4046,11 @@ describe("translate", () => {
 
     const MIN_CHARS_CONFIG: Config = {
       ...DEFAULT_CONFIG,
-      translate: {
-        ...DEFAULT_CONFIG.translate,
+      pageTranslation: {
+        ...DEFAULT_CONFIG.pageTranslation,
         mode: "bilingual" as const,
         page: {
-          ...DEFAULT_CONFIG.translate.page,
+          ...DEFAULT_CONFIG.pageTranslation.page,
           minCharactersPerNode: 10,
           minWordsPerNode: 0,
         },
@@ -3749,11 +4059,11 @@ describe("translate", () => {
 
     const MIN_WORDS_CONFIG: Config = {
       ...DEFAULT_CONFIG,
-      translate: {
-        ...DEFAULT_CONFIG.translate,
+      pageTranslation: {
+        ...DEFAULT_CONFIG.pageTranslation,
         mode: "bilingual" as const,
         page: {
-          ...DEFAULT_CONFIG.translate.page,
+          ...DEFAULT_CONFIG.pageTranslation.page,
           minCharactersPerNode: 0,
           minWordsPerNode: 5,
         },

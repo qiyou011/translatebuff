@@ -52,11 +52,9 @@ export function MultiLanguageCombobox({
       items={languageItems}
       filter={filterLanguage}
     >
-      <ComboboxPrimitive.Trigger
-        render={<Button variant="outline" className="w-40 justify-between" />}
-      >
+      <ComboboxPrimitive.Trigger render={<Button variant="outline" size="sm" />}>
         <span className="truncate">{buttonLabel}</span>
-        <Icon icon="tabler:chevron-down" className="text-muted-foreground" />
+        <Icon icon="tabler:chevron-down" className="size-4 text-muted-foreground" />
       </ComboboxPrimitive.Trigger>
       <ComboboxContent align="end" className="w-fit">
         <ComboboxInput showTrigger={false} placeholder={i18n.t("translationHub.searchLanguages")} />

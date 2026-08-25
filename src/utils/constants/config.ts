@@ -5,9 +5,13 @@ import type { PageTranslateRange } from "@/types/config/translate"
 import { BUILT_IN_AI_PROVIDER_ID } from "@/utils/providers/provider-registry"
 import { BUILT_IN_DICTIONARY_ACTION_ID } from "./custom-action"
 import { CUSTOM_ACTION_TEMPLATES } from "./custom-action-templates"
-import { DEFAULT_TRANSLATE_PROMPTS_CONFIG } from "./prompt"
+import {
+  DEFAULT_SUBTITLE_TRANSLATE_PROMPTS_CONFIG,
+  DEFAULT_TRANSLATE_PROMPTS_CONFIG,
+} from "./prompt"
 import {
   buildDefaultProviderConfigList,
+  DEFAULT_PROVIDER_CONFIG,
   DEFAULT_PROVIDER_CONFIG_LIST,
   MICROSOFT_TRANSLATE_PROVIDER_ID,
 } from "./providers"
@@ -21,6 +25,7 @@ import {
   DEFAULT_FONT_WEIGHT,
   DEFAULT_SUBTITLE_COLOR,
   DEFAULT_SUBTITLE_POSITION,
+  DEFAULT_SUBTITLES_TOGGLE_SHORTCUT_KEY,
   DEFAULT_TRANSLATION_POSITION,
 } from "./subtitles"
 import {
@@ -35,6 +40,7 @@ import {
   DEFAULT_SELECTION_TRANSLATION_SHORTCUT_KEY,
   DEFAULT_TRANSLATION_MODE_SHORTCUT_KEY,
 } from "./translate"
+import { DEFAULT_TRANSLATION_HUB_SHORTCUT_KEY } from "./translation-hub"
 import { TRANSLATION_NODE_STYLE_ON_INSTALLED } from "./translation-node-style"
 import { DEFAULT_TTS_CONFIG } from "./tts"
 
@@ -44,7 +50,7 @@ export const GOOGLE_DRIVE_TOKEN_STORAGE_KEY = "__googleDriveToken"
 
 export const THEME_STORAGE_KEY = "theme"
 export const DEFAULT_DETECTED_CODE = "eng" as const
-export const CONFIG_SCHEMA_VERSION = 88
+export const CONFIG_SCHEMA_VERSION = 99
 
 export const DEFAULT_FLOATING_BUTTON_POSITION = 0.66
 export const DEFAULT_FLOATING_BUTTON_SIDE: FloatingButtonSide = "right"
@@ -78,13 +84,14 @@ export const DEFAULT_CONFIG: Config = {
     level: "intermediate",
   },
   providersConfig: DEFAULT_PROVIDER_CONFIG_LIST,
-  translate: {
+  pageTranslation: {
     providerId: MICROSOFT_TRANSLATE_PROVIDER_ID,
     mode: "bilingual",
     modeShortcut: DEFAULT_TRANSLATION_MODE_SHORTCUT_KEY,
     node: {
       enabled: false,
       hotkey: "control",
+      forceRetranslation: false,
     },
     page: {
       range: "all",
@@ -150,9 +157,13 @@ export const DEFAULT_CONFIG: Config = {
       },
     },
     customActions: [],
-    saveSuggestion: {
+    noteSuggestion: {
       enabled: true,
       actionId: BUILT_IN_DICTIONARY_ACTION_ID,
+      // Fresh installs always carry the OpenAI default provider; suggestions
+      // start working the moment the user adds their key, with no hosted plan
+      // requirement attached.
+      providerId: DEFAULT_PROVIDER_CONFIG.openai.id,
     },
   },
   sideContent: {
@@ -175,6 +186,7 @@ export const DEFAULT_CONFIG: Config = {
   videoSubtitles: {
     enabled: true,
     autoStart: false,
+    toggleShortcut: DEFAULT_SUBTITLES_TOGGLE_SHORTCUT_KEY,
     providerId: MICROSOFT_TRANSLATE_PROVIDER_ID,
     style: {
       displayMode: DEFAULT_DISPLAY_MODE,
@@ -204,7 +216,7 @@ export const DEFAULT_CONFIG: Config = {
       maxCharactersPerBatch: DEFAULT_BATCH_CONFIG.maxCharactersPerBatch,
       maxItemsPerBatch: DEFAULT_BATCH_CONFIG.maxItemsPerBatch,
     },
-    customPromptsConfig: DEFAULT_TRANSLATE_PROMPTS_CONFIG,
+    customPromptsConfig: DEFAULT_SUBTITLE_TRANSLATE_PROMPTS_CONFIG,
     position: DEFAULT_SUBTITLE_POSITION,
   },
   siteControl: {
@@ -217,12 +229,15 @@ export const DEFAULT_CONFIG: Config = {
     disabledBuiltInRules: [],
   },
   uiLanguage: "auto",
+  translationHub: {
+    shortcut: DEFAULT_TRANSLATION_HUB_SHORTCUT_KEY,
+  },
 }
 
 /**
  * Translate features start on Microsoft Translate, which is reachable everywhere; a fresh
  * install is moved onto Google Translate afterwards where that endpoint answers — see
- * `promoteGoogleTranslateDefaultIfReachable`.
+ * `selectFreshTranslateProviders`.
  */
 export function buildFreshDefaultConfig(): Config {
   return {

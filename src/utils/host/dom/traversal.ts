@@ -6,9 +6,9 @@ import {
   PARAGRAPH_ATTRIBUTE,
   WALKED_ATTRIBUTE,
 } from "@/utils/constants/dom-labels"
-import { FORCE_BLOCK_TAGS } from "@/utils/constants/dom-rules"
 import { DEFAULT_WALK_BUDGET_MS, yieldToMain } from "@/utils/scheduler"
 import {
+  getEffectiveTagSet,
   isDontWalkIntoAndDontTranslateAsChildElement,
   isHTMLElement,
   isShallowBlockHTMLElement,
@@ -151,12 +151,26 @@ function* walkNode(
     }
   }
 
-  if (hasInlineNodeChild && isWithinIncludeScope(element, config)) {
+  // The document root must never become a paragraph unit. Walks now start at
+  // documentElement (#1991), and an inline-level child beside <body> — any
+  // unstyled custom element or stray text node injected under <html> defaults
+  // to display:inline — would otherwise label <html> itself as ONE paragraph.
+  // That collapses the whole document into a single observed unit: viewport
+  // gating dies (<html> always intersects), and the translated-region guard's
+  // querySelector becomes a document-wide match that can silently skip the
+  // entire page. Element-level injections still translate via their own
+  // paragraph labels; only bare text nodes directly under <html> (impossible
+  // to author in HTML, script-only) are left untranslated.
+  if (
+    hasInlineNodeChild &&
+    element !== element.ownerDocument.documentElement &&
+    isWithinIncludeScope(element, config)
+  ) {
     element.setAttribute(PARAGRAPH_ATTRIBUTE, "")
   }
 
   // force block will force the current and ancestor elements to be block node
-  forceBlock = forceBlock || FORCE_BLOCK_TAGS.has(element.tagName)
+  forceBlock = forceBlock || getEffectiveTagSet(config, "forceBlockTags").has(element.tagName)
 
   if (element.textContent?.trim() === "" && !forceBlock) {
     setNaturalTransNodeKind(element, "none")
@@ -169,8 +183,9 @@ function* walkNode(
   // One computed-style resolution feeds both shallow-shape checks (was up to
   // four separate getComputedStyle calls per element, #1881).
   const computedStyle = window.getComputedStyle(element)
-  const naturalBlockNode = forceBlock || isShallowBlockHTMLElement(element, computedStyle)
-  const naturalInlineNode = !naturalBlockNode && isShallowInlineHTMLElement(element, computedStyle)
+  const naturalBlockNode = forceBlock || isShallowBlockHTMLElement(element, computedStyle, config)
+  const naturalInlineNode =
+    !naturalBlockNode && isShallowInlineHTMLElement(element, computedStyle, config)
   setNaturalTransNodeKind(
     element,
     naturalBlockNode ? "block" : naturalInlineNode ? "inline" : "none",
@@ -248,4 +263,64 @@ export async function walkAndLabelElementChunked(
     step = iterator.next()
   }
   return step.value
+}
+
+/**
+ * Text counts as prose only when it contains a letter. Deliberately NARROWER
+ * than the `.trim()` test walkNode itself uses above: a stray "·", "|", "—" or
+ * a bare "2026-08-17" sitting between two block children is not text a reader
+ * would miss, and treating it as prose would forfeit viewport gating on
+ * exactly the flat containers #1881 was about. `\p{L}` covers Han/Hiragana/
+ * Hangul and subsumes isNumericContent, whose /^[\d\s,.-]+$/ admits no letter.
+ */
+const OWN_PROSE_RE = /\p{L}/u
+
+/**
+ * Giant-paragraph split guard — the CONTENT counterpart to
+ * `canSplitParagraphIntoDescendants`, which guards paragraph STRUCTURE.
+ *
+ * Splitting a giant observes its descendant paragraphs INSIDE what is really
+ * one translation unit. That is free on docs.docker.com (a 203k-px <article>
+ * whose own direct text is ZERO chars) and catastrophic on a Blogger post body
+ * or paulgraham.com (a flat <br>-delimited container whose only labeled
+ * descendants are inline <i>/<span>/<a> fragments — 8% and 1.1% of the article
+ * respectively; the rest is bare text nodes that belong to no observed unit
+ * and are never enqueued, while the <i> gets its own translation inserted
+ * mid-sentence).
+ *
+ * Only DIRECT text children can be stranded. By the labeling rule above, any
+ * element with a non-whitespace direct text child is itself labeled a
+ * paragraph, so every deeper text node already lies inside one of the chosen
+ * units. One loop over childNodes is therefore complete — and structurally
+ * blind to <script>, <style>, <pre>, hidden subtrees and our own translation
+ * wrappers, none of which can be a bare Text child.
+ *
+ * The refusal additionally requires a block-labeled child, i.e. that
+ * translateWalkedElement will really take its run path and re-segment the
+ * container. Without one it takes the single-node path and the whole giant
+ * ships as ONE request — a single node is never split by length. Note this is
+ * the MIRROR-OPPOSITE precondition to the pre-wrap clause in
+ * `canSplitParagraphIntoDescendants`, which refuses only in the all-inline
+ * shape; the two refusal domains are disjoint by construction.
+ */
+export function canSplitGiantWithoutStrandingOwnText(element: HTMLElement): boolean {
+  let hasOwnProse = false
+  let hasBlockChild = false
+
+  for (const child of element.childNodes) {
+    // nodeType directly, matching walkNode above — this predicate runs inside
+    // the observation gate, where the filter module may be stubbed out.
+    if (child.nodeType === Node.TEXT_NODE) {
+      if (!hasOwnProse && OWN_PROSE_RE.test(child.textContent ?? "")) {
+        hasOwnProse = true
+      }
+      continue
+    }
+    if (!hasBlockChild && isHTMLElement(child) && child.hasAttribute(BLOCK_ATTRIBUTE)) {
+      hasBlockChild = true
+    }
+    if (hasOwnProse && hasBlockChild) return false
+  }
+
+  return !(hasOwnProse && hasBlockChild)
 }

@@ -1,5 +1,6 @@
 import { Icon } from "@iconify/react"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
+import { useAtomValue } from "jotai"
 import { useCallback, useEffect, useEffectEvent, useState } from "react"
 import {
   Popover,
@@ -11,6 +12,7 @@ import {
 } from "@/components/ui/base-ui/popover"
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/base-ui/sidebar"
 import { env } from "@/env"
+import { configFieldsAtomMap } from "@/utils/atoms/config"
 import {
   buildBilibiliEmbedUrl,
   getBlogLocaleFromUILanguage,
@@ -25,7 +27,8 @@ import { version } from "../../../../package.json"
 export function WhatsNewFooter() {
   const queryClient = useQueryClient()
   const [open, setOpen] = useState(false)
-  const blogLocale = getBlogLocaleFromUILanguage()
+  const uiLanguage = useAtomValue(configFieldsAtomMap.uiLanguage)
+  const blogLocale = getBlogLocaleFromUILanguage(uiLanguage)
 
   const { data: lastViewedDate, isFetched: isLastViewedDateFetched } = useQuery({
     queryKey: ["last-viewed-blog-date"],
@@ -106,7 +109,12 @@ export function WhatsNewFooter() {
       <SidebarMenu>
         <SidebarMenuItem>
           <PopoverTrigger
-            render={<SidebarMenuButton aria-label={i18n.t("options.whatsNew.title")} />}
+            render={
+              <SidebarMenuButton
+                aria-label={i18n.t("options.whatsNew.title")}
+                tooltip={i18n.t("options.whatsNew.title")}
+              />
+            }
           >
             <Icon icon="tabler:rss" />
             <span>{i18n.t("options.whatsNew.title")}</span>
@@ -170,7 +178,9 @@ export function WhatsNewFooter() {
               </span>
             </a>
           </PopoverTitle>
-          <PopoverDescription>{latestBlogPost.description}</PopoverDescription>
+          {latestBlogPost.description && (
+            <PopoverDescription>{latestBlogPost.description}</PopoverDescription>
+          )}
         </PopoverHeader>
       </PopoverContent>
     </Popover>

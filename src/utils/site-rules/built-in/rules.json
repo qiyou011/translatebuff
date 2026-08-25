@@ -749,6 +749,7 @@
       "yt-formatted-string.ytd-video-renderer",
       "yt-formatted-string#content-text",
       "h1",
+      "yt-formatted-string.ytd-watch-metadata",
       "yt-formatted-string#video-title",
       ".ytLockupMetadataViewModelTitle,.shortsLockupViewModelHostOutsideMetadataTitle",
       "yt-formatted-string.span",
@@ -768,6 +769,9 @@
       ".product-item-price",
       "#commentCanvas .cmt",
       ".ytwTranscriptSegmentViewModelHost"
+    ],
+    "injectedCss.add": [
+      "yt-formatted-string.ytd-watch-metadata {-webkit-line-clamp: unset !important;max-height: unset !important;}"
     ],
     "injectedCss": ".read-frog-translated-content-wrapper img { width: 16px; height: 16px }\n.metadata-snippet-container {max-height: unset !important;}\n.read-frog-translated-content-wrapper {text-align: left;}\n.read-frog-translated-content-wrapper[dir=rtl] {text-align: right;}\n#commentCanvas .cmt {display:flex;flex-direction: column;}\n#commentCanvas .cmt font br {display: none;}\n#video-title,h1.ytd-watch-metadata,.ytd-video-renderer,.yt-lockup-metadata-view-model-wiz__title {-webkit-line-clamp: unset !important;max-height: unset !important;}\nyt-formatted-string#video-title,.ShortsLockupViewModelHostOutsideMetadataTitle {-webkit-line-clamp: unset !important;max-height: unset !important;}\nytd-expander.ytd-comment-renderer {--ytd-expander-max-lines: 1000;}\n.page-header-view-model-wiz__page-header-title--page-header-title-large {-webkit-line-clamp: unset !important;max-height: unset !important;}\n#title,#video-title,.yt-lockup-metadata-view-model__title,.ytLockupMetadataViewModelTitle,.shortsLockupViewModelHostOutsideMetadataTitle,h1.ytd-watch-metadata,.ytwFeedAdMetadataViewModelHostTextsStyleStandardHeadline {-webkit-line-clamp: unset !important;max-height: unset !important;}",
     "excludeSelectors.add": [
@@ -1073,13 +1077,15 @@
       ".time",
       ".peer-title",
       ".document-wrapper",
-      ".message.spoilers-container custom-emoji-element"
+      ".message.spoilers-container custom-emoji-element",
+      ".MessageMeta"
     ],
     "includeSelectors": [
       ".text-content",
       ".message",
       ".reply-markup-button-text",
       ".bot-commands-list-element-description",
+      ".message-content-wrapper .Button",
       "[class*='tabs-tab page-password active']",
       "#auth-qr-form"
     ],
@@ -1214,9 +1220,20 @@
     ]
   },
   {
-    "id": "linkedinFeed",
-    "matches": "https://linkedin.com/feed/*",
-    "includeSelectors": ["h1", ".feed-shared-update-v2__description-wrapper"]
+    "id": "linkedin",
+    "description": "Replaces linkedinFeed, whose host was missing www so it never matched; its include whitelist is dropped because both selectors went stale. Keeps that rule's intent (skip page chrome) as excludes. Post/comment bodies collapse at max-height:100px and actor headlines are nowrap+ellipsis, so translations get clipped",
+    "matches": "*.linkedin.com",
+    "excludeSelectors.add": [
+      "#global-nav",
+      ".global-footer-compact",
+      ".ad-banner-container",
+      ".scaffold-layout__sidebar",
+      ".update-components-actor__meta > a:not(.update-components-actor__meta-link)",
+      ".update-components-actor__title"
+    ],
+    "forceBlockNodeSelectors": [".update-components-actor__meta-link"],
+    "forceBlockStyleSelectors": [".update-components-actor__meta-link"],
+    "injectedCss": ".feed-shared-inline-show-more-text,.comments-comment-item__inline-show-more-text { max-height: none !important; }\n.update-components-actor__description,.comments-comment-meta__description-subtitle { white-space: normal !important;text-overflow: clip !important;overflow: visible !important;height: auto !important; }"
   },
   {
     "id": "indiehackers",
@@ -4498,6 +4515,12 @@
     "preserveTextSelectors.add": ["em"]
   },
   {
+    "id": "ui-community-releases",
+    "description": "Keep Ubiquiti Community's visible virtual-list items walkable while translating release posts and comments",
+    "matches": "https://community.ui.com/releases/*",
+    "injectedCss": "div[style*='flex: 0 0 auto'][style*='position: relative'][style*='visibility: hidden']:has(> div[style*='position: absolute'][style*='visibility: visible']) { visibility: visible !important; }"
+  },
+  {
     "id": "hltv",
     "matches": ["hltv.org", "*.hltv.org"],
     "excludeSelectors": [
@@ -4509,5 +4532,17 @@
       ".forum-topbar",
       ".forum-bottombar"
     ]
+  },
+  {
+    "id": "sillytavern",
+    "description": "SillyTavern renders backtick narration as <p><code>; translate CODE as part of its paragraph (fenced code blocks stay protected by PRE)",
+    "matches": ["localhost", "127.0.0.1"],
+    "dontWalkButTranslateTags.remove": ["CODE"]
+  },
+  {
+    "id": "readfrog-x-chat",
+    "description": "Skip the X Chat message footer (send time + delivery receipt). It renders twice inside the bubble — once as an aria-hidden opacity-0 spacer in the text flow, once in the absolutely positioned overlay — so both copies otherwise land in the message's translation unit. Target the footer root only: excluding its `.absolute.bottom-0.inset-e-0` wrapper too would hide that wrapper from unwrapDeepestOnlyHTMLChild, turning the bubble row into an only-child chain and moving the translation wrapper down into the pre-wrap text block",
+    "matches": ["chat.x.com"],
+    "excludeSelectors": ["div.flex.items-center.ml-auto.shrink-0.gap-1"]
   }
 ]

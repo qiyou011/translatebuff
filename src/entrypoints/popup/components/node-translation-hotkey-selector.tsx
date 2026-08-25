@@ -32,7 +32,7 @@ function HotkeyDisplay({ hotkey }: { hotkey: (typeof HOTKEYS)[number] }) {
 }
 
 export default function NodeTranslationHotkeySelector() {
-  const [translateConfig, setTranslateConfig] = useAtom(configFieldsAtomMap.translate)
+  const [translateConfig, setTranslateConfig] = useAtom(configFieldsAtomMap.pageTranslation)
 
   const handleNodeTranslationEnabledChange = async (checked: boolean) => {
     await setTranslateConfig(deepmerge(translateConfig, { node: { enabled: checked } }))
@@ -55,7 +55,7 @@ export default function NodeTranslationHotkeySelector() {
             <HotkeyDisplay hotkey={translateConfig.node.hotkey} />
           </div>
         </SelectTrigger>
-        <SelectContent className="min-w-fit">
+        <SelectContent>
           <SelectGroup>
             {HOTKEYS.map((item) => (
               <SelectItem key={item} value={item}>

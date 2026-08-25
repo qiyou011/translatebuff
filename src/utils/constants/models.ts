@@ -114,7 +114,27 @@ export const LLM_PROVIDER_MODELS = {
     "minimaxai/minimax-m3",
     "google/gemini-3.1-flash-lite",
   ],
+  // Jalapeno Cloud addresses models by their catalog name verbatim — the id in an API
+  // call is the same string shown on the models page. Narrowed to what suits translation:
+  // the code-specialised (Kimi-K2.7-Code), vision-first (Qwen3-VL-*) and thinking-only
+  // variants are left out, since neither buys anything here and both cost more per call.
+  jalapenocloud: [
+    "GLM-5.2",
+    "GLM-5.1",
+    "DeepSeek-V4-Flash",
+    "DeepSeek-V4-Pro",
+    "Hy3",
+    "Kimi-K3",
+    "Kimi-K2.5",
+    "MiniMax-M3",
+    "Qwen3.5-27B",
+    "Qwen3.5-35B-A3B",
+    "Qwen3.5-122B-A10B",
+    "Qwen3.5-397B-A17B",
+    "Qwen3-Next-80B-A3B-Instruct",
+  ],
   "openai-compatible": ["use-custom-model"],
+  "open-responses": ["use-custom-model"],
   xai: ["grok-4.20-0309-non-reasoning", "grok-4.20-0309-reasoning", "grok-4.3"],
   bedrock: [
     "amazon.titan-tg1-large",
@@ -261,19 +281,14 @@ export const LLM_PROVIDER_MODELS = {
     "google/gemma-2b-it",
   ],
   cohere: [
+    "command-a-plus-05-2026",
     "command-a-03-2025",
     "command-a-reasoning-08-2025",
     "command-a-vision-07-2025",
-    "command-r7b-12-2024",
-    "command-r-plus-04-2024",
-    "command-r-plus",
+    "command-a-translate-08-2025",
+    "command-r-plus-08-2024",
     "command-r-08-2024",
-    "command-r-03-2024",
-    "command-r",
-    "command",
-    "command-nightly",
-    "command-light",
-    "command-light-nightly",
+    "command-r7b-12-2024",
   ],
   fireworks: [
     "accounts/fireworks/models/firefunction-v1",

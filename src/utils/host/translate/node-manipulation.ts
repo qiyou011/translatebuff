@@ -1,16 +1,13 @@
-import type { AnalyticsSurface, TranslationActionContext } from "@/types/analytics"
 import type { Config } from "@/types/config/config"
 import type { Point } from "@/types/dom"
-import { ANALYTICS_SURFACE, TRANSLATION_REQUESTED_FEATURE } from "@/types/analytics"
-import { classifyTranslationRequest, trackTranslationRequested } from "@/utils/analytics"
-import { resolveProviderConfigOrNull } from "@/utils/constants/feature-providers"
 import { getRandomUUID } from "@/utils/crypto-polyfill"
-import { sendMessage } from "@/utils/message"
+import { getEffectiveSiteRule } from "@/utils/site-rules/effective"
 import { isHTMLElement } from "../dom/filter"
 import { findNearestAncestorBlockNodeAt } from "../dom/find"
 import { walkAndLabelElement } from "../dom/traversal"
 import { translateWalkedElement } from "./core/translation-walker"
 import { validateTranslationConfigAndToast } from "./translate-text"
+import { beginNodeSiteRuleCSSOperation } from "./ui/node-site-rule-css"
 
 // Re-export public APIs
 export {
@@ -22,53 +19,41 @@ export { translateWalkedElement } from "./core/translation-walker"
 export { removeAllTranslatedWrapperNodes } from "./dom/translation-cleanup"
 
 // High-level orchestration function
-export async function removeOrShowNodeTranslation(
-  point: Point,
-  config: Config,
-  surface?: AnalyticsSurface,
-): Promise<boolean> {
-  const node = findNearestAncestorBlockNodeAt(point)
+export async function removeOrShowNodeTranslation(point: Point, config: Config): Promise<boolean> {
+  const node = findNearestAncestorBlockNodeAt(point, config)
 
   if (!node || !isHTMLElement(node)) return false
 
   const id = getRandomUUID()
-  const analyticsSurface =
-    surface ??
-    (config.translate.node.hotkey === "clickAndHold"
-      ? ANALYTICS_SURFACE.TOUCH_GESTURE
-      : ANALYTICS_SURFACE.SHORTCUT)
-  const actionContext: TranslationActionContext = {
-    actionId: id,
-    feature: TRANSLATION_REQUESTED_FEATURE.HOVER_TRANSLATION,
-    surface: analyticsSurface,
-  }
-
-  await trackTranslationRequested({
-    feature: TRANSLATION_REQUESTED_FEATURE.HOVER_TRANSLATION,
-    surface: analyticsSurface,
-    ...classifyTranslationRequest(
-      resolveProviderConfigOrNull(config, "translate"),
-      config.translate.customPromptsConfig.promptId,
-    ),
-  })
 
   if (
     !validateTranslationConfigAndToast({
       providersConfig: config.providersConfig,
-      translate: config.translate,
+      pageTranslation: config.pageTranslation,
       language: config.language,
     })
   ) {
     return false
   }
 
-  walkAndLabelElement(node, id, config)
+  const rootNode = node.getRootNode()
+  const styleRoot = rootNode instanceof ShadowRoot ? rootNode : document
+  const siteRule = getEffectiveSiteRule(config, window.location.href)
+  const releaseSiteRuleCSS = await beginNodeSiteRuleCSSOperation(styleRoot, siteRule.injectedCss)
+
   try {
-    await translateWalkedElement(node, id, config, true, undefined, undefined, actionContext)
-  } finally {
-    void Promise.resolve(sendMessage("clearPromptExperimentAction", { actionId: id })).catch(
-      () => undefined,
+    walkAndLabelElement(node, id, config)
+    await translateWalkedElement(
+      node,
+      id,
+      config,
+      true,
+      undefined,
+      undefined,
+      config.pageTranslation.node.forceRetranslation,
     )
+  } finally {
+    await releaseSiteRuleCSS()
   }
   return true
 }

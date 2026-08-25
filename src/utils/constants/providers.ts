@@ -1,28 +1,34 @@
 import type {
   AllProviderTypes,
   APIProviderTypes,
+  CustomModelOnlyProviderTypes,
   LLMProviderModels,
+  LLMProviderTypes,
   ProviderConfig,
   ProvidersConfig,
   ProviderSponsorConfig,
 } from "@/types/config/provider"
 import type { Theme } from "@/types/config/theme"
+import { APP_NAME } from "@read-frog/definitions"
 import { camelCase } from "case-anything"
 import customProviderLogo from "@/assets/providers/custom-provider.svg?url&no-inline"
+import customResponsesLogo from "@/assets/providers/custom-responses.svg?url&no-inline"
 import deeplxLogoDark from "@/assets/providers/deeplx-dark.svg?url&no-inline"
 import deeplxLogoLight from "@/assets/providers/deeplx-light.svg?url&no-inline"
+import jalapenoCloudLogo from "@/assets/providers/jalapeno-cloud.png?url&no-inline"
 import tensdaqLogoColor from "@/assets/providers/tensdaq-color.svg?url&no-inline"
 import { env } from "@/env"
 import {
   API_PROVIDER_TYPES,
-  CUSTOM_LLM_PROVIDER_TYPES,
+  DEDICATED_LLM_PROVIDER_TYPES,
   NON_API_TRANSLATE_PROVIDERS,
   NON_API_TRANSLATE_PROVIDERS_MAP,
-  NON_CUSTOM_LLM_PROVIDER_TYPES,
+  PROTOCOL_COMPATIBLE_LLM_PROVIDER_TYPES,
   PURE_API_PROVIDER_TYPES,
   PURE_TRANSLATE_PROVIDERS,
   TRANSLATE_PROVIDER_TYPES,
   isAPIProviderConfig,
+  isCustomModelOnlyProvider,
 } from "@/types/config/provider"
 import { omit, pick } from "@/types/utils"
 import { i18n } from "@/utils/i18n"
@@ -34,12 +40,22 @@ export const DEFAULT_LLM_PROVIDER_MODELS: LLMProviderModels = {
     isCustomModel: false,
     customModel: null,
   },
+  jalapenocloud: {
+    model: "GLM-5.2",
+    isCustomModel: false,
+    customModel: null,
+  },
   atlascloud: {
     model: "deepseek-ai/deepseek-v4-flash",
     isCustomModel: false,
     customModel: null,
   },
   "openai-compatible": {
+    model: "use-custom-model",
+    isCustomModel: true,
+    customModel: null,
+  },
+  "open-responses": {
     model: "use-custom-model",
     isCustomModel: true,
     customModel: null,
@@ -100,7 +116,7 @@ export const DEFAULT_LLM_PROVIDER_MODELS: LLMProviderModels = {
     customModel: null,
   },
   cohere: {
-    model: "command-r7b-12-2024",
+    model: "command-a-translate-08-2025",
     isCustomModel: false,
     customModel: null,
   },
@@ -173,7 +189,18 @@ export const DEFAULT_LLM_PROVIDER_MODELS: LLMProviderModels = {
 
 export const PROVIDER_ITEMS: Record<
   AllProviderTypes,
-  { logo: (theme: Theme) => string; name: string; website: string; sponsor?: ProviderSponsorConfig }
+  {
+    logo: (theme: Theme) => string
+    name: string
+    website: string
+    sponsor?: ProviderSponsorConfig
+    /**
+     * Where someone signs up for or copies this provider's key. Only providers that set it get
+     * the "Get API key" button next to the API key field — absent means no button, because most
+     * providers' key pages sit behind a console we cannot link straight into.
+     */
+    apiKeyUrl?: string
+  }
 > = {
   "microsoft-translate": {
     logo: getLobeIconsCDNUrlFn("microsoft-color"),
@@ -195,10 +222,24 @@ export const PROVIDER_ITEMS: Record<
     name: "DeepL",
     website: "https://www.deepl.com/pro-api",
   },
+  jalapenocloud: {
+    logo: () => jalapenoCloudLogo,
+    name: "Jalapeno Cloud",
+    website: "https://www.jalapeno-cloud.ai/readfrog",
+    apiKeyUrl: "https://www.jalapeno-cloud.ai/readfrog",
+    sponsor: {
+      sponsoring: true,
+      referUrl: "https://www.jalapeno-cloud.ai/readfrog",
+      // Both default to the generic sponsor wording; Jalapeno names its actual offer instead.
+      badgeI18nKey: "options.apiProviders.badges.sponsorJalapenoCloud",
+      ctaI18nKey: "options.apiProviders.sponsorCtaJalapenoCloud",
+    },
+  },
   atlascloud: {
     logo: getLobeIconsCDNUrlFn("atlascloud"),
     name: "Atlas Cloud",
     website: "https://readfrog.s.gy/altas",
+    apiKeyUrl: "https://readfrog.s.gy/altas",
     sponsor: {
       sponsoring: true,
       referUrl: "https://readfrog.s.gy/altas",
@@ -206,7 +247,12 @@ export const PROVIDER_ITEMS: Record<
   },
   "openai-compatible": {
     logo: () => customProviderLogo,
-    name: "Custom Provider",
+    name: "Custom Chat Complete",
+    website: `${env.WXT_WEBSITE_URL}/docs/providers/openai-compatible-providers`,
+  },
+  "open-responses": {
+    logo: () => customResponsesLogo,
+    name: "Custom Responses",
     website: `${env.WXT_WEBSITE_URL}/docs/providers/openai-compatible-providers`,
   },
   openrouter: {
@@ -354,6 +400,24 @@ export const DEFAULT_PROVIDER_CONFIG = {
     enabled: true,
     provider: "microsoft-translate",
   },
+  jalapenocloud: {
+    id: "jalapenocloud-default",
+    name: PROVIDER_ITEMS.jalapenocloud.name,
+    enabled: true,
+    provider: "jalapenocloud",
+    baseURL: "https://api.jalapeno-cloud.ai/v1",
+    model: DEFAULT_LLM_PROVIDER_MODELS.jalapenocloud,
+    // Attribution headers are not here on purpose: they are ours to send, not the user's to
+    // configure, so they live in FORCED_PROVIDER_HEADERS and never enter stored config.
+    // Every Jalapeno model is a thinking model. Translation gains nothing from the reasoning
+    // pass and pays for it in latency and output tokens, so it starts off — and unlike the
+    // headers this is a preference, so it is written in where the user can change it.
+    providerOptions: {
+      chat_template_kwargs: {
+        thinking: false,
+      },
+    },
+  },
   atlascloud: {
     id: "atlascloud-default",
     name: PROVIDER_ITEMS.atlascloud.name,
@@ -385,6 +449,14 @@ export const DEFAULT_PROVIDER_CONFIG = {
     provider: "openai-compatible",
     baseURL: "https://api.example.com/v1",
     model: DEFAULT_LLM_PROVIDER_MODELS["openai-compatible"],
+  },
+  "open-responses": {
+    id: "open-responses-default",
+    name: PROVIDER_ITEMS["open-responses"].name,
+    enabled: true,
+    provider: "open-responses",
+    url: "https://api.example.com/v1/responses",
+    model: DEFAULT_LLM_PROVIDER_MODELS["open-responses"],
   },
   openai: {
     id: "openai-default",
@@ -589,11 +661,37 @@ export const DEFAULT_PROVIDER_CONFIG = {
 export const GOOGLE_TRANSLATE_PROVIDER_ID = DEFAULT_PROVIDER_CONFIG["google-translate"].id
 export const MICROSOFT_TRANSLATE_PROVIDER_ID = DEFAULT_PROVIDER_CONFIG["microsoft-translate"].id
 
-export const PROVIDER_BASE_URL_PLACEHOLDERS: Partial<Record<APIProviderTypes, string>> = {
+/**
+ * Headers a provider is always called with, merged over whatever the user set. The user may add
+ * headers alongside these but cannot drop or rewrite them, and they never enter stored config —
+ * which is also what makes them ours to change in a later release. A header a provider merely
+ * starts out with belongs in `DEFAULT_PROVIDER_CONFIG[provider].headers` instead, where the user
+ * owns it.
+ */
+export const FORCED_PROVIDER_HEADERS: Partial<Record<LLMProviderTypes, Record<string, string>>> = {
+  jalapenocloud: {
+    "HTTP-Referer": env.WXT_WEBSITE_URL,
+    "X-Jalapeno-Title": APP_NAME,
+  },
+  openrouter: {
+    "HTTP-Referer": env.WXT_WEBSITE_URL,
+    "X-OpenRouter-Title": APP_NAME,
+  },
+  // Anthropic's API refuses direct browser calls without this, so it is not a default the user
+  // can outgrow — it used to sit with the editable ones, where adding any header of your own
+  // dropped it and broke every request.
+  anthropic: {
+    "anthropic-dangerous-direct-browser-access": "true",
+  },
+}
+
+export const PROVIDER_URL_PLACEHOLDERS: Partial<Record<APIProviderTypes, string>> = {
+  jalapenocloud: DEFAULT_PROVIDER_CONFIG.jalapenocloud.baseURL,
   atlascloud: DEFAULT_PROVIDER_CONFIG.atlascloud.baseURL,
   siliconflow: DEFAULT_PROVIDER_CONFIG.siliconflow.baseURL,
   tensdaq: DEFAULT_PROVIDER_CONFIG.tensdaq.baseURL,
   "openai-compatible": DEFAULT_PROVIDER_CONFIG["openai-compatible"].baseURL,
+  "open-responses": DEFAULT_PROVIDER_CONFIG["open-responses"].url,
   openai: "https://api.openai.com/v1",
   azure: "https://<resource>.services.ai.azure.com/openai",
   deepseek: "https://api.deepseek.com",
@@ -625,7 +723,7 @@ export const DEFAULT_PROVIDER_CONFIG_LIST: ProvidersConfig = [
   DEFAULT_PROVIDER_CONFIG["microsoft-translate"],
   DEFAULT_PROVIDER_CONFIG["google-translate"],
   DEFAULT_PROVIDER_CONFIG.openai,
-  DEFAULT_PROVIDER_CONFIG.deepseek,
+  DEFAULT_PROVIDER_CONFIG.jalapenocloud,
   DEFAULT_PROVIDER_CONFIG.atlascloud,
 ]
 
@@ -666,13 +764,26 @@ export const LLM_PROVIDER_ITEMS = omit(TRANSLATE_PROVIDER_ITEMS, PURE_TRANSLATE_
 
 export const API_PROVIDER_ITEMS = pick(PROVIDER_ITEMS, API_PROVIDER_TYPES)
 
+const PROVIDER_NAME_I18N_KEYS = {
+  "openai-compatible": "options.apiProviders.providers.name.customChatComplete",
+  "open-responses": "options.apiProviders.providers.name.customResponses",
+} as const satisfies Record<CustomModelOnlyProviderTypes, string>
+
+export function getProviderItemName(providerType: APIProviderTypes): string {
+  if (!isCustomModelOnlyProvider(providerType)) {
+    return PROVIDER_ITEMS[providerType].name
+  }
+
+  return i18n.t(PROVIDER_NAME_I18N_KEYS[providerType]) || PROVIDER_ITEMS[providerType].name
+}
+
 export const PROVIDER_GROUPS = {
   builtInProviders: {
-    types: NON_CUSTOM_LLM_PROVIDER_TYPES,
+    types: DEDICATED_LLM_PROVIDER_TYPES,
     tutorialSlug: "built-in-providers",
   },
-  openaiCompatibleProviders: {
-    types: CUSTOM_LLM_PROVIDER_TYPES,
+  compatibleProviders: {
+    types: PROTOCOL_COMPATIBLE_LLM_PROVIDER_TYPES,
     tutorialSlug: "openai-compatible-providers",
   },
   pureTranslationProviders: {

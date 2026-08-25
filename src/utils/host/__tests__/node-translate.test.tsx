@@ -21,8 +21,8 @@ import {
 // Test config with fixed bilingual mode - won't change with DEFAULT_CONFIG
 const TEST_CONFIG: Config = {
   ...DEFAULT_CONFIG,
-  translate: {
-    ...DEFAULT_CONFIG.translate,
+  pageTranslation: {
+    ...DEFAULT_CONFIG.pageTranslation,
     mode: "bilingual" as const,
   },
 }
@@ -85,6 +85,86 @@ describe("node translation", () => {
       expect(wrapper).toBe(node.childNodes[1])
       expectTranslatedContent(wrapper, BLOCK_CONTENT_CLASS)
 
+      document.elementFromPoint = originalElementFromPoint
+    })
+
+    it("applies site-rule CSS while a node translation is visible", async () => {
+      const config = structuredClone(TEST_CONFIG)
+      config.siteRules = {
+        disabledBuiltInRules: [],
+        userRules: [
+          {
+            id: "node-translation-layout",
+            matches: window.location.hostname,
+            injectedCss: ".clamped-title { max-height: none !important; }",
+          },
+        ],
+      }
+
+      render(<div data-testid="test-node">{MOCK_ORIGINAL_TEXT}</div>)
+      const node = screen.getByTestId("test-node")
+      const originalElementFromPoint = Reflect.get(document, "elementFromPoint")
+      document.elementFromPoint = vi.fn<(...args: any[]) => any>(() => node)
+
+      await act(async () => {
+        await removeOrShowNodeTranslation({ x: 150, y: 125 }, config)
+        flushBatchedOperations()
+      })
+
+      const siteRuleStyle = document.head.querySelector<HTMLStyleElement>(
+        "#read-frog-site-rule-styles",
+      )
+      expect(siteRuleStyle?.textContent).toContain(".clamped-title")
+
+      const wrapper = node.querySelector(`.${CONTENT_WRAPPER_CLASS}`)
+      document.elementFromPoint = vi.fn<(...args: any[]) => any>(() => wrapper as Element)
+      await act(async () => {
+        await removeOrShowNodeTranslation({ x: 150, y: 125 }, config)
+        flushBatchedOperations()
+      })
+
+      expect(document.head.querySelector("#read-frog-site-rule-styles")).toBeNull()
+      document.elementFromPoint = originalElementFromPoint
+    })
+
+    it("removes stale site-rule CSS when the current rule has no CSS", async () => {
+      const configWithCSS = structuredClone(TEST_CONFIG)
+      configWithCSS.siteRules = {
+        disabledBuiltInRules: [],
+        userRules: [
+          {
+            id: "node-translation-layout",
+            matches: window.location.hostname,
+            injectedCss: ".clamped-title { max-height: none !important; }",
+          },
+        ],
+      }
+      const configWithoutCSS = structuredClone(TEST_CONFIG)
+      configWithoutCSS.siteRules = {
+        disabledBuiltInRules: [],
+        userRules: [],
+      }
+
+      render(<div data-testid="test-node">{MOCK_ORIGINAL_TEXT}</div>)
+      const node = screen.getByTestId("test-node")
+      const originalElementFromPoint = Reflect.get(document, "elementFromPoint")
+      document.elementFromPoint = vi.fn<(...args: any[]) => any>(() => node)
+
+      await act(async () => {
+        await removeOrShowNodeTranslation({ x: 150, y: 125 }, configWithCSS)
+        flushBatchedOperations()
+      })
+
+      expect(document.head.querySelector("#read-frog-site-rule-styles")).not.toBeNull()
+
+      const wrapper = node.querySelector(`.${CONTENT_WRAPPER_CLASS}`)
+      document.elementFromPoint = vi.fn<(...args: any[]) => any>(() => wrapper as Element)
+      await act(async () => {
+        await removeOrShowNodeTranslation({ x: 150, y: 125 }, configWithoutCSS)
+        flushBatchedOperations()
+      })
+
+      expect(document.head.querySelector("#read-frog-site-rule-styles")).toBeNull()
       document.elementFromPoint = originalElementFromPoint
     })
   })
