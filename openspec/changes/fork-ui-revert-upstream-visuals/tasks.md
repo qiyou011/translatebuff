@@ -27,7 +27,7 @@ pnpm vitest run --config vitest.fork.config.ts src/fork                         
 - [x] 1.5 跑绿 1.2 的四条测试
 - [x] 1.6 `.github/workflows/fork-guard.yml`：去掉 `on.pull_request.branches: [main]`；checkout 加 `ref: ${{ github.event.pull_request.head.sha }}`（保留 `fetch-depth: 0`），让 HEAD 就是分支 tip、不必从合成 merge 绕一层；按分支名分流，`feat/upstream-sync-*` 走 `FORK_SYNC_MODE=1`，其余走增量模式
 - [x] 1.7 新建 `vitest.fork.config.ts`（决策 10）：`mergeConfig` 根配置后追加 `forkUiRedirectPlugin(FORK_UI_REDIRECTS)`，并补进脚本的 `FORK_ROOT_FILES`。**根 `vitest.config.ts` 一个字不改、不进 allowlist**——全局注册会让上游自己的测试也解析到 fork 影子（`providers-config.test.tsx`、`feature-provider-selector-list.test.tsx`、`beta-gating.test.tsx`、`translate-text.test.tsx`），上游断言必然落空、`pnpm run test` 判红，修它只能改上游测试文件、又成越界。第 4 节所有「先红后绿」都依赖这一步
-- [ ] 1.8 ⏸ **待用户同意推分支**：用一个只改 `src/utils/message.ts` 一行的临时分支提 PR 到 `change/fork-foundation`，确认 `fork-guard` 这次真被触发且判红；验完关 PR、删分支
+- [ ] 1.8 用一个只改 `src/utils/message.ts` 一行的临时分支提 PR 到 `change/fork-foundation`，确认 `fork-guard` 这次真被触发且判红；验完关 PR、删分支
 - [ ] 1.9 ⏸ **由用户自行配置（2026-08-25：你不管）** · 人工检查点：在 GitHub 给 `main` 与 `change/*` 开分支保护（要求 PR 合入 + `fork-guard` 为必需检查），以 `gh api repos/qiyou011/translatebuff/branches/main/protection` 的输出为证贴进 PR。扩大触发面只覆盖「走 PR」的路径，直接本地 merge 这条路只有分支保护能堵——这是 109 个越界的真实来路，不闭环等于核心目标没达成
 - [x] 1.10 提交（`4235b0d6`）
 
@@ -220,4 +220,11 @@ src/entrypoints/translation-hub/components/translation-panel.tsx
 > - 期间发现并修复 1 个回归：popup 右侧露白（`a0decafe`）——上游 `main.tsx` 覆盖 `#root` 的 className，把 fork 的 392px 换回 320px。已改用行内 style 并加回归测试。
 > - 误报 1 个：翻译按钮灰色。实为在 `chrome://extensions/` 打开 popup，命中上游 `isIgnoreUrl` 的忽略名单；换普通网页即正常。三个决定禁用状态的文件与分叉点逐字一致，非本次引入。
 
-- [ ] 6.5 ⏸ **待用户同意推分支** 提 PR 到 `change/fork-foundation`，等人工审核
+> **冒烟后修复（2026-08-25，用户定性为本次改动引出的问题，不另立项）**
+>
+> popup 加宽到 392px 后暴露两处布局问题，随本变更一并修掉（`2346e138`）：上游给语言选择器写死
+> `w-30`，多出的空间全挤成中间留白；模式按钮沿用 `size="icon"` 的 36px，与同排 52px 的翻译按钮不等高。
+> 另统一了账号行与底栏内边距。语言选择器是上游文件，按红线走影子壳 + 重定向（重定向增至 21 条，均已登记指纹）。
+> 用户验收：可接受，不再调整。
+
+- [x] 6.5 提 PR 到 `change/fork-foundation`，等人工审核
