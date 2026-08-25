@@ -78,7 +78,9 @@ src/assets/providers/read-frog-provider.png
 
 > ⏸ **`.changeset/` 下 5 个 fork 自造的 changeset 本阶段不删**（用户 2026-08-25 决定：暂不，所有阶段完成后再说）。它们会继续出现在同步模式的差集里，需在 allowlist 登记为已知存量；待阶段 2 完成后再统一处理。
 
-- [ ] 3.1 删除上游已删的 2 个 options 页；`src/utils/config/migration.ts` 取分叉点版本。清单里的 5 个 `.changeset/*.md` **跳过不删**，改为登记进 allowlist：
+> 📌 **施工修正**：原清单里的 `auto-translate-languages.tsx`、`skip-languages.tsx` **不在本节删除**。「上游已删」是阶段 2 合并后的事实，阶段 0 尚未 merge，两者仍被 `options/pages/translation/index.tsx` import，删掉即构建失败。已改归第 5 节回退档（取分叉点版本），阶段 2 才作为 modify/delete 冲突 `git rm`。
+
+- [x] 3.1 `src/utils/config/migration.ts` 取分叉点版本（上游已有等价的 `buildMigrationRegistry`，阶段 2 合并时自然带入）。清单里的 5 个 `.changeset/*.md` **跳过不删**（用户决定暂缓），改为登记进 allowlist：
 
 ```
 .changeset/bright-birds-emphasize-translate.md
@@ -86,14 +88,12 @@ src/assets/providers/read-frog-provider.png
 .changeset/fresh-cats-rebrand-ui.md
 .changeset/kind-tools-showcase.md
 .changeset/quick-cats-open-popup.md
-src/entrypoints/options/pages/translation/auto-translate-languages.tsx
-src/entrypoints/options/pages/translation/skip-languages.tsx
 src/utils/config/migration.ts
 ```
 
-- [ ] 3.2 `pnpm run test` 确认无测试引用被删文件
-- [ ] 3.3 把 5 个 `.changeset/*.md` 追加进 `scripts/fork-allowlist.json` 的 `files`（暂缓删除期间的已知存量）
-- [ ] 3.4 存量扫描的**源码级条目**降到 70（资源档 29 条与 5 个 changeset 已登记、不再计入）；提交
+- [x] 3.2 `pnpm run test` 确认无测试引用被删文件
+- [x] 3.3 把 5 个 `.changeset/*.md` 追加进 `scripts/fork-allowlist.json` 的 `files`（暂缓删除期间的已知存量）
+- [x] 3.4 存量扫描的**源码级条目**降到 72 = 回退档 43 + 搬迁档 29（资源档 30 条与 5 个 changeset 已登记、不再计入）；提交
 
 ## 4. 搬迁档：功能性改动搬进 src/fork（29 个）
 
@@ -117,6 +117,8 @@ src/entrypoints/options/components/overlay-feature-preview.tsx
 src/entrypoints/options/pages/context-menu/index.tsx
 src/entrypoints/options/pages/floating-button/index.tsx
 src/entrypoints/options/pages/selection-toolbar/index.tsx
+src/entrypoints/options/pages/translation/auto-translate-languages.tsx
+src/entrypoints/options/pages/translation/skip-languages.tsx
 src/entrypoints/popup/atoms/auto-translate.ts
 src/entrypoints/popup/components/__tests__/blog-notification.test.tsx
 src/entrypoints/popup/components/blog-notification.tsx
@@ -150,7 +152,7 @@ src/utils/utils.ts
 - [ ] 4.9 字幕与划词组：`subtitles-translate-button.tsx`（logo）、`custom-action-button` 测试
 - [ ] 4.10 迁移脚本（决策 4）：**不要**把 customActions 修复搬进 `src/fork/config/migration.ts`——那条链只服务 fork 自己的 storage key，而这段修复修的是上游配置的 `selectionToolbar.customActions`；且回退 `v085-to-v086.ts` 后 schemaVersion ≥86 的存量用户再也不会经过那一步，修复会静默丢失。改新建 `src/fork/background/repair-custom-actions.ts`，由 `setupFork()` 调用、幂等、读到 null 就跳过，形态照抄同目录的 `correct-legacy-translation-mode.ts`。`v085-to-v086.ts`(+test) 回退上游版
 - [ ] 4.11 新建 `src/fork/identity/redirect-baseline.json`（以 `from` 路径为键存内容指纹），`ui-redirect-plugin` 的 `buildStart` 比对当前内容与记录值，失配即硬失败并提示「上游改了此文件，对账后更新指纹」。这是对「buildStart 只断路径不比内容」的机械兜底。两个约束：**指纹不塞进 `wxt.config.ts`**（那是冲突最频繁的 allowlist 文件，加 20+ 个每次同步都变的字段等于给它加冲突面）；**算法用「LF 归一化后 sha256」**，不用 `git hash-object` 或读工作树——本仓 `.gitattributes` 是 `* text=auto eol=lf`，跨平台检出会假失配
-- [ ] 4.12 存量扫描的源码级条目降到 41；三浏览器构建全绿；提交
+- [ ] 4.12 存量扫描的源码级条目降到 43（只剩回退档）；三浏览器构建全绿；提交
 
 ## 5. 回退档：纯视觉整体回退（41 个）
 

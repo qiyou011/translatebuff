@@ -33,6 +33,8 @@ $ git merge-tree --write-tree --name-only change/fork-foundation 53b54d68   # �
 
 ### 决策 1：四档分类，而不是整仓 checkout 上游
 
+> 📌 **2026-08-25 施工修正**：`auto-translate-languages.tsx`、`skip-languages.tsx` originally 归在清除档（理由「上游已删」），实际归错——「上游已删」是阶段 2 合并后的事实，阶段 0 还没 merge，两者仍被 `options/pages/translation/index.tsx` import，删掉即构建失败。已改归回退档（取分叉点版本）；它们在阶段 2 才作为 modify/delete 冲突 `git rm`。
+
 **为什么不能整文件 `git checkout upstream -- <file>`**：视觉改动和品牌接线**混在同一个文件里**。例：`src/components/api-config-warning.tsx` 一次改动既换了 className，又把 `href="https://readfrog.app/docs/api-key"` 换成 `getWebsiteUrl("/docs/api-key")`。整文件回退会把品牌接线一起抹掉。
 
 因此逐文件分四档：

@@ -8,7 +8,7 @@ import { ConfigVersionTooNewError } from "./errors"
 
 export const LATEST_SCHEMA_VERSION = CONFIG_SCHEMA_VERSION
 
-const MIGRATION_FILENAME_RE = /v(\d+)-to-v(\d+)\.ts$/
+const MIGRATION_FILENAME_RE = /v\d+-to-v(\d+)\.ts$/
 
 /**
  * Loads migration scripts from the "migration-scripts" directory and runs them sequentially to migrate the configuration
@@ -20,38 +20,15 @@ const modules = import.meta.glob<MigrationFunction>(["./migration-scripts/v*-to-
   eager: true,
   import: "migrate",
 })
-const migrationEntries = Object.entries(modules)
-  .map(([path, migrate]) => {
+export const migrationScripts: Record<number, MigrationFunction> = Object.fromEntries(
+  Object.entries(modules).map(([path, migrate]) => {
     const match = path.match(MIGRATION_FILENAME_RE)
     if (!match) {
       throw new Error(`Invalid migration filename: ${path}`)
     }
-    const fromVersion = Number(match[1])
-    const toVersion = Number(match[2])
-    if (toVersion !== fromVersion + 1) {
-      throw new Error(`Invalid migration step: ${path}`)
-    }
-    return { fromVersion, toVersion, migrate, path }
-  })
-  .sort((a, b) => a.toVersion - b.toVersion)
-
-const seenTargets = new Set<number>()
-migrationEntries.forEach((entry, index) => {
-  if (seenTargets.has(entry.toVersion)) {
-    throw new Error(`Duplicate migration target version: ${entry.toVersion}`)
-  }
-  seenTargets.add(entry.toVersion)
-
-  const expectedFromVersion = index + 1
-  if (entry.fromVersion !== expectedFromVersion) {
-    throw new Error(
-      `Discontinuous migration chain at ${entry.path}: expected v${expectedFromVersion} as source`,
-    )
-  }
-})
-
-export const migrationScripts: Record<number, MigrationFunction> = Object.fromEntries(
-  migrationEntries.map(({ toVersion, migrate }) => [toVersion, migrate]),
+    const version = Number(match[1])
+    return [version, migrate]
+  }),
 )
 
 logger.log("Loaded migration modules:", migrationScripts)
