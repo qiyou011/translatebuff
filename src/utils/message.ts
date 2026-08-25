@@ -181,3 +181,5 @@ interface ProtocolMap {
 }
 
 export const { sendMessage, onMessage } = defineExtensionMessaging<ProtocolMap>()
+
+// fork-guard 触发验证用，验完即删
