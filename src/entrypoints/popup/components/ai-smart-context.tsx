@@ -10,7 +10,7 @@ export function AISmartContext() {
 
   return (
     <div className="flex items-center justify-between gap-2">
-      <span className="flex items-center gap-1.5 text-sm font-medium">
+      <span className="flex items-center gap-1.5 text-[13px] font-medium">
         {i18n.t("popup.aiSmartContext")}
         <HelpTooltip>{i18n.t("popup.aiSmartContextDescription")}</HelpTooltip>
       </span>

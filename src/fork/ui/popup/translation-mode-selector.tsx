@@ -68,7 +68,11 @@ export default function TranslationModeSelector() {
             size="icon"
             aria-label={actionLabel}
             aria-disabled={nextModeBlocked || undefined}
-            className={cn(nextModeBlocked && "cursor-not-allowed opacity-50")}
+            className={cn(
+              // 与同排的翻译按钮等高，避免一高一矮
+              "size-[52px] rounded-lg",
+              nextModeBlocked && "cursor-not-allowed opacity-50",
+            )}
             onClick={handleModeToggle}
           />
         }

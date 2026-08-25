@@ -1,6 +1,5 @@
 import { IconSearch } from "@tabler/icons-react"
 import { useSetAtom } from "jotai"
-import { BrandMark } from "@/components/brand-mark"
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/base-ui/input-group"
 import { Kbd } from "@/components/ui/base-ui/kbd"
 import {
@@ -9,6 +8,7 @@ import {
   SidebarFooter,
   SidebarHeader,
 } from "@/components/ui/base-ui/sidebar"
+import { BrandMark } from "@/fork/components/brand-mark"
 import { UserAccountMenuSidebar } from "@/fork/ui/options/account-menu-sidebar"
 import { i18n } from "@/utils/i18n"
 import { getCommandPaletteShortcutHint } from "@/utils/os"
@@ -32,7 +32,7 @@ export function AppSidebar() {
         <UserAccountMenuSidebar />
         <InputGroup
           onClick={() => setCommandPaletteOpen(true)}
-          className="border-0 bg-card text-sidebar-foreground shadow-control transition-colors duration-200 hover:bg-muted"
+          className="shadow-control border-0 bg-card text-sidebar-foreground transition-colors duration-200 hover:bg-muted"
         >
           <InputGroupInput
             readOnly

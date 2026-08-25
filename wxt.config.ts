@@ -43,7 +43,61 @@ const forkChannelSuffix = forkChannelId ? `-${forkChannelId}` : "-{{browser}}"
 
 // fork「换皮」重定向：不编辑上游 composed UI 源文件，改由 resolve 插件按解析后的绝对路径
 // 把上游 provider 选择器 / 选项 provider 页重定向到 fork 版（相对/@ import 都拦得住）。
-const FORK_UI_REDIRECTS = [
+export const FORK_UI_REDIRECTS = [
+  {
+    // popup 语言选择器：上游写死 w-30，popup 加宽后中间留白过大，改成 flex-1 均分。
+    from: path.resolve(__dirname, "src/entrypoints/popup/components/language-options-selector.tsx"),
+    to: path.resolve(__dirname, "src/fork/ui/popup/language-options-selector.tsx"),
+  },
+  {
+    // popup 博客入口：上游直拼博客地址，本地预览下丢 hash 路由前缀。
+    from: path.resolve(__dirname, "src/entrypoints/popup/components/blog-notification.tsx"),
+    to: path.resolve(__dirname, "src/fork/ui/popup/blog-notification.tsx"),
+  },
+  {
+    // 品牌图标：上游把 read-frog.png import 死在多个组件顶部（悬浮球、字幕条），
+    // 逐个换皮组件太贵；直接重定向资源本身，一条覆盖全部引用点。
+    from: path.resolve(__dirname, "src/assets/icons/read-frog.png"),
+    to: path.resolve(__dirname, "src/fork/assets/renyimiao.svg"),
+  },
+  {
+    // options 功能示意区：上游用 read-frog 界面的静态截图，fork 换成实时 CSS 插画。
+    from: path.resolve(__dirname, "src/entrypoints/options/pages/context-menu/index.tsx"),
+    to: path.resolve(__dirname, "src/fork/ui/options/context-menu-page.tsx"),
+  },
+  {
+    // options 功能示意区：上游用 read-frog 界面的静态截图，fork 换成实时 CSS 插画。
+    from: path.resolve(__dirname, "src/entrypoints/options/pages/floating-button/index.tsx"),
+    to: path.resolve(__dirname, "src/fork/ui/options/floating-button-page.tsx"),
+  },
+  {
+    // options 功能示意区：上游用 read-frog 界面的静态截图，fork 换成实时 CSS 插画。
+    from: path.resolve(__dirname, "src/entrypoints/options/pages/selection-toolbar/index.tsx"),
+    to: path.resolve(__dirname, "src/fork/ui/options/selection-toolbar-page.tsx"),
+  },
+  {
+    // 笔记库详情链接：本地预览走 hash 路由，上游直拼会 404。
+    from: path.resolve(__dirname, "src/utils/notebase/pending-save.ts"),
+    to: path.resolve(__dirname, "src/fork/utils/notebase-pending-save.ts"),
+  },
+  {
+    // provider 图标解析：任译喵实例按 customModel 解析出真实模型品牌图。
+    // 上游有 30 余处 import 这个模块，改不动它们的 import，故走重定向。
+    from: path.resolve(__dirname, "src/utils/providers/provider-display.ts"),
+    to: path.resolve(__dirname, "src/fork/providers/provider-display.ts"),
+  },
+  {
+    // 帮助按钮：上游点开的是 read-frog 的 GitHub issues，改指任译喵站点。
+    // URL 硬编码在组件内部、无接缝可注入，只能整份换皮（见 fork 副本头注）。
+    from: path.resolve(__dirname, "src/components/help-button.tsx"),
+    to: path.resolve(__dirname, "src/fork/components/help-button.tsx"),
+  },
+  {
+    // 账号菜单的对外链接：登录 / Web 应用指向任译喵站点。上游 popup.tsx 与 sidebar.tsx
+    // 直接 import 这个模块，改不到它们的 import 语句，故走重定向。
+    from: path.resolve(__dirname, "src/components/user-account-menu/shared.tsx"),
+    to: path.resolve(__dirname, "src/fork/components/user-account-menu-shared.ts"),
+  },
   {
     // 微软翻译适配器：上游旧鉴权端点已下线（404），修复后的免鉴权实现放在 fork 侧。
     // 三个 importer（execute-translate、api/index 桶导出、background/translation-queues）

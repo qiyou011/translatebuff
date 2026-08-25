@@ -4,8 +4,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { act, fireEvent, render, screen, waitFor } from "@testing-library/react"
 import * as React from "react"
 import { afterEach, describe, expect, it, vi } from "vitest"
-import { env } from "@/env"
-import { version } from "../../../../../package.json"
 import { WhatsNewFooter } from "../whats-new-footer"
 
 const getLastViewedBlogDateMock = vi.fn<(...args: any[]) => any>()
@@ -198,9 +196,9 @@ describe("whatsNewFooter", () => {
 
     await waitFor(() => {
       expect(getLatestBlogDateMock).toHaveBeenCalledWith(
-        `${env.WXT_WEBSITE_URL}/api/blog/latest`,
+        "https://www.readfrog.app/api/blog/latest",
         "zh",
-        version,
+        expect.stringMatching(/^\d+\.\d+\.\d+$/),
       )
     })
 

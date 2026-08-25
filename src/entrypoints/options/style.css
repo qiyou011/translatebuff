@@ -1,28 +1,4 @@
 body {
   /* Chrome set the font to 75% of the default size */
   font-size: initial; /* reset to 16px */
-  min-width: 320px;
-  background: var(--rf-background);
-  color: var(--rf-foreground);
-}
-
-#root {
-  min-height: 100vh;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  main {
-    animation: options-content-enter 220ms ease-out both;
-  }
-}
-
-@keyframes options-content-enter {
-  from {
-    opacity: 0;
-    transform: translateY(4px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }

@@ -1,0 +1,62 @@
+// 换皮：上游 popup/components/blog-notification.tsx 的精确副本，只改一处——博客链接的拼法。
+// fork popup 确实渲染这个组件（右上角铃铛），链接直拼在本地预览下会 404。
+import { Icon } from "@iconify/react/dist/iconify.js"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
+import { Button } from "@/components/ui/base-ui/button"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/base-ui/tooltip"
+import { env } from "@/env"
+import { buildBlogUrl } from "@/fork/ui/popup/blog-url"
+import {
+  getBlogLocaleFromUILanguage,
+  getLastViewedBlogDate,
+  getLatestBlogDate,
+  hasNewBlogPost,
+  saveLastViewedBlogDate,
+} from "@/utils/blog"
+import { i18n } from "@/utils/i18n"
+import { version } from "../../../../package.json"
+
+export default function BlogNotification() {
+  const queryClient = useQueryClient()
+  const blogLocale = getBlogLocaleFromUILanguage()
+
+  const { data: lastViewedDate } = useQuery({
+    queryKey: ["last-viewed-blog-date"],
+    queryFn: getLastViewedBlogDate,
+  })
+
+  const { data: latestBlogPost } = useQuery({
+    queryKey: ["latest-blog-post", blogLocale],
+    queryFn: () => getLatestBlogDate(`${env.WXT_WEBSITE_URL}/api/blog/latest`, blogLocale, version),
+  })
+
+  const handleClick = async () => {
+    if (latestBlogPost) {
+      await saveLastViewedBlogDate(latestBlogPost.date)
+      await queryClient.invalidateQueries({ queryKey: ["last-viewed-blog-date"] })
+    }
+    // Open the latest blog post URL directly, or fallback to /blog if not available
+    // Convert relative URL to absolute URL
+    const blogUrl = buildBlogUrl(latestBlogPost?.url)
+    window.open(blogUrl, "_blank")
+  }
+
+  const showIndicator = hasNewBlogPost(lastViewedDate ?? null, latestBlogPost?.date ?? null)
+
+  return (
+    <Tooltip>
+      <TooltipTrigger
+        render={<Button variant="ghost" size="icon" className="relative" onClick={handleClick} />}
+      >
+        <Icon icon="tabler:bell-filled" />
+        {showIndicator && (
+          <span className="absolute top-1.5 right-1.5 flex size-2 items-center justify-center">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand opacity-75"></span>
+            <span className="relative inline-flex size-1.5 rounded-full bg-brand"></span>
+          </span>
+        )}
+      </TooltipTrigger>
+      <TooltipContent>{i18n.t("popup.blog.notification")}</TooltipContent>
+    </Tooltip>
+  )
+}

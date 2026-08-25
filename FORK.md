@@ -12,7 +12,10 @@ Translatebuff 是 read-frog 的软 fork（上游：mengxi-ream/read-frog）。
 5. `pnpm install` # 重新生成 pnpm-lock.yaml；绝不手工合并
 6. `pnpm run test` 与 `wxt build` + `build:edge` + `build:firefox` 必须全绿
 7. `node scripts/assert-fork-build.mjs` 必须通过（fork 域名已进产物 = env 覆盖生效；残留上游域名仅告警）
-8. `FORK_DIFF_BASE=origin/main node scripts/check-fork-boundary.mjs` 必须通过（无 allowlist 外越界）
+8. 边界检查必须通过。**同步分支走同步模式**：`FORK_SYNC_MODE=1 node scripts/check-fork-boundary.mjs`
+   （基准取本次合并进来的上游提交；HEAD 已不是合并提交时补 `FORK_SYNC_BASE=<上游落脚点>`）。
+   日常 PR 走增量模式 `FORK_DIFF_BASE=origin/<base> …`。用错模式会全判红或空转恒绿，两者都危险。
+   判定看的是「与上游是否**仍有分歧**」，把 fork 改动退回上游不算越界。
 9. `node scripts/check-fork-brand.mjs` 必须通过（locale/入口标题无上游品牌残留、无小写 Translatebuff 漂移）。上游新增带 "Read Frog" 的串会在此被揪出——重刷成 fork 品牌（拉丁 TranslateBuff / 中文 任译喵·任譯喵）
 10. 开 PR：sync/* -> main（CI `fork-guard.yml` 复跑 4/5/7/8/9）
 
@@ -40,6 +43,15 @@ Translatebuff 是 read-frog 的软 fork（上游：mengxi-ream/read-frog）。
 | src/entrypoints/options/pages/translation/translation-mode.tsx                     | src/fork/ui/options/translation-mode.tsx                   | 必须保留具名导出 `TranslationMode` 与 `ConfigCard id="translation-mode"`（命令面板靠该 id 跳转，改了静默断链） |
 
 （其余 8 条重定向是纯换皮 UI，本表只列「上游会继续演进、漏看会出功能问题」的三个。）
+
+> **2026-08-25 更新**：`buildStart` 现在**同时断言内容指纹**（`src/fork/identity/redirect-baseline.json`，
+> LF 归一化后 sha256）。上游改了被换皮文件的内容会直接构建失败，不再是「构建绿但皮悄悄掉」。
+> 失配后必须**先 diff 上游改动、判断要不要搬进 fork 副本，再更新指纹**——直接刷新指纹等于把这层护栏关掉。
+> 重定向未登记指纹同样硬失败，避免新增换皮漏进护栏之外。
+>
+> 重定向已从 11 条增至 20 条（阶段 0 还债后）。品牌图标改走**资源级重定向**
+> （`src/assets/icons/read-frog.png` → `src/fork/assets/renyimiao.svg`），一条覆盖悬浮球与字幕条两处，
+> 省掉两份要逐次对账的组件副本。
 
 **每次 merge 完上游，除常规门禁另加三步：**
 

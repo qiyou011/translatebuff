@@ -1,5 +1,6 @@
 import type { Plugin } from "vite"
-import { existsSync } from "node:fs"
+import { createHash } from "node:crypto"
+import { existsSync, readFileSync } from "node:fs"
 
 // fork「换皮」重定向插件（从 wxt.config 迁入 fork 领地，重定向清单作入参传入）：
 // 不编辑上游 composed UI 源文件，改由 resolve 插件按解析后的绝对路径把上游组件重定向到 fork 版
@@ -43,6 +44,10 @@ export function forkUiRedirectPlugin(redirects: { from: string; to: string }[]):
           )
         }
       }
+      // 路径存在不代表内容没变：上游改了被换皮文件，构建照样绿、皮却已经与上游行为偏离。
+      // 指纹比对把这种静默偏离变成硬失败。用 LF 归一化后取 sha256，不读 git blob——
+      // 本仓 .gitattributes 是 * text=auto eol=lf，跨平台检出会产生假失配。
+      assertRedirectFingerprints(redirects)
     },
     async resolveId(source, importer, options) {
       if (!importer) {
@@ -70,5 +75,49 @@ export function forkUiRedirectPlugin(redirects: { from: string; to: string }[]):
       }
       return match.to
     },
+  }
+}
+
+/** 内容指纹：LF 归一化后取 sha256，跨平台稳定。 */
+export function fingerprintFile(absolutePath: string): string {
+  const content = readFileSync(absolutePath, "utf8").replace(/\r\n/g, "\n")
+  return createHash("sha256").update(content).digest("hex").slice(0, 16)
+}
+
+function assertRedirectFingerprints(redirects: { from: string; to: string }[]) {
+  const baselinePath = new URL("./identity/redirect-baseline.json", import.meta.url)
+  const baseline = JSON.parse(readFileSync(baselinePath, "utf8")) as {
+    entries: Record<string, string>
+  }
+  const drifted: string[] = []
+  const missing: string[] = []
+  for (const redirect of redirects) {
+    // 键用「相对 src 的路径（含扩展名）」，不要过 normalizeModuleId——它会削掉 .ts/.tsx，
+    // 与基线里的键对不上，查不到记录就静默跳过检查，等于这层护栏根本没跑。
+    const key = redirect.from.replace(/\\/g, "/").split("/src/")[1]
+    const recorded = key ? baseline.entries[key] : undefined
+    const actual = fingerprintFile(redirect.from)
+    if (!recorded) {
+      missing.push(`   - src/${key ?? redirect.from}`)
+      continue
+    }
+    if (recorded !== actual) {
+      drifted.push(`   - src/${key}\n     记录 ${recorded} → 实际 ${actual}`)
+    }
+  }
+  if (missing.length > 0) {
+    throw new Error(
+      `\n\nfork-ui-redirect: 有重定向没有登记内容指纹，这层护栏对它们不生效：\n` +
+        `${missing.join("\n")}\n\n` +
+        `请把它们补进 src/fork/identity/redirect-baseline.json。\n`,
+    )
+  }
+  if (drifted.length > 0) {
+    throw new Error(
+      `\n\nfork-ui-redirect: 上游改动了被换皮的文件，fork 副本可能已与上游行为偏离：\n` +
+        `${drifted.join("\n")}\n\n` +
+        `请先 diff 上游改动、判断要不要搬进 fork 副本，再更新 ` +
+        `src/fork/identity/redirect-baseline.json 的指纹。不要直接刷新了事。\n`,
+    )
   }
 }

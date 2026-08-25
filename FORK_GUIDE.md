@@ -184,6 +184,10 @@ src/fork/
 - 内容脚本只换 shadow-host 内层 React，DOM/注入逻辑留上游。
 - `main.tsx` **不是**纯骨架（popup/main.tsx 带页面 atoms）——改每页 `main.tsx` 或抽 `src/fork` helper，二选一。
 
+> 🔴 **红线（2026-08-25 用户明确要求）**：**禁止为视觉定制原地编辑任何上游 UI 文件**。所有 fork 视觉与交互定制一律走 `src/fork/**` 影子壳 + `FORK_UI_REDIRECTS` 重定向。
+>
+> 代价是实测过的：一次 155 文件的原地换肤提交，独自贡献了 110 个越界文件里的 109 个，直接把合并上游 v1.46.4 的冲突从 12 个推到 34 个。存量复测用 `FORK_SCAN_ALL=1 node scripts/check-fork-boundary.mjs`（排查用，不参与 CI 判定）。
+>
 > ⚠️ **反冲突铁律（2026-07-22 同步教训）**：重度定制的**整块 surface**（popup ✓、翻译浮窗、被重刷的选项页）一律走「re-export shim + fork 壳（C 类）」，**绝不在 churning 共享文件上原地改**（`main.tsx` / `app.tsx` / `theme.css` / 共享组件都是上游高频文件，原地改 = 上游每次动它就冲突）。
 >
 > - **禁改名共享上游组件做品牌化**：品牌化要「fork 包一层」，绝不重命名上游组件。曾把 `frog-toast` → `brand-toast`，上游随后用 base-ui toast 重构该组件 → 正面冲突、fork 改名白做（该次同步 9 个冲突全源于此）。
@@ -240,7 +244,7 @@ FORK_DIFF_BASE=origin/main node scripts/check-fork-boundary.mjs  # 断言无越�
 
 ## 8. 已知事项与坑
 
-- **popup 目前很空**：只有品牌名 + 设置按钮。这是 `src/fork/ui/popup/App.tsx` 的**占位参考页**（确立壳层模式用），**不是删了源码**——原 14 个 popup 组件都在 `src/entrypoints/popup/components/`，options 页是完整上游 UI。真 popup 是后续 UI 重建变更。
+- ~~**popup 目前很空**~~ **（2026-08-25 已过期）**：`src/fork/ui/popup/App.tsx` 现在是完整壳层——账号菜单、语言选择、provider、翻译模式、站点开关、快捷键、博客入口都在，并复用多个上游 popup 组件。`MoreMenu` 与 `DiscordButton` 不在其中，所以上游的 Discord / 微信 / GitHub / 商店评价入口对 fork 用户天然不可达。
 - **本地 `.env` 会让部分上游测试失败**：dev 用的 `.env` 若覆盖 `WXT_WEBSITE_URL`，会让上游 guide/官方源相关测试挂。CI 不带 `.env`（用默认值）所以照常绿。需要指向 fork 后端做本地联调时再临时创建 `.env`，跑测试前移除。
 - **`free-api.test.ts` 偶发失败**：它打真实 Google/Microsoft 翻译 API，遇 429 限流会挂——环境性，非本仓引入。
 - **产物里仍有 `readfrog.app` 字样**：是 `src/env/shared.ts` 的默认回退字面量 + 尚未重建的 UI 链接。**运行时 active 后端已是 fork**（env 覆盖生效），这些是死字面量，`assert-fork-build.mjs` 只告警不拦。完整 UI 重建时清理。

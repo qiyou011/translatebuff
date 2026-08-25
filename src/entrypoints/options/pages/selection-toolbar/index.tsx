@@ -1,6 +1,6 @@
+import selectionToolbarDemoImage from "@/assets/demo/selection-toolbar.png"
 import { GradientBackground } from "@/components/gradient-background"
 import { i18n } from "@/utils/i18n"
-import { OverlayFeaturePreview } from "../../components/overlay-feature-preview"
 import { PageLayout } from "../../components/page-layout"
 import { SelectionToolbarDisabledSites } from "./selection-toolbar-disabled-sites"
 import { SelectionToolbarFeatureToggles } from "./selection-toolbar-feature-toggles"
@@ -13,12 +13,10 @@ export function SelectionToolbarPage() {
   return (
     <PageLayout title={i18n.t("options.overlayTools.selectionToolbar.title")}>
       <GradientBackground>
-        <OverlayFeaturePreview
-          feature="selection-toolbar"
-          title={i18n.t("options.overlayTools.selectionToolbar.title")}
-          description={i18n.t(
-            "options.floatingButtonAndToolbar.selectionToolbar.globalToggle.description",
-          )}
+        <img
+          src={selectionToolbarDemoImage}
+          alt={i18n.t("options.floatingButtonAndToolbar.selectionToolbarDemoImageAlt")}
+          className="h-auto w-100"
         />
       </GradientBackground>
       <div className="*:border-b [&>*:last-child]:border-b-0">

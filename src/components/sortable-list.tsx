@@ -120,7 +120,7 @@ function SortableItemWrapper({ id, children }: { id: string; children: React.Rea
       data-sortable-id={id}
       style={style}
       className={cn(
-        "cursor-grab rounded-xl transition-[background-color,border-color,box-shadow,transform,opacity] duration-200 active:cursor-grabbing",
+        "cursor-grab rounded-xl transition-all duration-200 active:cursor-grabbing",
         isDragging && "opacity-50",
       )}
       {...attributes}

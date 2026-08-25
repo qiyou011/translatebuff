@@ -13,17 +13,20 @@ import { ConfigCard } from "../../components/config-card"
 
 export function SkipLanguages() {
   return (
-    <ConfigCard
-      id="skip-languages"
-      title={i18n.t("options.translation.skipLanguages.title")}
-      description={i18n.t("options.translation.skipLanguages.description")}
-    >
-      <div className="flex flex-col gap-4">
-        <TargetLanguageSkipToggle />
-        <SkipLanguagesSelector />
-        <SelectedSkipLanguageCells />
-      </div>
-    </ConfigCard>
+    <div className="flex flex-col gap-y-4 py-6">
+      <ConfigCard
+        id="skip-languages"
+        title={i18n.t("options.translation.skipLanguages.title")}
+        description={i18n.t("options.translation.skipLanguages.description")}
+        className="py-0"
+      >
+        <div className="flex flex-col gap-4">
+          <TargetLanguageSkipToggle />
+          <SkipLanguagesSelector />
+        </div>
+      </ConfigCard>
+      <SelectedSkipLanguageCells />
+    </div>
   )
 }
 

@@ -1,7 +1,5 @@
 name: fork-guard
-on:
-  pull_request:
-    branches: [main]
+on: pull_request
 jobs:
   boundary:
     runs-on: ubuntu-latest
@@ -9,14 +7,24 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          # 默认检出的是 GitHub 合成的 refs/pull/N/merge，其第二父是 PR 分支 tip，
+          # 会让同步模式的基准推导取到分支 tip → 差集近乎为空 → 边界检查空转恒绿。
+          ref: ${{ github.event.pull_request.head.sha }}
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      # 同步分支合完上游后三点差集等于全量上游改动，用增量模式会把同步 PR 自己判红；
+      # 故按分支名分流。推导失败硬失败退出，不回落增量模式（静默降级 = 不做检查）。
       - name: Fork boundary check
-        run: FORK_DIFF_BASE=origin/${{ github.base_ref }} node scripts/check-fork-boundary.mjs
+        run: |
+          if [[ "${{ github.head_ref }}" == feat/upstream-sync-* ]]; then
+            FORK_SYNC_MODE=1 FORK_BASE_REF=${{ github.base_ref }} node scripts/check-fork-boundary.mjs
+          else
+            FORK_DIFF_BASE=origin/${{ github.base_ref }} node scripts/check-fork-boundary.mjs
+          fi
       - name: Fork brand check
         run: node scripts/check-fork-brand.mjs
       # free-api.test.ts 打真实外部翻译服务，端点抖动或限流会让构建门红在与本仓改动

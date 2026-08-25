@@ -1,5 +1,4 @@
 import { Icon } from "@iconify/react"
-import { BrandMark } from "@/components/brand-mark"
 import { AISmartContext } from "@/entrypoints/popup/components/ai-smart-context"
 import { AlwaysTranslate } from "@/entrypoints/popup/components/always-translate"
 import BlogNotification from "@/entrypoints/popup/components/blog-notification"
@@ -9,6 +8,7 @@ import { SiteControlToggle } from "@/entrypoints/popup/components/site-control-t
 import TranslateButton from "@/entrypoints/popup/components/translate-button"
 import TranslatePromptSelector from "@/entrypoints/popup/components/translate-prompt-selector"
 import { TranslationHubButton } from "@/entrypoints/popup/components/translation-hub-button"
+import { BrandMark } from "@/fork/components/brand-mark"
 import { ForkAccountMenu } from "@/fork/ui/popup/account-menu"
 import ProvidersField from "@/fork/ui/popup/providers-field"
 import TranslationModeSelector from "@/fork/ui/popup/translation-mode-selector"
@@ -23,7 +23,7 @@ function App() {
   return (
     <>
       <div className="flex flex-col gap-2.5 bg-background px-4 pt-3 pb-3">
-        <div className="flex items-center justify-between rounded-lg bg-card px-2 py-1.5">
+        <div className="flex items-center justify-between rounded-xl bg-card px-3 py-2">
           <ForkAccountMenu />
           <div className="flex items-center">
             <TranslationHubButton />
@@ -46,10 +46,10 @@ function App() {
           <AISmartContext />
         </div>
       </div>
-      <div className="flex items-center justify-between bg-secondary/70 px-2.5 py-2">
+      <div className="flex items-center justify-between bg-secondary/70 px-4 py-2">
         <button
           type="button"
-          className="flex cursor-pointer items-center gap-1.5 rounded-lg px-2.5 py-1.5 transition-colors duration-200 hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring/40 focus-visible:outline-none"
+          className="-mx-2 flex cursor-pointer items-center gap-1.5 rounded-lg px-2 py-1.5 transition-colors duration-200 hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring/40 focus-visible:outline-none"
           onClick={() => {
             void openOptionsPage()
           }}

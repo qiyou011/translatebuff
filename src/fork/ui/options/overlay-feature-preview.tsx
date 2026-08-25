@@ -1,6 +1,6 @@
 import type { ReactNode } from "react"
 import { Icon } from "@iconify/react"
-import { BrandMark } from "@/components/brand-mark"
+import { BrandMark } from "@/fork/components/brand-mark"
 import { i18n } from "@/utils/i18n"
 import { cn } from "@/utils/styles/utils"
 
@@ -17,9 +17,10 @@ export function OverlayFeaturePreview({
 }) {
   return (
     <div
+      data-fork-overlay-preview
       role="img"
       aria-label={`${title}: ${description}`}
-      className="relative h-44 w-full max-w-2xl overflow-hidden rounded-xl border border-border/80 bg-background shadow-control"
+      className="shadow-control relative h-44 w-full max-w-2xl overflow-hidden rounded-xl border border-border/80 bg-background"
     >
       <BrowserChrome />
       {feature === "floating-button" && <FloatingButtonScene />}

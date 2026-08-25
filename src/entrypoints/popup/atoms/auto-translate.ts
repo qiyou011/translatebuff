@@ -9,16 +9,12 @@ type TranslateConfig = Config["translate"]
 // Sync atom to store the checked state
 export const isCurrentSiteInPatternsAtom = atom<boolean>(false)
 
-export function isUrlInPatterns(translateConfig: TranslateConfig, url: string) {
-  return translateConfig.page.autoTranslatePatterns.some((pattern) =>
-    matchDomainPattern(url, pattern),
-  )
-}
-
 export async function getIsInPatterns(translateConfig: TranslateConfig) {
   const activeTabUrl = await getActiveTabUrl()
   if (!activeTabUrl) return false
-  return isUrlInPatterns(translateConfig, activeTabUrl)
+  return translateConfig.page.autoTranslatePatterns.some((pattern) =>
+    matchDomainPattern(activeTabUrl, pattern),
+  )
 }
 
 // Async atom to initialize the checked state
