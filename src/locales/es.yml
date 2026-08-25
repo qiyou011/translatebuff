@@ -727,6 +727,7 @@ options:
     translationMode:
       title: Modo de traducción
       description: "Elige cómo se muestra el texto traducido: bilingüe o solo traducción."
+      microsoftNotSupported: El traductor de Microsoft no admite el modo solo traducción. Elige otro servicio de traducción.
       mode:
         bilingual: Bilingüe
         translationOnly: Solo traducción

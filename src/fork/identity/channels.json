@@ -2,5 +2,9 @@
   "zip": { "number": "7100", "browser": "chrome" },
   "chrome-store": { "number": "7101", "browser": "chrome" },
   "edge": { "number": "7102", "browser": "edge" },
-  "firefox": { "number": "7103", "browser": "firefox" }
+  "firefox": { "number": "7103", "browser": "firefox" },
+  "360": { "number": "7104", "browser": "chrome" },
+  "quark": { "number": "7105", "browser": "chrome" },
+  "qq": { "number": "7106", "browser": "chrome" },
+  "sogou": { "number": "7107", "browser": "chrome" }
 }

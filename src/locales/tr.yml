@@ -612,6 +612,7 @@ options:
     translationMode:
       title: Çeviri Modu
       description: "Çevrilmiş metnin nasıl görüntüleneceğini seçin: iki dilli veya yalnızca çeviri."
+      microsoftNotSupported: Microsoft Çeviri yalnızca çeviri modunu desteklemiyor. Lütfen başka bir çeviri hizmeti seçin.
       mode:
         bilingual: İki Dilli
         translationOnly: Yalnızca Çeviri

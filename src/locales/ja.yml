@@ -612,6 +612,7 @@ options:
     translationMode:
       title: 翻訳モード
       description: 翻訳テキストの表示方法を選択：バイリンガルまたは翻訳のみ
+      microsoftNotSupported: Microsoft 翻訳は翻訳のみモードに対応していません。別の翻訳サービスを選んでください。
       mode:
         bilingual: バイリンガル
         translationOnly: 翻訳のみ

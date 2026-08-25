@@ -612,6 +612,7 @@ options:
     translationMode:
       title: 번역 모드
       description: "번역된 텍스트 표시 방법 선택: 이중 언어 또는 번역만"
+      microsoftNotSupported: Microsoft 번역기는 번역문만 보기 모드를 지원하지 않습니다. 다른 번역 서비스를 선택하세요.
       mode:
         bilingual: 이중 언어
         translationOnly: 번역만

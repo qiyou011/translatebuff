@@ -19,7 +19,12 @@ jobs:
         run: FORK_DIFF_BASE=origin/${{ github.base_ref }} node scripts/check-fork-boundary.mjs
       - name: Fork brand check
         run: node scripts/check-fork-brand.mjs
+      # free-api.test.ts 打真实外部翻译服务，端点抖动或限流会让构建门红在与本仓改动
+      # 无关的地方。与 release.yml 同样用 SKIP_FREE_API 跳过——而不是 --exclude glob：
+      # glob 只挡住这一个文件名，日后新增的实机冒烟测试仍会真打网络。
       - run: pnpm run test
+        env:
+          SKIP_FREE_API: "true"
       - run: pnpm run build
       - run: pnpm run build:edge
       - run: pnpm run build:firefox
