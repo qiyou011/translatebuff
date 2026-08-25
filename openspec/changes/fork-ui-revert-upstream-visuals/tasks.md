@@ -143,16 +143,16 @@ src/utils/utils.ts
 
 - [x] 4.1 品牌接线组：`brand-mark.tsx`、`api-config-warning.tsx`、`help-button.tsx`、`user-account-menu/shared.tsx` → `src/fork/components/`，链接统一走 `getWebsiteUrl`
 - [x] 4.2 **spike 已完成（2026-08-25，结论：可行）**：`ui-redirect-plugin` 的 `resolveId` 在 `!importer` 时 return null，而 `main.tsx` 是 HTML 入口模块，原本不确定能否命中。实测把 `popup/main.tsx` 临时重定向到一个带独有标记的探针文件，构建后标记出现在 `.output/chrome-mv3/chunks/popup-*.js` —— **重定向能命中 HTML 入口模块**（`index.html` 里的 `<script type="module" src="./main.tsx">` 走的是带 importer 的解析路径）。故 `popup/main.tsx`、`sidepanel/main.tsx` 按常规换皮处理，**不需要**退回「缩成 2 行壳 + 进 allowlist」的备选方案
-- [ ] 4.3 popup 组：`blog-notification.tsx`(+test)、`more-menu.tsx`、`discord-button.tsx`、`providers-field.tsx`、`atoms/auto-translate.ts` → `src/fork/ui/popup/`；`main.tsx` 按 4.2 的结论处理
-- [ ] 4.4 `providers-field.tsx` 里的 `selectedProviderIds` 去重单独写测试锁住——这是真 bug 修复（上游用 `providerKeyCounts` 允许重复 key），不是视觉改动，回退时最容易丢
-- [ ] 4.5 sidepanel 与 side.content 组：`sidepanel/main.tsx`（同 4.2 结论）、`side.content/index.tsx`（shadow host `-overlay` 后缀）、`side.content/components/floating-button/index.tsx`(+test)
-- [ ] 4.6 options 组：`overlay-feature-preview.tsx`(159 行) → `src/fork/ui/options/`；`context-menu`/`floating-button`/`selection-toolbar` 三个 index.tsx 回退到上游 demo 图版本；`app-sidebar/whats-new-footer` 测试回退
+- [x] 4.3 popup 组：`blog-notification.tsx`(+test)、`more-menu.tsx`、`discord-button.tsx`、`providers-field.tsx`、`atoms/auto-translate.ts` → `src/fork/ui/popup/`；`main.tsx` 按 4.2 的结论处理
+- [x] 4.4 **实测推翻**：那处去重改在了 `src/entrypoints/popup/components/providers-field.tsx`，而 fork popup 渲染的是 `src/fork/ui/popup/providers-field.tsx`（仍是上游 `providerKeyCounts` 写法）——修改从未生效，是死代码。上游文件直接回退。若确实想要「同一 provider 只显示一次」，应改 fork 那一份，属独立需求
+- [x] 4.5 sidepanel 与 side.content 组：`sidepanel/main.tsx`（同 4.2 结论）、`side.content/index.tsx`（shadow host `-overlay` 后缀）、`side.content/components/floating-button/index.tsx`(+test)
+- [x] 4.6 options 组：`overlay-feature-preview.tsx`(159 行) → `src/fork/ui/options/`；`context-menu`/`floating-button`/`selection-toolbar` 三个 index.tsx 回退到上游 demo 图版本；`app-sidebar/whats-new-footer` 测试回退
 - [x] 4.7 provider 展示层：`provider-display.ts` → `src/fork/providers/` + 重定向。**`provider-registry.ts` 直接回退不做换皮**——它的改动只是把 `BUILT_IN_AI_PROVIDER_LOGO` 换成任译喵图标，而 fork 选择器是白名单式分组（只放任译喵实例 + 纯翻译 provider），内置免费 AI 结构上不可达，该改动零作用；一并恢复被 fork 删掉的 `read-frog-provider.png`，否则回退后 import 断链（importer 在上游侧，必须走重定向）
 - [x] 4.8 utils 组：`utils.ts` 直接回退（`getReviewUrl` 唯一调用方是 `more-menu.tsx`，由 4.3 的 fork 壳不渲染该入口即可）；`notebase/pending-save.ts` → `src/fork/utils/` + 重定向，上游测试回退
-- [ ] 4.9 字幕与划词组：`subtitles-translate-button.tsx`（logo）、`custom-action-button` 测试
+- [x] 4.9 字幕与划词组：**改用资源级重定向**（`src/assets/icons/read-frog.png` → `src/fork/assets/renyimiao.svg`）一条覆盖字幕条与悬浮球两处品牌图，省掉两份要逐次对账的组件副本；`custom-action-button` 测试回退
 - [x] 4.10 迁移脚本（决策 4）：**不要**把 customActions 修复搬进 `src/fork/config/migration.ts`——那条链只服务 fork 自己的 storage key，而这段修复修的是上游配置的 `selectionToolbar.customActions`；且回退 `v085-to-v086.ts` 后 schemaVersion ≥86 的存量用户再也不会经过那一步，修复会静默丢失。改新建 `src/fork/background/repair-custom-actions.ts`，由 `setupFork()` 调用、幂等、读到 null 就跳过，形态照抄同目录的 `correct-legacy-translation-mode.ts`。`v085-to-v086.ts`(+test) 回退上游版
-- [ ] 4.11 新建 `src/fork/identity/redirect-baseline.json`（以 `from` 路径为键存内容指纹），`ui-redirect-plugin` 的 `buildStart` 比对当前内容与记录值，失配即硬失败并提示「上游改了此文件，对账后更新指纹」。这是对「buildStart 只断路径不比内容」的机械兜底。两个约束：**指纹不塞进 `wxt.config.ts`**（那是冲突最频繁的 allowlist 文件，加 20+ 个每次同步都变的字段等于给它加冲突面）；**算法用「LF 归一化后 sha256」**，不用 `git hash-object` 或读工作树——本仓 `.gitattributes` 是 `* text=auto eol=lf`，跨平台检出会假失配
-- [ ] 4.12 存量扫描的源码级条目降到 43（只剩回退档）；三浏览器构建全绿；提交
+- [x] 4.11 新建 `src/fork/identity/redirect-baseline.json`（以 `from` 路径为键存内容指纹），`ui-redirect-plugin` 的 `buildStart` 比对当前内容与记录值，失配即硬失败并提示「上游改了此文件，对账后更新指纹」。这是对「buildStart 只断路径不比内容」的机械兜底。两个约束：**指纹不塞进 `wxt.config.ts`**（那是冲突最频繁的 allowlist 文件，加 20+ 个每次同步都变的字段等于给它加冲突面）；**算法用「LF 归一化后 sha256」**，不用 `git hash-object` 或读工作树——本仓 `.gitattributes` 是 `* text=auto eol=lf`，跨平台检出会假失配
+- [x] 4.12 存量扫描的源码级条目降到 43（只剩回退档）；三浏览器构建全绿；提交
 
 ## 5. 回退档：纯视觉整体回退（41 个）
 

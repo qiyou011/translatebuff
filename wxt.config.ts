@@ -45,6 +45,32 @@ const forkChannelSuffix = forkChannelId ? `-${forkChannelId}` : "-{{browser}}"
 // 把上游 provider 选择器 / 选项 provider 页重定向到 fork 版（相对/@ import 都拦得住）。
 export const FORK_UI_REDIRECTS = [
   {
+    // popup 博客入口：上游直拼博客地址，本地预览下丢 hash 路由前缀。
+    from: path.resolve(__dirname, "src/entrypoints/popup/components/blog-notification.tsx"),
+    to: path.resolve(__dirname, "src/fork/ui/popup/blog-notification.tsx"),
+  },
+  {
+    // 品牌图标：上游把 read-frog.png import 死在多个组件顶部（悬浮球、字幕条），
+    // 逐个换皮组件太贵；直接重定向资源本身，一条覆盖全部引用点。
+    from: path.resolve(__dirname, "src/assets/icons/read-frog.png"),
+    to: path.resolve(__dirname, "src/fork/assets/renyimiao.svg"),
+  },
+  {
+    // options 功能示意区：上游用 read-frog 界面的静态截图，fork 换成实时 CSS 插画。
+    from: path.resolve(__dirname, "src/entrypoints/options/pages/context-menu/index.tsx"),
+    to: path.resolve(__dirname, "src/fork/ui/options/context-menu-page.tsx"),
+  },
+  {
+    // options 功能示意区：上游用 read-frog 界面的静态截图，fork 换成实时 CSS 插画。
+    from: path.resolve(__dirname, "src/entrypoints/options/pages/floating-button/index.tsx"),
+    to: path.resolve(__dirname, "src/fork/ui/options/floating-button-page.tsx"),
+  },
+  {
+    // options 功能示意区：上游用 read-frog 界面的静态截图，fork 换成实时 CSS 插画。
+    from: path.resolve(__dirname, "src/entrypoints/options/pages/selection-toolbar/index.tsx"),
+    to: path.resolve(__dirname, "src/fork/ui/options/selection-toolbar-page.tsx"),
+  },
+  {
     // 笔记库详情链接：本地预览走 hash 路由，上游直拼会 404。
     from: path.resolve(__dirname, "src/utils/notebase/pending-save.ts"),
     to: path.resolve(__dirname, "src/fork/utils/notebase-pending-save.ts"),

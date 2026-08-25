@@ -64,7 +64,7 @@ export default defineContentScript({
     const themeMode = await getLocalThemeMode()
 
     const ui = await createShadowRootUi(ctx, {
-      name: `${kebabCase(APP_NAME)}-overlay`,
+      name: kebabCase(APP_NAME),
       position: "overlay",
       anchor: "body",
       append: "last",

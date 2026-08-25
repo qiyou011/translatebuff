@@ -2,12 +2,10 @@ import "@/utils/zod-config"
 import type { ThemeMode } from "@/types/config/theme"
 import { Provider as JotaiProvider } from "jotai"
 import { useHydrateAtoms } from "jotai/utils"
+import readFrogLogo from "@/assets/icons/read-frog.png?url&no-inline"
 import { ThemeProvider } from "@/components/providers/theme-provider"
-import { BrandMark } from "@/fork/components/brand-mark"
 import { baseThemeModeAtom } from "@/utils/atoms/theme"
-import { getLocalConfig } from "@/utils/config/storage"
-import { DEFAULT_CONFIG } from "@/utils/constants/config"
-import { i18n, initI18n } from "@/utils/i18n"
+import { APP_NAME } from "@/utils/constants/app"
 import { renderPersistentReactRoot } from "@/utils/react-root"
 import { getLocalThemeMode } from "@/utils/theme"
 import "@fontsource-variable/onest/index.css"
@@ -29,14 +27,11 @@ function SidePanelShell() {
   return (
     <main className="flex min-h-screen flex-col bg-background px-5 py-6 text-foreground">
       <section className="flex flex-1 flex-col items-center justify-center gap-4 text-center">
-        <BrandMark
-          className="flex-col gap-3"
-          iconClassName="size-16 rounded-xl"
-          nameClassName="text-xl tracking-tight"
-        />
-        <p className="max-w-64 text-sm leading-6 text-pretty text-muted-foreground">
-          {i18n.t("extDescription")}
-        </p>
+        <img src={readFrogLogo} alt={APP_NAME} className="size-16 rounded-full" />
+        <div className="space-y-2">
+          <h1 className="text-xl font-semibold tracking-tight">{APP_NAME}</h1>
+          <p className="text-sm text-muted-foreground">Side Panel is coming soon.</p>
+        </div>
       </section>
     </main>
   )
@@ -46,8 +41,7 @@ async function initApp() {
   const root = document.getElementById("root")!
   root.className = "min-h-screen bg-background text-base antialiased"
 
-  const [configValue, themeMode] = await Promise.all([getLocalConfig(), getLocalThemeMode()])
-  await initI18n((configValue ?? DEFAULT_CONFIG).uiLanguage)
+  const themeMode = await getLocalThemeMode()
 
   renderPersistentReactRoot(
     root,

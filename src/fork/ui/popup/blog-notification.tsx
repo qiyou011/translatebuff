@@ -1,8 +1,11 @@
+// 换皮：上游 popup/components/blog-notification.tsx 的精确副本，只改一处——博客链接的拼法。
+// fork popup 确实渲染这个组件（右上角铃铛），链接直拼在本地预览下会 404。
 import { Icon } from "@iconify/react/dist/iconify.js"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { Button } from "@/components/ui/base-ui/button"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/base-ui/tooltip"
 import { env } from "@/env"
+import { buildBlogUrl } from "@/fork/ui/popup/blog-url"
 import {
   getBlogLocaleFromUILanguage,
   getLastViewedBlogDate,
@@ -34,9 +37,7 @@ export default function BlogNotification() {
     }
     // Open the latest blog post URL directly, or fallback to /blog if not available
     // Convert relative URL to absolute URL
-    const blogUrl = latestBlogPost?.url
-      ? `${env.WXT_WEBSITE_URL}${latestBlogPost.url}`
-      : `${env.WXT_WEBSITE_URL}/blog`
+    const blogUrl = buildBlogUrl(latestBlogPost?.url)
     window.open(blogUrl, "_blank")
   }
 
