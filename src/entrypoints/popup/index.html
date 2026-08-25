@@ -7,7 +7,13 @@
     <meta name="manifest.type" content="browser_action" />
   </head>
   <body class="!mr-0 min-w-[392px] bg-background">
-    <div id="root" class="min-h-72 w-[392px] bg-background text-foreground">
+    <!--
+      width 写成行内 style 而不是只靠 class：上游 main.tsx 初始化时会
+      `root.className = "... w-[320px] ..."` 整个覆盖 class，只留 class 的话
+      body 被 min-w-[392px] 撑到 392、#root 却缩回 320，右侧会露出一条白边。
+      style 属性不会被 className 赋值清掉。见 src/fork/ui/popup/__tests__/root-width.test.ts
+    -->
+    <div id="root" style="width: 392px" class="min-h-72 w-[392px] bg-background text-foreground">
       <div role="status" aria-live="polite" class="flex min-h-72 flex-col gap-3 px-4 py-3">
         <div class="flex h-10 items-center gap-2 rounded-lg bg-card px-3">
           <div class="size-5 rounded-md bg-muted"></div>
