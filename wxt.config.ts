@@ -51,6 +51,18 @@ const forkChannelSuffix = forkChannelId ? `-${forkChannelId}` : "-{{browser}}"
 // 把上游 provider 选择器 / 选项 provider 页重定向到 fork 版（相对/@ import 都拦得住）。
 export const FORK_UI_REDIRECTS = [
   {
+    // 反馈门户地址：上游指向自家 feedback.readfrog.app，任译喵走自己的反馈页。
+    // 换皮构造器一处覆盖两个入口（options 侧边栏、网页悬浮球）。
+    from: path.resolve(__dirname, "src/utils/featurebase.ts"),
+    to: path.resolve(__dirname, "src/fork/ui/options/featurebase.ts"),
+  },
+  {
+    // options 侧边栏「产品」组：上游是路线图 + 反馈、都指向它自家 Featurebase 门户；
+    // 任译喵没有路线图页，反馈走自己的站点。
+    from: path.resolve(__dirname, "src/entrypoints/options/app-sidebar/product-nav.tsx"),
+    to: path.resolve(__dirname, "src/fork/ui/options/product-nav.tsx"),
+  },
+  {
     // popup 语言选择器：上游写死 w-30，popup 加宽后中间留白过大，改成 flex-1 均分。
     from: path.resolve(__dirname, "src/entrypoints/popup/components/language-options-selector.tsx"),
     to: path.resolve(__dirname, "src/fork/ui/popup/language-options-selector.tsx"),

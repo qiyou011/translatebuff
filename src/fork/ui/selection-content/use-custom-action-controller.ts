@@ -21,6 +21,7 @@ import { ANALYTICS_FEATURE, ANALYTICS_SURFACE } from "@/types/analytics"
 import { createFeatureUsageContext, trackFeatureUsed } from "@/utils/analytics"
 import { UNKNOWN_FEATURE_PROVIDER } from "@/utils/analytics-provider"
 import { configFieldsAtomMap, writeConfigAtom } from "@/utils/atoms/config"
+import { getSelectionToolbarActions, patchSelectionToolbarAction } from "@/utils/custom-actions"
 import { onMessage } from "@/utils/message"
 import {
   getSelectableProvidersForCapability,
@@ -78,10 +79,10 @@ export function useSelectionCustomActionController() {
   const titleText = (webPageContext?.webTitle ?? document.title) || null
   const activeAction = useMemo(
     () =>
-      selectionToolbarConfig.customActions.find(
+      getSelectionToolbarActions(selectionToolbarConfig).find(
         (action) => action.enabled !== false && action.id === activeActionId,
       ) ?? null,
-    [activeActionId, selectionToolbarConfig.customActions],
+    [activeActionId, selectionToolbarConfig],
   )
   const customActionRequest = useMemo(
     () => ({
@@ -226,7 +227,7 @@ export function useSelectionCustomActionController() {
 
   const openContextMenuCustomAction = useCallback(
     (actionId: string) => {
-      const action = selectionToolbarConfig.customActions.find(
+      const action = getSelectionToolbarActions(selectionToolbarConfig).find(
         (candidate) => candidate.enabled !== false && candidate.id === actionId,
       )
       if (!action) {
@@ -276,7 +277,7 @@ export function useSelectionCustomActionController() {
         surface: ANALYTICS_SURFACE.CONTEXT_MENU,
       })
     },
-    [openActionRequest, resolveContextMenuOpenRequest, selectionToolbarConfig.customActions],
+    [openActionRequest, resolveContextMenuOpenRequest, selectionToolbarConfig],
   )
 
   const handleProviderChange = useCallback(
@@ -285,15 +286,12 @@ export function useSelectionCustomActionController() {
         return
       }
 
-      const updatedCustomActions = selectionToolbarConfig.customActions.map((action) =>
-        action.id === activeActionId ? { ...action, providerId } : action,
-      )
-
+      // 内置词典已不在 customActions 里，直接 map 那个数组会静默改不到它。
+      // patchSelectionToolbarAction 会按 id 落到正确的位置（内置 → builtInActions，自定义 → customActions）。
       void setConfig({
-        selectionToolbar: {
-          ...selectionToolbarConfig,
-          customActions: updatedCustomActions,
-        },
+        selectionToolbar: patchSelectionToolbarAction(selectionToolbarConfig, activeActionId, {
+          providerId,
+        }),
       })
     },
     [activeActionId, selectionToolbarConfig, setConfig],

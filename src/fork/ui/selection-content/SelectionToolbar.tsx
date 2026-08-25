@@ -30,6 +30,7 @@ import { buildContextSnapshot, readSelectionSnapshot } from "@/entrypoints/selec
 import { configFieldsAtomMap } from "@/utils/atoms/config"
 import { NOTRANSLATE_CLASS } from "@/utils/constants/dom-labels"
 import { MARGIN } from "@/utils/constants/selection"
+import { getSelectionToolbarActions } from "@/utils/custom-actions"
 import { cn } from "@/utils/styles/utils"
 import { matchDomainPattern } from "@/utils/url"
 import { CustomActionTrigger } from "./CustomActionTrigger"
@@ -506,8 +507,11 @@ export function SelectionToolbar() {
   )
 
   const { features } = selectionToolbar
-  const enabledCustomActions =
-    selectionToolbar.customActions?.filter((action) => action.enabled !== false) ?? []
+  // 上游 v1.43.6 把内置「词典」从 customActions 搬进了 builtInActions，
+  // 只读 customActions 会让词典按钮整个消失；getSelectionToolbarActions 统一取「内置 + 自定义」。
+  const enabledCustomActions = getSelectionToolbarActions(selectionToolbar).filter(
+    (action) => action.enabled !== false,
+  )
   const hasAnyEnabledFeature =
     features.translate.enabled || features.speak.enabled || enabledCustomActions.length > 0
 
