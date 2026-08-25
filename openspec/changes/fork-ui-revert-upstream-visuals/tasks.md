@@ -1,0 +1,212 @@
+# 阶段 0「还债」实施清单
+
+分叉点 SHA：`e15e5b68ee95f5f0f99368252e5d0a24fb14ca32`（下称 `$FORK_POINT`）
+工作分支：`fix/fork-ui-revert-upstream-visuals`，从 `change/fork-foundation` 切出，以 PR 合回 `change/fork-foundation`。
+
+> ⚠️ 本文的「回退档 / 搬迁档 / 清除档 / 资源档」与 `FORK.md` 的 A/B/C/D 类**无对应关系**，语义甚至相反（FORK.md 的 B 类 = 允许原地改，本文搬迁档 = 禁止原地改）。刻意不用字母命名以免误读。
+
+每档收尾统一验收：
+
+```bash
+pnpm run test
+pnpm run build && pnpm run build:edge && pnpm run build:firefox
+node scripts/assert-fork-build.mjs
+FORK_DIFF_BASE=origin/change/fork-foundation node scripts/check-fork-boundary.mjs   # 门禁（增量模式）
+FORK_SCAN_ALL=1 node scripts/check-fork-boundary.mjs                                # 排查用，不判成败
+pnpm vitest run --config vitest.fork.config.ts src/fork                             # fork 侧测试（重定向生效）
+```
+
+## 1. 基建：护栏的触发面与模式
+
+`scripts/fork-allowlist.json` **不加任何前缀字段**。109/110 的越界能进来，是因为 `fork-guard.yml` 只在 `on: pull_request: branches: [main]` 触发，而团队约定是 `feat/*`、`fix/*` 提 PR 到 `change/fork-foundation`——护栏在每一次日常 PR 上都不运行。
+
+- [x] 1.1 新建机读基线真源 `src/fork/identity/upstream-baseline.json`：`{ forkPointSha, lastSyncedSha, lastSyncedVersion }`，三项初值都是分叉点 / `1.42.2`。它只服务 `FORK_SCAN_ALL` 与 `FORK.md` 对账，**不参与同步模式基准推导**
+- [x] 1.2 先写失败测试 `scripts/__tests__/check-fork-boundary.test.ts`，四条：(a) 同步模式下纯上游文件 MUST NOT 判越界；(b) 增量模式下同一文件出现在 PR diff 里 MUST 判越界；(c) **HEAD 不是合并提交、且未给 `FORK_SYNC_BASE` 时，同步模式 MUST 报错退出**；(d) **推导或给定的基准若等于 base 分支 tip，MUST 判无效并硬失败**
+- [x] 1.3 跑测试确认红灯（当前脚本只有单一基准，无模式概念）
+- [x] 1.4 在 `check-fork-boundary.mjs` 实现两种模式。同步模式的基准**推导 + 校验**，注意三个坑：CI 里 `actions/checkout` 检出的是合成 merge ref，`git rev-parse HEAD^2` 拿到的是 PR 分支 tip（差集近乎为空、**空转恒绿**，比全判红更难发现）；本地跑到门禁那步 HEAD 早已不是合并提交；中途 `git merge change/fork-foundation` 跟一次 base 会污染第二父。- 推导：取本分支上最近一个「第二父不是 base 分支祖先」的 merge 提交的第二父；或由命令行 `FORK_SYNC_BASE=<sha>` 显式给定 - 校验（两条路径都必须过）：`git merge-base --is-ancestor $BASE HEAD` 成立，且 `git merge-base --is-ancestor $BASE origin/$BASE_REF` 不成立 - **推导失败或校验不过一律硬失败退出，绝不回落增量模式** - `FORK_SCAN_ALL=1` 从 `upstream-baseline.json` 读 `forkPointSha`；脚本与工作流里不得出现硬编码 SHA
+- [x] 1.5 跑绿 1.2 的四条测试
+- [x] 1.6 `.github/workflows/fork-guard.yml`：去掉 `on.pull_request.branches: [main]`；checkout 加 `ref: ${{ github.event.pull_request.head.sha }}`（保留 `fetch-depth: 0`），让 HEAD 就是分支 tip、不必从合成 merge 绕一层；按分支名分流，`feat/upstream-sync-*` 走 `FORK_SYNC_MODE=1`，其余走增量模式
+- [x] 1.7 新建 `vitest.fork.config.ts`（决策 10）：`mergeConfig` 根配置后追加 `forkUiRedirectPlugin(FORK_UI_REDIRECTS)`，并补进脚本的 `FORK_ROOT_FILES`。**根 `vitest.config.ts` 一个字不改、不进 allowlist**——全局注册会让上游自己的测试也解析到 fork 影子（`providers-config.test.tsx`、`feature-provider-selector-list.test.tsx`、`beta-gating.test.tsx`、`translate-text.test.tsx`），上游断言必然落空、`pnpm run test` 判红，修它只能改上游测试文件、又成越界。第 4 节所有「先红后绿」都依赖这一步
+- [ ] 1.8 ⏸ **待用户同意推分支**：用一个只改 `src/utils/message.ts` 一行的临时分支提 PR 到 `change/fork-foundation`，确认 `fork-guard` 这次真被触发且判红；验完关 PR、删分支
+- [ ] 1.9 ⏸ **由用户自行配置（2026-08-25：你不管）** · 人工检查点：在 GitHub 给 `main` 与 `change/*` 开分支保护（要求 PR 合入 + `fork-guard` 为必需检查），以 `gh api repos/qiyou011/translatebuff/branches/main/protection` 的输出为证贴进 PR。扩大触发面只覆盖「走 PR」的路径，直接本地 merge 这条路只有分支保护能堵——这是 109 个越界的真实来路，不闭环等于核心目标没达成
+- [ ] 1.10 ⏸ **待用户同意** 提交
+
+## 2. 资源档：fork 身份资源（32 个）
+
+- [ ] 2.1 3 个 fork 净新增迁进 fork 领地：`src/assets/icons/renyimiao.svg` → `src/fork/assets/renyimiao.svg`；`assets/renyimiao-icon.svg` → `src/fork/assets/renyimiao-icon.svg`；`.gitattributes` 补进脚本的 `FORK_ROOT_FILES` 集合
+- [ ] 2.2 全仓更新这两个 svg 的 import 路径，`pnpm run build` 确认资源仍进产物
+- [ ] 2.3 把以下 29 个上游素材/配置替换**逐条**追加进 `scripts/fork-allowlist.json` 的 `files` 数组（不用前缀）。同步模式的差集正是「fork 相对上游的自有改动」，这些必然出现在里面，不登记就判红：
+
+```
+.env.example
+assets/2025-recap.png
+assets/banner-zh.png
+assets/banner.png
+assets/opengraph.svg
+assets/read-frog-original.png
+assets/star.png
+assets/store/1.png
+assets/store/2.png
+assets/store/3.png
+assets/store/4.png
+assets/store/Marquee promo tile.png
+assets/store/Small promp tile.png
+assets/translate.png
+assets/wechat-account.jpg
+package.json
+public/icon/128.png
+public/icon/16-active.png
+public/icon/16.png
+public/icon/32-active.png
+public/icon/32.png
+public/icon/48-active.png
+public/icon/48.png
+public/icon/96.png
+src/assets/demo/context-menu.png
+src/assets/demo/floating-button.png
+src/assets/demo/selection-toolbar.png
+src/assets/icons/read-frog.png
+src/assets/providers/read-frog-provider.png
+```
+
+- [ ] 2.4 `FORK_SCAN_ALL=1 node scripts/check-fork-boundary.mjs` 确认这 29 条不再出现在 violations 里
+- [ ] 2.5 提交
+
+## 3. 清除档：丢弃与 take-theirs（8 个）
+
+> ⏸ **`.changeset/` 下 5 个 fork 自造的 changeset 本阶段不删**（用户 2026-08-25 决定：暂不，所有阶段完成后再说）。它们会继续出现在同步模式的差集里，需在 allowlist 登记为已知存量；待阶段 2 完成后再统一处理。
+
+- [ ] 3.1 删除上游已删的 2 个 options 页；`src/utils/config/migration.ts` 取分叉点版本。清单里的 5 个 `.changeset/*.md` **跳过不删**，改为登记进 allowlist：
+
+```
+.changeset/bright-birds-emphasize-translate.md
+.changeset/calm-cats-refine-ui.md
+.changeset/fresh-cats-rebrand-ui.md
+.changeset/kind-tools-showcase.md
+.changeset/quick-cats-open-popup.md
+src/entrypoints/options/pages/translation/auto-translate-languages.tsx
+src/entrypoints/options/pages/translation/skip-languages.tsx
+src/utils/config/migration.ts
+```
+
+- [ ] 3.2 `pnpm run test` 确认无测试引用被删文件
+- [ ] 3.3 把 5 个 `.changeset/*.md` 追加进 `scripts/fork-allowlist.json` 的 `files`（暂缓删除期间的已知存量）
+- [ ] 3.4 存量扫描的**源码级条目**降到 70（资源档 29 条与 5 个 changeset 已登记、不再计入）；提交
+
+## 4. 搬迁档：功能性改动搬进 src/fork（29 个）
+
+**每个文件三步走，逐文件独立完成、独立验证：**
+
+1. `git diff $FORK_POINT change/fork-foundation -- <file>` 打印 fork 改动，逐条确认哪些行为必须保留
+2. 在 `src/fork/` 下建模块承载该行为，写 fork 侧测试并用 `pnpm vitest run --config vitest.fork.config.ts src/fork` 跑（先红后绿）
+3. `git checkout $FORK_POINT -- <file>` 回退上游文件；若消费方是上游文件则加换皮重定向，断言 `git diff $FORK_POINT -- <file>` 为空
+
+**重定向判据（决策 8）**：只有 importer 在上游侧、fork 改不到其 import 语句时才加重定向。消费方本来就是 fork 模块的（如 `blog-notification` 由 `src/fork/ui/popup/App.tsx` 直接 import），搬进 fork 后改 import 即可，不占重定向名额。
+
+待搬迁清单：
+
+```
+src/components/api-config-warning.tsx
+src/components/brand-mark.tsx
+src/components/help-button.tsx
+src/components/user-account-menu/shared.tsx
+src/entrypoints/options/app-sidebar/__tests__/whats-new-footer.test.tsx
+src/entrypoints/options/components/overlay-feature-preview.tsx
+src/entrypoints/options/pages/context-menu/index.tsx
+src/entrypoints/options/pages/floating-button/index.tsx
+src/entrypoints/options/pages/selection-toolbar/index.tsx
+src/entrypoints/popup/atoms/auto-translate.ts
+src/entrypoints/popup/components/__tests__/blog-notification.test.tsx
+src/entrypoints/popup/components/blog-notification.tsx
+src/entrypoints/popup/components/discord-button.tsx
+src/entrypoints/popup/components/more-menu.tsx
+src/entrypoints/popup/components/providers-field.tsx
+src/entrypoints/popup/main.tsx
+src/entrypoints/selection.content/selection-toolbar/custom-action-button/__tests__/save-to-notebase-button.test.tsx
+src/entrypoints/side.content/components/floating-button/__tests__/index.test.tsx
+src/entrypoints/side.content/components/floating-button/index.tsx
+src/entrypoints/side.content/index.tsx
+src/entrypoints/sidepanel/main.tsx
+src/entrypoints/subtitles.content/ui/subtitles-translate-button.tsx
+src/utils/__tests__/notebase-pending-save.test.ts
+src/utils/config/__tests__/migration-scripts/v085-to-v086.test.ts
+src/utils/config/migration-scripts/v085-to-v086.ts
+src/utils/notebase/pending-save.ts
+src/utils/providers/provider-display.ts
+src/utils/providers/provider-registry.ts
+src/utils/utils.ts
+```
+
+- [ ] 4.1 品牌接线组：`brand-mark.tsx`、`api-config-warning.tsx`、`help-button.tsx`、`user-account-menu/shared.tsx` → `src/fork/components/`，链接统一走 `getWebsiteUrl`
+- [ ] 4.2 **先做 spike**（决策 9）：`ui-redirect-plugin.ts` 的 `resolveId` 在 `!importer` 时直接 return null，而 `popup/main.tsx`、`sidepanel/main.tsx` 是 HTML 入口模块、不是被 import 的模块——现有 11 条重定向没有一条是入口模块。写个最小验证确认重定向能否命中入口模块；**不成立就退回「上游 `main.tsx` 缩成 2 行壳 + 进 allowlist 走评审」**，与已有的 `app.tsx` 壳形态一致
+- [ ] 4.3 popup 组：`blog-notification.tsx`(+test)、`more-menu.tsx`、`discord-button.tsx`、`providers-field.tsx`、`atoms/auto-translate.ts` → `src/fork/ui/popup/`；`main.tsx` 按 4.2 的结论处理
+- [ ] 4.4 `providers-field.tsx` 里的 `selectedProviderIds` 去重单独写测试锁住——这是真 bug 修复（上游用 `providerKeyCounts` 允许重复 key），不是视觉改动，回退时最容易丢
+- [ ] 4.5 sidepanel 与 side.content 组：`sidepanel/main.tsx`（同 4.2 结论）、`side.content/index.tsx`（shadow host `-overlay` 后缀）、`side.content/components/floating-button/index.tsx`(+test)
+- [ ] 4.6 options 组：`overlay-feature-preview.tsx`(159 行) → `src/fork/ui/options/`；`context-menu`/`floating-button`/`selection-toolbar` 三个 index.tsx 回退到上游 demo 图版本；`app-sidebar/whats-new-footer` 测试回退
+- [ ] 4.7 provider 展示层：`provider-display.ts`、`provider-registry.ts` → `src/fork/providers/`，加两条重定向（importer 在上游侧，必须走重定向）
+- [ ] 4.8 utils 组：`utils.ts`（`getReviewUrl` 恢复上游、改由 fork 侧屏蔽入口）、`notebase/pending-save.ts`(+test) → `src/fork/utils/`
+- [ ] 4.9 字幕与划词组：`subtitles-translate-button.tsx`（logo）、`custom-action-button` 测试
+- [ ] 4.10 迁移脚本（决策 4）：**不要**把 customActions 修复搬进 `src/fork/config/migration.ts`——那条链只服务 fork 自己的 storage key，而这段修复修的是上游配置的 `selectionToolbar.customActions`；且回退 `v085-to-v086.ts` 后 schemaVersion ≥86 的存量用户再也不会经过那一步，修复会静默丢失。改新建 `src/fork/background/repair-custom-actions.ts`，由 `setupFork()` 调用、幂等、读到 null 就跳过，形态照抄同目录的 `correct-legacy-translation-mode.ts`。`v085-to-v086.ts`(+test) 回退上游版
+- [ ] 4.11 新建 `src/fork/identity/redirect-baseline.json`（以 `from` 路径为键存内容指纹），`ui-redirect-plugin` 的 `buildStart` 比对当前内容与记录值，失配即硬失败并提示「上游改了此文件，对账后更新指纹」。这是对「buildStart 只断路径不比内容」的机械兜底。两个约束：**指纹不塞进 `wxt.config.ts`**（那是冲突最频繁的 allowlist 文件，加 20+ 个每次同步都变的字段等于给它加冲突面）；**算法用「LF 归一化后 sha256」**，不用 `git hash-object` 或读工作树——本仓 `.gitattributes` 是 `* text=auto eol=lf`，跨平台检出会假失配
+- [ ] 4.12 存量扫描的源码级条目降到 41；三浏览器构建全绿；提交
+
+## 5. 回退档：纯视觉整体回退（41 个）
+
+- [ ] 5.1 对以下文件执行 `git checkout $FORK_POINT -- <file>`：
+
+```
+src/assets/styles/theme.css
+src/components/gradient-background.tsx
+src/components/provider-icon.tsx
+src/components/sortable-list.tsx
+src/components/ui/base-ui/badge.tsx
+src/components/ui/base-ui/button.tsx
+src/components/ui/base-ui/card.tsx
+src/components/ui/base-ui/combobox.tsx
+src/components/ui/base-ui/dialog.tsx
+src/components/ui/base-ui/dropdown-menu.tsx
+src/components/ui/base-ui/input.tsx
+src/components/ui/base-ui/popover.tsx
+src/components/ui/base-ui/progress.tsx
+src/components/ui/base-ui/select.tsx
+src/components/ui/base-ui/sidebar.tsx
+src/components/ui/base-ui/switch.tsx
+src/components/ui/base-ui/tabs.tsx
+src/components/ui/base-ui/textarea.tsx
+src/components/ui/selection-popover/index.tsx
+src/entrypoints/options/app-sidebar/whats-new-footer.tsx
+src/entrypoints/options/components/config-card.tsx
+src/entrypoints/options/components/metric-card.tsx
+src/entrypoints/options/components/page-layout.tsx
+src/entrypoints/options/pages/config/google-drive-sync/index.tsx
+src/entrypoints/options/style.css
+src/entrypoints/popup/components/ai-smart-context.tsx
+src/entrypoints/popup/components/always-translate.tsx
+src/entrypoints/popup/components/floating-button.tsx
+src/entrypoints/popup/components/language-options-selector.tsx
+src/entrypoints/popup/components/node-translation-hotkey-selector.tsx
+src/entrypoints/popup/components/site-control-toggle.tsx
+src/entrypoints/popup/components/translate-prompt-selector.tsx
+src/entrypoints/selection.content/components/copy-button.tsx
+src/entrypoints/selection.content/components/selection-toolbar-footer-content.tsx
+src/entrypoints/selection.content/components/speak-button.tsx
+src/entrypoints/selection.content/selection-toolbar/custom-action-button/custom-action-tool-button.tsx
+src/entrypoints/selection.content/selection-toolbar/index.tsx
+src/entrypoints/subtitles.content/ui/subtitles-settings-panel/panel-shell.tsx
+src/entrypoints/translation-hub/components/text-input.tsx
+src/entrypoints/translation-hub/components/translation-card.tsx
+src/entrypoints/translation-hub/components/translation-panel.tsx
+```
+
+- [ ] 5.2 `pnpm run test`——跟随视觉改过的断言会一起回退；若有测试失败说明该文件其实属于搬迁档，退回第 4 节处理
+- [ ] 5.3 三浏览器构建全绿
+- [ ] 5.4 `FORK_SCAN_ALL=1 node scripts/check-fork-boundary.mjs` 的输出里不再有任何 `.ts`/`.tsx`/`.css` 条目
+- [ ] 5.5 提交
+
+## 6. 收尾验收
+
+- [ ] 6.1 干跑合并复测：`git merge-tree --write-tree --name-only HEAD fe2957c8` 冲突数应为 12（9 个 locales + `wxt.config.ts` + `src/utils/constants/app.ts` + `src/entrypoints/popup/app.tsx`），命令原文与输出贴进 PR
+- [ ] 6.2 人工冒烟：popup 打开、网页翻译、划词翻译、字幕按钮、选项页各 tab、登录入口——确认视觉是上游样式但品牌 logo 与站点链接仍指向任译喵
+- [ ] 6.3 确认 Discord / GitHub issues / 上游商店评价三个入口仍不可见
+- [ ] 6.4 更新 `FORK_GUIDE.md` §3、§6 与 `FORK.md`：登记新增重定向条目与 `redirect-baseline.json` 内容指纹机制、把「禁止原地改上游 UI」写成红线、记录两种边界检查模式的用法
+- [ ] 6.5 提 PR 到 `change/fork-foundation`，等人工审核

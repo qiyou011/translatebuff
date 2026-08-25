@@ -43,7 +43,7 @@ const forkChannelSuffix = forkChannelId ? `-${forkChannelId}` : "-{{browser}}"
 
 // fork「换皮」重定向：不编辑上游 composed UI 源文件，改由 resolve 插件按解析后的绝对路径
 // 把上游 provider 选择器 / 选项 provider 页重定向到 fork 版（相对/@ import 都拦得住）。
-const FORK_UI_REDIRECTS = [
+export const FORK_UI_REDIRECTS = [
   {
     // 微软翻译适配器：上游旧鉴权端点已下线（404），修复后的免鉴权实现放在 fork 侧。
     // 三个 importer（execute-translate、api/index 桶导出、background/translation-queues）
