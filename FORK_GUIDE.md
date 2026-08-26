@@ -90,6 +90,8 @@ FORK_DIFF_BASE=origin/main node scripts/check-fork-boundary.mjs
 | `package.json` 的 `version`、`CHANGELOG.md`            | 上游发版重写；fork 发版号另走（见 §5）             |
 | `pnpm-lock.yaml`、`.changeset/**`                      | lock 用 `pnpm install` 重生成；changeset 休眠不删  |
 
+> `.changeset/**` 的「不删」只针对**上游写的** changeset（take-theirs 休眠即可）。**fork 自己不要新写 changeset**——fork 永不跑 `changeset version`，写了也不会被消费，只会长期挂在差集里当噪音。fork 发版走 §5。
+
 **冲突解法**：`git checkout --theirs <file>`。fork 要扩能力 → 一律另写到 `src/fork/`。
 
 ### 🟡 B 类 · 允许原地改（受 allowlist 管控）

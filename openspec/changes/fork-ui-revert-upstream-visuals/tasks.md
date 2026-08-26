@@ -77,6 +77,8 @@ src/assets/providers/read-frog-provider.png
 ## 3. 清除档：丢弃与 take-theirs（8 个）
 
 > ⏸ **`.changeset/` 下 5 个 fork 自造的 changeset 本阶段不删**（用户 2026-08-25 决定：暂不，所有阶段完成后再说）。它们会继续出现在同步模式的差集里，需在 allowlist 登记为已知存量；待阶段 2 完成后再统一处理。
+>
+> ✅ **已了结（2026-08-26）**：三阶段同步全部合入后，用户确认删除。5 个文件已 `git rm`，allowlist 对应 5 条同步移除（62 → 57 条）。
 
 > 📌 **施工修正**：原清单里的 `auto-translate-languages.tsx`、`skip-languages.tsx` **不在本节删除**。「上游已删」是阶段 2 合并后的事实，阶段 0 尚未 merge，两者仍被 `options/pages/translation/index.tsx` import，删掉即构建失败。已改归第 5 节回退档（取分叉点版本），阶段 2 才作为 modify/delete 冲突 `git rm`。
 
