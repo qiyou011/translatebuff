@@ -3,9 +3,8 @@ import type { Config } from "@/types/config/config"
 import type { ProviderConfig } from "@/types/config/provider"
 import type { FeatureKey } from "@/utils/constants/feature-providers"
 import { useAtomValue, useSetAtom } from "jotai"
-import { Field, FieldGroup, FieldLabel } from "@/components/ui/base-ui/field"
+import { Field, FieldGroup } from "@/components/ui/base-ui/field"
 import ForkProviderSelector from "@/fork/components/provider-selector"
-import { providerSupportsTranslationOnlyMode } from "@/fork/providers/translation-only-gate"
 import { useEnsureRenyimiaoSeeded } from "@/fork/providers/use-ensure-renyimiao-seeded"
 import {
   RenyimiaoGatedFallback,
@@ -20,16 +19,14 @@ import {
   getFeatureLabelI18nKey,
 } from "@/utils/constants/feature-providers"
 import { i18n } from "@/utils/i18n"
-import { isProviderSelectorItem } from "@/utils/providers/provider-display"
+import { isSystemProviderSelectorItem } from "@/utils/providers/provider-display"
+import { providerSupportsTranslationOnlyMode } from "@/utils/providers/translation-only-gate"
 import { cn } from "@/utils/styles/utils"
 
 // fork 换皮版选项页「功能提供商」宿主：由 wxt.config resolve 重定向顶替上游 feature-provider-selector-list。
 // 复刻上游结构（Field/FieldGroup/FieldLabel + props 面），选择器换 fork ForkProviderSelector；未登录/无 key 时
 // 对任译喵施加与 popup 一致的门禁（共享 useRenyimiaoGatedProviders + RenyimiaoGatedFallback）。挂载时
 // useEnsureRenyimiaoSeeded() 与 popup / 选项页「API 提供商」页对齐，堵首装直开「通用」页的门禁前置缺口。
-// needsApiKeyWarning 直接 re-export 上游（wxt 重定向自引豁免不自环）——上游 feature-providers-config
-// 从本模块具名导入 FeatureProviderSelectorList + needsApiKeyWarning 两个名字。
-export { needsApiKeyWarning } from "@/components/llm-providers/feature-provider-selector-list"
 
 type ProviderSelectorTriggerSize = ComponentProps<typeof ForkProviderSelector>["triggerSize"]
 
@@ -58,15 +55,15 @@ function FeatureProviderField({
   const providerId = FEATURE_PROVIDER_DEFS[featureKey].getProviderId(config)
   const providerConfig = getProviderConfigById(providersConfig, providerId) ?? null
   const { providers, showFallback } = useRenyimiaoGatedProviders(featureKey, providerId)
-  // 微软的免鉴权端点无保留标记模式，与仅译文组合会损坏页面（见 fork/providers/translation-only-gate）。
+  // 微软的免鉴权端点无保留标记模式，与仅译文组合会损坏页面（上游 v1.46.4 起自带该门禁，见 utils/providers/translation-only-gate）。
   // 判定放在这里而不是 ForkProviderSelector 内部：那个组件被 4 个上游 importer 共用，
   // 在里面按 mode 置灰会连带灰掉语言检测 / 自定义动作 / 划词工具栏的微软。
   const disabledProviderIds =
-    featureKey === "translate" && config.translate.mode === "translationOnly"
+    featureKey === "pageTranslation" && config.pageTranslation.mode === "translationOnly"
       ? providers
           .filter(
             (provider) =>
-              !isProviderSelectorItem(provider) &&
+              !isSystemProviderSelectorItem(provider) &&
               !providerSupportsTranslationOnlyMode(provider.provider),
           )
           .map((provider) => provider.id)
@@ -74,11 +71,13 @@ function FeatureProviderField({
 
   return (
     <Field>
-      <FieldLabel nativeLabel={false} render={<div className="flex flex-wrap" />}>
+      {/* 上游 v1.46.4 把 FieldLabel 换成原生 Label（无 nativeLabel/render），
+          这里只是不关联控件的标题行，直接用 div。 */}
+      <div className="flex w-fit flex-wrap gap-2 text-sm leading-snug font-medium">
         {i18n.t(getFeatureLabelI18nKey(featureKey))}
         {/* 任译喵门禁（showFallback）时抑制上游缺 key 警告，改由下方登录引导承载；仅非任译喵缺 key 走上游警告。 */}
         {!showFallback && renderApiKeyWarning?.(providerConfig)}
-      </FieldLabel>
+      </div>
       {showFallback ? (
         <RenyimiaoGatedFallback />
       ) : (
@@ -110,17 +109,14 @@ function CustomActionProviderField({
   const setConfig = useSetAtom(writeConfigAtom)
   const providersConfig = useAtomValue(configFieldsAtomMap.providersConfig)
   const currentProviderConfig = getProviderConfigById(providersConfig, action.providerId) ?? null
-  const { providers, showFallback } = useRenyimiaoGatedProviders(
-    "selectionToolbar.customAction",
-    action.providerId,
-  )
+  const { providers, showFallback } = useRenyimiaoGatedProviders("customAction", action.providerId)
 
   return (
     <Field>
-      <FieldLabel nativeLabel={false} render={<div />}>
+      <div className="flex w-fit flex-wrap gap-2 text-sm leading-snug font-medium">
         {action.name}
         {!showFallback && renderApiKeyWarning?.(currentProviderConfig)}
-      </FieldLabel>
+      </div>
       {showFallback ? (
         <RenyimiaoGatedFallback />
       ) : (
@@ -140,9 +136,7 @@ function CustomActionProviderField({
           }}
           className={providerSelectorClassName}
           triggerSize={providerSelectorTriggerSize}
-          placeholder={i18n.t(
-            "options.floatingButtonAndToolbar.selectionToolbar.customActions.form.selectProvider",
-          )}
+          placeholder={i18n.t("options.selectionToolbar.customActions.form.selectProvider")}
         />
       )}
     </Field>
@@ -170,7 +164,7 @@ function CustomActionProviderFields({
   return (
     <>
       <p className="text-sm font-medium text-muted-foreground">
-        {i18n.t("options.general.featureProviders.customActions")}
+        {i18n.t("options.selectionToolbar.customActions.title")}
       </p>
       {customActions.map((action) => (
         <CustomActionProviderField

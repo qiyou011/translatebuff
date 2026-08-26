@@ -66,6 +66,21 @@ function hasRenyimiaoApiUrl(envText) {
   return Boolean(match && match[1].trim() !== "")
 }
 
+// 上游 v1.46.4 引入 partner-bridge 内容脚本，往合作方站点注入脚本（Jalapeno Cloud）。
+// 该能力对任译喵毫无用处，却会在 manifest 里多一条对外可见的站点注入权限，国内商店过审敏感。
+// 删 entrypoint 是一次性的，这条断言防的是「下次同步又被带回来」。
+const PARTNER_SITE_TOKENS = ["jalapeno-cloud.ai"]
+
+export function findPartnerSiteHits(manifest) {
+  const patterns = [
+    ...(manifest.host_permissions ?? []),
+    ...(manifest.content_scripts ?? []).flatMap((entry) => entry.matches ?? []),
+  ]
+  return patterns.filter((pattern) =>
+    PARTNER_SITE_TOKENS.some((token) => String(pattern).includes(token)),
+  )
+}
+
 function walk(dir, acc = []) {
   for (const entry of readdirSync(dir, { withFileTypes: true })) {
     const p = join(dir, entry.name)
@@ -136,6 +151,21 @@ if (import.meta.url === pathToFileURL(process.argv[1]).href) {
     console.warn(
       `提示：产物仍含上游域名（默认回退字面量或未重建的 UI 链接，待完整 UI 重建清理）: ${residual.join(", ")}`,
     )
+  }
+
+  // 合作方站点注入权限：上游 partner-bridge 内容脚本会把 jalapeno-cloud.ai 写进 manifest，
+  // 国内商店过审敏感。删 entrypoint 是一次性的，这里防的是下次同步又被带回来。
+  try {
+    const manifest = JSON.parse(readFileSync(join(outDir, "manifest.json"), "utf8"))
+    const partnerHits = findPartnerSiteHits(manifest)
+    if (partnerHits.length > 0) {
+      console.error("产物 manifest 含合作方站点注入权限（应随 partner-bridge 一并删除）:")
+      for (const hit of partnerHits) console.error(`  - ${hit}`)
+      process.exit(1)
+    }
+  } catch (error) {
+    console.error(`无法读取产物 manifest 做合作方站点断言: ${error.message}`)
+    process.exit(1)
   }
 
   console.log("Fork build domain check OK（fork 域名已生效）")

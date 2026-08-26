@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest"
 import { storage } from "#imports"
-import { DEFAULT_PROVIDER_HEADERS } from "../headers"
+import { FORCED_PROVIDER_HEADERS } from "@/utils/constants/providers"
 
 let getStorageItemMock: ReturnType<typeof vi.fn>
 
@@ -9,16 +9,19 @@ const {
   azureChatModelMock,
   azureLanguageModelMock,
   openAICompatibleLanguageModelMock,
+  openResponsesLanguageModelMock,
   ollamaLanguageModelMock,
   createAnthropicMock,
   createAzureMock,
   createOllamaMock,
   createOpenAICompatibleMock,
+  createOpenResponsesMock,
 } = vi.hoisted(() => {
   const innerAnthropicLanguageModelMock = vi.fn<(...args: any[]) => any>()
   const innerAzureChatModelMock = vi.fn<(...args: any[]) => any>()
   const innerAzureLanguageModelMock = vi.fn<(...args: any[]) => any>()
   const innerOpenAICompatibleLanguageModelMock = vi.fn<(...args: any[]) => any>()
+  const innerOpenResponsesLanguageModelMock = vi.fn<(...args: any[]) => any>()
   const innerOllamaLanguageModelMock = vi.fn<(...args: any[]) => any>()
   const innerCreateAnthropicMock = vi.fn<(...args: any[]) => any>(
     (_options?: Record<string, unknown>) => ({
@@ -36,6 +39,11 @@ const {
       languageModel: innerOpenAICompatibleLanguageModelMock,
     }),
   )
+  const innerCreateOpenResponsesMock = vi.fn<(...args: any[]) => any>(
+    (_options?: Record<string, unknown>) => ({
+      languageModel: innerOpenResponsesLanguageModelMock,
+    }),
+  )
   const innerCreateOllamaMock = vi.fn<(...args: any[]) => any>(
     (_options?: Record<string, unknown>) => ({
       languageModel: innerOllamaLanguageModelMock,
@@ -47,11 +55,13 @@ const {
     azureChatModelMock: innerAzureChatModelMock,
     azureLanguageModelMock: innerAzureLanguageModelMock,
     openAICompatibleLanguageModelMock: innerOpenAICompatibleLanguageModelMock,
+    openResponsesLanguageModelMock: innerOpenResponsesLanguageModelMock,
     ollamaLanguageModelMock: innerOllamaLanguageModelMock,
     createAnthropicMock: innerCreateAnthropicMock,
     createAzureMock: innerCreateAzureMock,
     createOllamaMock: innerCreateOllamaMock,
     createOpenAICompatibleMock: innerCreateOpenAICompatibleMock,
+    createOpenResponsesMock: innerCreateOpenResponsesMock,
   }
 })
 
@@ -65,6 +75,10 @@ vi.mock("@ai-sdk/azure", () => ({
 
 vi.mock("@ai-sdk/openai-compatible", () => ({
   createOpenAICompatible: createOpenAICompatibleMock,
+}))
+
+vi.mock("@ai-sdk/open-responses", () => ({
+  createOpenResponses: createOpenResponsesMock,
 }))
 
 vi.mock("ai-sdk-ollama", () => ({
@@ -127,6 +141,7 @@ describe("getModelById", () => {
     azureChatModelMock.mockReturnValue("azure-chat-model")
     azureLanguageModelMock.mockReturnValue("azure-model")
     openAICompatibleLanguageModelMock.mockReturnValue("custom-model")
+    openResponsesLanguageModelMock.mockReturnValue("custom-responses-model")
     ollamaLanguageModelMock.mockReturnValue("ollama-model")
     getStorageItemMock = vi.fn<(...args: any[]) => any>()
     ;(storage.getItem as unknown as ReturnType<typeof vi.fn>) = getStorageItemMock
@@ -144,7 +159,7 @@ describe("getModelById", () => {
     expect(createAnthropicMock).toHaveBeenCalledWith(
       expect.objectContaining({
         apiKey: "test-key",
-        headers: DEFAULT_PROVIDER_HEADERS.anthropic,
+        headers: FORCED_PROVIDER_HEADERS.anthropic,
       }),
     )
     expect(anthropicLanguageModelMock).toHaveBeenCalledWith("claude-haiku-4-5")
@@ -164,10 +179,11 @@ describe("getModelById", () => {
         name: "openrouter",
         baseURL: "https://openrouter.ai/api/v1",
         apiKey: "test-key",
-        headers: DEFAULT_PROVIDER_HEADERS.openrouter,
+        headers: FORCED_PROVIDER_HEADERS.openrouter,
         supportsStructuredOutputs: true,
       }),
     )
+    expect(createOpenAICompatibleMock.mock.calls[0]?.[0]).not.toHaveProperty("url")
     expect(openAICompatibleLanguageModelMock).toHaveBeenCalledWith("x-ai/grok-4-fast:free")
   })
 
@@ -276,7 +292,7 @@ describe("getModelById", () => {
     expect(azureLanguageModelMock).not.toHaveBeenCalled()
   })
 
-  it("uses user headers as a full override for Anthropic", async () => {
+  it("merges user headers over Anthropic's forced browser-access header", async () => {
     getStorageItemMock.mockResolvedValue({
       providersConfig: [createAnthropicProviderConfig({ "X-Test": "1" })],
     })
@@ -288,12 +304,13 @@ describe("getModelById", () => {
       expect.objectContaining({
         headers: {
           "X-Test": "1",
+          ...FORCED_PROVIDER_HEADERS.anthropic,
         },
       }),
     )
   })
 
-  it("omits headers for Anthropic when user headers are an explicit empty object", async () => {
+  it("still sends Anthropic's forced header when user headers are an explicit empty object", async () => {
     getStorageItemMock.mockResolvedValue({
       providersConfig: [createAnthropicProviderConfig({})],
     })
@@ -301,7 +318,11 @@ describe("getModelById", () => {
     const { getModelById } = await import("../model")
     await getModelById("anthropic-default")
 
-    expect(createAnthropicMock.mock.calls[0]?.[0]).not.toHaveProperty("headers")
+    expect(createAnthropicMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        headers: FORCED_PROVIDER_HEADERS.anthropic,
+      }),
+    )
   })
 
   it("passes custom headers for OpenAI-compatible providers", async () => {
@@ -345,5 +366,46 @@ describe("getModelById", () => {
     expect(openAICompatibleLanguageModelMock).toHaveBeenCalledWith(
       "huihui-hy-mt1.5-1.8b-abliterated",
     )
+  })
+
+  it("uses the configured full endpoint for Open Responses providers", async () => {
+    getStorageItemMock.mockResolvedValue({
+      providersConfig: [
+        {
+          id: "custom-responses",
+          name: "Custom Responses",
+          enabled: true,
+          provider: "open-responses",
+          apiKey: "custom-key",
+          url: "http://127.0.0.1:1234/v1/responses",
+          model: {
+            model: "use-custom-model",
+            isCustomModel: true,
+            customModel: "gpt-oss-120b",
+          },
+          headers: {
+            "X-Test": "1",
+          },
+        },
+      ],
+    })
+
+    const { getModelById } = await import("../model")
+    const result = await getModelById("custom-responses")
+
+    expect(result).toBe("custom-responses-model")
+    expect(createOpenResponsesMock).toHaveBeenCalledWith({
+      name: "open-responses",
+      url: "http://127.0.0.1:1234/v1/responses",
+      apiKey: "custom-key",
+      headers: {
+        "X-Test": "1",
+      },
+    })
+    expect(createOpenResponsesMock.mock.calls[0]?.[0]).not.toHaveProperty("baseURL")
+    expect(createOpenResponsesMock.mock.calls[0]?.[0]).not.toHaveProperty(
+      "supportsStructuredOutputs",
+    )
+    expect(openResponsesLanguageModelMock).toHaveBeenCalledWith("gpt-oss-120b")
   })
 })

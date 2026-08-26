@@ -73,7 +73,7 @@ describe("initializeConfig", () => {
 
   function translateProviderIdsOf(config: Config) {
     return [
-      config.translate.providerId,
+      config.pageTranslation.providerId,
       config.selectionToolbar.features.translate.providerId,
       config.inputTranslation.providerId,
       config.videoSubtitles.providerId,
@@ -106,7 +106,7 @@ describe("initializeConfig", () => {
     expect(setItemMock).toHaveBeenCalledTimes(1)
     expect(setItemMock).toHaveBeenCalledWith("local:config", expect.any(Object))
     const freshConfig = setItemMock.mock.calls[0]?.[1] as Config
-    for (const providerId of ["openai-default", "deepseek-default", "atlascloud-default"]) {
+    for (const providerId of ["openai-default", "jalapenocloud-default", "atlascloud-default"]) {
       expect(freshConfig.providersConfig.find((provider) => provider.id === providerId)).toEqual(
         expect.objectContaining({ description: expect.any(String) }),
       )
@@ -152,7 +152,7 @@ describe("initializeConfig", () => {
     expect(isFreshInstall).toBe(false)
   })
 
-  it("reports a fresh install when an unparseable config is rebuilt", async () => {
+  it("reports recovery from an unparseable config as a fresh install so the provider probe reruns", async () => {
     getItemMock.mockResolvedValueOnce({ not: "a config" })
     getMetaMock.mockResolvedValueOnce({
       schemaVersion: CONFIG_SCHEMA_VERSION,

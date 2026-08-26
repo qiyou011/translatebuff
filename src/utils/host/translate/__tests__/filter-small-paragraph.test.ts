@@ -22,16 +22,16 @@ function createConfig({
   minWords = 0,
   userRules = [],
 }: {
-  mode?: Config["translate"]["mode"]
+  mode?: Config["pageTranslation"]["mode"]
   minCharacters?: number
   minWords?: number
   userRules?: SiteRule[]
 } = {}): Config {
   const config = structuredClone(DEFAULT_CONFIG)
   config.language.sourceCode = "eng"
-  config.translate.mode = mode
-  config.translate.page.minCharactersPerNode = minCharacters
-  config.translate.page.minWordsPerNode = minWords
+  config.pageTranslation.mode = mode
+  config.pageTranslation.page.minCharactersPerNode = minCharacters
+  config.pageTranslation.page.minWordsPerNode = minWords
   config.siteRules.userRules = userRules
   return config
 }
@@ -120,9 +120,11 @@ describe.each(["bilingual", "translationOnly"] as const)("%s translation", (mode
     await translateNodes([textNode], "walk-id", false, createConfig({ mode }))
 
     expect(mocks.translateTextForPage).toHaveBeenCalledOnce()
-    expect(mocks.translateTextForPage).toHaveBeenCalledWith(
-      "Hello @openai",
-      mode === "translationOnly" ? "html" : "plain",
-    )
+    // Bilingual passes a trailing actionContext/options pair; the
+    // translationOnly html path calls with (text, format) only — assert on
+    // the leading args shared by both shapes.
+    const callArgs = mocks.translateTextForPage.mock.calls.at(-1)!
+    expect(callArgs[0]).toBe("Hello @openai")
+    expect(callArgs[1]).toBe(mode === "translationOnly" ? "html" : "plain")
   })
 })

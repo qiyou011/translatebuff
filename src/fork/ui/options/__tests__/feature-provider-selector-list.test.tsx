@@ -34,10 +34,10 @@ const MICROSOFT_NAME = TRANSLATE_PROVIDERS.find(
   (provider) => provider.provider === "microsoft-translate",
 )!.name
 
-function buildConfig(mode: Config["translate"]["mode"]): Config {
+function buildConfig(mode: Config["pageTranslation"]["mode"]): Config {
   return {
     ...DEFAULT_CONFIG,
-    translate: { ...DEFAULT_CONFIG.translate, mode },
+    pageTranslation: { ...DEFAULT_CONFIG.pageTranslation, mode },
   }
 }
 

@@ -57,21 +57,21 @@ describe("dEFAULT_CONFIG", () => {
       "microsoft-translate-default",
       "google-translate-default",
       "openai-default",
-      "deepseek-default",
+      "jalapenocloud-default",
       "atlascloud-default",
     ])
-    expect(DEFAULT_CONFIG.translate.providerId).toBe("microsoft-translate-default")
+    expect(DEFAULT_CONFIG.pageTranslation.providerId).toBe("microsoft-translate-default")
     expect(DEFAULT_CONFIG.selectionToolbar.features.translate.providerId).toBe(
       "microsoft-translate-default",
     )
     expect(DEFAULT_CONFIG.inputTranslation.providerId).toBe("microsoft-translate-default")
     expect(DEFAULT_CONFIG.videoSubtitles.providerId).toBe("microsoft-translate-default")
     expect(
-      DEFAULT_CONFIG.providersConfig.find((provider) => provider.id === "deepseek-default"),
+      DEFAULT_CONFIG.providersConfig.find((provider) => provider.id === "jalapenocloud-default"),
     ).toEqual(
       expect.objectContaining({
         model: {
-          model: "deepseek-v4-flash",
+          model: "GLM-5.2",
           isCustomModel: false,
           customModel: null,
         },
@@ -88,6 +88,31 @@ describe("dEFAULT_CONFIG", () => {
         },
       }),
     )
+  })
+
+  it("defaults fresh hover translation off", async () => {
+    const { DEFAULT_CONFIG } = await import("../config")
+
+    expect(DEFAULT_CONFIG.pageTranslation.node.forceRetranslation).toBe(false)
+  })
+
+  it("keeps pre-v090 config parseable until the background migration runs", async () => {
+    const { DEFAULT_CONFIG } = await import("../config")
+    const { configSchema } = await import("@/types/config/config")
+    const legacyConfig = structuredClone(DEFAULT_CONFIG)
+    const legacyNode = legacyConfig.pageTranslation.node as Partial<
+      typeof legacyConfig.pageTranslation.node
+    >
+
+    delete legacyNode.forceRetranslation
+    legacyConfig.language.targetCode = "jpn"
+
+    const result = configSchema.safeParse(legacyConfig)
+
+    expect(result.success).toBe(true)
+    if (!result.success) return
+    expect(result.data.pageTranslation.node.forceRetranslation).toBe(false)
+    expect(result.data.language.targetCode).toBe("jpn")
   })
 
   it("rebuilds schema-valid built-in action state for persistence", async () => {

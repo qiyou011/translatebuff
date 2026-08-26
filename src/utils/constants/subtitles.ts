@@ -14,6 +14,7 @@ export const SENTENCE_END_PATTERN = /[,.。?？！!；;…؟۔\n]$/
 export const TRANSLATION_BATCH_SIZE = 5
 export const TRANSLATE_LOOK_AHEAD_MS = 30_000
 export const PROCESS_LOOK_AHEAD_MS = 60_000
+export const MAX_LOOKAHEAD_RATE = 4
 
 // DOM IDs
 export const READ_FROG_SUBTITLES_UI_HOST_ID = "read-frog-subtitles-ui-host"
@@ -29,6 +30,7 @@ export const TRANSLATE_BUTTON_CLASS = "read-frog-subtitles-translate-button"
 export const YOUTUBE_WATCH_URL_PATTERN = "youtube.com/watch"
 export const YOUTUBE_EMBED_PATH_PATTERN = /\/embed\/[^/?]+/
 export const YOUTUBE_SHORTS_PATH_PATTERN = /\/shorts\/[^/?]+/
+export const YOUTUBE_LIVE_PATH_PATTERN = /\/live\/[^/?]+/
 export const YOUTUBE_NAVIGATE_START_EVENT = "yt-navigate-start"
 export const YOUTUBE_NAVIGATE_FINISH_EVENT = "yt-navigate-finish"
 export const YOUTUBE_NATIVE_SUBTITLES_CLASS = ".ytp-caption-window-container"
@@ -67,6 +69,8 @@ export const DEFAULT_DISPLAY_MODE = "bilingual" as const
 export const DEFAULT_TRANSLATION_POSITION = "above" as const
 export const DEFAULT_CONTROLS_HEIGHT = 60
 export const DEFAULT_SUBTITLE_POSITION = { percent: 10, anchor: "bottom" } as const
+// Mnemonic for "captions", and it echoes YouTube's own `C` key without taking it over.
+export const DEFAULT_SUBTITLES_TOGGLE_SHORTCUT_KEY = "Alt+C"
 // Subtitle controls sit on top of arbitrary host pages, so keep their theme fixed for readability.
 export const SUBTITLES_THEME = "dark" as const
 
@@ -81,4 +85,3 @@ export const SUBTITLE_FONT_FAMILIES = {
 // Subtitles source
 export const SUBTITLES_SOURCE = { NATIVE: "native", AI: "ai" } as const
 export type SubtitlesSource = (typeof SUBTITLES_SOURCE)[keyof typeof SUBTITLES_SOURCE]
-export const VIDEO_TRANSCRIPTION_APPLY_URL = "https://tally.so/r/7Rzb96"

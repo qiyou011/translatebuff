@@ -6,12 +6,18 @@ import { useFieldContext } from "./form-context"
 export function InputFieldAutoSave({
   formForSubmit,
   label,
+  labelAfter,
   labelExtra,
   type,
   ...props
 }: {
   formForSubmit: { handleSubmit: () => void }
   label: React.ReactNode
+  /**
+   * Sits immediately beside the label, outside the `<label>` element — a link or button nested
+   * inside one would be invalid markup and would also steal the label's click.
+   */
+  labelAfter?: React.ReactNode
   labelExtra?: React.ReactNode
 } & React.InputHTMLAttributes<HTMLInputElement>) {
   const field = useFieldContext<string | number | undefined>()
@@ -38,11 +44,12 @@ export function InputFieldAutoSave({
   }
 
   return (
-    <Field invalid={hasError}>
-      <div className="flex w-full items-end justify-between">
-        <FieldLabel nativeLabel={false} render={<div />}>
-          {label}
-        </FieldLabel>
+    <Field data-invalid={hasError}>
+      <div className="flex w-full items-end justify-between gap-2">
+        <div className="flex items-center gap-2">
+          <FieldLabel htmlFor={field.name}>{label}</FieldLabel>
+          {labelAfter}
+        </div>
         {labelExtra}
       </div>
       <Input
@@ -54,7 +61,7 @@ export function InputFieldAutoSave({
         aria-invalid={hasError}
         {...props}
       />
-      <FieldError match={hasError}>
+      <FieldError>
         {errors.map((error) => (typeof error === "string" ? error : error?.message)).join(", ")}
       </FieldError>
     </Field>

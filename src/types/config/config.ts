@@ -6,13 +6,14 @@ import {
   MIN_SELECTION_OVERLAY_OPACITY,
 } from "@/utils/constants/selection"
 import { MIN_SIDE_CONTENT_WIDTH } from "@/utils/constants/side"
+import { DEFAULT_TRANSLATION_HUB_SHORTCUT_KEY } from "@/utils/constants/translation-hub"
 import {
   doesProviderSupportsCapability,
   getProviderIdsForCapability,
 } from "@/utils/providers/provider-registry"
 import { floatingButtonSchema } from "./floating-button"
 import { languageDetectionConfigSchema } from "./language-detection"
-import { isLLMProvider, providersConfigSchema } from "./provider"
+import { providersConfigSchema } from "./provider"
 import {
   selectionToolbarBuiltInActionsSchema,
   selectionToolbarCustomActionsSchema,
@@ -50,13 +51,14 @@ const selectionToolbarSchema = z
     }),
     builtInActions: selectionToolbarBuiltInActionsSchema,
     customActions: selectionToolbarCustomActionsSchema,
-    saveSuggestion: z.object({
+    noteSuggestion: z.object({
       enabled: z.boolean(),
       actionId: z.string().nonempty(),
+      providerId: z.string().nonempty(),
     }),
   })
   .superRefine((selectionToolbar, ctx) => {
-    const actionId = selectionToolbar.saveSuggestion.actionId
+    const actionId = selectionToolbar.noteSuggestion.actionId
     const actionExists =
       actionId === "default-dictionary" ||
       selectionToolbar.customActions.some((action) => action.id === actionId)
@@ -64,8 +66,8 @@ const selectionToolbarSchema = z
     if (!actionExists) {
       ctx.addIssue({
         code: "custom",
-        message: `Save Suggestion action "${actionId}" not found.`,
-        path: ["saveSuggestion", "actionId"],
+        message: `Note suggestion action "${actionId}" not found.`,
+        path: ["noteSuggestion", "actionId"],
       })
     }
   })
@@ -74,6 +76,16 @@ const selectionToolbarSchema = z
 const sideContentSchema = z.object({
   width: z.number().min(MIN_SIDE_CONTENT_WIDTH),
 })
+
+// Translation Hub schema. `.default()` mirrors `uiLanguageSchema`: it lets a
+// config stored before this field existed still parse in UI contexts that load
+// ahead of the background migration, instead of falling back to DEFAULT_CONFIG
+// and writing that over the user's settings.
+const translationHubSchema = z
+  .object({
+    shortcut: pageTranslationShortcutSchema,
+  })
+  .default({ shortcut: DEFAULT_TRANSLATION_HUB_SHORTCUT_KEY })
 
 // beta experience schema
 const betaExperienceSchema = z.object({
@@ -128,7 +140,7 @@ export const configSchema = z
   .object({
     language: languageSchema,
     providersConfig: providersConfigSchema,
-    translate: translateConfigSchema,
+    pageTranslation: translateConfigSchema,
     languageDetection: languageDetectionConfigSchema,
     tts: ttsConfigSchema,
     floatingButton: floatingButtonSchema,
@@ -141,6 +153,7 @@ export const configSchema = z
     siteControl: siteControlSchema,
     siteRules: siteRulesConfigSchema,
     uiLanguage: uiLanguageSchema,
+    translationHub: translationHubSchema,
   })
   .superRefine((data, ctx) => {
     for (const featureKey of FEATURE_KEYS) {
@@ -173,30 +186,23 @@ export const configSchema = z
           message: `Language detection mode is "llm" but no providerId is configured.`,
           path: ["languageDetection", "providerId"],
         })
-      } else {
-        const ldProvider = data.providersConfig.find((p) => p.id === ldProviderId)
-        if (!ldProvider) {
-          ctx.addIssue({
-            code: "custom",
-            message: `Language detection provider "${ldProviderId}" not found in providersConfig.`,
-            path: ["languageDetection", "providerId"],
-          })
-        } else {
-          if (!isLLMProvider(ldProvider.provider)) {
-            ctx.addIssue({
-              code: "custom",
-              message: `Language detection provider "${ldProviderId}" is not an LLM provider.`,
-              path: ["languageDetection", "providerId"],
-            })
-          }
-          if (!ldProvider.enabled) {
-            ctx.addIssue({
-              code: "custom",
-              message: `Language detection provider "${ldProviderId}" must be enabled.`,
-              path: ["languageDetection", "providerId"],
-            })
-          }
-        }
+      } else if (
+        // Capability-based, like the FEATURE_KEYS loop above, rather than a
+        // providersConfig lookup: Built-in AI is never a row in
+        // providersConfig, so requiring one there is what used to make a
+        // hosted provider fail validation and reset the whole config.
+        !doesProviderSupportsCapability("languageDetection", data.providersConfig, ldProviderId, {
+          requireEnable: true,
+        })
+      ) {
+        ctx.addIssue({
+          code: "invalid_value",
+          values: getProviderIdsForCapability("languageDetection", data.providersConfig, {
+            requireEnable: true,
+          }),
+          message: `Invalid provider id "${ldProviderId}".`,
+          path: ["languageDetection", "providerId"],
+        })
       }
     }
 
@@ -213,20 +219,15 @@ export const configSchema = z
 
     actionProviderEntries.forEach(({ providerId, path }) => {
       if (
-        !doesProviderSupportsCapability(
-          "selectionToolbar.customAction",
-          data.providersConfig,
-          providerId,
-          { requireEnable: true },
-        )
+        !doesProviderSupportsCapability("customAction", data.providersConfig, providerId, {
+          requireEnable: true,
+        })
       ) {
         ctx.addIssue({
           code: "invalid_value",
-          values: getProviderIdsForCapability(
-            "selectionToolbar.customAction",
-            data.providersConfig,
-            { requireEnable: true },
-          ),
+          values: getProviderIdsForCapability("customAction", data.providersConfig, {
+            requireEnable: true,
+          }),
           message: `Invalid provider id "${providerId}".`,
           path: [...path],
         })

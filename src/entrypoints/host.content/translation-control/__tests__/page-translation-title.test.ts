@@ -1,10 +1,7 @@
 // @vitest-environment jsdom
 
 import { beforeEach, describe, expect, it, vi } from "vitest"
-import { ANALYTICS_FEATURE, ANALYTICS_SURFACE } from "@/types/analytics"
-import { createFeatureUsageContext } from "@/utils/analytics"
 import { DEFAULT_CONFIG } from "@/utils/constants/config"
-import { getPageTranslationActionContext } from "@/utils/host/translate/translation-session"
 import { PageTranslationManager } from "../page-translation"
 
 const {
@@ -53,7 +50,8 @@ vi.mock("@/utils/host/dom/find", () => ({
   deepQueryTopLevelSelector: mockDeepQueryTopLevelSelector,
 }))
 
-vi.mock("@/utils/host/dom/traversal", () => ({
+vi.mock("@/utils/host/dom/traversal", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("@/utils/host/dom/traversal")>()),
   walkAndLabelElement: mockWalkAndLabelElement,
   walkAndLabelElementChunked: vi
     .fn<(...args: any[]) => any>()
@@ -132,37 +130,6 @@ describe("pageTranslationManager title handling", () => {
     mockSendMessage.mockResolvedValue(undefined)
   })
 
-  it("keeps automatic and context-free starts out of the prompt experiment", async () => {
-    const automaticContexts = [
-      undefined,
-      createFeatureUsageContext(ANALYTICS_FEATURE.PAGE_TRANSLATION, ANALYTICS_SURFACE.PAGE_AUTO),
-    ]
-
-    for (const analyticsContext of automaticContexts) {
-      const manager = new PageTranslationManager()
-      await manager.start(analyticsContext)
-
-      expect(getPageTranslationActionContext()).toBeNull()
-
-      manager.stop()
-    }
-  })
-
-  it("creates a prompt experiment action for a manual page translation", async () => {
-    const manager = new PageTranslationManager()
-    await manager.start(
-      createFeatureUsageContext(ANALYTICS_FEATURE.PAGE_TRANSLATION, ANALYTICS_SURFACE.POPUP),
-    )
-
-    expect(getPageTranslationActionContext()).toEqual({
-      actionId: expect.any(String),
-      feature: ANALYTICS_FEATURE.PAGE_TRANSLATION,
-      surface: ANALYTICS_SURFACE.POPUP,
-    })
-
-    manager.stop()
-  })
-
   it("does not prime webpage context on start for non-llm translation", async () => {
     mockTranslateTextForPageTitle.mockResolvedValue("Translated Title")
 
@@ -178,8 +145,8 @@ describe("pageTranslationManager title handling", () => {
   it("primes webpage context on start for AI-aware llm translation", async () => {
     mockGetLocalConfig.mockResolvedValue({
       ...DEFAULT_CONFIG,
-      translate: {
-        ...DEFAULT_CONFIG.translate,
+      pageTranslation: {
+        ...DEFAULT_CONFIG.pageTranslation,
         providerId: "openai-default",
         enableAIContentAware: true,
       },

@@ -2,3 +2,8 @@ export function findUpstreamDomainHits(bundleText: string, forbidden: string[]):
 export function findMissingForkDomains(bundleText: string, required: string[]): string[]
 export function readForkDomainsFromEnv(envText: string): string[]
 export function readTestDomainsFromEnv(envText: string): string[]
+
+export function findPartnerSiteHits(manifest: {
+  host_permissions?: string[]
+  content_scripts?: { matches?: string[] }[]
+}): string[]

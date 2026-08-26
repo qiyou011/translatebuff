@@ -1,8 +1,14 @@
+import type { SerializableProviderRef } from "@/utils/providers/provider-ref"
 import type { SubtitlesFragment } from "@/utils/subtitles/types"
-import { getLocalConfig } from "@/utils/config/storage"
 import { PROCESS_LOOK_AHEAD_MS } from "@/utils/constants/subtitles"
+import { effectiveLookAheadMs } from "@/utils/subtitles/lookahead"
 import { aiSegmentBlock } from "@/utils/subtitles/processor/ai-segmentation"
 import { optimizeSubtitles } from "@/utils/subtitles/processor/optimizer"
+
+export type ChunkSegmentedHandler = (
+  chunk: SubtitlesFragment[],
+  nextFragments: SubtitlesFragment[],
+) => void
 
 export class SegmentationPipeline {
   // Segmented results, read by translation pipeline
@@ -17,19 +23,32 @@ export class SegmentationPipeline {
   private getVideoElement: () => HTMLVideoElement | null
   private getSourceLanguage: () => string
   private preSegmented: boolean
+  private onChunkSegmented: ChunkSegmentedHandler | null
+  /**
+   * Resolved once per session by the adapter, so segmentation does not pay a
+   * hostedAi.status round trip per block. Null means AI segmentation cannot
+   * run (no provider, or the hosted tier was unavailable when the session
+   * started); chunks then fall back to rule-based optimization until a new
+   * session resolves a fresh ref.
+   */
+  private providerRef: SerializableProviderRef | null
 
   constructor(options: {
     baselineFragments?: SubtitlesFragment[]
     rawFragments: SubtitlesFragment[]
     getVideoElement: () => HTMLVideoElement | null
     getSourceLanguage: () => string
+    providerRef: SerializableProviderRef | null
     preSegmented?: boolean
+    onChunkSegmented?: ChunkSegmentedHandler
   }) {
     this.rawFragments = options.rawFragments
     this.processedFragments = [...(options.baselineFragments ?? [])]
     this.getVideoElement = options.getVideoElement
     this.getSourceLanguage = options.getSourceLanguage
+    this.providerRef = options.providerRef
     this.preSegmented = options.preSegmented ?? false
+    this.onChunkSegmented = options.onChunkSegmented ?? null
   }
 
   get isRunning(): boolean {
@@ -81,6 +100,8 @@ export class SegmentationPipeline {
   }
 
   private async processNextChunk(currentTimeMs: number): Promise<boolean> {
+    if (this.stopped) return false
+
     const chunk = this.findNextChunk(currentTimeMs)
     if (chunk.length === 0) return false
 
@@ -91,14 +112,27 @@ export class SegmentationPipeline {
       return true
     }
 
+    if (!this.providerRef) {
+      // Do not leave starts marked segmented with no replacement (would skip forever).
+      const optimized = optimizeSubtitles(chunk, this.getSourceLanguage())
+      this.replaceProcessedChunk(chunk, optimized)
+      return true
+    }
+
     try {
-      const config = await getLocalConfig()
-      if (config) {
-        const segmented = await aiSegmentBlock(chunk, config)
-        const optimized = optimizeSubtitles(segmented, this.getSourceLanguage())
-        this.replaceProcessedChunk(chunk, optimized)
+      const segmented = await aiSegmentBlock(chunk, this.providerRef)
+      // Session may have been torn down while the AI call was in flight.
+      if (this.stopped) {
+        chunk.forEach((f) => this.segmentedRawStarts.delete(f.start))
+        return true
       }
+      const optimized = optimizeSubtitles(segmented, this.getSourceLanguage())
+      this.replaceProcessedChunk(chunk, optimized)
     } catch {
+      if (this.stopped) {
+        chunk.forEach((f) => this.segmentedRawStarts.delete(f.start))
+        return true
+      }
       chunk.forEach((f) => this.aiSegmentFailedRawStarts.add(f.start))
       const optimized = optimizeSubtitles(chunk, this.getSourceLanguage())
       this.replaceProcessedChunk(chunk, optimized)
@@ -108,14 +142,21 @@ export class SegmentationPipeline {
   }
 
   private replaceProcessedChunk(chunk: SubtitlesFragment[], nextFragments: SubtitlesFragment[]) {
+    // Do not mutate processed fragments or notify the adapter after stop().
+    if (this.stopped) return
+
     const chunkStart = chunk[0]!.start
     const chunkEnd = chunk.at(-1)!.end
 
+    // Drop any cue that overlaps the window (not just cues whose start falls inside it).
+    // Half-open: keep if end <= chunkStart || start >= chunkEnd.
     this.processedFragments = this.processedFragments.filter(
-      (fragment) => fragment.start < chunkStart || fragment.start > chunkEnd,
+      (fragment) => fragment.end <= chunkStart || fragment.start >= chunkEnd,
     )
     this.processedFragments.push(...nextFragments)
     this.processedFragments.sort((a, b) => a.start - b.start)
+
+    this.onChunkSegmented?.(chunk, nextFragments)
   }
 
   private findNextChunk(currentTimeMs: number): SubtitlesFragment[] {
@@ -131,9 +172,13 @@ export class SegmentationPipeline {
     // eagerly sends the entire remaining video to the AI segmentation model.
     // Chunks further ahead are picked up later, once playback advances and the
     // translation coordinator restarts the pipeline.
-    if (firstUnprocessed.start > currentTimeMs + PROCESS_LOOK_AHEAD_MS) return []
+    const lookAheadMs = effectiveLookAheadMs(
+      PROCESS_LOOK_AHEAD_MS,
+      this.getVideoElement()?.playbackRate,
+    )
+    if (firstUnprocessed.start > currentTimeMs + lookAheadMs) return []
 
-    const windowEnd = firstUnprocessed.start + PROCESS_LOOK_AHEAD_MS
+    const windowEnd = firstUnprocessed.start + lookAheadMs
     return this.rawFragments.filter(
       (f) =>
         f.start >= firstUnprocessed.start &&

@@ -60,6 +60,7 @@
     ".changeset/calm-cats-refine-ui.md",
     ".changeset/fresh-cats-rebrand-ui.md",
     ".changeset/kind-tools-showcase.md",
-    ".changeset/quick-cats-open-popup.md"
+    ".changeset/quick-cats-open-popup.md",
+    "src/entrypoints/partner-bridge.content/index.ts"
   ]
 }

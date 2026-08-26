@@ -5,6 +5,7 @@ import { DEFAULT_CONFIG } from "@/utils/constants/config"
 import {
   BLOCK_ATTRIBUTE,
   INLINE_ATTRIBUTE,
+  NOTRANSLATE_CLASS,
   PARAGRAPH_ATTRIBUTE,
   WALKED_ATTRIBUTE,
 } from "@/utils/constants/dom-labels"
@@ -380,5 +381,199 @@ describe("site rule node selectors", () => {
     expect(host.querySelector("#inline-style")).toHaveAttribute(BLOCK_ATTRIBUTE)
     expect(host.querySelector("#inline-style")).not.toHaveAttribute(INLINE_ATTRIBUTE)
     host.remove()
+  })
+})
+
+describe("document root labeling guard", () => {
+  it("never labels documentElement as a paragraph even with inline-level children beside body", () => {
+    // Unstyled custom elements default to display:inline, so a reader-mode
+    // root (or any script-injected element) mounted beside <body> would
+    // otherwise make <html> itself a paragraph — collapsing the whole
+    // document into one observed translation unit (#1991 follow-up).
+    document.body.innerHTML = `<div><p>Body paragraph text</p></div>`
+    const readerRoot = document.createElement("sr-read")
+    readerRoot.innerHTML = `<sr-rd-content><p id="reader-p">Reader paragraph text</p></sr-rd-content>`
+    document.documentElement.append(readerRoot)
+
+    try {
+      walkAndLabelElement(document.documentElement, "root-guard", DEFAULT_CONFIG)
+
+      expect(document.documentElement).not.toHaveAttribute(PARAGRAPH_ATTRIBUTE)
+      expect(document.documentElement.getAttribute(WALKED_ATTRIBUTE)).toBe("root-guard")
+      // The injected subtree still labels normally and stays translatable.
+      expect(document.getElementById("reader-p")).toHaveAttribute(PARAGRAPH_ATTRIBUTE)
+    } finally {
+      readerRoot.remove()
+      document.body.innerHTML = ""
+      for (const attr of [
+        WALKED_ATTRIBUTE,
+        PARAGRAPH_ATTRIBUTE,
+        BLOCK_ATTRIBUTE,
+        INLINE_ATTRIBUTE,
+      ]) {
+        document.documentElement.removeAttribute(attr)
+      }
+    }
+  })
+
+  it("never labels documentElement as a paragraph for stray text nodes under html", () => {
+    document.body.innerHTML = `<div><p>Body paragraph text</p></div>`
+    const strayText = document.createTextNode("stray text beside body")
+    document.documentElement.append(strayText)
+
+    try {
+      walkAndLabelElement(document.documentElement, "root-guard-text", DEFAULT_CONFIG)
+
+      expect(document.documentElement).not.toHaveAttribute(PARAGRAPH_ATTRIBUTE)
+    } finally {
+      strayText.remove()
+      document.body.innerHTML = ""
+      for (const attr of [
+        WALKED_ATTRIBUTE,
+        PARAGRAPH_ATTRIBUTE,
+        BLOCK_ATTRIBUTE,
+        INLINE_ATTRIBUTE,
+      ]) {
+        document.documentElement.removeAttribute(attr)
+      }
+    }
+  })
+})
+
+describe("document root notranslate exemption", () => {
+  function cleanUpRoot() {
+    document.documentElement.classList.remove(NOTRANSLATE_CLASS)
+    document.body.innerHTML = ""
+    for (const attr of [WALKED_ATTRIBUTE, PARAGRAPH_ATTRIBUTE, BLOCK_ATTRIBUTE, INLINE_ATTRIBUTE]) {
+      document.documentElement.removeAttribute(attr)
+    }
+  }
+
+  it("walks the page when the document root carries the notranslate class", () => {
+    // Telegram Web A ships `<html translate="no" class="notranslate">` while
+    // Telegram Web K ships a bare `<html>`. Once #1992 moved the walk root from
+    // <body> to documentElement, that one class aborted the walk on its first
+    // blocked-element check and page translation labeled nothing at all.
+    document.documentElement.classList.add(NOTRANSLATE_CLASS)
+    document.body.innerHTML = `<div><p id="msg">Message body text</p></div>`
+
+    try {
+      walkAndLabelElement(document.documentElement, "root-notranslate", DEFAULT_CONFIG)
+
+      expect(document.getElementById("msg")).toHaveAttribute(PARAGRAPH_ATTRIBUTE)
+    } finally {
+      cleanUpRoot()
+    }
+  })
+
+  it("still blocks notranslate elements nested below the document root", () => {
+    // The exemption is root-only: nested opt-outs (and read frog's own injected
+    // UI, which carries the same class) must keep blocking descent.
+    document.documentElement.classList.add(NOTRANSLATE_CLASS)
+    document.body.innerHTML = `
+      <div>
+        <p id="msg">Message body text</p>
+        <div class="${NOTRANSLATE_CLASS}"><p id="opted-out">Opted out text</p></div>
+      </div>
+    `
+
+    try {
+      walkAndLabelElement(document.documentElement, "nested-notranslate", DEFAULT_CONFIG)
+
+      expect(document.getElementById("msg")).toHaveAttribute(PARAGRAPH_ATTRIBUTE)
+      expect(document.getElementById("opted-out")).not.toHaveAttribute(PARAGRAPH_ATTRIBUTE)
+    } finally {
+      cleanUpRoot()
+    }
+  })
+})
+
+describe("plain-text document <pre> exemption", () => {
+  // A .txt URL renders as one browser-generated <pre> holding the entire file
+  // (Chrome also gives it `white-space: pre-wrap`), so the blanket PRE block
+  // leaves such a page with nothing to translate at all.
+  const STORY_TEXT = "First hard wrapped paragraph.\n\nSecond hard wrapped paragraph."
+
+  function withContentType(contentType: string, callback: () => void) {
+    Object.defineProperty(document, "contentType", { value: contentType, configurable: true })
+    try {
+      callback()
+    } finally {
+      // Restore the prototype getter jsdom installs (text/html in tests).
+      Reflect.deleteProperty(document, "contentType")
+      document.body.innerHTML = ""
+    }
+  }
+
+  function renderPlainTextViewer(): HTMLElement {
+    document.body.innerHTML = `<pre id="viewer">${STORY_TEXT}</pre>`
+    return document.getElementById("viewer")!
+  }
+
+  it("walks and labels the generated <pre> of a text/plain document", () => {
+    withContentType("text/plain", () => {
+      const viewer = renderPlainTextViewer()
+
+      walkAndLabelElement(document.body, "plain-text-pre", DEFAULT_CONFIG)
+
+      expect(viewer).toHaveAttribute(WALKED_ATTRIBUTE)
+      expect(viewer).toHaveAttribute(PARAGRAPH_ATTRIBUTE)
+      // PRE is in FORCE_BLOCK_TAGS, so the exempted viewer is a block unit.
+      expect(viewer).toHaveAttribute(BLOCK_ATTRIBUTE)
+      expect(extractTextContent(viewer, DEFAULT_CONFIG)).toContain("Second hard wrapped paragraph.")
+    })
+  })
+
+  it("keeps blocking an authored <pre> in an html document", () => {
+    const viewer = renderPlainTextViewer()
+
+    try {
+      walkAndLabelElement(document.body, "html-pre", DEFAULT_CONFIG)
+
+      expect(document.contentType).toBe("text/html")
+      expect(viewer).not.toHaveAttribute(WALKED_ATTRIBUTE)
+      expect(viewer).not.toHaveAttribute(PARAGRAPH_ATTRIBUTE)
+      expect(extractTextContent(viewer, DEFAULT_CONFIG)).toBe("")
+    } finally {
+      document.body.innerHTML = ""
+    }
+  })
+
+  it("lets a site rule that names PRE explicitly win over the exemption", () => {
+    // The exemption un-blocks what the defaults block, so an author who wants
+    // PRE blocked on a plain-text host must be able to say so.
+    withContentType("text/plain", () => {
+      const viewer = renderPlainTextViewer()
+      const config = configWithSiteRule({ "dontWalkTags.add": ["PRE"] })
+
+      walkAndLabelElement(document.body, "explicit-add", config)
+
+      expect(viewer).not.toHaveAttribute(WALKED_ATTRIBUTE)
+      expect(viewer).not.toHaveAttribute(PARAGRAPH_ATTRIBUTE)
+    })
+  })
+
+  it("still honors excludeSelectors on a plain-text document", () => {
+    withContentType("text/plain", () => {
+      const viewer = renderPlainTextViewer()
+      const config = configWithSiteRule({ excludeSelectors: ["pre"] })
+
+      walkAndLabelElement(document.body, "exclude-selector", config)
+
+      expect(viewer).not.toHaveAttribute(WALKED_ATTRIBUTE)
+      expect(viewer).not.toHaveAttribute(PARAGRAPH_ATTRIBUTE)
+    })
+  })
+
+  it("keeps other plain-text-ish document types blocked", () => {
+    for (const contentType of ["application/json", "text/markdown", "text/xml"]) {
+      withContentType(contentType, () => {
+        const viewer = renderPlainTextViewer()
+
+        walkAndLabelElement(document.body, `blocked-${contentType}`, DEFAULT_CONFIG)
+
+        expect(viewer).not.toHaveAttribute(PARAGRAPH_ATTRIBUTE)
+      })
+    }
   })
 })

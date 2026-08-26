@@ -7,10 +7,10 @@ import TranslationModeSelector from "@/fork/ui/popup/translation-mode-selector"
 import { configAtom } from "@/utils/atoms/config"
 import { DEFAULT_CONFIG } from "@/utils/constants/config"
 
-function buildConfig(providerId: string, mode: Config["translate"]["mode"]): Config {
+function buildConfig(providerId: string, mode: Config["pageTranslation"]["mode"]): Config {
   return {
     ...DEFAULT_CONFIG,
-    translate: { ...DEFAULT_CONFIG.translate, providerId, mode },
+    pageTranslation: { ...DEFAULT_CONFIG.pageTranslation, providerId, mode },
   }
 }
 
@@ -26,7 +26,7 @@ function renderWith(config: Config) {
 }
 
 // 微软的免鉴权端点无保留标记模式，与仅译文（innerHTML 重渲染）组合会损坏页面。
-// popup 这个按钮是 config.translate.mode 的三个写入口之一，必须拦住。
+// popup 这个按钮是 config.pageTranslation.mode 的三个写入口之一，必须拦住。
 describe("fork popup 模式切换按钮", () => {
   it("微软 + 双语时按钮呈禁用态，点击不改模式", async () => {
     const store = renderWith(buildConfig("microsoft-translate-default", "bilingual"))
@@ -37,7 +37,7 @@ describe("fork popup 模式切换按钮", () => {
     fireEvent.click(button)
     await Promise.resolve()
 
-    expect(store.get(configAtom).translate.mode).toBe("bilingual")
+    expect(store.get(configAtom).pageTranslation.mode).toBe("bilingual")
   })
 
   it("谷歌 + 双语时正常切到仅译文", async () => {
@@ -49,7 +49,7 @@ describe("fork popup 模式切换按钮", () => {
     fireEvent.click(button)
     await Promise.resolve()
 
-    expect(store.get(configAtom).translate.mode).toBe("translationOnly")
+    expect(store.get(configAtom).pageTranslation.mode).toBe("translationOnly")
   })
 
   it("微软 + 仅译文时切回双语不受阻——门禁只拦进入方向", async () => {
@@ -61,6 +61,6 @@ describe("fork popup 模式切换按钮", () => {
     fireEvent.click(button)
     await Promise.resolve()
 
-    expect(store.get(configAtom).translate.mode).toBe("bilingual")
+    expect(store.get(configAtom).pageTranslation.mode).toBe("bilingual")
   })
 })

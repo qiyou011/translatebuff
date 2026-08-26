@@ -1,6 +1,7 @@
 @import "tailwindcss" source("../..");
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+@import "./glass-badge.css";
 
 @source not "../../**/__tests__";
 @source not "../../**/*.test.*";
@@ -62,11 +63,59 @@
   --color-toast-success: var(--rf-toast-success);
   --color-toast-warning: var(--rf-toast-warning);
   --color-link: var(--rf-link);
+  --color-accent-blue: var(--rf-accent-blue);
+  --color-accent-blue-hover: var(--rf-accent-blue-hover);
   --shadow-floating: var(--rf-elevation-floating);
   --animate-toast-success-odd: toast-success-odd 0.32s cubic-bezier(0.5, 1, 0.89, 1);
   --animate-toast-success-even: toast-success-even 0.32s cubic-bezier(0.5, 1, 0.89, 1);
   --animate-toast-error-odd: toast-error-odd 0.28s cubic-bezier(0.5, 1, 0.89, 1);
   --animate-toast-error-even: toast-error-even 0.28s cubic-bezier(0.5, 1, 0.89, 1);
+  --animate-subtitle-pending-breath: subtitle-pending-breath 2s ease-in-out infinite;
+  --animate-subtitle-pending-appear: subtitle-pending-appear 250ms ease-out both;
+  --animate-subtitle-fade-in: subtitle-fade-in 200ms ease-out both;
+  /* Three pulses, 2.7s end to end — kept in sync with
+     PROVIDER_FIELD_HIGHLIGHT_DURATION_MS, which clears the class afterwards. */
+  --animate-ring-flash: ring-flash 0.9s ease-out 3;
+
+  /* Pulses a field into the look `Input` already gives `aria-invalid` — destructive border,
+     3px destructive ring — without claiming the field is actually invalid.
+     Deliberately has no 0%/100% frame: the browser fills those in from whatever the element
+     computes to, so the field flashes out of and back into its own resting border and shadow
+     instead of a hardcoded copy of them. */
+  @keyframes ring-flash {
+    40% {
+      border-color: var(--rf-ring-flash-border);
+      box-shadow: 0 0 0 3px var(--rf-ring-flash-ring);
+    }
+  }
+
+  @keyframes subtitle-pending-breath {
+    0%,
+    100% {
+      opacity: 0.22;
+    }
+    50% {
+      opacity: 0.58;
+    }
+  }
+
+  @keyframes subtitle-pending-appear {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes subtitle-fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
 
   @keyframes toast-success-odd {
     0% {
@@ -128,14 +177,14 @@
 }
 
 :root {
-  /* Latin → Onest Variable (bundled via @fontsource-variable/onest, imported
+  /* Latin → Inter Variable (bundled via @fontsource-variable/inter, imported
      only in the extension's own pages — not content scripts). CJK stays on the
      lang-correct native font via system-ui (PingFang / 微软雅黑 on macOS/
      Windows), then falls to 思源黑体 (Source Han Sans / Noto Sans CJK) — the
      default on Android/ChromeOS/Linux — before the generic sans-serif. Emoji
      families stay last. */
   --rf-font-sans:
-    "Onest Variable", ui-sans-serif, system-ui, "Source Han Sans SC", "Noto Sans SC",
+    "Inter Variable", ui-sans-serif, system-ui, "Source Han Sans SC", "Noto Sans SC",
     "Source Han Sans TC", "Noto Sans TC", sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
     "Segoe UI Symbol", "Noto Color Emoji";
   --rf-font-mono:
@@ -181,7 +230,26 @@
   --rf-toast-success: var(--color-emerald-500);
   --rf-toast-warning: var(--color-amber-500);
   --rf-link: oklch(54.6% 0.245 262.881);
+  /* The one chromatic colour in an otherwise neutral UI. It marks a control as on
+     (the switch's track, and checkbox / radio whenever they move off the neutral
+     `--rf-primary`) and marks the inviting thing to do in a region (the dashed
+     "add" buttons). Named for what it is rather than for either role, because
+     shadcn already spends `--rf-primary` and `--rf-accent` on neutrals.
+
+     Opacity is fine for tinting a surface with it — `bg-accent-blue/10` behind a
+     dashed border — but not for deriving hover from the solid fill: opacity
+     composites against the page, so `bg-accent-blue/90` would lighten on the white
+     surface and darken on the near-black one. Hence a real second colour, which
+     moves *away* from the surface in both themes — 4.4pp darker on white, 4.5pp
+     lighter on black — so the `.dark` override flips the direction, not the intent. */
+  --rf-accent-blue: oklch(69.256% 0.16062 265.19);
+  --rf-accent-blue-hover: oklch(64.859% 0.16447 264.759);
   --rf-elevation-floating: 0 8px 40px 0 rgb(0 0 0 / 0.08), 0 0 1px 0 rgb(0 0 0 / 0.08);
+  /* The colours `--animate-ring-flash` pulses to. Kept in step with the `aria-invalid` rules
+     on `Input`, whose destructive tint differs per theme, since a keyframe cannot carry a
+     `.dark` variant of its own. */
+  --rf-ring-flash-border: var(--rf-destructive);
+  --rf-ring-flash-ring: color-mix(in oklab, var(--rf-destructive) 20%, transparent);
 }
 
 .dark {
@@ -224,7 +292,18 @@
   --rf-toast-success: var(--color-emerald-500);
   --rf-toast-warning: var(--color-amber-500);
   --rf-link: oklch(70.7% 0.165 254.624);
+  /* Darker and a touch more saturated than the light-theme blue. The light value
+     is 7.1:1 against this near-black surface but only 2.8:1 against the white
+     thumb, which is what makes it glare and washes the thumb into it; dropping to
+     L 58% lands both at ~4.5:1. Hover goes lighter here — see the note in
+     `:root` — because on a dark surface, darker recedes. */
+  --rf-accent-blue: oklch(58% 0.18 265.19);
+  --rf-accent-blue-hover: oklch(62.5% 0.175 264.759);
   --rf-elevation-floating: 0 8px 40px 0 rgb(0 0 0 / 0.28), 0 0 1px 0 rgb(0 0 0 / 0.28);
+  /* Mirrors `dark:aria-invalid:*` on `Input`: a softened border and a stronger ring, because
+     the light-theme pair is too hot against a near-black surface. */
+  --rf-ring-flash-border: color-mix(in oklab, var(--rf-destructive) 50%, transparent);
+  --rf-ring-flash-ring: color-mix(in oklab, var(--rf-destructive) 40%, transparent);
 }
 
 @layer base {
@@ -250,7 +329,11 @@ body {
     .animate-toast-success-odd,
     .animate-toast-success-even,
     .animate-toast-error-odd,
-    .animate-toast-error-even
+    .animate-toast-error-even,
+    .animate-subtitle-pending-breath,
+    .animate-subtitle-pending-appear,
+    .animate-subtitle-fade-in,
+    .animate-ring-flash
   ) {
     animation: none;
   }

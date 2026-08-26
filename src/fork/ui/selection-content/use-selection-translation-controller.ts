@@ -4,7 +4,6 @@ import type {
   SelectionToolbarTranslateRequestSlice,
 } from "@/entrypoints/selection.content/selection-toolbar/atoms"
 import type { SelectionToolbarInlineError } from "@/entrypoints/selection.content/selection-toolbar/inline-error"
-import type { TranslationActionContext } from "@/types/analytics"
 import type { FeatureProviderAnalytics } from "@/types/analytics"
 import type { BackgroundTextStreamSnapshot, ThinkingSnapshot } from "@/types/background-stream"
 import type { LLMProviderConfig, ProviderConfig } from "@/types/config/provider"
@@ -24,27 +23,18 @@ import {
   isAbortError,
 } from "@/entrypoints/selection.content/selection-toolbar/inline-error"
 import { useSelectionOpenRequestResolver } from "@/entrypoints/selection.content/selection-toolbar/use-selection-open-request"
-import {
-  ANALYTICS_FEATURE,
-  ANALYTICS_SURFACE,
-  TRANSLATION_REQUESTED_FEATURE,
-} from "@/types/analytics"
+import { ANALYTICS_FEATURE, ANALYTICS_SURFACE } from "@/types/analytics"
 import { isLLMProviderConfig, isTranslateProviderConfig } from "@/types/config/provider"
-import {
-  classifyTranslationRequest,
-  createFeatureUsageContext,
-  trackFeatureUsed,
-  trackTranslationRequested,
-} from "@/utils/analytics"
+import { createFeatureUsageContext, trackFeatureUsed } from "@/utils/analytics"
 import { classifyProviderConfig, UNKNOWN_FEATURE_PROVIDER } from "@/utils/analytics-provider"
 import { configFieldsAtomMap, writeConfigAtom } from "@/utils/atoms/config"
 import { buildFeatureProviderPatch } from "@/utils/constants/feature-providers"
 import { streamBackgroundText } from "@/utils/content-script/background-stream-client"
 import { prepareTranslationText } from "@/utils/host/translate/text-preparation"
-import { translateTextCore } from "@/utils/host/translate/translate-text"
+import { resolvePageProviderRef, translateTextCore } from "@/utils/host/translate/translate-text"
 import { getOrCreateWebPageContext } from "@/utils/host/translate/webpage-context"
 import { getOrGenerateWebPageSummary } from "@/utils/host/translate/webpage-summary"
-import { onMessage, sendMessage } from "@/utils/message"
+import { onMessage } from "@/utils/message"
 import {
   isPageTranslationShortcutEmpty,
   isValidConfiguredPageTranslationShortcut,
@@ -81,10 +71,14 @@ async function getSelectionWebPagePromptContext(
     return undefined
   }
 
+  // 上游 v1.46.4 起该函数收 SerializableProviderRef（不再是 ProviderConfig），
+  // 并新增 hostedFeature 标明计入哪条 Built-in AI 配额路由。
+  // fork 走任译喵自建 provider，配额参数只对上游托管模型计费生效。
   const webSummary = await getOrGenerateWebPageSummary(
     webPageContext,
-    providerConfig,
+    await resolvePageProviderRef(providerConfig, undefined, "selectionTranslation"),
     enableAIContentAware,
+    "selectionTranslation",
   )
   return {
     webTitle: webPageContext.webTitle,
@@ -101,7 +95,6 @@ async function translateWithTextStream({
   translateRequest,
   onChunk,
   registerAbortController,
-  actionContext,
 }: {
   preparedText: string
   providerId: string
@@ -109,7 +102,6 @@ async function translateWithTextStream({
   translateRequest: SelectionToolbarTranslateRequestSlice
   onChunk: (data: BackgroundTextStreamSnapshot) => void
   registerAbortController: (abortController: AbortController) => void
-  actionContext: TranslationActionContext
 }) {
   const targetLangName = LANG_CODE_TO_EN_NAME[translateRequest.language.targetCode]
   const modelName = resolveModelId(providerConfig.model)
@@ -135,18 +127,11 @@ async function translateWithTextStream({
     translateRequest.enableAIContentAware,
   )
   throwIfAborted()
-  const configuredPrompt =
-    translateRequest.customPromptsConfig.promptId === null ? "default" : "custom"
-  const promptExperimentVariant =
-    (await sendMessage("resolvePromptExperimentVariant", { configuredPrompt })) ?? undefined
-  throwIfAborted()
-
   let { systemPrompt, prompt } = getTranslatePromptFromConfig(
     { customPromptsConfig: translateRequest.customPromptsConfig },
     targetLangName,
     preparedText,
     {
-      promptExperimentVariant,
       ...(webPageContext
         ? {
             context: {
@@ -159,31 +144,6 @@ async function translateWithTextStream({
         : {}),
     },
   )
-
-  if (promptExperimentVariant) {
-    const exposed = await sendMessage("exposePromptExperiment", {
-      actionContext,
-      expectedVariant: promptExperimentVariant,
-    })
-    throwIfAborted()
-    if (!exposed) {
-      ;({ systemPrompt, prompt } = getTranslatePromptFromConfig(
-        { customPromptsConfig: translateRequest.customPromptsConfig },
-        targetLangName,
-        preparedText,
-        webPageContext
-          ? {
-              context: {
-                webTitle: webPageContext.webTitle,
-                webDescription: webPageContext.webDescription,
-                webContent: webPageContext.webContent,
-                webSummary: webPageContext.webSummary,
-              },
-            }
-          : undefined,
-      ))
-    }
-  }
 
   const translatedText = await streamBackgroundText(
     {
@@ -219,6 +179,7 @@ async function translateWithStandardProvider({
   const translatedText = await translateTextCore({
     text,
     langConfig: translateRequest.language,
+    hostedFeature: "selectionTranslation",
     providerConfig,
     enableAIContentAware: translateRequest.enableAIContentAware,
     extraHashTags: ["selectionTranslation"],
@@ -260,7 +221,7 @@ export function useSelectionTranslationController() {
   const paragraphsText = activeSession?.contextSnapshot.text ?? selectionText
   const titleText = document.title || null
   const translateProviders = useMemo(
-    () => getSelectableProvidersForCapability("selectionToolbar.translate", providersConfig),
+    () => getSelectableProvidersForCapability("selectionTranslation", providersConfig),
     [providersConfig],
   )
   const translateRequestKey = useMemo(() => JSON.stringify(translateRequest), [translateRequest])
@@ -298,7 +259,7 @@ export function useSelectionTranslationController() {
 
   const handleProviderChange = useCallback(
     (providerId: string) => {
-      void setConfig(buildFeatureProviderPatch({ "selectionToolbar.translate": providerId }))
+      void setConfig(buildFeatureProviderPatch({ selectionTranslation: providerId }))
     },
     [setConfig],
   )
@@ -326,23 +287,6 @@ export function useSelectionTranslationController() {
       // 上游 v1.43.6 给 feature_used 事件加了 provider / backend_kind 必填项。provider 要到
       // 下面解析出 providerConfig 才知道，而失败分支可能在那之前就上报，故先置未知、解析后再覆盖。
       let analyticsProvider: FeatureProviderAnalytics = UNKNOWN_FEATURE_PROVIDER
-      const actionContext: TranslationActionContext = {
-        actionId: `selection-${activeSession?.id ?? "unknown"}-${runId}`,
-        feature: TRANSLATION_REQUESTED_FEATURE.SELECTION_TRANSLATION,
-        surface: sourceSurface,
-      }
-
-      const requestedProvider =
-        translateRequest.provider?.kind === "local" ? translateRequest.provider.config : null
-      const translationRequestedPromise = trackTranslationRequested({
-        feature: TRANSLATION_REQUESTED_FEATURE.SELECTION_TRANSLATION,
-        surface: sourceSurface,
-        ...classifyTranslationRequest(
-          requestedProvider,
-          translateRequest.customPromptsConfig.promptId,
-        ),
-      })
-
       setIsTranslating(true)
       setTranslatedText(undefined)
       setThinking(null)
@@ -406,7 +350,6 @@ export function useSelectionTranslationController() {
 
         let nextTranslatedText = ""
         if (isLLMProviderConfig(providerConfig)) {
-          await translationRequestedPromise
           setThinking({
             status: "thinking",
             text: "",
@@ -426,7 +369,6 @@ export function useSelectionTranslationController() {
             registerAbortController: (abortController) => {
               abortControllerRef.current = abortController
             },
-            actionContext,
           })
 
           nextTranslatedText = nextSnapshot.output
@@ -465,18 +407,13 @@ export function useSelectionTranslationController() {
           })
         }
       } finally {
-        void Promise.resolve(
-          sendMessage("clearPromptExperimentAction", {
-            actionId: actionContext.actionId,
-          }),
-        ).catch(() => undefined)
         if (runIdRef.current === runId) {
           abortControllerRef.current = null
           setIsTranslating(false)
         }
       }
     },
-    [activeSession?.id, resetTranslationState, selectionText, sourceSurface, translateRequest],
+    [resetTranslationState, selectionText, sourceSurface, translateRequest],
   )
 
   const startTranslation = useEffectEvent((runId: number) => {

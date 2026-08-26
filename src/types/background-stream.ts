@@ -1,11 +1,16 @@
+import type { HostedAiFeature } from "@read-frog/api-contract"
 import type { JSONValue, StreamTextOnErrorCallback } from "ai"
 import type { Browser } from "#imports"
 import type { AISDKReasoning } from "@/types/config/provider"
 import type { SelectionToolbarCustomActionOutputType } from "@/types/config/selection-toolbar"
-import type { SaveSuggestionEnvelope } from "@/utils/save-suggestion/types"
+import type { HostedAiModelTier } from "@/utils/constants/provider-ids"
+import type { NoteSuggestionEnvelope } from "@/utils/note-suggestion/types"
 
 interface BaseBackgroundStreamSerializablePayload {
   providerId: string
+  modelTier?: HostedAiModelTier
+  /** Hosted billing idempotency key. Ignored by local/BYOK providers. */
+  requestId?: string
   instructions?: string
   prompt?: string
   messages?: JSONValue[]
@@ -20,7 +25,36 @@ interface BaseBackgroundStreamSerializablePayload {
   providerOptions?: Record<string, Record<string, JSONValue>>
 }
 
-export type BackgroundStreamTextSerializablePayload = BaseBackgroundStreamSerializablePayload
+/** The hosted features that stream plain text through the `stream-text` port. */
+export type HostedAiTextStreamFeature = Extract<
+  HostedAiFeature,
+  | "pageTranslation"
+  | "selectionTranslation"
+  | "videoSubtitles"
+  | "inputTranslation"
+  | "languageDetection"
+>
+
+/**
+ * Which hosted text route to call — normally one per feature, but video
+ * subtitles has two: line/summary translation and segmentation, which is a
+ * separate route because it carries a much larger output budget (and so a
+ * larger credit reservation) than a subtitle line should ever reserve.
+ *
+ * So this is a superset of `HostedAiTextStreamFeature`: the server still bills
+ * both subtitle routes against the single `videoSubtitles` feature.
+ */
+export type HostedAiTextStreamRoute = HostedAiTextStreamFeature | "videoSubtitlesSegmentation"
+
+export type BackgroundStreamTextSerializablePayload = BaseBackgroundStreamSerializablePayload & {
+  /**
+   * Which hosted route (and so which quota feature) a Built-in AI run bills
+   * against. Ignored by local/BYOK providers. Optional so a content script
+   * from before this field existed keeps working against an updated service
+   * worker mid-extension-update; absent means "pageTranslation".
+   */
+  hostedFeature?: HostedAiTextStreamRoute
+}
 
 export interface BackgroundStructuredObjectOutputField {
   name: string
@@ -52,7 +86,7 @@ export type BackgroundStreamNoteSuggestionSerializablePayload =
   BaseBackgroundStreamSerializablePayload
 
 export type BackgroundNoteSuggestionStreamSnapshot =
-  BackgroundStreamSnapshot<SaveSuggestionEnvelope>
+  BackgroundStreamSnapshot<NoteSuggestionEnvelope>
 
 export const BACKGROUND_STREAM_PORTS = {
   streamText: "stream-text",

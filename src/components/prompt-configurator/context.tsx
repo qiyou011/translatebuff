@@ -1,5 +1,6 @@
 import type { PrimitiveAtom, WritableAtom } from "jotai"
 import type { z } from "zod"
+import type { BuiltInPrompt } from "./built-in-prompts"
 import type { customPromptsConfigSchema } from "@/types/config/translate"
 import { createContext, use } from "react"
 
@@ -18,6 +19,7 @@ export interface PromptAtoms {
 export interface PromptConfiguratorContextValue {
   promptAtoms: PromptAtoms
   insertCells: PromptInsertCell[]
+  builtInPrompts: BuiltInPrompt[]
 }
 
 export const PromptConfiguratorContext = createContext<PromptConfiguratorContextValue | null>(null)
@@ -25,7 +27,7 @@ export const PromptConfiguratorContext = createContext<PromptConfiguratorContext
 export function usePromptAtoms() {
   const promptConfigurator = use(PromptConfiguratorContext)
   if (!promptConfigurator) {
-    throw new Error("usePromptAtoms must be used within PromptConfigurator")
+    throw new Error("usePromptAtoms must be used within PromptManager")
   }
   return promptConfigurator.promptAtoms
 }
@@ -33,7 +35,15 @@ export function usePromptAtoms() {
 export function usePromptInsertCells() {
   const promptConfigurator = use(PromptConfiguratorContext)
   if (!promptConfigurator) {
-    throw new Error("usePromptInsertCells must be used within PromptConfigurator")
+    throw new Error("usePromptInsertCells must be used within PromptManager")
   }
   return promptConfigurator.insertCells
+}
+
+export function useBuiltInPrompts() {
+  const promptConfigurator = use(PromptConfiguratorContext)
+  if (!promptConfigurator) {
+    throw new Error("useBuiltInPrompts must be used within PromptManager")
+  }
+  return promptConfigurator.builtInPrompts
 }

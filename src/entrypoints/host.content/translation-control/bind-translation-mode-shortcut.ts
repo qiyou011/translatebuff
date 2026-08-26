@@ -8,6 +8,7 @@ import {
   isPageTranslationShortcutEmpty,
   isValidConfiguredPageTranslationShortcut,
 } from "@/utils/page-translation-shortcut"
+import { canEnterTranslationOnlyMode } from "@/utils/providers/translation-only-gate"
 
 const NEXT_MODE: Record<TranslationMode, TranslationMode> = {
   bilingual: "translationOnly",
@@ -16,11 +17,11 @@ const NEXT_MODE: Record<TranslationMode, TranslationMode> = {
 
 export async function bindTranslationModeShortcutKey() {
   const config = await getLocalConfig()
-  if (!config || isPageTranslationShortcutEmpty(config.translate.modeShortcut)) {
+  if (!config || isPageTranslationShortcutEmpty(config.pageTranslation.modeShortcut)) {
     return () => {}
   }
 
-  const shortcut = config.translate.modeShortcut
+  const shortcut = config.pageTranslation.modeShortcut
   if (!isValidConfiguredPageTranslationShortcut(shortcut)) {
     return () => {}
   }
@@ -31,20 +32,32 @@ export async function bindTranslationModeShortcutKey() {
       const currentConfig = await getLocalConfig()
       if (!currentConfig) return
 
-      const currentMode = currentConfig.translate.mode
+      const currentMode = currentConfig.pageTranslation.mode
       const nextMode = NEXT_MODE[currentMode]
+
+      // Entering translationOnly is blocked while the page-translate provider
+      // has no markup support (translation-only-gate.ts) — keep the mode and
+      // surface the reason instead.
+      if (nextMode === "translationOnly" && !canEnterTranslationOnlyMode(currentConfig)) {
+        toastManager.add({
+          type: "info",
+          title: i18n.t("options.translation.preference.translationMode.microsoftNotSupported"),
+        })
+        return
+      }
+
       await setLocalConfig({
         ...currentConfig,
-        translate: {
-          ...currentConfig.translate,
+        pageTranslation: {
+          ...currentConfig.pageTranslation,
           mode: nextMode,
         },
       })
 
-      const modeName = i18n.t(`options.translation.translationMode.mode.${nextMode}`)
+      const modeName = i18n.t(`options.translation.preference.translationMode.mode.${nextMode}`)
       toastManager.add({
         type: "info",
-        title: i18n.t("options.translation.translationModeShortcut.switched", [modeName]),
+        title: i18n.t("options.translation.preference.translationMode.switched", [modeName]),
       })
     },
     {

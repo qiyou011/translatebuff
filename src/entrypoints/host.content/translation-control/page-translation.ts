@@ -1,19 +1,15 @@
 import type { FeatureUsageContext } from "@/types/analytics"
 import type { Config } from "@/types/config/config"
 import debounce from "debounce"
-import {
-  ANALYTICS_FEATURE,
-  ANALYTICS_SURFACE,
-  TRANSLATION_REQUESTED_FEATURE,
-} from "@/types/analytics"
+import { toastManager } from "@/components/ui/base-ui/toast"
+import { ANALYTICS_FEATURE, ANALYTICS_SURFACE } from "@/types/analytics"
 import { isLLMProviderConfig } from "@/types/config/provider"
+import { createFeatureUsageContext, trackFeatureUsed } from "@/utils/analytics"
 import {
-  classifyTranslationRequest,
-  createFeatureUsageContext,
-  trackFeatureUsed,
-  trackTranslationRequested,
-} from "@/utils/analytics"
-import { classifyProviderConfig, UNKNOWN_FEATURE_PROVIDER } from "@/utils/analytics-provider"
+  BUILT_IN_AI_FEATURE_PROVIDER,
+  classifyProviderConfig,
+  UNKNOWN_FEATURE_PROVIDER,
+} from "@/utils/analytics-provider"
 import { getLocalConfig } from "@/utils/config/storage"
 import {
   CONTENT_WRAPPER_CLASS,
@@ -21,13 +17,10 @@ import {
   SPINNER_CLASS,
 } from "@/utils/constants/dom-labels"
 import {
-  resolveProviderConfig,
-  resolveProviderConfigOrNull,
-} from "@/utils/constants/feature-providers"
-import {
   GIANT_PARAGRAPH_MAX_SPLIT_DEPTH,
   GIANT_PARAGRAPH_SPLIT_MIN_VIEWPORT_PX,
   GIANT_PARAGRAPH_SPLIT_VIEWPORT_MULTIPLIER,
+  GIANT_SPLIT_STRANDED_TEXT_MAX_UNITS,
 } from "@/utils/constants/translate"
 import { getRandomUUID } from "@/utils/crypto-polyfill"
 import {
@@ -36,7 +29,11 @@ import {
   isWalkBlockedElement as isWalkBlockedElementFilter,
 } from "@/utils/host/dom/filter"
 import { deepQueryTopLevelSelector } from "@/utils/host/dom/find"
-import { walkAndLabelElement, walkAndLabelElementChunked } from "@/utils/host/dom/traversal"
+import {
+  canSplitGiantWithoutStrandingOwnText,
+  walkAndLabelElement,
+  walkAndLabelElementChunked,
+} from "@/utils/host/dom/traversal"
 import {
   findStaleBilingualLayoutSource,
   findStaleTranslationOnlyAnchor,
@@ -44,6 +41,7 @@ import {
   wasCharacterDataChangeExtensionDriven,
   wasNodeRemovedByExtension,
 } from "@/utils/host/translate/core/translation-state"
+import { canSplitParagraphIntoDescendants } from "@/utils/host/translate/dom/paragraph-segmentation"
 import {
   removeAllTranslatedWrapperNodes,
   translateNodes,
@@ -55,12 +53,20 @@ import { translateTextForPageTitle } from "@/utils/host/translate/translate-vari
 import {
   beginPageTranslationSession,
   endPageTranslationSession,
+  setPageTranslationSessionProviderRef,
 } from "@/utils/host/translate/translation-session"
+import { cleanupNodeSiteRuleCSSIfUnused } from "@/utils/host/translate/ui/node-site-rule-css"
 import { cancelSpinnerAnimation } from "@/utils/host/translate/ui/spinner"
 import { ensureSiteRuleCSS, removeSiteRuleCSS } from "@/utils/host/translate/ui/style-injector"
 import { getOrCreateWebPageContext } from "@/utils/host/translate/webpage-context"
 import { logger } from "@/utils/logger"
 import { sendMessage } from "@/utils/message"
+import {
+  checkProviderAvailability,
+  isSystemProviderRef,
+  resolvePageTranslationProvider,
+  resolvePageTranslationProviderOrNull,
+} from "@/utils/providers/provider-ref"
 import { removeReactShadowHost } from "@/utils/react-shadow-host/create-shadow-host"
 import { isTranslationCancelledError } from "@/utils/request/cancellation"
 import { createWorkPacer } from "@/utils/scheduler"
@@ -91,9 +97,12 @@ interface IPageTranslationManager {
 
   /**
    * Stops the automatic page translation functionality
-   * Cleans up all observers and removes translated content and set storage
+   * Cleans up all observers and removes translated content and set storage.
+   * Pass `userInitiated` when the stop comes from a user surface (shortcut,
+   * touch gesture, popup/floating-button toggle) so the background records
+   * the refusal and auto-translation stops re-enabling the page (#2011).
    */
-  stop: () => void
+  stop: (options?: { userInitiated?: boolean }) => void
 
   /**
    * Re-resolves the site rule for the current URL and swaps injected CSS in
@@ -130,6 +139,8 @@ export class PageTranslationManager implements IPageTranslationManager {
   }
 
   private isPageTranslating: boolean = false
+  /** Non-null while a start() is between its guard and activation; see start(). */
+  private pendingStart: symbol | null = null
   private intersectionObserver: IntersectionObserver | null = null
   private mutationObservers: MutationObserver[] = []
   private observedMutationRoots = new WeakSet<Node>()
@@ -173,21 +184,39 @@ export class PageTranslationManager implements IPageTranslationManager {
       console.warn("PageTranslationManager is already active")
       return
     }
+    if (this.pendingStart) {
+      console.warn("PageTranslationManager start is already pending")
+      return
+    }
 
+    // Claim the start slot for the whole pre-activation span: its awaits
+    // (config read, availability gate) would otherwise let a second trigger
+    // pass the isPageTranslating guard above and run a duplicate initial
+    // walk. stop() clears the slot to cancel a still-pending start.
+    const startToken = Symbol("page-translation-start")
+    this.pendingStart = startToken
+    try {
+      await this.runStart(startToken, analyticsContext)
+    } finally {
+      if (this.pendingStart === startToken) {
+        this.pendingStart = null
+      }
+    }
+  }
+
+  private async runStart(
+    startToken: symbol,
+    analyticsContext?: FeatureUsageContext,
+  ): Promise<void> {
     const trackedContext = window === window.top ? analyticsContext : undefined
 
     const config = await getLocalConfig()
+    if (this.pendingStart !== startToken) {
+      return
+    }
     if (!config) {
       console.warn("Config is not initialized")
       if (trackedContext) {
-        if (trackedContext.surface !== ANALYTICS_SURFACE.PAGE_AUTO) {
-          await trackTranslationRequested({
-            feature: TRANSLATION_REQUESTED_FEATURE.PAGE_TRANSLATION,
-            surface: trackedContext.surface,
-            backend_kind: "unknown",
-            configured_prompt: "unknown",
-          })
-        }
         void trackFeatureUsed({
           ...trackedContext,
           ...UNKNOWN_FEATURE_PROVIDER,
@@ -197,23 +226,16 @@ export class PageTranslationManager implements IPageTranslationManager {
       return
     }
 
-    const requestedProviderConfig = resolveProviderConfigOrNull(config, "translate")
-    const providerAnalytics = classifyProviderConfig(requestedProviderConfig)
-    if (trackedContext && trackedContext.surface !== ANALYTICS_SURFACE.PAGE_AUTO) {
-      await trackTranslationRequested({
-        feature: TRANSLATION_REQUESTED_FEATURE.PAGE_TRANSLATION,
-        surface: trackedContext.surface,
-        ...classifyTranslationRequest(
-          requestedProviderConfig,
-          config.translate.customPromptsConfig.promptId,
-        ),
-      })
-    }
+    const requestedProviderConfig = resolvePageTranslationProviderOrNull(config)
+    const providerAnalytics =
+      requestedProviderConfig && isSystemProviderRef(requestedProviderConfig)
+        ? BUILT_IN_AI_FEATURE_PROVIDER
+        : classifyProviderConfig(requestedProviderConfig)
 
     if (
       !validateTranslationConfigAndToast({
         providersConfig: config.providersConfig,
-        translate: config.translate,
+        pageTranslation: config.pageTranslation,
         language: config.language,
       })
     ) {
@@ -227,37 +249,77 @@ export class PageTranslationManager implements IPageTranslationManager {
       return
     }
 
+    // The config validator above already rejects an unresolved provider. Keep the
+    // explicit guard for type-safety and for malformed storage snapshots.
+    if (!requestedProviderConfig) return
+
+    const availability = await checkProviderAvailability(requestedProviderConfig, "pageTranslation")
+    if (this.pendingStart !== startToken) {
+      return
+    }
+    if (!availability.available) {
+      toastManager.add({ type: "error", title: availability.message })
+      if (trackedContext) {
+        void trackFeatureUsed({
+          ...trackedContext,
+          ...providerAnalytics,
+          outcome: "failure",
+        })
+      }
+      return
+    }
+
     try {
-      const providerConfig = resolveProviderConfig(config, "translate")
+      const providerConfig = resolvePageTranslationProvider(config)
 
-      await sendMessage("setAndNotifyPageTranslationStateChangedByManager", {
-        enabled: true,
-        url: window.location.href,
-      })
-
+      // Activate before the notify round trip: once the flag is set, stop()
+      // is authoritative for teardown, so a cancel arriving during any await
+      // below tears the session down instead of racing a pending start. The
+      // session-version checks after each await abort the rest of the setup
+      // once such a teardown (or a newer session) has happened.
       this.isPageTranslating = true
       this.translationSessionVersion += 1
+      const sessionVersion = this.translationSessionVersion
 
-      const promptExperimentAction =
-        window === window.top &&
-        trackedContext &&
-        trackedContext.surface !== ANALYTICS_SURFACE.PAGE_AUTO
-          ? {
-              feature: TRANSLATION_REQUESTED_FEATURE.PAGE_TRANSLATION,
-              surface: trackedContext.surface,
-            }
-          : undefined
+      beginPageTranslationSession()
+      setPageTranslationSessionProviderRef(availability.providerRef)
 
-      beginPageTranslationSession(promptExperimentAction)
+      try {
+        await sendMessage("setAndNotifyPageTranslationStateChangedByManager", {
+          enabled: true,
+          url: window.location.href,
+        })
+      } catch (error) {
+        // Roll back the not-yet-visible activation locally (the notify
+        // channel just failed, so there is no background state to correct);
+        // without this the manager would stay "active" with no observers.
+        if (this.translationSessionVersion === sessionVersion) {
+          this.stopInternal({ notify: false })
+        }
+        throw error
+      }
+      if (this.translationSessionVersion !== sessionVersion) {
+        return
+      }
 
       const siteRule = getEffectiveSiteRule(config, window.location.href)
       if (siteRule.injectedCss) {
         void ensureSiteRuleCSS(document, siteRule.injectedCss)
       }
 
+      // Must match the predicate `getWebPagePromptContext` uses to decide
+      // whether it needs the context at all. Excluding system providers was
+      // right while hosted runs sent no context; now that they do, skipping the
+      // warm-up only moves the Defuddle full-document parse out of setup and
+      // into the first translation call, where it blocks the first visible
+      // paragraph and janks the main thread on a long page.
       await this.primeDocumentTitleContext(
-        config.translate.enableAIContentAware && isLLMProviderConfig(providerConfig),
+        config.pageTranslation.enableAIContentAware &&
+          (isSystemProviderRef(providerConfig) || isLLMProviderConfig(providerConfig)),
       )
+      if (this.translationSessionVersion !== sessionVersion) {
+        return
+      }
       this.startDocumentTitleTracking()
 
       // Listen to existing elements when they enter the viewport
@@ -308,8 +370,12 @@ export class PageTranslationManager implements IPageTranslationManager {
       this.observeMutations(document.documentElement)
 
       // Label existing elements in time-sliced chunks (walkability caching is
-      // handled by the walk's onBlockedElement callback).
-      const initialWalk = this.observeTopLevelParagraphs(document.body, config, { chunked: true })
+      // handled by the walk's onBlockedElement callback). Start at
+      // documentElement so pre-existing reader roots mounted beside body are
+      // included as well as ordinary body content.
+      const initialWalk = this.observeTopLevelParagraphs(document.documentElement, config, {
+        chunked: true,
+      })
       this.initialWalkDone = initialWalk
       try {
         await initialWalk
@@ -339,8 +405,8 @@ export class PageTranslationManager implements IPageTranslationManager {
     }
   }
 
-  stop(): void {
-    this.stopInternal({ notify: true })
+  stop(options?: { userInitiated?: boolean }): void {
+    this.stopInternal({ notify: true, userInitiated: options?.userInitiated })
   }
 
   async refreshSiteRuleCSS(): Promise<void> {
@@ -365,7 +431,18 @@ export class PageTranslationManager implements IPageTranslationManager {
     }
   }
 
-  private stopInternal({ notify }: { notify: boolean }): void {
+  private stopInternal({
+    notify,
+    userInitiated,
+  }: {
+    notify: boolean
+    userInitiated?: boolean
+  }): void {
+    // Cancel a start() still awaiting its pre-activation gates: the manager
+    // is not active yet, so the guard below would no-op this stop and the
+    // pending start would activate translation after the user cancelled.
+    this.pendingStart = null
+
     if (!this.isPageTranslating) {
       console.warn("PageTranslationManager is already inactive")
       return
@@ -375,6 +452,7 @@ export class PageTranslationManager implements IPageTranslationManager {
       void sendMessage("setAndNotifyPageTranslationStateChangedByManager", {
         enabled: false,
         url: window.location.href,
+        userInitiated,
       })
     }
 
@@ -411,6 +489,7 @@ export class PageTranslationManager implements IPageTranslationManager {
 
     removeSiteRuleCSS(document)
     removeAllTranslatedWrapperNodes()
+    cleanupNodeSiteRuleCSSIfUnused(document)
   }
 
   registerPageTranslationTriggers(): () => void {
@@ -446,7 +525,7 @@ export class PageTranslationManager implements IPageTranslationManager {
       if (!startTouches) return
       if (performance.now() - startTime < PageTranslationManager.MAX_DURATION) {
         if (this.isPageTranslating) {
-          this.stop()
+          this.stop({ userInitiated: true })
         } else {
           void this.start(
             createFeatureUsageContext(
@@ -635,7 +714,7 @@ export class PageTranslationManager implements IPageTranslationManager {
       container.hasAttribute("data-read-frog-paragraph") &&
       container.getAttribute("data-read-frog-walked") === walkId
     ) {
-      this.observeParagraphUnit(container, walkId, 0)
+      this.observeParagraphUnit(container, walkId, config, 0)
       return
     }
 
@@ -647,7 +726,7 @@ export class PageTranslationManager implements IPageTranslationManager {
       //  • the ancestor is *not* inside container
       return !ancestor || !container.contains(ancestor)
     })
-    topLevelParagraphs.forEach((el) => this.observeParagraphUnit(el, walkId, 0))
+    topLevelParagraphs.forEach((el) => this.observeParagraphUnit(el, walkId, config, 0))
   }
 
   /**
@@ -659,12 +738,24 @@ export class PageTranslationManager implements IPageTranslationManager {
    * paragraphs are split: their next-level descendant paragraphs are observed
    * individually instead.
    *
-   * Known tradeoff: direct inline children of a split giant (e.g. those date
-   * <em>s) are not covered by any observed unit and stay untranslated. Stray
-   * standalone inlines in a >3-viewport flat container are rare, and
-   * numeric-only text is skipped by the pipeline anyway.
+   * The split is only sound when the giant owns no prose of its own: by the
+   * labeling rule every other character inside it already sits in one of the
+   * chosen units. That holds on docs.docker.com (its <article>'s own direct
+   * text is zero chars) but inverts on <br>-delimited article bodies, where
+   * the bare text IS the article and the inline <i>/<span> fragments are the
+   * strays — splitting there stranded 92% of a Blogger post and 98.9% of
+   * paulgraham.com/greatwork.html, and gave the stray <i> its own
+   * mid-sentence translation. See canSplitGiantWithoutStrandingOwnText.
+   *
+   * Exception: a newline-preserving flow container is never split into
+   * inline descendants — see canSplitParagraphIntoDescendants.
    */
-  private observeParagraphUnit(element: HTMLElement, walkId: string, depth: number): void {
+  private observeParagraphUnit(
+    element: HTMLElement,
+    walkId: string,
+    config: Config,
+    depth: number,
+  ): void {
     const observer = this.intersectionObserver
     if (!observer) return
 
@@ -693,8 +784,39 @@ export class PageTranslationManager implements IPageTranslationManager {
       observer.observe(element)
       return
     }
+    if (
+      // Bounded by the very thing #1881 measures as harm: how many units one
+      // intersection enqueues. Above the cap, keeping viewport gating beats
+      // rescuing the giant's own text.
+      innerTopLevelParagraphs.length <= GIANT_SPLIT_STRANDED_TEXT_MAX_UNITS &&
+      // <body> is force-block and picks up a paragraph label from any stray
+      // direct text node, so refusing there would collapse the whole document
+      // into ONE observed unit — the outcome the traversal's document-root
+      // guard exists to prevent (gating dies, and the translated-region
+      // querySelector becomes a document-wide silent skip).
+      element !== element.ownerDocument.body &&
+      !canSplitGiantWithoutStrandingOwnText(element)
+    ) {
+      observer.observe(element)
+      return
+    }
+    if (!canSplitParagraphIntoDescendants(element, innerTopLevelParagraphs, config)) {
+      // A newline-preserving flow (X note tweet: pre-wrap div of inline
+      // rich-text <span> paragraphs,
+      // https://x.com/davidjpark96/status/1789773192435060737) must not be
+      // split when the container-level virtual-paragraph plan can segment it
+      // instead — per-span observation translates each span as one blob,
+      // destroying the blank-line paragraph structure.
+      // Both modes now have such a plan, but they need different things from
+      // it, which is why the decision lives in canSplitParagraphIntoDescendants
+      // rather than here: bilingual can interleave a wrapper at any boundary,
+      // while translationOnly has to cut the units apart into whole nodes and
+      // therefore keeps per-span observation for the plans it cannot express.
+      observer.observe(element)
+      return
+    }
     for (const paragraph of innerTopLevelParagraphs) {
-      this.observeParagraphUnit(paragraph, walkId, depth + 1)
+      this.observeParagraphUnit(paragraph, walkId, config, depth + 1)
     }
   }
 
@@ -971,7 +1093,7 @@ export class PageTranslationManager implements IPageTranslationManager {
         }
         passes += 1
         handledVersion = mutationVersions.get(source) ?? 0
-        if (config.translate.mode === "translationOnly") {
+        if (config.pageTranslation.mode === "translationOnly") {
           // Swapped-anchor staleness: translateNodes routes to the
           // translationOnly path, which restores surviving swaps first so the
           // provider sees current host text, then re-swaps. Keyed on the MODE,

@@ -32,7 +32,7 @@ import {
   isCurrentSiteInWhitelistAtom,
   isInSiteControlList,
 } from "./atoms/site-control"
-import "@fontsource-variable/onest/index.css"
+import "@fontsource-variable/inter/index.css"
 import "@/assets/styles/text-small.css"
 import "@/assets/styles/theme.css"
 
@@ -81,7 +81,7 @@ async function initApp() {
       })) ?? false
   }
 
-  const isInPatterns = tabId ? await getIsInPatterns(config.translate) : false
+  const isInPatterns = tabId ? await getIsInPatterns(config.pageTranslation) : false
 
   const activeTabUrl = activeTab[0]?.url || ""
   const isIgnoreTab = isIgnoreUrl(activeTabUrl)
