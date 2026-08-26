@@ -9,3 +9,9 @@ export function resolveSyncBase(
   baseRef: string,
   explicitBase?: string,
 ): string
+
+export function resolveUpstreamRef(
+  mode: "sync" | "audit" | "incremental",
+  base: string,
+  baseline: { forkPointSha: string; lastSyncedSha: string },
+): string
