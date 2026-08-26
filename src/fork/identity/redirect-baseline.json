@@ -1,6 +1,10 @@
 {
   "_comment": "每条换皮重定向的 from 文件内容指纹（LF 归一化后 sha256）。buildStart 比对失配即硬失败——上游改了被换皮文件的内容时，光断言路径存在不会报警，皮会悄悄掉。失配后必须先对账上游改动、再更新指纹，不要直接刷新了事。",
   "entries": {
+    "entrypoints/options/pages/video-subtitles/ai-quota/index.tsx": "0ac2828abac64eb8",
+    "entrypoints/subtitles.content/ui/subtitles-settings-panel/components/request-ai-subtitles-item.tsx": "b62a29a8835abb30",
+    "components/badges/plan-badge.tsx": "5beb5738cf65cbb1",
+    "components/llm-providers/use-hosted-ai-status.ts": "3892138c7824e669",
     "utils/featurebase.ts": "b7ee0983b989785f",
     "entrypoints/options/app-sidebar/product-nav.tsx": "d17c2b904fe6bed8",
     "entrypoints/popup/components/language-options-selector.tsx": "e0a99b444b42de92",

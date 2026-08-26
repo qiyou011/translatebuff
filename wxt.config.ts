@@ -51,6 +51,34 @@ const forkChannelSuffix = forkChannelId ? `-${forkChannelId}` : "-{{browser}}"
 // 把上游 provider 选择器 / 选项 provider 页重定向到 fork 版（相对/@ import 都拦得住）。
 export const FORK_UI_REDIRECTS = [
   {
+    // AI 字幕配额区：上游依赖自建转录后端 + Pro/Ultra 分钟配额，任译喵无对应服务（MUL-63）。
+    from: path.resolve(
+      __dirname,
+      "src/entrypoints/options/pages/video-subtitles/ai-quota/index.tsx",
+    ),
+    to: path.resolve(__dirname, "src/fork/ui/subtitles/ai-quota.tsx"),
+  },
+  {
+    // AI 字幕在字幕面板里的真入口：点击会走 ensureAiSubtitlesEntitled() 弹上游订阅引导。
+    from: path.resolve(
+      __dirname,
+      "src/entrypoints/subtitles.content/ui/subtitles-settings-panel/components/request-ai-subtitles-item.tsx",
+    ),
+    to: path.resolve(__dirname, "src/fork/ui/subtitles/request-ai-subtitles-item.tsx"),
+  },
+  {
+    // 上游套餐徽标（free/pro/ultra）：read-frog 自家计费体系，
+    // 任译喵有自己的会员标识，不显示上游套餐也不留其升级入口。
+    from: path.resolve(__dirname, "src/components/badges/plan-badge.tsx"),
+    to: path.resolve(__dirname, "src/fork/components/plan-badge.tsx"),
+  },
+  {
+    // Built-in AI 分层配额：上游自家托管模型 + 计费，任译喵有自己的会员体系。
+    // 掐状态源一处覆盖全部消费方，各 UI 拿不到 status 自然不渲染配额与分层。
+    from: path.resolve(__dirname, "src/components/llm-providers/use-hosted-ai-status.ts"),
+    to: path.resolve(__dirname, "src/fork/ui/hosted-ai/use-hosted-ai-status.ts"),
+  },
+  {
     // 反馈门户地址：上游指向自家 feedback.readfrog.app，任译喵走自己的反馈页。
     // 换皮构造器一处覆盖两个入口（options 侧边栏、网页悬浮球）。
     from: path.resolve(__dirname, "src/utils/featurebase.ts"),
