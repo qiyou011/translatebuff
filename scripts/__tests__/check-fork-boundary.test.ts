@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest"
-import { classifyChangedFiles, resolveSyncBase } from "../check-fork-boundary.mjs"
+import {
+  classifyChangedFiles,
+  resolveSyncBase,
+  resolveUpstreamRef,
+} from "../check-fork-boundary.mjs"
 
 const ALLOW = ["wxt.config.ts", "src/entrypoints/background/index.ts", "src/utils/constants/app.ts"]
 
@@ -155,5 +159,25 @@ describe("classifyChangedFiles 的分歧判定", () => {
   it("不传分歧判定时行为不变（默认一律视为有分歧）", () => {
     const { violations } = classifyChangedFiles(["src/utils/message.ts"], [])
     expect(violations).toEqual(["src/utils/message.ts"])
+  })
+})
+
+describe("resolveUpstreamRef", () => {
+  const baseline = { forkPointSha: "forkpoint", lastSyncedSha: "upstreamtip" }
+
+  it("同步模式的 base 本身就是本次合入的上游提交，直接用作分歧基准", () => {
+    expect(resolveUpstreamRef("sync", "upstreamtip", baseline)).toBe("upstreamtip")
+  })
+
+  it("排查模式的 base 是分叉点，不能拿它当分歧基准", () => {
+    // 差集已经是「分叉点之后变过的文件」，再问「是否与分叉点有分歧」必然为真，
+    // 判定退化成恒真——上游自己改的文件也会被算成 fork 欠账。
+    expect(resolveUpstreamRef("audit", "forkpoint", baseline)).toBe("upstreamtip")
+  })
+
+  it("增量模式的 base 是 fork 长期分支，分歧基准取上游落脚点", () => {
+    expect(resolveUpstreamRef("incremental", "origin/change/fork-foundation", baseline)).toBe(
+      "upstreamtip",
+    )
   })
 })

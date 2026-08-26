@@ -39,6 +39,22 @@ export function classifyChangedFiles(changed, allowlist, divergesFromUpstream) {
 }
 
 /**
+ * 推导「分歧基准」= 衡量某文件是否仍与上游有差异时，拿来对比的那个上游提交。
+ *
+ * 只有同步模式能直接复用 base——那时 base 就是本次合并进来的上游提交。其余模式的 base
+ * 都不是当前上游：增量模式是 fork 的长期分支，排查模式是分叉点。排查模式尤其要当心，
+ * 它的差集本就是「分叉点之后变过的文件」，再拿分叉点问「是否仍有分歧」必然为真，判定
+ * 退化成恒真，上游自己的改动会被整批算成 fork 欠账。分歧一律相对**当前**上游落脚点衡量。
+ *
+ * @param mode "sync" | "audit" | "incremental"
+ * @param base 当前模式的差集基准
+ * @param baseline upstream-baseline.json 的内容
+ */
+export function resolveUpstreamRef(mode, base, baseline) {
+  return mode === "sync" ? base : baseline.lastSyncedSha
+}
+
+/**
  * 推导同步模式的基准 = 本次合并进来的上游提交。
  *
  * 不能用 `git rev-parse HEAD^2`：CI 里 actions/checkout 在 pull_request 事件下检出的是
@@ -102,6 +118,13 @@ if (import.meta.url === pathToFileURL(process.argv[1]).href) {
   //   增量（默认）  origin/<base_ref>        差集 = 本次 PR 自己改了什么
   //   同步          本次合并进来的上游提交    差集 = fork 相对上游的自有改动
   //   排查          分叉点（不参与 CI 判定）  差集 = 累计欠账
+  const mode =
+    process.env.FORK_SCAN_ALL === "1"
+      ? "audit"
+      : process.env.FORK_SYNC_MODE === "1"
+        ? "sync"
+        : "incremental"
+
   let base
   if (process.env.FORK_SCAN_ALL === "1") {
     base = JSON.parse(readFileSync("src/fork/identity/upstream-baseline.json", "utf8")).forkPointSha
@@ -128,12 +151,11 @@ if (import.meta.url === pathToFileURL(process.argv[1]).href) {
     .filter(Boolean)
   const allowlist = JSON.parse(readFileSync("scripts/fork-allowlist.json", "utf8")).files
 
-  // 分歧基准取上游落脚点：排查/同步模式下 base 本身就是上游提交；增量模式下 base 是 fork
-  // 的长期分支，得另取 upstream-baseline.json 的 lastSyncedSha。
-  const upstreamRef =
-    process.env.FORK_SCAN_ALL === "1" || process.env.FORK_SYNC_MODE === "1"
-      ? base
-      : JSON.parse(readFileSync("src/fork/identity/upstream-baseline.json", "utf8")).lastSyncedSha
+  const upstreamRef = resolveUpstreamRef(
+    mode,
+    base,
+    JSON.parse(readFileSync("src/fork/identity/upstream-baseline.json", "utf8")),
+  )
   const divergesFromUpstream = (file) => {
     const diff = execFileSync("git", ["diff", "--name-only", upstreamRef, "HEAD", "--", file], {
       encoding: "utf8",
