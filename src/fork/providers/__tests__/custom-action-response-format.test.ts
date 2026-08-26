@@ -14,7 +14,7 @@ import { buildRenyimiaoProvider } from "../renyimiao"
 // 用真实 resolver 造 customAction provider ref（与 use-custom-action-controller.ts:93 同款路径），
 // 避免手搓 ref 形状——registry 改 ref 结构时测试自动跟随。
 function resolveRef(providersConfig: ProvidersConfig, id: string): CustomActionProviderRef {
-  const ref = resolveProviderRefForCapability("selectionToolbar.customAction", providersConfig, id)
+  const ref = resolveProviderRefForCapability("customAction", providersConfig, id)
   if (!ref) {
     throw new Error(`无法解析 provider ref：${id}`)
   }

@@ -1,7 +1,7 @@
 import type { ProviderSelectorOption } from "@/utils/providers/provider-display"
 import { isRenyimiaoInstance } from "@/fork/providers/renyimiao"
 import { isPureTranslateProviderConfig } from "@/types/config/provider"
-import { isProviderSelectorItem } from "@/utils/providers/provider-display"
+import { isSystemProviderSelectorItem } from "@/utils/providers/provider-display"
 
 // fork 版选择器分组（锁定任译喵）：只保留「任译喵组（置顶）+ 普通翻译组」，
 // 隐藏大语言模型组（OpenAI/DeepSeek/Atlas/自建）与内置模型组（免费AI）；空组过滤。
@@ -24,7 +24,8 @@ export function getForkProviderSelectorGroups(
     {
       key: "normalTranslator",
       providers: providers.filter(
-        (provider) => !isProviderSelectorItem(provider) && isPureTranslateProviderConfig(provider),
+        (provider) =>
+          !isSystemProviderSelectorItem(provider) && isPureTranslateProviderConfig(provider),
       ),
     },
   ]

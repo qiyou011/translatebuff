@@ -4,11 +4,11 @@ import { useAtom, useAtomValue } from "jotai"
 import { Button } from "@/components/ui/base-ui/button"
 import { Kbd, KbdGroup } from "@/components/ui/base-ui/kbd"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/base-ui/tooltip"
-import { canEnterTranslationOnlyMode } from "@/fork/providers/translation-only-gate"
 import { configAtom, configFieldsAtomMap } from "@/utils/atoms/config"
 import { i18n } from "@/utils/i18n"
 import { formatHotkeyParts } from "@/utils/os"
 import { isPageTranslationShortcutEmpty } from "@/utils/page-translation-shortcut"
+import { canEnterTranslationOnlyMode } from "@/utils/providers/translation-only-gate"
 import { cn } from "@/utils/styles/utils"
 
 // fork 版 popup 模式切换按钮（换皮上游 entrypoints/popup/components/translation-mode-selector）：
@@ -39,7 +39,7 @@ const MODE_TOOLTIP_KEY = {
 } as const
 
 export default function TranslationModeSelector() {
-  const [translateConfig, setTranslateConfig] = useAtom(configFieldsAtomMap.translate)
+  const [translateConfig, setTranslateConfig] = useAtom(configFieldsAtomMap.pageTranslation)
   const config = useAtomValue(configAtom)
   const currentMode = translateConfig.mode
   const currentModeIcon = MODE_ICON[currentMode]
@@ -87,7 +87,7 @@ export default function TranslationModeSelector() {
         <div className={cn("whitespace-nowrap", nextModeBlocked && "max-w-64 whitespace-normal")}>
           <p>{i18n.t(tooltipKey.current)}</p>
           {nextModeBlocked ? (
-            <p>{i18n.t("options.translation.translationMode.microsoftNotSupported")}</p>
+            <p>{i18n.t("options.translation.preference.translationMode.microsoftNotSupported")}</p>
           ) : (
             <p>{actionLabel}</p>
           )}

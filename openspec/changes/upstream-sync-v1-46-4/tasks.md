@@ -4,6 +4,19 @@
 工作分支：`feat/upstream-sync-v1-46-4`，从 `change/fork-foundation` 切出，以 PR 合回 `change/fork-foundation`。
 上次同步落脚点：`53b54d68`（v1.43.6），下称 `$PREV`。
 
+> **备忘：提示词实验被移除（2026-08-25，用户确认「后续可能恢复」）**
+>
+> 上游 #2036（`dc1c3fca feat(translation): add precision rewrite as an optional built-in prompt`）
+> 把整套提示词 A/B 实验撤了：`trackTranslationRequested` / `classifyTranslationRequest` /
+> `TRANSLATION_REQUESTED_FEATURE` / `TranslationActionContext` 类型、以及
+> `exposePromptExperiment` 与 `clearPromptExperimentAction` 两条消息全部不复存在。
+>
+> fork 侧 `src/fork/ui/selection-content/use-selection-translation-controller.ts` 曾消费这套接口，
+> 随之移除。**要恢复的话**：该文件在本次同步前的版本可从 `git show 4a85f62a:<path>` 取回，
+> 里面完整保留了 `actionContext` 构造、`trackTranslationRequested` 上报、
+> `exposePromptExperiment` 分流与 `finally` 里的 `clearPromptExperimentAction` 清理。
+> 但接口是上游撤的，恢复意味着 fork 要自建这套事件与消息通道——属独立需求，不在本次同步范围内。
+
 ## 0. 前置门禁
 
 - [ ] 0.1 确认 `upstream-sync-v1-43-6` 已合入 `change/fork-foundation`，且内测包人工验收通过

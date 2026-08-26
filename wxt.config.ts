@@ -117,35 +117,13 @@ export const FORK_UI_REDIRECTS = [
     to: path.resolve(__dirname, "src/fork/components/user-account-menu-shared.ts"),
   },
   {
-    // 微软翻译适配器：上游旧鉴权端点已下线（404），修复后的免鉴权实现放在 fork 侧。
-    // 三个 importer（execute-translate、api/index 桶导出、background/translation-queues）
-    // 都解析到同一绝对路径，一条重定向全部接管。
-    from: path.resolve(__dirname, "src/utils/host/translate/api/microsoft.ts"),
-    to: path.resolve(__dirname, "src/fork/providers/microsoft-translate.ts"),
-  },
-  {
-    // 选项页「翻译模式」卡片：上游版本对模式毫无门禁，切进仅译文后微软适配器会硬抛错。
-    // fork 版禁用该选项并就地说明原因；具名导出与 ConfigCard id 保持不变。
-    from: path.resolve(__dirname, "src/entrypoints/options/pages/translation/translation-mode.tsx"),
-    to: path.resolve(__dirname, "src/fork/ui/options/translation-mode.tsx"),
-  },
-  {
-    // 模式切换快捷键：同为 config.translate.mode 的写入口，微软激活时拦住并弹 toast 说明。
-    // importer 是上游 host.content/runtime.ts，故必须走重定向（不像 popup 那个能直接改 import）。
-    from: path.resolve(
-      __dirname,
-      "src/entrypoints/host.content/translation-control/bind-translation-mode-shortcut.ts",
-    ),
-    to: path.resolve(__dirname, "src/fork/ui/host-content/bind-translation-mode-shortcut.ts"),
-  },
-  {
     from: path.resolve(__dirname, "src/components/llm-providers/provider-selector.tsx"),
     to: path.resolve(__dirname, "src/fork/components/provider-selector.tsx"),
   },
   {
     from: path.resolve(
       __dirname,
-      "src/entrypoints/options/pages/api-providers/providers-config.tsx",
+      "src/entrypoints/options/pages/api-providers/providers-config/index.tsx",
     ),
     to: path.resolve(__dirname, "src/fork/ui/options/providers-config.tsx"),
   },
@@ -170,14 +148,6 @@ export const FORK_UI_REDIRECTS = [
     to: path.resolve(__dirname, "src/fork/ui/options/notebase-connection-field.tsx"),
   },
   {
-    // 选项页「保存建议」开关：功能 UI 已隐藏，开关留着会误导 → 重定向到 fork 空组件。
-    from: path.resolve(
-      __dirname,
-      "src/entrypoints/options/pages/selection-toolbar/selection-toolbar-save-suggestion-toggle.tsx",
-    ),
-    to: path.resolve(__dirname, "src/fork/ui/selection-toolbar/save-suggestion-toggle.tsx"),
-  },
-  {
     // 选项页「通用」页功能提供商宿主：未登录/无 key 时对任译喵门禁（隐藏 + 登录引导），换皮到 fork 版。
     from: path.resolve(
       __dirname,
@@ -191,7 +161,7 @@ export const FORK_UI_REDIRECTS = [
     // from 指向桶真身 index.tsx；预筛已修复支持桶导入（见 src/fork/ui-redirect-plugin.ts）。
     from: path.resolve(
       __dirname,
-      "src/entrypoints/options/pages/config/google-drive-sync/index.tsx",
+      "src/entrypoints/options/pages/preference/config/google-drive-sync/index.tsx",
     ),
     to: path.resolve(__dirname, "src/fork/ui/options/google-drive-sync-card.tsx"),
   },

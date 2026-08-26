@@ -1,9 +1,10 @@
 import type { Config } from "@/types/config/config"
 import { describe, expect, it } from "vitest"
-import { providerConfigItemSchema } from "@/types/config/provider"
+import { isPureTranslateProviderConfig, providerConfigItemSchema } from "@/types/config/provider"
 import { mergeWithArrayOverwrite } from "@/utils/atoms/config"
 import { DEFAULT_CONFIG } from "@/utils/constants/config"
 import {
+  isRenyimiaoInstance,
   buildRenyimiaoProvider,
   computeForkConfigSync,
   isForkVisibleProvider,
@@ -59,10 +60,17 @@ describe("isForkVisibleProvider（fork UI 可见性谓词）", () => {
     expect(isForkVisibleProvider(defaultProvider("google-translate"))).toBe(true)
   })
 
-  it("拦截默认大语言模型 provider（openai / deepseek / atlascloud）", () => {
-    expect(isForkVisibleProvider(defaultProvider("openai"))).toBe(false)
-    expect(isForkVisibleProvider(defaultProvider("deepseek"))).toBe(false)
-    expect(isForkVisibleProvider(defaultProvider("atlascloud"))).toBe(false)
+  it("拦截默认配置里的全部大语言模型 provider", () => {
+    // 不再点名具体 provider：上游会增删默认清单（v1.46.4 就移走了 deepseek），
+    // 点名哪几个就得跟着改。断言的本意是「任译喵实例之外的 LLM 一律不可见」，
+    // 直接遍历默认清单表达这个意思，对上游增删天然免疫。
+    const llmProviders = DEFAULT_CONFIG.providersConfig.filter(
+      (item) => !isRenyimiaoInstance(item) && !isPureTranslateProviderConfig(item),
+    )
+    expect(llmProviders.length).toBeGreaterThan(0)
+    for (const provider of llmProviders) {
+      expect(isForkVisibleProvider(provider)).toBe(false)
+    }
   })
 })
 
@@ -135,11 +143,11 @@ describe("syncRenyimiaoModels（以 fetch 结果为准重建实例集）", () =>
   it("功能指向被移除的任译喵实例时 repoint 到存活实例", () => {
     const config: Config = {
       ...seededConfig(),
-      translate: { ...DEFAULT_CONFIG.translate, providerId: DEEPSEEK_ID },
+      pageTranslation: { ...DEFAULT_CONFIG.pageTranslation, providerId: DEEPSEEK_ID },
     }
     const patch = syncRenyimiaoModels(config, ["GLM-5.2"])
     const next = applyPatch(config, patch)
-    expect(next.translate.providerId).toBe(renyimiaoInstanceId("GLM-5.2"))
+    expect(next.pageTranslation.providerId).toBe(renyimiaoInstanceId("GLM-5.2"))
   })
 
   it("划词工具栏翻译功能与自定义动作同时指向被移除实例：翻译 repoint 不被自定义动作补丁覆盖", () => {

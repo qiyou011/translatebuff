@@ -93,7 +93,7 @@ export function useSelectionCustomActionController() {
       provider: activeAction
         ? withRenyimiaoJsonObjectFormat(
             resolveProviderRefForCapability(
-              "selectionToolbar.customAction",
+              "customAction",
               providersConfig,
               activeAction.providerId,
             ),
@@ -103,7 +103,7 @@ export function useSelectionCustomActionController() {
     [activeAction, language, providersConfig],
   )
   const customActionProviders = useMemo(
-    () => getSelectableProvidersForCapability("selectionToolbar.customAction", providersConfig),
+    () => getSelectableProvidersForCapability("customAction", providersConfig),
     [providersConfig],
   )
   const executionPlan = useMemo(

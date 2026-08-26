@@ -4,7 +4,7 @@ import { useAtomValue, useSetAtom } from "jotai"
 import { Button } from "@/components/ui/base-ui/button"
 import { Field, FieldLabel } from "@/components/ui/base-ui/field"
 import { Input } from "@/components/ui/base-ui/input"
-import { ConfigCard } from "@/entrypoints/options/components/config-card"
+import { ConfigItem } from "@/entrypoints/options/components/config-item"
 import { FORK_BRANDING } from "@/fork/branding"
 import { useForkSession, useOpenForkLogin } from "@/fork/membership/atoms"
 import {
@@ -24,7 +24,7 @@ import { UpdateModelsButton } from "./update-models-button"
 // fork 换皮版选项页「API 提供商」：锁定为单个「任译喵 API」块——底层每模型一份实例，这里收成一块管理：
 // API Key 由登录单写（后台唯一写者注入），设置页只读掩码展示、无手填写入路径（消除并发写覆盖）；
 // 未登录显「登录后自动获取」并引导登录。点「更新模型」fetch 网关 /models 重建实例集、模型清单只读、Base URL 只读。
-// 复用通用布局(ConfigCard/EntityEditorLayout/EntityListRail) + base-ui 原语 + config atoms + fork 逻辑，
+// 复用通用布局(ConfigItem/EntityEditorLayout/EntityListRail) + base-ui 原语 + config atoms + fork 逻辑，
 // 不 import 上游 providers-config/ProviderConfigForm。经 wxt.config resolve 插件全局替换上游 ProvidersConfig。
 
 const RENYIMIAO_API_LABEL = `${FORK_BRANDING.displayName} API`
@@ -144,7 +144,7 @@ export function ProvidersConfig() {
 
   // 单一「任译喵 API」provider，无需实体列表侧栏（设计冗余），编辑器直接铺满内容区。
   return (
-    <ConfigCard
+    <ConfigItem
       id="api-providers"
       title={RENYIMIAO_API_LABEL}
       description="用于翻译和词汇解析功能"
@@ -159,6 +159,6 @@ export function ProvidersConfig() {
         onLogin={openLogin}
         onModelsFetched={handleModelsFetched}
       />
-    </ConfigCard>
+    </ConfigItem>
   )
 }

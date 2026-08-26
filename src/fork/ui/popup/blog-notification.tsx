@@ -1,11 +1,14 @@
 // 换皮：上游 popup/components/blog-notification.tsx 的精确副本，只改一处——博客链接的拼法。
-// fork popup 确实渲染这个组件（右上角铃铛），链接直拼在本地预览下会 404。
+// fork popup 确实渲染这个组件（右上角铃铛），上游直拼在本地预览下会 404。
+// 上游 v1.46.4 重构过本组件（uiLanguage 改从 atom 读），本副本已按新版重新生成。
 import { Icon } from "@iconify/react/dist/iconify.js"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
+import { useAtomValue } from "jotai"
 import { Button } from "@/components/ui/base-ui/button"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/base-ui/tooltip"
 import { env } from "@/env"
 import { buildBlogUrl } from "@/fork/ui/popup/blog-url"
+import { configFieldsAtomMap } from "@/utils/atoms/config"
 import {
   getBlogLocaleFromUILanguage,
   getLastViewedBlogDate,
@@ -18,7 +21,8 @@ import { version } from "../../../../package.json"
 
 export default function BlogNotification() {
   const queryClient = useQueryClient()
-  const blogLocale = getBlogLocaleFromUILanguage()
+  const uiLanguage = useAtomValue(configFieldsAtomMap.uiLanguage)
+  const blogLocale = getBlogLocaleFromUILanguage(uiLanguage)
 
   const { data: lastViewedDate } = useQuery({
     queryKey: ["last-viewed-blog-date"],
