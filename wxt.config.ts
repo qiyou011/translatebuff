@@ -11,6 +11,7 @@ import {
 } from "./src/env/shared"
 import { FORK_BRANDING } from "./src/fork/branding"
 import { resolveChannelNumber } from "./src/fork/identity/channel"
+import { resolveEdition } from "./src/fork/identity/edition"
 import {
   computeForkVersion,
   computeForkVersionName,
@@ -39,8 +40,23 @@ const forkVersionName = computeForkVersionName(
   forkReleaseVersion,
   FORK_BRANDING.displayName,
 )
+// 发行版（由 scripts/pack.mjs 注入 WXT_FORK_EDITION）：决定商店身份——manifest 显示名与 Firefox 扩展 ID。
+// 未注入 → cn（国内线），保证既有命令产物逐字不变；未知值由 resolveEdition 抛错。
+const forkEdition = resolveEdition(process.env.WXT_FORK_EDITION)
+// 国内版已在 AMO 上架，扩展 ID 是条目主键、上架后不可改——改它等于发布成新扩展、存量用户断更新，
+// 故国内保持原值不动，海外另起一个。Firefox 只要求 ID 形如邮箱或 GUID，不校验域名所有权。
+const forkGeckoId =
+  forkEdition === "global" ? "overseas@translatebuff.com" : "translatebuff@translatebuff.com"
+// 输出目录也按 edition 分开：两条线共用 .output/<browser>-mv3 时后跑的那条会静默覆盖前一条，
+// 而目录里没有任何标识能看出它是哪条线的——手动 load unpacked 时极易装错。
+// 国内保持原名不变（既有习惯与文档里的路径都不动），海外加 -global。
+const forkEditionDirSuffix = forkEdition === "global" ? "-global" : ""
+
 // 打包意图（由 scripts/pack.mjs 注入）：FORK_PACK=test → 产物加 -test 后缀，区分测试包 / 正式包。
-const forkPackSuffix = process.env.FORK_PACK === "test" ? "-test" : ""
+// 海外测试包再加 -global：两条线的测试包否则同名互相覆盖，且拿到手分不出是哪条线的。
+// 国内测试包名保持原样（-test-<浏览器>），不回归。
+const forkPackSuffix =
+  process.env.FORK_PACK === "test" ? (forkEdition === "global" ? "-test-global" : "-test") : ""
 
 // 渠道 id（由 scripts/pack.mjs 注入 WXT_FORK_CHANNEL）。设了则产物名以渠道 id 命名（同浏览器双渠道不撞车），
 // 未设则回退 {{browser}}（dev 裸 `wxt zip` 行为不变）。号码校验借 bundle 侧 resolveChannelNumber（单一真源）。
@@ -209,7 +225,8 @@ export default defineConfig({
       }
     : {},
   manifest: ({ mode, browser }) => ({
-    name: FORK_BRANDING.displayName,
+    // 商店条目名按线取：国内中文名，海外英文名。技术标识 APP_NAME 不受影响（见 src/utils/constants/app.ts）。
+    name: forkEdition === "global" ? FORK_BRANDING.name : FORK_BRANDING.displayName,
     version: forkVersion,
     version_name: forkVersionName,
     description: "__MSG_extDescription__",
@@ -250,8 +267,8 @@ export default defineConfig({
       },
       browser_specific_settings: {
         gecko: {
-          // fork 专属 Firefox 扩展 ID，区别于上游 read-frog，避免 AMO 上架撞车
-          id: "translatebuff@translatebuff.com",
+          // fork 专属 Firefox 扩展 ID，区别于上游 read-frog 且两条 edition 各一个，避免 AMO 上架撞车
+          id: forkGeckoId,
           strict_min_version: "112.0",
           data_collection_permissions: {
             required: ["none"],
@@ -261,6 +278,8 @@ export default defineConfig({
       },
     }),
   }),
+  // 默认模板是 `{{browser}}-mv{{manifestVersion}}{{modeSuffix}}`，此处只在末尾追加 edition 后缀。
+  outDirTemplate: `{{browser}}-mv{{manifestVersion}}{{modeSuffix}}${forkEditionDirSuffix}`,
   zip: {
     // fork 品牌命名：translatebuff-<版本>[-test]-<浏览器>.zip。artifactTemplate 才是 WXT 真·文件名模板；
     // 刻意不用 {{version}}（它取的是中文全角 version_name、会产出丑名），干净版本号从 forkVersion 注入。
@@ -268,7 +287,7 @@ export default defineConfig({
     // 否则 firefox 的 sources 包文件名仍走默认丑名。
     artifactTemplate: `${FORK_BRANDING.name.toLowerCase()}-${forkVersion}${forkPackSuffix}${forkChannelSuffix}.zip`,
     sourcesTemplate: `${FORK_BRANDING.name.toLowerCase()}-${forkVersion}${forkPackSuffix}-sources.zip`,
-    includeSources: ["**/*", ".env.production"],
+    includeSources: ["**/*", ".env.production", ".env.global.production"],
     excludeSources: ["docs/**/*", "assets/**/*", "repos/**/*", "readmes/**/*"],
   },
   hooks: {

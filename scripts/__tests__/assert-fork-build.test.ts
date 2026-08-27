@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest"
 import {
+  checkEditionDomains,
   findMissingForkDomains,
   findUpstreamDomainHits,
   readForkDomainsFromEnv,
@@ -74,5 +75,61 @@ describe("readTestDomainsFromEnv（从 .env 派生测试后端域，用于泄漏
 
   it(".env 为空 → 空数组（CI 干净构建无测试域可泄漏、守卫跳过）", () => {
     expect(readTestDomainsFromEnv("")).toEqual([])
+  })
+})
+
+describe("checkEditionDomains（双向域名断言：本线必须在、另一线绝不能在）", () => {
+  const CN_ENV = [
+    "WXT_API_URL=https://translatebuff.cn",
+    "WXT_WEBSITE_URL=https://translatebuff.cn",
+  ].join("\n")
+  const GLOBAL_ENV = [
+    "WXT_API_URL=https://www.translatebuff.com",
+    "WXT_WEBSITE_URL=https://www.translatebuff.com",
+  ].join("\n")
+
+  it("本线域名齐全 + 无另一线域名 → 通过", () => {
+    const result = checkEditionDomains("cfg={host:'www.translatebuff.com'}", GLOBAL_ENV, CN_ENV)
+    expect(result).toEqual({ missing: [], leaked: [], copyLeaked: [] })
+  })
+
+  it("本线域名缺失 → 报 missing（env 注入未生效的信号）", () => {
+    const result = checkEditionDomains("cfg={host:'example.org'}", GLOBAL_ENV, CN_ENV)
+    expect(result.missing).toEqual(["www.translatebuff.com"])
+  })
+
+  it("海外包混入 .cn 域 → 报 leaked（两线配置串味，本变更的首要失败形态）", () => {
+    const bundle = "a='www.translatebuff.com' b='translatebuff.cn'"
+    expect(checkEditionDomains(bundle, GLOBAL_ENV, CN_ENV).leaked).toEqual(["translatebuff.cn"])
+  })
+
+  it("国内包混入 .com 域 → 同样报 leaked（反向也拦）", () => {
+    const bundle = "a='translatebuff.cn' b='www.translatebuff.com'"
+    expect(checkEditionDomains(bundle, CN_ENV, GLOBAL_ENV).leaked).toEqual([
+      "www.translatebuff.com",
+    ])
+  })
+
+  it("只出现在界面文案里的另一线域名 → 归 copyLeaked（告警），不判构建失败", () => {
+    const bundle = "a='translatebuff.cn' copy='Sign in on www.translatebuff.com'"
+    const localeText = "loginRequired: Sign in on www.translatebuff.com"
+    const result = checkEditionDomains(bundle, CN_ENV, GLOBAL_ENV, localeText)
+    expect(result.leaked).toEqual([])
+    expect(result.copyLeaked).toEqual(["www.translatebuff.com"])
+  })
+
+  it("文案里有、但产物里另有非文案来源的同一域名 → 仍归 leaked（不被文案豁免遮蔽）", () => {
+    // 端点常量与文案共用同一域名时，豁免只能按「域名是否出现在文案源」判断——
+    // 这是刻意取舍：文案豁免会遮住同域的端点泄漏，故 leaked 判定仅对未出现在文案源的域名生效。
+    const localeText = "copy: www.translatebuff.com"
+    const result = checkEditionDomains("cfg=www.translatebuff.com", CN_ENV, GLOBAL_ENV, localeText)
+    expect(result.copyLeaked).toEqual(["www.translatebuff.com"])
+  })
+
+  it("不传文案源 → 全部按 leaked 处理（默认最严）", () => {
+    const bundle = "a='translatebuff.cn' b='www.translatebuff.com'"
+    const result = checkEditionDomains(bundle, CN_ENV, GLOBAL_ENV)
+    expect(result.leaked).toEqual(["www.translatebuff.com"])
+    expect(result.copyLeaked).toEqual([])
   })
 })

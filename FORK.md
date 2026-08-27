@@ -74,8 +74,11 @@ Translatebuff 是 read-frog 的软 fork（上游：mengxi-ream/read-frog）。
   manifest version 为纯数字段，故测试包与正式包**同版本号**，靠后端 + 文件名区分。
 - `package.json version` 与 `CHANGELOG.md` 仍一律 take-theirs（version 字段绝不 fork 改），绝不在 fork 上跑 changesets。
 - 打包两条轨（`scripts/pack.mjs`，产物落 `.output/`）：
-  - `node scripts/pack.mjs test` —— 测试后端（本地 `.env`）→ `translatebuff-<版本>-test-chrome.zip`，内部试用（load unpacked）。
-  - `node scripts/pack.mjs store` —— 正式后端（`.env.production`）→ `translatebuff-<版本>-chrome.zip`，上传 Chrome Web Store。
+  - `node scripts/pack.mjs test [--edition cn|global]` —— 测试后端（`cn` 读本地 `.env`，`global` 读 `.env.global`）
+    → `translatebuff-<版本>-test[-global]-<浏览器>.zip`，内部试用（load unpacked，目录在 `.output/<浏览器>-mv3[-global]`）。
+  - `node scripts/pack.mjs store [--edition cn|global] (--channel <id> | --all)` —— 正式后端
+    （`cn` 读 `.env.production`，`global` 读 `.env.global.production`）→ `translatebuff-<版本>-<渠道id>.zip`，上传对应商店。
+  - 两条 edition 的产物目录与文件名都分开，互不覆盖；跨线域名混入由 `assert-fork-build.mjs` 双向断言 fail-fast。
 
 ## 文件四分类与冲突解法
 

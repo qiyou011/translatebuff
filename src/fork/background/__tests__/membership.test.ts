@@ -14,6 +14,12 @@ import { configSchema } from "@/types/config/config"
 import { storageAdapter } from "@/utils/atoms/storage-adapter"
 import { CONFIG_STORAGE_KEY, DEFAULT_CONFIG } from "@/utils/constants/config"
 
+// 只挡 i18n 门面：它顶层 import src/locales/*.yml，而根 vitest 配置不带 ViteYaml 插件。
+// 归一逻辑照抄真实实现的「非 auto 原样返回」分支，Client-Language 的映射本身仍走真代码。
+vi.mock("@/utils/i18n/locale-map", () => ({
+  resolveUiLocale: (uiLanguage: string) => (uiLanguage === "auto" ? "en" : uiLanguage),
+}))
+
 const API_BASE = "https://api.test.local"
 const CRED = "cred-login-xyz"
 const SK = "sk-mock-renyimiao-0000000000000000000000"
@@ -196,6 +202,32 @@ describe("adoptCredential 在途去重（防主动探测 + 被动监听并发双
 })
 
 describe("syncMembershipFromWebsite（冷启动/挂载主动同步）", () => {
+  it("中文界面 → 平台请求发 Client-Language: zh-cn（国内线不回归）", async () => {
+    routeOk()
+    await storageAdapter.set(
+      CONFIG_STORAGE_KEY,
+      { ...DEFAULT_CONFIG, uiLanguage: "zh-CN" },
+      configSchema,
+    )
+    await adoptCredential(CRED)
+    const headers = fetchMock.mock.calls.find(([url]) => String(url).includes("login_status"))![1]
+      .headers as Record<string, string>
+    expect(headers["Client-Language"]).toBe("zh-cn")
+  })
+
+  it("英文界面 → 发 en-us（不再恒定 zh-cn）", async () => {
+    routeOk()
+    await storageAdapter.set(
+      CONFIG_STORAGE_KEY,
+      { ...DEFAULT_CONFIG, uiLanguage: "en" },
+      configSchema,
+    )
+    await adoptCredential(CRED)
+    const headers = fetchMock.mock.calls.find(([url]) => String(url).includes("login_status"))![1]
+      .headers as Record<string, string>
+    expect(headers["Client-Language"]).toBe("en-us")
+  })
+
   it("无会话 + 官网 cookie 存在 → 读 WXT_WEBSITE_URL 的 cookie 并接管", async () => {
     routeOk()
     const getSpy = mockCookieGet({ value: CRED })

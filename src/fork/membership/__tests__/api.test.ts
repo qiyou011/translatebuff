@@ -7,6 +7,7 @@ import {
   fetchTokensWithRetry,
   MembershipUnauthorizedError,
 } from "../api"
+import { DEFAULT_CLIENT_LANGUAGE } from "../client-language"
 
 const API_BASE = "https://api.test.local"
 const CRED = "cred-abc-123"
@@ -39,7 +40,16 @@ describe("buildAuthHeaders（显式请求头装配）", () => {
     expect(headers["Login-Credential"]).toBe(CRED)
     expect(headers["Saas-Product-Line"]).toBe("AITRANS")
     expect(headers["Saas-App-Id"]).toBe("aitrans-pc")
-    expect(headers["Client-Language"]).toBe("zh-cn")
+    expect(headers["Client-Language"]).toBe("en-us")
+  })
+
+  it("Client-Language 由第二参决定（中文界面仍发 zh-cn，国内线不回归）", () => {
+    expect(buildAuthHeaders(CRED, "zh-cn")["Client-Language"]).toBe("zh-cn")
+    expect(buildAuthHeaders(CRED, "ja-jp")["Client-Language"]).toBe("ja-jp")
+  })
+
+  it("不传第二参 → 回落 DEFAULT_CLIENT_LANGUAGE（已知可用的英文）", () => {
+    expect(buildAuthHeaders(CRED)["Client-Language"]).toBe(DEFAULT_CLIENT_LANGUAGE)
   })
 
   it("Useragent 恰为 7 段，首段 browser、第 5 段 client_name=aitrans-pc", () => {

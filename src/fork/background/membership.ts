@@ -9,6 +9,7 @@ import {
   fetchTokensWithRetry,
   MembershipUnauthorizedError,
 } from "@/fork/membership/api"
+import { toClientLanguage } from "@/fork/membership/client-language"
 import { CREDENTIAL_COOKIE_NAME, decideCookieAction } from "@/fork/membership/cookie-decision"
 import { computeLoginConfigPatch, computeLogoutConfigPatch } from "@/fork/membership/key-injection"
 import { clearMembershipInfo, saveMembershipInfo } from "@/fork/membership/membership-info"
@@ -24,6 +25,7 @@ import { configSchema } from "@/types/config/config"
 import { mergeWithArrayOverwrite } from "@/utils/atoms/config"
 import { storageAdapter } from "@/utils/atoms/storage-adapter"
 import { CONFIG_STORAGE_KEY, DEFAULT_CONFIG } from "@/utils/constants/config"
+import { resolveUiLocale } from "@/utils/i18n/locale-map"
 import { logger } from "@/utils/logger"
 
 // 任译喵会员登录后台编排：监听官网域凭据 cookie → 接管/清态 → 取用户信息+sk_key → 写 fork 会话 + 单写 provider key。
@@ -42,6 +44,19 @@ let clearGeneration = 0
 const adoptInFlight = new Set<string>()
 
 // 后台单写 config（设计 D5）：读一次 → 算补丁 → 合并 → 写一次。single-writer 的读-合-写只此一处。
+// 当前界面语言对应的 Client-Language。后端按完整 locale 查错误消息译文、查不到不回退英文，
+// 故语言取错的代价是用户看到 `err not found`。拆成纯函数 + 读取器两层：手上已有 config 的调用方
+// 直接用纯的那个，不为取个语言再读一遍 storage。
+function clientLanguageOf(config: Config): string {
+  return toClientLanguage(resolveUiLocale(config.uiLanguage))
+}
+
+async function readClientLanguage(): Promise<string> {
+  return clientLanguageOf(
+    await storageAdapter.get(CONFIG_STORAGE_KEY, DEFAULT_CONFIG, configSchema),
+  )
+}
+
 async function applyConfigPatch(computePatch: (config: Config) => Partial<Config>): Promise<void> {
   const config = await storageAdapter.get(CONFIG_STORAGE_KEY, DEFAULT_CONFIG, configSchema)
   const next = mergeWithArrayOverwrite(config, computePatch(config))
@@ -82,14 +97,15 @@ export async function adoptCredential(loginCredential: string): Promise<void> {
   adoptInFlight.add(loginCredential)
   const gen = clearGeneration
   try {
+    const clientLanguage = await readClientLanguage()
     // ① 用户信息 → 立即写会话（手机号秒显，不等 tokens 轮询）。
-    const { phone, user } = await fetchLoginStatus(loginCredential)
+    const { phone, user } = await fetchLoginStatus(loginCredential, clientLanguage)
     if (gen !== clearGeneration) {
       return
     }
     await saveForkSession({ loginCredential, phone, user })
     // ② sk_key + 网关 base_url（可能走开户轮询，此时会话已展示、不阻塞登录态）。
-    const tokens = await fetchTokensWithRetry(loginCredential)
+    const tokens = await fetchTokensWithRetry(loginCredential, { clientLanguage })
     if (!tokens || gen !== clearGeneration) {
       return
     }
@@ -143,7 +159,9 @@ export async function ensureMembershipKey(): Promise<void> {
   }
   const gen = clearGeneration
   try {
-    const tokens = await fetchTokensWithRetry(session.loginCredential)
+    const tokens = await fetchTokensWithRetry(session.loginCredential, {
+      clientLanguage: clientLanguageOf(config), // 复用本函数开头已读的那份 config
+    })
     if (tokens && gen === clearGeneration) {
       await applyConfigPatch((current) =>
         computeLoginConfigPatch(current, tokens.skKey, tokens.baseUrl),
@@ -168,7 +186,7 @@ export async function refreshMembershipInfo(): Promise<void> {
   }
   const gen = clearGeneration
   try {
-    const tokens = await fetchTokens(session.loginCredential)
+    const tokens = await fetchTokens(session.loginCredential, await readClientLanguage())
     if (gen !== clearGeneration) {
       return
     }

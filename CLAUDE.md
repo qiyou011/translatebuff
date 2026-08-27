@@ -25,12 +25,20 @@ pnpm dev                 # 开发（自动开 Chrome 装扩展）
 pnpm run test            # 单元测试（vitest）
 pnpm run build           # chrome 构建（另有 build:edge / build:firefox）
 pnpm run type-check      # oxlint 类型检查
-node scripts/assert-fork-build.mjs                                  # 断言产物内 fork 域名已生效
+node scripts/pack.mjs store --channel <id>                          # 国内线正式包（不传 --edition 即 cn）
+node scripts/pack.mjs store --edition global --all                 # 海外线全渠道正式包（.com）
+node scripts/assert-fork-build.mjs                                  # 断言产物内 fork 域名已生效（按 edition 双向校验）
 FORK_DIFF_BASE=origin/main node scripts/check-fork-boundary.mjs     # 断言无越界改动
 node scripts/check-fork-brand.mjs                                  # 断言 locale/标题无上游残留 + 无小写 Translatebuff
 ```
 
 环境要求：Node ≥ 22.22.0、pnpm 10.30.2（corepack 自动装）。
+
+**发行版（edition）**：产物目录按线分开——国内 `.output/<browser>-mv3`、海外 `.output/<browser>-mv3-global`，可直接 load unpacked。
+`cn` = 国内线（`.env.production`，translatebuff.cn），`global` = 海外线
+（`.env.global.production`，translatebuff.com）。两线独立后端与用户池，商店条目、扩展 ID、渠道号、官网跳转
+路径全部分开。⚠️ 绕过 `pack.mjs` 直接 `wxt zip` 会失去双向域名护栏——两线配置串味时构建成功、装上能用，
+用户登录才炸。
 
 ## 测试注意（详见 [AGENTS.md](./AGENTS.md)）
 
