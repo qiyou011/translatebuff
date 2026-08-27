@@ -181,3 +181,15 @@ describe("resolveUpstreamRef", () => {
     )
   })
 })
+
+describe("FORK_ROOT_FILES：fork 自有的根级 meta 文件", () => {
+  it("两份 edition 的正式配置都放行（.env.global.production 是 force-add 进仓的 fork 自有文件）", () => {
+    const { violations } = classifyChangedFiles([".env.production", ".env.global.production"], [])
+    expect(violations).toEqual([])
+  })
+
+  it("两份 edition 的本地测试配置也放行（gitignored，但误 add 时不该判成越界上游文件）", () => {
+    const { violations } = classifyChangedFiles([".env", ".env.global"], [])
+    expect(violations).toEqual([])
+  })
+})
