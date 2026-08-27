@@ -13,11 +13,11 @@ describe("websiteRouteBasePath（对外跳转基础路径按 edition 解析）",
     expect(websiteRouteBasePath("feedback")).toBe("/feedback")
   })
 
-  it("global 线取海外官网真实路径（订单在账户中心下、问卷在插件产品页下、反馈并入帮助页）", () => {
+  it("global 线取海外官网真实路径（订单在账户中心下、反馈并入帮助页）", () => {
     vi.stubEnv("WXT_FORK_EDITION", "global")
     expect(websiteRouteBasePath("login")).toBe("/login")
     expect(websiteRouteBasePath("orders")).toBe("/account/orders")
-    expect(websiteRouteBasePath("uninstallSurvey")).toBe("/extension/uninstall-survey")
+    expect(websiteRouteBasePath("uninstallSurvey")).toBe("/uninstall-survey")
     expect(websiteRouteBasePath("feedback")).toBe("/help")
   })
 

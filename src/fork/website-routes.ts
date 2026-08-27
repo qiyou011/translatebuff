@@ -19,13 +19,12 @@ export const WEBSITE_ROUTES: Record<ForkEdition, Record<WebsiteRoute, string>> =
   },
   global: {
     login: "/login",
-    // 海外官网把订单收在账户中心下、把插件相关页收在产品页下、把反馈并进帮助页——与国内不同名。
+    // 海外官网把订单收在账户中心下、把反馈并进帮助页——与国内不同名。
     orders: "/account/orders",
-    // ⚠️ 发版前必须确认海外官网已部署 `/plugin` → `/extension` 改名：该改名在官网仓已合并、
-    // 但 2026-08-26 实测线上仍是 `/plugin` 时代，此路径当时返回 404（裸 `/uninstall-survey`
-    // 反而能通——官网 redirects 表为已发布插件的裸路径留了承接）。产品确认直连新路径、
-    // 接受部署前是死链（MUL-67）。官网部署后本行即生效，无需改代码。
-    uninstallSurvey: "/extension/uninstall-survey",
+    // 问卷两线同名，但仍两边各写一份：这张表按 edition 取值，global 缺键即取不到。
+    // 海外站 2026-08-27 路由扁平化后取消了 `/extension` 前缀，两代旧前缀（`/plugin`、
+    // `/extension`）改由官网 redirects 表 301 承接——那是过渡措施，本表直连新路径。
+    uninstallSurvey: "/uninstall-survey",
     feedback: "/help",
   },
 }
