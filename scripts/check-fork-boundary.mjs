@@ -2,13 +2,16 @@ import { execFileSync, execSync } from "node:child_process"
 import { readFileSync } from "node:fs"
 import { pathToFileURL } from "node:url"
 
-// fork 净新增/自有的根级 meta 文件：上游永不创建，属 fork 所有，放行不判越界
+// fork 净新增/自有的根级 meta 文件：上游永不创建，属 fork 所有，放行不判越界。
+// 两份 edition 的配置各占两条（正式 force-add 进仓、测试本地 gitignored），漏登记会在 `git add -f` 后被判越界。
 const FORK_ROOT_FILES = new Set([
   "FORK.md",
   "FORK_GUIDE.md",
   "CLAUDE.md",
   ".env.production",
+  ".env.global.production",
   ".env",
+  ".env.global",
   ".gitignore",
   ".gitattributes",
   "vitest.fork.config.ts",
