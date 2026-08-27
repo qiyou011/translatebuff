@@ -116,7 +116,7 @@ options:
       description: Read the docs and learn how to use TranslateBuff
     email:
       title: Email us
-      description: Reach the team directly at contact@translatebuff.com
+      description: Reach the team directly at support@translatebuff.com
     featureRequest:
       title: Feature request
       description: Suggest an idea and vote on what the team builds next

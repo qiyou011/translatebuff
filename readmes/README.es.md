@@ -133,6 +133,18 @@ Consulta la [guía de contribución][docs-tutorial] para más detalles.
 
 Consulta [CONTRIBUTING.md](../CONTRIBUTING.md) para los términos de licencia de contribuyentes.
 
+### Compilación y empaquetado
+
+Este repositorio genera dos ediciones con backends y fichas de tienda independientes: `cn` (translatebuff.cn) y `global` (translatebuff.com). Compila siempre a través de `scripts/pack.mjs`: ejecutar `wxt zip` directamente omite las protecciones de dominio que mantienen separadas ambas ediciones.
+
+```bash
+node scripts/pack.mjs test --edition global                        # test build
+node scripts/pack.mjs store --edition global --channel global-zip  # store build, one channel
+node scripts/pack.mjs store --edition global --all                 # store build, every channel
+```
+
+Omite `--edition global` para compilar la edición cn. Los artefactos quedan en `.output/`; carga `.output/chrome-mv3-global/` como extensión descomprimida para probarla. La compilación de prueba lee un `.env.global` local excluido por gitignore: consulta [.env.example](../.env.example) para las variables de cada edición y [FORK_GUIDE.md](../FORK_GUIDE.md) para el modelo de ediciones.
+
 <div align="right">
 
 [![Back to top][back-to-top]](#readme-top)

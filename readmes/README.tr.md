@@ -133,6 +133,18 @@ Daha fazla bilgi için [Katkı Rehberi][docs-tutorial] bölümüne bakın.
 
 Katkıda bulunan lisans şartları için [CONTRIBUTING.md](../CONTRIBUTING.md) dosyasına bakın.
 
+### Derleme ve Paketleme
+
+Bu depo, arka uçları ve mağaza kayıtları birbirinden bağımsız iki sürüm üretir: `cn` (translatebuff.cn) ve `global` (translatebuff.com). Her zaman `scripts/pack.mjs` üzerinden derleyin — `wxt zip` komutunu doğrudan çalıştırmak, iki sürümü birbirinden ayıran alan adı korumalarını atlar.
+
+```bash
+node scripts/pack.mjs test --edition global                        # test build
+node scripts/pack.mjs store --edition global --channel global-zip  # store build, one channel
+node scripts/pack.mjs store --edition global --all                 # store build, every channel
+```
+
+cn sürümünü derlemek için `--edition global` ifadesini kaldırın. Çıktılar `.output/` altına düşer; denemek için `.output/chrome-mv3-global/` klasörünü paketlenmemiş uzantı olarak yükleyin. Test derlemesi, gitignore kapsamındaki yerel bir `.env.global` dosyasını okur — her sürümün ihtiyaç duyduğu değişkenler için [.env.example](../.env.example), sürüm modeli için [FORK_GUIDE.md](../FORK_GUIDE.md) dosyasına bakın.
+
 <div align="right">
 
 [![Back to top][back-to-top]](#readme-top)

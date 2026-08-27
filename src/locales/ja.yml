@@ -116,7 +116,7 @@ options:
       description: ドキュメントを読んで TranslateBuff の使い方を学べます
     email:
       title: メールで問い合わせ
-      description: contact@translatebuff.com からチームに直接連絡できます
+      description: support@translatebuff.com からチームに直接連絡できます
     featureRequest:
       title: 機能リクエスト
       description: アイデアを提案し、次に開発する機能に投票できます

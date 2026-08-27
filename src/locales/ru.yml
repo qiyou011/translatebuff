@@ -116,7 +116,7 @@ options:
       description: Прочитайте документацию и узнайте, как пользоваться TranslateBuff
     email:
       title: Написать нам
-      description: Свяжитесь с командой напрямую по адресу contact@translatebuff.com
+      description: Свяжитесь с командой напрямую по адресу support@translatebuff.com
     featureRequest:
       title: Предложить функцию
       description: Предложите идею и голосуйте за то, что команда сделает дальше

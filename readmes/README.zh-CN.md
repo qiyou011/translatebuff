@@ -31,6 +31,7 @@
   - [🤖 内置 AI 翻译](#-内置-ai-翻译)
 - [🤝 贡献](#-贡献)
   - [贡献代码](#贡献代码)
+  - [构建与打包](#构建与打包)
 
 <br/>
 
@@ -189,6 +190,18 @@
 查看[贡献指南](https://translatebuff.cn/zh/docs/code-contribution/contribution-guide)了解更多详情。
 
 贡献者许可条款请参阅 [CONTRIBUTING.md](../CONTRIBUTING.md)。
+
+### 构建与打包
+
+本仓库出两条发行版，后端与商店条目彼此独立：`cn`（translatebuff.cn）与 `global`（translatebuff.com）。一律用 `scripts/pack.mjs` 打包——直接跑 `wxt zip` 会绕过两条线的域名护栏。
+
+```bash
+node scripts/pack.mjs test --edition global                        # test build
+node scripts/pack.mjs store --edition global --channel global-zip  # store build, one channel
+node scripts/pack.mjs store --edition global --all                 # store build, every channel
+```
+
+去掉 `--edition global` 即打国内版。产物在 `.output/`，加载已解压的 `.output/chrome-mv3-global/` 即可试用。测试包读取本地的 `.env.global`（已被 gitignore）——各发行版需要哪些变量见 [.env.example](../.env.example)，发行版模型见 [FORK_GUIDE.md](../FORK_GUIDE.md)。
 
 <div align="right">
 

@@ -133,6 +133,18 @@ Translatebuff превращает обычное чтение в интерне
 
 Условия лицензирования вкладов см. в [CONTRIBUTING.md](../CONTRIBUTING.md).
 
+### Сборка и упаковка
+
+Репозиторий выпускает две редакции с независимыми бэкендами и карточками в магазине: `cn` (translatebuff.cn) и `global` (translatebuff.com). Всегда собирайте через `scripts/pack.mjs` — прямой запуск `wxt zip` обходит доменные проверки, которые разделяют редакции.
+
+```bash
+node scripts/pack.mjs test --edition global                        # test build
+node scripts/pack.mjs store --edition global --channel global-zip  # store build, one channel
+node scripts/pack.mjs store --edition global --all                 # store build, every channel
+```
+
+Уберите `--edition global`, чтобы собрать редакцию cn. Артефакты появятся в `.output/`; загрузите `.output/chrome-mv3-global/` как распакованное расширение, чтобы попробовать сборку. Тестовая сборка читает локальный `.env.global` (в gitignore) — переменные для каждой редакции см. в [.env.example](../.env.example), модель редакций — в [FORK_GUIDE.md](../FORK_GUIDE.md).
+
 <div align="right">
 
 [![Back to top][back-to-top]](#readme-top)

@@ -133,6 +133,18 @@
 
 貢獻者授權條款請參閱 [CONTRIBUTING.md](../CONTRIBUTING.md)。
 
+### 建置與打包
+
+本倉庫出兩條發行版，後端與商店項目彼此獨立：`cn`（translatebuff.cn）與 `global`（translatebuff.com）。一律用 `scripts/pack.mjs` 打包——直接跑 `wxt zip` 會繞過兩條線的網域護欄。
+
+```bash
+node scripts/pack.mjs test --edition global                        # test build
+node scripts/pack.mjs store --edition global --channel global-zip  # store build, one channel
+node scripts/pack.mjs store --edition global --all                 # store build, every channel
+```
+
+去掉 `--edition global` 即建置國內版。產物在 `.output/`，載入已解壓的 `.output/chrome-mv3-global/` 即可試用。測試包讀取本機的 `.env.global`（已被 gitignore）——各發行版需要哪些變數見 [.env.example](../.env.example)，發行版模型見 [FORK_GUIDE.md](../FORK_GUIDE.md)。
+
 <div align="right">
 
 [![Back to top][back-to-top]](#readme-top)
