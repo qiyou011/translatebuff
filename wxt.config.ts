@@ -242,7 +242,10 @@ export default defineConfig({
       "alarms",
       "cookies",
       "contextMenus",
-      "identity",
+      // 不要加回 "identity"：上游用它做 Google Drive 同步的 OAuth（src/utils/google-drive/auth.ts），
+      // 而 fork 把那张同步卡片重定向成了空组件（见上方 FORK_UI_REDIRECTS），整条链路已被 tree-shake 出包。
+      // 权限留着但零调用 → 商店按「申请了未使用的权限」驳回（国内线 1.2.0 上架即栽在这条，MUL-68）。
+      // 若哪天真要恢复 Google Drive 同步，连同这条权限一起加回来。
       "scripting",
       "webNavigation",
       ...(browser !== "firefox" ? ["offscreen", "sidePanel"] : []),
