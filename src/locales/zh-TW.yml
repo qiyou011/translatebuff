@@ -7,6 +7,8 @@ account:
   logout: 退出登入
   logoutError: 退出登入失敗，請重試
 forkMembership:
+  loggedIn: 已登入
+  keyPending: 正在取得翻譯密鑰…
   tierFree: 免費
   tierPro: PRO
   expiry: 會員到期

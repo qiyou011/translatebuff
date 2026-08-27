@@ -7,6 +7,8 @@ account:
   logout: Log out
   logoutError: Failed to log out. Please try again.
 forkMembership:
+  loggedIn: Logged in
+  keyPending: Getting your translation key…
   tierFree: Free
   tierPro: PRO
   expiry: Expires

@@ -7,6 +7,8 @@ account:
   logout: Выйти
   logoutError: Не удалось выйти. Попробуйте ещё раз.
 forkMembership:
+  loggedIn: Вы вошли
+  keyPending: Получение ключа перевода…
   tierFree: Бесплатный
   tierPro: PRO
   expiry: Действует до

@@ -11,6 +11,8 @@ import { Avatar, AvatarGroup, AvatarGroupCount, AvatarImage } from "@/components
 import { Button } from "@/components/ui/base-ui/button"
 import { Drawer, DrawerBody, DrawerContent, DrawerTrigger } from "@/components/ui/base-ui/drawer"
 import { forkSessionAtom, useOpenForkLogin } from "@/fork/membership/atoms"
+import { sendForkMessage } from "@/fork/message"
+import { renyimiaoApiKey } from "@/fork/providers/renyimiao"
 import { useEnsureRenyimiaoSeeded } from "@/fork/providers/use-ensure-renyimiao-seeded"
 import { FeatureProviderSelectorList } from "@/fork/ui/options/feature-provider-selector-list"
 import { configAtom, configFieldsAtomMap } from "@/utils/atoms/config"
@@ -103,6 +105,10 @@ export default function ForkProvidersField() {
 
   // 登录引导条：仅未登录时展示（登录后即隐，不等 key 注入——避免"登录后仍显示登录引导"的矛盾）。
   const needsLogin = !session
+  // 已登录但翻译密钥未就绪：开户轮询未完成、或 SW 中途被回收致注入丢失。
+  // 不提示的话用户会看到一个"已登录、看起来正常"的界面，翻译却静默失败。
+  // 点击重发挂载补偿消息（ensureMembershipKey 幂等），key 落盘后 storage.watch 会驱动本条自动消失。
+  const keyPending = !!session && renyimiaoApiKey(providersConfig) === ""
 
   return (
     <>
@@ -114,6 +120,16 @@ export default function ForkProvidersField() {
         >
           <IconLogin className="size-4 shrink-0" aria-hidden />
           <span>登录后启用任译喵翻译</span>
+        </button>
+      )}
+      {keyPending && (
+        <button
+          type="button"
+          onClick={() => void sendForkMessage("forkEnsureMembershipKey")}
+          className="flex items-center gap-2 rounded-lg border border-border bg-muted/50 px-3 py-2 text-left text-[13px] text-muted-foreground transition-colors hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring/40 focus-visible:outline-none"
+        >
+          <IconLogin className="size-4 shrink-0" aria-hidden />
+          <span>{i18n.t("forkMembership.keyPending")}</span>
         </button>
       )}
       <Drawer>

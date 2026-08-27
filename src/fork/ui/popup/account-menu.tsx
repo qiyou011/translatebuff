@@ -5,9 +5,9 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/base-ui/dropdown-menu"
+import { accountLabel } from "@/fork/membership/account-label"
 import { useForkSession, useOpenForkLogin, useOpenForkOrders } from "@/fork/membership/atoms"
 import { useForkMembershipInfo } from "@/fork/membership/membership-info"
-import { maskPhone } from "@/fork/membership/phone-mask"
 import { ForkAccountMenuBody, TierBadge } from "@/fork/ui/account-menu-body"
 import { i18n } from "@/utils/i18n"
 
@@ -31,7 +31,7 @@ export function ForkAccountMenu() {
     )
   }
 
-  const maskedPhone = maskPhone(session.phone)
+  const label = accountLabel(session)
 
   return (
     <DropdownMenu>
@@ -44,7 +44,9 @@ export function ForkAccountMenu() {
         }
       >
         <IconUserCircle className="size-6 text-foreground" aria-hidden />
-        <span className="truncate text-sm font-medium tabular-nums">{maskedPhone}</span>
+        <span className={`truncate text-sm font-medium${label.tabularNums ? " tabular-nums" : ""}`}>
+          {label.text}
+        </span>
         <TierBadge tier={membershipInfo?.tier} />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" side="bottom" className="min-w-48">

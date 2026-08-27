@@ -99,14 +99,21 @@ export async function adoptCredential(loginCredential: string): Promise<void> {
   try {
     const clientLanguage = await readClientLanguage()
     // ① 用户信息 → 立即写会话（手机号秒显，不等 tokens 轮询）。
-    const { phone, user } = await fetchLoginStatus(loginCredential, clientLanguage)
+    const { phone, email, user } = await fetchLoginStatus(loginCredential, clientLanguage)
     if (gen !== clearGeneration) {
       return
     }
-    await saveForkSession({ loginCredential, phone, user })
+    await saveForkSession({ loginCredential, phone, email, user })
     // ② sk_key + 网关 base_url（可能走开户轮询，此时会话已展示、不阻塞登录态）。
     const tokens = await fetchTokensWithRetry(loginCredential, { clientLanguage })
-    if (!tokens || gen !== clearGeneration) {
+    if (!tokens) {
+      // 轮询结束仍拿不到 sk_key（开户未完成 / 后端异常）。会话已存、popup 显示已登录，
+      // 但翻译不可用——不记一条就成了纯静默失败，只能靠临时打点排查。
+      // 用户侧由 providers-field 的 keyPending 提示条呈现，并可点击重试。
+      logger.error("[Fork][membership] tokens 为空，翻译密钥未就绪（会话已建立）")
+      return
+    }
+    if (gen !== clearGeneration) {
       return
     }
     // 会员信息（类型/到期/剩余额度）从 tokens 主档派生，写独立键（用量后续由 popup 刷新更新）。

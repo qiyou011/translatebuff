@@ -7,6 +7,8 @@ account:
   logout: Çıkış yap
   logoutError: Çıkış yapılamadı. Lütfen tekrar deneyin.
 forkMembership:
+  loggedIn: Oturum açıldı
+  keyPending: Çeviri anahtarınız alınıyor…
   tierFree: Ücretsiz
   tierPro: PRO
   expiry: Bitiş
