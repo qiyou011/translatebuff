@@ -6,6 +6,7 @@ import { env } from "@/env"
 import { appendChannelId } from "@/fork/identity/channel"
 import { sendForkMessage } from "@/fork/message"
 import { renyimiaoApiKey } from "@/fork/providers/renyimiao"
+import { websiteRouteBasePath } from "@/fork/website-routes"
 import { configFieldsAtomMap } from "@/utils/atoms/config"
 import { resolveUiLocale } from "@/utils/i18n/locale-map"
 import { CREDENTIAL_COOKIE_NAME } from "./cookie-decision"
@@ -87,7 +88,9 @@ export function useOpenForkLogin(): () => void {
     const locale = resolveUiLocale(uiLanguage)
     void browser.tabs.create({
       // 追加 ?cid=<渠道号> 供官网按渠道归因（与 UA 段4 同源）。
-      url: appendChannelId(`${env.WXT_WEBSITE_URL}${websiteLocalePath(locale, "/login")}`),
+      url: appendChannelId(
+        `${env.WXT_WEBSITE_URL}${websiteLocalePath(locale, websiteRouteBasePath("login"))}`,
+      ),
     })
   }, [uiLanguage])
 }
@@ -99,7 +102,9 @@ export function useOpenForkOrders(): () => void {
     const locale = resolveUiLocale(uiLanguage)
     void browser.tabs.create({
       // 追加 ?cid=<渠道号> 供官网按渠道归因转化/支付（与登录/卸载同源）。
-      url: appendChannelId(`${env.WXT_WEBSITE_URL}${websiteLocalePath(locale, "/orders")}`),
+      url: appendChannelId(
+        `${env.WXT_WEBSITE_URL}${websiteLocalePath(locale, websiteRouteBasePath("orders"))}`,
+      ),
     })
   }, [uiLanguage])
 }

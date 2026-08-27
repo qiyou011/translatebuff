@@ -8,11 +8,11 @@
 import type { RawToken } from "./tier"
 import { resolveChannelNumber } from "@/fork/identity/channel"
 import { extractErrorMessage } from "@/utils/error/extract-message"
+import { DEFAULT_CLIENT_LANGUAGE } from "./client-language"
 
 // ── 平台标识常量（固定值）──
 const SAAS_PRODUCT_LINE = "AITRANS"
 const SAAS_APP_ID = "aitrans-pc" // 亦即 7 段 UA 的 client_name 段（对齐参考 SAAS_APP_ID）
-const CLIENT_LANGUAGE = "zh-cn" // 全小写（对齐参考 CLIENT_LANGUAGE）
 
 // ── 7 段 Useragent 常量（格式：browser/{os}/{osVersion}/{channel}/aitrans-pc/{appVersion}/{sn}）──
 // 取值对齐官网确认的跨仓契约（translatebuff-web src/lib/service/const.ts 的 UA_STRING / CHANNEL_KEY，
@@ -33,13 +33,18 @@ function buildUserAgent(): string {
 }
 
 // 显式请求头装配（纯函数）：凭据 + 平台标识 + 7 段 UA + 语言。绝不含 credentials（由调用方保证不 include）。
-export function buildAuthHeaders(loginCredential: string): Record<string, string> {
+// clientLanguage 由调用方按当前界面语言算好传入（见 membership/client-language.ts）：后端按完整 locale
+// 查错误消息译文、查不到不回退英文，故缺省取已知可用的 en-us 而非某条具体语种。
+export function buildAuthHeaders(
+  loginCredential: string,
+  clientLanguage: string = DEFAULT_CLIENT_LANGUAGE,
+): Record<string, string> {
   return {
     "Login-Credential": loginCredential,
     "Saas-Product-Line": SAAS_PRODUCT_LINE,
     "Saas-App-Id": SAAS_APP_ID,
     Useragent: buildUserAgent(),
-    "Client-Language": CLIENT_LANGUAGE,
+    "Client-Language": clientLanguage,
   }
 }
 
@@ -80,10 +85,11 @@ export interface LoginStatusResult {
 async function authedGet(
   pathname: string,
   loginCredential: string,
+  clientLanguage?: string,
 ): Promise<Record<string, unknown>> {
   const res = await fetch(`${apiBase()}${pathname}`, {
     method: "GET",
-    headers: buildAuthHeaders(loginCredential),
+    headers: buildAuthHeaders(loginCredential, clientLanguage),
   })
   if (res.status === 401) {
     throw new MembershipUnauthorizedError()
@@ -97,8 +103,15 @@ async function authedGet(
 }
 
 // 取当前登录用户信息（手机号 + 用户资料）。401 由 authedGet 抛 MembershipUnauthorizedError。
-export async function fetchLoginStatus(loginCredential: string): Promise<LoginStatusResult> {
-  const data = await authedGet("/api/common_bll/v2/member/login_status", loginCredential)
+export async function fetchLoginStatus(
+  loginCredential: string,
+  clientLanguage?: string,
+): Promise<LoginStatusResult> {
+  const data = await authedGet(
+    "/api/common_bll/v2/member/login_status",
+    loginCredential,
+    clientLanguage,
+  )
   // 参考 LoginStatusResponse：{ member: { mobile, nickname, accounts } }。手机号取 member.mobile。
   const member = (data.member ?? data) as Record<string, unknown>
   const phone = typeof member.mobile === "string" ? member.mobile : ""
@@ -115,8 +128,11 @@ export interface TokensResult {
 
 // 取 one-api sk_key + 网关 base_url（一用户一 token，取首个 token 的 sk_key）。空 key→null；401 抛错。
 // base_url 与 sk_key 同源（同一 /v1/tokens 响应），供动态注入 provider baseURL 与拉 /models 用。
-export async function fetchTokens(loginCredential: string): Promise<TokensResult | null> {
-  const data = await authedGet("/api/claw_bff/v1/tokens", loginCredential)
+export async function fetchTokens(
+  loginCredential: string,
+  clientLanguage?: string,
+): Promise<TokensResult | null> {
+  const data = await authedGet("/api/claw_bff/v1/tokens", loginCredential, clientLanguage)
   // 参考 TokensResponse：{ base_url, tokens: [{ sk_key, token_name, priority, expired_time, ... }] }。
   const tokens = Array.isArray(data.tokens) ? (data.tokens as RawToken[]) : []
   const skKey = tokens[0]?.sk_key
@@ -150,6 +166,8 @@ export interface FetchTokensRetryOptions {
   retryDelayMs?: number
   /** 可注入延时（测试注入即时 resolve 免真实等待）。 */
   sleep?: (ms: number) => Promise<void>
+  /** 当前界面语言对应的 Client-Language；缺省由 buildAuthHeaders 回落。 */
+  clientLanguage?: string
 }
 
 const defaultSleep = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms))
@@ -166,16 +184,16 @@ export async function fetchTokensWithRetry(
   loginCredential: string,
   options: FetchTokensRetryOptions = {},
 ): Promise<TokensResult | null> {
-  const { maxRetries = 3, retryDelayMs = 3000, sleep = defaultSleep } = options
+  const { maxRetries = 3, retryDelayMs = 3000, sleep = defaultSleep, clientLanguage } = options
   // 首次立即取（开户已完成的常态一次即得）。
-  const first = await fetchTokens(loginCredential)
+  const first = await fetchTokens(loginCredential, clientLanguage)
   if (first) {
     return first
   }
   // 首登开户异步 → +3s 起、每 3s、最多 maxRetries 次，任一次拿到即停。401 由 fetchTokens 直接抛出、不再重试。
   for (let attempt = 0; attempt < maxRetries; attempt++) {
     await sleep(retryDelayMs)
-    const result = await fetchTokens(loginCredential)
+    const result = await fetchTokens(loginCredential, clientLanguage)
     if (result) {
       return result
     }
