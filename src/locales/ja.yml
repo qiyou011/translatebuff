@@ -7,6 +7,8 @@ account:
   logout: ログアウト
   logoutError: ログアウトに失敗しました。もう一度お試しください。
 forkMembership:
+  loggedIn: ログイン済み
+  keyPending: 翻訳キーを取得しています…
   tierFree: 無料
   tierPro: PRO
   expiry: 有効期限

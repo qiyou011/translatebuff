@@ -19,3 +19,10 @@ export function findPartnerSiteHits(manifest: {
   host_permissions?: string[]
   content_scripts?: { matches?: string[] }[]
 }): string[]
+
+export function assertEditionRequiredEnv(edition: string, envText: string): void
+
+export function findInjectedEnvMismatches(
+  bundleText: string,
+  expected: Record<string, string | undefined>,
+): { key: string; want: string; got: string }[]

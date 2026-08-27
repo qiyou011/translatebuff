@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest"
 import {
   checkEditionDomains,
+  findInjectedEnvMismatches,
   findCrossEditionSourceHits,
   findMissingForkDomains,
   findUpstreamDomainHits,
@@ -186,5 +187,51 @@ describe("findCrossEditionSourceHits（源码层扫另一线域名）", () => {
     expect(
       findCrossEditionSourceHits(entries, ["translatebuff.cn", "www.translatebuff.com"]),
     ).toHaveLength(2)
+  })
+})
+
+// 护栏回归锁：MUL-70 实测踩过一次——旧构建的 chunk 残留在产物目录里且被 popup.html 引用，
+// 于是同一个测试包里 background 是测试域、popup 是生产域，点登录跳到了正式站。
+// 既有三道断言全漏：正向断言只要求「测试域存在」（background 里有就够）；反向断言只查另一线
+// （cn）的域；就算查了，本线生产域也会因出现在 9 份 locale 文案里被 copyLeaked 豁免。
+describe("findInjectedEnvMismatches（注入值串味守卫）", () => {
+  const expected = { WXT_WEBSITE_URL: "https://test.translatebuff.com" }
+
+  it("同一产物里混入本线生产域 → 报出来", () => {
+    const bundle =
+      "WXT_WEBSITE_URL:`https://test.translatebuff.com` … WXT_WEBSITE_URL:`https://www.translatebuff.com`"
+    expect(findInjectedEnvMismatches(bundle, expected)).toEqual([
+      {
+        key: "WXT_WEBSITE_URL",
+        want: "https://test.translatebuff.com",
+        got: "https://www.translatebuff.com",
+      },
+    ])
+  })
+
+  it("处处一致 → 无告警", () => {
+    const bundle =
+      "WXT_WEBSITE_URL:`https://test.translatebuff.com` … WXT_WEBSITE_URL:`https://test.translatebuff.com`"
+    expect(findInjectedEnvMismatches(bundle, expected)).toEqual([])
+  })
+
+  it("localhost / 上游默认不参与比对（源码字面量，恒在产物里、与注入无关）", () => {
+    const bundle =
+      "WXT_WEBSITE_URL:`https://localhost:8877` WXT_WEBSITE_URL:`https://www.readfrog.app` " +
+      "WXT_WEBSITE_URL:`https://test.translatebuff.com`"
+    expect(findInjectedEnvMismatches(bundle, expected)).toEqual([])
+  })
+
+  it("跨线串味同样抓得到", () => {
+    expect(
+      findInjectedEnvMismatches("WXT_WEBSITE_URL:`https://translatebuff.cn`", expected),
+    ).toHaveLength(1)
+  })
+
+  // cn 测试包刻意不注入 WXT_API_URL（.env 里没有这一行），让它回落 .env.production。
+  // 未注入的键必须跳过，否则 cn 线打包会被自己的护栏拦死。
+  it("未注入的键跳过，不拿 undefined 去比对", () => {
+    const bundle = "WXT_API_URL:`https://translatebuff.cn`"
+    expect(findInjectedEnvMismatches(bundle, { WXT_API_URL: undefined })).toEqual([])
   })
 })

@@ -154,6 +154,75 @@ describe("fetchTokens（取 sk_key）", () => {
   })
 })
 
+describe("edition 分流：登录后端与 claw_bff 基址", () => {
+  const AUTH_BFF = "https://lrbff.test.local"
+  const CLAW_BASE = "https://claw.test.local"
+
+  // 海外线凭据由 third_party_login 签发、经 lrbff 中转，common_bll 只在带 BFF 换发的 SaaS Token
+  // 上下文里才认；插件直连必然 401。故 global 走 BFF，cn 保持直连（凭据由 common_bll 自签自认）。
+  it("global：login_status 走 lrbff 的 session 端点", async () => {
+    vi.stubEnv("WXT_FORK_EDITION", "global")
+    vi.stubEnv("WXT_RENYIMIAO_AUTH_BFF_URL", AUTH_BFF)
+    vi.stubEnv("WXT_RENYIMIAO_CLAW_API_URL", CLAW_BASE)
+    fetchMock.mockResolvedValue(jsonResponse(200, { mobile: "", email: "a@b.com" }))
+    await fetchLoginStatus(CRED)
+    expect(fetchMock.mock.calls[0]![0]).toBe(`${AUTH_BFF}/api/login_registration_bff/v1/session`)
+  })
+
+  it("cn：login_status 保持直连 common_bll（既有行为逐字不变）", async () => {
+    fetchMock.mockResolvedValue(jsonResponse(200, { data: { member: { mobile: "13800000000" } } }))
+    await fetchLoginStatus(CRED)
+    expect(fetchMock.mock.calls[0]![0]).toBe(`${API_BASE}/api/common_bll/v2/member/login_status`)
+  })
+
+  // 两线 claw_bff 是不同实例（国内 cbs1sit / 海外 tobtest，依据两个官网仓的 .env.test），
+  // 且 lrbff 路由表无 tokens 接口、无法经 BFF 取。
+  it("global：tokens 走独立的 claw 基址", async () => {
+    vi.stubEnv("WXT_FORK_EDITION", "global")
+    vi.stubEnv("WXT_RENYIMIAO_AUTH_BFF_URL", AUTH_BFF)
+    vi.stubEnv("WXT_RENYIMIAO_CLAW_API_URL", CLAW_BASE)
+    fetchMock.mockResolvedValue(jsonResponse(200, { data: { tokens: [{ sk_key: SK }] } }))
+    await fetchTokens(CRED)
+    expect(fetchMock.mock.calls[0]![0]).toBe(`${CLAW_BASE}/api/claw_bff/v1/tokens`)
+  })
+
+  it("cn：tokens 回落 apiBase（两线同域是 cn 的既有事实）", async () => {
+    fetchMock.mockResolvedValue(jsonResponse(200, { data: { tokens: [{ sk_key: SK }] } }))
+    await fetchTokens(CRED)
+    expect(fetchMock.mock.calls[0]![0]).toBe(`${API_BASE}/api/claw_bff/v1/tokens`)
+  })
+
+  // fail-loud：global 缺配绝不静默回落到 cn 的后端——那正是本轮排查了一整轮的失败形态
+  // （打错 host → 401 → 清态，全程零信号）。对齐 resolveChannelNumber 的既有模式。
+  it("global 缺 auth BFF 地址 → 抛错，绝不静默回落", async () => {
+    vi.stubEnv("WXT_FORK_EDITION", "global")
+    vi.stubEnv("WXT_RENYIMIAO_CLAW_API_URL", CLAW_BASE)
+    await expect(fetchLoginStatus(CRED)).rejects.toThrow(/WXT_RENYIMIAO_AUTH_BFF_URL/)
+  })
+
+  it("global 缺 claw 地址 → 抛错，绝不静默回落", async () => {
+    vi.stubEnv("WXT_FORK_EDITION", "global")
+    vi.stubEnv("WXT_RENYIMIAO_AUTH_BFF_URL", AUTH_BFF)
+    await expect(fetchTokens(CRED)).rejects.toThrow(/WXT_RENYIMIAO_CLAW_API_URL/)
+  })
+
+  // lrbff 的 compactSession 返回扁平体（无 data 封套），common_bll 返回 {member:{...}} 嵌套。
+  it("解析兼容两种响应形状，并取出 email", async () => {
+    vi.stubEnv("WXT_FORK_EDITION", "global")
+    vi.stubEnv("WXT_RENYIMIAO_AUTH_BFF_URL", AUTH_BFF)
+    vi.stubEnv("WXT_RENYIMIAO_CLAW_API_URL", CLAW_BASE)
+    fetchMock.mockResolvedValue(
+      jsonResponse(200, { member_id: "m1", mobile: "", email: "alice@gmail.com" }),
+    )
+    expect(await fetchLoginStatus(CRED)).toMatchObject({ phone: "", email: "alice@gmail.com" })
+  })
+
+  it("cn 嵌套形状下 email 缺失 → 空串，不炸", async () => {
+    fetchMock.mockResolvedValue(jsonResponse(200, { data: { member: { mobile: "13800000000" } } }))
+    expect(await fetchLoginStatus(CRED)).toMatchObject({ phone: "13800000000", email: "" })
+  })
+})
+
 describe("fetchTokensWithRetry（开户轮询）", () => {
   const noSleep = () => Promise.resolve()
 

@@ -75,6 +75,55 @@ function stripComments(source) {
   return source.replace(/\/\*[\s\S]*?\*\//g, "").replace(/(^|[^:])\/\/.*$/gm, "$1")
 }
 
+// 产物里被 Vite 静态替换的 env 值扫描：形如 WXT_WEBSITE_URL:`https://...`。
+// 与「扫域名」的既有断言互补——扫域名对本线生产域是空转的（它同时出现在 9 份 locale 文案里，
+// 被文案豁免整条吃掉，见 checkEditionDomains 的注释）。而 env 编译位点不受文案干扰：
+// 文案里的域名绝不会以 `WXT_xxx:` 前缀出现，故这里可以严格比对、零误报。
+//
+// 只校验取值里含本产品域（translatebuff.*）的位点：localhost / readfrog.app 是源码里
+// LOCAL_EXTENSION_ENV_DEFAULTS 与上游默认的字面量，恒在产物中，与注入无关。
+const PRODUCT_DOMAIN = "translatebuff."
+
+export function findInjectedEnvMismatches(bundleText, expected) {
+  const mismatches = []
+  for (const [key, want] of Object.entries(expected)) {
+    // 未注入的键跳过：cn 测试包刻意不配 WXT_API_URL，靠回落 .env.production，
+    // 拿 undefined 去比对会把正常的 cn 打包拦死。
+    if (!want) continue
+    const found = new Set()
+    const re = new RegExp(`${key}:\`([^\`]*)\``, "g")
+    let m
+    while ((m = re.exec(bundleText)) !== null) {
+      if (m[1].includes(PRODUCT_DOMAIN)) found.add(m[1])
+    }
+    for (const got of found) {
+      if (got !== want) mismatches.push({ key, want, got })
+    }
+  }
+  return mismatches
+}
+
+// 按 edition 的必填 env 键。global 线的后端与国内线完全不同（common_bll 经 lrbff、claw_bff 独立实例），
+// 缺一个就会在运行期回落/抛错，而那时只表现为「登录后 popup 纹丝不动」，零信号。
+// 提成纯函数是因为要在 pack.mjs 的 test 与 store 两条路径各调一次——store 走 assert-fork-build 的 CLI 段，
+// test 分支从不调用本脚本（见 pack.mjs：assert-fork-build 只在 packChannel 里跑）。
+const EDITION_REQUIRED_ENV_KEYS = {
+  cn: [],
+  global: ["WXT_RENYIMIAO_AUTH_BFF_URL", "WXT_RENYIMIAO_CLAW_API_URL"],
+}
+
+export function assertEditionRequiredEnv(edition, envText) {
+  const missing = (EDITION_REQUIRED_ENV_KEYS[edition] ?? []).filter(
+    (key) => !new RegExp(`^${key}=(.+)$`, "m").test(envText),
+  )
+  if (missing.length > 0) {
+    throw new Error(
+      `edition=${edition} 缺少必填 env：${missing.join(", ")}\n` +
+        `  海外线的登录后端与 claw_bff 与国内线是不同实例，缺配会在运行期静默打到错误的 host（表现为登录后无反应）。`,
+    )
+  }
+}
+
 // 从本地 .env（gitignore、仅 dev）派生「测试后端域」——它们绝不该出现在生产产物里。
 // 读 dev 会用到的 URL 变量的 hostname；剔除 localhost/回环地址（通用、可能合法出现，且非敏感）。
 // 刻意不在本脚本硬编码任何真实测试域名（本仓公开），改由 gitignored 的 .env 派生。
@@ -83,6 +132,8 @@ export function readTestDomainsFromEnv(envText) {
   const keys = [
     "WXT_RENYIMIAO_API_URL",
     "WXT_RENYIMIAO_GATEWAY_URL",
+    "WXT_RENYIMIAO_AUTH_BFF_URL",
+    "WXT_RENYIMIAO_CLAW_API_URL",
     "WXT_WEBSITE_URL",
     "WXT_OFFICIAL_SITE_ORIGINS",
   ]
@@ -181,6 +232,8 @@ if (import.meta.url === pathToFileURL(process.argv[1]).href) {
 
   // 登录后端域缺失即 fail-fast：fork 直读 import.meta.env.WXT_RENYIMIAO_API_URL，漏配则登录取到
   // undefined。（此域 ≠ 翻译网关常量 RENYIMIAO_GATEWAY_BASE_URL，勿混。）
+  assertEditionRequiredEnv(edition, envProductionText)
+
   if (!hasRenyimiaoApiUrl(envProductionText)) {
     console.error(
       "缺少登录后端域 WXT_RENYIMIAO_API_URL（.env.production 未配置或为空）——登录将取到 undefined，构建 fail-fast",
@@ -258,7 +311,9 @@ if (import.meta.url === pathToFileURL(process.argv[1]).href) {
   // .env 缺失（CI 干净构建）时无从泄漏、跳过；谁本地误带 .env 打 prod 包 / env 覆盖失效 → 在此 fail-fast。
   let envDevText = ""
   try {
-    envDevText = readFileSync(".env", "utf8")
+    // 按 edition 取：cn 读 .env、global 读 .env.global。原先硬编码 ".env" 导致海外线的测试域
+    // （lrbff / claw / 官网测试域）从来没被这道守卫覆盖过。
+    envDevText = readFileSync(edition === "global" ? ".env.global" : ".env", "utf8")
   } catch {
     // .env 缺失：CI 干净构建，无测试域可泄漏
   }

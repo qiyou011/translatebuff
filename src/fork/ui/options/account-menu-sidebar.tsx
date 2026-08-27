@@ -5,9 +5,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/base-ui/dropdown-menu"
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/base-ui/sidebar"
+import { accountLabel } from "@/fork/membership/account-label"
 import { useForkSession, useOpenForkLogin, useOpenForkOrders } from "@/fork/membership/atoms"
 import { useForkMembershipInfo } from "@/fork/membership/membership-info"
-import { maskPhone } from "@/fork/membership/phone-mask"
 import { ForkAccountMenuBody, TierBadge } from "@/fork/ui/account-menu-body"
 import { i18n } from "@/utils/i18n"
 
@@ -40,7 +40,7 @@ export function UserAccountMenuSidebar() {
     )
   }
 
-  const maskedPhone = maskPhone(session.phone)
+  const label = accountLabel(session)
 
   return (
     <SidebarMenu>
@@ -50,14 +50,16 @@ export function UserAccountMenuSidebar() {
             render={
               <SidebarMenuButton
                 size="lg"
-                tooltip={maskedPhone}
+                tooltip={label.text}
                 className="cursor-pointer data-[popup-open]:bg-sidebar-accent data-[popup-open]:text-sidebar-accent-foreground"
               />
             }
           >
             <IconUserCircle className="size-6 shrink-0 text-foreground" aria-hidden />
-            <span className="flex-1 truncate text-left text-sm font-medium tabular-nums">
-              {maskedPhone}
+            <span
+              className={`flex-1 truncate text-left text-sm font-medium${label.tabularNums ? " tabular-nums" : ""}`}
+            >
+              {label.text}
             </span>
             <TierBadge tier={membershipInfo?.tier} />
             <IconSelector aria-hidden className="ml-auto size-4" />

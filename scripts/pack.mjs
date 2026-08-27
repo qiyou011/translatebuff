@@ -19,10 +19,12 @@
 // 均调 `wxt zip`（非 build）——文件名/env 消费只在 zip 路径生效。spawnSync 传 env、不拼 shell 字符串（跨平台）。
 
 import { spawnSync } from "node:child_process"
-import { readdirSync, readFileSync } from "node:fs"
+import { readdirSync, readFileSync, rmSync } from "node:fs"
 import { join } from "node:path"
 import {
+  assertEditionRequiredEnv,
   checkEditionDomains,
+  findInjectedEnvMismatches,
   findUpstreamDomainHits,
   readTestDomainsFromEnv,
 } from "./assert-fork-build.mjs"
@@ -106,6 +108,7 @@ function packChannel(id, entry, editionEnv) {
   if (entry.browser === "firefox") zipArgs.push("--mv3")
   const outDir = outDirOf(entry.browser)
   const forkEnv = { ...editionEnv, WXT_FORK_CHANNEL: id, WXT_FORK_EDITION: edition }
+  rmSync(outDir, { recursive: true, force: true }) // 同 test 分支：防旧 chunk 残留致 env 串味
   run("pnpm", zipArgs, forkEnv)
   run("node", ["scripts/assert-fork-build.mjs"], { ...forkEnv, FORK_OUT_DIR: outDir })
   console.log(`\n✓ 渠道 ${id}（${entry.browser}，edition=${edition}）正式包 OK`)
@@ -121,6 +124,15 @@ if (mode === "test") {
     console.error(`缺少本地 ${testEnvPath}（edition=${edition} 的测试后端配置）——无法打测试包`)
     process.exit(1)
   }
+  // 必填键校验前置到打包前：test 分支从不调 assert-fork-build（那只在 packChannel 里跑），
+  // 而正向域名断言拦不住漏配——.env.global 有多个 host，漏一个仍有其余命中，present 非空照样判绿。
+  assertEditionRequiredEnv(edition, envText)
+
+  // 清产物目录再构建：wxt zip 不清 outDir，上一次构建残留的 chunk 会留在目录里，
+  // 而 popup.html 可能仍引用那个旧哈希 chunk —— 表现为同一个包里 background 是测试域、
+  // popup 是生产域，点登录跳到正式站（MUL-70 实测踩过）。
+  rmSync(outDirOf("chrome"), { recursive: true, force: true })
+
   // 注入测试值（盖过 .env.production 的生产值）+ 打包意图 + edition（驱动跳转路径 / 商店身份 / 渠道表）
   run("pnpm", ["exec", "wxt", "zip"], {
     ...parseDotenv(envText),
@@ -140,6 +152,22 @@ if (mode === "test") {
   // 反向断言：另一条线的生产域绝不该进本线测试包。漏配一个 WXT_* 就会静默回落 .env.production 的
   // 国内生产域——正向断言只看「测试域在不在」，看不见这种混入，非得在这里拦。
   // 界面文案里的跨线域名走 copyLeaked 豁免（与正式包同一套判定，见 checkEditionDomains）。
+  // 注入值一致性：产物里同一个 WXT_* 位点不得出现两种本产品域取值。
+  // 扫域名的两道断言对这种串味都是空转的（正向只看「测试域在不在」，反向只查另一线的域，
+  // 且本线生产域会被 locale 文案豁免掉），只有比对编译位点才抓得住。
+  const injected = parseDotenv(envText)
+  const mismatches = findInjectedEnvMismatches(collectBundleText(outDirOf("chrome")), {
+    WXT_WEBSITE_URL: injected.WXT_WEBSITE_URL,
+    WXT_API_URL: injected.WXT_API_URL,
+  })
+  if (mismatches.length > 0) {
+    console.error("\n✗ 产物里的注入值不一致（旧构建 chunk 残留？）——fail-fast:")
+    for (const { key, want, got } of mismatches) {
+      console.error(`  - ${key}: 期望 ${want}，产物中却有 ${got}`)
+    }
+    process.exit(1)
+  }
+
   const otherProdPath = EDITION_ENV_PATH[edition === "global" ? "cn" : "global"]
   let otherProdText = ""
   try {
@@ -172,6 +200,11 @@ if (mode === "test") {
   console.log(`\n✓ 测试包 OK（edition=${edition}）：产物含测试后端域 ${present.join(", ")}`)
 } else {
   // store：正式包，渠道从注册表解析、浏览器目标推导。
+  // 必填键校验必须前置到任何 wxt zip 之前：assert-fork-build 是在 packChannel 里、zip 跑完才调的，
+  // 那时产物已被写坏——实测踩过一次：global 正式包被断言拦下，但 .output/chrome-mv3-global 已经
+  // 被正式域覆盖，紧接着交付的"测试包"其实是那份残留。
+  assertEditionRequiredEnv(edition, readFileSync(EDITION_ENV_PATH[edition], "utf8"))
+
   const channels = readChannels()
   const wantAll = rest.includes("--all")
   const channelFlagIdx = rest.indexOf("--channel")

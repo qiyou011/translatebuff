@@ -7,6 +7,8 @@ account:
   logout: Đăng xuất
   logoutError: Đăng xuất thất bại. Vui lòng thử lại.
 forkMembership:
+  loggedIn: Đã đăng nhập
+  keyPending: Đang lấy khóa dịch của bạn…
   tierFree: Miễn phí
   tierPro: PRO
   expiry: Hết hạn

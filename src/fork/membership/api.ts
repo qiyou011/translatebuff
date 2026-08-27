@@ -7,6 +7,7 @@
 
 import type { RawToken } from "./tier"
 import { resolveChannelNumber } from "@/fork/identity/channel"
+import { currentEdition } from "@/fork/identity/edition"
 import { extractErrorMessage } from "@/utils/error/extract-message"
 import { DEFAULT_CLIENT_LANGUAGE } from "./client-language"
 
@@ -56,9 +57,51 @@ export class MembershipUnauthorizedError extends Error {
   }
 }
 
-// 平台 API 基址（登录后端域，≠ RENYIMIAO_GATEWAY_BASE_URL 翻译网关）。函数读取以可测。
+// 平台 API 基址（common_bll，cn 线的登录后端域，≠ RENYIMIAO_GATEWAY_BASE_URL 翻译网关）。函数读取以可测。
+// ⚠️ global 线已无运行期消费者（login_status 走 BFF、tokens 走 claw 独立实例），但 .env.global 里那一行
+//    不能删——wxt zip 是 production 模式会自动读 .env.production，删了会回落成国内生产域并混进海外包。
 function apiBase(): string {
   return import.meta.env.WXT_RENYIMIAO_API_URL as string
+}
+
+// edition 必填 env 的读取器：global 缺配即抛错，绝不静默回落到另一条线的后端。
+// 与 resolveChannelNumber 同款 fail-loud —— 静默回落打错 host 的表现是「401 → 清态」，
+// 全程零信号，正是本仓排查过一整轮的那个失败形态。
+function requiredGlobalEnv(key: string, value: string | undefined): string {
+  if (!value) {
+    throw new Error(`edition=global 缺少 ${key}（海外线后端与国内线不同，绝不回落）`)
+  }
+  return value
+}
+
+// login_status 的基址与路径。
+// global：凭据由 third_party_login 签发、经 lrbff 中转，common_bll 只认带 BFF 换发 SaaS Token 的上下文，
+//         插件直连必然 401 —— 故走 BFF 的 session 端点（它内部再转 common_bll 并补上 SaaS Token）。
+// cn：    凭据由 common_bll 的 captcha_login 自签自认，直连即可，既有行为逐字不变。
+function loginStatusTarget(): { base: string; pathname: string } {
+  if (currentEdition() === "global") {
+    return {
+      base: requiredGlobalEnv(
+        "WXT_RENYIMIAO_AUTH_BFF_URL",
+        import.meta.env.WXT_RENYIMIAO_AUTH_BFF_URL as string | undefined,
+      ),
+      pathname: "/api/login_registration_bff/v1/session",
+    }
+  }
+  return { base: apiBase(), pathname: "/api/common_bll/v2/member/login_status" }
+}
+
+// claw_bff 基址（sk_key / tokens）。两线是**不同实例**：国内 cbs1sit、海外 tobtest
+// （依据两个官网仓 .env.test 的 NEXT_PUBLIC_CLAW_API_URL），且 lrbff 路由表无 tokens 接口、无法经 BFF 取。
+// cn 两者同域，回落 apiBase()；global 缺配抛错，与 loginStatusTarget 同款语义。
+function clawBase(): string {
+  if (currentEdition() === "global") {
+    return requiredGlobalEnv(
+      "WXT_RENYIMIAO_CLAW_API_URL",
+      import.meta.env.WXT_RENYIMIAO_CLAW_API_URL as string | undefined,
+    )
+  }
+  return apiBase()
 }
 
 // 解 envelope：后端多层 `{ data: {...} }`，取内层；无 data 字段则原样返回（对齐参考 `data.data ?? data`）。
@@ -76,6 +119,8 @@ function unwrap(json: unknown): Record<string, unknown> {
 
 export interface LoginStatusResult {
   phone: string
+  /** 海外线唯一身份标识：Google 登录的用户没有手机号，popup 展示脱敏邮箱。cn 线该字段恒为空。 */
+  email: string
   // user 形状宽松（Open Question：以真接口/参考站 MemberData 为准），本迭代原样透传内层 member。
   user: Record<string, unknown>
 }
@@ -86,8 +131,9 @@ async function authedGet(
   pathname: string,
   loginCredential: string,
   clientLanguage?: string,
+  base: string = apiBase(),
 ): Promise<Record<string, unknown>> {
-  const res = await fetch(`${apiBase()}${pathname}`, {
+  const res = await fetch(`${base}${pathname}`, {
     method: "GET",
     headers: buildAuthHeaders(loginCredential, clientLanguage),
   })
@@ -107,15 +153,15 @@ export async function fetchLoginStatus(
   loginCredential: string,
   clientLanguage?: string,
 ): Promise<LoginStatusResult> {
-  const data = await authedGet(
-    "/api/common_bll/v2/member/login_status",
-    loginCredential,
-    clientLanguage,
-  )
-  // 参考 LoginStatusResponse：{ member: { mobile, nickname, accounts } }。手机号取 member.mobile。
+  const { base, pathname } = loginStatusTarget()
+  const data = await authedGet(pathname, loginCredential, clientLanguage, base)
+  // 两种响应形状：common_bll 是 { member: { mobile, nickname, accounts } } 嵌套；
+  // lrbff 的 compactSession 是 { member_id, member_name, mobile, email, ... } 扁平体（无 data 封套）。
+  // `data.member ?? data` 同时吃下两者。
   const member = (data.member ?? data) as Record<string, unknown>
   const phone = typeof member.mobile === "string" ? member.mobile : ""
-  return { phone, user: member }
+  const email = typeof member.email === "string" ? member.email : ""
+  return { phone, email, user: member }
 }
 
 export interface TokensResult {
@@ -132,7 +178,12 @@ export async function fetchTokens(
   loginCredential: string,
   clientLanguage?: string,
 ): Promise<TokensResult | null> {
-  const data = await authedGet("/api/claw_bff/v1/tokens", loginCredential, clientLanguage)
+  const data = await authedGet(
+    "/api/claw_bff/v1/tokens",
+    loginCredential,
+    clientLanguage,
+    clawBase(),
+  )
   // 参考 TokensResponse：{ base_url, tokens: [{ sk_key, token_name, priority, expired_time, ... }] }。
   const tokens = Array.isArray(data.tokens) ? (data.tokens as RawToken[]) : []
   const skKey = tokens[0]?.sk_key

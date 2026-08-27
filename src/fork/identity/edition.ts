@@ -11,9 +11,15 @@
 // | 位置                                    | 分的是什么                          | 运行上下文        |
 // |-----------------------------------------|-------------------------------------|-------------------|
 // | .env.production / .env.global.production| 域名类变量（官网、授信 origin、     | dotenv，构建期注入 |
-// |                                         | cookie 域、登录后端、翻译网关）     |                   |
+// |                                         | cookie 域、登录后端、翻译网关、      |                   |
+// |                                         | lrbff / claw_bff 基址）              |                   |
 // | .env / .env.global                      | 同上，但指测试后端（本地 gitignored）| dotenv，构建期注入 |
 // | fork/website-routes.ts                  | 登录/订单/卸载问卷/反馈四条跳转路径 | bundle 运行期     |
+// | fork/membership/api.ts                  | 登录后端（global 走 lrbff 的 session，| bundle 运行期     |
+// |                                         | cn 直连 common_bll）+ claw_bff 基址   |                   |
+// |                                         | （两线不同实例）。global 缺配即抛错   |                   |
+// | fork/membership/account-label.ts        | 账户展示字段（global 脱敏邮箱 /       | bundle 运行期     |
+// |                                         | cn 脱敏手机号）                       |                   |
 // | fork/identity/channels.json             | 渠道号与 edition 归属               | JSON，两侧共读    |
 // | fork/identity/channel.ts DEFAULT_CHANNEL| 各线默认渠道                        | bundle 运行期     |
 // | wxt.config.ts                           | 商店显示名、Firefox 扩展 ID、        | Node 构建期       |
