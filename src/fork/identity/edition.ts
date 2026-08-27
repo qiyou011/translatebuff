@@ -4,6 +4,32 @@
 // 构建期由 scripts/pack.mjs 注入 WXT_FORK_EDITION：Vite 编译期静态替换 import.meta.env.WXT_FORK_EDITION
 // （复用 channel.ts 的血统，绕 t3-env 保 fork 边界）。Node 侧（wxt.config.ts / pack.mjs）走 process.env，
 // 两处共用本文件的 resolveEdition 一份解析实现。
+//
+// ── 分叉落点索引 ────────────────────────────────────────────────────────────────
+// 按 edition 取值的位置全在下表。**新增分叉点必须登记到这里。**
+//
+// | 位置                                    | 分的是什么                          | 运行上下文        |
+// |-----------------------------------------|-------------------------------------|-------------------|
+// | .env.production / .env.global.production| 域名类变量（官网、授信 origin、     | dotenv，构建期注入 |
+// |                                         | cookie 域、登录后端、翻译网关）     |                   |
+// | .env / .env.global                      | 同上，但指测试后端（本地 gitignored）| dotenv，构建期注入 |
+// | fork/website-routes.ts                  | 登录/订单/卸载问卷/反馈四条跳转路径 | bundle 运行期     |
+// | fork/identity/channels.json             | 渠道号与 edition 归属               | JSON，两侧共读    |
+// | fork/identity/channel.ts DEFAULT_CHANNEL| 各线默认渠道                        | bundle 运行期     |
+// | wxt.config.ts                           | 商店显示名、Firefox 扩展 ID、        | Node 构建期       |
+// |                                         | 产物目录后缀、测试包文件名后缀      |                   |
+// | scripts/pack.mjs                        | edition → 配置源文件、渠道范围       | Node 打包         |
+// | scripts/assert-fork-build.mjs           | edition → 配置源文件、默认产物目录   | Node 断言         |
+//
+// 这些落点横跨 dotenv / bundle 运行期 / Node 构建期三个上下文，物理上合不成一个文件——
+// env 值必须留 dotenv（WXT 注入链 + 「禁止服务端密钥」的边界写在文件头），channels.json 必须是 JSON
+// （.mjs 与 TS 两侧共读），wxt.config.ts 拿不到 bundle 侧的 currentEdition()。详见
+// openspec/changes/fork-global-edition/design.md 的 D1–D3。
+//
+// 刻意不做机器校验：wxt.config.ts / pack.mjs 里的分叉是字符串条件（edition === "global"），
+// 两份 env 更是纯数据，扫描比对必然高误报——一个会误报的脆弱测试比没有更糟。索引放在本文件
+// 而非独立文档，是因为任何新分叉点都必须 import 这里的 currentEdition / resolveEdition，改的人一定看得到。
+// ────────────────────────────────────────────────────────────────────────────────
 
 export type ForkEdition = "cn" | "global"
 

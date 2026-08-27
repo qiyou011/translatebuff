@@ -39,15 +39,40 @@ export function readForkDomainsFromEnv(envText) {
 export function checkEditionDomains(bundleText, ownEnvText, otherEnvText, localeText = "") {
   // 去重：readForkDomainsFromEnv 对 WXT_API_URL / WXT_WEBSITE_URL 各返一条，两者常同值。
   const own = [...new Set(readForkDomainsFromEnv(ownEnvText))]
-  const other = [...new Set(readForkDomainsFromEnv(otherEnvText))].filter(
-    (host) => !own.includes(host),
-  )
+  // 禁止清单**不拿 own 过滤**。曾经过滤过，结果是最直接的串味形态反而漏网：把本线 env 的某个
+  // WXT_* 改成另一线的域，那个域就同时进了 own 与 other，被过滤后禁止清单清空、护栏自我注销
+  // （实测坏配置照样 exit 0 并打印「无另一线域名」）。两条线的官网域从不重合，过滤挡不住真实误报，
+  // 只会在最该报警时闭嘴。
+  const other = [...new Set(readForkDomainsFromEnv(otherEnvText))]
   const hits = findUpstreamDomainHits(bundleText, other)
   return {
     missing: findMissingForkDomains(bundleText, own),
     leaked: hits.filter((host) => !localeText.includes(host)),
     copyLeaked: hits.filter((host) => localeText.includes(host)),
   }
+}
+
+// 源码层扫另一 edition 的域名。产物层扫描对国内线是空转的——它唯一的禁止域
+// www.translatebuff.com 出现在 9 份 locale 文案里，被文案豁免整条吃掉；而当年抓到 branding.ts
+// 那个无人消费的 .com 死常量，靠的正是这条禁止域。源码层绕开这个死结：文案只住在 src/locales/，
+// 调用方排掉那个目录后，其余任何命中都是真的端点/常量泄漏。
+// entries 形如 [{ path, content }]，由调用方收集——保持纯函数可测、不读盘。
+export function findCrossEditionSourceHits(entries, forbidden) {
+  const hits = []
+  for (const { path: file, content } of entries) {
+    const code = stripComments(content)
+    for (const host of forbidden) {
+      if (code.includes(host)) hits.push({ file, host })
+    }
+  }
+  return hits
+}
+
+// 剥注释后再扫：注释里写到另一线域名是正常的（本文件的分叉落点索引、换皮副本的来源说明都会写），
+// 真正的泄漏是代码里的字面量。行注释的 `//` 必须排除掉 `://`——否则 "https://x" 会被从 // 处截断，
+// 把要抓的域名连同后半段一起吃掉，真泄漏反而漏网。
+function stripComments(source) {
+  return source.replace(/\/\*[\s\S]*?\*\//g, "").replace(/(^|[^:])\/\/.*$/gm, "$1")
 }
 
 // 从本地 .env（gitignore、仅 dev）派生「测试后端域」——它们绝不该出现在生产产物里。
@@ -101,6 +126,27 @@ export function findPartnerSiteHits(manifest) {
   return patterns.filter((pattern) =>
     PARTNER_SITE_TOKENS.some((token) => String(pattern).includes(token)),
   )
+}
+
+// 收集参与交叉扫描的源码文件。排两类：
+//   · src/locales —— 界面文案，产品已决定两条线共用品牌主域，不算泄漏。
+//   · 测试文件 —— 用例本就要拿两条线的域名做夹具（如 cookie-decision.test.ts 断言域匹配），
+//     扫它们必然误报。测试不进产物，漏扫无风险。
+function walkSource(dir, acc = []) {
+  for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    const p = join(dir, entry.name)
+    const normalized = p.replace(/\\/g, "/")
+    if (entry.isDirectory()) {
+      if (normalized === "src/locales" || entry.name === "__tests__") continue
+      walkSource(p, acc)
+    } else if (
+      /\.(ts|tsx|json)$/.test(entry.name) &&
+      !/\.(test|forktest)\.tsx?$/.test(entry.name)
+    ) {
+      acc.push(p)
+    }
+  }
+  return acc
 }
 
 function walk(dir, acc = []) {
@@ -181,6 +227,25 @@ if (import.meta.url === pathToFileURL(process.argv[1]).href) {
     for (const d of leaked) console.error(`  - ${d}`)
     process.exit(1)
   }
+  // 源码层交叉扫描：排掉 src/locales/（文案按产品决定共用品牌主域），其余源码里出现另一线的域名
+  // 一律 fail-fast——这是产物层豁免之后唯一还拦得住 branding.ts 那类死常量的地方。
+  const sourceEntries = []
+  for (const file of walkSource("src")) {
+    sourceEntries.push({ path: file, content: readFileSync(file, "utf8") })
+  }
+  try {
+    sourceEntries.push({ path: "wxt.config.ts", content: readFileSync("wxt.config.ts", "utf8") })
+  } catch {
+    // 非仓根执行：跳过
+  }
+  const forbiddenHosts = [...new Set(readForkDomainsFromEnv(otherEnvText))]
+  const sourceHits = findCrossEditionSourceHits(sourceEntries, forbiddenHosts)
+  if (sourceHits.length > 0) {
+    console.error(`edition=${edition} 的源码里出现了另一条线的域名——构建 fail-fast:`)
+    for (const hit of sourceHits) console.error(`  - ${hit.file}: ${hit.host}`)
+    process.exit(1)
+  }
+
   // 文案里的另一线域名：产品已确认界面文案统一用品牌主域 translatebuff.com，两条线共用同一份 locale
   // （2026-08-26 决策，MUL-67）。故不阻断构建，仅回声一行——真出现新的文案域名时仍看得见。
   if (copyLeaked.length > 0) {

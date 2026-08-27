@@ -3,6 +3,11 @@ export function findMissingForkDomains(bundleText: string, required: string[]): 
 export function readForkDomainsFromEnv(envText: string): string[]
 export function readTestDomainsFromEnv(envText: string): string[]
 
+export function findCrossEditionSourceHits(
+  entries: { path: string; content: string }[],
+  forbidden: string[],
+): { file: string; host: string }[]
+
 export function checkEditionDomains(
   bundleText: string,
   ownEnvText: string,

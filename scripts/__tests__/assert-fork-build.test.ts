@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest"
 import {
   checkEditionDomains,
+  findCrossEditionSourceHits,
   findMissingForkDomains,
   findUpstreamDomainHits,
   readForkDomainsFromEnv,
@@ -126,10 +127,64 @@ describe("checkEditionDomains（双向域名断言：本线必须在、另一线
     expect(result.copyLeaked).toEqual(["www.translatebuff.com"])
   })
 
+  it("本线 env 自己被改成另一线的域 → 仍判 leaked（禁止清单不能被 own 注销）", () => {
+    // 最直接的「配置串味」形态：有人把 .env.global.production 的 WXT_API_URL 改成了 .cn。
+    // 此时 .cn 同时出现在 own 与 other 里；若拿 own 去过滤 other，禁止清单会被清空、
+    // 护栏把自己注销掉——实测过这个洞：坏配置照样 exit 0 且打印「无另一线域名」。
+    const brokenGlobalEnv = [
+      "WXT_API_URL=https://translatebuff.cn",
+      "WXT_WEBSITE_URL=https://www.translatebuff.com",
+    ].join("\n")
+    const bundle = "a='translatebuff.cn' b='www.translatebuff.com'"
+    const result = checkEditionDomains(bundle, brokenGlobalEnv, CN_ENV)
+    expect(result.leaked).toEqual(["translatebuff.cn"])
+  })
+
   it("不传文案源 → 全部按 leaked 处理（默认最严）", () => {
     const bundle = "a='translatebuff.cn' b='www.translatebuff.com'"
     const result = checkEditionDomains(bundle, CN_ENV, GLOBAL_ENV)
     expect(result.leaked).toEqual(["www.translatebuff.com"])
     expect(result.copyLeaked).toEqual([])
+  })
+})
+
+describe("findCrossEditionSourceHits（源码层扫另一线域名）", () => {
+  // 产物层扫描对国内线是空转的：它唯一的禁止域 www.translatebuff.com 出现在 9 份 locale 文案里，
+  // 被文案豁免整条吃掉。而当年抓到 branding.ts 死常量靠的正是这条禁止域——加了豁免后它已抓不到了。
+  // 源码层扫描绕开这个死结：文案只住在 src/locales/，排掉那个目录，其余任何命中都是真的端点/常量泄漏。
+  it("命中源码里的另一线域名（branding.ts 那种死常量）", () => {
+    const entries = [
+      { path: "src/fork/branding.ts", content: 'websiteUrl: "https://www.translatebuff.com",' },
+    ]
+    expect(findCrossEditionSourceHits(entries, ["www.translatebuff.com"])).toEqual([
+      { file: "src/fork/branding.ts", host: "www.translatebuff.com" },
+    ])
+  })
+
+  it("注释里的散文提及不算泄漏（索引表、换皮说明都会写到另一线域名）", () => {
+    const entries = [
+      { path: "a.ts", content: "// cn = 国内线（translatebuff.cn），global = 海外线\nconst x = 1" },
+      { path: "b.ts", content: "/* 换皮到 translatebuff.cn/feedback */\nconst y = 2" },
+    ]
+    expect(findCrossEditionSourceHits(entries, ["translatebuff.cn"])).toEqual([])
+  })
+
+  it("剥注释不能吃掉 https:// 里的双斜杠（否则真泄漏反而漏网）", () => {
+    const entries = [{ path: "a.ts", content: 'const u = "https://www.translatebuff.com"' }]
+    expect(findCrossEditionSourceHits(entries, ["www.translatebuff.com"])).toEqual([
+      { file: "a.ts", host: "www.translatebuff.com" },
+    ])
+  })
+
+  it("干净源码返回空", () => {
+    const entries = [{ path: "src/fork/branding.ts", content: 'name: "TranslateBuff",' }]
+    expect(findCrossEditionSourceHits(entries, ["www.translatebuff.com"])).toEqual([])
+  })
+
+  it("同一文件多个禁止域各报一条", () => {
+    const entries = [{ path: "a.ts", content: "x=translatebuff.cn; y=www.translatebuff.com" }]
+    expect(
+      findCrossEditionSourceHits(entries, ["translatebuff.cn", "www.translatebuff.com"]),
+    ).toHaveLength(2)
   })
 })
