@@ -116,7 +116,7 @@ options:
       description: 閱讀文件，了解怎麼使用任译喵
     email:
       title: 電子郵件聯絡
-      description: 透過 contact@translatebuff.com 直接聯絡團隊
+      description: 透過 support@translatebuff.com 直接聯絡團隊
     featureRequest:
       title: 功能建議
       description: 提出想法，並為團隊接下來要做的功能投票

@@ -116,7 +116,7 @@ options:
       description: Belgeleri okuyun ve TranslateBuff'u nasıl kullanacağınızı öğrenin
     email:
       title: Bize e-posta gönderin
-      description: Ekibe doğrudan contact@translatebuff.com adresinden ulaşın
+      description: Ekibe doğrudan support@translatebuff.com adresinden ulaşın
     featureRequest:
       title: Özellik önerisi
       description: Bir fikir önerin ve ekibin sırada ne geliştireceğini oylayın

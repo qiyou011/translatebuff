@@ -32,6 +32,7 @@ Master languages effortlessly and deeply with AI, right in your browser.
   - [🤖 Built-in AI Translation](#-built-in-ai-translation)
 - [🤝 Contribute](#-contribute)
   - [Contribute Code](#contribute-code)
+  - [Build & Package](#build--package)
 
 <br/>
 
@@ -176,6 +177,18 @@ Contributions of all types are more than welcome.
 Check out the [Contribution Guide][docs-tutorial] for more details.
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md) for contributor licensing terms.
+
+### Build & Package
+
+This repo ships two editions with separate backends and store listings: `cn` (translatebuff.cn) and `global` (translatebuff.com). Always build through `scripts/pack.mjs` — calling `wxt zip` directly skips the guards that keep the two editions from bleeding into each other.
+
+```bash
+node scripts/pack.mjs test --edition global                        # test build
+node scripts/pack.mjs store --edition global --channel global-zip  # store build, one channel
+node scripts/pack.mjs store --edition global --all                 # store build, every channel
+```
+
+Drop `--edition global` to build the cn edition. Artifacts land in `.output/`; load `.output/chrome-mv3-global/` unpacked to try a build. The test build reads a local `.env.global` that is gitignored — see [.env.example](./.env.example) for the variables each edition needs, and [FORK_GUIDE.md](./FORK_GUIDE.md) for the edition model.
 
 <div align="right">
 

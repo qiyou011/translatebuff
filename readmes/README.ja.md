@@ -133,6 +133,18 @@ YouTube 字幕を動画プレイヤー内で直接翻訳できます。外国語
 
 コントリビューターのライセンス条件は [CONTRIBUTING.md](../CONTRIBUTING.md) を参照してください。
 
+### ビルドとパッケージ
+
+このリポジトリはバックエンドとストア掲載が独立した 2 つのエディションを出力します：`cn`（translatebuff.cn）と `global`（translatebuff.com）。必ず `scripts/pack.mjs` 経由でビルドしてください——`wxt zip` を直接叩くと 2 つのエディションを隔てるドメインガードを迂回します。
+
+```bash
+node scripts/pack.mjs test --edition global                        # test build
+node scripts/pack.mjs store --edition global --channel global-zip  # store build, one channel
+node scripts/pack.mjs store --edition global --all                 # store build, every channel
+```
+
+`--edition global` を外すと cn エディションになります。成果物は `.output/` に出ます。`.output/chrome-mv3-global/` をパッケージ化されていない拡張機能として読み込めば試せます。テストビルドは gitignore 済みのローカル `.env.global` を読みます——必要な変数は [.env.example](../.env.example)、エディションの考え方は [FORK_GUIDE.md](../FORK_GUIDE.md) を参照。
+
 <div align="right">
 
 [![Back to top][back-to-top]](#readme-top)

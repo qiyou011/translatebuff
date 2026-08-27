@@ -32,6 +32,7 @@ Học ngôn ngữ dễ hơn và sâu hơn ngay trong trình duyệt của bạn.
   - [🤖 Dịch AI tích hợp](#-dịch-ai-tích-hợp)
 - [🤝 Đóng góp](#-đóng-góp)
   - [Đóng góp mã nguồn](#đóng-góp-mã-nguồn)
+  - [Build và đóng gói](#build-và-đóng-gói)
 
 <br/>
 
@@ -134,6 +135,18 @@ Mọi hình thức đóng góp đều được hoan nghênh.
 Xem [Contribution Guide][docs-tutorial] để biết thêm chi tiết.
 
 Điều khoản cấp phép cho người đóng góp nằm trong [CONTRIBUTING.md](../CONTRIBUTING.md).
+
+### Build và đóng gói
+
+Kho này xuất ra hai phiên bản có backend và mục cửa hàng riêng biệt: `cn` (translatebuff.cn) và `global` (translatebuff.com). Luôn build qua `scripts/pack.mjs` — chạy thẳng `wxt zip` sẽ bỏ qua các lớp bảo vệ tên miền giữ cho hai phiên bản không lẫn vào nhau.
+
+```bash
+node scripts/pack.mjs test --edition global                        # test build
+node scripts/pack.mjs store --edition global --channel global-zip  # store build, one channel
+node scripts/pack.mjs store --edition global --all                 # store build, every channel
+```
+
+Bỏ `--edition global` để build phiên bản cn. Sản phẩm nằm trong `.output/`; tải `.output/chrome-mv3-global/` dưới dạng tiện ích đã giải nén để dùng thử. Bản build thử đọc tệp `.env.global` cục bộ (đã bị gitignore) — xem [.env.example](../.env.example) để biết biến của từng phiên bản và [FORK_GUIDE.md](../FORK_GUIDE.md) để hiểu mô hình phiên bản.
 
 <div align="right">
 

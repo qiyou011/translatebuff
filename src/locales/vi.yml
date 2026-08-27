@@ -116,7 +116,7 @@ options:
       description: Đọc tài liệu để biết cách sử dụng TranslateBuff
     email:
       title: Gửi email cho chúng tôi
-      description: Liên hệ trực tiếp với nhóm qua contact@translatebuff.com
+      description: Liên hệ trực tiếp với nhóm qua support@translatebuff.com
     featureRequest:
       title: Đề xuất tính năng
       description: Đề xuất ý tưởng và bình chọn cho tính năng nhóm sẽ làm tiếp theo

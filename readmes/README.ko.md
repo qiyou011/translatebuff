@@ -32,6 +32,7 @@
   - [🤖 내장 AI 번역](#-내장-ai-번역)
 - [🤝 기여](#-기여)
   - [코드 기여](#코드-기여)
+  - [빌드 및 패키징](#빌드-및-패키징)
 
 <br/>
 
@@ -134,6 +135,18 @@ YouTube 자막을 동영상 플레이어 안에서 직접 번역합니다. 외�
 자세한 내용은 [Contribution Guide][docs-tutorial]를 확인하세요.
 
 기여자 라이선스 조건은 [CONTRIBUTING.md](../CONTRIBUTING.md)를 참조하세요.
+
+### 빌드 및 패키징
+
+이 저장소는 백엔드와 스토어 등록이 각각 독립된 두 에디션을 만듭니다: `cn`(translatebuff.cn)과 `global`(translatebuff.com). 반드시 `scripts/pack.mjs`로 빌드하세요 — `wxt zip`을 직접 실행하면 두 에디션을 분리하는 도메인 가드를 우회합니다.
+
+```bash
+node scripts/pack.mjs test --edition global                        # test build
+node scripts/pack.mjs store --edition global --channel global-zip  # store build, one channel
+node scripts/pack.mjs store --edition global --all                 # store build, every channel
+```
+
+`--edition global`을 빼면 cn 에디션이 빌드됩니다. 결과물은 `.output/`에 생성되며, `.output/chrome-mv3-global/`을 압축 해제된 확장 프로그램으로 로드하면 바로 사용해 볼 수 있습니다. 테스트 빌드는 gitignore된 로컬 `.env.global`을 읽습니다 — 필요한 변수는 [.env.example](../.env.example), 에디션 모델은 [FORK_GUIDE.md](../FORK_GUIDE.md)를 참고하세요.
 
 <div align="right">
 

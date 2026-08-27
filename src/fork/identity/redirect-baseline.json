@@ -23,6 +23,7 @@
     "entrypoints/translation-hub/atoms.ts": "ec9388ac42803202",
     "entrypoints/options/pages/custom-actions/action-config-form/notebase-connection-field.tsx": "37638f4c97b50ca4",
     "components/llm-providers/feature-provider-selector-list.tsx": "8579d649e5910e2a",
-    "entrypoints/options/pages/preference/config/google-drive-sync/index.tsx": "ff2f5a801e8f270f"
+    "entrypoints/options/pages/preference/config/google-drive-sync/index.tsx": "ff2f5a801e8f270f",
+    "entrypoints/options/pages/help-and-community/index.tsx": "1ca30ed362816dc3"
   }
 }
