@@ -33,8 +33,20 @@ jobs:
       - run: pnpm run test
         env:
           SKIP_FREE_API: "true"
+      # 国内线：三个浏览器目标各构建一次，顺带验证三端都还能编译——这是单渠道打包给不了的覆盖面。
       - run: pnpm run build
       - run: pnpm run build:edge
       - run: pnpm run build:firefox
-      - name: Assert no upstream domains in bundle
-        run: node scripts/assert-fork-build.mjs
+      # 逐个产物目录都断言。此前只跑一次、默认读 .output/chrome-mv3，edge / firefox 白构建从没被验过。
+      - name: Assert bundle domains (cn, all targets)
+        run: |
+          for browser in chrome edge firefox; do
+            echo "── asserting .output/$browser-mv3"
+            FORK_OUT_DIR=".output/$browser-mv3" node scripts/assert-fork-build.mjs
+          done
+      # 海外线：走 pack.mjs 真跑一次正式出包，而不是在这里重写一遍 env 注入——
+      # 抄一份注入逻辑到 YAML，两边漂移时 CI 绿而真实打包红，护栏就变成了噪音。
+      # 只打一个代表渠道：同 edition 的渠道之间只差一个号码，配置错误一个就能暴露，打满 4 个是纯浪费。
+      # pack.mjs 内部已串好「读该线配置 → 注入 → wxt zip → assert-fork-build（带 edition 与产物目录）」。
+      - name: Global edition build + assert
+        run: node scripts/pack.mjs store --edition global --channel global-zip

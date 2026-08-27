@@ -22,6 +22,11 @@ export default mergeConfig(
       // 额外收 .forktest.ts：这类哨兵断言「重定向已生效」，在根配置下必然失败，
       // 故用根配置默认 include 匹配不到的扩展名，避免污染 pnpm run test。
       include: ["src/fork/**/*.{test,forktest}.{ts,tsx}"],
+      // 本配置下每个测试文件都要解析 wxt.config.ts → 23 条换皮重定向 → 整棵 UI 依赖树，
+      // 模块解析本身就重。默认 5s 在并发 + 机器负载下会卡线，让 redirect-wiring 与 notebase-url
+      // 两个哨兵随机超时（实测 5020ms / 6860ms，单独跑 2.02s 稳过）——CI 随机翻红、且红在与改动
+      // 无关的地方。放宽到 20s：真断言失败仍即时红，只有"慢"不再被误判成"错"。
+      testTimeout: 20_000,
     },
   }),
 )
