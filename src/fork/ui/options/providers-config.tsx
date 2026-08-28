@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/base-ui/button"
 import { Field, FieldLabel } from "@/components/ui/base-ui/field"
 import { Input } from "@/components/ui/base-ui/input"
 import { ConfigItem } from "@/entrypoints/options/components/config-item"
+import { ConfigSection } from "@/entrypoints/options/components/config-section"
 import { FORK_BRANDING } from "@/fork/branding"
 import { useForkSession, useOpenForkLogin } from "@/fork/membership/atoms"
 import {
@@ -18,6 +19,7 @@ import {
 import { useEnsureRenyimiaoSeeded } from "@/fork/providers/use-ensure-renyimiao-seeded"
 import { configAtom, configFieldsAtomMap, writeConfigAtom } from "@/utils/atoms/config"
 import { i18n } from "@/utils/i18n"
+import { PROVIDER_CONFIG_SECTION_ID } from "@/utils/navigation"
 import { ConnectionTestButton } from "./connection-test-button"
 import { UpdateModelsButton } from "./update-models-button"
 
@@ -143,22 +145,23 @@ export function ProvidersConfig() {
   }
 
   // 单一「任译喵 API」provider，无需实体列表侧栏（设计冗余），编辑器直接铺满内容区。
+  // 外层 ConfigSection 与同页「功能提供商」「语言检测」同构（分组标题 + 分隔线），标题归它出，
+  // 内层 ConfigItem 只留描述并走 vertical——horizontal 自带的 items-center + min-w-[320px] 会把整块缩成居中窄条。
+  // 锚点沿用上游的 PROVIDER_CONFIG_SECTION_ID：「请在 API 提供商 页面设置 API Key」徽标与命令面板
+  // 都按它滚动，自造 id 会让两条入口只跳到页面顶部。
   return (
-    <ConfigItem
-      id="api-providers"
-      title={RENYIMIAO_API_LABEL}
-      description="用于翻译和词汇解析功能"
-      className="lg:flex-col"
-    >
-      <RenyimiaoApiEditor
-        apiKey={apiKey}
-        baseUrl={baseUrl}
-        modelIds={modelIds}
-        primaryInstance={primaryInstance}
-        session={session}
-        onLogin={openLogin}
-        onModelsFetched={handleModelsFetched}
-      />
-    </ConfigItem>
+    <ConfigSection id={PROVIDER_CONFIG_SECTION_ID} title={RENYIMIAO_API_LABEL}>
+      <ConfigItem orientation="vertical" description="用于翻译和词汇解析功能">
+        <RenyimiaoApiEditor
+          apiKey={apiKey}
+          baseUrl={baseUrl}
+          modelIds={modelIds}
+          primaryInstance={primaryInstance}
+          session={session}
+          onLogin={openLogin}
+          onModelsFetched={handleModelsFetched}
+        />
+      </ConfigItem>
+    </ConfigSection>
   )
 }
