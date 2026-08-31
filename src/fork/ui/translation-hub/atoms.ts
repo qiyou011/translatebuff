@@ -1,5 +1,8 @@
+import type { TranslateRequest } from "@/entrypoints/translation-hub/atoms"
 import type { TranslateProviderConfig } from "@/types/config/provider"
 import { atom } from "jotai"
+import { translateRequestAtom as upstreamTranslateRequestAtom } from "@/entrypoints/translation-hub/atoms"
+import { sendForkMessage } from "@/fork/message"
 import { isForkVisibleProvider } from "@/fork/providers/renyimiao"
 import { configFieldsAtomMap } from "@/utils/atoms/config"
 import { filterEnabledProvidersConfig, getTranslateProvidersConfig } from "@/utils/config/helpers"
@@ -32,3 +35,17 @@ export const selectedProvidersAtom = atom((get) => {
     .map((id) => providersConfig.find((provider) => provider.id === id))
     .filter((provider): provider is TranslateProviderConfig => provider !== undefined)
 })
+
+// 翻译中心是三条翻译通路里唯一不发上游消息的一条（页面内直调 executeTranslate），
+// 活跃信号只能挂在「用户点翻译」这个写入点上——即 text-input 写 translateRequestAtom 的那一刻。
+// 沿用上面 selectedProviderIdsAtom 的覆盖模式：值仍存上游 atom，本地只包一层 write。
+export const translateRequestAtom = atom(
+  (get) => get(upstreamTranslateRequestAtom),
+  (_get, set, request: TranslateRequest | null) => {
+    set(upstreamTranslateRequestAtom, request)
+    // 写 null 是清空面板，不是发起翻译，不计活跃。
+    if (request) {
+      void sendForkMessage("forkReportTranslateActivity")
+    }
+  },
+)
