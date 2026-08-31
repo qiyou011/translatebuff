@@ -12,7 +12,8 @@ import { extractErrorMessage } from "@/utils/error/extract-message"
 import { DEFAULT_CLIENT_LANGUAGE } from "./client-language"
 
 // ── 平台标识常量（固定值）──
-const SAAS_PRODUCT_LINE = "AITRANS"
+// 导出：中台埋点的事件报文 product_line 与本头部同源，避免两处各写一份字面量。
+export const SAAS_PRODUCT_LINE = "AITRANS"
 const SAAS_APP_ID = "aitrans-pc" // 亦即 7 段 UA 的 client_name 段（对齐参考 SAAS_APP_ID）
 
 // ── 7 段 Useragent 常量（格式：browser/{os}/{osVersion}/{channel}/aitrans-pc/{appVersion}/{sn}）──
