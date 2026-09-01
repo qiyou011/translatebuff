@@ -137,6 +137,30 @@ function mockRect(element: Element, rect: Partial<DOMRect>) {
 }
 
 describe("floatingButton controls", () => {
+  it("renders the main widget as a black circle with a larger white brand mark", () => {
+    renderFloatingButton()
+
+    const mainButton = getMainButton()
+    const brandMark = mainButton.querySelector("img")
+    const floatingButtonContainer = screen.getByTestId("floating-button-container")
+    const auxiliaryButtons = Array.from(floatingButtonContainer.children).filter(
+      (child): child is HTMLButtonElement => child instanceof HTMLButtonElement,
+    )
+
+    expect(mainButton).toHaveClass("size-12")
+    expect(mainButton).toHaveClass("rounded-full")
+    expect(mainButton).toHaveClass("bg-black")
+    expect(brandMark).toHaveClass("size-10")
+    expect(brandMark).toHaveClass("invert")
+    expect(auxiliaryButtons).toHaveLength(2)
+    for (const auxiliaryButton of auxiliaryButtons) {
+      expect(auxiliaryButton).toHaveClass("border-black")
+      expect(auxiliaryButton).toHaveClass("bg-black")
+      expect(auxiliaryButton).toHaveClass("text-white")
+      expect(auxiliaryButton).toHaveClass("hover:bg-neutral-800")
+    }
+  })
+
   it("shows the close trigger only after entering the main floating button", () => {
     renderFloatingButton()
 
@@ -145,7 +169,8 @@ describe("floatingButton controls", () => {
 
     expect(mainButton).toHaveClass("transition-[transform,opacity,box-shadow]")
     expect(mainButton).toHaveClass("duration-300")
-    expect(closeTrigger).toHaveClass("-top-1")
+    expect(closeTrigger).toHaveClass("size-8")
+    expect(closeTrigger).toHaveClass("-top-2")
     expect(closeTrigger).toHaveClass("left-0")
     expect(closeTrigger).toHaveClass("invisible")
     expect(closeTrigger).toHaveClass("pointer-events-none")
@@ -159,7 +184,7 @@ describe("floatingButton controls", () => {
 
     expect(closeTrigger).toHaveClass("visible")
     expect(closeTrigger).toHaveClass("pointer-events-auto")
-    expect(closeTrigger).toHaveClass("-left-6")
+    expect(closeTrigger).toHaveClass("-left-8")
   })
 
   it("renders a lock trigger at the lower-left corner and keeps controls expanded after entering the main button", () => {
@@ -170,7 +195,8 @@ describe("floatingButton controls", () => {
     const floatingButtonContainer = screen.getByTestId("floating-button-container")
 
     expect(lockTrigger).toHaveClass("left-0")
-    expect(lockTrigger).toHaveClass("-bottom-1")
+    expect(lockTrigger).toHaveClass("size-8")
+    expect(lockTrigger).toHaveClass("-bottom-2")
     expect(lockTrigger).toHaveClass("invisible")
     expect(lockTrigger).toHaveClass("pointer-events-none")
     expect(lockTrigger).toHaveClass("text-neutral-300")
@@ -185,7 +211,7 @@ describe("floatingButton controls", () => {
 
     expect(lockTrigger).toHaveClass("visible")
     expect(lockTrigger).toHaveClass("pointer-events-auto")
-    expect(lockTrigger).toHaveClass("-left-6")
+    expect(lockTrigger).toHaveClass("-left-8")
     expect(mainButton).toHaveClass("translate-x-0")
 
     fireEvent.click(lockTrigger)
@@ -193,7 +219,7 @@ describe("floatingButton controls", () => {
     const unlockTrigger = screen.getByRole("button", { name: "Unlock floating button" })
 
     expect(unlockTrigger).toHaveClass("text-neutral-300")
-    expect(unlockTrigger).toHaveClass("-left-6")
+    expect(unlockTrigger).toHaveClass("-left-8")
     expect(mainButton).toHaveClass("translate-x-0")
     expect(mainButton).toHaveClass("opacity-100")
     expect(mainButton).not.toHaveClass("translate-x-6")
@@ -525,7 +551,7 @@ describe("floatingButton controls", () => {
         (button) => button !== closeTrigger && button !== lockTrigger && button !== mainButton,
       )
 
-    expect(mainButton).toHaveClass("rounded-r-full")
+    expect(mainButton).toHaveClass("rounded-full")
     expect(mainButton).toHaveClass("translate-x-0")
     expect(closeTrigger).toHaveClass("right-0")
     expect(lockTrigger).toHaveClass("right-0")
@@ -536,8 +562,8 @@ describe("floatingButton controls", () => {
     fireEvent.mouseEnter(mainButton)
 
     expect(mainButton).toHaveClass("translate-x-0")
-    expect(closeTrigger).toHaveClass("-right-6")
-    expect(lockTrigger).toHaveClass("-right-6")
+    expect(closeTrigger).toHaveClass("-right-8")
+    expect(lockTrigger).toHaveClass("-right-8")
     for (const hiddenButton of hiddenButtons) {
       expect(hiddenButton).toHaveClass("translate-x-0")
     }

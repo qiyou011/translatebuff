@@ -52,18 +52,18 @@ interface PendingDragState {
 }
 
 const floatingButtonControlClassName = cn(
-  "pointer-events-none invisible absolute flex size-6 cursor-pointer items-center justify-center",
+  "pointer-events-none invisible absolute flex size-8 cursor-pointer items-center justify-center",
   "text-neutral-300 transition-[color,left,right,transform] duration-300 hover:scale-110 hover:text-neutral-500 active:scale-90 active:text-neutral-500",
   "dark:text-neutral-700 dark:hover:text-neutral-500 dark:active:text-neutral-500",
 )
 const floatingButtonControlOffsetClassNames = {
   right: {
     collapsed: "left-0",
-    expanded: "-left-6",
+    expanded: "-left-8",
   },
   left: {
     collapsed: "right-0",
-    expanded: "-right-6",
+    expanded: "-right-8",
   },
 } satisfies Record<FloatingButtonSide, { collapsed: string; expanded: string }>
 
@@ -368,14 +368,9 @@ export default function FloatingButton() {
           ref={mainButtonRef}
           data-testid="floating-main-button"
           className={cn(
-            "relative flex h-10 items-center border-border bg-card shadow-lg transition-[transform,opacity,box-shadow] duration-300 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-            isDraggingButton
-              ? "w-10 cursor-grabbing touch-none justify-center rounded-full border opacity-100"
-              : floatingButtonSide === "right"
-                ? "w-11 justify-start rounded-l-full border border-r-0"
-                : "w-11 justify-end rounded-r-full border border-l-0",
+            "relative flex size-12 items-center justify-center rounded-full border border-black bg-black shadow-lg transition-[transform,opacity,box-shadow] duration-300 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+            isDraggingButton ? "cursor-grabbing touch-none opacity-100" : "cursor-pointer",
             !isDraggingButton && "translate-x-0 opacity-100",
-            !isDraggingButton && "cursor-pointer",
           )}
           onPointerDown={handlePointerDown}
           onPointerMove={handlePointerMove}
@@ -392,12 +387,9 @@ export default function FloatingButton() {
             src={brandLogoUrl}
             alt=""
             aria-hidden="true"
-            width={32}
-            height={32}
-            className={cn(
-              "h-8 w-8 rounded-full",
-              !isDraggingButton && (floatingButtonSide === "right" ? "ml-1" : "mr-1"),
-            )}
+            width={40}
+            height={40}
+            className="size-10 rounded-full invert"
           />
         </button>
 
@@ -475,7 +467,7 @@ function FloatingButtonCloseMenu({
             aria-label="Close floating button"
             className={cn(
               floatingButtonControlClassName,
-              "-top-1",
+              "-top-2",
               controlOffsetClassName,
               expanded && "pointer-events-auto visible",
               open && "pointer-events-auto visible",
@@ -483,7 +475,7 @@ function FloatingButtonCloseMenu({
           />
         }
       >
-        <IconX className="h-3 w-3" strokeWidth={3} />
+        <IconX className="size-4" strokeWidth={3} />
       </DropdownMenuTrigger>
       <DropdownMenuContent
         container={shadowWrapper}
@@ -525,16 +517,16 @@ function FloatingButtonLockControl({ expanded, side }: FloatingButtonLockControl
       aria-label={locked ? "Unlock floating button" : "Lock floating button"}
       className={cn(
         floatingButtonControlClassName,
-        "-bottom-1",
+        "-bottom-2",
         controlOffsetClassName,
         expanded && "pointer-events-auto visible",
       )}
       onClick={handleToggleLocked}
     >
       {locked ? (
-        <IconLock className="h-3 w-3" strokeWidth={3} />
+        <IconLock className="size-4" strokeWidth={3} />
       ) : (
-        <IconLockOpen className="h-3 w-3" strokeWidth={3} />
+        <IconLockOpen className="size-4" strokeWidth={3} />
       )}
     </button>
   )

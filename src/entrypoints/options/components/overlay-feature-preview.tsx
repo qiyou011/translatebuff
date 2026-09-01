@@ -1,5 +1,7 @@
 import type { ReactNode } from "react"
 import { Icon } from "@iconify/react"
+import { RiTranslate } from "@remixicon/react"
+import { IconVolume, IconX } from "@tabler/icons-react"
 import { BrandMark } from "@/components/brand-mark"
 import { i18n } from "@/utils/i18n"
 import { cn } from "@/utils/styles/utils"
@@ -65,16 +67,22 @@ function ArticleLines({ selected = false }: { selected?: boolean }) {
 
 function FloatingButtonScene() {
   return (
-    <div className="relative h-[calc(100%-2rem)] overflow-hidden px-8 py-5 pr-16">
+    <div className="relative h-[calc(100%-2rem)] overflow-hidden px-8 py-5 pr-20">
       <ArticleLines />
-      <div className="absolute top-12 right-0 flex items-center">
-        <div className="mr-1.5 flex flex-col gap-1.5">
-          <PreviewIcon icon="tabler:language" />
-          <PreviewIcon icon="tabler:settings" muted />
+      <div className="absolute top-1 right-0 flex flex-col items-end gap-2">
+        <PreviewFloatingAction icon="tabler:language" />
+        <div className="relative">
+          <span className="absolute -top-1 -left-6 flex size-6 items-center justify-center text-neutral-300 dark:text-neutral-700">
+            <Icon icon="tabler:x" className="size-3" strokeWidth={3} />
+          </span>
+          <span className="absolute -bottom-1 -left-6 flex size-6 items-center justify-center text-neutral-300 dark:text-neutral-700">
+            <Icon icon="tabler:lock-open" className="size-3" strokeWidth={3} />
+          </span>
+          <span className="flex size-12 items-center justify-center rounded-full border border-black bg-black shadow-lg">
+            <BrandMark showName={false} iconClassName="size-10 rounded-full invert" />
+          </span>
         </div>
-        <div className="flex h-11 w-12 items-center rounded-l-full border border-r-0 border-border bg-card pl-1.5 shadow-lg">
-          <BrandMark showName={false} iconClassName="size-8 rounded-full" />
-        </div>
+        <PreviewFloatingAction icon="tabler:settings" />
       </div>
     </div>
   )
@@ -84,76 +92,94 @@ function SelectionToolbarScene() {
   return (
     <div className="relative h-[calc(100%-2rem)] px-8 py-5">
       <ArticleLines selected />
-      <div className="absolute top-9 left-[26%] flex items-center gap-0.5 rounded-xl border border-border/60 bg-popover p-1 shadow-floating">
-        <PreviewToolbarButton icon="tabler:language" active />
-        <PreviewToolbarButton icon="tabler:volume" />
-        <PreviewToolbarButton icon="tabler:sparkles" />
-        <span className="mx-0.5 h-5 w-px bg-border" />
-        <PreviewToolbarButton icon="tabler:x" compact />
+      <div className="group absolute top-9 left-[26%] flex items-center rounded-xl bg-popover p-1 shadow-floating">
+        <div className="flex items-center overflow-hidden rounded-xl">
+          <PreviewToolbarButton>
+            <RiTranslate className="size-4.5" />
+          </PreviewToolbarButton>
+          <PreviewToolbarButton>
+            <IconVolume className="size-4.5" strokeWidth={1.6} />
+          </PreviewToolbarButton>
+          <PreviewToolbarButton>
+            <Icon icon="tabler:book-2" className="size-4.5" strokeWidth={0.8} />
+          </PreviewToolbarButton>
+        </div>
+        <span className="absolute -top-1 -right-1 flex size-3.5 items-center justify-center rounded-full border border-border bg-neutral-100 dark:bg-neutral-900">
+          <IconX className="size-3 text-neutral-400 dark:text-neutral-600" />
+        </span>
       </div>
-      <div className="absolute top-[4.7rem] left-[43%] size-2 rotate-45 border-r border-b border-border/50 bg-popover" />
     </div>
   )
 }
 
 function ContextMenuScene() {
   return (
-    <div className="relative h-[calc(100%-2rem)] px-8 py-5 pr-52">
-      <ArticleLines selected />
-      <div className="absolute top-3 right-5 w-44 overflow-hidden rounded-lg border border-border/80 bg-popover p-1 shadow-floating">
-        <ContextMenuItem icon="tabler:language">
-          {i18n.t("contextMenu.translateSelection")}
-        </ContextMenuItem>
-        <ContextMenuItem icon="tabler:volume">
-          {i18n.t("contextMenu.readAloudSelection")}
-        </ContextMenuItem>
-        <div className="my-1 h-px bg-border/70" />
-        <ContextMenuItem icon="tabler:world">{i18n.t("contextMenu.translate")}</ContextMenuItem>
+    <div className="relative h-[calc(100%-2rem)] overflow-hidden px-8 py-5 pr-52">
+      <ArticleLines />
+
+      <div className="absolute top-2 right-5 w-48 rounded-lg border border-black/10 bg-[#f7f7f7] p-1 text-[#202124] shadow-[0_8px_24px_rgba(0,0,0,0.22)] dark:border-white/10 dark:bg-[#292a2d] dark:text-[#e8eaed]">
+        <NativeContextMenuItem shortcut="Ctrl+C">{i18n.t("action.copy")}</NativeContextMenuItem>
+        <NativeContextMenuPlaceholder width="w-28" />
+        <div className="my-1 h-px bg-black/10 dark:bg-white/10" />
+        <NativeContextMenuPlaceholder width="w-32" />
+        <div className="my-1 h-px bg-black/10 dark:bg-white/10" />
+        <NativeContextMenuItem active>
+          <span className="flex min-w-0 items-center gap-2">
+            <BrandMark showName={false} iconClassName="size-3.5 rounded-[2px]" />
+            <span className="truncate">{i18n.t("contextMenu.translate")}</span>
+          </span>
+        </NativeContextMenuItem>
+        <div className="my-1 h-px bg-black/10 dark:bg-white/10" />
+        <NativeContextMenuPlaceholder width="w-20" />
       </div>
     </div>
   )
 }
 
-function PreviewIcon({ icon, muted = false }: { icon: string; muted?: boolean }) {
+function PreviewFloatingAction({ icon }: { icon: string }) {
   return (
-    <span
-      className={cn(
-        "flex size-7 items-center justify-center rounded-full border bg-card shadow-sm",
-        muted && "opacity-65",
-      )}
-    >
-      <Icon icon={icon} className="size-3.5" />
+    <span className="mr-2 flex size-[34px] items-center justify-center rounded-full border border-border bg-white text-neutral-600 shadow-lg dark:bg-neutral-900 dark:text-neutral-400">
+      <Icon icon={icon} className="size-5" />
     </span>
   )
 }
 
-function PreviewToolbarButton({
-  icon,
+function PreviewToolbarButton({ children }: { children: ReactNode }) {
+  return (
+    <span className="flex h-7 shrink-0 items-center justify-center px-2 text-foreground">
+      {children}
+    </span>
+  )
+}
+
+function NativeContextMenuItem({
+  children,
+  shortcut,
   active = false,
-  compact = false,
 }: {
-  icon: string
+  children: ReactNode
+  shortcut?: string
   active?: boolean
-  compact?: boolean
 }) {
   return (
-    <span
+    <div
       className={cn(
-        "flex items-center justify-center rounded-lg",
-        compact ? "size-6" : "size-8",
-        active ? "bg-primary text-primary-foreground" : "text-muted-foreground",
+        "flex h-5 items-center gap-2 rounded-[4px] px-2 text-[10px] leading-none",
+        active && "bg-[#e8eaed] dark:bg-[#3c4043]",
       )}
     >
-      <Icon icon={icon} className={compact ? "size-3.5" : "size-4"} />
-    </span>
+      <span className="min-w-0 flex-1 truncate">{children}</span>
+      {shortcut && (
+        <span className="shrink-0 pl-3 text-black/55 dark:text-white/55">{shortcut}</span>
+      )}
+    </div>
   )
 }
 
-function ContextMenuItem({ icon, children }: { icon: string; children: ReactNode }) {
+function NativeContextMenuPlaceholder({ width }: { width: string }) {
   return (
-    <div className="flex h-7 items-center gap-2 rounded-md px-2 text-[11px] text-foreground first:bg-accent">
-      <Icon icon={icon} className="size-3.5 shrink-0 text-muted-foreground" />
-      <span className="truncate">{children}</span>
+    <div className="flex h-5 items-center px-2">
+      <span className={cn("h-1.5 rounded-full bg-black/18 dark:bg-white/18", width)} />
     </div>
   )
 }
