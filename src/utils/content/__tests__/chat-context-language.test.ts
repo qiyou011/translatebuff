@@ -115,6 +115,17 @@ describe("detectChatContextLanguage", () => {
     ).resolves.toBe("rus")
   })
 
+  it("消息太短、拼接后不足最短判定长度时返回 null", async () => {
+    // franc 的 DEFAULT_MIN_LENGTH 是 10；两条两字的短回复拼起来够不着。
+    renderMessages(["はい", "了解"])
+    await expect(
+      detectChatContextLanguage(document, {
+        chatSelector: CHAT_SELECTOR,
+        excludeSelector: EXCLUDE_SELECTOR,
+      }),
+    ).resolves.toBeNull()
+  })
+
   it("没有 excludeSelector 时不报错", async () => {
     renderMessages(JA)
     await expect(

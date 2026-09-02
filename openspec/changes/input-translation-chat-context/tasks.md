@@ -3,6 +3,8 @@
 
 ## 1. 站点规则数据层（PR#1）
 
+> ⚠️ 阻塞：`chatContextSelectors` 需要改 `src/types/config/site-rules.ts` 的 zod schema，该文件属 A 类·绝不改。待定选择器供给方式（站点规则字段 vs 独立映射表），见 issue 讨论。
+
 - [ ] 1.1 写失败测试：`resolveSiteRule` 能解析 `chatContextSelectors` 及其 `.add` / `.remove` 增量，未声明时为 `null`
 - [ ] 1.2 在 `src/utils/site-rules/resolve.ts` 追加同构的 `chatContextSelector` 合并项，并补进 `EMPTY_RESOLVED_SITE_RULE`
 - [ ] 1.3 给 `built-in/rules.json` 的 `discord` 条目加 `chatContextSelectors: ["li[id^=chat-messages] div[id^=message-content]"]`，并补一条断言该规则解析结果的测试
@@ -10,13 +12,13 @@
 
 ## 2. 对话语言检测（PR#1）
 
-- [ ] 2.1 写失败测试：jsdom 构造 Discord 形态 DOM，`detectChatContextLanguage` 对纯日语对话返回 `jpn`
-- [ ] 2.2 实现 `detectChatContextLanguage(doc, rule, limit = 5)`：取选择器末尾 5 条 → 克隆并剔除 `excludeSelector` 命中的子孙 → 拼接 → `detectLanguage(text, { enableLLM: false })`
-- [ ] 2.3 补测试：韩语在前日语在后时取末 5 条判为 `jpn`
-- [ ] 2.4 补测试：消息不足 5 条、无消息节点、全为表情与链接（返回 `null`）
-- [ ] 2.5 补测试：消息含时间戳与用户名时被剔除；含 @提及的俄语消息仍判为 `rus`（已知限制的兜底断言）
-- [ ] 2.6 补测试：5 条极短 CJK 消息拼接不足 `DEFAULT_MIN_LENGTH = 10` 时返回 `null`
-- [ ] 2.7 提交
+- [x] 2.1 写失败测试：jsdom 构造 Discord 形态 DOM，`detectChatContextLanguage` 对纯日语对话返回 `jpn`
+- [x] 2.2 实现 `detectChatContextLanguage(doc, rule, limit = 5)`：取选择器末尾 5 条 → 克隆并剔除 `excludeSelector` 命中的子孙 → 拼接 → `detectLanguage(text, { enableLLM: false })`
+- [x] 2.3 补测试：韩语在前日语在后时取末 5 条判为 `jpn`
+- [x] 2.4 补测试：消息不足 5 条、无消息节点、全为表情与链接（返回 `null`）
+- [x] 2.5 补测试：消息含时间戳与用户名时被剔除；含 @提及的俄语消息仍判为 `rus`（已知限制的兜底断言）
+- [x] 2.6 补测试：5 条极短 CJK 消息拼接不足 `DEFAULT_MIN_LENGTH = 10` 时返回 `null`
+- [x] 2.7 提交
 
 ## 3. 语言解析上提（PR#1）
 
