@@ -1438,4 +1438,6 @@ inputTranslationBar:
   translateTo: Перевести на
   autoDetected: Определено автоматически
   fromPageSource: По языку страницы
+  manualSelection: Выбрано вручную
+  sameLanguage: Совпадает с целевым языком, не переведено
   undo: Отменить

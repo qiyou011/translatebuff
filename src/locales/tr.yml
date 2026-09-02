@@ -1438,4 +1438,6 @@ inputTranslationBar:
   translateTo: Şuna çevir
   autoDetected: Otomatik algılandı
   fromPageSource: Sayfa diline göre
+  manualSelection: Elle seçildi
+  sameLanguage: Hedef dille aynı, çevrilmedi
   undo: Geri al

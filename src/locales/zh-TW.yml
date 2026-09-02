@@ -1554,4 +1554,6 @@ inputTranslationBar:
   translateTo: 翻譯為
   autoDetected: 自動偵測
   fromPageSource: 依網頁原始語言
+  manualSelection: 手動選擇
+  sameLanguage: 與目標語言相同，未翻譯
   undo: 復原

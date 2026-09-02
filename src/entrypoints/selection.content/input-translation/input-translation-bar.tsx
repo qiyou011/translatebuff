@@ -1,5 +1,9 @@
 import type { LangCodeISO6393 } from "@read-frog/definitions"
-import type { InputTranslationBar as BarState } from "./use-input-translation"
+import type {
+  InputTranslationBar as BarState,
+  InputTranslationBarSource,
+} from "./use-input-translation"
+import { Info } from "lucide-react"
 import { useCallback, useEffect, useState } from "react"
 import { LanguageCombobox } from "@/components/language-combobox"
 import { Button } from "@/components/ui/base-ui/button"
@@ -17,11 +21,24 @@ interface BarPosition {
   left: number
 }
 
+const SOURCE_LABEL_KEYS = {
+  chatContext: "inputTranslationBar.autoDetected",
+  pageSource: "inputTranslationBar.fromPageSource",
+  manual: "inputTranslationBar.manualSelection",
+} as const satisfies Record<InputTranslationBarSource, string>
+
+/** 两种形态共用的外壳：同一位置、同款外观。 */
+const SHELL_CLASS =
+  "flex items-center gap-2 rounded-md border border-border bg-background px-2 py-1 text-xs shadow-md"
+
 /**
  * 挂在输入框上方的纠正条。
  *
- * 自动检测判错时这是用户唯一的挽回手段，所以它不是装饰：显示这次翻成了哪种语言、
- * 这个语言是怎么来的（检测出来的还是回退到网页源语言），并给出改语言与撤销两个出口。
+ * 自动判定判错时这是用户唯一的挽回手段，所以它不是装饰：显示这次翻成了哪种语言、
+ * 这个语言是怎么来的，并给出改语言与撤销两个出口。
+ *
+ * 两端同语言那次什么都没换，于是换成一条没有撤销按钮的提示——同一位置、同款外观，
+ * 但不给一个无从撤销的按钮。它是那次操作唯一的反馈。
  */
 export function InputTranslationBar({
   bar,
@@ -88,20 +105,27 @@ export function InputTranslationBar({
         transform: "translateY(-100%)",
         zIndex: 2147483000,
       }}
-      className="flex items-center gap-2 rounded-md border border-border bg-background px-2 py-1 text-xs shadow-md"
+      className={SHELL_CLASS}
     >
-      <span className="text-muted-foreground">{i18n.t("inputTranslationBar.translateTo")}</span>
-      <LanguageCombobox value={bar.lang} onValueChange={handleLanguageChange} triggerSize="sm" />
-      <span className="text-muted-foreground">
-        {bar.langSource === "chatContext"
-          ? i18n.t("inputTranslationBar.autoDetected")
-          : bar.langSource === "pageSource"
-            ? i18n.t("inputTranslationBar.fromPageSource")
-            : null}
-      </span>
-      <Button variant="ghost" size="sm" onClick={onUndo}>
-        {i18n.t("inputTranslationBar.undo")}
-      </Button>
+      {bar.kind === "sameLanguage" ? (
+        <>
+          <Info className="size-3.5 text-muted-foreground" />
+          <span className="font-medium">{i18n.t("inputTranslationBar.sameLanguage")}</span>
+        </>
+      ) : (
+        <>
+          <span className="text-muted-foreground">{i18n.t("inputTranslationBar.translateTo")}</span>
+          <LanguageCombobox
+            value={bar.lang}
+            onValueChange={handleLanguageChange}
+            triggerSize="sm"
+          />
+          <span className="text-muted-foreground">{i18n.t(SOURCE_LABEL_KEYS[bar.langSource])}</span>
+          <Button variant="ghost" size="sm" onClick={onUndo}>
+            {i18n.t("inputTranslationBar.undo")}
+          </Button>
+        </>
+      )}
     </div>
   )
 }

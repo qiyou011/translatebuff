@@ -1438,4 +1438,6 @@ inputTranslationBar:
   translateTo: 翻訳先
   autoDetected: 自動検出
   fromPageSource: ページの言語に従う
+  manualSelection: 手動選択
+  sameLanguage: 翻訳先と同じ言語のため未翻訳
   undo: 元に戻す

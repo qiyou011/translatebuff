@@ -1554,4 +1554,6 @@ inputTranslationBar:
   translateTo: Traducir a
   autoDetected: Detectado automáticamente
   fromPageSource: Según el idioma de la página
+  manualSelection: Seleccionado manualmente
+  sameLanguage: Igual que el idioma de destino, sin traducir
   undo: Deshacer

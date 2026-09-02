@@ -1438,4 +1438,6 @@ inputTranslationBar:
   translateTo: Dịch sang
   autoDetected: Tự động phát hiện
   fromPageSource: Theo ngôn ngữ trang
+  manualSelection: Chọn thủ công
+  sameLanguage: Trùng ngôn ngữ đích, chưa dịch
   undo: Hoàn tác

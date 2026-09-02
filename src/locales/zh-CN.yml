@@ -1554,4 +1554,6 @@ inputTranslationBar:
   translateTo: 翻译为
   autoDetected: 自动检测
   fromPageSource: 按网页源语言
+  manualSelection: 手动选择
+  sameLanguage: 与目标语言相同，未翻译
   undo: 撤销

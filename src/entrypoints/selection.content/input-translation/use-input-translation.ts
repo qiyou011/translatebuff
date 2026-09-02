@@ -11,8 +11,6 @@ import { configFieldsAtomMap } from "@/utils/atoms/config"
 import { getLocalConfig } from "@/utils/config/storage"
 import { INPUT_REPLACE_REQUEST_TYPE } from "@/utils/constants/input-injector"
 import { translateTextForInput } from "@/utils/host/translate/translate-variants"
-import { i18n } from "@/utils/i18n"
-import { getLanguageName } from "@/utils/language-labels"
 import { HostedAiProviderUnavailableError } from "@/utils/providers/provider-ref"
 import { resolveProviderRefForCapability } from "@/utils/providers/provider-registry"
 import { resolveInputTranslationLang } from "./resolve-lang"
@@ -23,8 +21,6 @@ const LAST_CYCLE_SWAPPED_KEY = "read-frog-input-translation-last-cycle-swapped"
 const SPINNER_ID = "read-frog-input-translation-spinner"
 /** Hammering the hotkey must stack one toast, not one per attempt. */
 const HOSTED_UNAVAILABLE_TOAST_ID = "input-translation-hosted-unavailable"
-/** 同语言提示同样只叠一条，理由与上面那条一致。 */
-const SAME_LANGUAGE_TOAST_ID = "input-translation-same-language"
 
 function getLastCycleSwapped(): boolean {
   try {
@@ -134,19 +130,34 @@ function setTextWithUndo(
   }
 }
 
+/** 这次的语言是怎么定的，界面据此显示「自动检测」／「按网页源语言」／「手动选择」。 */
+export type InputTranslationBarSource = "chatContext" | "pageSource" | "manual"
+
 /**
- * 一次已完成替换的输入翻译。内联条要靠它显示语言、重译和撤销。
+ * 输入框上方那条的两种形态。
  *
  * 必须记住 `element` 而不只是文本：同一个页面上主输入框、消息编辑框、搜索框同时存在，
  * 只记文本会把 A 框的原文撤销进 B 框。
  */
-export interface InputTranslationBar {
-  element: HTMLInputElement | HTMLTextAreaElement | HTMLElement
-  originalText: string
-  /** 翻译方向的来源端，改语言重译时照旧用它。 */
-  fromCode: LangCodeISO6393
-  lang: LangCodeISO6393
-  langSource: InputTranslationLangSource
+export type InputTranslationBar =
+  | {
+      kind: "translated"
+      element: HTMLInputElement | HTMLTextAreaElement | HTMLElement
+      originalText: string
+      /** 翻译方向的来源端，改语言重译时照旧用它。 */
+      fromCode: LangCodeISO6393
+      lang: LangCodeISO6393
+      langSource: InputTranslationBarSource
+    }
+  /** 两端同语言、什么都没换。同一位置、同款外观，但没有可撤销的对象。 */
+  | { kind: "sameLanguage"; element: HTMLElement; lang: LangCodeISO6393 }
+
+/**
+ * 语言由配置直接给定（钉死的源语言、固定语言码）时不挂条子：没有自动判定，
+ * 也就没有要纠错的对象，挂出来只是噪音。
+ */
+function toBarSource(source: InputTranslationLangSource): InputTranslationBarSource | null {
+  return source === "explicit" ? null : source
 }
 
 /**
@@ -239,11 +250,7 @@ export function useInputTranslation() {
       // 无法区分，调用方据此弹不了提示——用户连按三下空格却毫无反应，只会以为功能坏了。
       // 在这里断掉还顺带省下 spinner 与 provider 解析。
       if (langs.from.code === langs.to.code) {
-        toastManager.add({
-          type: "warning",
-          title: i18n.t("translation.autoModeSameLanguage", [getLanguageName(langs.to.code)]),
-          id: SAME_LANGUAGE_TOAST_ID,
-        })
+        setBar({ kind: "sameLanguage", element, lang: langs.to.code })
         isTranslatingRef.current = false
         return
       }
@@ -289,13 +296,17 @@ export function useInputTranslation() {
           setTextWithUndo(element, translatedText)
           // 放弃替换的那条分支刻意不挂内联条：否则撤销会把用户新输入的内容
           // 改写成一段他没要的旧文本。
-          setBar({
-            element,
-            originalText,
-            fromCode: langs.from.code,
-            lang: langs.to.code,
-            langSource: langs.to.source,
-          })
+          const barSource = toBarSource(langs.to.source)
+          if (barSource) {
+            setBar({
+              kind: "translated",
+              element,
+              originalText,
+              fromCode: langs.from.code,
+              lang: langs.to.code,
+              langSource: barSource,
+            })
+          }
         }
       } catch (error) {
         // A hosted plan/quota denial is a state the user can act on, not a
@@ -327,7 +338,7 @@ export function useInputTranslation() {
 
   const undo = useCallback(() => {
     // 元素可能已经被 SPA 卸载；此时什么都不写，别去动一个不存在的目标。
-    if (bar && document.contains(bar.element)) {
+    if (bar?.kind === "translated" && document.contains(bar.element)) {
       setTextWithUndo(bar.element, bar.originalText)
     }
     setBar(null)
@@ -335,12 +346,13 @@ export function useInputTranslation() {
 
   const retranslate = useCallback(
     async (code: LangCodeISO6393) => {
-      if (!bar || !document.contains(bar.element)) return
+      if (bar?.kind !== "translated" || !document.contains(bar.element)) return
       // 拿原文重译，不是拿上一轮的译文再翻一遍——那样会一路失真。
       const translated = await translateTextForInput(bar.originalText, bar.fromCode, code)
       if (!translated) return
       setTextWithUndo(bar.element, translated)
-      setBar({ ...bar, lang: code, langSource: "explicit" })
+      // 原型要求标注由「自动检测」改成「手动选择」。
+      setBar({ ...bar, lang: code, langSource: "manual" })
     },
     [bar],
   )

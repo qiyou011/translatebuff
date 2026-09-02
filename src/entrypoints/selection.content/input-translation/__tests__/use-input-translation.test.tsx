@@ -123,19 +123,20 @@ describe("useInputTranslation 的语言解析", () => {
     })
   })
 
-  it("解析后两端语言相同时不调引擎，改为提示", async () => {
+  it("解析后两端语言相同时不调引擎，改在输入框上方挂提示条", async () => {
     // 对话是俄语，用户的目标语言也设成俄语 → 无事可做。
     const config = configWith({ sourceCode: "auto", targetCode: "rus" })
     getLocalConfigMock.mockResolvedValue(config)
     setupPage(RUSSIAN_CHAT)
-    renderWithConfig(config)
+    const rendered = renderWithConfig(config)
 
     pressSpaceThrice()
 
-    await waitFor(() => {
-      expect(toastAddMock).toHaveBeenCalled()
-    })
+    await waitFor(() => expect(rendered.result.current.bar).not.toBeNull())
+    expect(rendered.result.current.bar).toMatchObject({ kind: "sameLanguage" })
     expect(translateTextForInputMock).not.toHaveBeenCalled()
+    // 提示挪进内联条后，toast 这条路就该断掉，否则同一件事说两遍。
+    expect(toastAddMock).not.toHaveBeenCalled()
   })
 
   it("用户钉死源语言时不被对话检测顶掉", async () => {
@@ -189,6 +190,7 @@ describe("useInputTranslation 的内联条", () => {
 
     await waitFor(() => expect(rendered.result.current.bar).not.toBeNull())
     expect(rendered.result.current.bar).toMatchObject({
+      kind: "translated",
       element: input,
       originalText: "你好呀，最近怎么样",
       lang: "rus",
@@ -204,7 +206,7 @@ describe("useInputTranslation 的内联条", () => {
     pressSpaceThrice()
 
     await waitFor(() => expect(rendered.result.current.bar).not.toBeNull())
-    expect(rendered.result.current.bar?.langSource).toBe("pageSource")
+    expect(rendered.result.current.bar).toMatchObject({ langSource: "pageSource" })
   })
 
   it("翻译期间用户改了输入、系统放弃替换时，不挂内联条", async () => {
@@ -266,6 +268,18 @@ describe("useInputTranslation 的内联条", () => {
     expect(other.value).toBe("别动我")
   })
 
+  it("源语言被钉死时不挂内联条——没有自动判定，也就没有要纠错的对象", async () => {
+    const config = configWith({ sourceCode: "eng", targetCode: "cmn" })
+    getLocalConfigMock.mockResolvedValue(config)
+    setupPage(RUSSIAN_CHAT)
+    const rendered = renderWithConfig(config)
+
+    pressSpaceThrice()
+
+    await waitFor(() => expect(translateTextForInputMock).toHaveBeenCalled())
+    expect(rendered.result.current.bar).toBeNull()
+  })
+
   it("改语言后用原文重译，而不是拿已翻译的文本再翻一遍", async () => {
     const { rendered } = renderTranslating()
     pressSpaceThrice()
@@ -277,6 +291,7 @@ describe("useInputTranslation 的内联条", () => {
     })
 
     expect(translateTextForInputMock).toHaveBeenCalledWith("你好呀，最近怎么样", "cmn", "jpn")
-    expect(rendered.result.current.bar).toMatchObject({ lang: "jpn", langSource: "explicit" })
+    // 原型要求标注由「自动检测」改成「手动选择」，与配置来的 explicit 不是一回事。
+    expect(rendered.result.current.bar).toMatchObject({ lang: "jpn", langSource: "manual" })
   })
 })

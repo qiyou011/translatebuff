@@ -1438,4 +1438,6 @@ inputTranslationBar:
   translateTo: 번역 대상
   autoDetected: 자동 감지
   fromPageSource: 페이지 언어 기준
+  manualSelection: 직접 선택
+  sameLanguage: 번역 대상과 같은 언어라 번역하지 않음
   undo: 실행 취소
