@@ -1550,3 +1550,8 @@ languages:
   wls: 瓦利斯語
   rar: 庫克群島毛利語
   hif: 斐濟印地語
+inputTranslationBar:
+  translateTo: 翻譯為
+  autoDetected: 自動偵測
+  fromPageSource: 依網頁原始語言
+  undo: 復原

@@ -1434,3 +1434,8 @@ languages:
   wls: Уоллисский
   rar: Раротонганский
   hif: Фиджийский хинди
+inputTranslationBar:
+  translateTo: Перевести на
+  autoDetected: Определено автоматически
+  fromPageSource: По языку страницы
+  undo: Отменить

@@ -1434,3 +1434,8 @@ languages:
   wls: ウォリス語
   rar: ラロトンガ語
   hif: フィジー・ヒンディー語
+inputTranslationBar:
+  translateTo: 翻訳先
+  autoDetected: 自動検出
+  fromPageSource: ページの言語に従う
+  undo: 元に戻す

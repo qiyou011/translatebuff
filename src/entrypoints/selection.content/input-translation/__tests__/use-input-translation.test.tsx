@@ -2,7 +2,7 @@
 
 import type { ReactNode } from "react"
 import type { Config } from "@/types/config/config"
-import { cleanup, renderHook, waitFor } from "@testing-library/react"
+import { act, cleanup, renderHook, waitFor } from "@testing-library/react"
 import { createStore, Provider } from "jotai"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 
@@ -14,6 +14,7 @@ const translateTextForInputMock = vi.fn<(...args: any[]) => any>()
 const toastAddMock = vi.fn<(...args: any[]) => any>()
 const getLocalConfigMock = vi.fn<(...args: any[]) => any>()
 const getDetectedCodeMock = vi.fn<(...args: any[]) => any>()
+let execCommandMock: ReturnType<typeof vi.fn<() => boolean>>
 
 vi.mock("@/utils/host/translate/translate-variants", () => ({
   translateTextForInput: (...args: any[]) => translateTextForInputMock(...args),
@@ -84,7 +85,8 @@ describe("useInputTranslation 的语言解析", () => {
   beforeEach(() => {
     // 以下三个都是 jsdom 的缺口，不补桩会在到达断言前就抛，且异常被 `void handleTranslation()`
     // 吞掉，表现为「什么都没发生」。execCommand 用于替换输入框内容，animate 用于 spinner 转圈。
-    document.execCommand = vi.fn<() => boolean>(() => true)
+    execCommandMock = vi.fn<() => boolean>(() => true)
+    document.execCommand = execCommandMock
     Element.prototype.animate = vi.fn<() => { cancel: () => void }>(() => ({
       cancel: vi.fn<() => void>(),
     })) as unknown as Animate
@@ -147,5 +149,134 @@ describe("useInputTranslation 的语言解析", () => {
     await waitFor(() => {
       expect(translateTextForInputMock).toHaveBeenCalledWith("你好呀，最近怎么样", "cmn", "eng")
     })
+  })
+})
+
+describe("useInputTranslation 的内联条", () => {
+  beforeEach(() => {
+    execCommandMock = vi.fn<() => boolean>(() => true)
+    document.execCommand = execCommandMock
+    Element.prototype.animate = vi.fn<() => { cancel: () => void }>(() => ({
+      cancel: vi.fn<() => void>(),
+    })) as unknown as Animate
+    window.matchMedia = vi.fn<() => { matches: boolean }>(() => ({
+      matches: false,
+    })) as unknown as typeof window.matchMedia
+    vi.stubGlobal("location", new URL("https://discord.com/channels/1/2"))
+    translateTextForInputMock.mockReset().mockResolvedValue("Привет")
+    toastAddMock.mockReset()
+    getDetectedCodeMock.mockReset().mockResolvedValue("deu")
+    getLocalConfigMock.mockReset()
+  })
+
+  afterEach(() => {
+    cleanup()
+    vi.unstubAllGlobals()
+    document.body.innerHTML = ""
+  })
+
+  function renderTranslating() {
+    const config = configWith({ sourceCode: "auto", targetCode: "cmn" })
+    getLocalConfigMock.mockResolvedValue(config)
+    const input = setupPage(RUSSIAN_CHAT)
+    const rendered = renderWithConfig(config)
+    return { input, rendered }
+  }
+
+  it("替换成功后挂出内联条，带上语言与它的来源", async () => {
+    const { input, rendered } = renderTranslating()
+    pressSpaceThrice()
+
+    await waitFor(() => expect(rendered.result.current.bar).not.toBeNull())
+    expect(rendered.result.current.bar).toMatchObject({
+      element: input,
+      originalText: "你好呀，最近怎么样",
+      lang: "rus",
+      langSource: "chatContext",
+    })
+  })
+
+  it("回退整页源语言时，来源标成 pageSource 而不是 chatContext", async () => {
+    const config = configWith({ sourceCode: "auto", targetCode: "cmn" })
+    getLocalConfigMock.mockResolvedValue(config)
+    setupPage(["👍", "🎉"]) // 判不出语种 → 回退
+    const rendered = renderWithConfig(config)
+    pressSpaceThrice()
+
+    await waitFor(() => expect(rendered.result.current.bar).not.toBeNull())
+    expect(rendered.result.current.bar?.langSource).toBe("pageSource")
+  })
+
+  it("翻译期间用户改了输入、系统放弃替换时，不挂内联条", async () => {
+    let resolveTranslation: (value: string) => void = () => {}
+    translateTextForInputMock.mockImplementation(
+      () => new Promise<string>((resolve) => (resolveTranslation = resolve)),
+    )
+    const { input, rendered } = renderTranslating()
+    pressSpaceThrice()
+
+    await waitFor(() => expect(translateTextForInputMock).toHaveBeenCalled())
+    input.value = "用户又改了别的"
+    await act(async () => {
+      resolveTranslation("Привет")
+    })
+
+    expect(rendered.result.current.bar).toBeNull()
+  })
+
+  it("撤销把原文写回去", async () => {
+    const { input, rendered } = renderTranslating()
+    pressSpaceThrice()
+    await waitFor(() => expect(rendered.result.current.bar).not.toBeNull())
+
+    input.value = "Привет"
+    execCommandMock.mockClear()
+    act(() => rendered.result.current.undo())
+
+    expect(execCommandMock).toHaveBeenCalledWith("insertText", false, "你好呀，最近怎么样")
+    expect(rendered.result.current.bar).toBeNull()
+  })
+
+  it("原输入框已离开文档时，撤销不写入任何东西", async () => {
+    const { input, rendered } = renderTranslating()
+    pressSpaceThrice()
+    await waitFor(() => expect(rendered.result.current.bar).not.toBeNull())
+
+    input.remove()
+    execCommandMock.mockClear()
+    act(() => rendered.result.current.undo())
+
+    expect(execCommandMock).not.toHaveBeenCalled()
+  })
+
+  it("焦点已切到另一个输入框时，撤销只写回原来那个", async () => {
+    const { input, rendered } = renderTranslating()
+    pressSpaceThrice()
+    await waitFor(() => expect(rendered.result.current.bar).not.toBeNull())
+
+    const other = document.createElement("input")
+    other.value = "别动我"
+    document.body.appendChild(other)
+    other.focus()
+
+    act(() => rendered.result.current.undo())
+
+    // execCommand 作用于当前焦点元素，所以撤销必须先把焦点抢回原输入框。
+    expect(document.activeElement).toBe(input)
+    expect(other.value).toBe("别动我")
+  })
+
+  it("改语言后用原文重译，而不是拿已翻译的文本再翻一遍", async () => {
+    const { rendered } = renderTranslating()
+    pressSpaceThrice()
+    await waitFor(() => expect(rendered.result.current.bar).not.toBeNull())
+
+    translateTextForInputMock.mockClear().mockResolvedValue("こんにちは")
+    await act(async () => {
+      await rendered.result.current.retranslate("jpn")
+    })
+
+    expect(translateTextForInputMock).toHaveBeenCalledWith("你好呀，最近怎么样", "cmn", "jpn")
+    expect(rendered.result.current.bar).toMatchObject({ lang: "jpn", langSource: "explicit" })
   })
 })

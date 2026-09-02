@@ -1434,3 +1434,8 @@ languages:
   wls: Tiếng Wallis
   rar: Tiếng Rarotongan
   hif: Tiếng Hindi Fiji
+inputTranslationBar:
+  translateTo: Dịch sang
+  autoDetected: Tự động phát hiện
+  fromPageSource: Theo ngôn ngữ trang
+  undo: Hoàn tác

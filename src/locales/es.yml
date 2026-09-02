@@ -1550,3 +1550,8 @@ languages:
   wls: Wallisiano
   rar: Rarotongano
   hif: Hindi de Fiyi
+inputTranslationBar:
+  translateTo: Traducir a
+  autoDetected: Detectado automáticamente
+  fromPageSource: Según el idioma de la página
+  undo: Deshacer

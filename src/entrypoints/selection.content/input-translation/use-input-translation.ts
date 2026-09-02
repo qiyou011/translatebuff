@@ -1,6 +1,8 @@
+import type { LangCodeISO6393 } from "@read-frog/definitions"
+import type { InputTranslationLangSource } from "./resolve-lang"
 import type { InputTranslationLang } from "@/types/config/config"
 import { useAtomValue } from "jotai"
-import { useCallback, useEffect, useRef } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { toastManager } from "@/components/ui/base-ui/toast"
 import { ANALYTICS_FEATURE, ANALYTICS_SURFACE } from "@/types/analytics"
 import { createFeatureUsageContext, trackFeatureAttempt } from "@/utils/analytics"
@@ -133,6 +135,21 @@ function setTextWithUndo(
 }
 
 /**
+ * 一次已完成替换的输入翻译。内联条要靠它显示语言、重译和撤销。
+ *
+ * 必须记住 `element` 而不只是文本：同一个页面上主输入框、消息编辑框、搜索框同时存在，
+ * 只记文本会把 A 框的原文撤销进 B 框。
+ */
+export interface InputTranslationBar {
+  element: HTMLInputElement | HTMLTextAreaElement | HTMLElement
+  originalText: string
+  /** 翻译方向的来源端，改语言重译时照旧用它。 */
+  fromCode: LangCodeISO6393
+  lang: LangCodeISO6393
+  langSource: InputTranslationLangSource
+}
+
+/**
  * 把两端的语言选项解析成具体语言码。配置走 `getLocalConfig()` 而不是 atom 切片拼装——
  * `getEffectiveSiteRule` 按 Config 对象身份做记忆，每次现拼会让那份记忆永不命中。
  */
@@ -154,6 +171,9 @@ export function useInputTranslation() {
   const providersConfig = useAtomValue(configFieldsAtomMap.providersConfig)
   const spaceTimestampsRef = useRef<number[]>([])
   const isTranslatingRef = useRef(false)
+  // 只在替换真的发生之后写一次。竞态保护仍旧用下面那个闭包局部变量——setState 是异步的，
+  // 同一个 async 闭包读不到新值，拿它当守卫会漏。
+  const [bar, setBar] = useState<InputTranslationBar | null>(null)
 
   const handleTranslation = useCallback(
     async (element: HTMLInputElement | HTMLTextAreaElement | HTMLElement) => {
@@ -267,6 +287,15 @@ export function useInputTranslation() {
         // Only apply translation if content hasn't changed during async operation
         if (currentText.trim() === originalText && translatedText) {
           setTextWithUndo(element, translatedText)
+          // 放弃替换的那条分支刻意不挂内联条：否则撤销会把用户新输入的内容
+          // 改写成一段他没要的旧文本。
+          setBar({
+            element,
+            originalText,
+            fromCode: langs.from.code,
+            lang: langs.to.code,
+            langSource: langs.to.source,
+          })
         }
       } catch (error) {
         // A hosted plan/quota denial is a state the user can act on, not a
@@ -292,6 +321,28 @@ export function useInputTranslation() {
       inputTranslationConfig.providerId,
       providersConfig,
     ],
+  )
+
+  const dismiss = useCallback(() => setBar(null), [])
+
+  const undo = useCallback(() => {
+    // 元素可能已经被 SPA 卸载；此时什么都不写，别去动一个不存在的目标。
+    if (bar && document.contains(bar.element)) {
+      setTextWithUndo(bar.element, bar.originalText)
+    }
+    setBar(null)
+  }, [bar])
+
+  const retranslate = useCallback(
+    async (code: LangCodeISO6393) => {
+      if (!bar || !document.contains(bar.element)) return
+      // 拿原文重译，不是拿上一轮的译文再翻一遍——那样会一路失真。
+      const translated = await translateTextForInput(bar.originalText, bar.fromCode, code)
+      if (!translated) return
+      setTextWithUndo(bar.element, translated)
+      setBar({ ...bar, lang: code, langSource: "explicit" })
+    },
+    [bar],
   )
 
   useEffect(() => {
@@ -350,4 +401,6 @@ export function useInputTranslation() {
       document.removeEventListener("keydown", handleKeyDown, true)
     }
   }, [inputTranslationConfig.enabled, inputTranslationConfig.timeThreshold, handleTranslation])
+
+  return { bar, undo, retranslate, dismiss }
 }

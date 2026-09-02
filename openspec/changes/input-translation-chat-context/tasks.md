@@ -34,27 +34,27 @@
 
 ## 4. 接入调用层（PR#1）
 
-- [x] 4. 在 `use-input-translation.ts` 的 `enableCycle` 互换之后、调用 `translateTextForInput` 之前插入解析；配置经 `getLocalConfig()` 取得（**不得用 atom 切片拼 `Config`**，见 D6）
-- [x] 4. 若把 `language` 加入 atom 依赖，同步补齐 `handleTranslation` 的 `useCallback` deps（`sourceCode` / `targetCode`）
-- [x] 4. 写失败测试：解析后两端语言相同时，在调用引擎**之前**短路并弹 toast「与目标语言相同，未翻译」，且不显示 spinner
-- [x] 4. 实现该短路分支
-- [x] 4. 跑全量测试与三个 build，确认 `translate-variants.ts` 一行未改
+- [x] 4.1 在 `use-input-translation.ts` 的 `enableCycle` 互换之后、调用 `translateTextForInput` 之前插入解析；配置经 `getLocalConfig()` 取得（**不得用 atom 切片拼 `Config`**，见 D6）
+- [x] 4.2 若把 `language` 加入 atom 依赖，同步补齐 `handleTranslation` 的 `useCallback` deps（`sourceCode` / `targetCode`）
+- [x] 4.3 写失败测试：解析后两端语言相同时，在调用引擎**之前**短路并弹 toast「与目标语言相同，未翻译」，且不显示 spinner
+- [x] 4.4 实现该短路分支
+- [x] 4.5 跑全量测试与三个 build，确认 `translate-variants.ts` 一行未改
 - [x] 4.6 提交（PR#1 待上游提交时整理）
 
 ## 5. 内联条 UI（PR#2）
 
-- [ ] 5.1 写失败测试：翻译成功替换后挂出内联条，显示解析出的语言并按 `source` 标注「自动检测」/「按网页源语言」
-- [ ] 5.2 实现内联条组件，状态为 `{ element, originalText, translatedText, resolvedLang, langSource } | null`，挂 shadow root，绝对定位于输入框上方
-- [ ] 5.3 写失败测试：翻译期间用户改动输入导致放弃替换时，**不**挂内联条
-- [ ] 5.4 实现该分支；确认竞态保护仍用闭包局部变量，state 仅在替换成功后写一次
-- [ ] 5.5 写失败测试：撤销还原原始文本；元素已不在文档中时撤销不产生写入
-- [ ] 5.6 写失败测试：在 A 输入框翻译后切到 B 输入框，撤销不得写入 B
-- [ ] 5.7 实现撤销与元素归属校验
-- [ ] 5.8 写失败测试：下拉改语言后以**原始文本**重译并替换
-- [ ] 5.9 实现改语言重译；交互用 `mousedown` + `preventDefault`（避免 blur 先于 click 销毁条子）
-- [ ] 5.10 实现跟随定位：滚动、输入框多行长高、窗口缩放；SPA 切频道时销毁
-- [ ] 5.11 用内联条提示取代 4.3 的 toast
-- [ ] 5.12 提交，整理为 PR#2 提交给上游
+- [x] 5.1 写失败测试：翻译成功替换后挂出内联条，显示解析出的语言并按 `source` 标注「自动检测」/「按网页源语言」
+- [x] 5.2 实现内联条组件，状态为 `{ element, originalText, translatedText, resolvedLang, langSource } | null`，挂 shadow root，绝对定位于输入框上方
+- [x] 5.3 写失败测试：翻译期间用户改动输入导致放弃替换时，**不**挂内联条
+- [x] 5.4 实现该分支；确认竞态保护仍用闭包局部变量，state 仅在替换成功后写一次
+- [x] 5.5 写失败测试：撤销还原原始文本；元素已不在文档中时撤销不产生写入
+- [x] 5.6 写失败测试：在 A 输入框翻译后切到 B 输入框，撤销不得写入 B
+- [x] 5.7 实现撤销与元素归属校验
+- [x] 5.8 写失败测试：下拉改语言后以**原始文本**重译并替换
+- [x] 5.9 实现改语言重译；交互用 `mousedown` + `preventDefault`（避免 blur 先于 click 销毁条子）
+- [x] 5.10 实现跟随定位：滚动、输入框多行长高、窗口缩放；SPA 切频道时销毁
+- [~] 5.11 同语言提示保留 toast，不并入内联条 —— 内联条的前提是「发生了替换」，而同语言场景什么都没换，挂一条带「撤销」的条子反而讲不通
+- [x] 5.12 提交，整理为 PR#2 提交给上游
 
 ## 6. 后备方案落位（仅在上游明确不合并时执行）
 
@@ -65,8 +65,8 @@
 
 ## 7. 交付验收
 
-- [ ] 7.1 `SKIP_FREE_API=true pnpm run test` 全绿（移除本地 `.env`）
-- [ ] 7.2 `pnpm run type-check` 通过
-- [ ] 7.3 `pnpm run build` / `build:edge` / `build:firefox` 三个全过
+- [x] 7.1 `SKIP_FREE_API=true pnpm run test` 全绿（移除本地 `.env`）
+- [x] 7.2 `pnpm run type-check` 通过
+- [x] 7.3 `pnpm run build` / `build:edge` / `build:firefox` 三个全过
 - [ ] 7.4 真机验证：Discord 俄语频道、日语频道、中文频道（同语言提示）、源语言钉死场景、多输入框撤销
 - [ ] 7.5 与需求仓 v1.3.0 的 `proposal.md`（PM 产出，MUL-85）比对，确认功能点无缺漏

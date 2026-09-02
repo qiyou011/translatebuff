@@ -1434,3 +1434,8 @@ languages:
   wls: 월리스어
   rar: 라로통가어
   hif: 피지 힌디어
+inputTranslationBar:
+  translateTo: 번역 대상
+  autoDetected: 자동 감지
+  fromPageSource: 페이지 언어 기준
+  undo: 실행 취소

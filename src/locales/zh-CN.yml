@@ -1550,3 +1550,8 @@ languages:
   wls: 瓦利斯语
   rar: 拉罗汤加语
   hif: 斐济印地语
+inputTranslationBar:
+  translateTo: 翻译为
+  autoDetected: 自动检测
+  fromPageSource: 按网页源语言
+  undo: 撤销
