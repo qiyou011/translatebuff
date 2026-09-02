@@ -1,6 +1,6 @@
 {
   "name": "@read-frog/extension",
-  "version": "1.46.4",
+  "version": "1.46.6",
   "private": true,
   "description": "Translatebuff browser extension for translation and language learning",
   "type": "module",
