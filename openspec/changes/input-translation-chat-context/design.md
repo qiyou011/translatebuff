@@ -36,7 +36,15 @@
 
 代价：同一配置项在不同站点含义不同。经 D2 泛化后，语义可表述为「站点声明了对话选择器就用对话语言」，认知负担从"同名不同义"降为"有数据则用数据"。
 
-### D2：站点规则新增 `chatContextSelectors` 字段，而非在代码里判 Discord
+### D2：站点 → 选择器登记（实施时由「站点规则新字段」改为独立映射表）
+
+> **实施结论**：本节原方案在编码阶段被推翻。`SiteRule` 由 `src/types/config/site-rules.ts` 的
+> zod schema 推导，属绝不改区——加字段与 D1 否掉枚举值踩的是同一条红线，且会让 fork 在上游
+> 合并前永远带不了这份数据，主备两条路的数据来源就此分叉。最终落成独立映射表
+> `src/utils/content/chat-context-sites.ts`：零绝不改区改动，主备共用同一份实现。
+> 下面保留原推理，供上游 PR 讨论时参考。
+
+原方案：站点规则新增 `chatContextSelectors` 字段，而非在代码里判 Discord
 
 `resolve.ts` 的选择器字段是清一色的 `mergeSelectorDelta(matched, "<X>Selectors", "<X>Selectors.add", "<X>Selectors.remove")`，追加一项与既有模式同构。
 
@@ -83,28 +91,27 @@
 
 ## 数据模型 / 接口契约
 
-### 站点规则字段
+### 站点登记
 
+```ts
+getChatContextSelector(url: string): string | null   // src/utils/content/chat-context-sites.ts
 ```
-chatContextSelectors: string[]          // 规则 JSON 中的可选字段
-chatContextSelectors.add / .remove      // 与其他选择器字段同构的增量语法
-```
 
-`ResolvedSiteRule` 相应新增 `chatContextSelector: string | null`。
-
-`discord` 规则填入其消息选择器 `li[id^=chat-messages] div[id^=message-content]`。**不能用合并后的 `includeSelector`** —— 该规则的 8 条 `includeSelectors` 还含 embed 标题、频道 header、搜索结果、popout。
+Discord 频道页登记消息选择器 `li[id^=chat-messages] div[id^=message-content]`。**不能用合并后的 `includeSelector`** —— 该规则的 8 条 `includeSelectors` 还含 embed 标题、频道 header、搜索结果、popout。
 
 ### 检测函数
 
 ```ts
 detectChatContextLanguage(
   doc: Document,
-  rule: ResolvedSiteRule,
+  selectors: { chatSelector: string | null; excludeSelector: string | null },
   limit = 5,
 ): Promise<LangCodeISO6393 | null>
 ```
 
-取 `rule.chatContextSelector` 命中节点的末尾 `limit` 条；每条先克隆、再删除 `rule.excludeSelector` 命中的子孙节点、再取 `textContent`；拼接后调用现成的 `detectLanguage(text, { enableLLM: false })`（已把 `"und"` 映射为 `null`）。
+取 `chatSelector` 命中节点的末尾 `limit` 条；每条先克隆、再删除 `excludeSelector` 命中的子孙节点、再取 `textContent` 并抹掉 URL。
+
+判定不是把这几条拼起来一次算——franc 按长度加权，聊天室里最长的往往是机器人的英文公告，会把周围几条短的人类消息整个压过去（人工验收就栽在这里）。实际做法：最新一条含假名或谚文就直接定日／韩（这两套字形各自只有一种语言在用，且 franc 拒判 10 字符以下）；否则只把窗口内**与最新一条同文字系统**的消息合起来喂 franc。西里尔与汉字不按字形猜——俄塞乌共用、中日共用，实测短俄语会被判成塞尔维亚语。
 
 ### 解析函数（必须是可复用导出，见 R3）
 
@@ -112,18 +119,19 @@ detectChatContextLanguage(
 resolveInputTranslationLang(
   lang: InputTranslationLang,
   config: Config,
-  rule: ResolvedSiteRule,
+  url: string,
+  doc: Document,
 ): Promise<{ code: LangCodeISO6393; source: "chatContext" | "pageSource" | "explicit" }>
 ```
 
 - `"targetCode"` → `{ config.language.targetCode, "explicit" }`
 - `"sourceCode"`：
   - `config.language.sourceCode !== "auto"` → `{ 该固定码, "explicit" }`（D5）
-  - 否则 `rule.chatContextSelector` 非空时试 `detectChatContextLanguage`，命中 → `{ code, "chatContext" }`
+  - 否则站点已登记选择器时试 `detectChatContextLanguage`，命中 → `{ code, "chatContext" }`
   - 否则 → `{ getFinalSourceCode("auto", 整页检测码), "pageSource" }`
 - 固定语言码 → `{ 原值, "explicit" }`
 
-`source` 供内联条区分「自动检测」与「按网页源语言」。
+`source` 供内联条区分「自动检测」与「按网页源语言」；手动改语言后由界面层置为 `manual`（显示「手动选择」）。`explicit` 表示语言由配置直接给定，此时**不挂内联条**——没有自动判定，也就没有要纠错的对象。
 
 ## Risks / Trade-offs
 
@@ -139,8 +147,8 @@ Discord 两条规则的排除项是 username / timestamp / repliedMessage / cont
 
 主路径是向 read-frog 提 PR，**拆两个**：
 
-- **PR#1**：`chatContextSelectors` 字段 + `detectChatContextLanguage` + 调用层解析（含 D5）+ 同语言 toast 提示
-- **PR#2**：内联条 UI（取代 toast）
+- **PR#1**：站点登记 + `detectChatContextLanguage` + 调用层解析（含 D5）
+- **PR#2**：内联条 UI，含同语言提示条形态
 
 拆分理由：引擎能力与 Discord 专属 UI 的上游接受度差很多；拆开则前者更可能被收，且即使只收 PR#1，静默路径也已堵上。
 
