@@ -6,7 +6,7 @@ import type {
 import { Info } from "lucide-react"
 import { useCallback, useEffect, useState } from "react"
 import { LanguageCombobox } from "@/components/language-combobox"
-import { Button } from "@/components/ui/base-ui/button"
+import { shadowWrapper } from "@/entrypoints/selection.content"
 import { i18n } from "@/utils/i18n"
 
 interface InputTranslationBarProps {
@@ -27,9 +27,19 @@ const SOURCE_LABEL_KEYS = {
   manual: "inputTranslationBar.manualSelection",
 } as const satisfies Record<InputTranslationBarSource, string>
 
-/** 两种形态共用的外壳：同一位置、同款外观。 */
+/**
+ * 两种形态共用的外壳。
+ *
+ * 刻意不是浮层卡片——无描边、无阴影，只是贴着输入框的一小块，宽度随内容收拢，衬一层
+ * 半透明底与聊天区分开，存在感压到最低（原型据竞品实测定的调子）。底色用中性灰而不是
+ * 白，深浅两种宿主页面上都能看出层次。
+ */
 const SHELL_CLASS =
-  "flex items-center gap-2 rounded-md border border-border bg-background px-2 py-1 text-xs shadow-md"
+  "flex h-7 w-fit items-center gap-2.5 rounded-md bg-[rgb(127_127_127/0.16)] px-2.5 text-xs backdrop-blur-sm"
+
+/** 语言选择器与撤销都是纯文字，不是按钮——同上，别把它做成一块控件。 */
+const PLAIN_TRIGGER_CLASS =
+  "h-auto border-0 bg-transparent px-0 py-0 font-semibold text-foreground shadow-none hover:bg-transparent"
 
 /**
  * 挂在输入框上方的纠正条。
@@ -38,7 +48,7 @@ const SHELL_CLASS =
  * 这个语言是怎么来的，并给出改语言与撤销两个出口。
  *
  * 两端同语言那次什么都没换，于是换成一条没有撤销按钮的提示——同一位置、同款外观，
- * 但不给一个无从撤销的按钮。它是那次操作唯一的反馈。
+ * 但不给一个无从撤销的按钮。它是那次操作唯一的反馈，所以文字用正文亮度而不是次级色。
  */
 export function InputTranslationBar({
   bar,
@@ -108,22 +118,34 @@ export function InputTranslationBar({
       className={SHELL_CLASS}
     >
       {bar.kind === "sameLanguage" ? (
-        <>
-          <Info className="size-3.5 text-muted-foreground" />
-          <span className="font-medium">{i18n.t("inputTranslationBar.sameLanguage")}</span>
-        </>
+        <span className="flex items-center gap-1.5 text-foreground">
+          <Info className="size-3.5 shrink-0" />
+          {i18n.t("inputTranslationBar.sameLanguage")}
+        </span>
       ) : (
         <>
-          <span className="text-muted-foreground">{i18n.t("inputTranslationBar.translateTo")}</span>
+          <span className="shrink-0 text-muted-foreground">
+            {i18n.t("inputTranslationBar.translateTo")}
+          </span>
           <LanguageCombobox
             value={bar.lang}
             onValueChange={handleLanguageChange}
             triggerSize="sm"
+            triggerClassName={PLAIN_TRIGGER_CLASS}
+            // 不传就 portal 到 document.body——那在 shadow root 外面，样式一条都够不着，
+            // 菜单会变成一张透明的、压在页面文字上的裸列表。
+            container={shadowWrapper ?? undefined}
           />
-          <span className="text-muted-foreground">{i18n.t(SOURCE_LABEL_KEYS[bar.langSource])}</span>
-          <Button variant="ghost" size="sm" onClick={onUndo}>
+          <span className="shrink-0 text-[11px] text-muted-foreground">
+            {i18n.t(SOURCE_LABEL_KEYS[bar.langSource])}
+          </span>
+          <button
+            type="button"
+            onClick={onUndo}
+            className="shrink-0 cursor-pointer text-muted-foreground hover:text-foreground hover:underline"
+          >
             {i18n.t("inputTranslationBar.undo")}
-          </Button>
+          </button>
         </>
       )}
     </div>
