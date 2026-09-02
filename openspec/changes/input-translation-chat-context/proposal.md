@@ -1,0 +1,34 @@
+## Why
+
+「输入翻译」的目标语言选「网页源语言」时，在 Discord 上恒定翻成英文——Discord 的整页语言等于它的界面语言（`<html lang="en-US">` 加全英文 UI 框架），与频道里正在聊的语种无关。在随时切换语种的国际化社区，这个选项等于不可用。
+
+竞品（沉浸式翻译）改为跟随**当前对话**的语言：实测同一频道内韩语消息在前、日语消息在后，它选了日语。
+
+目标：在声明了聊天上下文的站点上，让「网页源语言」跟随对话语言；并给用户一个当场纠错的手段。
+
+## What Changes
+
+- 站点规则新增可选字段 `chatContextSelectors`，声明「哪些节点是对话消息」。Discord 内置规则填入其消息选择器；其余站点不填，行为不变。
+- 输入翻译的语言解析从翻译引擎**上提到调用层**（`use-input-translation.ts`）。引擎 `translateTextForInput` 签名与实现零改动。
+- 解析规则：目标语言为「网页源语言」**且**全局源语言为「自动」**且**站点声明了 `chatContextSelectors` 时，取最近 5 条消息判定语言；判不出则回退整页源语言。全局源语言被用户钉死为具体语种时**不启用**，不覆盖用户的显式选择。
+- 输入框上方新增内联条：`翻译为 [语言 ▾] ｜ 自动检测 / 按网页源语言 ｜ 撤销`，可手动改语言并重译。
+- 解析出的语言等于目标语言时不再静默：给出「与目标语言相同，未翻译」提示。
+
+## Capabilities
+
+### New Capabilities
+
+- `input-translation-chat-context`: 输入翻译在声明了聊天上下文的站点上，按最近若干条消息判定目标语言，并提供内联的语言纠正与撤销入口。
+
+### Modified Capabilities
+
+无。本次不改动任何既有 Spec 的需求。
+
+## Impact
+
+- **配置**：不新增配置项，不改 `configSchema`，不需要迁移。「网页源语言」在声明了 `chatContextSelectors` 的站点上语义收窄为「当前对话语言」。
+- **站点规则**：`resolve.ts` 追加一项同构的选择器合并；`built-in/rules.json` 的 `discord` 条目新增字段。
+- **调用层**：`use-input-translation.ts` 在 `enableCycle` 互换之后、调用引擎之前插入解析；新增内联条组件与状态。
+- **翻译引擎**：`translate-variants.ts` 不改动。
+- **缓存**：`extraHashTags` 由 `inputTranslation:sourceCode->targetCode` 变为解析后的具体语种对，缓存分片变细、旧条目失效；不会脏命中，因哈希本就包含解析后的源/目标语种。
+- **交付路径**：本变更以向上游 read-frog 提 PR 为主路径，分两个 PR（能力 / 内联条 UI）；上游不合并时走 fork 侧后备方案。详见 `design.md`。
