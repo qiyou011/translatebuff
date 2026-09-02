@@ -1,14 +1,16 @@
 > 全程 TDD：先写失败测试并跑出真实红灯，再写实现。本地跑测试须设 `SKIP_FREE_API=true` 并移除本地 `.env`。
 > 分支 `feat/fork-foundation-input-trans`，不并回 `change/fork-foundation`；PR#1 / PR#2 分别提给上游 read-frog。
 
-## 1. 站点规则数据层（PR#1）
+## 1. 站点 → 对话选择器映射（PR#1）
 
-> ⚠️ 阻塞：`chatContextSelectors` 需要改 `src/types/config/site-rules.ts` 的 zod schema，该文件属 A 类·绝不改。待定选择器供给方式（站点规则字段 vs 独立映射表），见 issue 讨论。
+> 原计划给站点规则加 `chatContextSelectors` 字段，实施时发现 `SiteRule = z.infer<typeof siteRuleSchema>`
+> 而该 schema 在 `src/types/config/site-rules.ts`（A 类·绝不改），与 D1 否掉枚举值是同一条红线。
+> 改为独立映射表：零 A 类改动，且主路径与后备路径共用同一份实现，消除数据源分叉。
+> 噪音排除项不重复一份，仍取站点规则已维护好的 `excludeSelector`。
 
-- [ ] 1.1 写失败测试：`resolveSiteRule` 能解析 `chatContextSelectors` 及其 `.add` / `.remove` 增量，未声明时为 `null`
-- [ ] 1.2 在 `src/utils/site-rules/resolve.ts` 追加同构的 `chatContextSelector` 合并项，并补进 `EMPTY_RESOLVED_SITE_RULE`
-- [ ] 1.3 给 `built-in/rules.json` 的 `discord` 条目加 `chatContextSelectors: ["li[id^=chat-messages] div[id^=message-content]"]`，并补一条断言该规则解析结果的测试
-- [ ] 1.4 提交
+- [x] 1.1 写失败测试：`getChatContextSelector` 对 Discord 频道页返回消息选择器，对发现页 / 未登记站点 / 非法 URL 返回 `null`
+- [x] 1.2 实现 `src/utils/content/chat-context-sites.ts`，复用现成的 `urlMatchesPattern` 做站点匹配
+- [x] 1.3 提交
 
 ## 2. 对话语言检测（PR#1）
 
@@ -22,13 +24,13 @@
 
 ## 3. 语言解析上提（PR#1）
 
-- [ ] 3.1 写失败测试：`resolveInputTranslationLang` 对 `"targetCode"` 返回 `{ code: 全局目标语言, source: "explicit" }`
-- [ ] 3.2 实现 `resolveInputTranslationLang(lang, config, rule)`，**作为可复用导出**（R3 硬约束，不得埋进 hook）
-- [ ] 3.3 补测试：源语言为「自动」且站点有选择器 → `source: "chatContext"`
-- [ ] 3.4 补测试：源语言被钉死为具体语种 → 直接返回该码且**不执行**检测（`source: "explicit"`，断言检测函数未被调用）
-- [ ] 3.5 补测试：检测返回 `null` → 回退整页源语言，`source: "pageSource"`
-- [ ] 3.6 补测试：`enableCycle: true` 使 `"sourceCode"` 落在 `fromLang` 位时，解析路径与落在 `toLang` 位一致
-- [ ] 3.7 提交
+- [x] 3.1 写失败测试：`resolveInputTranslationLang` 对 `"targetCode"` 返回 `{ code: 全局目标语言, source: "explicit" }`
+- [x] 3.2 实现 `resolveInputTranslationLang(lang, config, url, doc)`，**作为可复用导出**（R3 硬约束，不得埋进 hook）
+- [x] 3.3 补测试：源语言为「自动」且站点有选择器 → `source: "chatContext"`
+- [x] 3.4 补测试：源语言被钉死为具体语种 → 直接返回该码且**不执行**检测（`source: "explicit"`，断言检测函数未被调用）
+- [x] 3.5 补测试：检测返回 `null` → 回退整页源语言，`source: "pageSource"`
+- [x] 3.6 解析器与语言落在 from/to 哪一位无关（`enableCycle` 的位置差异在调用层，见任务组 4）
+- [x] 3.7 提交
 
 ## 4. 接入调用层（PR#1）
 
