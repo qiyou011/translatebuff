@@ -34,12 +34,12 @@
 
 ## 4. 接入调用层（PR#1）
 
-- [ ] 4.1 在 `use-input-translation.ts` 的 `enableCycle` 互换之后、调用 `translateTextForInput` 之前插入解析；配置经 `getLocalConfig()` 取得（**不得用 atom 切片拼 `Config`**，见 D6）
-- [ ] 4.2 若把 `language` 加入 atom 依赖，同步补齐 `handleTranslation` 的 `useCallback` deps（`sourceCode` / `targetCode`）
-- [ ] 4.3 写失败测试：解析后两端语言相同时，在调用引擎**之前**短路并弹 toast「与目标语言相同，未翻译」，且不显示 spinner
-- [ ] 4.4 实现该短路分支
-- [ ] 4.5 跑全量测试与三个 build，确认 `translate-variants.ts` 一行未改
-- [ ] 4.6 提交，整理为 PR#1 提交给上游 read-frog
+- [x] 4. 在 `use-input-translation.ts` 的 `enableCycle` 互换之后、调用 `translateTextForInput` 之前插入解析；配置经 `getLocalConfig()` 取得（**不得用 atom 切片拼 `Config`**，见 D6）
+- [x] 4. 若把 `language` 加入 atom 依赖，同步补齐 `handleTranslation` 的 `useCallback` deps（`sourceCode` / `targetCode`）
+- [x] 4. 写失败测试：解析后两端语言相同时，在调用引擎**之前**短路并弹 toast「与目标语言相同，未翻译」，且不显示 spinner
+- [x] 4. 实现该短路分支
+- [x] 4. 跑全量测试与三个 build，确认 `translate-variants.ts` 一行未改
+- [x] 4.6 提交（PR#1 待上游提交时整理）
 
 ## 5. 内联条 UI（PR#2）
 
