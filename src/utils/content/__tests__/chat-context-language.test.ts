@@ -115,15 +115,62 @@ describe("detectChatContextLanguage", () => {
     ).resolves.toBe("rus")
   })
 
-  it("消息太短、拼接后不足最短判定长度时返回 null", async () => {
-    // franc 的 DEFAULT_MIN_LENGTH 是 10；两条两字的短回复拼起来够不着。
-    renderMessages(["はい", "了解"])
+  it("短到判不出的拉丁文本返回 null", async () => {
+    // franc 拒判 10 字符以下，且拉丁字形不指向任何单一语种，只能认输。
+    renderMessages(["ok", "yes"])
     await expect(
       detectChatContextLanguage(document, {
         chatSelector: CHAT_SELECTOR,
         excludeSelector: EXCLUDE_SELECTOR,
       }),
     ).resolves.toBeNull()
+  })
+
+  it("短假名按字形判为日语，短谚文判为韩语", async () => {
+    // franc 够不着的长度，但假名与谚文各自只有一种语言在用，可以直接认。
+    renderMessages(["はい"])
+    await expect(
+      detectChatContextLanguage(document, {
+        chatSelector: CHAT_SELECTOR,
+        excludeSelector: EXCLUDE_SELECTOR,
+      }),
+    ).resolves.toBe("jpn")
+
+    renderMessages(["넵"])
+    await expect(
+      detectChatContextLanguage(document, {
+        chatSelector: CHAT_SELECTOR,
+        excludeSelector: EXCLUDE_SELECTOR,
+      }),
+    ).resolves.toBe("kor")
+  })
+
+  it("短西里尔不按字形猜——俄语／塞尔维亚语／乌克兰语共用同一套字母", async () => {
+    renderMessages(["да"])
+    await expect(
+      detectChatContextLanguage(document, {
+        chatSelector: CHAT_SELECTOR,
+        excludeSelector: EXCLUDE_SELECTOR,
+      }),
+    ).resolves.toBeNull()
+  })
+
+  it("最近一条是短日语、前面夹着机器人的长英文公告时，仍判为日语", async () => {
+    // 人工验收现场：Discord 的 MEE6 机器人插了一条 57 字符的英文公告，
+    // 而人类消息都很短。拼起来按长度算，英文会把日语压过去。
+    renderMessages([
+      "誰もいねーじゃん。",
+      "GG @Customer Service: Kelly, you just advanced to level 1!",
+      "안사요 안사",
+      "돈 없쇼",
+      "こんばんは",
+    ])
+    await expect(
+      detectChatContextLanguage(document, {
+        chatSelector: CHAT_SELECTOR,
+        excludeSelector: EXCLUDE_SELECTOR,
+      }),
+    ).resolves.toBe("jpn")
   })
 
   it("没有 excludeSelector 时不报错", async () => {

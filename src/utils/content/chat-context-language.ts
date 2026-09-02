@@ -40,13 +40,74 @@ export async function detectChatContextLanguage(
     return null
   }
 
-  const text = messages
+  const recent = messages
     .slice(-limit)
     .map((message) => extractMessageText(message, excludeSelector))
     .filter(Boolean)
-    .join("\n")
 
-  return detectLanguage(text, { enableLLM: false })
+  // 从最新一条往回走，取第一条能判出语种的。
+  //
+  // 不能把这几条拼起来一次判：franc 是按长度加权的，而聊天室里最长的那条往往是机器人的
+  // 英文公告（实测「GG @Someone, you just advanced to level 1!」57 字符），它会把周围几条
+  // 短的人类消息整个压过去——人工验收就是栽在这里，一屋子日韩对话被判成英语。
+  // 「跟最近一条」也正是用户对这个功能的预期。
+  const newest = recent[recent.length - 1]!
+
+  // 假名与谚文各自只有一种语言在用，一个字就够定案，不必凑长度。
+  const decisive = detectByDecisiveScript(newest)
+  if (decisive) {
+    return decisive
+  }
+
+  // 其余文字系统要靠 franc，而 franc 需要足够长的文本才分得开同族语言（一条 67 字符的
+  // 俄语单独喂进去会被判成塞尔维亚语）。于是把窗口内**与最新一条同文字系统**的消息合起来
+  // 凑长度——同时也就把机器人的英文公告挡在了西里尔／日文对话之外。
+  //
+  // 不合并全部消息正是人工验收暴露的那个坑：franc 按长度加权，聊天室里最长的往往是机器人
+  // 那条英文公告（实测「GG @Someone, you just advanced to level 1!」57 字符），它能把一屋子
+  // 日韩对话整个压成英语。
+  const newestScript = classifyScript(newest)
+  const sameScript = recent.filter((message) => classifyScript(message) === newestScript)
+
+  return detectLanguage(sameScript.join("\n"), { enableLLM: false })
+}
+
+/** 文本属于哪套文字系统。只用来分组，不直接映射语种。 */
+function classifyScript(text: string): string {
+  if (KANA_PATTERN.test(text)) return "kana"
+  if (HANGUL_PATTERN.test(text)) return "hangul"
+  if (CYRILLIC_PATTERN.test(text)) return "cyrillic"
+  if (HAN_PATTERN.test(text)) return "han"
+  return "other"
+}
+
+/** 西里尔：俄语／塞尔维亚语／乌克兰语等共用，只能分组、不能直接定语种。 */
+const CYRILLIC_PATTERN = /[Ѐ-ӿ]/
+/** 汉字：中日共用，同理只分组。 */
+const HAN_PATTERN = /[㐀-䶿一-鿿]/
+
+/** 假名：只有日语在用。 */
+const KANA_PATTERN = /[぀-ゟ゠-ヿ]/
+/** 谚文：只有韩语在用。 */
+const HANGUL_PATTERN = /[ᄀ-ᇿ가-힯]/
+
+/**
+ * 按字形判语种，只认唯一映射的那两种。
+ *
+ * franc 自己拒判 10 字符以下的文本，而聊天里「こんばんは」这类一句话恰恰不到 10 个字——
+ * 光靠 franc 会把最该跟随的那条漏掉，退而去读上一条机器人的长英文公告。
+ *
+ * 刻意只认假名与谚文：汉字是中日共用、西里尔是俄语／塞尔维亚语／乌克兰语共用，按字形猜
+ * 会猜错（实测一条短俄语被判成塞尔维亚语）。这两类仍旧交给 franc，宁可判不出也不猜。
+ */
+function detectByDecisiveScript(text: string): LangCodeISO6393 | null {
+  if (KANA_PATTERN.test(text)) {
+    return "jpn"
+  }
+  if (HANGUL_PATTERN.test(text)) {
+    return "kor"
+  }
+  return null
 }
 
 /**
