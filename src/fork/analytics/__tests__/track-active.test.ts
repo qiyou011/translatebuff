@@ -1,5 +1,11 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
-import { clearLastReportedDate, readLastReportedDate, toUtcDateKey } from "../active-dedup"
+import { clearForkSession, saveForkSession } from "@/fork/membership/session"
+import {
+  ANONYMOUS_IDENTITY,
+  clearLastReportedDate,
+  readLastReportedDate,
+  toUtcDateKey,
+} from "../active-dedup"
 
 const postClickEvent = vi.fn<(...args: any[]) => any>()
 
@@ -25,11 +31,17 @@ beforeEach(async () => {
   postClickEvent.mockReset()
   postClickEvent.mockResolvedValue(undefined)
   await clearLastReportedDate()
+  await clearForkSession()
 })
 
 afterEach(async () => {
   await clearLastReportedDate()
+  await clearForkSession()
 })
+
+async function loginAs(phone: string, loginCredential = `cred-${phone}`) {
+  await saveForkSession({ loginCredential, phone, user: {} })
+}
 
 describe("活跃事件按自然日去重", () => {
   it("当日首次翻译上报一次", async () => {
@@ -57,12 +69,55 @@ describe("活跃事件按自然日去重", () => {
   })
 })
 
+describe("按身份分别去重", () => {
+  it("游客已报后登录账号，同日仍再报一次", async () => {
+    await reportTranslateActive(TODAY)
+    await loginAs("13800000000")
+
+    await reportTranslateActive(LATER_TODAY)
+
+    expect(postClickEvent).toHaveBeenCalledTimes(2)
+  })
+
+  it("换账号后同日重新上报", async () => {
+    await loginAs("13800000000")
+    await reportTranslateActive(TODAY)
+    await loginAs("13900000000")
+
+    await reportTranslateActive(LATER_TODAY)
+
+    expect(postClickEvent).toHaveBeenCalledTimes(2)
+  })
+
+  it("同账号重新登录（凭据换了）同日不重复上报", async () => {
+    await loginAs("13800000000", "cred-first")
+    await reportTranslateActive(TODAY)
+    await loginAs("13800000000", "cred-second") // 重登换凭据，手机号不变
+
+    await reportTranslateActive(LATER_TODAY)
+
+    expect(postClickEvent).toHaveBeenCalledTimes(1)
+  })
+
+  it("登录账号已报后登出，游客身份同日不重复上报", async () => {
+    await reportTranslateActive(TODAY) // 游客先报一次
+    await loginAs("13800000000")
+    await reportTranslateActive(LATER_TODAY) // 账号再报一次
+    postClickEvent.mockClear()
+    await clearForkSession()
+
+    await reportTranslateActive(LATER_TODAY)
+
+    expect(postClickEvent).not.toHaveBeenCalled()
+  })
+})
+
 describe("先标记再上报", () => {
   it("上报失败也记为今日已报，避免断网时每次翻译都重发", async () => {
     postClickEvent.mockRejectedValue(new Error("network down"))
 
     await expect(reportTranslateActive(TODAY)).resolves.toBeUndefined()
-    expect(await readLastReportedDate()).toBe(toUtcDateKey(TODAY))
+    expect(await readLastReportedDate(ANONYMOUS_IDENTITY)).toBe(toUtcDateKey(TODAY))
 
     postClickEvent.mockReset()
     postClickEvent.mockResolvedValue(undefined)
