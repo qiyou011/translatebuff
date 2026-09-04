@@ -1,11 +1,16 @@
 import { afterEach, describe, expect, it } from "vitest"
+import { storage } from "#imports"
 import {
+  ANONYMOUS_IDENTITY,
   clearLastReportedDate,
   readLastReportedDate,
   shouldReportOn,
   toUtcDateKey,
   writeLastReportedDate,
 } from "../active-dedup"
+
+const ACCOUNT_A = "13800000000"
+const ACCOUNT_B = "13900000000"
 
 // 固定 UTC 时间戳：本地时区无关，换台机器跑结论一致。
 const UTC_MORNING = Date.UTC(2026, 7, 31, 0, 30)
@@ -50,13 +55,42 @@ describe("是否该上报", () => {
   })
 })
 
-describe("上报日期存取", () => {
+describe("上报日期按身份存取", () => {
   it("未写入时读到 null", async () => {
-    expect(await readLastReportedDate()).toBeNull()
+    expect(await readLastReportedDate(ANONYMOUS_IDENTITY)).toBeNull()
   })
 
   it("写入后读回同值", async () => {
-    await writeLastReportedDate("2026-08-31")
-    expect(await readLastReportedDate()).toBe("2026-08-31")
+    await writeLastReportedDate(ANONYMOUS_IDENTITY, "2026-08-31")
+    expect(await readLastReportedDate(ANONYMOUS_IDENTITY)).toBe("2026-08-31")
+  })
+
+  it("身份之间互不影响：游客已报不代表账号已报", async () => {
+    await writeLastReportedDate(ANONYMOUS_IDENTITY, "2026-08-31")
+
+    expect(await readLastReportedDate(ACCOUNT_A)).toBeNull()
+  })
+
+  it("多个账号各存各的当日记录", async () => {
+    await writeLastReportedDate(ACCOUNT_A, "2026-08-31")
+    await writeLastReportedDate(ACCOUNT_B, "2026-08-31")
+
+    expect(await readLastReportedDate(ACCOUNT_A)).toBe("2026-08-31")
+    expect(await readLastReportedDate(ACCOUNT_B)).toBe("2026-08-31")
+  })
+
+  it("写入当日记录时丢弃非当日的历史条目", async () => {
+    await writeLastReportedDate(ACCOUNT_A, "2026-08-30")
+
+    await writeLastReportedDate(ACCOUNT_B, "2026-08-31")
+
+    expect(await readLastReportedDate(ACCOUNT_A)).toBeNull()
+    expect(await readLastReportedDate(ACCOUNT_B)).toBe("2026-08-31")
+  })
+
+  it("旧格式的裸日期字符串视为无记录", async () => {
+    await storage.setItem("local:forkActiveTracking", "2026-08-31")
+
+    expect(await readLastReportedDate(ANONYMOUS_IDENTITY)).toBeNull()
   })
 })
