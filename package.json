@@ -19,9 +19,9 @@
     "lint": "oxlint --type-aware --type-check",
     "lint:fix": "oxlint --type-aware --fix",
     "postinstall": "WXT_SKIP_ENV_VALIDATION=true wxt prepare",
-    "test": "vitest run",
-    "test:cov": "vitest run --coverage",
-    "test:watch": "vitest",
+    "test": "node --import ./scripts/test-env.mjs ./node_modules/vitest/vitest.mjs run",
+    "test:cov": "node --import ./scripts/test-env.mjs ./node_modules/vitest/vitest.mjs run --coverage",
+    "test:watch": "node --import ./scripts/test-env.mjs ./node_modules/vitest/vitest.mjs",
     "type-check": "oxlint --type-aware --type-check",
     "scrape:ai-sdk-models": "npx tsx scripts/scrape-ai-sdk-provider-models.ts --out scripts/output/ai-sdk-provider-models.json",
     "zip": "wxt zip",
@@ -191,14 +191,36 @@
       },
       "test": {
         "executor": "nx:run-commands",
+        "inputs": [
+          "{projectRoot}/src/**/*",
+          "{projectRoot}/scripts/**/*",
+          "{projectRoot}/vitest.*.ts",
+          "{projectRoot}/tsconfig.json",
+          "{projectRoot}/package.json",
+          "{projectRoot}/pnpm-lock.yaml",
+          {
+            "env": "SKIP_FREE_API"
+          }
+        ],
         "options": {
-          "command": "vitest run"
+          "command": "pnpm run test"
         }
       },
       "test:cov": {
         "executor": "nx:run-commands",
+        "inputs": [
+          "{projectRoot}/src/**/*",
+          "{projectRoot}/scripts/**/*",
+          "{projectRoot}/vitest.*.ts",
+          "{projectRoot}/tsconfig.json",
+          "{projectRoot}/package.json",
+          "{projectRoot}/pnpm-lock.yaml",
+          {
+            "env": "SKIP_FREE_API"
+          }
+        ],
         "options": {
-          "command": "vitest run --coverage"
+          "command": "pnpm run test:cov"
         }
       },
       "fmt": {
