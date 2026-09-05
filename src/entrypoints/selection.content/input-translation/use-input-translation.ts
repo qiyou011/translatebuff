@@ -1,19 +1,14 @@
-import type { LangCodeISO6393 } from "@read-frog/definitions"
-import type { InputTranslationLangSource } from "./resolve-lang"
-import type { InputTranslationLang } from "@/types/config/config"
 import { useAtomValue } from "jotai"
-import { useCallback, useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useRef } from "react"
 import { toastManager } from "@/components/ui/base-ui/toast"
 import { ANALYTICS_FEATURE, ANALYTICS_SURFACE } from "@/types/analytics"
 import { createFeatureUsageContext, trackFeatureAttempt } from "@/utils/analytics"
 import { classifyResolvedProvider } from "@/utils/analytics-provider"
 import { configFieldsAtomMap } from "@/utils/atoms/config"
-import { getLocalConfig } from "@/utils/config/storage"
 import { INPUT_REPLACE_REQUEST_TYPE } from "@/utils/constants/input-injector"
 import { translateTextForInput } from "@/utils/host/translate/translate-variants"
 import { HostedAiProviderUnavailableError } from "@/utils/providers/provider-ref"
 import { resolveProviderRefForCapability } from "@/utils/providers/provider-registry"
-import { resolveInputTranslationLang } from "./resolve-lang"
 
 const SPACE_KEY = " "
 const TRIGGER_COUNT = 3
@@ -130,61 +125,11 @@ function setTextWithUndo(
   }
 }
 
-/** 这次的语言是怎么定的，界面据此显示「自动检测」／「按网页源语言」／「手动选择」。 */
-export type InputTranslationBarSource = "chatContext" | "pageSource" | "manual"
-
-/**
- * 输入框上方那条的两种形态。
- *
- * 必须记住 `element` 而不只是文本：同一个页面上主输入框、消息编辑框、搜索框同时存在，
- * 只记文本会把 A 框的原文撤销进 B 框。
- */
-export type InputTranslationBar =
-  | {
-      kind: "translated"
-      element: HTMLInputElement | HTMLTextAreaElement | HTMLElement
-      originalText: string
-      /** 翻译方向的来源端，改语言重译时照旧用它。 */
-      fromCode: LangCodeISO6393
-      lang: LangCodeISO6393
-      langSource: InputTranslationBarSource
-    }
-  /** 两端同语言、什么都没换。同一位置、同款外观，但没有可撤销的对象。 */
-  | { kind: "sameLanguage"; element: HTMLElement; lang: LangCodeISO6393 }
-
-/**
- * 语言由配置直接给定（钉死的源语言、固定语言码）时不挂条子：没有自动判定，
- * 也就没有要纠错的对象，挂出来只是噪音。
- */
-function toBarSource(source: InputTranslationLangSource): InputTranslationBarSource | null {
-  return source === "explicit" ? null : source
-}
-
-/**
- * 把两端的语言选项解析成具体语言码。配置走 `getLocalConfig()` 而不是 atom 切片拼装——
- * `getEffectiveSiteRule` 按 Config 对象身份做记忆，每次现拼会让那份记忆永不命中。
- */
-async function resolveLangPair(fromLang: InputTranslationLang, toLang: InputTranslationLang) {
-  const config = await getLocalConfig()
-  if (!config) {
-    return null
-  }
-  const url = window.location.href
-  const [from, to] = await Promise.all([
-    resolveInputTranslationLang(fromLang, config, url, document),
-    resolveInputTranslationLang(toLang, config, url, document),
-  ])
-  return { from, to }
-}
-
 export function useInputTranslation() {
   const inputTranslationConfig = useAtomValue(configFieldsAtomMap.inputTranslation)
   const providersConfig = useAtomValue(configFieldsAtomMap.providersConfig)
   const spaceTimestampsRef = useRef<number[]>([])
   const isTranslatingRef = useRef(false)
-  // 只在替换真的发生之后写一次。竞态保护仍旧用下面那个闭包局部变量——setState 是异步的，
-  // 同一个 async 闭包读不到新值，拿它当守卫会漏。
-  const [bar, setBar] = useState<InputTranslationBar | null>(null)
 
   const handleTranslation = useCallback(
     async (element: HTMLInputElement | HTMLTextAreaElement | HTMLElement) => {
@@ -237,24 +182,6 @@ export function useInputTranslation() {
 
       isTranslatingRef.current = true
 
-      // 语言解析放在这一层，而不是引擎里：方向互换刚在上面做完，引擎本来就收具体语言码，
-      // 于是引擎一行不用改；解析顺带带出的 `source` 还要交给界面区分「自动检测」与
-      // 「按网页源语言」。守卫在解析之前就置位，所以下面每条提前返回都要自己放开。
-      const langs = await resolveLangPair(fromLang, toLang)
-      if (!langs) {
-        isTranslatingRef.current = false
-        return
-      }
-
-      // 两端同语言时提前收手。引擎内部也会返回空串，但那个空串和「没什么可翻」的空串
-      // 无法区分，调用方据此弹不了提示——用户连按三下空格却毫无反应，只会以为功能坏了。
-      // 在这里断掉还顺带省下 spinner 与 provider 解析。
-      if (langs.from.code === langs.to.code) {
-        setBar({ kind: "sameLanguage", element, lang: langs.to.code })
-        isTranslatingRef.current = false
-        return
-      }
-
       // Show spinner near the input element
       const hideSpinner = showSpinner(element)
 
@@ -278,7 +205,7 @@ export function useInputTranslation() {
               ),
             ),
           },
-          () => translateTextForInput(text, langs.from.code, langs.to.code),
+          () => translateTextForInput(text, fromLang, toLang),
         )
 
         // Check if element content changed during translation (user input)
@@ -294,19 +221,6 @@ export function useInputTranslation() {
         // Only apply translation if content hasn't changed during async operation
         if (currentText.trim() === originalText && translatedText) {
           setTextWithUndo(element, translatedText)
-          // 放弃替换的那条分支刻意不挂内联条：否则撤销会把用户新输入的内容
-          // 改写成一段他没要的旧文本。
-          const barSource = toBarSource(langs.to.source)
-          if (barSource) {
-            setBar({
-              kind: "translated",
-              element,
-              originalText,
-              fromCode: langs.from.code,
-              lang: langs.to.code,
-              langSource: barSource,
-            })
-          }
         }
       } catch (error) {
         // A hosted plan/quota denial is a state the user can act on, not a
@@ -332,29 +246,6 @@ export function useInputTranslation() {
       inputTranslationConfig.providerId,
       providersConfig,
     ],
-  )
-
-  const dismiss = useCallback(() => setBar(null), [])
-
-  const undo = useCallback(() => {
-    // 元素可能已经被 SPA 卸载；此时什么都不写，别去动一个不存在的目标。
-    if (bar?.kind === "translated" && document.contains(bar.element)) {
-      setTextWithUndo(bar.element, bar.originalText)
-    }
-    setBar(null)
-  }, [bar])
-
-  const retranslate = useCallback(
-    async (code: LangCodeISO6393) => {
-      if (bar?.kind !== "translated" || !document.contains(bar.element)) return
-      // 拿原文重译，不是拿上一轮的译文再翻一遍——那样会一路失真。
-      const translated = await translateTextForInput(bar.originalText, bar.fromCode, code)
-      if (!translated) return
-      setTextWithUndo(bar.element, translated)
-      // 原型要求标注由「自动检测」改成「手动选择」。
-      setBar({ ...bar, lang: code, langSource: "manual" })
-    },
-    [bar],
   )
 
   useEffect(() => {
@@ -413,6 +304,4 @@ export function useInputTranslation() {
       document.removeEventListener("keydown", handleKeyDown, true)
     }
   }, [inputTranslationConfig.enabled, inputTranslationConfig.timeThreshold, handleTranslation])
-
-  return { bar, undo, retranslate, dismiss }
 }

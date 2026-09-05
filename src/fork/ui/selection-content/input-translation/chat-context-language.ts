@@ -1,5 +1,5 @@
 import type { LangCodeISO6393 } from "@read-frog/definitions"
-import { detectLanguage } from "./language"
+import { detectLanguage } from "@/utils/content/language"
 
 /**
  * 判定「当前对话」语种所需的两个选择器。

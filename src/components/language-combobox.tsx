@@ -31,14 +31,6 @@ interface LanguageComboboxProps {
   /** The trigger's size, as a `Button` variant — `sm` matches the settings selects. */
   triggerSize?: ComponentProps<typeof Button>["size"]
   className?: string
-  /**
-   * Where the popup portals to. Content-script callers must pass their shadow root:
-   * the default lands the popup on `document.body`, outside the shadow tree, where none
-   * of the extension's styles reach it — it renders unstyled and transparent over the page.
-   */
-  container?: ComponentProps<typeof ComboboxContent>["container"]
-  /** Extra classes for the trigger, for surfaces that want a plain-text trigger. */
-  triggerClassName?: string
 }
 
 export function LanguageCombobox({
@@ -49,8 +41,6 @@ export function LanguageCombobox({
   placeholder,
   triggerSize,
   className,
-  container,
-  triggerClassName,
 }: LanguageComboboxProps) {
   const languageItems = useMemo(
     () => getLanguageItems(detectedLangCode, autoLabel),
@@ -73,11 +63,7 @@ export function LanguageCombobox({
             type="button"
             variant="outline"
             size={triggerSize}
-            className={cn(
-              "w-auto min-w-0 justify-between font-normal",
-              className,
-              triggerClassName,
-            )}
+            className={cn("w-auto min-w-0 justify-between font-normal", className)}
           />
         }
       >
@@ -96,7 +82,7 @@ export function LanguageCombobox({
           )}
         </ComboboxValue>
       </ComboboxTrigger>
-      <ComboboxContent container={container}>
+      <ComboboxContent>
         <ComboboxInput
           showTrigger={false}
           placeholder={placeholder ?? i18n.t("translationHub.searchLanguages")}

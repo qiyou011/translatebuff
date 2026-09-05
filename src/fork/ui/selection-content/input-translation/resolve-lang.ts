@@ -1,9 +1,9 @@
 import type { LangCodeISO6393 } from "@read-frog/definitions"
 import type { Config, InputTranslationLang } from "@/types/config/config"
 import { getDetectedCodeFromStorage, getFinalSourceCode } from "@/utils/config/languages"
-import { detectChatContextLanguage } from "@/utils/content/chat-context-language"
-import { getChatContextSelector } from "@/utils/content/chat-context-sites"
 import { getEffectiveSiteRule } from "@/utils/site-rules/effective"
+import { detectChatContextLanguage } from "./chat-context-language"
+import { getChatContextSelector } from "./chat-context-sites"
 
 /**
  * 这个语言码是怎么定下来的。界面据此区分「自动检测」与「按网页源语言」——用户看得见

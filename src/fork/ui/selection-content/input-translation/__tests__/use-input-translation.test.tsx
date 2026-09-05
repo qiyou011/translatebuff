@@ -81,6 +81,15 @@ function renderWithConfig(config: Config) {
   })
 }
 
+type InputTranslationLifecycleApi = {
+  setInteractionElement?: (element: HTMLElement | null) => void
+  setLanguageMenuOpen?: (open: boolean) => void
+}
+
+function lifecycleApi(rendered: ReturnType<typeof renderWithConfig>) {
+  return rendered.result.current as typeof rendered.result.current & InputTranslationLifecycleApi
+}
+
 describe("useInputTranslation 的语言解析", () => {
   beforeEach(() => {
     // 以下三个都是 jsdom 的缺口，不补桩会在到达断言前就抛，且异常被 `void handleTranslation()`
@@ -184,6 +193,14 @@ describe("useInputTranslation 的内联条", () => {
     return { input, rendered }
   }
 
+  function renderSameLanguage() {
+    const config = configWith({ sourceCode: "auto", targetCode: "rus" })
+    getLocalConfigMock.mockResolvedValue(config)
+    const input = setupPage(RUSSIAN_CHAT)
+    const rendered = renderWithConfig(config)
+    return { input, rendered }
+  }
+
   it("替换成功后挂出内联条，带上语言与它的来源", async () => {
     const { input, rendered } = renderTranslating()
     pressSpaceThrice()
@@ -237,6 +254,31 @@ describe("useInputTranslation 的内联条", () => {
 
     expect(execCommandMock).toHaveBeenCalledWith("insertText", false, "你好呀，最近怎么样")
     expect(rendered.result.current.bar).toBeNull()
+  })
+
+  it.each([
+    ["删除", "Прив"],
+    ["修改", "Здравствуйте"],
+    ["新增", "Привет! Как дела?"],
+  ])("用户%s译文内容后，内联条仍保留且撤销恢复触发时原文", async (_action, edited) => {
+    const { input, rendered } = renderTranslating()
+    pressSpaceThrice()
+    await waitFor(() => expect(rendered.result.current.bar).not.toBeNull())
+
+    input.value = edited
+    act(() => {
+      input.dispatchEvent(new Event("input", { bubbles: true }))
+    })
+
+    expect(rendered.result.current.bar).toMatchObject({
+      kind: "translated",
+      originalText: "你好呀，最近怎么样",
+    })
+
+    execCommandMock.mockClear()
+    act(() => rendered.result.current.undo())
+
+    expect(execCommandMock).toHaveBeenCalledWith("insertText", false, "你好呀，最近怎么样")
   })
 
   it("原输入框已离开文档时，撤销不写入任何东西", async () => {
@@ -293,5 +335,198 @@ describe("useInputTranslation 的内联条", () => {
     expect(translateTextForInputMock).toHaveBeenCalledWith("你好呀，最近怎么样", "cmn", "jpn")
     // 原型要求标注由「自动检测」改成「手动选择」，与配置来的 explicit 不是一回事。
     expect(rendered.result.current.bar).toMatchObject({ lang: "jpn", langSource: "manual" })
+  })
+
+  it("真正失焦只隐藏翻译内联条，聚焦其他输入框不显示，重新聚焦原输入框后恢复", async () => {
+    const { input, rendered } = renderTranslating()
+    pressSpaceThrice()
+    await waitFor(() => expect(rendered.result.current.bar).not.toBeNull())
+
+    const interaction = document.createElement("div")
+    const interactionButton = document.createElement("button")
+    const outside = document.createElement("button")
+    interaction.appendChild(interactionButton)
+    document.body.append(interaction, outside)
+
+    act(() => lifecycleApi(rendered).setInteractionElement?.(interaction))
+    act(() => interactionButton.focus())
+    expect(rendered.result.current.bar).not.toBeNull()
+
+    act(() => outside.focus())
+    await waitFor(() => expect(rendered.result.current.bar).toBeNull())
+
+    const otherInput = document.createElement("input")
+    document.body.appendChild(otherInput)
+    act(() => otherInput.focus())
+    expect(rendered.result.current.bar).toBeNull()
+
+    act(() => input.focus())
+    await waitFor(() =>
+      expect(rendered.result.current.bar).toMatchObject({
+        kind: "translated",
+        element: input,
+        originalText: "你好呀，最近怎么样",
+      }),
+    )
+  })
+
+  it("语言菜单 Portal 持有焦点时不算失焦，菜单关闭且焦点在外部时暂时隐藏", async () => {
+    const { input, rendered } = renderTranslating()
+    pressSpaceThrice()
+    await waitFor(() => expect(rendered.result.current.bar).not.toBeNull())
+
+    const interaction = document.createElement("div")
+    const portalInput = document.createElement("input")
+    document.body.append(interaction, portalInput)
+
+    act(() => lifecycleApi(rendered).setInteractionElement?.(interaction))
+    act(() => lifecycleApi(rendered).setLanguageMenuOpen?.(true))
+    act(() => portalInput.focus())
+    expect(rendered.result.current.bar).not.toBeNull()
+
+    act(() => lifecycleApi(rendered).setLanguageMenuOpen?.(false))
+    await waitFor(() => expect(rendered.result.current.bar).toBeNull())
+
+    act(() => input.focus())
+    await waitFor(() => expect(rendered.result.current.bar).not.toBeNull())
+  })
+
+  it("只有 Enter 后输入框实际清空才视为消息发送并关闭内联条", async () => {
+    const { input, rendered } = renderTranslating()
+    pressSpaceThrice()
+    await waitFor(() => expect(rendered.result.current.bar).not.toBeNull())
+
+    input.value = "Привет"
+    act(() => {
+      input.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter", bubbles: true }))
+    })
+    expect(rendered.result.current.bar).not.toBeNull()
+
+    input.value = ""
+    act(() => {
+      input.dispatchEvent(new Event("input", { bubbles: true }))
+    })
+    await waitFor(() => expect(rendered.result.current.bar).toBeNull())
+
+    const outside = document.createElement("button")
+    document.body.appendChild(outside)
+    act(() => outside.focus())
+    act(() => input.focus())
+    expect(rendered.result.current.bar).toBeNull()
+  })
+
+  it("Enter 未提交消息以及 Shift+Enter 换行都不关闭内联条", async () => {
+    const { input, rendered } = renderTranslating()
+    pressSpaceThrice()
+    await waitFor(() => expect(rendered.result.current.bar).not.toBeNull())
+
+    input.value = "Привет"
+    act(() => {
+      input.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter", bubbles: true }))
+    })
+    expect(rendered.result.current.bar).not.toBeNull()
+
+    act(() => {
+      input.dispatchEvent(
+        new KeyboardEvent("keydown", { key: "Enter", shiftKey: true, bubbles: true }),
+      )
+    })
+    input.value = "Привет\n"
+    act(() => {
+      input.dispatchEvent(new Event("input", { bubbles: true }))
+    })
+    expect(rendered.result.current.bar).not.toBeNull()
+  })
+
+  it("语言菜单关闭时按 Esc 关闭内联条", async () => {
+    const { input, rendered } = renderTranslating()
+    pressSpaceThrice()
+    await waitFor(() => expect(rendered.result.current.bar).not.toBeNull())
+
+    act(() => {
+      input.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", bubbles: true }))
+    })
+
+    expect(rendered.result.current.bar).toBeNull()
+
+    const outside = document.createElement("button")
+    document.body.appendChild(outside)
+    act(() => outside.focus())
+    act(() => input.focus())
+    expect(rendered.result.current.bar).toBeNull()
+  })
+
+  it("语言菜单展开时第一次 Esc 只关闭菜单，下一次才关闭内联条", async () => {
+    const { input, rendered } = renderTranslating()
+    pressSpaceThrice()
+    await waitFor(() => expect(rendered.result.current.bar).not.toBeNull())
+
+    act(() => lifecycleApi(rendered).setLanguageMenuOpen?.(true))
+    act(() => {
+      input.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", bubbles: true }))
+    })
+    expect(rendered.result.current.bar).not.toBeNull()
+
+    act(() => lifecycleApi(rendered).setLanguageMenuOpen?.(false))
+    act(() => {
+      input.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", bubbles: true }))
+    })
+    expect(rendered.result.current.bar).toBeNull()
+  })
+
+  it("同语言提示在用户继续输入后关闭", async () => {
+    const { input, rendered } = renderSameLanguage()
+    pressSpaceThrice()
+    await waitFor(() => expect(rendered.result.current.bar).toMatchObject({ kind: "sameLanguage" }))
+
+    input.value = "你好呀，最近怎么样，补充一句"
+    act(() => {
+      input.dispatchEvent(new Event("input", { bubbles: true }))
+    })
+
+    expect(rendered.result.current.bar).toBeNull()
+  })
+
+  it("同语言提示在消息实际发送后关闭", async () => {
+    const { input, rendered } = renderSameLanguage()
+    pressSpaceThrice()
+    await waitFor(() => expect(rendered.result.current.bar).toMatchObject({ kind: "sameLanguage" }))
+
+    act(() => {
+      input.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter", bubbles: true }))
+    })
+    input.value = ""
+    act(() => {
+      input.dispatchEvent(new Event("input", { bubbles: true }))
+    })
+
+    expect(rendered.result.current.bar).toBeNull()
+  })
+
+  it("同语言提示在按 Esc 后关闭", async () => {
+    const { input, rendered } = renderSameLanguage()
+    pressSpaceThrice()
+    await waitFor(() => expect(rendered.result.current.bar).toMatchObject({ kind: "sameLanguage" }))
+
+    act(() => {
+      input.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", bubbles: true }))
+    })
+
+    expect(rendered.result.current.bar).toBeNull()
+  })
+
+  it("同语言提示在焦点真正移到输入框外后永久关闭", async () => {
+    const { input, rendered } = renderSameLanguage()
+    pressSpaceThrice()
+    await waitFor(() => expect(rendered.result.current.bar).toMatchObject({ kind: "sameLanguage" }))
+
+    const outside = document.createElement("button")
+    document.body.appendChild(outside)
+    act(() => outside.focus())
+
+    await waitFor(() => expect(rendered.result.current.bar).toBeNull())
+
+    act(() => input.focus())
+    expect(rendered.result.current.bar).toBeNull()
   })
 })
