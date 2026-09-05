@@ -100,3 +100,15 @@ GitNexus 已更新当前仓库索引。为纳入未跟踪的 fork 文件，使�
 - 额外尝试对泰语草稿再次触发时，仍按配置的来源端与对话目标端重新翻译，并未显示同语言提示。规格中的同语言场景比较的是“对话语言”与“用户配置的目标语言”，不是自动识别当前草稿语言（`resolve-lang.ts`、`use-input-translation.ts`）；本轮没有改变用户语言配置，因此**不计为同语言提示分支已验证**。
 - 未测试实际消息发送（避免污染频道）、真实 IME 组合输入、浅色主题/主题切换、窄窗口和长语言名、多输入框/多频道隔离、全部文字对比度、错误/超时路径及主 profile 下 production 安装。任务 8.6、8.8 的完整矩阵仍不能标记全部完成。
 - 本轮没有修改产品源码、用户主题/语言配置或账号数据，没有提交、推送、合并或归档。
+
+## 追加：提交前验证与交付范围（2026-09-05）
+
+用户在复盘后明确要求提交并推送本变更。代码提交为 `784469ad`（`fix(input-translation): isolate fork UI and preserve draft interactions`），当前分支为 `feat/fork-foundation-input-trans`，推送目标为 origin 同名分支，不合并或归档。
+
+- 提交前重新运行全量测试：345 个文件通过、1 个文件按要求跳过；3298 项通过、4 项跳过。沿用测试专用官网环境变量和 `SKIP_FREE_API=true`，未删除用户 `.env`。
+- 类型检查、Chrome production build、OpenSpec strict、diff 空白检查通过。构建仍有既有大 chunk 告警。
+- GitNexus 默认全局版本与本地数据库格式不兼容；切换至与索引兼容的 1.6.11 后执行 `detect-changes --scope all`。原始结果为 31 文件、155 符号，`partial=false`、`truncated=false`、`error=null`。现有索引的流程枚举局限仍存在，不把 0 affected processes 解释为运行时无影响。
+- 正常执行 pre-commit 的 lint-staged 和 commit-msg 校验，没有跳过钩子。提交后正式 fork 门禁 `FORK_DIFF_BASE=origin/change/fork-foundation node scripts/check-fork-boundary.mjs` 返回 `Fork boundary OK`。
+- 本提交遵循 FORK_GUIDE：fork 不消费上游 changeset 发布流程。三份本地 `.changeset/*.md` 保留但不提交，用户可见修复说明随本变更文档交付；不删除记录、不扩大 allowlist、不调整发布版本。
+- `.worktreeinclude`、`AGENTS.md`、`CLAUDE.md` 的无关修改留在工作区，不纳入本提交。
+- 6.3、6.4 已完成；8.6、8.8 仍待完整视觉验收，不能因提交而自动勾选。推送是否成功以实际远端检查为准。

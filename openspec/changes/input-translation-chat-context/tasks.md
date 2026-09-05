@@ -1,6 +1,6 @@
 > 全程 TDD：先写失败测试并跑出真实红灯，再写实现。本地跑测试须设 `SKIP_FREE_API=true`；测试可显式覆盖官网环境变量，不删除用户 `.env`。
-> 分支 `feat/fork-foundation-input-trans`，不并回 `change/fork-foundation`。2026-09-05 用户确认采用 fork 自持方案，历史 PR#1 / PR#2 标签仅保留溯源；本轮不提交、不推送。
-> 2026-09-05 自动复盘已沉淀至 [notes/retrospective.md](./notes/retrospective.md)。实施任务仍为 58/62：6.3、6.4、8.6、8.8 保持未完成。复盘完成不代表交付或归档完成。
+> 分支 `feat/fork-foundation-input-trans`，不并回 `change/fork-foundation`。2026-09-05 用户确认采用 fork 自持方案，历史 PR#1 / PR#2 标签仅保留溯源；后续用户已明确授权提交并推送本变更，不执行归档。
+> 2026-09-05 自动复盘已沉淀至 [notes/retrospective.md](./notes/retrospective.md)。提交对账后实施任务为 60/62：8.6、8.8 保持未完成。复盘和提交完成不代表完整交付或归档完成。
 
 ## 1. 站点 → 对话选择器映射（PR#1）
 
@@ -68,9 +68,9 @@
 
 - [x] 6.1 把新增模块及对应测试搬到 `src/fork/ui/selection-content/input-translation/`，fork App 只挂载 fork hook；专用语言菜单组合 Base UI 原语并复用上游列表/输入组件，恢复上游 hook、index 和两个共享 Combobox 文件（无需重定向或扩 allowlist）
 - [x] 6.2 新增上游漂移哨兵，记录 hook、index、共享语言选择器与 Combobox 四份已评审文件的 sha256；已验证恢复前 4 红、恢复后 4 绿，更新指纹必须先人工对账
-- [ ] 6.3 `FORK_DIFF_BASE=<base> node scripts/check-fork-boundary.mjs` 必须通过
-  - 当前工作树完整特性文件集按同一分类器核验：源码违规为 0；仍有 3 个既有 changeset 被拦截，未擅自删除或扩 allowlist。原 CLI 只读提交，当前未提交迁移不能用 HEAD 检查代替。完整门禁暂不勾选。
-- [ ] 6.4 提交
+- [x] 6.3 `FORK_DIFF_BASE=<base> node scripts/check-fork-boundary.mjs` 必须通过
+  - 提交 `784469ad` 后执行 `FORK_DIFF_BASE=origin/change/fork-foundation node scripts/check-fork-boundary.mjs`，结果为 `Fork boundary OK`。遵循 FORK_GUIDE 的 fork 不新增 changeset 规则，三份本地 changeset 保留但未纳入提交；修复说明随本变更文档提交，未删除文件或扩 allowlist。此结论针对提交差集，不表示剩余未提交文件也已过门禁。
+- [x] 6.4 提交（`784469ad`：`fix(input-translation): isolate fork UI and preserve draft interactions`；已通过正常 pre-commit 与 commit-msg 钩子）
 - [x] 6.5 迁移后重新跑功能测试、全量测试、类型检查、Chrome 构建及源文件边界核验（94 项功能测试、3298 项全量通过/4 跳过；四份上游源码与基线一致；完整边界仍有既有 changeset 策略问题，见 6.3）
 - [x] 6.6 浏览器实证迁移后的三空格翻译、菜单搜索/键盘、失焦恢复、原文重译和编辑后撤销；记录产物与截图，不发送聊天消息（Chrome 152 全新配置、生产构建、本地泰语测试页与真实翻译服务；不等于登录态 Discord 验收，详见 fork-migration-validation.md）
   - 后续已在主 Chrome 的真实 Discord 泰语频道，以重新构建并重载的 `chrome-mv3-dev` 补验核心链路、纯文本粘贴、清空译文后撤销与分层 Esc；原草稿已恢复，未发送消息。当前深色主题补验不替代 8.8 完整矩阵或主 profile 的 production 包验收。
