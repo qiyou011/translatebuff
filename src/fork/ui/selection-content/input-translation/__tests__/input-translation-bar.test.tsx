@@ -72,10 +72,80 @@ function setup(extensionTheme: Theme = "light", background = "black") {
     </ThemeContext>,
     { container: host },
   )
-  return { ...rendered, element, host, props, setThemeMode, interaction: () => interaction }
+  return {
+    ...rendered,
+    rerender: (node: React.ReactNode) =>
+      rendered.rerender(
+        <ThemeContext value={{ theme: extensionTheme, themeMode: extensionTheme, setThemeMode }}>
+          {node}
+        </ThemeContext>,
+      ),
+    element,
+    host,
+    props,
+    setThemeMode,
+    interaction: () => interaction,
+  }
 }
 
 describe("input translation themed menu", () => {
+  it("shows pending feedback and disables language selection without disabling undo", async () => {
+    const { props, rerender } = setup()
+    rerender(
+      <InputTranslationBar
+        {...props}
+        bar={{ ...props.bar, pendingLang: "jpn", feedback: { kind: "pending" } }}
+      />,
+    )
+    expect(await screen.findByText("inputTranslationBar.translating")).toBeVisible()
+    expect(screen.getByRole("combobox")).toBeDisabled()
+    expect(screen.getByRole("button", { name: "inputTranslationBar.undo" })).toBeEnabled()
+    expect(screen.queryByText("inputTranslationBar.autoDetected")).toBeNull()
+  })
+
+  it("initial error has only safe failure copy and retry, without a chooser or undo", async () => {
+    const { props, rerender } = setup()
+    const onRetry = vi.fn<() => void>()
+    rerender(
+      <InputTranslationBar
+        {...props}
+        onRetry={onRetry}
+        bar={{
+          kind: "initial",
+          element: props.bar.element,
+          originalText: "original",
+          direction: { fromLang: "targetCode", toLang: "sourceCode" },
+          feedback: { kind: "error", retryable: true, messageKey: "inputTranslationBar.failed" },
+        }}
+      />,
+    )
+    fireEvent.click(await screen.findByRole("button", { name: "inputTranslationBar.retry" }))
+    expect(onRetry).toHaveBeenCalledOnce()
+    expect(screen.queryByRole("combobox")).toBeNull()
+    expect(screen.queryByRole("button", { name: "inputTranslationBar.undo" })).toBeNull()
+  })
+
+  it("terminal retranslation error keeps undo but never offers retry or account actions", async () => {
+    const { props, rerender } = setup()
+    rerender(
+      <InputTranslationBar
+        {...props}
+        bar={{
+          ...props.bar,
+          feedback: {
+            kind: "error",
+            retryable: false,
+            messageKey: "inputTranslationBar.contentBlocked",
+          },
+        }}
+      />,
+    )
+    expect(await screen.findByText("inputTranslationBar.contentBlocked")).toBeVisible()
+    expect(screen.queryByRole("button", { name: "inputTranslationBar.retry" })).toBeNull()
+    expect(screen.getByRole("button", { name: "inputTranslationBar.undo" })).toBeEnabled()
+    expect(screen.getByRole("combobox")).toBeEnabled()
+  })
+
   it("adapts to the editor without changing the global extension theme", async () => {
     const { host, setThemeMode } = setup()
     await waitFor(() =>
@@ -256,6 +326,15 @@ describe("input translation menu keyboard boundary", () => {
       expect(remove).toHaveBeenCalledWith(type, expect.any(Function))
     }
     remove.mockRestore()
+  })
+
+  it("does not refocus the editor when an old menu event arrives after unmount", async () => {
+    const { editor, search, unmount } = await openShadowMenu()
+    const focusEditor = vi.spyOn(editor, "focus")
+    unmount()
+    fireEvent.keyDown(search, { key: "Escape", bubbles: true, composed: true })
+    expect(focusEditor).not.toHaveBeenCalled()
+    focusEditor.mockRestore()
   })
 
   it("does not isolate other extension fields or the page editor", async () => {

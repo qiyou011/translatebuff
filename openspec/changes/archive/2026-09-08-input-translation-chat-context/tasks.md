@@ -1,6 +1,42 @@
 > 全程 TDD：先写失败测试并跑出真实红灯，再写实现。本地跑测试须设 `SKIP_FREE_API=true`；测试可显式覆盖官网环境变量，不删除用户 `.env`。
+> 2026-09-08 归档确认：用户明确同意在 72/74 状态下保留未完成记录并归档。8.6、8.8 不改勾选，不将代码审查通过等同于完整浏览器验收；600px 窄视口条体裁切已由用户明确排除本次修复范围，不再作为归档阻断。归档仅同步主规格、移动工件，不提交或推送代码。
 > 分支 `feat/fork-foundation-input-trans`，不并回 `change/fork-foundation`。2026-09-05 用户确认采用 fork 自持方案，历史 PR#1 / PR#2 标签仅保留溯源；后续用户已明确授权提交并推送本变更，不执行归档。
 > 2026-09-05 自动复盘已沉淀至 [notes/retrospective.md](./notes/retrospective.md)。提交对账后实施任务为 60/62：8.6、8.8 保持未完成。复盘和提交完成不代表完整交付或归档完成。
+
+## 10. 真实浏览器阻断：焦点交接修复
+
+> 当前授权覆盖计划、评审、工件更新、实施及反复真实浏览器验证；明确不提交、不推送、不归档。Task 9.7 的首次实证已复现问题，不是通过；记录见本机 discord-feedback-browser-test-2026-09-07.md。
+
+- [x] 10.1 制定焦点交接计划并完成架构复审，更新 proposal/design/spec/tasks；加入同步 focus 重入守卫
+- [x] 10.2 完成 GitNexus 影响分析和真实菜单/Shadow DOM/重试焦点红测；最小实现 hook 焦点交接与专属菜单返焦策略
+- [x] 10.3 完成同步会话失效、真正失焦、旧请求、原文撤销、菜单键盘回归及独立代码审查（自动回归与代码复核通过；主 Chrome 原生 Tab、两层 Esc、三轮快速打开立即外点，以及慢请求失焦暂存和 pending Undo 已实证通过）
+- [x] 10.4 运行新鲜的局部/全量测试、类型/lint/fmt、严格工件校验、图变化检查和 Chrome 测试包构建（收尾测试初始化时序已修正：局部连续三次 177 通过，全量 3384 通过/4 跳过，fork 519 通过；本轮无生产变化，沿用已校验构建）
+- [x] 10.5 部署有备份的新包，在主 Chrome Discord 连续验证语言切换、慢请求、失败重试及主动失焦；不额外聚焦掩盖问题，失败则继续修复验证，清理测试规则并恢复草稿
+  - 2026-09-08 新包重载核验及实页通过：连续三轮切语言与两类失败重试，10.14s pending、2.03s 真失焦暂存、2.01s 晚到成功不覆盖撤销。临时规则和配置档已移除，测试 DevTools 关闭，原草稿「你好」恢复；未发消息、未提交。详见 [focus-handoff-validation.md](./focus-handoff-validation.md)。
+
+## 9. Discord 失败反馈与重译状态（2026-09-07 用户确认）
+
+> 对应产品提交 `6f8f4d3c1b3dcdccea11a9fc341f7494e9f568cb` 与禅道 #61290。独立架构评审通过，按 D13–D14 实施；不自动提交、推送、归档或修改禅道状态。旧任务 8.6/8.8 保留。
+
+- [x] 9.1 完成架构评审、四工件一致性更新与 fork 调用链 impact；确认错误兼容路径、原文快照、失焦暂存和请求归属清理约束
+- [x] 9.2 TDD 实现 fork 错误分类：结构化/跨上下文错误、安全、账号/套餐/额度、BYOK 鉴权、临时/未知可重试；复用文案、不追加状态请求
+- [x] 9.3 TDD 实现首次失败 notice 与重试：不误挂纠错条、不二次 enableCycle、首尾空白原文快照、解析异常释放锁及 Discord 范围门禁
+- [x] 9.4 TDD 实现重译 pending、失败回退、当前显示语言重试、重复请求锁及空结果收尾；UI 状态槽/disabled/undo/既有 spinner 联动并补九语文案
+- [x] 9.5 TDD 实现请求失效与结果守卫：undo/Esc/send/unmount/路由、新会话、用户编辑/ABA；失焦结果暂存至原框聚焦，旧 finally 不影响新请求
+- [x] 9.6 运行局部测试、fork 与全量回归、类型/lint/fmt、OpenSpec 严格校验、Chrome 测试包构建；记录新鲜结果，不复用历史通过结论
+- [x] 9.7 使用新插件在主 Chrome Discord 实证正常/慢请求/失败重试/撤销/失焦/菜单搜索，记录版本和证据，不发送聊天消息；原 8.6/8.8 未覆盖项不得顺带勾选
+
+### 2026-09-07 本轮实施证据
+
+- 架构评审与补充失焦暂存评审均为「审查通过」。独立代码审查发现首次重试失焦取消、空格之间粘贴漏进快照两项 P2，以及 null 配置遗留 pending；均先补红灯测试再修复，复核无新增阻塞。
+- `SKIP_FREE_API=true pnpm test src/fork/ui/selection-content/input-translation`：10 文件、145 测试通过（含 48 hook/集成与 24 错误分类）；UI 测试修正 ThemeProvider 测试装配后，禁用反馈的回退检查为 3 红，恢复实现后通过。
+- `SKIP_FREE_API=true pnpm test --config vitest.fork.config.ts`：64 文件、487 测试通过；保留既有 Vite native config 兼容警告。
+- `SKIP_FREE_API=true pnpm test`：347 文件通过、1 文件跳过；3352 测试通过、4 跳过。存在既有 jsdom navigation 提示，无失败。
+- `pnpm run lint`（含 type-check）、`pnpm run fmt:check`、`git diff --check`、`jy-openspec validate input-translation-chat-context --strict` 通过。新增 locale key 经 `wxt prepare` 更新本地生成类型，不提交生成产物。
+- 本轮 21 个变更文件（含新文件）经现有 `classifyChangedFiles` 与实际 allowlist 检查无越界；未修改上游引擎、schema、协议、共享选择器。GitNexus `detect_changes(scope=all, repo=translatebuff)` 原始返回 23 个 tracked 文件、69 符号、low，未标记 partial/truncated；包含既有用户脏文档，新文件另经边界与测试检查。未执行提交，不将此次检查代替未来提交前检查。
+- `node scripts/pack.mjs test --edition cn` 通过，包含测试环境后端域；输出 `.output/chrome-mv3/`、`.output/translatebuff-1.3.0-test-chrome.zip`（约 5.65 MB），manifest 1.3.0/MV3，ZIP CRC 通过。SHA-256：`c6198c68ce1e4666b9561b0e4cf2724b802465cff697e981ef755d2cf49ca18b`。
+- 浏览器技能已准备，但 CUA 返回「Mac is locked and automatic unlock could not unlock it」。未操作 Discord、未发送消息，未声称浏览器通过。9.7 与旧 8.6/8.8 继续未勾选；需要用户解锁 Mac 后补实证。
+- 本轮未提交、推送、归档或修改禅道状态；保留用户原有版本 1.3.0 改动及其他脏文件，未创建或删除 changeset。
 
 ## 1. 站点 → 对话选择器映射（PR#1）
 

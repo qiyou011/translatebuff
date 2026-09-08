@@ -1435,6 +1435,10 @@ languages:
   rar: Tiếng Rarotongan
   hif: Tiếng Hindi Fiji
 inputTranslationBar:
+  translating: Đang dịch…
+  failed: Dịch thất bại
+  retry: Thử lại
+  contentBlocked: Nội dung không vượt qua kiểm tra an toàn nên không thể dịch
   translateTo: Dịch sang
   autoDetected: Tự động phát hiện
   fromPageSource: Theo ngôn ngữ trang

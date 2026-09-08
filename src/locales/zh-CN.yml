@@ -1551,6 +1551,10 @@ languages:
   rar: 拉罗汤加语
   hif: 斐济印地语
 inputTranslationBar:
+  translating: 翻译中…
+  failed: 翻译失败
+  retry: 重试
+  contentBlocked: 内容未通过安全审核，无法翻译
   translateTo: 翻译为
   autoDetected: 自动检测
   fromPageSource: 按网页源语言

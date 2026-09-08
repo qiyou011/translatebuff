@@ -1,7 +1,7 @@
 import type { LangCodeISO6393 } from "@read-frog/definitions"
 import type { LanguageItem } from "@/components/language-combobox-options"
 import { Combobox as Primitive } from "@base-ui/react"
-import { useMemo } from "react"
+import { useMemo, useRef, useState } from "react"
 import { filterLanguage, getTargetLanguageItems } from "@/components/language-combobox-options"
 import { Button } from "@/components/ui/base-ui/button"
 import {
@@ -22,6 +22,17 @@ interface InputTranslationLanguageSelectProps {
   container: HTMLElement
   onOpenChange: Primitive.Root.Props<LanguageItem<LangCodeISO6393>>["onOpenChange"]
   triggerClassName?: string
+  disabled?: boolean
+}
+
+function deepActiveElement(document: Document): Element | null {
+  let active = document.activeElement
+  while (active?.shadowRoot?.activeElement) active = active.shadowRoot.activeElement
+  return active
+}
+
+function containsTarget(owner: HTMLElement, target: EventTarget | null): boolean {
+  return target === owner || (target instanceof Node && owner.contains(target))
 }
 
 /** Only this surface owns the upward, editor-themed portal; shared menus stay upstream. */
@@ -31,20 +42,52 @@ export function InputTranslationLanguageSelect({
   container,
   onOpenChange,
   triggerClassName,
+  disabled = false,
 }: InputTranslationLanguageSelectProps) {
   const items = useMemo(() => getTargetLanguageItems(), [])
+  const [selectionCommitted, setSelectionCommitted] = useState(false)
+  const triggerRef = useRef<HTMLButtonElement | null>(null)
+  const popupRef = useRef<HTMLDivElement | null>(null)
   return (
     <Primitive.Root<LanguageItem<LangCodeISO6393>>
       items={items}
       value={items.find((item) => item.value === value) ?? null}
       onValueChange={(item) => {
-        if (item) onValueChange(item.value)
+        if (item) {
+          setSelectionCommitted(true)
+          onValueChange(item.value)
+        }
       }}
       filter={filterLanguage}
       autoHighlight
-      onOpenChange={onOpenChange}
+      disabled={disabled}
+      onOpenChange={(open, details) => {
+        if (open) setSelectionCommitted(false)
+        const trigger = triggerRef.current
+        const popup = popupRef.current
+        const eventPath = details.event?.composedPath() ?? []
+        if (
+          !open &&
+          details.reason === "escape-key" &&
+          !selectionCommitted &&
+          trigger?.isConnected &&
+          !trigger.hasAttribute("disabled") &&
+          popup &&
+          [trigger, popup].some((owner) =>
+            containsTarget(owner, deepActiveElement(owner.ownerDocument)),
+          ) &&
+          eventPath.some((target) =>
+            [trigger, popup].some((owner) => containsTarget(owner, target)),
+          )
+        ) {
+          trigger.focus({ preventScroll: true })
+        }
+        onOpenChange?.(open, details)
+      }}
     >
       <ComboboxTrigger
+        ref={triggerRef}
+        disabled={disabled}
         render={
           <Button
             type="button"
@@ -71,6 +114,8 @@ export function InputTranslationLanguageSelect({
           className="isolate z-2147483001"
         >
           <Primitive.Popup
+            ref={popupRef}
+            finalFocus={selectionCommitted ? false : undefined}
             data-slot="combobox-content"
             className={cn(
               "rf-input-translation-menu group/combobox-content relative origin-(--transform-origin) overflow-hidden rounded-lg shadow-md ring-1 ring-foreground/10 duration-100 *:data-[slot=input-group]:m-1 *:data-[slot=input-group]:mb-0 *:data-[slot=input-group]:h-8 *:data-[slot=input-group]:shadow-none data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95",

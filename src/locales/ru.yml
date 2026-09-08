@@ -1435,6 +1435,10 @@ languages:
   rar: Раротонганский
   hif: Фиджийский хинди
 inputTranslationBar:
+  translating: Перевод…
+  failed: Не удалось перевести
+  retry: Повторить
+  contentBlocked: Содержимое не прошло проверку безопасности и не может быть переведено
   translateTo: Перевести на
   autoDetected: Определено автоматически
   fromPageSource: По языку страницы

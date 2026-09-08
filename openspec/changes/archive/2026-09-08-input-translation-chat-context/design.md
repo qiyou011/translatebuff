@@ -30,6 +30,39 @@
 
 ## Decisions
 
+### D15：内联动作同步交接焦点（2026-09-07，修订后架构审查通过）
+
+- 在 retranslate 与首次 retry 动作入口、发布 pending 和启动请求之前，由 hook 私有 helper 将焦点交回当前会话原输入框，使用 focus({ preventScroll: true })。translated retry 复用 retranslate，不改原文、不额外触发 input。
+- 动作须来自当前输入框或专属交互范围。聚焦前捕获 bar 对象身份、URL 和草稿；focus 可同步触发会话清理，返回后必须复核 bar 身份、请求锁为空、元素连接、URL/草稿不变、原框确实拥有焦点。任一失败立即返回，不能复活已结束会话。正常 isVisible 更新不改变 bar 身份；全段不得插入 await。
+- 专属语言菜单每次打开重置 selectionCommitted；有效选项提交设置该状态，并以 Popup.finalFocus=false 抑制向禁用触发器返焦。未提交的 Esc、Tab、外部点击保留默认关闭语义；搜索事件隔离不变。不修改共享 Base UI 组件。
+- 响应、finally 与关闭定时器不得强制聚焦。用户随后主动离开时继续遵循 D13 的隐藏与暂存规则；不增加定时豁免、全局焦点管理器或轮询。
+- 2026-09-08 补充架构评审通过：Shadow 菜单 Esc 卸载与默认返焦之间存在短暂空档，会被既有隐藏检查先判为失焦。仅在专属菜单 onOpenChange 的未提交 `escape-key` 关闭路径、trigger 连接且启用、深层焦点与关闭事件均来自本菜单/trigger 时，同步 focus trigger 后通知 hook。选值仍交接 editor；外部点击、Tab、程序关闭不额外返焦；卸载/禁用时不动作。首次 Esc 只关菜单，第二次结束条。
+- `hasFocusWithin` 的 upstream impact 为 HIGH/exact（20 个符号），已告知用户；不采用放宽该公共守卫的方案。即使 document.activeElement 等于 ShadowRoot host 且内部 activeElement 为空，也不能证明焦点属于本菜单；不得用 host 特判放宽请求结果写回授权。
+- 独立架构复审已确认同步重入 P1 闭环，结论「审查通过」。具体实现及普通 DOM/Shadow DOM、鼠标/键盘、真实 Chrome 验收仍需执行，不能用设计通过代替运行证据。
+
+### D13：Discord 请求反馈与有效性（2026-09-07，增量评审通过）
+
+本节覆盖 D7 中「state 只在替换成功后写一次」的旧限制：首次失败 notice 与 pending 需要独立反馈状态，但仅成功译文拥有撤销对象。现有 fork 自持边界 D12 不变。
+
+- `InputTranslationBar` 保留 translated/sameLanguage，增加 initial notice；translated 附可选 pending/error 反馈。pending 显示请求语言，但上次成功语言独立保留，失败或用户编辑取消时回退。React state 只负责显示，同步 ref 的请求身份负责防重入与写回授权。
+- 请求闭包保存元素、当前 URL、请求前草稿、方向及不可变原文。首次三空格序列开始前保存原始草稿（含用户首尾空白），与送给引擎的规范化文本分开；重试不再次执行 enableCycle。首次失败后编辑关闭旧 notice，新触发保存新快照。
+- 首次解析语言也纳入 try/finally；同步请求锁覆盖解析、翻译和等待提交。请求自身拥有 spinner 与监听清理，旧请求 finally 不得释放新请求锁或移除新 spinner。空结果退出 pending，不作为成功译文。
+- 成功写入前验证请求身份、原元素仍连接、URL 未变、草稿未变。监听 input 立即失效请求，覆盖编辑后改回的 ABA 情况。已有成功会话取消 pending 时仅恢复成功语言/来源，保留撤销，不回写旧译文。首次取消不挂纠错条。
+- undo、Esc（菜单未展开）、实际发送、元素卸载或新会话使旧请求失效；首次还没有 bar 时也要覆盖。失焦只隐藏；结果在失焦时返回，暂存于当前请求，重新聚焦原输入框且守卫仍有效才提交，不自动抢回其他输入框焦点。新输入框触发替换旧请求，不新增多会话缓存。
+- 继续使用既有 setTextWithUndo / MAIN-world 协议。本次仅保证发出写入前的校验；现有协议没有接收确认，不宣称跨上下文原子写入。
+
+### D14：错误分类与 UI 边界
+
+新增 fork 局部纯分类函数，输出可重试性和安全的本地化文案 key。优先识别结构化 code/body/cause，再兼容序列化后普通 Error 的受控错误码文本。metadata 仅提供证据，不能直接采用公共自动重试的结论。
+
+安全 `data_inspection_failed`、未登录、套餐限制、额度耗尽、BYOK 鉴权失败优先归为不可重试；网络/超时/429/5xx、hosted 临时不可用和未知归为可重试。hosted 错误目前只有 provider/message：在确定错误类型内，匹配现有 reason 文案或「reason + · 额度后缀」，未知安全回退可重试，不为分类追加 API 请求，不改上游错误类。覆盖四种 reason 及后缀测试。原始响应只参与分类，绝不直接显示可能带草稿、密钥或服务细节的 body。
+
+初次失败 notice 无语言/撤销；重译失败保留完整纠错条与 undo。状态槽复用来源/翻译中/错误，warning 仅图标着色、正文跟随已有主题；不新增弹窗、登录/升级按钮或第二个 spinner。语言选择器 pending 禁用，同步锁仍需防同帧重复调用。重试取失败回退后当前显示语言（俄语→日语失败→俄语→重试俄语）。所有新增 UI 以现有 Discord 频道匹配为门；显式语言只关闭纠错条，不关闭错误 notice。
+
+### 2026-09-07 评审记录
+
+独立 architect-review 只读检查需求、工件及源码，结论「审查通过」。纳入其约束：原文与 trim 文本分离、首次无 bar 请求可取消、序列化后错误适配、请求归属清理、空结果退出 pending。不增加 manager/事件总线/通用状态机。GitNexus 索引 a8b240f（当前 HEAD），fork hook 与 UI 调用链 LOW；App 为 UNKNOWN，文本确认由 selection.content/index.tsx 经 app.tsx shim 挂载。旧任务 8.6/8.8 不因本次设计通过而完成。
+
 ### D12：fork 自持边界（2026-09-05 用户确认，覆盖下文历史主备交付选择）
 
 为支持不定期合并上游，本次启用原 R2 的 fork 自持路径，不等待上游是否接受 PR。业务模块、主题、内联条及测试集中在 `src/fork/ui/selection-content/input-translation/`。fork App 只调用该目录导出的 hook，不同时挂载上游 hook，不增加全局重定向。

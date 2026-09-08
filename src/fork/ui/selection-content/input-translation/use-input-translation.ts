@@ -1,4 +1,5 @@
 import type { LangCodeISO6393 } from "@read-frog/definitions"
+import type { InputTranslationError } from "./input-translation-error"
 import type { InputTranslationLangSource } from "./resolve-lang"
 import type { InputTranslationLang } from "@/types/config/config"
 import { useAtomValue } from "jotai"
@@ -13,6 +14,8 @@ import { INPUT_REPLACE_REQUEST_TYPE } from "@/utils/constants/input-injector"
 import { translateTextForInput } from "@/utils/host/translate/translate-variants"
 import { HostedAiProviderUnavailableError } from "@/utils/providers/provider-ref"
 import { resolveProviderRefForCapability } from "@/utils/providers/provider-registry"
+import { getChatContextSelector } from "./chat-context-sites"
+import { classifyInputTranslationError } from "./input-translation-error"
 import { resolveInputTranslationLang } from "./resolve-lang"
 
 const SPACE_KEY = " "
@@ -165,6 +168,11 @@ function hasFocusWithin(element: HTMLElement, interactionElement: HTMLElement | 
 /** 这次的语言是怎么定的，界面据此显示「自动检测」／「按网页源语言」／「手动选择」。 */
 export type InputTranslationBarSource = "chatContext" | "pageSource" | "manual"
 
+export type InputTranslationFeedback =
+  | { kind: "pending" }
+  | ({ kind: "error" } & InputTranslationError)
+type TranslationDirection = { fromLang: InputTranslationLang; toLang: InputTranslationLang }
+
 /**
  * 输入框上方那条的两种形态。
  *
@@ -180,6 +188,15 @@ export type InputTranslationBar =
       fromCode: LangCodeISO6393
       lang: LangCodeISO6393
       langSource: InputTranslationBarSource
+      pendingLang?: LangCodeISO6393
+      feedback?: InputTranslationFeedback
+    }
+  | {
+      kind: "initial"
+      element: HTMLElement
+      originalText: string
+      direction: TranslationDirection
+      feedback: InputTranslationFeedback
     }
   /** 两端同语言、什么都没换。同一位置、同款外观，但没有可撤销的对象。 */
   | { kind: "sameLanguage"; element: HTMLElement; lang: LangCodeISO6393 }
@@ -187,6 +204,15 @@ export type InputTranslationBar =
 type InputTranslationBarState = {
   bar: InputTranslationBar
   isVisible: boolean
+}
+
+type PendingInputRequest = {
+  element: HTMLElement
+  valid: () => boolean
+  finish: () => void
+  cancel: () => void
+  settle: (commit: () => void) => void
+  deferred: (() => void) | null
 }
 
 /**
@@ -218,54 +244,157 @@ export function useInputTranslation() {
   const inputTranslationConfig = useAtomValue(configFieldsAtomMap.inputTranslation)
   const providersConfig = useAtomValue(configFieldsAtomMap.providersConfig)
   const spaceTimestampsRef = useRef<number[]>([])
-  const isTranslatingRef = useRef(false)
+  const requestRef = useRef<PendingInputRequest | null>(null)
+  const triggerSnapshotRef = useRef<{ element: HTMLElement; text: string } | null>(null)
   const interactionElementRef = useRef<HTMLElement | null>(null)
   const languageMenuOpenRef = useRef(false)
-  // 只在替换真的发生之后写一次。竞态保护仍旧用下面那个闭包局部变量——setState 是异步的，
-  // 同一个 async 闭包读不到新值，拿它当守卫会漏。
   const [barState, setBarState] = useState<InputTranslationBarState | null>(null)
+  const stateRef = useRef<InputTranslationBarState | null>(null)
+  const updateState = useCallback(
+    (update: (state: InputTranslationBarState | null) => InputTranslationBarState | null) => {
+      stateRef.current = update(stateRef.current)
+      setBarState(stateRef.current)
+    },
+    [],
+  )
+  const publish = useCallback(
+    (next: InputTranslationBar | null) => {
+      updateState(() =>
+        next
+          ? { bar: next, isVisible: hasFocusWithin(next.element, interactionElementRef.current) }
+          : null,
+      )
+    },
+    [updateState],
+  )
   // `bar` 是仍然存活的翻译会话；`barState.isVisible` 只控制 UI。真正失焦时两者不能一起清空，
   // 否则重新聚焦原输入框时会丢失 originalText，也无法恢复撤销入口。
   const bar = barState?.bar ?? null
 
+  // The request owns its listeners/spinner. Logical cancellation deliberately does not
+  // change the upstream transport; a late finally can only clean its own resources.
+  const beginRequest = useCallback(
+    (element: HTMLElement, onCancel: () => void) => {
+      const draft = getEditableText(element)
+      const url = window.location.href
+      const hideSpinner = showSpinner(element)
+      const cleanup: Array<() => void> = [hideSpinner]
+      const request: PendingInputRequest = {
+        element,
+        deferred: null,
+        valid: () =>
+          requestRef.current === request &&
+          element.isConnected &&
+          window.location.href === url &&
+          getEditableText(element) === draft,
+        finish: () => {
+          request.deferred = null
+          cleanup.splice(0).forEach((dispose) => dispose())
+          if (requestRef.current === request) requestRef.current = null
+        },
+        cancel: () => {
+          if (requestRef.current !== request) return
+          request.finish()
+          if (!element.isConnected || window.location.href !== url) publish(null)
+          else onCancel()
+        },
+        settle: (commit) => {
+          if (!request.valid()) {
+            request.cancel()
+            return
+          }
+          const apply = () => {
+            if (!request.valid()) {
+              request.cancel()
+              return
+            }
+            if (!hasFocusWithin(element, interactionElementRef.current)) return
+            // Remove our input listener before the intentional extension write.
+            request.finish()
+            commit()
+          }
+          request.deferred = apply
+          apply()
+        },
+      }
+      requestRef.current = request
+      const listen = (target: EventTarget, type: string, handler: EventListener) => {
+        target.addEventListener(type, handler, true)
+        cleanup.push(() => target.removeEventListener(type, handler, true))
+      }
+      listen(element, "input", () => request.cancel())
+      listen(document, "focusin", () => request.deferred?.())
+      listen(document, "keydown", (event) => {
+        const key = event as KeyboardEvent
+        if (
+          key.key === "Escape" &&
+          !languageMenuOpenRef.current &&
+          (eventComesFrom(event, element) || eventComesFrom(event, interactionElementRef.current))
+        ) {
+          request.cancel()
+          publish(null)
+        }
+      })
+      listen(document, "submit", (event) => {
+        if (event.target instanceof HTMLFormElement && event.target.contains(element)) {
+          request.cancel()
+          publish(null)
+        }
+      })
+      listen(window, "popstate", () => {
+        if (!request.valid()) request.cancel()
+      })
+      listen(window, "hashchange", () => {
+        if (!request.valid()) request.cancel()
+      })
+      // Observe only child-list changes along the editor's ancestor chain, not the
+      // entire Discord message subtree. Removing any ancestor invalidates ownership.
+      const observer = new MutationObserver(() => {
+        if (!request.valid()) request.cancel()
+      })
+      for (let parent = element.parentElement; parent; parent = parent.parentElement) {
+        observer.observe(parent, { childList: true })
+      }
+      cleanup.push(() => observer.disconnect())
+      return request
+    },
+    [publish],
+  )
+
+  useEffect(
+    () => () => {
+      requestRef.current?.finish()
+    },
+    [],
+  )
+
   const handleTranslation = useCallback(
-    async (element: HTMLInputElement | HTMLTextAreaElement | HTMLElement) => {
-      if (isTranslatingRef.current) return
+    async (
+      element: HTMLInputElement | HTMLTextAreaElement | HTMLElement,
+      retryBar?: Extract<InputTranslationBar, { kind: "initial" }>,
+    ) => {
+      if (requestRef.current?.element === element) return
+      requestRef.current?.cancel()
 
       // Security: skip password fields to prevent exposing sensitive data
       if (element instanceof HTMLInputElement && element.type === "password") {
         return
       }
 
-      // Get the text content based on element type
-      let text: string
-      if (element instanceof HTMLInputElement || element instanceof HTMLTextAreaElement) {
-        text = element.value
-      } else if (element.isContentEditable) {
-        text = element.textContent || ""
-      } else {
-        return
-      }
-
-      // Remove trailing whitespace added by space key presses
-      text = text.trim()
-
-      // For input/textarea, trim whitespace immediately (execCommand works reliably).
-      // For contenteditable, skip — we'll do a single replacement after translation
-      // returns, because rich text editors can't be updated reliably from isolated world.
-      if (element instanceof HTMLInputElement || element instanceof HTMLTextAreaElement) {
-        setTextWithUndo(element, text)
-      }
-
-      if (!text) {
-        return
-      }
+      const text = getEditableText(element).trim()
+      if (!text || !element.isConnected) return
+      const originalText =
+        retryBar?.originalText ??
+        (triggerSnapshotRef.current?.element === element
+          ? triggerSnapshotRef.current.text
+          : getEditableText(element))
+      const discord = getChatContextSelector(window.location.href) !== null
 
       // Determine fromLang and toLang, possibly swapped if cycle is enabled
-      let fromLang = inputTranslationConfig.fromLang
-      let toLang = inputTranslationConfig.toLang
+      let fromLang = retryBar?.direction.fromLang ?? inputTranslationConfig.fromLang
+      let toLang = retryBar?.direction.toLang ?? inputTranslationConfig.toLang
 
-      if (inputTranslationConfig.enableCycle) {
+      if (inputTranslationConfig.enableCycle && !retryBar) {
         const wasSwapped = getLastCycleSwapped()
         if (wasSwapped) {
           // Already swapped last time, use original direction
@@ -277,36 +406,17 @@ export function useInputTranslation() {
         }
       }
 
-      isTranslatingRef.current = true
-
-      // 语言解析放在这一层，而不是引擎里：方向互换刚在上面做完，引擎本来就收具体语言码，
-      // 于是引擎一行不用改；解析顺带带出的 `source` 还要交给界面区分「自动检测」与
-      // 「按网页源语言」。守卫在解析之前就置位，所以下面每条提前返回都要自己放开。
-      const langs = await resolveLangPair(fromLang, toLang)
-      if (!langs) {
-        isTranslatingRef.current = false
-        return
-      }
-
-      // 两端同语言时提前收手。引擎内部也会返回空串，但那个空串和「没什么可翻」的空串
-      // 无法区分，调用方据此弹不了提示——用户连按三下空格却毫无反应，只会以为功能坏了。
-      // 在这里断掉还顺带省下 spinner 与 provider 解析。
-      if (langs.from.code === langs.to.code) {
-        setBarState({
-          bar: { kind: "sameLanguage", element, lang: langs.to.code },
-          isVisible: true,
-        })
-        isTranslatingRef.current = false
-        return
-      }
-
-      // Show spinner near the input element
-      const hideSpinner = showSpinner(element)
-
-      // Store original text to detect if user edited during translation
-      const originalText = text
-
+      const direction = { fromLang, toLang }
+      publish(retryBar ? { ...retryBar, feedback: { kind: "pending" } } : null)
+      const request = beginRequest(element, () => publish(null))
       try {
+        const langs = await resolveLangPair(fromLang, toLang)
+        if (!request.valid()) return
+        if (!langs) throw new Error("Input translation configuration is unavailable")
+        if (langs.from.code === langs.to.code) {
+          if (discord) publish({ kind: "sameLanguage", element, lang: langs.to.code })
+          return
+        }
         const translatedText = await trackFeatureAttempt(
           {
             ...createFeatureUsageContext(
@@ -326,51 +436,44 @@ export function useInputTranslation() {
           () => translateTextForInput(text, langs.from.code, langs.to.code),
         )
 
-        // Check if element content changed during translation (user input)
-        let currentText: string
-        if (element instanceof HTMLInputElement || element instanceof HTMLTextAreaElement) {
-          currentText = element.value
-        } else if (element.isContentEditable) {
-          currentText = element.textContent || ""
-        } else {
-          currentText = originalText
+        if (!translatedText) {
+          if (request.valid()) publish(null)
+          return
         }
-
-        // Only apply translation if content hasn't changed during async operation
-        if (currentText.trim() === originalText && translatedText) {
+        request.settle(() => {
           setTextWithUndo(element, translatedText)
-          // 放弃替换的那条分支刻意不挂内联条：否则撤销会把用户新输入的内容
-          // 改写成一段他没要的旧文本。
           const barSource = toBarSource(langs.to.source)
-          if (barSource) {
-            setBarState({
-              bar: {
-                kind: "translated",
-                element,
-                originalText,
-                fromCode: langs.from.code,
-                lang: langs.to.code,
-                langSource: barSource,
-              },
-              isVisible: true,
+          if (discord && barSource) {
+            publish({
+              kind: "translated",
+              element,
+              originalText,
+              fromCode: langs.from.code,
+              lang: langs.to.code,
+              langSource: barSource,
             })
-          }
-        }
+          } else publish(null)
+        })
       } catch (error) {
-        // A hosted plan/quota denial is a state the user can act on, not a
-        // defect: without this the spinner just appears and disappears and
-        // the feature reads as broken.
-        if (error instanceof HostedAiProviderUnavailableError) {
+        if (!request.valid()) return
+        if (discord) {
+          publish({
+            kind: "initial",
+            element,
+            originalText,
+            direction,
+            feedback: { kind: "error", ...classifyInputTranslationError(error) },
+          })
+        } else if (error instanceof HostedAiProviderUnavailableError) {
           toastManager.add({
             type: "error",
             title: error.message,
             id: HOSTED_UNAVAILABLE_TOAST_ID,
           })
         }
-        console.error("Input translation error:", error)
       } finally {
-        hideSpinner()
-        isTranslatingRef.current = false
+        if (!request.valid()) request.cancel()
+        if (!request.deferred) request.finish()
       }
     },
     [
@@ -379,16 +482,44 @@ export function useInputTranslation() {
       inputTranslationConfig.enableCycle,
       inputTranslationConfig.providerId,
       providersConfig,
+      beginRequest,
+      publish,
     ],
   )
 
   const dismiss = useCallback(() => {
     languageMenuOpenRef.current = false
-    setBarState(null)
-  }, [])
+    requestRef.current?.finish()
+    publish(null)
+  }, [publish])
 
   const setInteractionElement = useCallback((element: HTMLElement | null) => {
     interactionElementRef.current = element
+  }, [])
+
+  const focusEditorForInlineAction = useCallback((element: HTMLElement) => {
+    const expectedBar = stateRef.current?.bar
+    if (
+      !expectedBar ||
+      expectedBar.element !== element ||
+      requestRef.current ||
+      !element.isConnected
+    )
+      return false
+    if (!hasFocusWithin(element, interactionElementRef.current)) return false
+    const expectedUrl = element.ownerDocument.location.href
+    const expectedDraft = getEditableText(element)
+    element.focus({ preventScroll: true })
+    // focus() synchronously runs host and hook listeners, which may end or replace the session.
+    if (stateRef.current?.bar !== expectedBar || requestRef.current || !element.isConnected)
+      return false
+    if (
+      element.ownerDocument.location.href !== expectedUrl ||
+      getEditableText(element) !== expectedDraft
+    )
+      return false
+    const activeElement = element.ownerDocument.activeElement
+    return activeElement === element || (activeElement !== null && element.contains(activeElement))
   }, [])
 
   const setLanguageMenuOpen = useCallback(
@@ -399,45 +530,82 @@ export function useInputTranslation() {
       // 菜单通过 Portal 挂在内联条 DOM 之外。菜单关闭后等焦点归位：若回到触发器或原输入框，
       // 继续保留；若是点到外部导致菜单关闭，翻译条只暂时隐藏，同语言提示则永久结束。
       window.setTimeout(() => {
-        setBarState((current) => {
+        updateState((current) => {
           if (
             !current ||
-            current.bar !== bar ||
+            current.bar.element !== bar?.element ||
             hasFocusWithin(current.bar.element, interactionElementRef.current)
           ) {
             return current
           }
-          return current.bar.kind === "sameLanguage" ? null : { ...current, isVisible: false }
+          return current.bar.kind !== "translated" ? null : { ...current, isVisible: false }
         })
       }, 0)
     },
-    [bar],
+    [bar, updateState],
   )
 
   const undo = useCallback(() => {
+    const current = stateRef.current?.bar
+    dismiss()
     // 元素可能已经被 SPA 卸载；此时什么都不写，别去动一个不存在的目标。
-    if (bar?.kind === "translated" && document.contains(bar.element)) {
-      setTextWithUndo(bar.element, bar.originalText)
+    if (current?.kind === "translated" && document.contains(current.element)) {
+      setTextWithUndo(current.element, current.originalText)
     }
-    setBarState(null)
-  }, [bar])
+  }, [dismiss])
 
   const retranslate = useCallback(
     async (code: LangCodeISO6393) => {
-      if (bar?.kind !== "translated" || !document.contains(bar.element)) return
-      // 拿原文重译，不是拿上一轮的译文再翻一遍——那样会一路失真。
-      const translated = await translateTextForInput(bar.originalText, bar.fromCode, code)
-      if (!translated) return
-      setTextWithUndo(bar.element, translated)
-      // 原型要求标注由「自动检测」改成「手动选择」。
-      setBarState((current) =>
-        current?.bar === bar
-          ? { ...current, bar: { ...bar, lang: code, langSource: "manual" } }
-          : current,
-      )
+      const current = stateRef.current?.bar
+      if (requestRef.current || current?.kind !== "translated" || !current.element.isConnected)
+        return
+      if (!focusEditorForInlineAction(current.element)) return
+      const previous = { ...current, feedback: undefined, pendingLang: undefined }
+      publish({ ...previous, pendingLang: code, feedback: { kind: "pending" } })
+      const request = beginRequest(current.element, () => publish(previous))
+      try {
+        const translated = await translateTextForInput(
+          current.originalText.trim(),
+          current.fromCode,
+          code,
+        )
+        if (!translated) {
+          if (request.valid()) publish(previous)
+          return
+        }
+        request.settle(() => {
+          setTextWithUndo(current.element, translated)
+          publish({ ...previous, lang: code, langSource: "manual" })
+        })
+      } catch (error) {
+        if (request.valid())
+          publish({
+            ...previous,
+            feedback: { kind: "error", ...classifyInputTranslationError(error) },
+          })
+      } finally {
+        if (!request.valid()) request.cancel()
+        if (!request.deferred) request.finish()
+      }
     },
-    [bar],
+    [beginRequest, focusEditorForInlineAction, publish],
   )
+
+  const retry = useCallback(async () => {
+    const current = stateRef.current?.bar
+    if (
+      requestRef.current ||
+      !current ||
+      current.kind === "sameLanguage" ||
+      current.feedback?.kind !== "error" ||
+      !current.feedback.retryable
+    )
+      return
+    if (current.kind === "initial") {
+      if (!focusEditorForInlineAction(current.element)) return
+      await handleTranslation(current.element, current)
+    } else await retranslate(current.lang)
+  }, [focusEditorForInlineAction, handleTranslation, retranslate])
 
   useEffect(() => {
     if (!bar) return undefined
@@ -447,14 +615,21 @@ export function useInputTranslation() {
     let focusCheckTimer: number | undefined
 
     const dismissCurrentBar = () => {
-      setBarState((current) => (current?.bar === bar ? null : current))
+      if (stateRef.current?.bar.element === bar.element) dismiss()
     }
 
     const hideCurrentBar = () => {
-      setBarState((current) => {
-        if (current?.bar !== bar) return current
+      if (
+        bar.kind === "sameLanguage" ||
+        (bar.kind === "initial" && bar.feedback.kind !== "pending")
+      ) {
+        dismissCurrentBar()
+        return
+      }
+      updateState((current) => {
+        if (current?.bar.element !== bar.element) return current
         // 同语言提示是一次性反馈，没有需要保留的原文快照。
-        return bar.kind === "sameLanguage" ? null : { ...current, isVisible: false }
+        return { ...current, isVisible: false }
       })
     }
 
@@ -487,7 +662,7 @@ export function useInputTranslation() {
     }
 
     const handleFocusIn = (event: FocusEvent) => {
-      if (bar.kind !== "translated" || !eventComesFrom(event, bar.element)) return
+      if (bar.kind === "sameLanguage" || !eventComesFrom(event, bar.element)) return
 
       // 输入框已被宿主清空时通常表示发送完成；即使漏掉了发送事件，也不能恢复旧会话。
       if (!document.contains(bar.element) || getEditableText(bar.element).trim() === "") {
@@ -495,7 +670,9 @@ export function useInputTranslation() {
         return
       }
 
-      setBarState((current) => (current?.bar === bar ? { ...current, isVisible: true } : current))
+      updateState((current) =>
+        current?.bar.element === bar.element ? { ...current, isVisible: true } : current,
+      )
     }
 
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -534,7 +711,7 @@ export function useInputTranslation() {
     const handleInput = (event: Event) => {
       if (!eventComesFrom(event, bar.element)) return
       // 同语言提示没有可撤销对象，只是本次三空格操作的一次性反馈；用户继续输入即收起。
-      if (bar.kind === "sameLanguage") {
+      if (bar.kind !== "translated") {
         dismissCurrentBar()
         return
       }
@@ -573,7 +750,7 @@ export function useInputTranslation() {
       bar.element.removeEventListener("input", handleInput)
       contentObserver.disconnect()
     }
-  }, [bar])
+  }, [bar, dismiss, updateState])
 
   useEffect(() => {
     if (!inputTranslationConfig.enabled) return undefined
@@ -583,6 +760,7 @@ export function useInputTranslation() {
       if (event.key !== SPACE_KEY) {
         // Reset on any other key
         spaceTimestampsRef.current = []
+        triggerSnapshotRef.current = null
         return
       }
 
@@ -595,6 +773,7 @@ export function useInputTranslation() {
 
       if (!isInputField || !activeElement) {
         spaceTimestampsRef.current = []
+        triggerSnapshotRef.current = null
         return
       }
 
@@ -603,8 +782,19 @@ export function useInputTranslation() {
 
       // Remove timestamps older than threshold
       const timeThreshold = inputTranslationConfig.timeThreshold
+      if (timestamps.length && now - timestamps[timestamps.length - 1]! > timeThreshold) {
+        timestamps.length = 0
+      }
       while (timestamps.length > 0 && now - timestamps[0]! > timeThreshold * (TRIGGER_COUNT - 1)) {
         timestamps.shift()
+      }
+
+      if (!timestamps.length || triggerSnapshotRef.current?.element !== activeElement) {
+        timestamps.length = 0
+        triggerSnapshotRef.current = {
+          element: activeElement,
+          text: getEditableText(activeElement),
+        }
       }
 
       // Add current timestamp
@@ -626,8 +816,24 @@ export function useInputTranslation() {
       }
     }
 
+    const handleDraftEdit = (event: Event) => {
+      if (!eventComesFrom(event, triggerSnapshotRef.current?.element ?? null)) return
+      // A keyboard space's default insertion is part of the sequence. Paste, drop,
+      // composition and other edits are not: the next space must take a fresh snapshot.
+      if (
+        event instanceof InputEvent &&
+        event.inputType === "insertText" &&
+        event.data === SPACE_KEY &&
+        !event.isComposing
+      )
+        return
+      spaceTimestampsRef.current = []
+      triggerSnapshotRef.current = null
+    }
+    document.addEventListener("input", handleDraftEdit, true)
     document.addEventListener("keydown", handleKeyDown, true)
     return () => {
+      document.removeEventListener("input", handleDraftEdit, true)
       document.removeEventListener("keydown", handleKeyDown, true)
     }
   }, [inputTranslationConfig.enabled, inputTranslationConfig.timeThreshold, handleTranslation])
@@ -636,6 +842,7 @@ export function useInputTranslation() {
     bar: barState?.isVisible ? bar : null,
     undo,
     retranslate,
+    retry,
     dismiss,
     setInteractionElement,
     setLanguageMenuOpen,

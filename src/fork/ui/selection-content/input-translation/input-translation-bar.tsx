@@ -3,7 +3,7 @@ import type {
   InputTranslationBar as BarState,
   InputTranslationBarSource,
 } from "./use-input-translation"
-import { Info } from "lucide-react"
+import { Info, TriangleAlert } from "lucide-react"
 import { useCallback, useEffect, useState } from "react"
 import { useTheme } from "@/components/providers/theme-provider"
 import { i18n } from "@/utils/i18n"
@@ -16,6 +16,7 @@ interface InputTranslationBarProps {
   bar: BarState | null
   onRetranslate: (code: LangCodeISO6393) => void
   onUndo: () => void
+  onRetry?: () => void
   onDismiss: () => void
   onInteractionElementChange: (element: HTMLElement | null) => void
   onLanguageMenuOpenChange: (open: boolean) => void
@@ -39,7 +40,7 @@ const SOURCE_LABEL_KEYS = {
  * 不透明中性底与聊天区分开，颜色由输入区域主题决定，避免背景图片影响可读性。
  */
 const SHELL_CLASS =
-  "rf-input-translation-shell flex h-7 w-fit max-w-[calc(100vw-16px)] items-center gap-2.5 rounded-md px-2.5 text-xs"
+  "rf-input-translation-shell flex min-h-7 w-fit max-w-[calc(100vw-16px)] flex-wrap items-center gap-x-2.5 gap-y-1 rounded-md px-2.5 py-1 text-xs"
 
 /** 语言选择器与撤销都是纯文字，不是按钮——同上，别把它做成一块控件。 */
 const PLAIN_TRIGGER_CLASS = "rf-input-translation-trigger h-auto px-0 py-0 font-semibold"
@@ -57,6 +58,7 @@ export function InputTranslationBar({
   bar,
   onRetranslate,
   onUndo,
+  onRetry,
   onDismiss,
   onInteractionElementChange,
   onLanguageMenuOpenChange,
@@ -143,6 +145,29 @@ export function InputTranslationBar({
     return null
   }
 
+  const feedback = bar.kind === "sameLanguage" ? undefined : bar.feedback
+  const feedbackSlot = feedback && (
+    <span role="status" aria-live="polite" className="flex min-w-0 items-center gap-1.5">
+      {feedback.kind === "pending" ? (
+        i18n.t("inputTranslationBar.translating")
+      ) : (
+        <>
+          <TriangleAlert aria-hidden className="size-3.5 shrink-0 text-amber-600" />
+          <span className="wrap-anywhere">{i18n.t(feedback.messageKey)}</span>
+          {feedback.retryable && (
+            <button
+              type="button"
+              onClick={onRetry}
+              className="rf-input-translation-undo shrink-0 cursor-pointer hover:underline"
+            >
+              {i18n.t("inputTranslationBar.retry")}
+            </button>
+          )}
+        </>
+      )}
+    </span>
+  )
+
   return (
     <div
       ref={onInteractionElementChange}
@@ -175,6 +200,8 @@ export function InputTranslationBar({
             <Info className="size-3.5 shrink-0" />
             {i18n.t("inputTranslationBar.sameLanguage")}
           </span>
+        ) : bar.kind === "initial" ? (
+          feedbackSlot
         ) : (
           <>
             <span className="shrink-0 text-muted-foreground">
@@ -182,16 +209,19 @@ export function InputTranslationBar({
             </span>
             {portalContainer && (
               <InputTranslationLanguageSelect
-                value={bar.lang}
+                value={bar.pendingLang ?? bar.lang}
+                disabled={feedback?.kind === "pending"}
                 onValueChange={handleLanguageChange}
                 triggerClassName={PLAIN_TRIGGER_CLASS}
                 container={portalContainer}
                 onOpenChange={handleMenuOpenChange}
               />
             )}
-            <span className="shrink-0 text-[11px] text-muted-foreground">
-              {i18n.t(SOURCE_LABEL_KEYS[bar.langSource])}
-            </span>
+            {feedbackSlot ?? (
+              <span className="shrink-0 text-[11px] text-muted-foreground">
+                {i18n.t(SOURCE_LABEL_KEYS[bar.langSource])}
+              </span>
+            )}
             <button
               type="button"
               onClick={onUndo}

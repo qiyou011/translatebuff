@@ -55,6 +55,7 @@ export default function App({
         bar={inputTranslation.bar}
         onRetranslate={inputTranslation.retranslate}
         onUndo={inputTranslation.undo}
+        onRetry={inputTranslation.retry}
         onDismiss={inputTranslation.dismiss}
         onInteractionElementChange={inputTranslation.setInteractionElement}
         onLanguageMenuOpenChange={inputTranslation.setLanguageMenuOpen}

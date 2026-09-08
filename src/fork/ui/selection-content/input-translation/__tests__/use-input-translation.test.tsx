@@ -2,9 +2,19 @@
 
 import type { ReactNode } from "react"
 import type { Config } from "@/types/config/config"
-import { act, cleanup, renderHook, waitFor } from "@testing-library/react"
+import {
+  act,
+  cleanup,
+  fireEvent,
+  render,
+  renderHook,
+  waitFor,
+  within,
+} from "@testing-library/react"
 import { createStore, Provider } from "jotai"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
+import { ThemeContext } from "@/components/providers/theme-provider"
+import { InputTranslationBar as TranslationBar } from "../input-translation-bar"
 
 type Animate = Element["animate"]
 import { configAtom } from "@/utils/atoms/config"
@@ -41,6 +51,846 @@ vi.mock("@/utils/providers/provider-registry", async (importOriginal) => ({
 }))
 
 const { useInputTranslation } = await import("../use-input-translation")
+
+function deferredTranslation() {
+  let resolve!: (value: string) => void
+  let reject!: (error: Error) => void
+  const promise = new Promise<string>((res, rej) => {
+    resolve = res
+    reject = rej
+  })
+  return { promise, resolve, reject }
+}
+
+async function settleDeferred(
+  request: ReturnType<typeof deferredTranslation>,
+  settlement: "resolve" | "reject",
+  value: string,
+) {
+  await act(async () => {
+    if (settlement === "resolve") request.resolve(value)
+    else request.reject(new Error(value))
+  })
+}
+
+function clickLikeBrowser(target: HTMLElement) {
+  fireEvent.pointerDown(target)
+  const shouldFocus = fireEvent.mouseDown(target)
+  if (shouldFocus) target.focus()
+  fireEvent.pointerUp(target)
+  fireEvent.mouseUp(target)
+  fireEvent.click(target)
+}
+
+function activateButtonFromKeyboard(target: HTMLElement) {
+  target.focus()
+  fireEvent.keyDown(target, { key: "Enter" })
+  fireEvent.keyUp(target, { key: "Enter" })
+  fireEvent.click(target)
+}
+
+function deepActiveElement(root: Document | ShadowRoot): Element | null {
+  let active = root.activeElement
+  while (active?.shadowRoot?.activeElement) active = active.shadowRoot.activeElement
+  return active
+}
+
+describe("Discord request feedback and stale-result protection", () => {
+  beforeEach(() => {
+    vi.stubGlobal(
+      "ResizeObserver",
+      class {
+        observe() {}
+        unobserve() {}
+        disconnect() {}
+      },
+    )
+    document.execCommand = vi.fn<(_command: string, _show: boolean, value: string) => boolean>(
+      (_command, _show, value) => {
+        const element = document.activeElement
+        if (element instanceof HTMLInputElement) element.value = value
+        return true
+      },
+    )
+    Element.prototype.animate = vi.fn<() => { cancel: () => void }>(() => ({
+      cancel: vi.fn<() => void>(),
+    })) as unknown as Animate
+    window.matchMedia = vi.fn<() => { matches: boolean }>(() => ({
+      matches: false,
+    })) as unknown as typeof window.matchMedia
+    vi.stubGlobal("location", new URL("https://discord.com/channels/1/2"))
+    translateTextForInputMock.mockReset().mockResolvedValue("Привет")
+    toastAddMock.mockReset()
+    getDetectedCodeMock.mockReset().mockResolvedValue("deu")
+    getLocalConfigMock.mockReset()
+    sessionStorage.clear()
+  })
+  afterEach(() => {
+    cleanup()
+    vi.unstubAllGlobals()
+    document.body.replaceChildren()
+  })
+
+  function setup() {
+    const config = configWith({ sourceCode: "auto", targetCode: "cmn" })
+    getLocalConfigMock.mockResolvedValue(config)
+    const input = setupPage(RUSSIAN_CHAT)
+    return { input, config, rendered: renderWithConfig(config) }
+  }
+
+  async function translated() {
+    const context = setup()
+    act(pressSpaceThrice)
+    await waitFor(() => expect(context.input.value).toBe("Привет"))
+    return context
+  }
+
+  async function renderSurface(rootKind: "document" | "shadow") {
+    const { input, config, rendered } = setup()
+    rendered.unmount()
+    const store = createStore()
+    store.set(configAtom, config)
+    function Surface() {
+      const api = useInputTranslation()
+      return (
+        <TranslationBar
+          bar={api.bar}
+          onRetranslate={api.retranslate}
+          onRetry={api.retry}
+          onUndo={api.undo}
+          onDismiss={api.dismiss}
+          onInteractionElementChange={api.setInteractionElement}
+          onLanguageMenuOpenChange={api.setLanguageMenuOpen}
+        />
+      )
+    }
+    const host = document.createElement("div")
+    document.body.append(host)
+    const queryRoot = rootKind === "shadow" ? host.attachShadow({ mode: "open" }) : host
+    const container = document.createElement("div")
+    queryRoot.append(container)
+    render(
+      <Provider store={store}>
+        <ThemeContext value={{ theme: "dark", themeMode: "dark", setThemeMode: () => {} }}>
+          <Surface />
+        </ThemeContext>
+      </Provider>,
+      { container },
+    )
+    const focusRoot = queryRoot instanceof ShadowRoot ? queryRoot : document
+    return { input, queries: within(queryRoot as HTMLElement), focusRoot, host }
+  }
+
+  it("shows pending language and spinner without replacing the successful draft", async () => {
+    const { input, rendered } = await translated()
+    const request = deferredTranslation()
+    translateTextForInputMock.mockReturnValue(request.promise)
+    act(() => {
+      void rendered.result.current.retranslate("jpn")
+    })
+    expect(rendered.result.current.bar).toMatchObject({
+      pendingLang: "jpn",
+      feedback: { kind: "pending" },
+    })
+    expect(input.value).toBe("Привет")
+    expect(document.getElementById("read-frog-input-translation-spinner")).not.toBeNull()
+    act(() => {
+      void rendered.result.current.retranslate("eng")
+    })
+    expect(translateTextForInputMock).toHaveBeenCalledTimes(2)
+    await act(async () => request.resolve("こんにちは"))
+    expect(input.value).toBe("こんにちは")
+    expect(rendered.result.current.bar).toMatchObject({ lang: "jpn", langSource: "manual" })
+    expect(document.getElementById("read-frog-input-translation-spinner")).toBeNull()
+  })
+
+  it.each(["resolve", "reject"] as const)(
+    "undo invalidates the pending translation before a late %s",
+    async (settlement) => {
+      const { input, rendered } = await translated()
+      const request = deferredTranslation()
+      translateTextForInputMock.mockReturnValue(request.promise)
+      act(() => {
+        void rendered.result.current.retranslate("jpn")
+      })
+      act(() => rendered.result.current.undo())
+      await settleDeferred(request, settlement, "late Japanese")
+      expect(input.value).toBe("你好呀，最近怎么样")
+      expect(rendered.result.current.bar).toBeNull()
+    },
+  )
+
+  it("rolls back a failed language and retries the displayed successful language", async () => {
+    const { input, rendered } = await translated()
+    translateTextForInputMock.mockRejectedValueOnce(new Error("network error"))
+    await act(async () => {
+      await rendered.result.current.retranslate("jpn")
+    })
+    expect(input.value).toBe("Привет")
+    expect(rendered.result.current.bar).toMatchObject({
+      lang: "rus",
+      feedback: { kind: "error", retryable: true },
+    })
+    const retryButton = document.createElement("button")
+    document.body.append(retryButton)
+    act(() => {
+      rendered.result.current.setInteractionElement(retryButton)
+      retryButton.focus()
+    })
+    const request = deferredTranslation()
+    translateTextForInputMock.mockReturnValue(request.promise)
+    act(() => {
+      void rendered.result.current.retry()
+    })
+    expect(document.activeElement).toBe(input)
+    expect(rendered.result.current.bar).toMatchObject({ feedback: { kind: "pending" } })
+    expect(translateTextForInputMock).toHaveBeenLastCalledWith("你好呀，最近怎么样", "cmn", "rus")
+    await act(async () => request.resolve("Привет снова"))
+    expect(input.value).toBe("Привет снова")
+  })
+
+  it("shows a first-failure notice and succeeds on retry without requiring another hotkey", async () => {
+    const { input, rendered } = setup()
+    translateTextForInputMock.mockRejectedValueOnce(new Error("network error"))
+    act(pressSpaceThrice)
+    await waitFor(() =>
+      expect(rendered.result.current.bar).toMatchObject({
+        kind: "initial",
+        feedback: { kind: "error", retryable: true },
+      }),
+    )
+    expect(input.value).toBe("你好呀，最近怎么样")
+    expect(toastAddMock).not.toHaveBeenCalled()
+    await act(async () => {
+      await rendered.result.current.retry()
+    })
+    expect(input.value).toBe("Привет")
+    expect(rendered.result.current.bar).toMatchObject({ kind: "translated" })
+  })
+
+  it("does not flip enableCycle a second time on first-failure retry", async () => {
+    const { input, config, rendered } = setup()
+    config.inputTranslation = { ...config.inputTranslation, enableCycle: true }
+    rendered.unmount()
+    const cycled = renderWithConfig(config)
+    translateTextForInputMock.mockRejectedValueOnce(new Error("timeout"))
+    act(pressSpaceThrice)
+    await waitFor(() => expect(cycled.result.current.bar?.kind).toBe("initial"))
+    expect(translateTextForInputMock).toHaveBeenLastCalledWith(input.value, "rus", "cmn")
+    await act(async () => {
+      await cycled.result.current.retry()
+    })
+    expect(translateTextForInputMock).toHaveBeenLastCalledWith("你好呀，最近怎么样", "rus", "cmn")
+  })
+
+  it.each([
+    ["Escape", "resolve"],
+    ["Escape", "reject"],
+    ["unmount", "resolve"],
+    ["unmount", "reject"],
+    ["remove", "resolve"],
+    ["remove", "reject"],
+    ["route", "resolve"],
+    ["route", "reject"],
+  ] as const)("invalidates even the first request on %s before %s", async (action, settlement) => {
+    const { input, rendered } = setup()
+    const request = deferredTranslation()
+    translateTextForInputMock.mockReturnValue(request.promise)
+    act(pressSpaceThrice)
+    await waitFor(() => expect(translateTextForInputMock).toHaveBeenCalled())
+    act(() => {
+      if (action === "Escape")
+        input.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", bubbles: true }))
+      if (action === "unmount") rendered.unmount()
+      if (action === "remove") input.remove()
+      if (action === "route") vi.stubGlobal("location", new URL("https://discord.com/channels/1/3"))
+    })
+    await act(async () => {
+      if (settlement === "resolve") request.resolve("must not write")
+      else request.reject(new Error("must not publish"))
+    })
+    expect(input.value).toBe("你好呀，最近怎么样")
+    expect(document.getElementById("read-frog-input-translation-spinner")).toBeNull()
+  })
+
+  it.each(["resolve", "reject"] as const)(
+    "invalidates edits even when the user changes the draft back (ABA) before %s",
+    async (settlement) => {
+      const { input, rendered } = await translated()
+      const request = deferredTranslation()
+      translateTextForInputMock.mockReturnValue(request.promise)
+      act(() => {
+        void rendered.result.current.retranslate("jpn")
+      })
+      act(() => {
+        input.value = "changed"
+        input.dispatchEvent(new Event("input", { bubbles: true }))
+        input.value = "Привет"
+        input.dispatchEvent(new Event("input", { bubbles: true }))
+      })
+      await settleDeferred(request, settlement, "must not write")
+      expect(input.value).toBe("Привет")
+      expect(rendered.result.current.bar).toMatchObject({
+        lang: "rus",
+        originalText: "你好呀，最近怎么样",
+      })
+      expect(rendered.result.current.bar).not.toHaveProperty("pendingLang", "jpn")
+      act(() => rendered.result.current.undo())
+      expect(input.value).toBe("你好呀，最近怎么样")
+    },
+  )
+
+  it("holds a completed result while blurred and commits only when the same editor refocuses", async () => {
+    const { input, rendered } = await translated()
+    const request = deferredTranslation()
+    translateTextForInputMock.mockReturnValue(request.promise)
+    act(() => {
+      void rendered.result.current.retranslate("jpn")
+    })
+    const other = document.createElement("input")
+    other.value = "other draft"
+    document.body.append(other)
+    act(() => other.focus())
+    await waitFor(() => expect(rendered.result.current.bar).toBeNull())
+    await act(async () => request.resolve("こんにちは"))
+    expect(document.activeElement).toBe(other)
+    expect(input.value).toBe("Привет")
+    expect(other.value).toBe("other draft")
+    act(() => input.focus())
+    await waitFor(() => expect(input.value).toBe("こんにちは"))
+  })
+
+  it("first-failure retry also survives blur and commits on editor refocus", async () => {
+    const { input, rendered } = setup()
+    translateTextForInputMock.mockRejectedValueOnce(new Error("network error"))
+    act(pressSpaceThrice)
+    await waitFor(() => expect(rendered.result.current.bar?.kind).toBe("initial"))
+    const request = deferredTranslation()
+    translateTextForInputMock.mockReturnValue(request.promise)
+    act(() => {
+      void rendered.result.current.retry()
+    })
+    const outside = document.createElement("button")
+    document.body.append(outside)
+    act(() => outside.focus())
+    await waitFor(() => expect(rendered.result.current.bar).toBeNull())
+    await act(async () => request.resolve("recovered"))
+    expect(input.value).toBe("你好呀，最近怎么样")
+    act(() => input.focus())
+    await waitFor(() => expect(input.value).toBe("recovered"))
+  })
+
+  it("an error arriving during blur becomes visible on editor refocus", async () => {
+    const { input, rendered } = setup()
+    const request = deferredTranslation()
+    translateTextForInputMock.mockReturnValue(request.promise)
+    act(pressSpaceThrice)
+    await waitFor(() => expect(translateTextForInputMock).toHaveBeenCalledOnce())
+    const outside = document.createElement("button")
+    document.body.append(outside)
+    act(() => outside.focus())
+    await act(async () => request.reject(new Error("network error")))
+    expect(rendered.result.current.bar).toBeNull()
+    act(() => input.focus())
+    expect(rendered.result.current.bar).toMatchObject({
+      kind: "initial",
+      feedback: { kind: "error" },
+    })
+  })
+
+  it.each(["resolve", "reject"] as const)(
+    "an old %s finally cannot release the new request lock or remove its spinner",
+    async (settlement) => {
+      const { input, rendered } = await translated()
+      const old = deferredTranslation()
+      translateTextForInputMock.mockReturnValueOnce(old.promise)
+      act(() => {
+        void rendered.result.current.retranslate("jpn")
+      })
+      act(() => rendered.result.current.undo())
+      const next = deferredTranslation()
+      translateTextForInputMock.mockReturnValueOnce(next.promise)
+      act(pressSpaceThrice)
+      await waitFor(() => expect(translateTextForInputMock).toHaveBeenCalledTimes(3))
+      await settleDeferred(old, settlement, "old result")
+      expect(input.value).toBe("你好呀，最近怎么样")
+      expect(document.getElementById("read-frog-input-translation-spinner")).not.toBeNull()
+      act(pressSpaceThrice)
+      expect(translateTextForInputMock).toHaveBeenCalledTimes(3)
+      await act(async () => next.resolve("new result"))
+      expect(input.value).toBe("new result")
+    },
+  )
+
+  it("exits pending on empty results without changing the successful language", async () => {
+    const { input, rendered } = await translated()
+    translateTextForInputMock.mockResolvedValueOnce("")
+    await act(async () => {
+      await rendered.result.current.retranslate("jpn")
+    })
+    expect(input.value).toBe("Привет")
+    expect(rendered.result.current.bar).toMatchObject({ lang: "rus" })
+    expect(rendered.result.current.bar).not.toHaveProperty("feedback.kind", "pending")
+  })
+
+  it("keeps original whitespace independently of normalized translation input", async () => {
+    const { input, rendered } = setup()
+    input.value = "  你好呀，最近怎么样  "
+    act(() => {
+      input.dispatchEvent(new KeyboardEvent("keydown", { key: " ", bubbles: true }))
+      input.value += " "
+      input.dispatchEvent(new KeyboardEvent("keydown", { key: " ", bubbles: true }))
+      input.value += " "
+      input.dispatchEvent(new KeyboardEvent("keydown", { key: " ", bubbles: true }))
+    })
+    await waitFor(() => expect(input.value).toBe("Привет"))
+    act(() => rendered.result.current.undo())
+    expect(input.value).toBe("  你好呀，最近怎么样  ")
+  })
+
+  it("paste between spaces starts a new trigger sequence and preserves the pasted original", async () => {
+    const { input, rendered } = setup()
+    input.value = "draft A"
+    act(() => {
+      input.dispatchEvent(new KeyboardEvent("keydown", { key: " ", bubbles: true }))
+      input.value = "draft A pasted B"
+      input.dispatchEvent(
+        new InputEvent("input", { bubbles: true, inputType: "insertFromPaste", data: "pasted B" }),
+      )
+      input.dispatchEvent(new KeyboardEvent("keydown", { key: " ", bubbles: true }))
+      input.value += " "
+      input.dispatchEvent(
+        new InputEvent("input", { bubbles: true, inputType: "insertText", data: " " }),
+      )
+      input.dispatchEvent(new KeyboardEvent("keydown", { key: " ", bubbles: true }))
+      input.value += " "
+      input.dispatchEvent(
+        new InputEvent("input", { bubbles: true, inputType: "insertText", data: " " }),
+      )
+    })
+    await act(async () => {})
+    expect(translateTextForInputMock).not.toHaveBeenCalled()
+    act(() => {
+      input.dispatchEvent(new KeyboardEvent("keydown", { key: " ", bubbles: true }))
+    })
+    await waitFor(() => expect(input.value).toBe("Привет"))
+    act(() => rendered.result.current.undo())
+    expect(input.value).toBe("draft A pasted B")
+  })
+
+  it.each(["document", "shadow"] as const)(
+    "selecting a language through the real menu preserves focus and pending in %s DOM",
+    async (rootKind) => {
+      const { input, queries } = await renderSurface(rootKind)
+      act(pressSpaceThrice)
+      await queries.findByRole("combobox")
+      const request = deferredTranslation()
+      translateTextForInputMock.mockReturnValue(request.promise)
+      fireEvent.click(queries.getByRole("combobox"))
+      const search = await queries.findByPlaceholderText("translationHub.searchLanguages")
+      act(() => search.focus())
+      fireEvent.change(search, { target: { value: "jpn" } })
+      clickLikeBrowser(await queries.findByRole("option", { name: /jpn/ }))
+      await waitFor(() =>
+        expect(queries.queryByPlaceholderText("translationHub.searchLanguages")).toBeNull(),
+      )
+      expect(document.activeElement).toBe(input)
+      expect(queries.getByText("inputTranslationBar.translating")).toBeVisible()
+      expect(queries.getByRole("combobox")).toBeDisabled()
+      expect(queries.getByRole("button", { name: "inputTranslationBar.undo" })).toBeEnabled()
+      await act(async () => request.resolve("こんにちは"))
+      await waitFor(() => expect(input.value).toBe("こんにちは"))
+    },
+  )
+
+  it.each(["document", "shadow"] as const)(
+    "returns focus to the trigger when an empty search closes with Escape in %s DOM",
+    async (rootKind) => {
+      const { queries, focusRoot } = await renderSurface(rootKind)
+      act(pressSpaceThrice)
+      const trigger = await queries.findByRole("combobox")
+      fireEvent.click(trigger)
+      const search = await queries.findByPlaceholderText("translationHub.searchLanguages")
+      act(() => search.focus())
+      fireEvent.change(search, { target: { value: "no-language-can-match-this" } })
+      await queries.findByText("translationHub.noLanguagesFound")
+      fireEvent.keyDown(search, { key: "Escape" })
+      await waitFor(() => expect(search.isConnected).toBe(false))
+      await waitFor(() => expect(deepActiveElement(focusRoot)).toBe(trigger))
+      expect(queries.getByRole("button", { name: "inputTranslationBar.undo" })).toBeEnabled()
+    },
+  )
+
+  it.each(["sibling", "host"] as const)(
+    "does not pull focus from a ShadowRoot %s when an old popup Escape event closes the menu",
+    async (targetKind) => {
+      const { queries, focusRoot, host } = await renderSurface("shadow")
+      act(pressSpaceThrice)
+      const trigger = await queries.findByRole("combobox")
+      fireEvent.click(trigger)
+      const search = await queries.findByPlaceholderText("translationHub.searchLanguages")
+      act(() => search.focus())
+      const sibling = document.createElement("button")
+      focusRoot.append(sibling)
+      host.tabIndex = -1
+      const target = targetKind === "sibling" ? sibling : host
+      act(() => target.focus())
+      fireEvent.keyDown(search, { key: "Escape" })
+      await waitFor(() => expect(search.isConnected).toBe(false))
+      expect(deepActiveElement(document)).toBe(target)
+    },
+  )
+
+  it.each([
+    ["document", "Escape"],
+    ["document", "outside"],
+    ["shadow", "Escape"],
+    ["shadow", "outside"],
+  ] as const)(
+    "resets committed final focus before a %s DOM menu closes via %s without selection",
+    async (rootKind, closeKind) => {
+      const { input, queries, focusRoot } = await renderSurface(rootKind)
+      act(pressSpaceThrice)
+      await queries.findByRole("combobox")
+      translateTextForInputMock.mockResolvedValueOnce("こんにちは")
+      fireEvent.click(queries.getByRole("combobox"))
+      let search = await queries.findByPlaceholderText("translationHub.searchLanguages")
+      fireEvent.change(search, { target: { value: "jpn" } })
+      clickLikeBrowser(await queries.findByRole("option", { name: /jpn/ }))
+      await waitFor(() => expect(input.value).toBe("こんにちは"))
+      const focusEditor = vi.spyOn(input, "focus")
+
+      fireEvent.click(queries.getByRole("combobox"))
+      search = await queries.findByPlaceholderText("translationHub.searchLanguages")
+      // Wait for Base UI's real opening autofocus; manually focusing here leaves its
+      // queued animation-frame focus pending and races the subsequent outside click.
+      await waitFor(() => expect(deepActiveElement(document)).toBe(search))
+      const outside = document.createElement("button")
+      document.body.append(outside)
+      if (closeKind === "Escape") {
+        fireEvent.keyDown(search, { key: "Escape" })
+      } else {
+        clickLikeBrowser(outside)
+      }
+
+      await waitFor(() => expect(search.isConnected).toBe(false))
+      const expectedFocus = closeKind === "Escape" ? queries.getByRole("combobox") : outside
+      const expectedFocusRoot = closeKind === "Escape" ? focusRoot : document
+      await waitFor(() => expect(deepActiveElement(expectedFocusRoot)).toBe(expectedFocus))
+      expect(focusEditor).not.toHaveBeenCalled()
+      expect(input.value).toBe("こんにちは")
+      focusEditor.mockRestore()
+      expect(queries.queryByRole("button", { name: "inputTranslationBar.undo" }) !== null).toBe(
+        closeKind === "Escape",
+      )
+      if (closeKind === "outside") {
+        act(() => input.focus())
+        await queries.findByRole("button", { name: "inputTranslationBar.undo" })
+      }
+    },
+  )
+
+  it.each([
+    ["document", "initial"],
+    ["document", "translated"],
+    ["shadow", "initial"],
+    ["shadow", "translated"],
+  ] as const)(
+    "keeps focus and feedback continuous for %s DOM %s Retry",
+    async (rootKind, failureKind) => {
+      const { input, queries } = await renderSurface(rootKind)
+      if (failureKind === "initial") {
+        translateTextForInputMock.mockRejectedValueOnce(new Error("network error"))
+        act(pressSpaceThrice)
+      } else {
+        act(pressSpaceThrice)
+        await queries.findByRole("combobox")
+        translateTextForInputMock.mockRejectedValueOnce(new Error("network error"))
+        fireEvent.click(await queries.findByRole("combobox"))
+        const search = await queries.findByPlaceholderText("translationHub.searchLanguages")
+        fireEvent.change(search, { target: { value: "jpn" } })
+        clickLikeBrowser(await queries.findByRole("option", { name: /jpn/ }))
+      }
+      const retry = await queries.findByRole("button", { name: "inputTranslationBar.retry" })
+      const request = deferredTranslation()
+      translateTextForInputMock.mockReturnValue(request.promise)
+      const callsBeforeRetry = translateTextForInputMock.mock.calls.length
+      act(() => activateButtonFromKeyboard(retry))
+      act(() => activateButtonFromKeyboard(retry))
+      await waitFor(() =>
+        expect(translateTextForInputMock).toHaveBeenCalledTimes(callsBeforeRetry + 1),
+      )
+      expect(document.activeElement).toBe(input)
+      expect(queries.getByText("inputTranslationBar.translating")).toBeVisible()
+      const expectedDisabled = failureKind === "translated" ? true : null
+      expect(queries.queryByRole("combobox")?.hasAttribute("disabled") ?? null).toBe(
+        expectedDisabled,
+      )
+      const expectedUndoDisabled = failureKind === "translated" ? false : null
+      expect(
+        queries
+          .queryByRole("button", { name: "inputTranslationBar.undo" })
+          ?.hasAttribute("disabled") ?? null,
+      ).toBe(expectedUndoDisabled)
+      await act(async () => request.resolve("retry result"))
+      await waitFor(() => expect(input.value).toBe("retry result"))
+    },
+  )
+
+  it.each(["document", "shadow"] as const)(
+    "supports keyboard language selection and layered Escape dismissal in %s DOM",
+    async (rootKind) => {
+      const { input, queries, focusRoot } = await renderSurface(rootKind)
+      act(pressSpaceThrice)
+      const trigger = await queries.findByRole("combobox")
+      translateTextForInputMock.mockResolvedValueOnce("hello")
+      fireEvent.click(trigger)
+      const search = await queries.findByPlaceholderText("translationHub.searchLanguages")
+      fireEvent.change(search, { target: { value: "English" } })
+      fireEvent.keyDown(search, { key: "ArrowDown" })
+      fireEvent.keyDown(search, { key: "Enter" })
+      await waitFor(() => expect(input.value).toBe("hello"))
+
+      fireEvent.click(queries.getByRole("combobox"))
+      const reopenedSearch = await queries.findByPlaceholderText("translationHub.searchLanguages")
+      act(() => reopenedSearch.focus())
+      fireEvent.keyDown(reopenedSearch, { key: "Escape" })
+      await waitFor(() => expect(reopenedSearch.isConnected).toBe(false))
+      await waitFor(() => expect(deepActiveElement(focusRoot)).toBe(trigger))
+      expect(queries.queryByRole("button", { name: "inputTranslationBar.undo" })).not.toBeNull()
+      const reopenedTrigger = queries.getByRole("combobox")
+      fireEvent.keyDown(reopenedTrigger, { key: "Escape" })
+      await waitFor(() =>
+        expect(queries.queryByRole("button", { name: "inputTranslationBar.undo" })).toBeNull(),
+      )
+    },
+  )
+
+  it("restores a retryable error after Retry fails again without duplicate requests", async () => {
+    const { rendered } = setup()
+    translateTextForInputMock.mockRejectedValueOnce(new Error("network error"))
+    act(pressSpaceThrice)
+    await waitFor(() => expect(rendered.result.current.bar?.kind).toBe("initial"))
+    const request = deferredTranslation()
+    translateTextForInputMock.mockReturnValue(request.promise)
+    const callsBeforeRetry = translateTextForInputMock.mock.calls.length
+    act(() => {
+      void rendered.result.current.retry()
+      void rendered.result.current.retry()
+    })
+    await waitFor(() =>
+      expect(translateTextForInputMock).toHaveBeenCalledTimes(callsBeforeRetry + 1),
+    )
+    await act(async () => request.reject(new Error("network error again")))
+    expect(rendered.result.current.bar).toMatchObject({
+      kind: "initial",
+      feedback: { kind: "error", retryable: true },
+    })
+    expect(document.getElementById("read-frog-input-translation-spinner")).toBeNull()
+  })
+
+  it("dismisses a first Retry empty result without duplicate requests", async () => {
+    const { rendered } = setup()
+    translateTextForInputMock.mockRejectedValueOnce(new Error("network error"))
+    act(pressSpaceThrice)
+    await waitFor(() => expect(rendered.result.current.bar?.kind).toBe("initial"))
+    const request = deferredTranslation()
+    translateTextForInputMock.mockReturnValue(request.promise)
+    const callsBeforeRetry = translateTextForInputMock.mock.calls.length
+    act(() => {
+      void rendered.result.current.retry()
+      void rendered.result.current.retry()
+    })
+    await waitFor(() =>
+      expect(translateTextForInputMock).toHaveBeenCalledTimes(callsBeforeRetry + 1),
+    )
+    await act(async () => request.resolve(""))
+    expect(rendered.result.current.bar).toBeNull()
+    expect(document.getElementById("read-frog-input-translation-spinner")).toBeNull()
+  })
+
+  it("hands first-failure Retry focus back before publishing pending", async () => {
+    const { input, rendered } = setup()
+    translateTextForInputMock.mockRejectedValueOnce(new Error("network error"))
+    act(pressSpaceThrice)
+    await waitFor(() => expect(rendered.result.current.bar?.kind).toBe("initial"))
+    const retryButton = document.createElement("button")
+    document.body.append(retryButton)
+    act(() => {
+      rendered.result.current.setInteractionElement(retryButton)
+      retryButton.focus()
+    })
+    const request = deferredTranslation()
+    translateTextForInputMock.mockReturnValue(request.promise)
+    act(() => {
+      void rendered.result.current.retry()
+    })
+    expect(document.activeElement).toBe(input)
+    expect(rendered.result.current.bar).toMatchObject({ feedback: { kind: "pending" } })
+    await act(async () => request.resolve("recovered"))
+    expect(input.value).toBe("recovered")
+  })
+
+  it.each(["empty", "draft", "route", "dismiss", "remove"] as const)(
+    "does not start an old inline action when focus synchronously changes %s ownership",
+    async (change) => {
+      const { input, rendered } = await translated()
+      const interactionButton = document.createElement("button")
+      document.body.append(interactionButton)
+      act(() => {
+        rendered.result.current.setInteractionElement(interactionButton)
+        interactionButton.focus()
+      })
+      input.addEventListener(
+        "focus",
+        () => {
+          if (change === "empty") input.value = ""
+          if (change === "draft") input.value = "host changed draft"
+          if (change === "route") window.history.pushState({}, "", "/focus-handoff-changed")
+          if (change === "dismiss") rendered.result.current.dismiss()
+          if (change === "remove") input.remove()
+        },
+        { once: true },
+      )
+      const callsBeforeAction = translateTextForInputMock.mock.calls.length
+      await act(async () => {
+        await rendered.result.current.retranslate("jpn")
+      })
+      expect(translateTextForInputMock).toHaveBeenCalledTimes(callsBeforeAction)
+      if (change === "remove")
+        await waitFor(() => {
+          if (rendered.result.current.bar !== null) throw new Error("removed session still present")
+        })
+      expect(rendered.result.current.bar === null).toBe(
+        change === "empty" || change === "dismiss" || change === "remove",
+      )
+      expect(document.getElementById("read-frog-input-translation-spinner")).toBeNull()
+    },
+  )
+
+  it("lets a new editor request started during focus handoff own the spinner and result", async () => {
+    const { input, rendered } = await translated()
+    const interactionButton = document.createElement("button")
+    const nextInput = document.createElement("input")
+    nextInput.value = "next draft"
+    document.body.append(interactionButton, nextInput)
+    act(() => {
+      rendered.result.current.setInteractionElement(interactionButton)
+      interactionButton.focus()
+    })
+    const nextRequest = deferredTranslation()
+    translateTextForInputMock.mockReturnValue(nextRequest.promise)
+    input.addEventListener(
+      "focus",
+      () => {
+        input.remove()
+        nextInput.focus()
+        pressSpaceThrice()
+      },
+      { once: true },
+    )
+    const callsBeforeAction = translateTextForInputMock.mock.calls.length
+    await act(async () => {
+      await rendered.result.current.retranslate("jpn")
+    })
+    await waitFor(() =>
+      expect(translateTextForInputMock).toHaveBeenCalledTimes(callsBeforeAction + 1),
+    )
+    expect(document.activeElement).toBe(nextInput)
+    expect(document.getElementById("read-frog-input-translation-spinner")).not.toBeNull()
+    await act(async () => nextRequest.resolve("next result"))
+    expect(nextInput.value).toBe("next result")
+    expect(document.getElementById("read-frog-input-translation-spinner")).toBeNull()
+  })
+
+  it("language resolution failure releases the lock so a later attempt works", async () => {
+    const { input, rendered, config } = setup()
+    getLocalConfigMock.mockRejectedValueOnce(new Error("resolution failed"))
+    act(pressSpaceThrice)
+    await waitFor(() => expect(rendered.result.current.bar?.kind).toBe("initial"))
+    getLocalConfigMock.mockResolvedValue(config)
+    await act(async () => {
+      await rendered.result.current.retry()
+    })
+    expect(input.value).toBe("Привет")
+    expect(document.getElementById("read-frog-input-translation-spinner")).toBeNull()
+  })
+
+  it("missing config on retry cannot leave an orphaned pending notice", async () => {
+    const { rendered } = setup()
+    translateTextForInputMock.mockRejectedValueOnce(new Error("network error"))
+    act(pressSpaceThrice)
+    await waitFor(() => expect(rendered.result.current.bar?.kind).toBe("initial"))
+    getLocalConfigMock.mockResolvedValue(null)
+    await act(async () => {
+      await rendered.result.current.retry()
+    })
+    expect(rendered.result.current.bar).toMatchObject({
+      feedback: { kind: "error", retryable: true },
+    })
+    expect(document.getElementById("read-frog-input-translation-spinner")).toBeNull()
+  })
+
+  it("a pending retranslation cannot refill the editor after an actual send", async () => {
+    const { input, rendered } = await translated()
+    const request = deferredTranslation()
+    translateTextForInputMock.mockReturnValue(request.promise)
+    act(() => {
+      void rendered.result.current.retranslate("jpn")
+    })
+    act(() => {
+      input.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter", bubbles: true }))
+      input.value = ""
+      input.dispatchEvent(new Event("input", { bubbles: true }))
+    })
+    await act(async () => request.resolve("must not send twice"))
+    expect(input.value).toBe("")
+    expect(rendered.result.current.bar).toBeNull()
+  })
+
+  it("terminal first failure in explicit mode still has feedback but cannot retry", async () => {
+    const { config, rendered } = setup()
+    rendered.unmount()
+    config.language = { ...config.language, sourceCode: "eng" }
+    const explicit = renderWithConfig(config)
+    translateTextForInputMock.mockRejectedValueOnce(new Error("data_inspection_failed"))
+    act(pressSpaceThrice)
+    await waitFor(() =>
+      expect(explicit.result.current.bar).toMatchObject({
+        kind: "initial",
+        feedback: { retryable: false },
+      }),
+    )
+    await act(async () => {
+      await explicit.result.current.retry()
+    })
+    expect(translateTextForInputMock).toHaveBeenCalledOnce()
+  })
+
+  it("closes stale first-error notice when the original input is edited", async () => {
+    const { input, rendered } = setup()
+    translateTextForInputMock.mockRejectedValueOnce(new Error("network error"))
+    act(pressSpaceThrice)
+    await waitFor(() => expect(rendered.result.current.bar?.kind).toBe("initial"))
+    act(() => {
+      input.value = "new original"
+      input.dispatchEvent(new Event("input", { bubbles: true }))
+    })
+    expect(rendered.result.current.bar).toBeNull()
+    act(pressSpaceThrice)
+    await waitFor(() =>
+      expect(rendered.result.current.bar).toMatchObject({ originalText: "new original" }),
+    )
+  })
+
+  it("keeps unregistered pages free of Discord correction UI", async () => {
+    const { input, rendered } = setup()
+    vi.stubGlobal("location", new URL("https://example.com"))
+    act(pressSpaceThrice)
+    await waitFor(() => expect(input.value).toBe("Привет"))
+    expect(rendered.result.current.bar).toBeNull()
+  })
+})
 
 const RUSSIAN_CHAT = [
   "Элис, еще раз добрый день! У меня появились срочные обстоятельства.",
