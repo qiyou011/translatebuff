@@ -1,3 +1,26 @@
+# 本地 dev override（已被 .gitignore 忽略，不提交）——任译喵登录本地联调用。
+# ⚠️ 覆盖 WXT_WEBSITE_URL 会让部分上游 guide 测试失败；跑 pnpm run test 前请先移除本文件（见 FORK_GUIDE §8）。
+
+# 任译喵登录后端域（平台 common_bll/claw_bff）——dev 直连真测试后端 cbs1sit（与官网 .env.development 同款）。
+# 需配合官网 3000 用「真手机号 + 真短信」登录（非 1234567890 mock 号）签发真凭据；真凭据打真后端才通行。
+# 注意：登录后端域 ≠ 翻译网关域（WXT_RENYIMIAO_GATEWAY_URL），不同域、不同性质、勿混。
+WXT_RENYIMIAO_API_URL=https://cbs1sit.htjsq.com
+
+# 任译喵翻译网关域（oneapi）——登录前默认 / base_url 缺失回落；真实网关登录后由 /v1/tokens 动态下发。
+WXT_RENYIMIAO_GATEWAY_URL=https://open-ai.baomiao.cn/v1
+
+# 官网域——dev 指向部署的测试官网 test.translatebuff.cn，其真登录在此域写可读 Login-Credential cookie。
+WXT_WEBSITE_URL=https://test.translatebuff.cn
+
+# 官网授信 origin——cookie watcher 的域匹配（去端口取 hostname）与 content-script 注入范围都读它。dev 指测试官网。
+WXT_OFFICIAL_SITE_ORIGINS=https://test.translatebuff.cn
+
+# 登录 cookie 域——proxy-fetch 读 Login-Credential cookie 时按子串匹配（test.translatebuff.cn 命中）。
+WXT_AUTH_COOKIE_DOMAINS=translatebuff.cn
+
+# 中台埋点上报域（活跃事件 translate_active 走这里）。两条 edition 共用同一上报域——
+# 与两个官网仓的 NEXT_PUBLIC_REPORT_API_URL 现状一致，海外线没有独立上报域。
+WXT_REPORT_API_URL=https://datareport1sit.htjsq.com
 web-ext.config.ts
 .env.development
 .env.production
