@@ -1,0 +1,74 @@
+/* Deliberately unlayered and locally scoped: an outer .dark still matches Tailwind's
+   dark variants even when this editor is light. Never change the shared shadow root. */
+.rf-input-translation-scope .rf-input-translation-shell {
+  background: var(--rf-background);
+  color: var(--rf-foreground);
+}
+
+.rf-input-translation-scope .rf-input-translation-trigger {
+  background: transparent;
+  color: var(--rf-foreground);
+  border: 0;
+  box-shadow: none;
+  flex-shrink: 1;
+  min-width: 0;
+}
+
+.rf-input-translation-scope .rf-input-translation-undo {
+  color: var(--rf-foreground);
+}
+
+.rf-input-translation-scope .rf-input-translation-trigger:focus-visible,
+.rf-input-translation-scope .rf-input-translation-undo:focus-visible {
+  outline: 2px solid var(--rf-ring);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+.rf-input-translation-scope .rf-input-translation-menu {
+  display: flex;
+  flex-direction: column;
+  width: min(280px, var(--available-width), calc(100vw - 16px));
+  min-width: min(220px, var(--available-width), calc(100vw - 16px));
+  max-height: var(--available-height);
+  background: var(--rf-popover);
+  color: var(--rf-popover-foreground);
+}
+
+.rf-input-translation-menu [data-slot="input-group"] {
+  width: calc(100% - 8px);
+  flex-shrink: 0;
+  background: var(--rf-input);
+  border-color: var(--rf-border);
+}
+
+.rf-input-translation-menu [data-slot="input-group"]:focus-within {
+  border-color: var(--rf-ring);
+}
+
+.rf-input-translation-menu input {
+  background: transparent;
+  color: var(--rf-foreground);
+}
+
+.rf-input-translation-menu input::placeholder {
+  color: var(--rf-muted-foreground);
+  opacity: 1;
+}
+
+.rf-input-translation-menu [data-slot="combobox-list"] {
+  min-height: 0;
+  max-height: min(320px, calc(var(--available-height) - 44px));
+  overflow-y: auto;
+}
+
+.rf-input-translation-menu [data-slot="combobox-item"] {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.rf-input-translation-menu [data-selected],
+.rf-input-translation-menu [data-highlighted] {
+  background: var(--rf-accent);
+  color: var(--rf-accent-foreground);
+}

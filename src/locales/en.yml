@@ -1550,3 +1550,14 @@ languages:
   wls: Wallisian
   rar: Rarotongan
   hif: Fiji Hindi
+inputTranslationBar:
+  translating: Translating…
+  failed: Translation failed
+  retry: Retry
+  contentBlocked: Content did not pass the safety review and cannot be translated
+  translateTo: Translate to
+  autoDetected: Auto-detected
+  fromPageSource: From page language
+  manualSelection: Manually selected
+  sameLanguage: Same as target language, not translated
+  undo: Undo

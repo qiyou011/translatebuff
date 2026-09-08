@@ -1550,3 +1550,14 @@ languages:
   wls: Wallisiano
   rar: Rarotongano
   hif: Hindi de Fiyi
+inputTranslationBar:
+  translating: Traduciendo…
+  failed: Error de traducción
+  retry: Reintentar
+  contentBlocked: El contenido no superó la revisión de seguridad y no se puede traducir
+  translateTo: Traducir a
+  autoDetected: Detectado automáticamente
+  fromPageSource: Según el idioma de la página
+  manualSelection: Seleccionado manualmente
+  sameLanguage: Igual que el idioma de destino, sin traducir
+  undo: Deshacer

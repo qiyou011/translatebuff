@@ -67,6 +67,22 @@ const forkChannelSuffix = forkChannelId ? `-${forkChannelId}` : "-{{browser}}"
 // 把上游 provider 选择器 / 选项 provider 页重定向到 fork 版（相对/@ import 都拦得住）。
 export const FORK_UI_REDIRECTS = [
   {
+    // UI-optimization 的圆形悬浮控件放在 fork，保留上游原件用于后续同步。
+    from: path.resolve(
+      __dirname,
+      "src/entrypoints/side.content/components/floating-button/index.tsx",
+    ),
+    to: path.resolve(__dirname, "src/fork/ui/side-content/floating-button/index.tsx"),
+  },
+  {
+    // 同时覆盖上游 TranslateButton 内部使用的辅助按钮，保留 Tooltip 契约。
+    from: path.resolve(
+      __dirname,
+      "src/entrypoints/side.content/components/floating-button/components/hidden-button.tsx",
+    ),
+    to: path.resolve(__dirname, "src/fork/ui/side-content/floating-button/hidden-button.tsx"),
+  },
+  {
     // 帮助与社区页：上游 6 张卡里 5 张指向 read-frog 自家资源（文档站 / Featurebase / Discord /
     // 微信群），fork 无对应，实测多为死链。收敛为只留邮件联系一张。
     from: path.resolve(__dirname, "src/entrypoints/options/pages/help-and-community/index.tsx"),

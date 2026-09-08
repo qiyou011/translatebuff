@@ -1434,3 +1434,14 @@ languages:
   wls: ウォリス語
   rar: ラロトンガ語
   hif: フィジー・ヒンディー語
+inputTranslationBar:
+  translating: 翻訳中…
+  failed: 翻訳に失敗しました
+  retry: 再試行
+  contentBlocked: 安全性審査により、この内容は翻訳できません
+  translateTo: 翻訳先
+  autoDetected: 自動検出
+  fromPageSource: ページの言語に従う
+  manualSelection: 手動選択
+  sameLanguage: 翻訳先と同じ言語のため未翻訳
+  undo: 元に戻す

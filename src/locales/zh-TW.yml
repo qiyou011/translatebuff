@@ -1550,3 +1550,14 @@ languages:
   wls: 瓦利斯語
   rar: 庫克群島毛利語
   hif: 斐濟印地語
+inputTranslationBar:
+  translating: 翻譯中…
+  failed: 翻譯失敗
+  retry: 重試
+  contentBlocked: 內容未通過安全審核，無法翻譯
+  translateTo: 翻譯為
+  autoDetected: 自動偵測
+  fromPageSource: 依網頁原始語言
+  manualSelection: 手動選擇
+  sameLanguage: 與目標語言相同，未翻譯
+  undo: 復原

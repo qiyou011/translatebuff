@@ -1434,3 +1434,14 @@ languages:
   wls: Wallis Dili
   rar: Rarotongan
   hif: Fiji Hintçesi
+inputTranslationBar:
+  translating: Çevriliyor…
+  failed: Çeviri başarısız
+  retry: Yeniden dene
+  contentBlocked: İçerik güvenlik incelemesini geçemediği için çevrilemiyor
+  translateTo: Şuna çevir
+  autoDetected: Otomatik algılandı
+  fromPageSource: Sayfa diline göre
+  manualSelection: Elle seçildi
+  sameLanguage: Hedef dille aynı, çevrilmedi
+  undo: Geri al

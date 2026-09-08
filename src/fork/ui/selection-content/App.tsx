@@ -1,13 +1,13 @@
 import { useAtomValue } from "jotai"
 import { useEffect } from "react"
 import { ToastProvider } from "@/components/ui/base-ui/toast"
-import { useInputTranslation } from "@/entrypoints/selection.content/input-translation"
 import {
   SELECTION_CONTENT_OVERLAY_LAYERS,
   SELECTION_CONTENT_OVERLAY_ROOT_ATTRIBUTE,
 } from "@/entrypoints/selection.content/overlay-layers"
 import { useContextMenuReadAloud } from "@/entrypoints/selection.content/use-context-menu-read-aloud"
 import { configFieldsAtomMap } from "@/utils/atoms/config"
+import { InputTranslationBar, useInputTranslation } from "./input-translation"
 import { SelectionCustomActionProvider } from "./SelectionCustomActionProvider"
 import { SelectionToolbar } from "./SelectionToolbar"
 import { SelectionTranslationProvider } from "./SelectionTranslationProvider"
@@ -31,7 +31,7 @@ export default function App({
   uiContainer: HTMLElement
   portalContainer: ShadowRoot
 }) {
-  useInputTranslation()
+  const inputTranslation = useInputTranslation()
   useContextMenuReadAloud()
   const opacity = useAtomValue(configFieldsAtomMap.selectionToolbar).opacity / 100
 
@@ -51,6 +51,15 @@ export default function App({
         ...{ [SELECTION_CONTENT_OVERLAY_ROOT_ATTRIBUTE]: "" },
       }}
     >
+      <InputTranslationBar
+        bar={inputTranslation.bar}
+        onRetranslate={inputTranslation.retranslate}
+        onUndo={inputTranslation.undo}
+        onRetry={inputTranslation.retry}
+        onDismiss={inputTranslation.dismiss}
+        onInteractionElementChange={inputTranslation.setInteractionElement}
+        onLanguageMenuOpenChange={inputTranslation.setLanguageMenuOpen}
+      />
       <SelectionTranslationProvider>
         <SelectionCustomActionProvider>
           <SelectionToolbar />
