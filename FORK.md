@@ -5,6 +5,8 @@ Translatebuff 是 read-frog 的软 fork（上游：mengxi-ream/read-frog）。
 
 ## 同步仪式（按上游 changeset release，或每周一次）
 
+同步时同时复查 [上游问题跟进记录](UPSTREAM_FOLLOW_UPS.md)，其中包含暂缓本地修复的已知事项及 fork 副本对账要求。
+
 1. `git fetch upstream`
 2. `git switch -c sync/$(date +%Y-%m-%d) main`
 3. `git merge upstream/main` # 只 MERGE —— 绝不 rebase/squash main
