@@ -1,0 +1,240 @@
+import { Icon } from "@iconify/react"
+import { useMutation } from "@tanstack/react-query"
+import { useAtom, useAtomValue, useSetAtom } from "jotai"
+import { useEffect, useEffectEvent, useRef } from "react"
+import ProviderIcon from "@/components/provider-icon"
+import { useTheme } from "@/components/providers/theme-provider"
+import { Button } from "@/components/ui/base-ui/button"
+import { anchoredToastManager } from "@/components/ui/base-ui/toast"
+import {
+  selectedProviderIdsAtom,
+  translateRequestAtom,
+  translationCardExpandedStateAtom,
+} from "@/entrypoints/translation-hub/atoms"
+import { ANALYTICS_FEATURE, ANALYTICS_SURFACE } from "@/types/analytics"
+import { createFeatureUsageContext, trackFeatureAttempt } from "@/utils/analytics"
+import { classifyProviderConfig } from "@/utils/analytics-provider"
+import { configFieldsAtomMap } from "@/utils/atoms/config"
+import { getProviderConfigById } from "@/utils/config/helpers"
+import { executeTranslate } from "@/utils/host/translate/execute-translate"
+import { i18n } from "@/utils/i18n"
+import { getTranslatePrompt } from "@/utils/prompts/translate"
+import { getProviderLogo, getProviderName } from "@/utils/providers/provider-display"
+import { cn } from "@/utils/styles/utils"
+
+interface TranslationCardProps {
+  providerId: string
+  isExpanded: boolean
+  onExpandedChange: (expanded: boolean) => void
+}
+
+export function TranslationCard({
+  providerId,
+  isExpanded,
+  onExpandedChange,
+}: TranslationCardProps) {
+  const { theme } = useTheme()
+  const request = useAtomValue(translateRequestAtom)
+  const language = useAtomValue(configFieldsAtomMap.language)
+  const providersConfig = useAtomValue(configFieldsAtomMap.providersConfig)
+  const [selectedProviderIds, setSelectedProviderIds] = useAtom(selectedProviderIdsAtom)
+  const setExpandedById = useSetAtom(translationCardExpandedStateAtom)
+
+  const provider = getProviderConfigById(providersConfig, providerId)
+
+  // Track request IDs to ignore stale responses from slow providers
+  const requestIdRef = useRef(0)
+  const copyButtonRef = useRef<HTMLButtonElement>(null)
+
+  const mutation = useMutation({
+    mutationKey: ["translate", providerId],
+    meta: { suppressToast: true },
+    mutationFn: async (req: NonNullable<typeof request>) => {
+      return await trackFeatureAttempt(
+        {
+          ...createFeatureUsageContext(
+            ANALYTICS_FEATURE.TRANSLATION_HUB,
+            ANALYTICS_SURFACE.TRANSLATION_HUB,
+          ),
+          ...classifyProviderConfig(provider),
+        },
+        async () => {
+          if (!provider) throw new Error("Provider not found")
+
+          const myRequestId = ++requestIdRef.current
+          const result = await executeTranslate(
+            req.inputText,
+            {
+              sourceCode: req.sourceLanguage,
+              targetCode: req.targetLanguage,
+              level: language.level,
+            },
+            provider,
+            getTranslatePrompt,
+          )
+
+          // Ignore stale responses - return undefined to silently discard
+          if (requestIdRef.current !== myRequestId) {
+            return undefined
+          }
+
+          return result
+        },
+      )
+    },
+  })
+
+  const requestTranslation = () => {
+    if (request?.inputText.trim()) {
+      mutation.mutate(request)
+    }
+  }
+
+  // Trigger translation when request changes
+  const triggerTranslation = useEffectEvent(requestTranslation)
+
+  useEffect(() => {
+    triggerTranslation()
+  }, [request?.timestamp])
+
+  const handleCopy = () => {
+    if (mutation.data) {
+      void navigator.clipboard.writeText(mutation.data)
+      if (!copyButtonRef.current) return
+
+      anchoredToastManager.add({
+        data: { tooltipStyle: true },
+        id: `translation-copy-${providerId}`,
+        positionerProps: {
+          anchor: copyButtonRef.current,
+          sideOffset: 6,
+        },
+        title: i18n.t("translationHub.copiedToClipboard"),
+      })
+    }
+  }
+
+  const handleRemove = () => {
+    setSelectedProviderIds(selectedProviderIds.filter((id) => id !== providerId))
+    setExpandedById((prev) => {
+      if (!(providerId in prev)) return prev
+
+      const next = { ...prev }
+      delete next[providerId]
+      return next
+    })
+  }
+
+  if (!provider) return null
+
+  const hasContent = mutation.isError || (mutation.data !== undefined && mutation.data !== "")
+
+  return (
+    <div className="rounded-lg border bg-card">
+      <div
+        className={cn(
+          "flex items-center justify-between px-3 py-2",
+          hasContent && isExpanded && "border-b",
+        )}
+      >
+        <div className="flex items-center space-x-2">
+          {provider ? (
+            <ProviderIcon
+              logo={getProviderLogo(provider, theme)}
+              name={getProviderName(provider)}
+              size="sm"
+            />
+          ) : (
+            <div className="flex h-5 w-5 items-center justify-center rounded bg-muted text-xs text-muted-foreground">
+              ?
+            </div>
+          )}
+        </div>
+        <div className="flex items-center space-x-1">
+          {mutation.isPending && (
+            <Icon icon="tabler:loader-2" className="h-4 w-4 animate-spin text-muted-foreground" />
+          )}
+          {!mutation.isPending && hasContent && (
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={requestTranslation}
+              className="h-7 w-7"
+              title={i18n.t("translationHub.retryTranslation")}
+            >
+              <Icon icon="tabler:refresh" className="h-3.5 w-3.5" />
+            </Button>
+          )}
+          {mutation.data && !mutation.isPending && (
+            <Button
+              ref={copyButtonRef}
+              variant="ghost"
+              size="icon"
+              onClick={handleCopy}
+              className="h-7 w-7"
+              title={i18n.t("translationHub.copyTranslation")}
+            >
+              <Icon icon="tabler:copy" className="h-3.5 w-3.5" />
+            </Button>
+          )}
+          {hasContent && (
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => onExpandedChange(!isExpanded)}
+              className="h-7 w-7"
+              title={i18n.t(
+                isExpanded ? "translationHub.collapseCard" : "translationHub.expandCard",
+              )}
+              aria-label={i18n.t(
+                isExpanded ? "translationHub.collapseCard" : "translationHub.expandCard",
+              )}
+              aria-expanded={isExpanded}
+            >
+              <Icon
+                icon={isExpanded ? "tabler:chevron-up" : "tabler:chevron-down"}
+                className="h-3.5 w-3.5"
+              />
+            </Button>
+          )}
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={handleRemove}
+            className="h-7 w-7"
+            title={i18n.t("translationHub.deleteCard")}
+          >
+            <Icon icon="tabler:x" className="h-3.5 w-3.5" />
+          </Button>
+        </div>
+      </div>
+
+      {hasContent && isExpanded && (
+        <div className="p-3">
+          {mutation.isError ? (
+            <div>
+              <div className="mb-1 flex items-center space-x-2 text-destructive">
+                <Icon icon="tabler:alert-circle" className="h-4 w-4" />
+                <span className="text-sm font-medium">
+                  {i18n.t("translationHub.translationFailed")}
+                </span>
+              </div>
+              <p className="text-sm break-words whitespace-pre-wrap text-muted-foreground">
+                {mutation.error instanceof Error
+                  ? mutation.error.message
+                  : i18n.t("translationHub.translationFailedFallback")}
+              </p>
+            </div>
+          ) : (
+            <div
+              key={mutation.data}
+              className="animate-in text-base leading-relaxed whitespace-pre-wrap duration-300 fade-in"
+            >
+              {mutation.data}
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  )
+}

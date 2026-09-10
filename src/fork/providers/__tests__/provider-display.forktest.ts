@@ -24,6 +24,10 @@ describe("fork provider logo 解析", () => {
 })
 
 describe("fork provider 展示名称", () => {
+  it("兼容英文品牌前缀，仍只展示模型名", () => {
+    const provider = { ...renyimiaoProvider("GLM-5.3-Flash"), name: "TranslateBuff GLM-5.3-Flash" }
+    expect(getProviderName(provider)).toBe("GLM-5.3-Flash")
+  })
   it("已有任译喵配置显示纯模型名，不修改存储名称或模型标识", () => {
     const provider = {
       ...renyimiaoProvider("Deepseek-V4-Flash"),

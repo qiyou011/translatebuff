@@ -1,3 +1,4 @@
+import ViteYaml from "@modyfi/vite-plugin-yaml"
 import { defineConfig, mergeConfig } from "vitest/config"
 import { forkUiRedirectPlugin } from "./src/fork/ui-redirect-plugin"
 import baseConfig from "./vitest.config"
@@ -17,7 +18,7 @@ import { FORK_UI_REDIRECTS } from "./wxt.config"
 export default mergeConfig(
   baseConfig,
   defineConfig({
-    plugins: [forkUiRedirectPlugin(FORK_UI_REDIRECTS)],
+    plugins: [ViteYaml(), forkUiRedirectPlugin(FORK_UI_REDIRECTS)],
     test: {
       // 额外收 .forktest.ts：这类哨兵断言「重定向已生效」，在根配置下必然失败，
       // 故用根配置默认 include 匹配不到的扩展名，避免污染 pnpm run test。

@@ -1,5 +1,7 @@
 # 上游云服务隔离实施任务
 
+归档决策（2026-09-10）：用户确认“测试已验证完成”，并在获知任务仍为 14/20 后明确授权“强制归档”。保留以下六项未勾选状态，不以概括性测试确认替代各项独立证据；品牌、模型名称与静态预览补充及已知问题详见 [archive-closeout.md](archive-closeout.md)。
+
 依据：[design.md](design.md)、[隔离规格](specs/fork-upstream-cloud-isolation/spec.md)、[认证规格变更](specs/fork-backend-repoint/spec.md)。
 
 目标：保留翻译核心和任译喵业务，通过现有重定向禁用三类上游云服务，并在请求前兼容旧模型引用。沿用 TypeScript、React、WXT、ORPC、Vitest，不新增依赖。本清单保持责任与验收粒度，不预写完整 SDK 实现。

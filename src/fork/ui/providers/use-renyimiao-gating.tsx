@@ -2,6 +2,7 @@ import type { ProviderCapability } from "@/utils/providers/provider-registry"
 import { useAtomValue } from "jotai"
 import { useMemo } from "react"
 import { Button } from "@/components/ui/base-ui/button"
+import { getForkDisplayName } from "@/fork/branding"
 import { forkSessionAtom, useOpenForkLogin } from "@/fork/membership/atoms"
 import { renyimiaoApiKey } from "@/fork/providers/renyimiao"
 import { computeRenyimiaoGating } from "@/fork/ui/providers/renyimiao-gating"
@@ -30,13 +31,15 @@ export function RenyimiaoGatedFallback() {
   if (session) {
     return (
       <div className="rounded-lg border border-border px-3 py-2 text-[13px] text-muted-foreground">
-        正在获取任译喵模型…
+        {i18n.t("forkProviders.modelsLoading", [getForkDisplayName()])}
       </div>
     )
   }
   return (
     <div className="flex items-center justify-between gap-2 rounded-lg border border-border px-3 py-2">
-      <span className="text-[13px] text-muted-foreground">登录后自动获取模型</span>
+      <span className="text-[13px] text-muted-foreground">
+        {i18n.t("forkProviders.modelsAfterLogin")}
+      </span>
       <Button size="sm" variant="outline" onClick={openLogin}>
         {i18n.t("account.login")}
       </Button>

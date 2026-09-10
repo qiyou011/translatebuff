@@ -73,7 +73,7 @@ export function UpdateModelsButton({
     >
       <Icon icon="tabler:refresh" className="size-3.5" />
       {mutation.isSuccess
-        ? `已更新 ${mutation.data.length} 个模型`
+        ? i18n.t("forkProviders.updatedModels", [mutation.data.length])
         : i18n.t("options.apiProviders.form.models.fetchModels")}
     </Button>
   )

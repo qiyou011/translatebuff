@@ -182,4 +182,12 @@ registry 包装不能导入整个 `src/fork/providers/renyimiao.ts`、UI gating 
 
 ## Open Questions
 
+### 已确认的后续 UI 补充与归档边界
+
+- 品牌按 edition 选择：国内任译喵、海外 TranslateBuff。运行时语言资源经 fork 包装统一产品名；浏览器管理页描述在构建侧处理。模型展示 helper 只剥离托管实例的历史品牌前缀，不写回配置。
+- 翻译中心卡片保留上游请求/布局逻辑，通过 fork 副本调用共用展示函数；九种语言补齐 API 配置与状态提示。
+- 三处静态示例共用 forkPreview.sampleText，页面预览使用薄包装复用原 iframe/CSS 装饰，字幕预览保留英文原文。CSS 预览草稿使用上层 Jotai store 中的会话 atom，避免 LocaleBoundary 重挂载覆盖手动编辑或清空；不落 storage。
+- 新增代码留在 fork，注册精确重定向及上游源指纹；只补既有允许的 locale，不扩大核心引擎差异。
+- 用户于 2026-09-10 确认测试完成并明确授权强制归档；未完成检查与已知问题仍保留，详见 [archive-closeout.md](archive-closeout.md)。这不是对双线所有构建与逐项网络证据的补证，也不授权提交、推送或发布。
+
 当前没有影响方案编写的产品未决项。详细方法签名、最终叶子覆盖数量在实施时依据真实调用确定，不在规划阶段模拟完整上游 SDK。若无法在上述冲突预算内实现，需要重新评审；设计批准、代码实施和真实浏览器验收分别记录，不相互替代。

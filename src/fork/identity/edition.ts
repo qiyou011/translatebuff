@@ -15,6 +15,7 @@
 // |                                         | lrbff / claw_bff 基址）              |                   |
 // | .env / .env.global                      | 同上，但指测试后端（本地 gitignored）| dotenv，构建期注入 |
 // | fork/website-routes.ts                  | 登录/订单/卸载问卷/反馈四条跳转路径 | bundle 运行期     |
+// | fork/branding.ts / fork/i18n/resources.ts | 产品显示名与语言资源品牌；模型项只显示模型名 | Node / bundle |
 // | fork/membership/api.ts                  | 登录后端（global 走 lrbff 的 session，| bundle 运行期     |
 // |                                         | cn 直连 common_bll）+ claw_bff 基址   |                   |
 // |                                         | （两线不同实例）。global 缺配即抛错   |                   |

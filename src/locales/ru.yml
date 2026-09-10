@@ -6,6 +6,19 @@ account:
   webApp: Веб-приложение
   logout: Выйти
   logoutError: Не удалось выйти. Попробуйте ещё раз.
+forkPreview:
+  sampleText: Господин Камия борется не с миром, а с тем, что могло бы привлечь внимание мира.
+
+forkProviders:
+  description: "Для перевода и объяснения лексики"
+  modelsLabel: "Модели"
+  keyAfterLogin: "Загружается автоматически после входа"
+  modelsAfterLogin: "Модели загружаются автоматически после входа"
+  keyLoading: "Получение ключа $1…"
+  modelsLoading: "Получение моделей $1…"
+  fetchHint: "Получить доступные модели со шлюза $1"
+  updatedModels: "Обновлено моделей: $1"
+  loginEnable: "Войдите, чтобы включить перевод $1"
 forkMembership:
   loggedIn: Вы вошли
   keyPending: Получение ключа перевода…

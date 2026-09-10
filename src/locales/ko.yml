@@ -6,6 +6,19 @@ account:
   webApp: 웹 앱
   logout: 로그아웃
   logoutError: 로그아웃하지 못했습니다. 다시 시도해 주세요.
+forkPreview:
+  sampleText: 가미야 씨는 세상과 싸우는 것이 아니라, 세상의 이목을 끌 수도 있는 것들과 싸우고 있습니다.
+
+forkProviders:
+  description: "번역 및 어휘 설명에 사용됩니다"
+  modelsLabel: "모델"
+  keyAfterLogin: "로그인 후 자동으로 가져옵니다"
+  modelsAfterLogin: "로그인 후 모델을 자동으로 가져옵니다"
+  keyLoading: "$1 키를 가져오는 중…"
+  modelsLoading: "$1 모델을 가져오는 중…"
+  fetchHint: "$1 게이트웨이에서 사용 가능한 모델 가져오기"
+  updatedModels: "업데이트된 모델: $1"
+  loginEnable: "로그인하여 $1 번역 활성화"
 forkMembership:
   loggedIn: 로그인됨
   keyPending: 번역 키를 가져오는 중…

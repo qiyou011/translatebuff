@@ -1,5 +1,5 @@
 import brandIcon from "@/fork/assets/renyimiao.svg?url&no-inline"
-import { i18n } from "@/utils/i18n"
+import { getForkDisplayName } from "@/fork/branding"
 import { cn } from "@/utils/styles/utils"
 
 export function BrandMark({
@@ -13,7 +13,7 @@ export function BrandMark({
   nameClassName?: string
   showName?: boolean
 }) {
-  const name = i18n.t("name")
+  const name = getForkDisplayName()
 
   return (
     <span className={cn("inline-flex min-w-0 items-center gap-2", className)} translate="no">

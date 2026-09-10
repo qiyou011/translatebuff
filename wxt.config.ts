@@ -9,7 +9,8 @@ import {
   isLocalPackagesEnabled,
   resolveExtensionEnv,
 } from "./src/env/shared"
-import { FORK_BRANDING } from "./src/fork/branding"
+import { FORK_BRANDING, getForkDisplayName } from "./src/fork/branding"
+import { brandChromeMessages } from "./src/fork/i18n/chrome-messages"
 import { resolveChannelNumber } from "./src/fork/identity/channel"
 import { resolveEdition } from "./src/fork/identity/edition"
 import {
@@ -35,14 +36,14 @@ const pkgVersion = JSON.parse(readFileSync(path.resolve(__dirname, "package.json
   .version as string
 const forkReleaseVersion = readForkVersion()
 const forkVersion = computeForkVersion(forkReleaseVersion)
+const forkEdition = resolveEdition(process.env.WXT_FORK_EDITION)
 const forkVersionName = computeForkVersionName(
   pkgVersion,
   forkReleaseVersion,
-  FORK_BRANDING.displayName,
+  getForkDisplayName(forkEdition),
 )
 // 发行版（由 scripts/pack.mjs 注入 WXT_FORK_EDITION）：决定商店身份——manifest 显示名与 Firefox 扩展 ID。
 // 未注入 → cn（国内线），保证既有命令产物逐字不变；未知值由 resolveEdition 抛错。
-const forkEdition = resolveEdition(process.env.WXT_FORK_EDITION)
 // 国内版已在 AMO 上架，扩展 ID 是条目主键、上架后不可改——改它等于发布成新扩展、存量用户断更新，
 // 故国内保持原值不动，海外另起一个。Firefox 只要求 ID 形如邮箱或 GUID，不校验域名所有权。
 const forkGeckoId =
@@ -66,6 +67,38 @@ const forkChannelSuffix = forkChannelId ? `-${forkChannelId}` : "-{{browser}}"
 // fork「换皮」重定向：不编辑上游 composed UI 源文件，改由 resolve 插件按解析后的绝对路径
 // 把上游 provider 选择器 / 选项 provider 页重定向到 fork 版（相对/@ import 都拦得住）。
 export const FORK_UI_REDIRECTS = [
+  {
+    from: path.resolve(
+      __dirname,
+      "src/entrypoints/options/pages/translation/translation-style/style-preview.tsx",
+    ),
+    to: path.resolve(__dirname, "src/fork/ui/options/preview/style-preview.tsx"),
+  },
+  {
+    from: path.resolve(
+      __dirname,
+      "src/entrypoints/options/pages/translation/translation-style/custom-css/index.tsx",
+    ),
+    to: path.resolve(__dirname, "src/fork/ui/options/preview/custom-css-page.tsx"),
+  },
+  {
+    from: path.resolve(
+      __dirname,
+      "src/entrypoints/options/pages/video-subtitles/subtitles-style/style-editor/subtitles-preview.tsx",
+    ),
+    to: path.resolve(__dirname, "src/fork/ui/options/preview/subtitles-preview.tsx"),
+  },
+  {
+    from: path.resolve(__dirname, "src/utils/i18n/resources.ts"),
+    to: path.resolve(__dirname, "src/fork/i18n/resources.ts"),
+  },
+  {
+    from: path.resolve(
+      __dirname,
+      "src/entrypoints/translation-hub/components/translation-card.tsx",
+    ),
+    to: path.resolve(__dirname, "src/fork/ui/translation-hub/translation-card.tsx"),
+  },
   {
     from: path.resolve(
       __dirname,
@@ -308,7 +341,7 @@ export default defineConfig({
     : {},
   manifest: ({ mode, browser }) => ({
     // 商店条目名按线取：国内中文名，海外英文名。技术标识 APP_NAME 不受影响（见 src/utils/constants/app.ts）。
-    name: forkEdition === "global" ? FORK_BRANDING.name : FORK_BRANDING.displayName,
+    name: getForkDisplayName(forkEdition),
     version: forkVersion,
     version_name: forkVersionName,
     description: "__MSG_extDescription__",
@@ -376,6 +409,17 @@ export default defineConfig({
     excludeSources: ["docs/**/*", "assets/**/*", "repos/**/*", "readmes/**/*"],
   },
   hooks: {
+    "build:publicAssets": (_, assets) => {
+      // 配置钩子在 i18n 模块生成 messages.json 后运行，保留各语种描述及占位符。
+      for (const asset of assets) {
+        if (
+          /^_locales[\\/][^\\/]+[\\/]messages\.json$/.test(asset.relativeDest) &&
+          "contents" in asset
+        ) {
+          asset.contents = brandChromeMessages(asset.contents, forkEdition)
+        }
+      }
+    },
     "vite:build:extendConfig": (entrypoints, viteConfig) => {
       const entrypoint = entrypoints.length === 1 ? entrypoints[0] : undefined
       if (entrypoint?.type !== "content-script") return

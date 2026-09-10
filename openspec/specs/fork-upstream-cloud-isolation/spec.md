@@ -1,4 +1,10 @@
-## ADDED Requirements
+# fork-upstream-cloud-isolation Specification
+
+## Purpose
+
+TBD - created by archiving change disable-upstream-cloud-services. Update Purpose after archive.
+
+## Requirements
 
 ### Requirement: 三类上游云服务统一禁用
 
@@ -131,7 +137,7 @@
 
 ### Requirement: 改动与上游同步边界可控
 
-系统 SHALL 将新增功能代码放入 src/fork，复用现有模块重定向与指纹检查，不改上游翻译引擎、消息协议、配置 schema、迁移链或原 UI，不新增 allowlist 例外。预计上游原地新增改动仅限 wxt.config.ts 的注册增量；超出该边界 MUST 重新评审。
+系统 SHALL 将新增功能代码放入 src/fork，复用现有模块重定向与指纹检查，不改上游翻译引擎、消息协议、配置 schema、迁移链或原 UI，不新增 allowlist 例外。原地改动限于 wxt.config.ts 的注册及构建接入，以及已允许的九种语言资源中的文案增量；超出该边界 MUST 重新评审。
 
 #### Scenario: 同步到被覆盖模块的改动
 
@@ -161,3 +167,40 @@
 
 - **WHEN** 本地测试设置 SKIP_FREE_API=true
 - **THEN** free-api.test.ts 被明确记录为跳过，不被计作外部在线翻译服务验证通过
+
+### Requirement: 产品品牌按发行版而非界面语言显示
+
+系统 SHALL 在国内版显示“任译喵”、海外版显示“TranslateBuff”，覆盖产品头部、API 提供商标题、模型分组和扩展管理页描述；界面说明及登录、加载、更新反馈 SHALL 使用当前界面语言。品牌展示不得改变技术标识、自有接口、密钥或持久化配置。
+
+#### Scenario: 海外版切换中文界面
+
+- **WHEN** 海外版用户将界面语言切换为中文
+- **THEN** 界面说明切换中文，产品品牌仍为 TranslateBuff；国内版切换英文界面时产品品牌仍为任译喵
+
+#### Scenario: 九种语言资源覆盖自有模型界面
+
+- **WHEN** 用户在任一现有九种界面语言下打开自有 API 配置或查看登录、加载、模型更新反馈
+- **THEN** 对应文案使用该语言，不残留硬编码中文标签或状态提示；浏览器管理页的本地化描述使用当前发行版品牌
+
+### Requirement: 托管模型展示仅包含模型名
+
+系统 SHALL 在托管模型选项、选中值及翻译中心结果卡片标题中只显示模型名，不添加任译喵或 TranslateBuff 品牌前缀；品牌可以出现在分组标题。对历史品牌前缀的兼容 SHALL 仅发生于展示层。
+
+#### Scenario: 历史配置包含品牌前缀
+
+- **WHEN** 已有托管 provider 名称为“任译喵 GLM-5.3-Flash”或“TranslateBuff GLM-5.3-Flash”
+- **THEN** 选项、选中值和结果卡片显示 GLM-5.3-Flash，原 provider 名称、ID、密钥、baseURL 和模型请求参数保持不变
+
+### Requirement: 静态预览示例跟随界面语言
+
+系统 SHALL 为页面翻译样式预览、CSS 编辑器默认示例及字幕示例译文共用 forkPreview.sampleText，覆盖现有九种界面语言；示例 MUST 保持静态，不调用翻译接口，不受发行版或翻译目标语言驱动。字幕示例原文 SHALL 保留英文。
+
+#### Scenario: 默认预览切换语言
+
+- **WHEN** 用户切换界面语言且尚未手动修改 CSS 预览示例
+- **THEN** 页面、CSS 默认示例和字幕示例译文随之切换，页面预览的默认 lang 属性与示例语言一致，字幕英文原文不变，不产生翻译请求
+
+#### Scenario: 手动修改或清空示例
+
+- **WHEN** 用户在 CSS 编辑器手动修改或清空示例，或自选预览语言、方向后切换界面语言
+- **THEN** 手动设置在当前选项页会话内保留，不被默认示例覆盖，也不写入持久化配置

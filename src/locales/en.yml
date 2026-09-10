@@ -6,6 +6,19 @@ account:
   webApp: Web app
   logout: Log out
   logoutError: Failed to log out. Please try again.
+forkPreview:
+  sampleText: Mr. Kamiya is not fighting against the world, but against things that could make the world take notice.
+
+forkProviders:
+  description: "For translation and vocabulary explanations"
+  modelsLabel: "Models"
+  keyAfterLogin: "Retrieved automatically after login"
+  modelsAfterLogin: "Models are retrieved automatically after login"
+  keyLoading: "Getting your $1 key…"
+  modelsLoading: "Getting $1 models…"
+  fetchHint: "Fetch available models from the $1 gateway"
+  updatedModels: "Models updated: $1"
+  loginEnable: "Log in to enable $1 translation"
 forkMembership:
   loggedIn: Logged in
   keyPending: Getting your translation key…

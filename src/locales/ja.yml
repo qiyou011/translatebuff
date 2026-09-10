@@ -6,6 +6,19 @@ account:
   webApp: ウェブアプリ
   logout: ログアウト
   logoutError: ログアウトに失敗しました。もう一度お試しください。
+forkPreview:
+  sampleText: 神谷さんは世界と戦っているのではなく、世界の注目を集めるかもしれないものと戦っている。
+
+forkProviders:
+  description: "翻訳と語彙の解説に使用します"
+  modelsLabel: "モデル"
+  keyAfterLogin: "ログイン後に自動取得"
+  modelsAfterLogin: "ログイン後にモデルを自動取得"
+  keyLoading: "$1 のキーを取得中…"
+  modelsLoading: "$1 のモデルを取得中…"
+  fetchHint: "$1 のゲートウェイから利用可能なモデルを取得"
+  updatedModels: "更新したモデル数：$1"
+  loginEnable: "ログインして $1 の翻訳を有効にする"
 forkMembership:
   loggedIn: ログイン済み
   keyPending: 翻訳キーを取得しています…

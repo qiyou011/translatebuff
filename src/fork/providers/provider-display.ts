@@ -12,12 +12,11 @@ import { isSystemProviderSelectorItem } from "@/utils/providers/provider-display
 export * from "@/utils/providers/provider-display"
 
 export function getProviderName(provider: ProviderSelectorOption): string {
-  const prefix = `${FORK_BRANDING.displayName} `
-  return !isSystemProviderSelectorItem(provider) &&
-    isRenyimiaoInstance(provider) &&
-    provider.name.startsWith(prefix)
-    ? provider.name.slice(prefix.length)
-    : provider.name
+  if (isSystemProviderSelectorItem(provider) || !isRenyimiaoInstance(provider)) return provider.name
+  const prefix = [FORK_BRANDING.displayName, FORK_BRANDING.name]
+    .map((brand) => `${brand} `)
+    .find((brandPrefix) => provider.name.startsWith(brandPrefix))
+  return prefix ? provider.name.slice(prefix.length) : provider.name
 }
 
 export function getProviderLogo(provider: ProviderSelectorOption, theme: Theme): string {

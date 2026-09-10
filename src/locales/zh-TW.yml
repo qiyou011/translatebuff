@@ -6,6 +6,19 @@ account:
   webApp: 網頁應用程式
   logout: 退出登入
   logoutError: 退出登入失敗，請重試
+forkPreview:
+  sampleText: 神谷先生不是在對抗世界，而是在對抗可能讓世界為之側目的事物。
+
+forkProviders:
+  description: "用於翻譯和詞彙解析功能"
+  modelsLabel: "模型"
+  keyAfterLogin: "登入後自動取得"
+  modelsAfterLogin: "登入後自動取得模型"
+  keyLoading: "正在取得 $1 金鑰…"
+  modelsLoading: "正在取得 $1 模型…"
+  fetchHint: "從 $1 閘道取得可用模型"
+  updatedModels: "已更新 $1 個模型"
+  loginEnable: "登入後啟用 $1 翻譯"
 forkMembership:
   loggedIn: 已登入
   keyPending: 正在取得翻譯密鑰…

@@ -12,7 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/base-ui/select"
-import { FORK_BRANDING } from "@/fork/branding"
+import { getForkDisplayName } from "@/fork/branding"
 import { i18n } from "@/utils/i18n"
 import { getProviderLogo, getProviderName } from "@/utils/providers/provider-display"
 import { getForkProviderSelectorGroups } from "./provider-selector-groups"
@@ -42,19 +42,16 @@ interface ForkProviderSelectorProps {
 }
 
 function getGroupLabel(key: ForkProviderGroupKey): string {
-  return key === "renyimiao"
-    ? FORK_BRANDING.displayName
-    : i18n.t("translateService.normalTranslator")
+  return key === "renyimiao" ? getForkDisplayName() : i18n.t("translateService.normalTranslator")
 }
 
 // 任译喵组内去掉冗余的「任译喵 」前缀（组头已带品牌），平铺展示模型名；仅展示层，不改配置 name。
 function getGroupedItemName(
   provider: ProviderSelectorOption,
-  groupKey: ForkProviderGroupKey,
+  _groupKey: ForkProviderGroupKey,
 ): string {
   const name = getProviderName(provider)
-  const prefix = `${FORK_BRANDING.displayName} `
-  return groupKey === "renyimiao" && name.startsWith(prefix) ? name.slice(prefix.length) : name
+  return name
 }
 
 export default function ForkProviderSelector({

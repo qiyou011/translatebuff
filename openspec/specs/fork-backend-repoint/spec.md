@@ -34,11 +34,16 @@ TBD - created by archiving change fork-foundation. Update Purpose after archive.
 - **WHEN** 产物文本仅含 fork 域名（如 `api.translatebuff.com`）
 - **THEN** 扫描返回空数组，CI 断言通过
 
-### Requirement: v1 保留 better-auth
+### Requirement: 上游认证客户端本地禁用适配
 
-系统 SHALL 在 v1 保留上游 better-auth 认证客户端不做代码替换，仅通过环境指向到 fork 后端；后端负责实现兼容的认证契约。
+系统 SHALL 在 fork 构建中替换上游界面和后台认证客户端的运行时实现，保留消费方需要的导出和会话契约。会话读取 SHALL 返回无会话、非加载状态，不注册真实会话刷新或产生网络请求；非读取认证操作 SHALL 明确报告不支持。上游源码与依赖可继续同步，但不得成为禁用时的回退实现。
 
-#### Scenario: 不替换认证客户端
+#### Scenario: 上游会话不发请求
 
-- **WHEN** 检视 `src/utils/auth/*` 与 `src/utils/orpc/*`
-- **THEN** 这些客户端保持上游原样（未被 fork 重导出桩替换），认证经由 `env.WXT_API_URL` 指向 fork 后端
+- **WHEN** UI 调用 useSession，或界面/后台调用 getSession
+- **THEN** 返回符合消费契约的无会话结果，不保持 pending、不联网、不启动刷新订阅
+
+#### Scenario: 上游认证操作与自有认证分离
+
+- **WHEN** 旧入口尝试调用上游认证操作，或者任译喵用户已处于登录状态
+- **THEN** 上游认证操作被本地拒绝而非伪装成功，自有会话、会员 token 和官网认证联动不受影响

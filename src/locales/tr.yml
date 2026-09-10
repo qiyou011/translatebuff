@@ -6,6 +6,19 @@ account:
   webApp: Web uygulaması
   logout: Çıkış yap
   logoutError: Çıkış yapılamadı. Lütfen tekrar deneyin.
+forkPreview:
+  sampleText: Bay Kamiya dünyaya karşı değil, dünyanın dikkatini çekebilecek şeylere karşı savaşıyor.
+
+forkProviders:
+  description: "Çeviri ve sözcük açıklamaları için"
+  modelsLabel: "Modeller"
+  keyAfterLogin: "Giriş yaptıktan sonra otomatik alınır"
+  modelsAfterLogin: "Modeller giriş yaptıktan sonra otomatik alınır"
+  keyLoading: "$1 anahtarı alınıyor…"
+  modelsLoading: "$1 modelleri alınıyor…"
+  fetchHint: "$1 ağ geçidinden kullanılabilir modelleri al"
+  updatedModels: "Güncellenen model sayısı: $1"
+  loginEnable: "$1 çevirisini etkinleştirmek için giriş yapın"
 forkMembership:
   loggedIn: Oturum açıldı
   keyPending: Çeviri anahtarınız alınıyor…

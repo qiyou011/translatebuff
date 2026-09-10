@@ -6,6 +6,19 @@ account:
   webApp: Aplicación web
   logout: Cerrar sesión
   logoutError: No se pudo cerrar sesión. Inténtalo de nuevo.
+forkPreview:
+  sampleText: El señor Kamiya no lucha contra el mundo, sino contra las cosas que podrían llamar la atención del mundo.
+
+forkProviders:
+  description: "Para traducción y explicaciones de vocabulario"
+  modelsLabel: "Modelos"
+  keyAfterLogin: "Se obtiene automáticamente al iniciar sesión"
+  modelsAfterLogin: "Los modelos se obtienen automáticamente al iniciar sesión"
+  keyLoading: "Obteniendo tu clave de $1…"
+  modelsLoading: "Obteniendo modelos de $1…"
+  fetchHint: "Obtener los modelos disponibles de la pasarela de $1"
+  updatedModels: "Modelos actualizados: $1"
+  loginEnable: "Inicia sesión para activar la traducción de $1"
 forkMembership:
   loggedIn: Sesión iniciada
   keyPending: Obteniendo tu clave de traducción…

@@ -6,6 +6,19 @@ account:
   webApp: Ứng dụng web
   logout: Đăng xuất
   logoutError: Đăng xuất thất bại. Vui lòng thử lại.
+forkPreview:
+  sampleText: Ông Kamiya không chống lại thế giới, mà chống lại những điều có thể khiến thế giới chú ý.
+
+forkProviders:
+  description: "Dùng để dịch và giải thích từ vựng"
+  modelsLabel: "Mô hình"
+  keyAfterLogin: "Tự động lấy sau khi đăng nhập"
+  modelsAfterLogin: "Tự động lấy mô hình sau khi đăng nhập"
+  keyLoading: "Đang lấy khóa $1…"
+  modelsLoading: "Đang lấy mô hình $1…"
+  fetchHint: "Lấy các mô hình khả dụng từ cổng $1"
+  updatedModels: "Số mô hình đã cập nhật: $1"
+  loginEnable: "Đăng nhập để bật tính năng dịch của $1"
 forkMembership:
   loggedIn: Đã đăng nhập
   keyPending: Đang lấy khóa dịch của bạn…

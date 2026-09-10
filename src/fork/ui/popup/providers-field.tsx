@@ -10,6 +10,7 @@ import { useTheme } from "@/components/providers/theme-provider"
 import { Avatar, AvatarGroup, AvatarGroupCount, AvatarImage } from "@/components/ui/base-ui/avatar"
 import { Button } from "@/components/ui/base-ui/button"
 import { Drawer, DrawerBody, DrawerContent, DrawerTrigger } from "@/components/ui/base-ui/drawer"
+import { getForkDisplayName } from "@/fork/branding"
 import { forkSessionAtom, useOpenForkLogin } from "@/fork/membership/atoms"
 import { sendForkMessage } from "@/fork/message"
 import { renyimiaoApiKey } from "@/fork/providers/renyimiao"
@@ -118,7 +119,7 @@ export default function ForkProvidersField() {
           className="flex items-center gap-2 rounded-lg border border-border bg-muted/50 px-3 py-2 text-left text-[13px] text-muted-foreground transition-colors hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring/40 focus-visible:outline-none"
         >
           <IconLogin className="size-4 shrink-0" aria-hidden />
-          <span>登录后启用任译喵翻译</span>
+          <span>{i18n.t("forkProviders.loginEnable", [getForkDisplayName()])}</span>
         </button>
       )}
       {keyPending && (

@@ -6,7 +6,7 @@ import { Field, FieldLabel } from "@/components/ui/base-ui/field"
 import { Input } from "@/components/ui/base-ui/input"
 import { ConfigItem } from "@/entrypoints/options/components/config-item"
 import { ConfigSection } from "@/entrypoints/options/components/config-section"
-import { FORK_BRANDING } from "@/fork/branding"
+import { getForkDisplayName } from "@/fork/branding"
 import { useForkSession, useOpenForkLogin } from "@/fork/membership/atoms"
 import {
   isRenyimiaoInstance,
@@ -28,8 +28,6 @@ import { UpdateModelsButton } from "./update-models-button"
 // 未登录显「登录后自动获取」并引导登录。点「更新模型」fetch 网关 /models 重建实例集、模型清单只读、Base URL 只读。
 // 复用通用布局(ConfigItem/EntityEditorLayout/EntityListRail) + base-ui 原语 + config atoms + fork 逻辑，
 // 不 import 上游 providers-config/ProviderConfigForm。经 wxt.config resolve 插件全局替换上游 ProvidersConfig。
-
-const RENYIMIAO_API_LABEL = `${FORK_BRANDING.displayName} API`
 
 function RenyimiaoApiEditor({
   apiKey,
@@ -60,7 +58,9 @@ function RenyimiaoApiEditor({
         {/* 以登录态为准（未登录即便残留 stale key 也引导登录）：登录且已注入 → 只读掩码；登录待取 → 获取中；未登录 → 引导登录。 */}
         {!session ? (
           <div className="flex items-center justify-between gap-2 rounded-lg border border-border px-3 py-2">
-            <span className="text-sm text-muted-foreground">登录后自动获取</span>
+            <span className="text-sm text-muted-foreground">
+              {i18n.t("forkProviders.keyAfterLogin")}
+            </span>
             <Button size="sm" variant="outline" onClick={onLogin}>
               {i18n.t("account.login")}
             </Button>
@@ -70,14 +70,14 @@ function RenyimiaoApiEditor({
           <Input type="password" value={apiKey} readOnly disabled />
         ) : (
           <div className="rounded-lg border border-border px-3 py-2 text-sm text-muted-foreground">
-            正在获取任译喵密钥…
+            {i18n.t("forkProviders.keyLoading", [getForkDisplayName()])}
           </div>
         )}
       </Field>
 
       <Field>
         <div className="flex items-center justify-between gap-2">
-          <FieldLabel>模型</FieldLabel>
+          <FieldLabel>{i18n.t("forkProviders.modelsLabel")}</FieldLabel>
           {session && apiKey && (
             <UpdateModelsButton
               baseURL={baseUrl}
@@ -89,14 +89,16 @@ function RenyimiaoApiEditor({
         {/* 空 key 门禁（对齐上方 API Key 三态）：未登录引导登录、登录待取显获取中、已注入才列真实模型——不把 seed 裸露给未登录用户。 */}
         {!session ? (
           <div className="flex items-center justify-between gap-2 rounded-lg border border-border px-3 py-2">
-            <span className="text-sm text-muted-foreground">登录后自动获取模型</span>
+            <span className="text-sm text-muted-foreground">
+              {i18n.t("forkProviders.modelsAfterLogin")}
+            </span>
             <Button size="sm" variant="outline" onClick={onLogin}>
               {i18n.t("account.login")}
             </Button>
           </div>
         ) : !apiKey ? (
           <div className="rounded-lg border border-border px-3 py-2 text-sm text-muted-foreground">
-            正在获取任译喵模型…
+            {i18n.t("forkProviders.modelsLoading", [getForkDisplayName()])}
           </div>
         ) : modelIds.length > 0 ? (
           <div className="flex flex-col gap-1 rounded-lg border border-border p-2">
@@ -107,7 +109,9 @@ function RenyimiaoApiEditor({
             ))}
           </div>
         ) : (
-          <p className="text-sm text-muted-foreground">点「更新模型」从任译喵网关拉取可用模型</p>
+          <p className="text-sm text-muted-foreground">
+            {i18n.t("forkProviders.fetchHint", [getForkDisplayName()])}
+          </p>
         )}
       </Field>
 
@@ -150,8 +154,8 @@ export function ProvidersConfig() {
   // 锚点沿用上游的 PROVIDER_CONFIG_SECTION_ID：「请在 API 提供商 页面设置 API Key」徽标与命令面板
   // 都按它滚动，自造 id 会让两条入口只跳到页面顶部。
   return (
-    <ConfigSection id={PROVIDER_CONFIG_SECTION_ID} title={RENYIMIAO_API_LABEL}>
-      <ConfigItem orientation="vertical" description="用于翻译和词汇解析功能">
+    <ConfigSection id={PROVIDER_CONFIG_SECTION_ID} title={`${getForkDisplayName()} API`}>
+      <ConfigItem orientation="vertical" description={i18n.t("forkProviders.description")}>
         <RenyimiaoApiEditor
           apiKey={apiKey}
           baseUrl={baseUrl}
