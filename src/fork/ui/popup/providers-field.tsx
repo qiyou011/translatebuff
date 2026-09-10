@@ -15,11 +15,11 @@ import { sendForkMessage } from "@/fork/message"
 import { renyimiaoApiKey } from "@/fork/providers/renyimiao"
 import { useEnsureRenyimiaoSeeded } from "@/fork/providers/use-ensure-renyimiao-seeded"
 import { FeatureProviderSelectorList } from "@/fork/ui/options/feature-provider-selector-list"
+import { resolveProviderRefForCapability } from "@/fork/upstream-services/provider-registry"
 import { configAtom, configFieldsAtomMap } from "@/utils/atoms/config"
 import { FEATURE_KEYS, FEATURE_PROVIDER_DEFS } from "@/utils/constants/feature-providers"
 import { i18n } from "@/utils/i18n"
 import { getProviderLogo, getProviderName } from "@/utils/providers/provider-display"
-import { getSelectableProvidersForCapability } from "@/utils/providers/provider-registry"
 
 // fork 换皮版 popup provider 块：抽屉体直接复用已门禁的 fork FeatureProviderSelectorList（隐藏不可用任译喵 +
 // 无可选/选中即任译喵时改显登录引导），与选项页「通用」页共用同一份门禁宿主、单点维护。popup 特有的只有
@@ -34,16 +34,15 @@ function getSelectedProviderOptions(
   const selectedProviders: ProviderSelectorOption[] = []
 
   const addProvider = (capability: ProviderCapability, providerId: string) => {
-    const selectedProvider = getSelectableProvidersForCapability(capability, providersConfig).find(
-      (providerOption) => providerOption.id === providerId,
-    )
-    if (!selectedProvider) {
+    const resolved = resolveProviderRefForCapability(capability, providersConfig, providerId)
+    if (resolved?.kind !== "local") {
       return
     }
-    selectedProviders.push(selectedProvider)
+    selectedProviders.push(resolved.config)
   }
 
   for (const featureKey of FEATURE_KEYS) {
+    if (featureKey === "noteSuggestion") continue
     addProvider(featureKey, FEATURE_PROVIDER_DEFS[featureKey].getProviderId(config))
   }
   for (const action of config.selectionToolbar.customActions) {

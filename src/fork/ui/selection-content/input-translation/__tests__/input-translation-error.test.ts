@@ -1,8 +1,15 @@
 import { describe, expect, it } from "vitest"
+import { UpstreamCloudDisabledError } from "@/fork/upstream-services/disabled-error"
 import { i18n } from "@/utils/i18n"
 import { classifyInputTranslationError } from "../input-translation-error"
 
 describe("input translation manual retry policy", () => {
+  it("offers model selection instead of retry or an upstream purchase for disabled cloud", () => {
+    expect(classifyInputTranslationError(new UpstreamCloudDisabledError())).toEqual({
+      retryable: false,
+      messageKey: "options.selectionToolbar.customActions.form.selectProvider",
+    })
+  })
   it.each([
     ["HOSTED_AI_TIER_RESTRICTED", "ultraRequired"],
     ["HOSTED_AI_QUOTA_EXHAUSTED", "quotaExhausted"],

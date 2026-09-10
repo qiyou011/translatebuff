@@ -77,7 +77,13 @@ describe("withRenyimiaoJsonObjectFormat（词典结构化输出降级）", () =>
   })
 
   it("豁免：system ref（内置免费 AI）原样返回、不注入", () => {
-    const systemRef = resolveRef([], BUILT_IN_AI_PROVIDER_ID)
+    // 旧会话可持有显式快照；fork registry 已不再产生这个 system ref。
+    const systemRef: CustomActionProviderRef = {
+      kind: "system",
+      id: BUILT_IN_AI_PROVIDER_ID,
+      name: "Legacy model",
+      modelTier: "normal",
+    }
     expect(systemRef.kind).toBe("system")
     expect(withRenyimiaoJsonObjectFormat(systemRef)).toBe(systemRef)
   })

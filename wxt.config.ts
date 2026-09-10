@@ -67,6 +67,66 @@ const forkChannelSuffix = forkChannelId ? `-${forkChannelId}` : "-{{browser}}"
 // 把上游 provider 选择器 / 选项 provider 页重定向到 fork 版（相对/@ import 都拦得住）。
 export const FORK_UI_REDIRECTS = [
   {
+    from: path.resolve(
+      __dirname,
+      "src/entrypoints/options/pages/api-providers/feature-providers/index.tsx",
+    ),
+    to: path.resolve(__dirname, "src/fork/ui/options/feature-providers-config.tsx"),
+  },
+  {
+    from: path.resolve(__dirname, "src/utils/host/translate/translate-text.ts"),
+    to: path.resolve(__dirname, "src/fork/upstream-services/page-translation.ts"),
+  },
+  {
+    from: path.resolve(__dirname, "src/utils/subtitles/processor/translator.ts"),
+    to: path.resolve(__dirname, "src/fork/upstream-services/subtitles.ts"),
+  },
+  {
+    from: path.resolve(__dirname, "src/entrypoints/background/hosted-ai-status.ts"),
+    to: path.resolve(__dirname, "src/fork/upstream-services/hosted-ai-status.ts"),
+  },
+  {
+    from: path.resolve(__dirname, "src/entrypoints/background/notebase-pending-save.ts"),
+    to: path.resolve(__dirname, "src/fork/upstream-services/notebase-pending-save.ts"),
+  },
+  {
+    from: path.resolve(__dirname, "src/utils/blog.ts"),
+    to: path.resolve(__dirname, "src/fork/upstream-services/blog.ts"),
+  },
+  {
+    from: path.resolve(__dirname, "src/entrypoints/options/app-sidebar/whats-new-footer.tsx"),
+    to: path.resolve(__dirname, "src/fork/ui/options/whats-new-footer.tsx"),
+  },
+  {
+    from: path.resolve(__dirname, "src/utils/auth/auth-client.ts"),
+    to: path.resolve(__dirname, "src/fork/upstream-services/auth-client.ts"),
+  },
+  {
+    from: path.resolve(__dirname, "src/utils/auth/background-auth-client.ts"),
+    to: path.resolve(__dirname, "src/fork/upstream-services/background-auth-client.ts"),
+  },
+  {
+    from: path.resolve(__dirname, "src/utils/orpc/client.ts"),
+    to: path.resolve(__dirname, "src/fork/upstream-services/orpc-client.ts"),
+  },
+  {
+    from: path.resolve(__dirname, "src/utils/orpc/background-client.ts"),
+    to: path.resolve(__dirname, "src/fork/upstream-services/background-orpc-client.ts"),
+  },
+  {
+    from: path.resolve(__dirname, "src/utils/providers/provider-ref.ts"),
+    to: path.resolve(__dirname, "src/fork/upstream-services/provider-ref.ts"),
+  },
+  {
+    from: path.resolve(__dirname, "src/utils/content/language.ts"),
+    to: path.resolve(__dirname, "src/fork/upstream-services/language.ts"),
+  },
+  {
+    // 旧上游托管模型仅在请求前兼容，不改变持久化配置或上游能力分类。
+    from: path.resolve(__dirname, "src/utils/providers/provider-registry.ts"),
+    to: path.resolve(__dirname, "src/fork/upstream-services/provider-registry.ts"),
+  },
+  {
     // UI-optimization 的圆形悬浮控件放在 fork，保留上游原件用于后续同步。
     from: path.resolve(
       __dirname,

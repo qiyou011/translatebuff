@@ -11,13 +11,14 @@ import {
   FEATURE_KEYS,
   FEATURE_PROVIDER_DEFS,
 } from "@/utils/constants/feature-providers"
+import { isRenyimiaoInstance, RENYIMIAO_ID_PREFIX } from "./renyimiao-identity"
 
 // 任译喵内置托管翻译：每个模型一份 openai-compatible 实例（共享网关 baseURL + API Key）。
 // 选项页把它们收成一个「任译喵 API」块管理（改 key 广播、点「更新模型」fetch /models 重建实例集）；
 // popup 选择器平铺各模型、每功能可各选。隐藏其它 provider 由 UI 层负责；config 层只 seed + repoint，
 // 不移除默认 provider（避开上游 initializeConfig 新装竞态）。纯 config 数据操作，零改 schema。
 
-export const RENYIMIAO_ID_PREFIX = "renyimiao-"
+export { isRenyimiaoInstance, RENYIMIAO_ID_PREFIX } from "./renyimiao-identity"
 
 // oneapi 翻译网关地址：从 env 读取（真实域不硬编码进公开源码），独立翻译网关、≠ 登录后端域（WXT_RENYIMIAO_API_URL）。
 // 作为「登录前默认 / base_url 缺失回落」——登录后由 /v1/tokens 返回的动态 base_url 覆盖。
@@ -53,11 +54,6 @@ export type RenyimiaoProviderConfig = Extract<ProviderConfig, { provider: "opena
 
 export function renyimiaoInstanceId(modelId: string): string {
   return `${RENYIMIAO_ID_PREFIX}${modelId}`
-}
-
-// 任译喵实例识别谓词（按 id 前缀）。fork 各处共用。
-export function isRenyimiaoInstance(provider: { id: string }): boolean {
-  return provider.id.startsWith(RENYIMIAO_ID_PREFIX)
 }
 
 function isRenyimiaoProviderConfig(provider: ProviderConfig): provider is RenyimiaoProviderConfig {

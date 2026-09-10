@@ -10,8 +10,8 @@ import {
   RenyimiaoGatedFallback,
   useRenyimiaoGatedProviders,
 } from "@/fork/ui/providers/use-renyimiao-gating"
+import { resolveProviderRefForCapability } from "@/fork/upstream-services/provider-registry"
 import { configAtom, configFieldsAtomMap, writeConfigAtom } from "@/utils/atoms/config"
-import { getProviderConfigById } from "@/utils/config/helpers"
 import {
   buildFeatureProviderPatch,
   FEATURE_KEYS,
@@ -52,8 +52,10 @@ function FeatureProviderField({
   const config = useAtomValue(configAtom)
   const setConfig = useSetAtom(writeConfigAtom)
   const providersConfig = useAtomValue(configFieldsAtomMap.providersConfig)
-  const providerId = FEATURE_PROVIDER_DEFS[featureKey].getProviderId(config)
-  const providerConfig = getProviderConfigById(providersConfig, providerId) ?? null
+  const configuredId = FEATURE_PROVIDER_DEFS[featureKey].getProviderId(config)
+  const resolved = resolveProviderRefForCapability(featureKey, providersConfig, configuredId)
+  const providerId = resolved?.id ?? configuredId
+  const providerConfig = resolved?.kind === "local" ? resolved.config : null
   const { providers, showFallback } = useRenyimiaoGatedProviders(featureKey, providerId)
   // 微软的免鉴权端点无保留标记模式，与仅译文组合会损坏页面（上游 v1.46.4 起自带该门禁，见 utils/providers/translation-only-gate）。
   // 判定放在这里而不是 ForkProviderSelector 内部：那个组件被 4 个上游 importer 共用，
@@ -108,8 +110,14 @@ function CustomActionProviderField({
   const config = useAtomValue(configAtom)
   const setConfig = useSetAtom(writeConfigAtom)
   const providersConfig = useAtomValue(configFieldsAtomMap.providersConfig)
-  const currentProviderConfig = getProviderConfigById(providersConfig, action.providerId) ?? null
-  const { providers, showFallback } = useRenyimiaoGatedProviders("customAction", action.providerId)
+  const resolved = resolveProviderRefForCapability(
+    "customAction",
+    providersConfig,
+    action.providerId,
+  )
+  const providerId = resolved?.id ?? action.providerId
+  const currentProviderConfig = resolved?.kind === "local" ? resolved.config : null
+  const { providers, showFallback } = useRenyimiaoGatedProviders("customAction", providerId)
 
   return (
     <Field>
@@ -122,7 +130,7 @@ function CustomActionProviderField({
       ) : (
         <ForkProviderSelector
           providers={providers}
-          value={action.providerId}
+          value={providerId}
           onChange={(id) => {
             const updatedCustomActions = config.selectionToolbar.customActions.map((item) =>
               item.id === action.id ? { ...item, providerId: id } : item,
@@ -191,7 +199,7 @@ export function FeatureProviderSelectorList({
 
   return (
     <FieldGroup className={cn("gap-4", className)}>
-      {FEATURE_KEYS.map((featureKey) => (
+      {FEATURE_KEYS.filter((featureKey) => featureKey !== "noteSuggestion").map((featureKey) => (
         <FeatureProviderField
           key={featureKey}
           featureKey={featureKey}

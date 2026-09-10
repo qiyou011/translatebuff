@@ -24,6 +24,7 @@ const translateTextForInputMock = vi.fn<(...args: any[]) => any>()
 const toastAddMock = vi.fn<(...args: any[]) => any>()
 const getLocalConfigMock = vi.fn<(...args: any[]) => any>()
 const getDetectedCodeMock = vi.fn<(...args: any[]) => any>()
+const resolveProviderMock = vi.fn<() => unknown>()
 let execCommandMock: ReturnType<typeof vi.fn<() => boolean>>
 
 vi.mock("@/utils/host/translate/translate-variants", () => ({
@@ -47,7 +48,7 @@ vi.mock("@/utils/analytics", () => ({
 vi.mock("@/utils/analytics-provider", () => ({ classifyResolvedProvider: () => ({}) }))
 vi.mock("@/utils/providers/provider-registry", async (importOriginal) => ({
   ...(await importOriginal<typeof import("@/utils/providers/provider-registry")>()),
-  resolveProviderRefForCapability: () => ({ kind: "local", config: {} }),
+  resolveProviderRefForCapability: () => resolveProviderMock(),
 }))
 
 const { useInputTranslation } = await import("../use-input-translation")
@@ -120,6 +121,7 @@ describe("Discord request feedback and stale-result protection", () => {
     })) as unknown as typeof window.matchMedia
     vi.stubGlobal("location", new URL("https://discord.com/channels/1/2"))
     translateTextForInputMock.mockReset().mockResolvedValue("Привет")
+    resolveProviderMock.mockReset().mockReturnValue({ kind: "local", config: {} })
     toastAddMock.mockReset()
     getDetectedCodeMock.mockReset().mockResolvedValue("deu")
     getLocalConfigMock.mockReset()
@@ -144,6 +146,29 @@ describe("Discord request feedback and stale-result protection", () => {
     await waitFor(() => expect(context.input.value).toBe("Привет"))
     return context
   }
+
+  it("stops legacy cloud input before language or translation requests when no model is available", async () => {
+    const config = configWith({ sourceCode: "auto", targetCode: "cmn" })
+    config.inputTranslation = { ...config.inputTranslation, providerId: "read-frog-free-ai" }
+    getLocalConfigMock.mockResolvedValue(config)
+    resolveProviderMock.mockReturnValue(null)
+    const input = setupPage(RUSSIAN_CHAT)
+    const rendered = renderWithConfig(config)
+    act(pressSpaceThrice)
+    await waitFor(() =>
+      expect(rendered.result.current.bar).toMatchObject({
+        feedback: {
+          kind: "error",
+          retryable: false,
+          messageKey: "options.selectionToolbar.customActions.form.selectProvider",
+        },
+      }),
+    )
+    expect(translateTextForInputMock).not.toHaveBeenCalled()
+    expect(getDetectedCodeMock).not.toHaveBeenCalled()
+    expect(input.value).not.toBe("Привет")
+    expect(document.getElementById("read-frog-input-translation-spinner")).toBeNull()
+  })
 
   async function renderSurface(rootKind: "document" | "shadow") {
     const { input, config, rendered } = setup()

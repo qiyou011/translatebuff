@@ -123,3 +123,27 @@ Translatebuff 是 read-frog 的软 fork（上游：mengxi-ream/read-frog）。
 - 只 merge，绝不 rebase/squash main 上的上游提交（否则毁掉便宜三方合并的共享祖先）。
 - 所有净新增代码进 src/fork/**。
 - fork 配置使用独立 storage key + schema + 迁移链；绝不触碰上游 configSchema。
+
+## 上游云服务隔离（disable-upstream-cloud-services）
+
+本次实施基线为 `cc6a65974dbec43c9643f246d26ccff65701d2bf`；实际已同步上游为 `02ad422c1e1260960e141e4012a20d93e85082aa`（1.46.6）。以后应读取 `src/fork/identity/upstream-baseline.json`，不要把本文 SHA 当作永远不变的最新版本。
+
+新增 14 条精确重定向，服务适配代码位于 `src/fork/upstream-services/`，UI 叶子位于 `src/fork/ui/`，上游原件保留。额外的 `feature-providers-config` 覆盖 API 提供商页独立设置区，保留原布局/说明/写入 hook，仅隐藏笔记建议行、显示实际模型；不可只检查 popup 的 selector list。
+
+| 适配点                                   | 行为与同步关注点                                                                                                                        |
+| ---------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| provider-registry / provider-ref         | 旧 system 引用在请求前解析为首个启用、非空 key、能力匹配的任译喵实例；有效 local 不变；显式快照同样受控。不能改模型分类或配置同步算法。 |
+| language                                 | 三个导出都提前隔离旧 system；本地检测和显式有效 local LLM 保留。不得重新引入三次云请求尝试。                                            |
+| page-translation / subtitles             | 只补无候选时的前置反馈：页面退出；字幕抛局部禁用错误，让原协调器记录失败、结束 loading。其余引擎导出和正常流程复用上游。                |
+| auth-client / background-auth-client     | 上游会话空且立即结束；仅保留当前使用的方法契约，不初始化 SDK；自有会员模块不变。                                                        |
+| orpc-client / background-orpc-client     | 真实 router 类型及 query helper，最小禁用 transport 本地拒绝；普通/流式都不联网。                                                       |
+| hosted-ai-status / notebase-pending-save | 状态消息为 null；笔记处理器不启动、不监听 Cookie、不删除历史数据。                                                                      |
+| blog / WhatsNewFooter                    | 博客直接请求返回 null；popup 和设置通知叶子不挂查询，旧缓存不再显示。                                                                   |
+
+包装复用原模块时，**原模块内部调用不会自动指向包装导出**；协作函数必须显式调用 fork 版本。registry 只能依赖纯身份叶子 `renyimiao-identity.ts`，不能反向引入带配置依赖的 `renyimiao.ts`。
+
+同步时检查上述原件的 diff 与 `redirect-baseline.json` 内容指纹，以及 `@read-frog/definitions`、`@read-frog/api-contract` 的类型/常量变动。新增客户端、直接 fetch 或 API 前缀必须重新核对；新 RPC 方法若共用既有 transport 会被拒绝，但新出口不能靠旧守卫自动兜住。
+
+验收必须两套测试都跑：`SKIP_FREE_API=true pnpm run test` 保留上游测试，`SKIP_FREE_API=true pnpm run test --config vitest.fork.config.ts src/fork` 验证实际重定向。再跑类型/格式、双发行版 Chrome 测试和正式配置构建、Edge/Firefox 构建；最后在新包中检查 SW、扩展页、content script 的三类 API 零请求及正常翻译/登录生命周期。构建仍含上游域名字面量不等于发起了请求，不能替代网络实证。
+
+无迁移、无新增兼容配置写入。回滚只撤销本次适配器、注册/指纹和 fork UI 增量并重新构建，不重置整条分支；回滚会恢复上游请求风险。本次 changeset 仅记录用户可见变化，不运行 `changeset version/release`，不更改 fork 发版号。

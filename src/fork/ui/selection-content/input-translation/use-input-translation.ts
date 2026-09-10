@@ -5,6 +5,7 @@ import type { InputTranslationLang } from "@/types/config/config"
 import { useAtomValue } from "jotai"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { toastManager } from "@/components/ui/base-ui/toast"
+import { UpstreamCloudDisabledError } from "@/fork/upstream-services/disabled-error"
 import { ANALYTICS_FEATURE, ANALYTICS_SURFACE } from "@/types/analytics"
 import { createFeatureUsageContext, trackFeatureAttempt } from "@/utils/analytics"
 import { classifyResolvedProvider } from "@/utils/analytics-provider"
@@ -13,7 +14,10 @@ import { getLocalConfig } from "@/utils/config/storage"
 import { INPUT_REPLACE_REQUEST_TYPE } from "@/utils/constants/input-injector"
 import { translateTextForInput } from "@/utils/host/translate/translate-variants"
 import { HostedAiProviderUnavailableError } from "@/utils/providers/provider-ref"
-import { resolveProviderRefForCapability } from "@/utils/providers/provider-registry"
+import {
+  isBuiltInAiProviderId,
+  resolveProviderRefForCapability,
+} from "@/utils/providers/provider-registry"
 import { getChatContextSelector } from "./chat-context-sites"
 import { classifyInputTranslationError } from "./input-translation-error"
 import { resolveInputTranslationLang } from "./resolve-lang"
@@ -410,6 +414,13 @@ export function useInputTranslation() {
       publish(retryBar ? { ...retryBar, feedback: { kind: "pending" } } : null)
       const request = beginRequest(element, () => publish(null))
       try {
+        const provider = resolveProviderRefForCapability(
+          "inputTranslation",
+          providersConfig,
+          inputTranslationConfig.providerId,
+        )
+        if (!provider && isBuiltInAiProviderId(inputTranslationConfig.providerId))
+          throw new UpstreamCloudDisabledError()
         const langs = await resolveLangPair(fromLang, toLang)
         if (!request.valid()) return
         if (!langs) throw new Error("Input translation configuration is unavailable")
@@ -425,13 +436,7 @@ export function useInputTranslation() {
             ),
             // Capability-resolved so Built-in AI is not reported as "unknown":
             // it is synthesized by the registry and never a providersConfig row.
-            ...classifyResolvedProvider(
-              resolveProviderRefForCapability(
-                "inputTranslation",
-                providersConfig,
-                inputTranslationConfig.providerId,
-              ),
-            ),
+            ...classifyResolvedProvider(provider),
           },
           () => translateTextForInput(text, langs.from.code, langs.to.code),
         )
@@ -464,7 +469,10 @@ export function useInputTranslation() {
             direction,
             feedback: { kind: "error", ...classifyInputTranslationError(error) },
           })
-        } else if (error instanceof HostedAiProviderUnavailableError) {
+        } else if (
+          error instanceof HostedAiProviderUnavailableError ||
+          error instanceof UpstreamCloudDisabledError
+        ) {
           toastManager.add({
             type: "error",
             title: error.message,
@@ -564,6 +572,13 @@ export function useInputTranslation() {
       publish({ ...previous, pendingLang: code, feedback: { kind: "pending" } })
       const request = beginRequest(current.element, () => publish(previous))
       try {
+        const provider = resolveProviderRefForCapability(
+          "inputTranslation",
+          providersConfig,
+          inputTranslationConfig.providerId,
+        )
+        if (!provider && isBuiltInAiProviderId(inputTranslationConfig.providerId))
+          throw new UpstreamCloudDisabledError()
         const translated = await translateTextForInput(
           current.originalText.trim(),
           current.fromCode,
@@ -588,7 +603,13 @@ export function useInputTranslation() {
         if (!request.deferred) request.finish()
       }
     },
-    [beginRequest, focusEditorForInlineAction, publish],
+    [
+      beginRequest,
+      focusEditorForInlineAction,
+      publish,
+      providersConfig,
+      inputTranslationConfig.providerId,
+    ],
   )
 
   const retry = useCallback(async () => {

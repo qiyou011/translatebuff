@@ -15,6 +15,7 @@ export type InputTranslationError = {
     | "inputTranslationBar.failed"
     | "inputTranslationBar.contentBlocked"
     | "subtitles.errors.aiAuthFailed"
+    | "options.selectionToolbar.customActions.form.selectProvider"
 }
 
 // Only inspect known error fields; never render/log a raw provider body or key.
@@ -41,6 +42,12 @@ function errorEvidence(error: unknown, depth = 0): string {
 
 export function classifyInputTranslationError(error: unknown): InputTranslationError {
   const evidence = errorEvidence(error)
+  if (/\bUPSTREAM_CLOUD_DISABLED\b/.test(evidence)) {
+    return {
+      retryable: false,
+      messageKey: "options.selectionToolbar.customActions.form.selectProvider",
+    }
+  }
   if (/\bdata_inspection_failed\b/i.test(evidence)) {
     return { retryable: false, messageKey: "inputTranslationBar.contentBlocked" }
   }
