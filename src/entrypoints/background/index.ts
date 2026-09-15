@@ -2,6 +2,7 @@ import "@/utils/zod-config"
 import type { Config, UiLanguage } from "@/types/config/config"
 import { browser, defineBackground } from "#imports"
 import { setupFork } from "@/fork/background"
+import { createPageTranslationQueues } from "@/fork/page-translation/queues"
 import { getWebsiteUrl } from "@/fork/website-url"
 import { storageAdapter } from "@/utils/atoms/storage-adapter"
 import { selectFreshTranslateProviders } from "@/utils/config/default-translate-provider"
@@ -125,7 +126,7 @@ export default defineBackground({
 
     // Synchronous: all queue message handlers register in the first turn of
     // the SW so wake-triggering messages are never dropped during init.
-    setUpWebPageTranslationQueue()
+    setUpWebPageTranslationQueue(createPageTranslationQueues)
     setUpSubtitlesTranslationQueue()
     void setUpDatabaseCleanup()
     setUpConfigBackup()

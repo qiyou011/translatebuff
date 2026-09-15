@@ -44,6 +44,40 @@ export async function microsoftTranslate(
     throw new Error("Microsoft translator does not support HTML fragments")
   }
 
+  const result = await requestMicrosoftTranslationBatch(texts, fromLang, toLang, options)
+  try {
+    if (!Array.isArray(result) || result.length !== texts.length) {
+      throw new Error(
+        `Unexpected response format: expected ${texts.length} results, got ${Array.isArray(result) ? result.length : "non-array"}`,
+      )
+    }
+
+    const translations = result.map(
+      (item: { translations?: { text?: string }[] }, index: number) => {
+        const text = item?.translations?.[0]?.text
+        if (text === null || text === undefined) {
+          throw new Error(`Missing translation for item at index ${index}`)
+        }
+        return text
+      },
+    )
+
+    return isSingle ? translations[0]! : translations
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error)
+    throw new Error(`Failed to parse Microsoft translation response: ${message}`, { cause: error })
+  }
+}
+/** Raw page batch transport; a malformed item must not discard its siblings. */
+export async function requestMicrosoftTranslationBatch(
+  texts: string[],
+  fromLang: string,
+  toLang: string,
+  options?: { textFormat?: TranslationTextFormat; signal?: AbortSignal },
+): Promise<unknown> {
+  if (texts.length === 0) return []
+  if (options?.textFormat === "html")
+    throw new Error("Microsoft translator does not support HTML fragments")
   const effectiveFromLang = fromLang === "auto" ? "" : fromLang
 
   // The endpoint runs Microsoft's HTML tag aligner on every request, so a bare
@@ -85,27 +119,9 @@ export async function microsoftTranslate(
   }
 
   try {
-    const result = await resp.json()
-
-    if (!Array.isArray(result) || result.length !== texts.length) {
-      throw new Error(
-        `Unexpected response format: expected ${texts.length} results, got ${Array.isArray(result) ? result.length : "non-array"}`,
-      )
-    }
-
-    const translations = result.map(
-      (item: { translations?: { text?: string }[] }, index: number) => {
-        const text = item?.translations?.[0]?.text
-        if (text === null || text === undefined) {
-          throw new Error(`Missing translation for item at index ${index}`)
-        }
-        return text
-      },
-    )
-
-    return isSingle ? translations[0]! : translations
+    return await resp.json()
   } catch (error) {
-    const message = error instanceof Error ? error.message : String(error)
-    throw new Error(`Failed to parse Microsoft translation response: ${message}`, { cause: error })
+    if (error instanceof SyntaxError) return undefined
+    throw error
   }
 }

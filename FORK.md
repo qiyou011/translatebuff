@@ -120,6 +120,15 @@ Translatebuff 是 read-frog 的软 fork（上游：mengxi-ream/read-frog）。
 
 ## 不变量
 
+### v1.4.0 页面批量接入（2026-09-12 架构复审通过）
+
+`background/index.ts` 显式传入 fork 页面队列工厂；未传工厂仍是上游行为，字幕不变。
+净新增实现/测试在 `src/fork/page-translation/`。白名单新增 `background/translation-queues.ts`、
+`background/config.ts`、`utils/request/request-queue.ts`、Google/Microsoft adapter；同步时检查
+注入点、scope取消、共享初始化Promise、真实在途计数，以及MT单条编解码和错误元数据。
+Google/MS原导出仍保留；不新增影子队列。`page-translation-cost-reduction.md` 是仅记录的
+changeset例外，不运行release/version。最终默认值与fork发版号仍受本变更实测发布门控制。
+
 - 只 merge，绝不 rebase/squash main 上的上游提交（否则毁掉便宜三方合并的共享祖先）。
 - 所有净新增代码进 src/fork/**。
 - fork 配置使用独立 storage key + schema + 迁移链；绝不触碰上游 configSchema。

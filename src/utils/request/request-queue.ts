@@ -35,6 +35,8 @@ type QueuedRequestTask = RequestTask & {
 }
 
 export interface QueueOptions {
+  /** fork: optional actual in-flight limit; omitted preserves upstream dispatch. */
+  maxConcurrent?: number
   rate: number // tokens/sec
   capacity: number // token bucket size
   timeoutMs: number
@@ -44,6 +46,7 @@ export interface QueueOptions {
 }
 
 export class RequestQueue {
+  private activeAttempts = 0
   private waitingQueue: BinaryHeapPQ<QueuedRequestTask>
   private waitingTasks = new Map<string, QueuedRequestTask>()
   private executingTasks = new Map<string, QueuedRequestTask>()
@@ -63,6 +66,7 @@ export class RequestQueue {
   private consecutiveRateLimits = 0
 
   constructor(private options: QueueOptions) {
+    this.validateConcurrency(options.maxConcurrent)
     this.retryPolicy = options.retryPolicy ?? defaultRequestRetryPolicy
     this.bucketTokens = options.capacity
     this.lastRefill = Date.now()
@@ -120,6 +124,7 @@ export class RequestQueue {
   }
 
   setQueueOptions(options: Partial<QueueOptions>) {
+    this.validateConcurrency(options.maxConcurrent)
     const { retryPolicy, ...queueOptions } = options
     const parseConfigStatus = requestQueueConfigSchema.partial().safeParse(queueOptions)
     if (parseConfigStatus.error) {
@@ -203,7 +208,17 @@ export class RequestQueue {
       this.bucketTokens >= tokensNeeded
         ? 0
         : Math.ceil(((tokensNeeded - this.bucketTokens) / this.options.rate) * 1000)
-    return Math.max(pauseDelayMs, tokenDelayMs)
+    return Math.max(pauseDelayMs, tokenDelayMs, this.atConcurrencyLimit() ? 1000 : 0)
+  }
+
+  private validateConcurrency(value: number | undefined) {
+    if (value !== undefined && (!Number.isSafeInteger(value) || value < 1)) {
+      throw new Error("maxConcurrent must be a positive safe integer")
+    }
+  }
+
+  private atConcurrencyLimit() {
+    return this.activeAttempts >= (this.options.maxConcurrent ?? Infinity)
   }
 
   private schedule() {
@@ -218,7 +233,7 @@ export class RequestQueue {
       return
     }
 
-    while (this.bucketTokens >= 1 && this.waitingQueue.size() > 0) {
+    while (!this.atConcurrencyLimit() && this.bucketTokens >= 1 && this.waitingQueue.size() > 0) {
       const now = Date.now()
 
       const task = this.waitingQueue.peek()
@@ -240,7 +255,8 @@ export class RequestQueue {
       }
     }
 
-    if (this.waitingQueue.size() > 0) {
+    // Actual completion wakes us. A zero-delay timer here would busy-loop.
+    if (!this.atConcurrencyLimit() && this.waitingQueue.size() > 0) {
       const nextTask = this.waitingQueue.peek()
       if (nextTask) {
         const now = Date.now()
@@ -274,6 +290,8 @@ export class RequestQueue {
     // console.info(`🏃 Starting execution of task ${task.id} (attempt ${task.retryCount + 1}) at ${Date.now()}`)
 
     let timeoutId: NodeJS.Timeout | null = null
+    let invocationFinished = false
+    let logicFinished = false
     const abortController = new AbortController()
     task.abortController = abortController
     const timeoutMs = task.timeoutMs ?? this.options.timeoutMs
@@ -294,7 +312,25 @@ export class RequestQueue {
 
       // Race between the actual task and timeout; the signal cancels the
       // in-flight attempt on timeout so a retry never runs concurrently with it
-      const result = await Promise.race([task.thunk(abortController.signal), timeoutPromise])
+      this.activeAttempts++
+      let invocation: Promise<any>
+      try {
+        invocation = Promise.resolve(task.thunk(abortController.signal))
+      } catch (error) {
+        invocation = Promise.reject(error)
+      }
+      // Abort is a request, not proof that the underlying transport stopped.
+      const releaseAttempt = () => {
+        invocationFinished = true
+        // Late settlement after timeout/cancel has no remaining finally to wake us.
+        // Otherwise keep the slot until retry/auth/429 classification is complete.
+        if (logicFinished) {
+          this.activeAttempts--
+          this.schedule()
+        }
+      }
+      void invocation.then(releaseAttempt, releaseAttempt)
+      const result = await Promise.race([invocation, timeoutPromise])
 
       // Clear timeout if task completed successfully
       if (timeoutId) {
@@ -374,6 +410,8 @@ export class RequestQueue {
         }
       }
     } finally {
+      logicFinished = true
+      if (invocationFinished) this.activeAttempts--
       // Ensure timeout is always cleared
       if (timeoutId) {
         clearTimeout(timeoutId)

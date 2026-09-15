@@ -1,3 +1,4 @@
+import type { createPageTranslationQueues } from "@/fork/page-translation/queues"
 import type { HostedAiTextStreamRoute } from "@/types/background-stream"
 import type { Config } from "@/types/config/config"
 import type { ProviderConfig } from "@/types/config/provider"
@@ -9,7 +10,9 @@ import { LANG_CODE_TO_EN_NAME } from "@read-frog/definitions"
 import { browser, storage } from "#imports"
 import { isLLMProviderConfig } from "@/types/config/provider"
 import { putBatchRequestRecord } from "@/utils/batch-request-record"
+import { getLocalConfig } from "@/utils/config/storage"
 import { CONFIG_STORAGE_KEY, DEFAULT_CONFIG } from "@/utils/constants/config"
+import { isNoTranslationSentinel } from "@/utils/constants/prompt"
 import { BATCH_SEPARATOR, BATCH_SEPARATOR_LINE_PATTERN } from "@/utils/constants/prompt"
 import {
   BATCH_TIMEOUT_BASE_MS,
@@ -121,9 +124,11 @@ async function getValidatedCachedTranslation(
   hash: string,
   sourceText: string,
   validateHtmlAttributeMarkers: boolean,
+  allowSentinel = false,
 ): Promise<string | undefined> {
   const cached = await db.translationCache.get(hash)
   if (!cached) return undefined
+  if (allowSentinel && isNoTranslationSentinel(cached.translation)) return cached.translation
   if (!validateHtmlAttributeMarkers) return cached.translation
 
   try {
@@ -427,6 +432,7 @@ function watchQueueConfig(
   queueName: "webpage" | "subtitles",
   queuesPromise: Promise<{
     requestQueue: RequestQueue
+    interactionQueue?: RequestQueue
     batchQueue: { setBatchConfig: (config: Partial<BatchQueueConfig>) => void }
   }>,
   selectConfig: (config: Config) => {
@@ -437,12 +443,13 @@ function watchQueueConfig(
   let lastAppliedJson: string | null = null
   storage.watch<Config>(`local:${CONFIG_STORAGE_KEY}`, (newConfig) => {
     if (!newConfig) return
-    void queuesPromise.then(({ requestQueue, batchQueue }) => {
+    void queuesPromise.then(({ requestQueue, batchQueue, interactionQueue }) => {
       try {
         const selected = selectConfig(newConfig)
         const json = JSON.stringify(selected)
         if (json === lastAppliedJson) return
         requestQueue.setQueueOptions(selected.requestQueueConfig)
+        interactionQueue?.setQueueOptions(selected.requestQueueConfig)
         batchQueue.setBatchConfig(selected.batchQueueConfig)
         lastAppliedJson = json
         logger.info(`[translation-queues] ${queueName} queue config updated`, selected)
@@ -458,7 +465,9 @@ const selectWebPageQueueConfig = (config: Config) => ({
   batchQueueConfig: config.pageTranslation.batchQueueConfig,
 })
 
-export function setUpWebPageTranslationQueue(): void {
+export function setUpWebPageTranslationQueue(
+  pageQueueFactory?: typeof createPageTranslationQueues,
+): void {
   // Scopes whose cancel already drained the queues. Consulted by (a) the
   // enqueue handler after its cache-lookup await and (b) the batch queue's
   // retry/fallback path after its backoff sleep — both are windows where a
@@ -471,16 +480,30 @@ export function setUpWebPageTranslationQueue(): void {
   const webPromptResolver: PromptResolver<WebTranslationPromptContext> = getTranslatePrompt
 
   const queuesPromise = loadQueueSetupConfig("webpage", selectWebPageQueueConfig).then(
-    ({ requestQueueConfig, batchQueueConfig, configSource }) =>
-      createTranslationQueues<WebTranslationPromptContext>({
-        requestQueueConfig,
-        batchQueueConfig,
-        promptResolver: webPromptResolver,
-        isScopeCancelled: (scopeKey) => cancelledScopes.has(scopeKey),
-        queueName: "webpage",
-        hostedFeature: "pageTranslation",
-        configSource,
-      }),
+    async ({ requestQueueConfig, batchQueueConfig, configSource }) => {
+      if (pageQueueFactory) {
+        return {
+          kind: "fork" as const,
+          ...pageQueueFactory({
+            requestQueueConfig,
+            batchQueueConfig,
+            isScopeCancelled: (scopeKey) => cancelledScopes.has(scopeKey),
+          }),
+        }
+      }
+      return {
+        kind: "upstream" as const,
+        ...(await createTranslationQueues<WebTranslationPromptContext>({
+          requestQueueConfig,
+          batchQueueConfig,
+          promptResolver: webPromptResolver,
+          isScopeCancelled: (scopeKey) => cancelledScopes.has(scopeKey),
+          queueName: "webpage",
+          hostedFeature: "pageTranslation",
+          configSource,
+        })),
+      }
+    },
   )
 
   // Everything below registers in the FIRST synchronous turn of the SW: an
@@ -488,7 +511,8 @@ export function setUpWebPageTranslationQueue(): void {
   watchQueueConfig("webpage", queuesPromise, selectWebPageQueueConfig)
 
   onMessage("enqueueTranslateRequest", async (message) => {
-    const { requestQueue, batchQueue } = await queuesPromise
+    const queues = await queuesPromise
+    const { requestQueue } = queues
     const {
       data: {
         text,
@@ -522,6 +546,7 @@ export function setUpWebPageTranslationQueue(): void {
         hash,
         text,
         validateHtmlAttributeMarkers,
+        queues.kind === "fork",
       )
       if (cachedTranslation !== undefined) return cachedTranslation
     }
@@ -542,7 +567,45 @@ export function setUpWebPageTranslationQueue(): void {
       webSummary: normalizePromptContextValue(webSummary),
     }
 
-    if (shouldUseBatchQueue(providerRef)) {
+    if (queues.kind === "fork") {
+      const localProvider = getLocalProviderConfig(providerRef)
+      const interactive = hostedFeature !== undefined && hostedFeature !== "pageTranslation"
+      if (interactive || !localProvider) {
+        const requestId = localProvider ? undefined : getRandomUUID()
+        result = await (interactive ? queues.interactionQueue : requestQueue).enqueue(
+          (signal) =>
+            executeQueuedTranslation(text, langConfig, providerRef, webPromptResolver, {
+              context,
+              textFormat,
+              preserveLineBreaks,
+              signal,
+              hostedRequestId: requestId,
+              hostedFeature,
+            }),
+          scheduleAt,
+          Sha256Hex(hash, scope ?? "", hostedFeature ?? "pageTranslation"),
+          scope ? [scope] : undefined,
+        )
+      } else {
+        const promptConfig = structuredClone(
+          ((await getLocalConfig()) ?? DEFAULT_CONFIG).pageTranslation.customPromptsConfig,
+        )
+        if (scope && cancelledScopes.has(scope)) throw new TranslationCancelledError(scope)
+        result = await queues.batchQueue.enqueue({
+          text,
+          langConfig,
+          provider: localProvider,
+          hash,
+          scheduleAt,
+          context,
+          scope,
+          hostedFeature,
+          textFormat,
+          preserveLineBreaks,
+          promptConfig,
+        })
+      }
+    } else if (shouldUseBatchQueue(providerRef)) {
       const data = {
         text,
         langConfig,
@@ -553,7 +616,7 @@ export function setUpWebPageTranslationQueue(): void {
         scope,
         hostedFeature,
       }
-      result = await batchQueue.enqueue(data)
+      result = await queues.batchQueue.enqueue(data)
     } else {
       const localProvider = getLocalProviderConfig(providerRef)
       if (!localProvider) {
@@ -569,7 +632,11 @@ export function setUpWebPageTranslationQueue(): void {
       result = await requestQueue.enqueue(thunk, scheduleAt, hash, scope ? [scope] : undefined)
     }
 
-    if (validateHtmlAttributeMarkers) {
+    if (scope && cancelledScopes.has(scope)) throw new TranslationCancelledError(scope)
+    if (
+      validateHtmlAttributeMarkers &&
+      !(queues.kind === "fork" && isNoTranslationSentinel(result))
+    ) {
       assertHtmlAttributeMarkerIntegrity(text, result)
     }
 
@@ -586,7 +653,11 @@ export function setUpWebPageTranslationQueue(): void {
   })
 
   onMessage("getOrGenerateWebPageSummary", async (message) => {
-    const { requestQueue } = await queuesPromise
+    const queues = await queuesPromise
+    const interactive =
+      message.data.hostedFeature !== undefined && message.data.hostedFeature !== "pageTranslation"
+    const requestQueue =
+      queues.kind === "fork" && interactive ? queues.interactionQueue : queues.requestQueue
     const { webTitle, webContent, providerRef } = message.data
 
     if (!webTitle || !webContent) {

@@ -116,22 +116,13 @@ export function reassemblePreservedLine(line: PreservedLine, translation: string
   return line.prefix + translation.replace(TRANSLATED_LINE_PREFIX_REGEX, "")
 }
 
-export async function googleTranslate(
-  sourceText: string,
-  fromLang: string,
-  toLang: string,
-  options?: {
-    textFormat?: TranslationTextFormat
-    /**
-     * Caller-owned signal that the source's line breaks are semantic (the
-     * source container preserves newlines, or the text is user-typed input).
-     * Plain format only — html payloads carry their own structure. Known gap:
-     * literal newlines inside html-format text nodes still collapse.
-     */
-    preserveLineBreaks?: boolean
-    signal?: AbortSignal
-  },
-): Promise<string> {
+export interface GoogleTranslationOptions {
+  textFormat?: TranslationTextFormat
+  preserveLineBreaks?: boolean
+  signal?: AbortSignal
+}
+
+export function prepareGoogleTranslation(sourceText: string, options?: GoogleTranslationOptions) {
   // translateHtml parses the request text as HTML, so plain source text must be
   // escaped (& < > nbsp) before sending, while html input (translationOnly page
   // mode) is sent as-is so the endpoint preserves its tags. The response stays
@@ -154,14 +145,24 @@ export async function googleTranslate(
       .map((line) => escapeText(line.content))
       .join(GOOGLE_LINE_BREAK_MARKER_PAIR)
   }
+  return { requestText, preservedLines }
+}
+
+/** Raw page batch transport: shape validation belongs outside RequestQueue. */
+export async function requestGoogleTranslationBatch(
+  requestTexts: string[],
+  fromLang: string,
+  toLang: string,
+  signal?: AbortSignal,
+): Promise<unknown> {
   const resp = await fetch(GOOGLE_TRANSLATE_HTML_URL, {
     method: "POST",
     headers: {
       "Content-Type": "application/json+protobuf",
       "X-Goog-API-Key": GOOGLE_TRANSLATE_HTML_API_KEY,
     },
-    body: JSON.stringify([[[requestText], fromLang, toLang], GOOGLE_TRANSLATE_HTML_CLIENT]),
-    signal: options?.signal,
+    body: JSON.stringify([[requestTexts, fromLang, toLang], GOOGLE_TRANSLATE_HTML_CLIENT]),
+    signal,
   }).catch((error) => {
     throw attachRequestErrorMeta(new Error(`Network error during translation: ${error.message}`), {
       kind: "network",
@@ -185,39 +186,63 @@ export async function googleTranslate(
   }
 
   try {
-    const result = await resp.json()
+    return await resp.json()
+  } catch (error) {
+    if (error instanceof SyntaxError) return undefined
+    throw error
+  }
+}
 
+export function restoreGoogleTranslation(
+  translatedText: string,
+  preservedLines?: PreservedLine[],
+): string {
+  if (!preservedLines) {
+    return translatedText
+  }
+
+  const segments = translatedText.split(GOOGLE_LINE_BREAK_MARKER_PAIR_SPLIT_REGEX)
+  if (segments.length === preservedLines.length) {
+    return preservedLines
+      .map((line, index) =>
+        line.content === ""
+          ? line.prefix
+          : reassemblePreservedLine(
+              line,
+              // A stray unpaired marker inside a segment must never leak
+              // markup into the rendered translation.
+              segments[index]!.replace(GOOGLE_LINE_BREAK_MARKER_SINGLE_REGEX, " "),
+            ),
+      )
+      .join("\n")
+  }
+
+  // Segment drift (a pair merged or duplicated by the model — never seen in
+  // sampling, but the failure must degrade gracefully): keep the line
+  // structure by folding markers into newlines and skip prefix restoration.
+  return translatedText
+    .replace(GOOGLE_LINE_BREAK_MARKER_PAIR_GLOBAL_REGEX, "\n")
+    .replace(GOOGLE_LINE_BREAK_MARKER_SINGLE_REGEX, "\n")
+}
+
+export async function googleTranslate(
+  sourceText: string,
+  fromLang: string,
+  toLang: string,
+  options?: GoogleTranslationOptions,
+): Promise<string> {
+  const { requestText, preservedLines } = prepareGoogleTranslation(sourceText, options)
+  const result = await requestGoogleTranslationBatch(
+    [requestText],
+    fromLang,
+    toLang,
+    options?.signal,
+  )
+  try {
     if (!Array.isArray(result) || !Array.isArray(result[0]) || typeof result[0][0] !== "string") {
       throw new TypeError("Unexpected response format from translation API")
     }
-    const translatedText: string = result[0][0]
-
-    if (!preservedLines) {
-      return translatedText
-    }
-
-    const segments = translatedText.split(GOOGLE_LINE_BREAK_MARKER_PAIR_SPLIT_REGEX)
-    if (segments.length === preservedLines.length) {
-      return preservedLines
-        .map((line, index) =>
-          line.content === ""
-            ? line.prefix
-            : reassemblePreservedLine(
-                line,
-                // A stray unpaired marker inside a segment must never leak
-                // markup into the rendered translation.
-                segments[index]!.replace(GOOGLE_LINE_BREAK_MARKER_SINGLE_REGEX, " "),
-              ),
-        )
-        .join("\n")
-    }
-
-    // Segment drift (a pair merged or duplicated by the model — never seen in
-    // sampling, but the failure must degrade gracefully): keep the line
-    // structure by folding markers into newlines and skip prefix restoration.
-    return translatedText
-      .replace(GOOGLE_LINE_BREAK_MARKER_PAIR_GLOBAL_REGEX, "\n")
-      .replace(GOOGLE_LINE_BREAK_MARKER_SINGLE_REGEX, "\n")
+    return restoreGoogleTranslation(result[0][0], preservedLines)
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error)
     throw new Error(`Failed to parse translation response: ${message}`, { cause: error })

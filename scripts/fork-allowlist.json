@@ -1,5 +1,11 @@
 {
   "files": [
+    "src/entrypoints/background/translation-queues.ts",
+    "src/entrypoints/background/config.ts",
+    "src/utils/request/request-queue.ts",
+    "src/utils/host/translate/api/google.ts",
+    "src/utils/host/translate/api/microsoft.ts",
+    ".changeset/page-translation-cost-reduction.md",
     "wxt.config.ts",
     "src/entrypoints/background/index.ts",
     "src/utils/constants/app.ts",
