@@ -1,0 +1,760 @@
+{
+  "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+  "capturedAt": "2026-09-12T12:25:46.787Z",
+  "browser": "151.0.7922.34",
+  "artifact": "/Users/yisen/Desktop/Junyun/Projects/Company/translatebuff/.output/chrome-mv3",
+  "scope": "three full-height scroll passes with stable capture count",
+  "provider": "google-translate-default",
+  "language": {
+    "level": "intermediate",
+    "sourceCode": "eng",
+    "targetCode": "cmn"
+  },
+  "mode": "bilingual",
+  "range": "all",
+  "preload": {
+    "margin": 1000,
+    "threshold": 0
+  },
+  "batch": {
+    "maxCharactersPerBatch": 4000,
+    "maxItemsPerBatch": 16
+  },
+  "queue": {
+    "capacity": 20,
+    "rate": 8
+  },
+  "dom": {
+    "title": "函数 - JavaScript | MDN",
+    "height": 23351,
+    "scrollY": 0,
+    "spinners": 0,
+    "wrappers": 74,
+    "chineseWrappers": 73,
+    "probe": {
+      "start": 2651.099999964237,
+      "first": 524.6000000238419,
+      "longTasks": []
+    }
+  },
+  "phase": "mdn",
+  "captures": [
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "Functions - JavaScript | MDN",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932480
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "Skip to main content",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932509
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "Skip to search",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932509
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "HTML",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932509
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "CSS",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932510
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "JavaScript",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932510
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "Web APIs",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932510
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "All",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932511
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "Learn",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932511
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "Tools",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932511
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "About",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932511
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "Blog",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932512
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "Web",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932512
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "JavaScript",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932512
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "Guide",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932512
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "Functions",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932512
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "Functions",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932512
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "Previous",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932512
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "Next",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932512
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "In this article",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932513
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "Defining functions",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932513
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "Calling functions",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932513
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "Function scopes and closures",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932513
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "Using the arguments object",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932513
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "Function parameters",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932513
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "Arrow functions",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932514
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "Defining functions",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932514
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "Function declarations",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932514
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "The name of the function.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932514
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "Tutorials and guides",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932514
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "JavaScript Guide",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932515
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "Introduction",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932515
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "Grammar and types",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932515
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "Control flow and error handling",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932515
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "Loops and iteration",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932516
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "Functions",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932516
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "Expressions and operators",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932516
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "Numbers and strings",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932516
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "Representing dates & times",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932516
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "Regular expressions",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932516
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "Indexed collections",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932517
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "Keyed collections",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932517
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "Working with objects",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932517
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "Using classes",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932518
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "Using promises",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932518
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "JavaScript typed arrays",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932518
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "Iterators and generators",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932518
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "Resource management",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932518
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "Internationalization",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932519
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "JavaScript modules",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932519
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "Intermediate",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932519
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "Advanced",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932522
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "Scrimba",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932523
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "Log in",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932523
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "Theme",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932523
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "English (US)",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932523
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "Functions are one of the fundamental building blocks in JavaScript. A function in JavaScript is similar to a procedure—a set of statements that performs a task or calculates a value, but for a procedure to qualify as a function, it should take some input and return an output where there is some obvious relationship between the input and the output. To use a function, you must define it somewhere in the scope from which you wish to call it.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932523
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "See also the exhaustive reference chapter about JavaScript functions to get to know the details.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932523
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "A function definition (also called a function declaration, or function statement) consists of the function keyword, followed by:",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932526
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "A list of parameters to the function, enclosed in parentheses and separated by commas.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932526
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "The JavaScript statements that define the function, enclosed in curly braces, { /* … */ }.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932526
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "For example, the following code defines a function named square:",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932527
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "The function square takes one parameter, called number. The function consists of one statement that says to return the parameter of the function (that is, number) multiplied by itself. The return statement specifies the value returned by the function, which is number * number.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932530
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "Parameters are essentially passed to functions by value — so if the code within the body of a function assigns a completely new value to a parameter that was passed to the function, the change is not reflected globally or in the code which called that function.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932530
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "When you pass an object as a parameter, if the function changes the object's properties, that change is visible outside the function, as shown in the following example:",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932531
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "When you pass an array as a parameter, if the function changes any of the array's values, that change is visible outside the function, as shown in the following example:",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932531
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "Learn frontend, backend, and AI from our course partner  Scrimba",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932531
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "Function declarations and expressions can be nested, which forms a scope chain. For example:",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215932716
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "See function scopes and closures for more information.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215933059
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "Function expressions",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215933090
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "While the function declaration above is syntactically a statement, functions can also be created by a function expression.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215933893
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "Such a function can be anonymous; it does not have to have a name. For example, the function square could have been defined as:",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215933965
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "However, a name can be provided with a function expression. Providing a name allows the function to refer to itself, and also makes it easier to identify the function in a debugger's stack traces:",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215934333
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "Function expressions are convenient when passing a function as an argument to another function. The following example defines a map function that should receive a function as first argument and an array as second argument. Then, it is called with a function defined by a function expression:",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215934555
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "In JavaScript, a function can be defined based on a condition. For example, the following function definition defines myFunc only if num equals 0:",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215935049
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "In addition to defining functions as described here, you can also use the Function constructor to create functions from a string at runtime, much like eval().",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215935245
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "A method is a function that is a property of an object. Read more about objects and methods in Working with objects.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215935275
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "Defining a function does not execute it. Defining it names the function and specifies what to do when the function is called.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215935367
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "Calling the function actually performs the specified actions with the indicated parameters. For example, if you define the function square, you could call it as follows:",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215935419
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "The preceding statement calls the function with an argument of 5. The function executes its statements and returns the value 25.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215939220
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "Functions must be in scope when they are called, but the function declaration can be hoisted (appear below the call in the code). The scope of a function declaration is the function in which it is declared (or the entire program, if it is declared at the top level).",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215939226
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "The arguments of a function are not limited to strings and numbers. You can pass whole objects to a function. The showProps() function (defined in Working with objects) is an example of a function that takes an object as an argument.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215939234
+    },
+    {
+      "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+      "text": "A function can call itself. For example, here is a function that computes factorials recursively:",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215939241
+    }
+  ],
+  "requests": [
+    {
+      "phase": "mdn",
+      "kind": "google",
+      "items": 1,
+      "chars": 28,
+      "bytes": 55,
+      "start": 7418,
+      "status": "network-error",
+      "error": "Failed to fetch",
+      "ms": 176
+    },
+    {
+      "phase": "mdn",
+      "kind": "google",
+      "items": 62,
+      "chars": 2585,
+      "bytes": 2801,
+      "start": 7419.899999976158,
+      "status": 200,
+      "returned": 62,
+      "ms": 447
+    },
+    {
+      "phase": "mdn",
+      "kind": "google",
+      "items": 1,
+      "chars": 92,
+      "bytes": 119,
+      "start": 7577.099999964237,
+      "status": 200,
+      "returned": 1,
+      "ms": 147
+    },
+    {
+      "phase": "mdn",
+      "kind": "google",
+      "items": 2,
+      "chars": 74,
+      "bytes": 104,
+      "start": 7951.199999988079,
+      "status": 200,
+      "returned": 2,
+      "ms": 221
+    },
+    {
+      "phase": "mdn",
+      "kind": "google",
+      "items": 1,
+      "chars": 28,
+      "bytes": 55,
+      "start": 8670.599999964237,
+      "status": 200,
+      "returned": 1,
+      "ms": 159
+    },
+    {
+      "phase": "mdn",
+      "kind": "google",
+      "items": 2,
+      "chars": 249,
+      "bytes": 279,
+      "start": 8826.5,
+      "status": 200,
+      "returned": 2,
+      "ms": 173
+    },
+    {
+      "phase": "mdn",
+      "kind": "google",
+      "items": 1,
+      "chars": 196,
+      "bytes": 223,
+      "start": 9194,
+      "status": 200,
+      "returned": 1,
+      "ms": 142
+    },
+    {
+      "phase": "mdn",
+      "kind": "google",
+      "items": 1,
+      "chars": 291,
+      "bytes": 318,
+      "start": 9417.599999964237,
+      "status": 200,
+      "returned": 1,
+      "ms": 245
+    },
+    {
+      "phase": "mdn",
+      "kind": "google",
+      "items": 1,
+      "chars": 146,
+      "bytes": 173,
+      "start": 9909.5,
+      "status": 200,
+      "returned": 1,
+      "ms": 128
+    },
+    {
+      "phase": "mdn",
+      "kind": "google",
+      "items": 3,
+      "chars": 399,
+      "bytes": 432,
+      "start": 10126.899999976158,
+      "status": 200,
+      "returned": 3,
+      "ms": 212
+    },
+    {
+      "phase": "mdn",
+      "kind": "google",
+      "items": 1,
+      "chars": 169,
+      "bytes": 196,
+      "start": 10281.199999988079,
+      "status": 200,
+      "returned": 1,
+      "ms": 184
+    },
+    {
+      "phase": "mdn",
+      "kind": "google",
+      "items": 4,
+      "chars": 724,
+      "bytes": 760,
+      "start": 14101.399999976158,
+      "status": 200,
+      "returned": 4,
+      "ms": 206
+    }
+  ],
+  "active": 0,
+  "peak": 3
+}

@@ -1,0 +1,1574 @@
+{
+  "url": "https://react.dev/learn/thinking-in-react",
+  "capturedAt": "2026-09-12T12:23:35.779Z",
+  "browser": "151.0.7922.34",
+  "artifact": "/Users/yisen/Desktop/Junyun/Projects/Company/translatebuff/.output/chrome-mv3",
+  "scope": "three full-height scroll passes with stable capture count",
+  "provider": "google-translate-default",
+  "language": {
+    "level": "intermediate",
+    "sourceCode": "eng",
+    "targetCode": "cmn"
+  },
+  "mode": "bilingual",
+  "range": "all",
+  "preload": {
+    "margin": 1000,
+    "threshold": 0
+  },
+  "batch": {
+    "maxCharactersPerBatch": 1000,
+    "maxItemsPerBatch": 4
+  },
+  "queue": {
+    "capacity": 20,
+    "rate": 8
+  },
+  "dom": {
+    "title": "React 中的思考 – React",
+    "height": 15635,
+    "scrollY": 0,
+    "spinners": 0,
+    "wrappers": 146,
+    "chineseWrappers": 144,
+    "probe": {
+      "start": 2310.7999999523163,
+      "first": 538.8000000119209,
+      "longTasks": []
+    }
+  },
+  "phase": "react",
+  "captures": [
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Thinking in React – React",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215804198
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "v19.3",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215804297
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Search",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215804298
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Learn",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215804298
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Reference",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215804299
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Community",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215804301
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Blog",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215804302
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "GET STARTED",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215804302
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Quick Start",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215804303
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Tutorial: Tic-Tac-Toe",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215804303
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Thinking in React",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215804304
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Installation",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215804304
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Setup",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215804305
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "React Compiler",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215804305
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "LEARN REACT",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215804305
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Describing the UI",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215804305
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Adding Interactivity",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215804305
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Managing State",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215804309
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Escape Hatches",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215804309
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Learn React",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215804309
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Quick Start",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215804309
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Copy page",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215804309
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Thinking in React",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215804310
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Start with the mockup",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215804311
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "The mockup looks like this:",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215804311
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Step 1: Break the UI into a component hierarchy",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215804311
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "There are five components on this screen:",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215804311
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "React can change how you think about the designs you look at and the apps you build. When you build a user interface with React, you will first break it apart into pieces called components. Then, you will describe the different visual states for each of your components. Finally, you will connect your components together so that the data flows through them. In this tutorial, we’ll guide you through the thought process of building a searchable product data table with React.",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215804313
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Imagine that you already have a JSON API and a mockup from a designer.",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215804314
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "The JSON API returns some data that looks like this:",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215804314
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "To implement a UI in React, you will usually follow the same five steps.",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215804314
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Start by drawing boxes around every component and subcomponent in the mockup and naming them. If you work with a designer, they may have already named these components in their design tool. Ask them!",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215804316
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Depending on your background, you can think about splitting up a design into components in different ways:",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215804316
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Programming—use the same techniques for deciding if you should create a new function or object. One such technique is the separation of concerns, that is, a component should ideally only be concerned with one thing. If it ends up growing, it should be decomposed into smaller subcomponents.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215804317
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "CSS—consider what you would make class selectors for. (However, components are a bit less granular.)",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215804317
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Design—consider how you would organize the design’s layers.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215804317
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "If your JSON is well-structured, you’ll often find that it naturally maps to the component structure of your UI. That’s because UI and data models often have the same information architecture—that is, the same shape. Separate your UI into components, where each component matches one piece of your data model.",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215804317
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "SearchBar (blue) receives the user input.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215804330
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "FilterableProductTable (grey) contains the entire app.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215804330
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "ProductTable (lavender) displays and filters the list according to the user input.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215804330
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "ProductCategoryRow (green) displays a heading for each category.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215804331
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "ProductRow (yellow) displays a row for each product.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215804331
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "If you look at ProductTable (lavender), you’ll see that the table header (containing the “Name” and “Price” labels) isn’t its own component. This is a matter of preference, and you could go either way. For this example, it is a part of ProductTable because it appears inside the ProductTable’s list. However, if this header grows to be complex (e.g., if you add sorting), you can move it into its own ProductTableHeader component.",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215804331
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Now that you’ve identified the components in the mockup, arrange them into a hierarchy. Components that appear within another component in the mockup should appear as a child in the hierarchy:",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215804332
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Step 2: Build a static version in React",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215804438
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "App.js",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215804438
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Download",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215804438
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Reload",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215804438
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Clear",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215804439
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Fork",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215804439
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Now that you have your component hierarchy, it’s time to implement your app. The most straightforward approach is to build a version that renders the UI from your data model without adding any interactivity… yet! It’s often easier to build the static version first and add interactivity later. Building a static version requires a lot of typing and no thinking, but adding interactivity requires a lot of thinking and not a lot of typing.",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215804440
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "To build a static version of your app that renders your data model, you’ll want to build components that reuse other components and pass data using props. Props are a way of passing data from parent to child. (If you’re familiar with the concept of state, don’t use state at all to build this static version. State is reserved only for interactivity, that is, data that changes over time. Since this is a static version of the app, you don’t need it.)",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215804443
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "You can either build “top down” by starting with building the components higher up in the hierarchy (like FilterableProductTable) or “bottom up” by working from components lower down (like ProductRow). In simpler examples, it’s usually easier to go top-down, and on larger projects, it’s easier to go bottom-up.",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215804443
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Show more",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215804564
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Pitfall",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215804564
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "(If this code looks intimidating, go through the Quick Start first!)",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215804564
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "After building your components, you’ll have a library of reusable components that render your data model. Because this is a static app, the components will only return JSX. The component at the top of the hierarchy (FilterableProductTable) will take your data model as a prop. This is called one-way data flow because the data flows down from the top-level component to the ones at the bottom of the tree.",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215804566
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "At this point, you should not be using any state values. That’s for the next step!",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215804567
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "The original list of products",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215804639
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "The search text the user has entered",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215804639
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "The value of the checkbox",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215804639
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "The filtered list of products",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215804639
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "What’s left is probably state.",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215804639
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Step 3: Find the minimal but complete representation of UI state",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215804640
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "To make the UI interactive, you need to let users change your underlying data model. You will use state for this.",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215804640
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Think of state as the minimal set of changing data that your app needs to remember. The most important principle for structuring state is to keep it DRY (Don’t Repeat Yourself). Figure out the absolute minimal representation of the state your application needs and compute everything else on-demand. For example, if you’re building a shopping list, you can store the items as an array in state. If you want to also display the number of items in the list, don’t store the number of items as another state value—instead, read the length of your array.",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215804645
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Now think of all of the pieces of data in this example application:",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215804646
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Which of these are state? Identify the ones that are not:",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215804646
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Does it remain unchanged over time? If so, it isn’t state.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215804647
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Is it passed in from a parent via props? If so, it isn’t state.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215804647
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Can you compute it based on existing state or props in your component? If so, it definitely isn’t state!",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215804647
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Let’s go through them one by one again:",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215804826
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "The original list of products is passed in as props, so it’s not state.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215804826
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "The search text seems to be state since it changes over time and can’t be computed from anything.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215804827
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "The value of the checkbox seems to be state since it changes over time and can’t be computed from anything.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215804827
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Deep Dive",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215804864
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Props vs State",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215804864
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Show Details",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215804864
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "The filtered list of products isn’t state because it can be computed by taking the original list of products and filtering it according to the search text and value of the checkbox.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215804865
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "This means only the search text and the value of the checkbox are state! Nicely done!",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215804865
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Step 4: Identify where your state should live",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215804962
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "After identifying your app’s minimal state data, you need to identify which component is responsible for changing this state, or owns the state. Remember: React uses one-way data flow, passing data down the component hierarchy from parent to child component. It may not be immediately clear which component should own what state. This can be challenging if you’re new to this concept, but you can figure it out by following these steps!",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215804964
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "For each piece of state in your application:",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215805065
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Decide where the state should live:",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215805065
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Now let’s run through our strategy for them:",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215805065
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Identify components that use state:",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215805065
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Identify every component that renders something based on that state.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215805065
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Find their closest common parent component—a component above them all in the hierarchy.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215805065
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "In the previous step, you found two pieces of state in this application: the search input text, and the value of the checkbox. In this example, they always appear together, so it makes sense to put them into the same place.",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215805065
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Find their common parent: The first parent component both components share is FilterableProductTable.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215805066
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Often, you can put the state directly into their common parent.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215805066
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "You can also put the state into some component above their common parent.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215805067
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "If you can’t find a component where it makes sense to own the state, create a new component solely for holding the state and add it somewhere in the hierarchy above the common parent component.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215805068
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "ProductTable needs to filter the product list based on that state (search text and checkbox value).",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215805069
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "SearchBar needs to display that state (search text and checkbox value).",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215805070
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Decide where the state lives: We’ll keep the filter text and checked state values in FilterableProductTable.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215805139
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "So the state values will live in FilterableProductTable.",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215805139
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Add state to the component with the useState() Hook. Hooks are special functions that let you “hook into” React. Add two state variables at the top of FilterableProductTable and specify their initial state:",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215805141
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Then, pass filterText and inStockOnly to ProductTable and SearchBar as props:",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215805142
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "You can start seeing how your application will behave. Edit the filterText initial value from useState('') to useState('fruit') in the sandbox code below. You’ll see both the search input text and the table update:",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215805285
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Console",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215805331
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Notice that editing the form doesn’t work yet. There is a console error in the sandbox above explaining why:",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215805331
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "You provided a `value` prop to a form field without an `onChange` handler. This will render a read-only field.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215805332
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "In the sandbox above, ProductTable and SearchBar read the filterText and inStockOnly props to render the table, the input, and the checkbox. For example, here is how SearchBar populates the input value:",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215805332
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "import { useState } from 'react';",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215805351
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "function FilterableProductTable({ products }) {",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215805351
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "const [filterText, setFilterText] = useState('');",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215805352
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "return (",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215805352
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "<div>",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215805352
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "<SearchBar",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215805352
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "filterText={filterText}",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215805352
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "inStockOnly={inStockOnly} />",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215805352
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "<ProductTable",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215805353
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "products={products}",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215805353
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "filterText={filterText}",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215805354
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "inStockOnly={inStockOnly} />",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215805354
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "</div>",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215805354
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": ");",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215805354
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "const [inStockOnly, setInStockOnly] = useState(false);",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215805361
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "import { useState } from 'react';",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215805365
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "function FilterableProductTable({ products }) {",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215805365
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "const [filterText, setFilterText] = useState('');",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215805365
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "return (",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215805366
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "<div>",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215805366
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "<SearchBar",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215805366
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "filterText={filterText}",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215805366
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "inStockOnly={inStockOnly} />",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215805367
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "<ProductTable",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215805367
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "products={products}",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215805368
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "filterText={filterText}",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215805368
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "inStockOnly={inStockOnly} />",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215805369
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "</div>",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215805369
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": ");",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215805369
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "const [inStockOnly, setInStockOnly] = useState(false);",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215805371
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Step 5: Add inverse data flow",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215805415
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "However, you haven’t added any code to respond to the user actions like typing yet. This will be your final step.",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215805416
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Currently your app renders correctly with props and state flowing down the hierarchy. But to change the state according to user input, you will need to support data flowing the other way: the form components deep in the hierarchy need to update the state in FilterableProductTable.",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215805418
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "React makes this data flow explicit, but it requires a little more typing than two-way data binding. If you try to type or check the box in the example above, you’ll see that React ignores your input. This is intentional. By writing <input value={filterText} />, you’ve set the value prop of the input to always be equal to the filterText state passed in from FilterableProductTable. Since filterText state is never set, the input never changes.",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215805418
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "You want to make it so whenever the user changes the form inputs, the state updates to reflect those changes. The state is owned by FilterableProductTable, so only it can call setFilterText and setInStockOnly. To let SearchBar update the FilterableProductTable’s state, you need to pass these functions down to SearchBar:",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215805419
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Inside the SearchBar, you will add the onChange event handlers and set the parent state from them:",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215805560
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Now the application fully works!",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215805884
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Where to go from here",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215805949
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "You can learn all about handling events and updating state in the Adding Interactivity section.",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215805950
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "inStockOnly={inStockOnly}",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215805970
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "onFilterTextChange={setFilterText}",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215805970
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "onInStockOnlyChange={setInStockOnly} />",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215805970
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "inStockOnly={inStockOnly}",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215805987
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "onFilterTextChange={setFilterText}",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215805987
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "onInStockOnlyChange={setInStockOnly} />",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215805987
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Previous",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215806175
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Next",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215806176
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Copyright © Meta Platforms, Inc",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215806177
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "uwu?",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215806178
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "API Reference",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215806179
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "React APIs",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215806179
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "React DOM APIs",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215806179
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Code of Conduct",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215806179
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Meet the Team",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215806179
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Docs Contributors",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215806179
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Acknowledgements",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215806180
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "More",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215806180
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "React Native",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215806180
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Privacy",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215806181
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Terms",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215806181
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "This was a very brief introduction to how to think about building components and applications with React. You can start a React project right now or dive deeper on all the syntax used in this tutorial.",
+      "format": "plain",
+      "preserveLineBreaks": true,
+      "at": 1789215806182
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Only show products in stock",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215811847
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Name",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215811847
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Price",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215811848
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Fruits",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215811848
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Apple",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215811848
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "$1",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215811850
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Dragonfruit",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215811850
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "$1",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215811850
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Passionfruit",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215811851
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "$2",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215811852
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Vegetables",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215811853
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Spinach",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215811853
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "$2",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215811853
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Pumpkin",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215811853
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "$4",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215811854
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "Peas",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215811855
+    },
+    {
+      "url": "https://react.dev/learn/thinking-in-react",
+      "text": "$1",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215811855
+    }
+  ],
+  "requests": [
+    {
+      "phase": "react",
+      "kind": "google",
+      "items": 1,
+      "chars": 25,
+      "bytes": 54,
+      "start": 7349.400000035763,
+      "status": "network-error",
+      "error": "Failed to fetch",
+      "ms": 186
+    },
+    {
+      "phase": "react",
+      "kind": "google",
+      "items": 30,
+      "chars": 1035,
+      "bytes": 1157,
+      "start": 7462.800000011921,
+      "status": "network-error",
+      "error": "Failed to fetch",
+      "ms": 185
+    },
+    {
+      "phase": "react",
+      "kind": "google",
+      "items": 11,
+      "chars": 1974,
+      "bytes": 2055,
+      "start": 7463.400000035763,
+      "status": 200,
+      "returned": 11,
+      "ms": 281
+    },
+    {
+      "phase": "react",
+      "kind": "google",
+      "items": 6,
+      "chars": 68,
+      "bytes": 110,
+      "start": 7574.100000023842,
+      "status": 200,
+      "returned": 6,
+      "ms": 168
+    },
+    {
+      "phase": "react",
+      "kind": "google",
+      "items": 3,
+      "chars": 1200,
+      "bytes": 1259,
+      "start": 7574.600000023842,
+      "status": 200,
+      "returned": 3,
+      "ms": 156
+    },
+    {
+      "phase": "react",
+      "kind": "google",
+      "items": 10,
+      "chars": 424,
+      "bytes": 484,
+      "start": 7777.300000011921,
+      "status": 200,
+      "returned": 10,
+      "ms": 78
+    },
+    {
+      "phase": "react",
+      "kind": "google",
+      "items": 8,
+      "chars": 1372,
+      "bytes": 1434,
+      "start": 7778,
+      "status": 200,
+      "returned": 8,
+      "ms": 113
+    },
+    {
+      "phase": "react",
+      "kind": "google",
+      "items": 2,
+      "chars": 124,
+      "bytes": 156,
+      "start": 7989.600000023842,
+      "status": 200,
+      "returned": 2,
+      "ms": 68
+    },
+    {
+      "phase": "react",
+      "kind": "google",
+      "items": 8,
+      "chars": 536,
+      "bytes": 592,
+      "start": 7989.800000011921,
+      "status": 200,
+      "returned": 8,
+      "ms": 85
+    },
+    {
+      "phase": "react",
+      "kind": "google",
+      "items": 1,
+      "chars": 436,
+      "bytes": 467,
+      "start": 8091.700000047684,
+      "status": 200,
+      "returned": 1,
+      "ms": 206
+    },
+    {
+      "phase": "react",
+      "kind": "google",
+      "items": 6,
+      "chars": 650,
+      "bytes": 698,
+      "start": 8271.900000035763,
+      "status": 200,
+      "returned": 6,
+      "ms": 265
+    },
+    {
+      "phase": "react",
+      "kind": "google",
+      "items": 11,
+      "chars": 933,
+      "bytes": 996,
+      "start": 8272.5,
+      "status": 200,
+      "returned": 11,
+      "ms": 263
+    },
+    {
+      "phase": "react",
+      "kind": "google",
+      "items": 16,
+      "chars": 842,
+      "bytes": 918,
+      "start": 8444,
+      "status": 200,
+      "returned": 16,
+      "ms": 195
+    },
+    {
+      "phase": "react",
+      "kind": "google",
+      "items": 3,
+      "chars": 146,
+      "bytes": 179,
+      "start": 8548.300000011921,
+      "status": 200,
+      "returned": 3,
+      "ms": 168
+    },
+    {
+      "phase": "react",
+      "kind": "google",
+      "items": 4,
+      "chars": 1166,
+      "bytes": 1210,
+      "start": 8548.800000011921,
+      "status": 200,
+      "returned": 4,
+      "ms": 259
+    },
+    {
+      "phase": "react",
+      "kind": "google",
+      "items": 1,
+      "chars": 25,
+      "bytes": 54,
+      "start": 8630.900000035763,
+      "status": 200,
+      "returned": 1,
+      "ms": 90
+    },
+    {
+      "phase": "react",
+      "kind": "google",
+      "items": 30,
+      "chars": 1035,
+      "bytes": 1157,
+      "start": 8739.300000011921,
+      "status": 200,
+      "returned": 30,
+      "ms": 142
+    },
+    {
+      "phase": "react",
+      "kind": "google",
+      "items": 1,
+      "chars": 98,
+      "bytes": 125,
+      "start": 8753,
+      "status": 200,
+      "returned": 1,
+      "ms": 163
+    },
+    {
+      "phase": "react",
+      "kind": "google",
+      "items": 5,
+      "chars": 228,
+      "bytes": 267,
+      "start": 9101.600000023842,
+      "status": 200,
+      "returned": 5,
+      "ms": 144
+    },
+    {
+      "phase": "react",
+      "kind": "google",
+      "items": 1,
+      "chars": 21,
+      "bytes": 48,
+      "start": 9101.900000035763,
+      "status": 200,
+      "returned": 1,
+      "ms": 72
+    },
+    {
+      "phase": "react",
+      "kind": "google",
+      "items": 15,
+      "chars": 173,
+      "bytes": 243,
+      "start": 9319.200000047684,
+      "status": 200,
+      "returned": 15,
+      "ms": 75
+    },
+    {
+      "phase": "react",
+      "kind": "google",
+      "items": 1,
+      "chars": 201,
+      "bytes": 228,
+      "start": 9319.700000047684,
+      "status": 200,
+      "returned": 1,
+      "ms": 184
+    },
+    {
+      "phase": "react",
+      "kind": "google",
+      "items": 14,
+      "chars": 104,
+      "bytes": 170,
+      "start": 14987.800000011921,
+      "status": 200,
+      "returned": 14,
+      "ms": 113
+    }
+  ],
+  "active": 0,
+  "peak": 4
+}

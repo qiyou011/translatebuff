@@ -1,0 +1,186 @@
+{
+  "tokenizer": "js-tiktoken o200k_base",
+  "scope": "static system+user content tokenization; excludes model-specific chat framing, cache effects, arrival timing, retries, fallback and output; all captured inputs retained, no dedup",
+  "rows": [
+    {
+      "page": "mdn",
+      "sourceItems": 83,
+      "sourceCharacters": 4995,
+      "protocol": "legacy",
+      "maxItems": 4,
+      "maxCharacters": 1000,
+      "batches": 21,
+      "inputContentTokens": 9348
+    },
+    {
+      "page": "mdn",
+      "sourceItems": 83,
+      "sourceCharacters": 4995,
+      "protocol": "json",
+      "maxItems": 4,
+      "maxCharacters": 1000,
+      "batches": 21,
+      "inputContentTokens": 6248
+    },
+    {
+      "page": "mdn",
+      "sourceItems": 83,
+      "sourceCharacters": 4995,
+      "protocol": "legacy",
+      "maxItems": 8,
+      "maxCharacters": 2000,
+      "batches": 11,
+      "inputContentTokens": 5456
+    },
+    {
+      "page": "mdn",
+      "sourceItems": 83,
+      "sourceCharacters": 4995,
+      "protocol": "json",
+      "maxItems": 8,
+      "maxCharacters": 2000,
+      "batches": 11,
+      "inputContentTokens": 3877
+    },
+    {
+      "page": "mdn",
+      "sourceItems": 83,
+      "sourceCharacters": 4995,
+      "protocol": "legacy",
+      "maxItems": 16,
+      "maxCharacters": 4000,
+      "batches": 6,
+      "inputContentTokens": 3509
+    },
+    {
+      "page": "mdn",
+      "sourceItems": 83,
+      "sourceCharacters": 4995,
+      "protocol": "json",
+      "maxItems": 16,
+      "maxCharacters": 4000,
+      "batches": 6,
+      "inputContentTokens": 2692
+    },
+    {
+      "page": "react",
+      "sourceItems": 182,
+      "sourceCharacters": 12257,
+      "protocol": "legacy",
+      "maxItems": 4,
+      "maxCharacters": 1000,
+      "batches": 46,
+      "inputContentTokens": 20983
+    },
+    {
+      "page": "react",
+      "sourceItems": 182,
+      "sourceCharacters": 12257,
+      "protocol": "json",
+      "maxItems": 4,
+      "maxCharacters": 1000,
+      "batches": 46,
+      "inputContentTokens": 14227
+    },
+    {
+      "page": "react",
+      "sourceItems": 182,
+      "sourceCharacters": 12257,
+      "protocol": "legacy",
+      "maxItems": 8,
+      "maxCharacters": 2000,
+      "batches": 23,
+      "inputContentTokens": 12023
+    },
+    {
+      "page": "react",
+      "sourceItems": 182,
+      "sourceCharacters": 12257,
+      "protocol": "json",
+      "maxItems": 8,
+      "maxCharacters": 2000,
+      "batches": 23,
+      "inputContentTokens": 8772
+    },
+    {
+      "page": "react",
+      "sourceItems": 182,
+      "sourceCharacters": 12257,
+      "protocol": "legacy",
+      "maxItems": 16,
+      "maxCharacters": 4000,
+      "batches": 12,
+      "inputContentTokens": 7737
+    },
+    {
+      "page": "react",
+      "sourceItems": 182,
+      "sourceCharacters": 12257,
+      "protocol": "json",
+      "maxItems": 16,
+      "maxCharacters": 4000,
+      "batches": 12,
+      "inputContentTokens": 6162
+    },
+    {
+      "page": "wikipedia",
+      "sourceItems": 267,
+      "sourceCharacters": 47794,
+      "protocol": "legacy",
+      "maxItems": 4,
+      "maxCharacters": 1000,
+      "batches": 84,
+      "inputContentTokens": 44187
+    },
+    {
+      "page": "wikipedia",
+      "sourceItems": 267,
+      "sourceCharacters": 47794,
+      "protocol": "json",
+      "maxItems": 4,
+      "maxCharacters": 1000,
+      "batches": 84,
+      "inputContentTokens": 31788
+    },
+    {
+      "page": "wikipedia",
+      "sourceItems": 267,
+      "sourceCharacters": 47794,
+      "protocol": "legacy",
+      "maxItems": 8,
+      "maxCharacters": 2000,
+      "batches": 39,
+      "inputContentTokens": 26654
+    },
+    {
+      "page": "wikipedia",
+      "sourceItems": 267,
+      "sourceCharacters": 47794,
+      "protocol": "json",
+      "maxItems": 8,
+      "maxCharacters": 2000,
+      "batches": 39,
+      "inputContentTokens": 21104
+    },
+    {
+      "page": "wikipedia",
+      "sourceItems": 267,
+      "sourceCharacters": 47794,
+      "protocol": "legacy",
+      "maxItems": 16,
+      "maxCharacters": 4000,
+      "batches": 19,
+      "inputContentTokens": 18862
+    },
+    {
+      "page": "wikipedia",
+      "sourceItems": 267,
+      "sourceCharacters": 47794,
+      "protocol": "json",
+      "maxItems": 16,
+      "maxCharacters": 4000,
+      "batches": 19,
+      "inputContentTokens": 16357
+    }
+  ]
+}

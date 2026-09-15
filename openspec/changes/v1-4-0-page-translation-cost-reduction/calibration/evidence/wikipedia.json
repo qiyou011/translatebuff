@@ -1,0 +1,2092 @@
+{
+  "url": "https://en.wikipedia.org/wiki/Machine_translation",
+  "capturedAt": "2026-09-12T12:26:05.086Z",
+  "browser": "151.0.7922.34",
+  "artifact": "/Users/yisen/Desktop/Junyun/Projects/Company/translatebuff/.output/chrome-mv3",
+  "scope": "three full-height scroll passes with stable capture count",
+  "provider": "google-translate-default",
+  "language": {
+    "level": "intermediate",
+    "sourceCode": "eng",
+    "targetCode": "cmn"
+  },
+  "mode": "bilingual",
+  "range": "all",
+  "preload": {
+    "margin": 1000,
+    "threshold": 0
+  },
+  "batch": {
+    "maxCharactersPerBatch": 4000,
+    "maxItemsPerBatch": 16
+  },
+  "queue": {
+    "capacity": 20,
+    "rate": 8
+  },
+  "dom": {
+    "title": "机器翻译 - 维基百科",
+    "height": 26786,
+    "scrollY": 0,
+    "spinners": 0,
+    "wrappers": 273,
+    "chineseWrappers": 273,
+    "probe": {
+      "start": 2290.600000023842,
+      "first": 621,
+      "longTasks": []
+    }
+  },
+  "phase": "wikipedia",
+  "captures": [
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Machine translation - Wikipedia",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949253
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Jump to content",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949301
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Toggle History subsection",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949302
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Toggle Approaches subsection",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949302
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Toggle Issues subsection",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949303
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Toggle Applications subsection",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949303
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Machine translation and signed languages",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949304
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "See also",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949304
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Further reading",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949305
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "External links",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949305
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Machine translation",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949305
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "From Wikipedia, the free encyclopedia",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949305
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Not to be confused with Computer-assisted translation, Interactive machine translation, or Translator (computing).",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949305
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "A mobile phone app translating Spanish text into English",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949306
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Part of a series on",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949306
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Linguistic validation",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949306
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Word-for-word",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949313
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Sense-for-sense",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949313
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Translation studies",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949313
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Skopos theory",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949314
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Translation project",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949314
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Translation criticism",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949314
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Dynamic and formal equivalence",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949315
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Contrastive linguistics",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949315
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Polysystem theory",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949315
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Machine translation",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949316
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Mobile translation",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949316
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Translation management system",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949316
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Pre-editing",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949316
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Multimedia translation",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949316
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Video game",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949316
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Related topics",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949316
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Video relay service (VRS)",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949316
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Telephone interpreting",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949317
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Language barrier",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949317
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Fan translation (of video games)",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949317
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Journalistic translation",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949317
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Books and magazines on translation",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949317
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Bible translations by language",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949318
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Translated books",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949318
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Kural translations by language",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949318
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Machine translation is the use of computational techniques to translate text or speech from one language to another, including the contextual, idiomatic, and pragmatic nuances of both languages.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949318
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "While some language models are capable of generating comprehensible results, machine translation tools remain limited by the complexity of language and emotion, often lacking depth and semantic precision. Its quality is influenced by linguistic, grammatical, tonal, and cultural differences, making it inadequate to replace real translators fully.[1][2] Effective improvement in translation quality requires understanding of target society's customs and historical context, and human intervention and visual cues remain necessary in simultaneous interpretation. On the other hand, domain-specific customization, such as for technical documentation or official texts, can yield more stable results,[3] and is commonly employed in multilingual websites and professional databases.[4][5]",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949320
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Initial approaches were mostly rule-based or statistical in nature. However, these methods have since been superseded by neural machine translation[6] and large language models.[7]",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949322
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Main article: History of machine translation",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949322
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "The origins of machine translation can be traced back to the work of Al-Kindi, a ninth-century Arabic cryptographer who developed techniques for systemic language translation, including cryptanalysis, frequency analysis, and probability and statistics, which are used in modern machine translation.[8] The idea of machine translation later appeared in the 17th century. In 1629, René Descartes proposed a universal language, with equivalent ideas in different tongues sharing one symbol.[9]",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949325
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "The idea of using digital computers for translation of natural languages was proposed as early as 1947 by England's A. D. Booth[10] and Warren Weaver at Rockefeller Foundation in the same year. \"The memorandum written by Warren Weaver in 1949 is perhaps the single most influential publication in the earliest days of machine translation.\"[11][12] Others followed. A demonstration was made in 1954 on the APEXC machine at Birkbeck College (University of London) of a rudimentary translation of English into French. Several papers on the topic were published at the time, and even articles in popular journals (for example an article by Cleave and Zacharov in the September 1955 issue of Wireless World).  A similar application, also pioneered at Birkbeck College at the time, was reading and composing Braille texts by computer.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949328
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Yehoshua Bar-Hillel, began his research at MIT (1951). A Georgetown University MT research team, led by Professor Michael Zarechnak, followed (1951) with a public demonstration of its Georgetown-IBM experiment system in 1954. MT research programs popped up in Japan[13][14] and Russia (1955), and the first MT conference was held in London (1956).[15][16]",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949329
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "David G. Hays \"wrote about computer-assisted language processing as early as 1957\" and \"was project leader on computational linguistics\nat Rand from 1955 to 1968.\"[17]",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949330
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "1960–1975",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949330
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Researchers continued to join the field as the Association for Machine Translation and Computational Linguistics was formed in the U.S. (1962) and the National Academy of Sciences formed the Automatic Language Processing Advisory Committee (ALPAC) to study MT (1964). Real progress was much slower, however, and after the ALPAC report (1966), which found that the ten-year-long research had failed to fulfill expectations, funding was greatly reduced.[18] According to a 1972 report by the Director of Defense Research and Engineering (DDR&E), the feasibility of large-scale MT was reestablished by the success of the Logos MT system in translating military manuals into Vietnamese during that conflict.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949331
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "The French Textile Institute also used MT to translate abstracts from and into French, English, German and Spanish (1970); Brigham Young University started a project to translate Mormon texts by automated translation (1971).",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949331
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "1975–1980s",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949333
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "SYSTRAN, which \"pioneered the field under contracts from the U.S. government\"[19] in the 1960s, was used by Xerox to translate technical manuals (1978). Beginning in the late 1980s, as computational power increased and became less expensive, more interest was shown in statistical models for machine translation. MT became more popular after the advent of computers.[20] SYSTRAN's first implementation system was implemented in 1988 by the online service of the French Postal Service called Minitel.[21] Various computer based translation companies were also launched, including Trados (1984), which was the first to develop and market Translation Memory technology (1989), though this is not the same as MT. The first commercial MT system for Russian / English / German-Ukrainian was developed at Kharkov State University (1991).",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949333
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "List of most translated works",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949333
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "1990s and early 2000s",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949341
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "By 1998, \"for as little as $29.95\" one could \"buy a program for translating in one direction between English and a major European language of\nyour choice\" to run on a PC.[19]",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949342
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "MT on the web started with SYSTRAN offering free translation of small texts (1996) and then providing this via AltaVista Babelfish,[19] which racked up 500,000 requests a day (1997).[22] The second free translation service on the web was Lernout & Hauspie's GlobaLink.[19] Atlantic Magazine wrote in 1998 that \"Systran's Babelfish and GlobaLink's Comprende\" handled\n\"Don't bank on it\" with a \"competent performance.\"[23]",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949343
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Franz Josef Och (the future head of Translation Development AT Google) won DARPA's speed MT competition (2003).[24] More innovations during this time included MOSES, the open-source statistical MT engine (2007), a text/SMS translation service for mobiles in Japan (2008), and a mobile phone with built-in speech-to-speech translation functionality for English, Japanese and Chinese (2009). In 2012, Google announced that Google Translate translates roughly enough text to fill 1 million books in one day.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949344
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "ANNs and LLMs in 2020s",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949344
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "This section is empty. You can help by adding to it. (November 2025)",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949348
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "See also: Hybrid machine translation and Example-based machine translation",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949434
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Before the advent of deep learning methods, statistical methods required a lot of rules accompanied by morphological, syntactic, and semantic annotations.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949436
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Rule-based",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949436
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Main article: Rule-based machine translation",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949436
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "The rule-based machine translation approach was used mostly in the creation of dictionaries and grammar programs. Its biggest downfall was that everything had to be made explicit: orthographical variation and erroneous input must be made part of the source language analyser in order to cope with it, and lexical selection rules must be written for all instances of ambiguity.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949439
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Transfer-based machine translation",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949440
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Main article: Transfer-based machine translation",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949440
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Transfer-based machine translation was similar to interlingual machine translation in that it created a translation from an intermediate representation that simulated the meaning of the original sentence. Unlike interlingual MT, it depended partially on the language pair involved in the translation.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949440
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Main article: Interlingual machine translation",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949441
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Interlingual machine translation was one instance of rule-based machine-translation approaches.  In this approach, the source language, i.e. the text to be translated, was transformed into an interlingual language, i.e. a \"language neutral\" representation that is independent of any language. The target language was then generated out of the interlingua. The only interlingual machine translation system that was made operational at the commercial level was the KANT system (Nyberg and Mitamura, 1992), which was designed to translate Caterpillar Technical English (CTE) into other languages.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949442
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Dictionary-based",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949529
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Main article: Dictionary-based machine translation",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949529
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Machine translation used a method based on dictionary entries, which means that the words were translated as they are by a dictionary.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949530
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Main article: Statistical machine translation",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949530
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Statistical machine translation tried to generate translations using statistical methods based on bilingual text corpora, such as the Canadian Hansard corpus, the English-French record of the Canadian parliament and EUROPARL, the record of the European Parliament. Where such corpora were available, good results were achieved translating similar texts, but such corpora were rare for many language pairs. The first statistical machine translation software was CANDIDE from IBM. In 2005, Google improved its internal translation capabilities by using approximately 200 billion words from United Nations materials to train their system; translation accuracy improved.[25]",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949533
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "SMT's biggest downfall included it being dependent upon huge amounts of parallel texts, its problems with morphology-rich languages (especially with translating into such languages), and its inability to correct singleton errors.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949534
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Some work has been done in the utilization of multiparallel corpora, that is a body of text that has been translated into 3 or more languages. Using these methods, a text that has been translated into 2 or more languages may be utilized in combination to provide a more accurate translation into a third language compared with if just one of those source languages were used alone.[26][27][28]",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949535
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Neural MT",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949535
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Main article: Neural machine translation",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949535
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "A deep learning-based approach to MT, neural machine translation has made rapid progress in recent years. However, the current consensus is that the so-called human parity achieved is not real, being based wholly on limited domains, language pairs, and certain test benchmarks,[29] i.e., it lacks statistical significance power.[30]",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949537
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Translations by neural MT tools like DeepL Translator, which is thought to usually deliver the best machine translation results as of 2022, typically still need post-editing by a human.[31][32][33]",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949619
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Instead of training specialized translation models on parallel datasets, one can also directly prompt generative large language models like GPT to translate a text.[34][35][36] This approach is considered promising,[37] but is still more resource-intensive than specialized translation models.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949623
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "A mistranslated menu in Beijing offers \"stir-fried wikipedia with pimientos\" and other nonsensical dishes.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949624
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Studies using human evaluation (e.g. by professional literary translators or human readers) have systematically identified various issues with the latest advanced MT outputs.[36] Some quality evaluation studies have found that, in several languages, human translations outperform ChatGPT-produced translations in terminological accuracy and clarity of expression.[38][39] Common issues include the translation of ambiguous parts whose correct translation requires common sense-like semantic language processing or context.[36] There can also be errors in the source texts, missing high-quality training data and the severity of frequency of several types of problems may not get reduced with techniques used to date, requiring some level of human active participation.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949625
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Main articles: Word-sense disambiguation and Syntactic disambiguation",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949626
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Word-sense disambiguation concerns finding a suitable translation when a word can have more than one meaning. The problem was first raised in the 1950s by Yehoshua Bar-Hillel.[40] He pointed out that without a \"universal encyclopedia\", a machine would never be able to distinguish between the two meanings of a word.[41] Today there are numerous approaches designed to overcome this problem. They can be approximately divided into \"shallow\" approaches and \"deep\" approaches.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949626
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Broken Chinese \"沒有進入\" from machine translation in Bali, Indonesia. The broken Chinese sentence sounds like \"there does not exist an entry\" or \"have not entered yet\".",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949713
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Shallow approaches assume no knowledge of the text. They simply apply statistical methods to the words surrounding the ambiguous word. Deep approaches presume a comprehensive knowledge of the word. So far, shallow approaches have been more successful.[42]",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949717
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Claude Piron, a long-time translator for the United Nations and the World Health Organization, wrote that machine translation, at its best, automates the easier part of a translator's job; the harder and more time-consuming part usually involves doing extensive research to resolve ambiguities in the source text, which the grammatical and lexical exigencies of the target language require to be resolved:",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949718
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Why does a translator need a whole workday to translate five pages, and not an hour or two? ..... About 90% of an average text corresponds to these simple conditions.  But unfortunately, there's the other 10%.  It's that part that requires six [more] hours of work.  There are ambiguities one has to resolve.  For instance, the author of the source text, an Australian physician, cited the example of an epidemic which was declared during World War II in a \"Japanese prisoners of war camp\".  Was he talking about an American camp with Japanese prisoners or a Japanese camp with American prisoners?  The English has two senses.  It's necessary therefore to do research, maybe to the extent of a phone call to Australia.[43]",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949719
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "The ideal deep approach would require the translation software to do all the research necessary for this kind of disambiguation on its own; but this would require a higher degree of AI than has yet been attained.  A shallow approach which simply guessed at the sense of the ambiguous English phrase that Piron mentions (based, perhaps, on which kind of prisoner-of-war camp is more often mentioned in a given corpus) would have a reasonable chance of guessing wrong fairly often.  A shallow approach that involves \"ask the user about each ambiguity\" would, by Piron's estimate, only automate about 25% of a professional translator's job, leaving the harder 75% still to be done by a human.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949721
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Non-standard speech",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949795
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "One of the major pitfalls of MT is its inability to translate non-standard language with the same accuracy as standard language. Heuristic or statistical based MT takes input from various sources in standard form of a language. Rule-based translation, by nature, does not include common non-standard usages. This causes errors in translation from a vernacular source or into colloquial language. Limitations on translation from casual speech present issues in the use of machine translation in mobile devices.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949799
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Named entities",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949799
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Main article: Named entity",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949799
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "In information extraction, named entities, in a narrow sense, refer to concrete or abstract entities in the real world such as people, organizations, companies, and places that have a proper name: George Washington, Chicago, Microsoft.  It also refers to expressions of time, space and quantity such as 1 July 2011, $500.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949801
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "In the sentence \"Smith is the president of Fabrionix\" both Smith and Fabrionix are named entities, and can be further qualified via first name or other information; \"president\" is not, since Smith could have earlier held another position at Fabrionix, e.g. Vice President.\nThe term rigid designator is what defines these usages for analysis in statistical machine translation.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949801
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Named entities must first be identified in the text; if not, they may be erroneously translated as common nouns, which would most likely not affect the BLEU rating of the translation but would change the text's human readability.[44] They may be omitted from the output translation, which would also have implications for the text's readability and message.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949802
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Transliteration includes finding the letters in the target language that most closely correspond to the name in the source language.  This, however, has been cited as sometimes worsening the quality of translation.[45] For \"Southern California\" the first word should be translated directly, while the second word should be transliterated.  Machines often transliterate both because they treated them as one entity.  Words like these are hard for machine translators, even those with a transliteration component, to process.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215949803
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Use of a \"do-not-translate\" list, which has the same end goal – transliteration as opposed to translation[46] – still relies on correct identification of named entities.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215950342
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "A third approach is a class-based model. Named entities are replaced with a token to represent their \"class\"; \"Ted\"  and \"Erica\" would both be replaced with \"person\" class token. Then the statistical distribution and use of person names, in general, can be analyzed instead of looking at the distributions of \"Ted\" and \"Erica\" individually, so that the probability of a given name in a specific language will not affect the assigned probability of a translation. A study by Stanford on improving this area of translation gives the examples that different probabilities will be assigned to \"David is going for a walk\" and \"Ankit is going for a walk\" for English as a target language due to the different number of occurrences for each name in the training data. A frustrating outcome of the same study by Stanford (and other attempts to improve named recognition translation) is that many times, a decrease in the BLEU scores for translation will result from the inclusion of methods for named entity translation.[46]",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215950343
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "While no system provides the ideal of fully automatic high-quality machine translation of unrestricted text, many fully automated systems produce reasonable output.[47][48][49] The quality of machine translation is substantially improved if the domain is restricted and controlled.[50] This enables using machine translation as a tool to speed up and simplify translations, as well as producing flawed but useful low-cost or ad-hoc translations.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215950347
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Machine translation applications have also been released for most mobile devices, including mobile telephones, pocket PCs, PDAs, etc. Due to their portability, such instruments have come to be designated as mobile translation tools enabling mobile business networking between partners speaking different languages, or facilitating both foreign language learning and unaccompanied traveling to foreign countries without the need of the intermediation of a human translator.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215950439
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "For example, the Google Translate app allows foreigners to quickly translate text in their surrounding via augmented reality using the smartphone camera that overlays the translated text onto the text.[51] It can also recognize speech and then translate it.[52]",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215950440
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Public administration",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215950440
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Despite their inherent limitations, MT programs are used around the world. Probably the largest institutional user is the European Commission. In 2012, with an aim to replace a rule-based MT by newer, statistical-based MT@EC, The European Commission contributed 3.072 million euros (via its ISA programme).[53]",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215950441
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Machine translation has also been used for translating Wikipedia articles and could play a larger role in creating, updating, expanding, and generally improving articles in the future, especially as the MT capabilities may improve. There is a \"content translation tool\" which allows editors to more easily translate articles across several select languages.[54][55][56] English-language articles are thought to usually be more comprehensive and less biased than their non-translated equivalents in other languages.[57] As of 2022, English Wikipedia has over 6.5 million articles while, for example, the German and Swedish Wikipedias each only have over 2.5 million articles,[58] each often far less comprehensive.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215950441
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Surveillance and military",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215950534
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Following terrorist attacks in Western countries, including 9-11, the U.S. and its allies have been most interested in developing Arabic machine translation programs, but also in translating Pashto and Dari languages.[citation needed] Within these languages, the focus is on key phrases and quick communication between military members and civilians through the use of mobile phone apps.[59] The Information Processing Technology Office in DARPA hosted programs like TIDES and Babylon translator. In 2003, the US Air Force awarded a $1 million contract to develop a language translation technology.[60]",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215950538
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Social media",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215950538
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "The notable rise of social networking on the web in recent years has created yet another niche for the application of machine translation software – in utilities such as Facebook, or instant messaging clients such as Skype, Google Talk, MSN Messenger, etc. – allowing users speaking different languages to communicate with each other.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215950540
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Online games",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215950540
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Lineage W gained popularity in Japan because of its machine translation features allowing players from different countries to communicate.[61]",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215950540
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Despite being labelled as an unworthy competitor to human translation in 1966 by the Automated Language Processing Advisory Committee put together by the United States government,[62] the quality of machine translation has now been improved to such levels that its application in online collaboration and in the medical field are being investigated. The application of this technology in medical settings where human translators are absent is another topic of research, but difficulties arise due to the importance of accurate translations in medical diagnoses.[63]",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215950541
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Researchers caution that the use of machine translation in medicine could risk mistranslations that can be dangerous in critical situations.[64][65] Machine translation can make it easier for doctors to communicate with their patients in day-to-day activities, but it is recommended to only use machine translation when there is no other alternative, and that translated medical texts should be reviewed by human translators for accuracy.[66][67]",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215950542
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Legal language poses a significant challenge to machine translation tools due to its precise nature and atypical use of normal words. For this reason, specialized algorithms have been developed for use in legal contexts.[68] Due to the risk of mistranslations arising from machine translators, researchers recommend that machine translations should be reviewed by human translators for accuracy, and some courts prohibit its use in formal proceedings.[69]",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215950622
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "The use of machine translation in law has raised concerns about translation errors and client confidentiality. Lawyers who use free translation tools such as Google Translate may accidentally violate client confidentiality by exposing private information to the providers of the translation tools.[68] In addition, there have been arguments that consent for a police search that is obtained with machine translation is invalid, with different courts issuing different verdicts over whether or not these arguments are valid.[64]",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215950623
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Ancient languages",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215950624
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "The advancements in convolutional neural networks in recent years and in low resource machine translation (when only a very limited amount of data and examples are available for training) enabled machine translation for ancient languages, such as Akkadian and its dialects Babylonian and Assyrian.[70]",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215950625
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Main article: Evaluation of machine translation",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215950625
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "There are many factors that affect how machine translation systems are evaluated. These factors include the intended use of the translation, the nature of the machine translation software, and the nature of the translation process.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215950626
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Different programs may work well for different purposes. For example, statistical machine translation (SMT) typically outperforms example-based machine translation (EBMT), but researchers found that when evaluating English to French translation, EBMT performs better.[71] The same concept applies for technical documents, which can be more easily translated by SMT because of their formal language.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215950627
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "In certain applications, however, e.g., product descriptions written in a controlled language, a dictionary-based machine-translation system has produced satisfactory translations that require no human intervention save for quality inspection.[72]",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215950714
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "There are various means for evaluating the output quality of machine translation systems. The oldest is the use of human judges[73] to assess a translation's quality. Even though human evaluation is time-consuming, it is still the most reliable method to compare different systems such as rule-based and statistical systems.[74] Automated means of evaluation include BLEU, NIST, METEOR, and LEPOR.[75]",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215950716
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Relying exclusively on unedited machine translation ignores the fact that communication in human language is context-embedded and that it takes a person to comprehend the context of the original text with a reasonable degree of probability. It is certainly true that even purely human-generated translations are prone to error. Therefore, to ensure that a machine-generated translation will be useful to a human being and that publishable-quality translation is achieved, such translations must be reviewed and edited by a human.[76] The late Claude Piron wrote that machine translation, at its best, automates the easier part of a translator's job; the harder and more time-consuming part usually involves doing extensive research to resolve ambiguities in the source text, which the grammatical and lexical exigencies of the target language require to be resolved. Such research is a necessary prelude to the pre-editing necessary in order to provide input for machine-translation software such that the output will not be meaningless.[77]",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215950717
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "In addition to disambiguation problems, decreased accuracy can occur due to varying levels of training data for machine translating programs. Both example-based and statistical machine translation rely on a vast array of real example sentences as a base for translation, and when too many or too few sentences are analyzed accuracy is jeopardized. Researchers found that when a program is trained on 203,529 sentence pairings, accuracy actually decreases.[71] The optimal level of training data seems to be just over 100,000 sentences, possibly because as training data increases, the number of possible sentences increases, making it harder to find an exact translation match.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215950718
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Flaws in machine translation have been noted for their entertainment value. Two videos uploaded to YouTube in April 2017 involve two Japanese hiragana characters えぐ (e and gu) being repeatedly pasted into Google Translate, with the resulting translations quickly degrading into nonsensical phrases such as \"DECEARING EGG\" and \"Deep-sea squeeze trees\", which are then read in increasingly absurd voices;[78][79] the full-length version of the video currently has 7.1 million views as of August 2025.[80]",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215950806
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Main article: Machine translation of sign languages",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215950808
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "In the early 2000s, options for machine translation between spoken and signed languages were severely limited. It was a common belief that deaf individuals could use traditional translators. However, stress, intonation, pitch, and timing are conveyed much differently in spoken languages compared to signed languages. Therefore, a deaf individual may misinterpret or become confused about the meaning of written text that is based on a spoken language.[81]",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215950809
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Researchers Zhao, et al. (2000), developed a prototype called TEAM (translation from English to ASL by machine) that completed English to American Sign Language (ASL) translations. The program would first analyze the syntactic, grammatical, and morphological aspects of the English text. Following this step, the program accessed a sign synthesizer, which acted as a dictionary for ASL. This synthesizer housed the process one must follow to complete ASL signs, as well as the meanings of these signs. Once the entire text is analyzed and the signs necessary to complete the translation are located in the synthesizer, a computer generated human appeared and would use ASL to sign the English text to the user.[81]",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215950810
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Only works that are original are subject to copyright protection, so some scholars claim that machine translation results are not entitled to copyright protection because MT does not involve creativity.[82] The copyright at issue is for a derivative work; the author of the original work in the original language does not lose his rights when a work is translated: a translator must have permission to publish a translation.[83]",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215950812
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "AI-complete",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215950995
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Cache language model",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215950996
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Comparison of machine translation applications",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215950996
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Comparison of different machine translation approaches",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215950996
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Computational linguistics",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215950996
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Computer-assisted translation",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215950997
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Controlled language in machine translation",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215950997
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Controlled natural language",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215950997
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Foreign language writing aid",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215950998
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Fuzzy matching (computer-assisted translation)",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215950999
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "History of machine translation",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215950999
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Human language technology",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951000
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Humour in translation (\"howlers\")",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951000
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Language and Communication Technologies",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951001
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "List of emerging technologies",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951001
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "List of research laboratories for machine translation",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951001
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Pseudo-translation",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951001
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Round-trip translation",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951001
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Translation § Machine translation",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951001
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Translation memory",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951001
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "ULTRA (machine translation system)",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951001
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Universal Networking Language",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951002
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Universal translator",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951002
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "\"Can Machine Translation Replace Human Translation In The Future?\". www.linkedin.com. Retrieved 9 October 2025.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951009
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Mohammed H. Al Aqad (25 April 2025). Role of AI in Translation and Interpretation. IGI global. p. 454. ISBN 9798337300603.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951009
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Anichini, Nicole (25 January 2024). \"The Pros and Cons of Machine Translation\". TCLoc Master's. Retrieved 9 October 2025.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951009
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Magdalena Cieślak. \"THE SCOPE AND LIMITS OF MACHINE TRANSLATION\". ojs.letras.up.pt. Archived from the original on 27 June 2021. Retrieved 9 October 2025.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951009
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Costa-jussà, Marta R.; Rapp, Reinhard; Lambert, Patrik; Eberle, Kurt; Banchs, Rafael E.; Babych, Bogdan (21 July 2016). Hybrid approaches to machine translation. Switzerland: Springer International Publishing. ISBN 978-3-319-21310-1. OCLC 953581497.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951009
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Claude Piron, Le défi des langues (The Language Challenge), Paris, L'Harmattan, 1994.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951009
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Babych, Bogdan; Hartley, Anthony (2003). Improving Machine Translation Quality with Automatic Named Entity Recognition (PDF). Paper presented at the 7th International EAMT Workshop on MT and Other Language Technology Tools... Archived from the original (PDF) on 14 May 2006. Retrieved 4 November 2013.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951010
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Naveen, Palanichamy; Trojovský, Pavel (18 October 2024). \"Overview and challenges of machine translation for contextually appropriate translations\". iScience. 27 (10) 110878. Bibcode:2024iSci...27k0878N. doi:10.1016/j.isci.2024.110878. ISSN 2589-0042. PMC 11465115. PMID 39391737.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951174
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "\"Google Translate Gets a Deep-Learning Upgrade\". IEEE Spectrum. 3 October 2016. Retrieved 7 July 2024.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951175
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "\"Google Translate vs. ChatGPT: Which One Is the Best Language Translator?\". PCMag UK. 23 February 2024. Retrieved 7 July 2024.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951176
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "DuPont, Quinn (January 2018). \"The Cryptological Origins of Machine Translation: From al-Kindi to Weaver\". Amodern. Archived from the original on 14 August 2019. Retrieved 2 September 2019.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951180
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Knowlson, James (1975). Universal Language Schemes in England and France, 1600-1800. Toronto: University of Toronto Press. ISBN 0-8020-5296-7.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951181
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Hermajakob, U., Knight, K., & Hal, D. (2008). Name Translation in Statistical Machine Translation Learning When to Transliterate Archived 4 January 2018 at the Wayback Machine.  Association for Computational Linguistics.  389–397.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951181
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Neeraj Agrawal; Ankush Singla. Using Named Entity Recognition to improve Machine Translation (PDF). Archived (PDF) from the original on 21 May 2013. Retrieved 4 November 2013.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951182
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Melby, Alan. The Possibility of Language (Amsterdam:Benjamins, 1995, 27–41). Benjamins.com. 1995. ISBN 978-90-272-1614-4. Archived from the original on 25 May 2011. Retrieved 12 June 2012.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951183
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Wooten, Adam (14 February 2006). \"A Simple Model Outlining Translation Technology\". T&I Business. Retrieved 12 June 2012.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951183
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "\"Appendix III of 'The present status of automatic translation of languages', Advances in Computers, vol.1 (1960), p.158-163. Reprinted in Y.Bar-Hillel: Language and information (Reading, Mass.: Addison-Wesley, 1964), p.174-179\" (PDF). Archived from the original (PDF) on 28 September 2018. Retrieved 12 June 2012.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951183
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Booth, Andrew D. (1 May 1953). \"MECHANICAL TRANSLATION\". Computers and Automation 1953-05: Vol 2 Iss 4. Berkeley Enterprises. p. 6.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951344
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "J. Hutchins (2000). \"Warren Weaver and the launching of MT\". Early Years in Machine Translation (PDF). Studies in the History of the Language Sciences. Vol. 97. p. 17. doi:10.1075/sihols.97.05hut. ISBN 978-90-272-4586-1. S2CID 163460375. Archived from the original (PDF) on 28 February 2020 – via Semantic Scholar.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951345
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "\"Warren Weaver, American mathematician\". Encyclopedia Britannica. 13 July 2020. Archived from the original on 6 March 2021. Retrieved 7 August 2020.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951460
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "上野, 俊夫 (13 August 1986). パーソナルコンピュータによる機械翻訳プログラムの制作 (in Japanese). Tokyo: (株)ラッセル社. p. 16. ISBN 4-947627-00-X. わが国では1956年、当時の電気試験所が英和翻訳専用機「ヤマト」を実験している。この機械は1962年頃には中学1年の教科書で90点以上の能力に達したと報告されている。(translation (assisted by Google Translate): In 1959 Japan, the National Institute of Advanced Industrial Science and Technology(AIST) tested the proper English-Japanese translation machine Yamato, which reported in 1964 as that reached the power level over the score of 90-point on the textbook of first grade of junior hi-school.)",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951461
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "\"機械翻訳専用機「やまと」-コンピュータ博物館\". Archived from the original on 19 October 2016. Retrieved 4 April 2017.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951462
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Nye, Mary Jo (2016). \"Speaking in Tongues: Science's centuries-long hunt for a common language\". Distillations. 2 (1): 40–43. Archived from the original on 3 August 2020. Retrieved 20 March 2018.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951462
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Gordin, Michael D. (2015). Scientific Babel: How Science Was Done Before and After Global English. Chicago, Illinois: University of Chicago Press. ISBN 978-0-226-00029-9.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951463
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Wolfgang Saxon (28 July 1995). \"David G. Hays, 66, a Developer Of Language Study by Computer\". The New York Times. Archived from the original on 7 February 2020. Retrieved 7 August 2020. wrote about computer-assisted language processing as early as 1957.. was project leader on computational linguistics at Rand from 1955 to 1968.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951464
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "\"Human quality machine translation solution by Ta with you\" (in Spanish). Tauyou.com. 15 April 2009. Archived from the original on 22 September 2009. Retrieved 12 June 2012.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951464
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "\"Google Translate Adds 20 Languages To Augmented Reality App\". Popular Science. 30 July 2015. Retrieved 9 January 2023.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951465
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Whitney, Lance. \"Google Translate app update said to make speech-to-text even easier\". CNET. Retrieved 9 January 2023.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951465
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "\"Machine Translation Service\". 5 August 2011. Archived from the original on 8 September 2013. Retrieved 13 September 2013.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951466
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Wilson, Kyle (8 May 2019). \"Wikipedia has a Google Translate problem\". The Verge. Retrieved 9 January 2023.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951466
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "\"Wikipedia taps Google to help editors translate articles\". VentureBeat. 9 January 2019. Retrieved 9 January 2023.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951467
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "\"Content translation tool helps create over half a million Wikipedia articles\". Wikimedia Foundation. 23 September 2019. Retrieved 10 January 2023.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951467
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Magazine, Undark (12 August 2021). \"Wikipedia Has a Language Problem. Here's How To Fix It\". Undark Magazine. Retrieved 9 January 2023.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951468
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "\"List of Wikipedias - Meta\". meta.wikimedia.org. Retrieved 9 January 2023.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951468
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Gallafent, Alex (26 April 2011). \"Machine Translation for the Military\". PRI's the World. Archived from the original on 9 May 2013. Retrieved 17 September 2013.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951469
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "上野, 俊夫 (13 August 1986). パーソナルコンピュータによる機械翻訳プログラムの制作 (in Japanese). Tokyo: (株)ラッセル社. p. 16. ISBN 4-947627-00-X.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951540
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Budiansky, Stephen (December 1998). \"Lost in Translation\". Atlantic Magazine. pp. 81–84.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951540
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Schank, Roger C. (2014). Conceptual Information Processing. New York: Elsevier. p. 5. ISBN 978-1-4832-5879-9.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951541
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Farwell, David; Gerber, Laurie; Hovy, Eduard (29 June 2003). Machine Translation and the Information Soup: Third Conference of the Association for Machine Translation in the Americas, AMTA'98, Langhorne, PA, USA, October 28–31, 1998 Proceedings. Berlin: Springer. p. 276. ISBN 3-540-65259-0.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951545
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Barron, Brenda (18 November 2019). \"Babel Fish: What Happened To The Original Translation Application?: We Investigate\". Digital.com. Archived from the original on 20 November 2019. Retrieved 22 November 2019.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951546
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "and gave other examples too",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951546
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Chan, Sin-Wai (2015). Routledge Encyclopedia of Translation Technology. Oxon: Routledge. p. 385. ISBN 978-0-415-52484-1.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951546
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "\"Google Translator: The Universal Language\". Blog.outer-court.com. 25 January 2007. Archived from the original on 20 November 2008. Retrieved 12 June 2012.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951547
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Jackson, William (9 September 2003). \"GCN – Air force wants to build a universal translator\". Gcn.com. Archived from the original on 16 June 2011. Retrieved 12 June 2012.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951548
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Young-sil, Yoon (26 June 2023). \"Korean Games Growing in Popularity in Tough Japanese Game Market\". BusinessKorea. Retrieved 8 August 2023.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951548
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Automatic Language Processing Advisory Committee, Division of Behavioral Sciences, National Academy of Sciences, National Research Council (1966). Language and Machines: Computers in Translation and Linguistics (PDF) (Report). Washington, D. C.: National Research Council, National Academy of Sciences. Archived (PDF) from the original on 21 October 2013. Retrieved 21 October 2013.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951549
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Randhawa, Gurdeeshpal; Ferreyra, Mariella; Ahmed, Rukhsana; Ezzat, Omar; Pottie, Kevin (April 2013). \"Using machine translation in clinical practice\". Canadian Family Physician. 59 (4): 382–383. PMC 3625087. PMID 23585608. Archived from the original on 4 May 2013. Retrieved 21 October 2013.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951550
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Vieira, Lucas Nunes; O'Hagan, Minako; O'Sullivan, Carol (18 August 2021). \"Understanding the societal impacts of machine translation: a critical review of the literature on medical and legal use cases\". Information, Communication & Society. 24 (11): 1515–1532. doi:10.1080/1369118X.2020.1776370. hdl:1983/29727bd1-a1ae-4600-9e8e-018f11ec75fb. ISSN 1369-118X. S2CID 225694304.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951550
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Khoong, Elaine C.; Steinbrook, Eric; Brown, Cortlyn; Fernandez, Alicia (1 April 2019). \"Assessing the Use of Google Translate for Spanish and Chinese Translations of Emergency Department Discharge Instructions\". JAMA Internal Medicine. 179 (4): 580–582. doi:10.1001/jamainternmed.2018.7653. ISSN 2168-6106. PMC 6450297. PMID 30801626.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951551
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Schwartz, Lane (2008). Multi-Source Translation Methods (PDF). Paper presented at the 8th Biennial Conference of the Association for Machine Translation in the Americas. Archived (PDF) from the original on 29 June 2016. Retrieved 3 November 2017.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951619
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Cohn, Trevor; Lapata, Mirella (2007). Machine Translation by Triangulation: Making Effective Use of Multi-Parallel Corpora (PDF). Paper presented at the 45th Annual Meeting of the Association for Computational Linguistics, June 23–30, 2007, Prague, Czech Republic. Archived (PDF) from the original on 10 October 2015. Retrieved 3 February 2015.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951620
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Piccoli, Vanessa (5 July 2022). \"Plurilingualism, multimodality and machine translation in medical consultations: A case study\". Translation and Interpreting Studies. 17 (1): 42–65. doi:10.1075/tis.21012.pic. ISSN 1932-2798. S2CID 246780731.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951622
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Nakov, Preslav; Ng, Hwee Tou (2012). \"Improving Statistical Machine Translation for a Resource-Poor Language Using Related Resource-Rich Languages\". Journal of Artificial Intelligence Research. 44: 179–222. arXiv:1401.6876. doi:10.1613/jair.3540.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951728
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Antonio Toral, Sheila Castilho, Ke Hu, and Andy\nWay. 2018. Attaining the unattainable? reassessing claims of human parity in neural machine translation. CoRR, abs/1808.10432.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951732
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Yvette, Graham; Barry, Haddow; Koehn, Philipp (2019). \"Translationese in Machine Translation Evaluation\". arXiv:1906.09833 [cs.CL].",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951732
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Katsnelson, Alla (29 August 2022). \"Poor English skills? New AIs help researchers to write better\". Nature. 609 (7925): 208–209. Bibcode:2022Natur.609..208K. doi:10.1038/d41586-022-02767-9. PMID 36038730. S2CID 251931306.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951734
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Korab, Petr (18 February 2022). \"DeepL: An Exceptionally Magnificent Language Translator\". Medium. Retrieved 9 January 2023.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951734
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "\"DeepL outperforms Google Translate – DW – 12/05/2018\". Deutsche Welle. Retrieved 9 January 2023.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951734
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Hendy, Amr; Abdelrehim, Mohamed; Sharaf, Amr; Raunak, Vikas; Gabr, Mohamed; Matsushita, Hitokazu; Kim, Young Jin; Afify, Mohamed; Awadalla, Hany (18 February 2023). \"How Good Are GPT Models at Machine Translation? A Comprehensive Evaluation\". arXiv:2302.09210 [cs.CL].",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951734
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Fadelli, Ingrid. \"Study assesses the quality of AI literary translations by comparing them with human translations\". techxplore.com. Retrieved 18 December 2022.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951735
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Herrera-Espejel, Paula Sofia; Rach, Stefan (20 November 2023). \"The Use of Machine Translation for Outreach and Health Communication in Epidemiology and Public Health: Scoping Review\". JMIR Public Health and Surveillance. 9 e50814. doi:10.2196/50814. ISSN 2369-2960. PMC 10696499. PMID 37983078.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951737
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "legalj (2 January 2023). \"Man v. Machine: Social and Legal Implications of Machine Translation\". Princeton Legal Journal. Retrieved 4 December 2023.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951738
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Chavez, Edward L. (2008). \"New Mexico's Success with Non-English Speaking Jurors\". Journal of Court Innovation. 1: 303.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951738
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Gutherz, Gai; Gordin, Shai; Sáenz, Luis; Levy, Omer; Berant, Jonathan (2 May 2023). Kearns, Michael (ed.). \"Translating Akkadian to English with neural machine translation\". PNAS Nexus. 2 (5) pgad096. doi:10.1093/pnasnexus/pgad096. ISSN 2752-6542. PMC 10153418. PMID 37143863.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951739
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Way, Andy; Nano Gough (20 September 2005). \"Comparing Example-Based and Statistical Machine Translation\". Natural Language Engineering. 11 (3): 295–309. doi:10.1017/S1351324905003888. S2CID 3242163.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951739
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Muegge (2006), \"Fully Automatic High Quality Machine Translation of Restricted Text: A Case Study Archived 17 October 2011 at the Wayback Machine,\" in Translating and the computer 28. Proceedings of the twenty-eighth international conference on translating and the computer, 16–17 November 2006, London, London: Aslib. ISBN 978-0-85142-483-5.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951740
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "\"Comparison of MT systems by human evaluation, May 2008\". Morphologic.hu. Archived from the original on 19 April 2012. Retrieved 12 June 2012.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951740
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Anderson, D.D. (1995). Machine translation as a tool in second language learning Archived 4 January 2018 at the Wayback Machine. CALICO Journal. 13(1). 68–96.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951746
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Han et al. (2012), \"LEPOR: A Robust Evaluation Metric for Machine Translation with Augmented Factors Archived 4 January 2018 at the Wayback Machine,\" in Proceedings of the 24th International Conference on Computational Linguistics (COLING 2012): Posters, pages 441–450, Mumbai, India.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951747
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Thai, Katherine; Karpinska, Marzena; Krishna, Kalpesh; Ray, Bill; Inghilleri, Moira; Wieting, John; Iyyer, Mohit (25 October 2022). \"Exploring Document-Level Literary Machine Translation with Parallel Paragraphs from World Literature\". arXiv:2210.14250 [cs.CL].",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951811
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Kocmi, Tom; Avramidis, Eleftherios; Bawden, Rachel; Bojar, Ondřej; Dvorkovich, Anton; Federmann, Christian; Fishel, Mark; Freitag, Markus; Gowda, Thamme; Grundkiewicz, Roman; Haddow, Barry; Koehn, Philipp; Marie, Benjamin; Monz, Christof; Morishita, Makoto (2023). Koehn, Philipp; Haddow, Barry; Kocmi, Tom; Monz, Christof (eds.). Findings of the 2023 Conference on Machine Translation (WMT23): LLMs Are Here but Not Quite There Yet. Proceedings of the Eighth Conference on Machine Translation. Singapore: Association for Computational Linguistics. pp. 1–42. doi:10.18653/v1/2023.wmt-1.1.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951812
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Al Rousan, Rafat; Jaradat, Raghad; Malkawi, Mona (31 December 2025). \"ChatGPT translation vs. human translation: an examination of a literary text\". Cogent Social Sciences. 11 (1) 2472916. doi:10.1080/23311886.2025.2472916.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951812
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Altakhaineh, Abdel Rahman Mitib; Alghathian, Ghazi Ayed; Jarrah, Mashal Mufleh (5 April 2025). \"A Comparative Study of Accuracy in Human vs. AI Translation of Legal Documents into Arabic\". International Journal of Language & Law. 14: 63–80. ISSN 2194-7414.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951816
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "J.M. Cohen observes (p.14): \"Scientific translation is the aim of an age that would reduce all activities to techniques. It is impossible however to imagine a literary-translation machine less complex than the human brain itself, with all its knowledge, reading, and discrimination.\"",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951817
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "See the annually performed NIST tests since 2001 Archived 22 March 2009 at the Wayback Machine and Bilingual Evaluation Understudy",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951818
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Abadi, Mark. \"4 times Google Translate totally dropped the ball\". Business Insider.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951818
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "\"回数を重ねるほど狂っていく Google翻訳で「えぐ」を英訳すると奇妙な世界に迷い込むと話題に\". ねとらぼ. 16 April 2017.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951819
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "\"えぐ\". 12 April 2017 – via www.youtube.com.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951819
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Zhao, L., Kipper, K., Schuler, W., Vogler, C., & Palmer, M. (2000). A Machine Translation System from English to American Sign Language Archived 20 July 2018 at the Wayback Machine. Lecture Notes in Computer Science, 1934: 54–67.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951819
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Milestones in machine translation – No.6: Bar-Hillel and the nonfeasibility of FAHQT Archived 12 March 2007 at the Wayback Machine by John Hutchins",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951910
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "\"Machine Translation: No Copyright On The Result?\". SEO Translator, citing Zimbabwe Independent. Archived from the original on 29 November 2012. Retrieved 24 November 2012. [dead link]",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951911
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "\"translation | UCL Copyright Queries\". blogs.ucl.ac.uk. Retrieved 18 August 2025.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951912
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Nirenburg, Sergei; Somers, Harold L.; Wilks, Yorick A., eds. (2003). Readings in Machine Translation. Cambridge, MA: The MIT Press. ISBN 9780262140744.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951913
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Cohen, J. M. (1986), \"Translation\", Encyclopedia Americana, vol. 27, pp. 12–15",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951913
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Hutchins, W. John; Somers, Harold L. (1992). An Introduction to Machine Translation. London: Academic Press. ISBN 0-12-362830-X.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951913
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Lewis-Kraus, Gideon (7 June 2015). \"Tower of Babble\". New York Times Magazine. pp. 48–52.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951914
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Weber, Steven; Mehandru, Nikita (2022). \"The 2020s Political Economy of Machine Translation\". Business and Politics. 24 (1): 96–112. arXiv:2011.01007. doi:10.1017/bap.2021.17. S2CID 226236853.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951914
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Eisenstein, Jacob (1 October 2019). \"Machine translation\". Introduction to Natural Language Processing. The MIT Press. pp. 431–456. ISBN 978-0-262-04284-0.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951915
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Wikiversity has learning resources about Topic:Computational linguistics",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951916
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "International Association for Machine Translation (IAMT) Archived 24 June 2010 at the Wayback Machine",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951916
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Machine Translation Archive Archived 1 April 2019 at the Wayback Machine by John Hutchins. An electronic repository (and bibliography) of articles, books and papers in the field of machine translation and computer-based translation technology",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951917
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Machine translation (computer-based translation) – Publications by John Hutchins (includes PDFs of several books on machine translation)",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951996
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Machine Translation and Minority Languages",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951996
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "John Hutchins 1999 Archived 7 September 2007 at the Wayback Machine",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951997
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Natural language processing",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951998
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Approaches to machine translation",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951998
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Emerging technologies",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951998
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Authority control databases",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951998
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "This page was last edited on 25 August 2026, at 20:22 (UTC).",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951998
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Page was rendered with Parsoid.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951998
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Text is available under the Creative Commons Attribution-ShareAlike 4.0 License;\nadditional terms may apply. By using this site, you agree to the Terms of Use and Privacy Policy. Wikipedia® is a registered trademark of the Wikimedia Foundation, Inc., a non-profit organization.",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215951999
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Privacy policy",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215952000
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "About Wikipedia",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215952000
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Contact Wikipedia",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215952000
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Legal & safety contacts",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215952000
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Code of Conduct",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215952000
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Cookie statement",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215952000
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Mobile view",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215952000
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Applications of artificial intelligence",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215952001
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Tasks of natural language processing",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215952003
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Automation software",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215952003
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Machine_translation",
+      "text": "Bar-Hillel (1960), \"Automatic Translation of Languages\". Available online at http://www.mt-archive.info/Bar-Hillel-1960.pdf Archived 28 September 2011 at the Wayback Machine",
+      "format": "plain",
+      "preserveLineBreaks": false,
+      "at": 1789215952425
+    }
+  ],
+  "requests": [
+    {
+      "phase": "wikipedia",
+      "kind": "google",
+      "items": 1,
+      "chars": 31,
+      "bytes": 58,
+      "start": 24194.099999964237,
+      "status": 200,
+      "returned": 1,
+      "ms": 107
+    },
+    {
+      "phase": "wikipedia",
+      "kind": "google",
+      "items": 60,
+      "chars": 7106,
+      "bytes": 7336,
+      "start": 24194.599999964237,
+      "status": 200,
+      "returned": 60,
+      "ms": 396
+    },
+    {
+      "phase": "wikipedia",
+      "kind": "google",
+      "items": 20,
+      "chars": 3720,
+      "bytes": 3806,
+      "start": 24380,
+      "status": 200,
+      "returned": 20,
+      "ms": 285
+    },
+    {
+      "phase": "wikipedia",
+      "kind": "google",
+      "items": 11,
+      "chars": 3965,
+      "bytes": 4048,
+      "start": 24554.899999976158,
+      "status": 200,
+      "returned": 11,
+      "ms": 248
+    },
+    {
+      "phase": "wikipedia",
+      "kind": "google",
+      "items": 7,
+      "chars": 2126,
+      "bytes": 2178,
+      "start": 24663.899999976158,
+      "status": 200,
+      "returned": 7,
+      "ms": 303
+    },
+    {
+      "phase": "wikipedia",
+      "kind": "google",
+      "items": 9,
+      "chars": 3432,
+      "bytes": 3507,
+      "start": 25293.80000001192,
+      "status": 200,
+      "returned": 9,
+      "ms": 308
+    },
+    {
+      "phase": "wikipedia",
+      "kind": "google",
+      "items": 15,
+      "chars": 4336,
+      "bytes": 4409,
+      "start": 25474.399999976158,
+      "status": 200,
+      "returned": 15,
+      "ms": 260
+    },
+    {
+      "phase": "wikipedia",
+      "kind": "google",
+      "items": 8,
+      "chars": 4270,
+      "bytes": 4326,
+      "start": 25675.30000001192,
+      "status": 200,
+      "returned": 8,
+      "ms": 270
+    },
+    {
+      "phase": "wikipedia",
+      "kind": "google",
+      "items": 30,
+      "chars": 1853,
+      "bytes": 1979,
+      "start": 25872.099999964237,
+      "status": 200,
+      "returned": 30,
+      "ms": 169
+    },
+    {
+      "phase": "wikipedia",
+      "kind": "google",
+      "items": 10,
+      "chars": 1874,
+      "bytes": 1945,
+      "start": 26043.5,
+      "status": 200,
+      "returned": 10,
+      "ms": 277
+    },
+    {
+      "phase": "wikipedia",
+      "kind": "google",
+      "items": 2,
+      "chars": 445,
+      "bytes": 481,
+      "start": 26205.19999998808,
+      "status": 200,
+      "returned": 2,
+      "ms": 268
+    },
+    {
+      "phase": "wikipedia",
+      "kind": "google",
+      "items": 31,
+      "chars": 5784,
+      "bytes": 6289,
+      "start": 26380,
+      "status": 200,
+      "returned": 31,
+      "ms": 388
+    },
+    {
+      "phase": "wikipedia",
+      "kind": "google",
+      "items": 2,
+      "chars": 585,
+      "bytes": 621,
+      "start": 26483,
+      "status": 200,
+      "returned": 2,
+      "ms": 171
+    },
+    {
+      "phase": "wikipedia",
+      "kind": "google",
+      "items": 28,
+      "chars": 5704,
+      "bytes": 5977,
+      "start": 26671.30000001192,
+      "status": 200,
+      "returned": 28,
+      "ms": 333
+    },
+    {
+      "phase": "wikipedia",
+      "kind": "google",
+      "items": 31,
+      "chars": 2403,
+      "bytes": 2544,
+      "start": 26865.5,
+      "status": 200,
+      "returned": 31,
+      "ms": 296
+    },
+    {
+      "phase": "wikipedia",
+      "kind": "google",
+      "items": 1,
+      "chars": 173,
+      "bytes": 202,
+      "start": 27286.30000001192,
+      "status": 200,
+      "returned": 1,
+      "ms": 120
+    }
+  ],
+  "active": 0,
+  "peak": 3
+}

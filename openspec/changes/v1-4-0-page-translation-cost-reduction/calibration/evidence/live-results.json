@@ -1,0 +1,1053 @@
+[
+  {
+    "name": "llm-count-16",
+    "items": 16,
+    "chars": 438,
+    "success": 16,
+    "errors": [],
+    "firstMs": 4452,
+    "totalMs": 4458,
+    "requests": [
+      {
+        "phase": "llm-count-16",
+        "kind": "llm",
+        "model": "GLM-5.3-Flash (0.32x)",
+        "count": 16,
+        "chars": 438,
+        "bytes": 2046,
+        "jsonMode": true,
+        "start": 1885541.699999988,
+        "at": "2026-09-12T12:24:52.327Z",
+        "status": 200,
+        "usage": {
+          "completion_tokens": 293,
+          "completion_tokens_details": {
+            "reasoning_tokens": 142
+          },
+          "prompt_tokens": 449,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          },
+          "total_tokens": 742
+        },
+        "returned": 16,
+        "ms": 4435
+      }
+    ]
+  },
+  {
+    "name": "llm-count-17",
+    "items": 17,
+    "chars": 466,
+    "success": 17,
+    "errors": [],
+    "firstMs": 3729,
+    "totalMs": 5707,
+    "requests": [
+      {
+        "phase": "llm-count-17",
+        "kind": "llm",
+        "model": "GLM-5.3-Flash (0.32x)",
+        "count": 16,
+        "chars": 438,
+        "bytes": 2046,
+        "jsonMode": true,
+        "start": 1889999.8999999762,
+        "at": "2026-09-12T12:24:56.785Z",
+        "status": 200,
+        "usage": {
+          "completion_tokens": 281,
+          "completion_tokens_details": {
+            "reasoning_tokens": 130
+          },
+          "prompt_tokens": 449,
+          "prompt_tokens_details": {
+            "cached_tokens": 448
+          },
+          "total_tokens": 730
+        },
+        "returned": 16,
+        "ms": 5688
+      },
+      {
+        "phase": "llm-count-17",
+        "kind": "llm",
+        "model": "GLM-5.3-Flash (0.32x)",
+        "count": 1,
+        "chars": 28,
+        "bytes": 1450,
+        "jsonMode": true,
+        "start": 1890105.8999999762,
+        "at": "2026-09-12T12:24:56.891Z",
+        "status": 200,
+        "usage": {
+          "completion_tokens": 147,
+          "completion_tokens_details": {
+            "reasoning_tokens": 130
+          },
+          "prompt_tokens": 314,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          },
+          "total_tokens": 461
+        },
+        "returned": 1,
+        "ms": 3608
+      }
+    ]
+  },
+  {
+    "name": "llm-chars-3999",
+    "items": 2,
+    "chars": 3999,
+    "success": 2,
+    "errors": [],
+    "firstMs": 34288,
+    "totalMs": 34290,
+    "requests": [
+      {
+        "phase": "llm-chars-3999",
+        "kind": "llm",
+        "model": "GLM-5.3-Flash (0.32x)",
+        "count": 2,
+        "chars": 3998,
+        "bytes": 5432,
+        "jsonMode": true,
+        "start": 1895805.5,
+        "at": "2026-09-12T12:25:02.590Z",
+        "status": 200,
+        "usage": {
+          "completion_tokens": 2533,
+          "completion_tokens_details": {
+            "reasoning_tokens": 2024
+          },
+          "prompt_tokens": 846,
+          "prompt_tokens_details": {
+            "cached_tokens": 256
+          },
+          "total_tokens": 3379
+        },
+        "returned": 2,
+        "ms": 34176
+      }
+    ]
+  },
+  {
+    "name": "llm-chars-4000",
+    "items": 2,
+    "chars": 4000,
+    "success": 2,
+    "errors": [],
+    "firstMs": 12166,
+    "totalMs": 12167,
+    "requests": [
+      {
+        "phase": "llm-chars-4000",
+        "kind": "llm",
+        "model": "GLM-5.3-Flash (0.32x)",
+        "count": 2,
+        "chars": 3998,
+        "bytes": 5432,
+        "jsonMode": true,
+        "start": 1930092.5,
+        "at": "2026-09-12T12:25:36.877Z",
+        "status": 200,
+        "usage": {
+          "completion_tokens": 948,
+          "completion_tokens_details": {
+            "reasoning_tokens": 437
+          },
+          "prompt_tokens": 846,
+          "prompt_tokens_details": {
+            "cached_tokens": 832
+          },
+          "total_tokens": 1794
+        },
+        "returned": 2,
+        "ms": 12059
+      }
+    ]
+  },
+  {
+    "name": "llm-chars-4001",
+    "items": 2,
+    "chars": 4001,
+    "success": 2,
+    "errors": [],
+    "firstMs": 20769,
+    "totalMs": 20771,
+    "requests": [
+      {
+        "phase": "llm-chars-4001",
+        "kind": "llm",
+        "model": "GLM-5.3-Flash (0.32x)",
+        "count": 2,
+        "chars": 4000,
+        "bytes": 5434,
+        "jsonMode": true,
+        "start": 1942159.3999999762,
+        "at": "2026-09-12T12:25:48.944Z",
+        "status": 200,
+        "usage": {
+          "completion_tokens": 1642,
+          "completion_tokens_details": {
+            "reasoning_tokens": 1132
+          },
+          "prompt_tokens": 847,
+          "prompt_tokens_details": {
+            "cached_tokens": 832
+          },
+          "total_tokens": 2489
+        },
+        "returned": 2,
+        "ms": 20764
+      }
+    ]
+  },
+  {
+    "name": "llm-single-4001",
+    "items": 1,
+    "chars": 4001,
+    "success": 1,
+    "errors": [],
+    "firstMs": 74270,
+    "totalMs": 74271,
+    "requests": [
+      {
+        "phase": "llm-single-4001",
+        "kind": "llm",
+        "model": "GLM-5.3-Flash (0.32x)",
+        "count": 1,
+        "chars": 4001,
+        "bytes": 5423,
+        "jsonMode": true,
+        "start": 1962934.0999999642,
+        "at": "2026-09-12T12:26:09.719Z",
+        "status": 200,
+        "usage": {
+          "completion_tokens": 5775,
+          "completion_tokens_details": {
+            "reasoning_tokens": 5116
+          },
+          "prompt_tokens": 840,
+          "prompt_tokens_details": {
+            "cached_tokens": 256
+          },
+          "total_tokens": 6615
+        },
+        "returned": 1,
+        "ms": 74262
+      }
+    ]
+  },
+  {
+    "name": "llm-exact-3999",
+    "items": 2,
+    "chars": 3999,
+    "success": 2,
+    "errors": [],
+    "firstMs": 13121,
+    "totalMs": 13122,
+    "requests": [
+      {
+        "phase": "llm-exact-3999",
+        "kind": "llm",
+        "model": "GLM-5.3-Flash (0.32x)",
+        "count": 2,
+        "chars": 3999,
+        "bytes": 5433,
+        "jsonMode": true,
+        "start": 2119294.899999976,
+        "at": "2026-09-12T12:28:46.080Z",
+        "status": 200,
+        "usage": {
+          "completion_tokens": 1156,
+          "completion_tokens_details": {
+            "reasoning_tokens": 649
+          },
+          "prompt_tokens": 847,
+          "prompt_tokens_details": {
+            "cached_tokens": 512
+          },
+          "total_tokens": 2003
+        },
+        "returned": 2,
+        "ms": 13012
+      }
+    ]
+  },
+  {
+    "name": "llm-exact-4000",
+    "items": 2,
+    "chars": 4000,
+    "success": 2,
+    "errors": [],
+    "firstMs": 17317,
+    "totalMs": 17321,
+    "requests": [
+      {
+        "phase": "llm-exact-4000",
+        "kind": "llm",
+        "model": "GLM-5.3-Flash (0.32x)",
+        "count": 2,
+        "chars": 4000,
+        "bytes": 5434,
+        "jsonMode": true,
+        "start": 2132320.7999999523,
+        "at": "2026-09-12T12:28:59.106Z",
+        "status": 200,
+        "usage": {
+          "completion_tokens": 1239,
+          "completion_tokens_details": {
+            "reasoning_tokens": 730
+          },
+          "prompt_tokens": 847,
+          "prompt_tokens_details": {
+            "cached_tokens": 512
+          },
+          "total_tokens": 2086
+        },
+        "returned": 2,
+        "ms": 17311
+      }
+    ]
+  },
+  {
+    "name": "llm-exact-4001",
+    "items": 2,
+    "chars": 4001,
+    "success": 2,
+    "errors": [],
+    "firstMs": 6416,
+    "totalMs": 29732,
+    "requests": [
+      {
+        "phase": "llm-exact-4001",
+        "kind": "llm",
+        "model": "GLM-5.3-Flash (0.32x)",
+        "count": 1,
+        "chars": 2000,
+        "bytes": 3422,
+        "jsonMode": true,
+        "start": 2149645.5,
+        "at": "2026-09-12T12:29:16.430Z",
+        "status": 200,
+        "usage": {
+          "completion_tokens": 2044,
+          "completion_tokens_details": {
+            "reasoning_tokens": 1785
+          },
+          "prompt_tokens": 576,
+          "prompt_tokens_details": {
+            "cached_tokens": 512
+          },
+          "total_tokens": 2620
+        },
+        "returned": 1,
+        "ms": 29726
+      },
+      {
+        "phase": "llm-exact-4001",
+        "kind": "llm",
+        "model": "GLM-5.3-Flash (0.32x)",
+        "count": 1,
+        "chars": 2001,
+        "bytes": 3423,
+        "jsonMode": true,
+        "start": 2149751.199999988,
+        "at": "2026-09-12T12:29:16.536Z",
+        "status": 200,
+        "usage": {
+          "completion_tokens": 361,
+          "completion_tokens_details": {
+            "reasoning_tokens": 99
+          },
+          "prompt_tokens": 576,
+          "prompt_tokens_details": {
+            "cached_tokens": 256
+          },
+          "total_tokens": 937
+        },
+        "returned": 1,
+        "ms": 6305
+      }
+    ]
+  },
+  {
+    "name": "google-translate-default-count-100",
+    "items": 100,
+    "chars": 2790,
+    "success": 0,
+    "errors": [
+      "Network error during translation: Failed to fetch",
+      "Network error during translation: Failed to fetch"
+    ],
+    "firstMs": null,
+    "totalMs": 3797,
+    "requests": [
+      {
+        "phase": "google-translate-default-count-100",
+        "kind": "google",
+        "count": 100,
+        "chars": 2790,
+        "bytes": 3114,
+        "jsonMode": false,
+        "start": 2179447,
+        "at": "2026-09-12T12:29:46.232Z",
+        "status": "network-error",
+        "error": "Failed to fetch",
+        "ms": 196
+      },
+      {
+        "phase": "google-translate-default-count-100",
+        "kind": "google",
+        "count": 100,
+        "chars": 2790,
+        "bytes": 3114,
+        "jsonMode": false,
+        "start": 2180716.7999999523,
+        "at": "2026-09-12T12:29:47.502Z",
+        "status": "network-error",
+        "error": "Failed to fetch",
+        "ms": 175
+      },
+      {
+        "phase": "google-translate-default-count-100",
+        "kind": "google",
+        "count": 100,
+        "chars": 2790,
+        "bytes": 3114,
+        "jsonMode": false,
+        "start": 2182976.199999988,
+        "at": "2026-09-12T12:29:49.761Z",
+        "status": "network-error",
+        "error": "Failed to fetch",
+        "ms": 191
+      }
+    ]
+  },
+  {
+    "name": "google-control-1",
+    "items": 1,
+    "chars": 27,
+    "success": 0,
+    "errors": [
+      "Network error during translation: Failed to fetch"
+    ],
+    "firstMs": null,
+    "totalMs": 3863,
+    "requests": [
+      {
+        "phase": "google-control-1",
+        "kind": "google",
+        "count": 1,
+        "chars": 27,
+        "bytes": 54,
+        "jsonMode": false,
+        "start": 2317118.899999976,
+        "at": "2026-09-12T12:32:03.904Z",
+        "status": "network-error",
+        "error": "Failed to fetch",
+        "ms": 179
+      },
+      {
+        "phase": "google-control-1",
+        "kind": "google",
+        "count": 1,
+        "chars": 27,
+        "bytes": 54,
+        "jsonMode": false,
+        "start": 2318353.899999976,
+        "at": "2026-09-12T12:32:05.139Z",
+        "status": "network-error",
+        "error": "Failed to fetch",
+        "ms": 192
+      },
+      {
+        "phase": "google-control-1",
+        "kind": "google",
+        "count": 1,
+        "chars": 27,
+        "bytes": 54,
+        "jsonMode": false,
+        "start": 2320697.5999999642,
+        "at": "2026-09-12T12:32:07.482Z",
+        "status": "network-error",
+        "error": "Failed to fetch",
+        "ms": 175
+      }
+    ]
+  },
+  {
+    "name": "google-control-32",
+    "items": 32,
+    "chars": 886,
+    "success": 32,
+    "errors": [],
+    "firstMs": 517,
+    "totalMs": 523,
+    "requests": [
+      {
+        "phase": "google-control-32",
+        "kind": "google",
+        "count": 32,
+        "chars": 886,
+        "bytes": 1006,
+        "jsonMode": false,
+        "start": 2321008.899999976,
+        "at": "2026-09-12T12:32:07.794Z",
+        "status": 200,
+        "returned": 32,
+        "ms": 388
+      }
+    ]
+  },
+  {
+    "name": "microsoft-count-100",
+    "items": 100,
+    "chars": 2790,
+    "success": 100,
+    "errors": [],
+    "firstMs": 2521,
+    "totalMs": 2535,
+    "requests": [
+      {
+        "phase": "microsoft-count-100",
+        "kind": "microsoft",
+        "count": 100,
+        "chars": 2790,
+        "bytes": 3091,
+        "jsonMode": false,
+        "start": 2321463.7999999523,
+        "at": "2026-09-12T12:32:08.249Z",
+        "status": 200,
+        "returned": 100,
+        "ms": 2464
+      }
+    ]
+  },
+  {
+    "name": "microsoft-count-101",
+    "items": 101,
+    "chars": 2819,
+    "success": 101,
+    "errors": [],
+    "firstMs": 350,
+    "totalMs": 444,
+    "requests": [
+      {
+        "phase": "microsoft-count-101",
+        "kind": "microsoft",
+        "count": 100,
+        "chars": 2790,
+        "bytes": 3091,
+        "jsonMode": false,
+        "start": 2324002.5999999642,
+        "at": "2026-09-12T12:32:10.788Z",
+        "status": 200,
+        "returned": 100,
+        "ms": 292
+      },
+      {
+        "phase": "microsoft-count-101",
+        "kind": "microsoft",
+        "count": 1,
+        "chars": 29,
+        "bytes": 33,
+        "jsonMode": false,
+        "start": 2324107.7999999523,
+        "at": "2026-09-12T12:32:10.893Z",
+        "status": 200,
+        "returned": 1,
+        "ms": 280
+      }
+    ]
+  },
+  {
+    "name": "google-translate-default-payload-utf8",
+    "items": 64,
+    "chars": 26934,
+    "success": 64,
+    "errors": [],
+    "firstMs": 396,
+    "totalMs": 426,
+    "requests": [
+      {
+        "phase": "google-translate-default-payload-utf8",
+        "kind": "google",
+        "count": 34,
+        "chars": 27904,
+        "bytes": 31430,
+        "jsonMode": false,
+        "start": 2324426.7999999523,
+        "at": "2026-09-12T12:32:11.212Z",
+        "status": 200,
+        "returned": 34,
+        "ms": 364
+      },
+      {
+        "phase": "google-translate-default-payload-utf8",
+        "kind": "google",
+        "count": 30,
+        "chars": 24630,
+        "bytes": 27744,
+        "jsonMode": false,
+        "start": 2324542.5999999642,
+        "at": "2026-09-12T12:32:11.328Z",
+        "status": 200,
+        "returned": 30,
+        "ms": 273
+      }
+    ]
+  },
+  {
+    "name": "microsoft-translate-default-payload-utf8",
+    "items": 64,
+    "chars": 26934,
+    "success": 64,
+    "errors": [],
+    "firstMs": 3530,
+    "totalMs": 3570,
+    "requests": [
+      {
+        "phase": "microsoft-translate-default-payload-utf8",
+        "kind": "microsoft",
+        "count": 34,
+        "chars": 27904,
+        "bytes": 31407,
+        "jsonMode": false,
+        "start": 2324854.699999988,
+        "at": "2026-09-12T12:32:11.640Z",
+        "status": 200,
+        "returned": 34,
+        "ms": 3535
+      },
+      {
+        "phase": "microsoft-translate-default-payload-utf8",
+        "kind": "microsoft",
+        "count": 30,
+        "chars": 24630,
+        "bytes": 27721,
+        "jsonMode": false,
+        "start": 2324966.199999988,
+        "at": "2026-09-12T12:32:11.751Z",
+        "status": 200,
+        "returned": 30,
+        "ms": 3388
+      }
+    ]
+  },
+  {
+    "name": "google-recheck-100",
+    "items": 100,
+    "chars": 2790,
+    "success": 100,
+    "errors": [],
+    "firstMs": 438,
+    "totalMs": 452,
+    "requests": [
+      {
+        "phase": "google-recheck-100",
+        "kind": "google",
+        "count": 100,
+        "chars": 2790,
+        "bytes": 3114,
+        "jsonMode": false,
+        "start": 2421213.2999999523,
+        "at": "2026-09-12T12:33:47.998Z",
+        "status": 200,
+        "returned": 100,
+        "ms": 375
+      }
+    ]
+  },
+  {
+    "name": "google-recheck-101",
+    "items": 101,
+    "chars": 2819,
+    "success": 101,
+    "errors": [],
+    "firstMs": 229,
+    "totalMs": 276,
+    "requests": [
+      {
+        "phase": "google-recheck-101",
+        "kind": "google",
+        "count": 100,
+        "chars": 2790,
+        "bytes": 3114,
+        "jsonMode": false,
+        "start": 2421668.199999988,
+        "at": "2026-09-12T12:33:48.453Z",
+        "status": 200,
+        "returned": 100,
+        "ms": 167
+      },
+      {
+        "phase": "google-recheck-101",
+        "kind": "google",
+        "count": 1,
+        "chars": 29,
+        "bytes": 56,
+        "jsonMode": false,
+        "start": 2421774.7999999523,
+        "at": "2026-09-12T12:33:48.560Z",
+        "status": 200,
+        "returned": 1,
+        "ms": 107
+      }
+    ]
+  },
+  {
+    "name": "microsoft-page-saturation-input",
+    "items": 601,
+    "chars": 24531,
+    "success": 601,
+    "errors": [],
+    "firstMs": 459,
+    "totalMs": 5080,
+    "requests": [
+      {
+        "phase": "microsoft-page-saturation-input",
+        "kind": "microsoft",
+        "count": 100,
+        "chars": 3990,
+        "bytes": 4291,
+        "jsonMode": false,
+        "start": 2422009.399999976,
+        "at": "2026-09-12T12:33:48.794Z",
+        "status": 200,
+        "returned": 100,
+        "ms": 334
+      },
+      {
+        "phase": "microsoft-page-saturation-input",
+        "kind": "microsoft",
+        "count": 100,
+        "chars": 4100,
+        "bytes": 4401,
+        "jsonMode": false,
+        "start": 2422050.399999976,
+        "at": "2026-09-12T12:33:48.835Z",
+        "status": 200,
+        "returned": 100,
+        "ms": 2506
+      },
+      {
+        "phase": "microsoft-page-saturation-input",
+        "kind": "microsoft",
+        "count": 100,
+        "chars": 4100,
+        "bytes": 4401,
+        "jsonMode": false,
+        "start": 2422087.399999976,
+        "at": "2026-09-12T12:33:48.872Z",
+        "status": 200,
+        "returned": 100,
+        "ms": 2428
+      },
+      {
+        "phase": "microsoft-page-saturation-input",
+        "kind": "microsoft",
+        "count": 100,
+        "chars": 4100,
+        "bytes": 4401,
+        "jsonMode": false,
+        "start": 2422118.5,
+        "at": "2026-09-12T12:33:48.903Z",
+        "status": 200,
+        "returned": 100,
+        "ms": 2380
+      },
+      {
+        "phase": "microsoft-page-saturation-input",
+        "kind": "microsoft",
+        "count": 1,
+        "chars": 68,
+        "bytes": 72,
+        "jsonMode": false,
+        "start": 2422189,
+        "at": "2026-09-12T12:33:48.974Z",
+        "status": 200,
+        "returned": 1,
+        "ms": 157
+      },
+      {
+        "phase": "microsoft-page-saturation-input",
+        "kind": "microsoft",
+        "count": 100,
+        "chars": 4100,
+        "bytes": 4401,
+        "jsonMode": false,
+        "start": 2422339.7999999523,
+        "at": "2026-09-12T12:33:49.125Z",
+        "status": 200,
+        "returned": 100,
+        "ms": 2383
+      },
+      {
+        "phase": "microsoft-page-saturation-input",
+        "kind": "microsoft",
+        "count": 100,
+        "chars": 4100,
+        "bytes": 4401,
+        "jsonMode": false,
+        "start": 2424490.2999999523,
+        "at": "2026-09-12T12:33:51.275Z",
+        "status": 200,
+        "returned": 100,
+        "ms": 2462
+      },
+      {
+        "phase": "microsoft-page-saturation-input",
+        "kind": "microsoft",
+        "count": 1,
+        "chars": 41,
+        "bytes": 45,
+        "jsonMode": false,
+        "start": 2424899.399999976,
+        "at": "2026-09-12T12:33:51.684Z",
+        "status": 200,
+        "returned": 1,
+        "ms": 311
+      }
+    ],
+    "interaction": {
+      "activeBefore": 4,
+      "chars": 68,
+      "ms": 216,
+      "success": true
+    }
+  },
+  {
+    "name": "gateway-model-DeepSeek-V4.1-Flash (1.20x)",
+    "items": 4,
+    "chars": 834,
+    "success": 4,
+    "errors": [],
+    "firstMs": 3951,
+    "totalMs": 3954,
+    "requests": [
+      {
+        "phase": "gateway-model-DeepSeek-V4.1-Flash (1.20x)",
+        "kind": "llm",
+        "model": "DeepSeek-V4.1-Flash (1.20x)",
+        "count": 4,
+        "chars": 834,
+        "bytes": 2269,
+        "jsonMode": true,
+        "start": 2550281.2999999523,
+        "at": "2026-09-12T12:35:57.066Z",
+        "status": 200,
+        "usage": {
+          "prompt_tokens": 462,
+          "completion_tokens": 638,
+          "total_tokens": 1100,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 485
+          },
+          "prompt_cache_hit_tokens": 0,
+          "prompt_cache_miss_tokens": 462
+        },
+        "returned": 4,
+        "ms": 3839
+      }
+    ],
+    "outputs": [
+      {
+        "text": "A function definition (also called a function declaration, or function statement) consists of the function keyword, followed by:",
+        "result": "函数定义（也称为函数声明或函数语句）由 function 关键字组成，后面跟着："
+      },
+      {
+        "text": "The function square takes one parameter, called number. The function consists of one statement that says to return the parameter of the function (that is, number) multiplied by itself. The return statement specifies the value returned by the function, which is number * number.",
+        "result": "函数 square 接受一个参数，名为 number。该函数由一条语句组成，这条语句表示返回该函数的参数（即 number）与自身相乘的结果。return 语句指定了函数返回的值，即 number * number。"
+      },
+      {
+        "text": "Parameters are essentially passed to functions by value — so if the code within the body of a function assigns a completely new value to a parameter that was passed to the function, the change is not reflected globally or in the code which called that function.",
+        "result": "参数本质上是按值传递给函数的——因此，如果函数体内的代码给传递给该函数的参数赋予一个全新的值，该更改不会全局反映，也不会在调用该函数的代码中反映。"
+      },
+      {
+        "text": "When you pass an object as a parameter, if the function changes the object's properties, that change is visible outside the function, as shown in the following example:",
+        "result": "当你将一个对象作为参数传递时，如果函数更改了该对象的属性，那么这种更改在函数外部是可见的，如下例所示："
+      }
+    ]
+  },
+  {
+    "name": "gateway-model-Kimi-K2.7 (2.60x)",
+    "items": 4,
+    "chars": 834,
+    "success": 4,
+    "errors": [],
+    "firstMs": 5192,
+    "totalMs": 5194,
+    "requests": [
+      {
+        "phase": "gateway-model-Kimi-K2.7 (2.60x)",
+        "kind": "llm",
+        "model": "Kimi-K2.7 (2.60x)",
+        "count": 4,
+        "chars": 834,
+        "bytes": 2320,
+        "jsonMode": true,
+        "start": 2554243.7999999523,
+        "at": "2026-09-12T12:36:01.029Z",
+        "status": 200,
+        "usage": {
+          "prompt_tokens": 421,
+          "completion_tokens": 552,
+          "total_tokens": 973,
+          "completion_tokens_details": {
+            "reasoning_tokens": 408,
+            "text_tokens": 144
+          },
+          "prompt_tokens_details": {
+            "text_tokens": 421,
+            "cached_tokens": 0
+          }
+        },
+        "returned": 4,
+        "ms": 5082
+      }
+    ],
+    "outputs": [
+      {
+        "text": "A function definition (also called a function declaration, or function statement) consists of the function keyword, followed by:",
+        "result": "函数定义（也称为函数声明或函数语句）由 function 关键字以及以下内容组成："
+      },
+      {
+        "text": "The function square takes one parameter, called number. The function consists of one statement that says to return the parameter of the function (that is, number) multiplied by itself. The return statement specifies the value returned by the function, which is number * number.",
+        "result": "函数 square 接收一个名为 number 的参数。该函数包含一条语句，表示返回函数的参数（即 number）乘以自身。return 语句指定了函数返回的值，即 number * number。"
+      },
+      {
+        "text": "Parameters are essentially passed to functions by value — so if the code within the body of a function assigns a completely new value to a parameter that was passed to the function, the change is not reflected globally or in the code which called that function.",
+        "result": "参数本质上是按值传递给函数的——因此，如果函数体内部的代码为传入的参数赋予了一个全新的值，这个改变不会反映到全局作用域或调用该函数的代码中。"
+      },
+      {
+        "text": "When you pass an object as a parameter, if the function changes the object's properties, that change is visible outside the function, as shown in the following example:",
+        "result": "当你将对象作为参数传递时，如果函数修改了该对象的属性，这个变化在函数外部也是可见的，如下例所示："
+      }
+    ]
+  },
+  {
+    "name": "gateway-model-MiniMax-M3 (1.84x)",
+    "items": 4,
+    "chars": 834,
+    "success": 4,
+    "errors": [],
+    "firstMs": 4308,
+    "totalMs": 4311,
+    "requests": [
+      {
+        "phase": "gateway-model-MiniMax-M3 (1.84x)",
+        "kind": "llm",
+        "model": "MiniMax-M3 (1.84x)",
+        "count": 4,
+        "chars": 834,
+        "bytes": 2260,
+        "jsonMode": true,
+        "start": 2559447.899999976,
+        "at": "2026-09-12T12:36:06.233Z",
+        "status": 200,
+        "usage": {
+          "completion_tokens": 522,
+          "completion_tokens_details": {
+            "reasoning_tokens": 384
+          },
+          "prompt_tokens": 573,
+          "prompt_tokens_details": {
+            "cached_tokens": 148
+          },
+          "total_tokens": 1095
+        },
+        "returned": 4,
+        "ms": 4196
+      }
+    ],
+    "outputs": [
+      {
+        "text": "A function definition (also called a function declaration, or function statement) consists of the function keyword, followed by:",
+        "result": "函数定义（也称为函数声明或函数语句）由 function 关键字组成，后跟："
+      },
+      {
+        "text": "The function square takes one parameter, called number. The function consists of one statement that says to return the parameter of the function (that is, number) multiplied by itself. The return statement specifies the value returned by the function, which is number * number.",
+        "result": "函数 square 接受一个名为 number 的参数。该函数包含一条语句，指示返回函数的参数（即 number）与其自身相乘的结果。return 语句指定了函数返回的值，即 number * number。"
+      },
+      {
+        "text": "Parameters are essentially passed to functions by value — so if the code within the body of a function assigns a completely new value to a parameter that was passed to the function, the change is not reflected globally or in the code which called that function.",
+        "result": "参数本质上是通过值传递给函数的——因此如果函数体内的代码为传递给函数的参数赋予了一个全新的值，则此更改不会在全局范围内或在调用该函数的代码中反映出来。"
+      },
+      {
+        "text": "When you pass an object as a parameter, if the function changes the object's properties, that change is visible outside the function, as shown in the following example:",
+        "result": "当你将一个对象作为参数传递时，如果函数更改了该对象的属性，则该更改在函数外部可见，如下例所示："
+      }
+    ]
+  },
+  {
+    "name": "gateway-model-Prime-Astra (4.00x)",
+    "items": 4,
+    "chars": 834,
+    "success": 4,
+    "errors": [],
+    "firstMs": 43662,
+    "totalMs": 43666,
+    "requests": [
+      {
+        "phase": "gateway-model-Prime-Astra (4.00x)",
+        "kind": "llm",
+        "model": "Prime-Astra (4.00x)",
+        "count": 4,
+        "chars": 834,
+        "bytes": 2261,
+        "jsonMode": true,
+        "start": 2563765.5999999642,
+        "at": "2026-09-12T12:36:10.550Z",
+        "status": "network-error",
+        "error": "Task bd367824-7268-4aac-a56b-5a06f339ec50 timed out after 32510ms",
+        "ms": 32512
+      },
+      {
+        "phase": "gateway-model-Prime-Astra (4.00x)",
+        "kind": "llm",
+        "model": "Prime-Astra (4.00x)",
+        "count": 4,
+        "chars": 834,
+        "bytes": 2261,
+        "jsonMode": true,
+        "start": 2597305.199999988,
+        "at": "2026-09-12T12:36:44.090Z",
+        "status": 200,
+        "usage": {
+          "prompt_tokens": 5095,
+          "completion_tokens": 203,
+          "total_tokens": 5298,
+          "completion_tokens_details": {
+            "reasoning_tokens": 21
+          }
+        },
+        "returned": 4,
+        "ms": 10011
+      }
+    ],
+    "outputs": [
+      {
+        "text": "A function definition (also called a function declaration, or function statement) consists of the function keyword, followed by:",
+        "result": "函数定义（也称为函数声明或函数语句）由 function 关键字以及以下内容组成："
+      },
+      {
+        "text": "The function square takes one parameter, called number. The function consists of one statement that says to return the parameter of the function (that is, number) multiplied by itself. The return statement specifies the value returned by the function, which is number * number.",
+        "result": "square 函数接受一个名为 number 的参数。该函数包含一条语句，用于返回函数参数（即 number）与自身相乘的结果。return 语句指定函数返回的值，即 number * number。"
+      },
+      {
+        "text": "Parameters are essentially passed to functions by value — so if the code within the body of a function assigns a completely new value to a parameter that was passed to the function, the change is not reflected globally or in the code which called that function.",
+        "result": "参数本质上是按值传递给函数的，因此，如果函数体中的代码为传递给函数的参数赋予了一个全新的值，这一更改不会反映到全局范围或调用该函数的代码中。"
+      },
+      {
+        "text": "When you pass an object as a parameter, if the function changes the object's properties, that change is visible outside the function, as shown in the following example:",
+        "result": "将对象作为参数传递时，如果函数更改了对象的属性，该更改在函数外部也是可见的，如以下示例所示："
+      }
+    ]
+  }
+]

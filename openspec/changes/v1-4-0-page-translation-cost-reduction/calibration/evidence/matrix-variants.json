@@ -1,0 +1,23 @@
+[
+  {
+    "cap": 2,
+    "artifact": "/tmp/translatebuff-calibration-9TTcHd/artifact-cap-2",
+    "originalSha256": "77bed37758ffd86b4ac74c7b70dfbc3bfa537659a4736255f63b260baac98d0b",
+    "variantSha256": "d7061bd2c3f6c9de8bb8dc11ec650690790e7d015b0eb7b69bb4f0ea54956975",
+    "change": "single default maxConcurrent numeric literal; production artifact untouched"
+  },
+  {
+    "cap": 4,
+    "artifact": "/tmp/translatebuff-calibration-9TTcHd/artifact-cap-4",
+    "originalSha256": "77bed37758ffd86b4ac74c7b70dfbc3bfa537659a4736255f63b260baac98d0b",
+    "variantSha256": "77bed37758ffd86b4ac74c7b70dfbc3bfa537659a4736255f63b260baac98d0b",
+    "change": "single default maxConcurrent numeric literal; production artifact untouched"
+  },
+  {
+    "cap": 6,
+    "artifact": "/tmp/translatebuff-calibration-9TTcHd/artifact-cap-6",
+    "originalSha256": "77bed37758ffd86b4ac74c7b70dfbc3bfa537659a4736255f63b260baac98d0b",
+    "variantSha256": "eb142a37256f3fd3c700f1e488add3d8005cb5ae80f0ae01c2da3d63c20463c7",
+    "change": "single default maxConcurrent numeric literal; production artifact untouched"
+  }
+]

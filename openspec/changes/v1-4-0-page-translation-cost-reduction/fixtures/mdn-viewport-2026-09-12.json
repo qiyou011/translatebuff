@@ -1,0 +1,293 @@
+{
+  "source": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Functions",
+  "capturedAt": "2026-09-12T06:40:27.159Z",
+  "scope": "initial viewport and configured preload, not whole page",
+  "mode": "bilingual",
+  "range": "all",
+  "preload": {
+    "margin": 1000,
+    "threshold": 0
+  },
+  "language": {
+    "sourceCode": "eng",
+    "targetCode": "cmn"
+  },
+  "batch": {
+    "maxCharactersPerBatch": 4000,
+    "maxItemsPerBatch": 16
+  },
+  "requestQueue": {
+    "capacity": 20,
+    "rate": 8
+  },
+  "blocks": [
+    {
+      "format": "plain",
+      "text": "Functions - JavaScript | MDN"
+    },
+    {
+      "format": "plain",
+      "text": "Skip to main content"
+    },
+    {
+      "format": "plain",
+      "text": "Skip to search"
+    },
+    {
+      "format": "plain",
+      "text": "HTML"
+    },
+    {
+      "format": "plain",
+      "text": "CSS"
+    },
+    {
+      "format": "plain",
+      "text": "JavaScript"
+    },
+    {
+      "format": "plain",
+      "text": "Web APIs"
+    },
+    {
+      "format": "plain",
+      "text": "All"
+    },
+    {
+      "format": "plain",
+      "text": "Learn"
+    },
+    {
+      "format": "plain",
+      "text": "Tools"
+    },
+    {
+      "format": "plain",
+      "text": "About"
+    },
+    {
+      "format": "plain",
+      "text": "Blog"
+    },
+    {
+      "format": "plain",
+      "text": "Web"
+    },
+    {
+      "format": "plain",
+      "text": "JavaScript"
+    },
+    {
+      "format": "plain",
+      "text": "Guide"
+    },
+    {
+      "format": "plain",
+      "text": "Functions"
+    },
+    {
+      "format": "plain",
+      "text": "Functions"
+    },
+    {
+      "format": "plain",
+      "text": "Previous"
+    },
+    {
+      "format": "plain",
+      "text": "Next"
+    },
+    {
+      "format": "plain",
+      "text": "In this article"
+    },
+    {
+      "format": "plain",
+      "text": "Defining functions"
+    },
+    {
+      "format": "plain",
+      "text": "Calling functions"
+    },
+    {
+      "format": "plain",
+      "text": "Function scopes and closures"
+    },
+    {
+      "format": "plain",
+      "text": "Using the arguments object"
+    },
+    {
+      "format": "plain",
+      "text": "Function parameters"
+    },
+    {
+      "format": "plain",
+      "text": "Arrow functions"
+    },
+    {
+      "format": "plain",
+      "text": "Defining functions"
+    },
+    {
+      "format": "plain",
+      "text": "Function declarations"
+    },
+    {
+      "format": "plain",
+      "text": "The name of the function."
+    },
+    {
+      "format": "plain",
+      "text": "Tutorials and guides"
+    },
+    {
+      "format": "plain",
+      "text": "JavaScript Guide"
+    },
+    {
+      "format": "plain",
+      "text": "Introduction"
+    },
+    {
+      "format": "plain",
+      "text": "Grammar and types"
+    },
+    {
+      "format": "plain",
+      "text": "Control flow and error handling"
+    },
+    {
+      "format": "plain",
+      "text": "Loops and iteration"
+    },
+    {
+      "format": "plain",
+      "text": "Functions"
+    },
+    {
+      "format": "plain",
+      "text": "Expressions and operators"
+    },
+    {
+      "format": "plain",
+      "text": "Numbers and strings"
+    },
+    {
+      "format": "plain",
+      "text": "Representing dates & times"
+    },
+    {
+      "format": "plain",
+      "text": "Regular expressions"
+    },
+    {
+      "format": "plain",
+      "text": "Indexed collections"
+    },
+    {
+      "format": "plain",
+      "text": "Keyed collections"
+    },
+    {
+      "format": "plain",
+      "text": "Working with objects"
+    },
+    {
+      "format": "plain",
+      "text": "Using classes"
+    },
+    {
+      "format": "plain",
+      "text": "Using promises"
+    },
+    {
+      "format": "plain",
+      "text": "JavaScript typed arrays"
+    },
+    {
+      "format": "plain",
+      "text": "Iterators and generators"
+    },
+    {
+      "format": "plain",
+      "text": "Resource management"
+    },
+    {
+      "format": "plain",
+      "text": "Internationalization"
+    },
+    {
+      "format": "plain",
+      "text": "JavaScript modules"
+    },
+    {
+      "format": "plain",
+      "text": "Intermediate"
+    },
+    {
+      "format": "plain",
+      "text": "Scrimba"
+    },
+    {
+      "format": "plain",
+      "text": "Log in"
+    },
+    {
+      "format": "plain",
+      "text": "Theme"
+    },
+    {
+      "format": "plain",
+      "text": "English (US)"
+    },
+    {
+      "format": "plain",
+      "text": "Functions are one of the fundamental building blocks in JavaScript. A function in JavaScript is similar to a procedure—a set of statements that performs a task or calculates a value, but for a procedure to qualify as a function, it should take some input and return an output where there is some obvious relationship between the input and the output. To use a function, you must define it somewhere in the scope from which you wish to call it."
+    },
+    {
+      "format": "plain",
+      "text": "See also the exhaustive reference chapter about JavaScript functions to get to know the details."
+    },
+    {
+      "format": "plain",
+      "text": "A function definition (also called a function declaration, or function statement) consists of the function keyword, followed by:"
+    },
+    {
+      "format": "plain",
+      "text": "A list of parameters to the function, enclosed in parentheses and separated by commas."
+    },
+    {
+      "format": "plain",
+      "text": "The JavaScript statements that define the function, enclosed in curly braces, { /* … */ }."
+    },
+    {
+      "format": "plain",
+      "text": "For example, the following code defines a function named square:"
+    },
+    {
+      "format": "plain",
+      "text": "The function square takes one parameter, called number. The function consists of one statement that says to return the parameter of the function (that is, number) multiplied by itself. The return statement specifies the value returned by the function, which is number * number."
+    },
+    {
+      "format": "plain",
+      "text": "Parameters are essentially passed to functions by value — so if the code within the body of a function assigns a completely new value to a parameter that was passed to the function, the change is not reflected globally or in the code which called that function."
+    },
+    {
+      "format": "plain",
+      "text": "When you pass an object as a parameter, if the function changes the object's properties, that change is visible outside the function, as shown in the following example:"
+    },
+    {
+      "format": "plain",
+      "text": "When you pass an array as a parameter, if the function changes any of the array's values, that change is visible outside the function, as shown in the following example:"
+    },
+    {
+      "format": "plain",
+      "text": "Learn frontend, backend, and AI from our course partner  Scrimba"
+    },
+    {
+      "format": "plain",
+      "text": "Warmup Page"
+    }
+  ]
+}
