@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest"
 import {
+  assertEditionRequiredEnv,
   checkEditionDomains,
   findInjectedEnvMismatches,
   findCrossEditionSourceHits,
@@ -8,6 +9,20 @@ import {
   readForkDomainsFromEnv,
   readTestDomainsFromEnv,
 } from "../assert-fork-build.mjs"
+
+describe("assertEditionRequiredEnv（登录官网必须命中 Cookie 实际所属 host）", () => {
+  it("国内正式配置使用会跳转的裸域时拒绝打包", () => {
+    expect(() =>
+      assertEditionRequiredEnv(
+        "cn",
+        [
+          "WXT_WEBSITE_URL=https://translatebuff.cn",
+          "WXT_OFFICIAL_SITE_ORIGINS=https://translatebuff.cn,https://www.translatebuff.cn",
+        ].join("\n"),
+      ),
+    ).toThrow("WXT_WEBSITE_URL 必须为 https://www.translatebuff.cn")
+  })
+})
 
 describe("findUpstreamDomainHits", () => {
   it("命中上游域名时返回该域名", () => {

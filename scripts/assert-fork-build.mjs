@@ -112,6 +112,19 @@ const EDITION_REQUIRED_ENV_KEYS = {
   global: ["WXT_RENYIMIAO_AUTH_BFF_URL", "WXT_RENYIMIAO_CLAW_API_URL"],
 }
 
+// 正式官网的裸域只做 301，登录 Cookie 则由实际部署的 www host 以 host-only 方式写入。
+// 若 WXT_WEBSITE_URL 指向裸域，插件 cookies.get 会读错 host：官网已登录，插件仍保持未登录。
+// 这里只拦两条正式线的已知重定向裸域；test.* 等本地测试配置不受影响。
+const REDIRECT_ONLY_WEBSITE_ORIGINS = {
+  cn: "https://translatebuff.cn",
+  global: "https://translatebuff.com",
+}
+
+const CANONICAL_WEBSITE_ORIGINS = {
+  cn: "https://www.translatebuff.cn",
+  global: "https://www.translatebuff.com",
+}
+
 export function assertEditionRequiredEnv(edition, envText) {
   const missing = (EDITION_REQUIRED_ENV_KEYS[edition] ?? []).filter(
     (key) => !new RegExp(`^${key}=(.+)$`, "m").test(envText),
@@ -120,6 +133,16 @@ export function assertEditionRequiredEnv(edition, envText) {
     throw new Error(
       `edition=${edition} 缺少必填 env：${missing.join(", ")}\n` +
         `  海外线的登录后端与 claw_bff 与国内线是不同实例，缺配会在运行期静默打到错误的 host（表现为登录后无反应）。`,
+    )
+  }
+
+  const websiteMatch = envText.match(/^WXT_WEBSITE_URL=(.+)$/m)
+  const websiteOrigin = websiteMatch?.[1].trim().replace(/\/$/, "")
+  if (websiteOrigin === REDIRECT_ONLY_WEBSITE_ORIGINS[edition]) {
+    throw new Error(
+      `edition=${edition} 的 WXT_WEBSITE_URL 必须为 ${CANONICAL_WEBSITE_ORIGINS[edition]}，` +
+        `不能使用会 301 跳转的 ${websiteOrigin}；官网 Login-Credential 是 host-only Cookie，` +
+        `否则插件 cookies.get 无法读取官网登录态。`,
     )
   }
 }

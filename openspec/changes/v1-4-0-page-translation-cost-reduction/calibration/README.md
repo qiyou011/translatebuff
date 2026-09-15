@@ -12,7 +12,7 @@
 
 - 日期：2026-09-12，原始时间为 UTC；本地时区 Asia/Taipei，UTC+8。
 - 分支 `feat/1.4.0`，基线 HEAD `8da720d053f10d47c82a1a6f4197b3267caa3e51` 加当前未提交实现；不是仅该提交的产物。
-- 内部构建 `.output/chrome-mv3`，manifest 仍 1.3.0，上游 package 1.46.6。不得以 1.3.0 正式分发新逻辑；正式生效版本待发布门通过后设为 1.4.0。
+- 内部候选构建 `.output/chrome-mv3` 的 manifest 已于 2026-09-15 升至 1.4.0，上游 package 仍为 1.46.6。此次升版用于区分此前的 1.3.0 测试包，不代表发布门已通过或已正式发布。
 - 线上边界/网关测试使用用户已登录的 Chrome 会员环境，通过实际扩展消息和网络请求完成；不持久切换用户 provider，不保存密钥、认证头或会员信息。
 - 三页取文和并发矩阵使用隔离临时 profile、真实 Chrome for Testing 151.0.7922.34、headless、1440×1000，加载构建后的扩展并调用真实 Google 服务。这不是模拟 DOM，但也不是有界面 Chrome/Edge/Firefox 全平台人工验收。
 - 取文配置：eng→cmn、双语、range=all、preload margin=1000/threshold=0、关闭 AI 上下文、请求队列 rate=8/capacity=20。
