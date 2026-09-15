@@ -1,5 +1,4 @@
 import type { FloatingButtonSide } from "@/types/config/floating-button"
-import { IconLock, IconLockOpen, IconMessageCircle, IconSettings, IconX } from "@tabler/icons-react"
 import { useAtom, useAtomValue } from "jotai"
 import { useEffect, useRef, useState } from "react"
 import { browser } from "#imports"
@@ -13,21 +12,29 @@ import { anchoredToastManager } from "@/components/ui/base-ui/toast"
 import { enablePageTranslationAtom, isDraggingButtonAtom } from "@/entrypoints/side.content/atoms"
 import TranslateButton from "@/entrypoints/side.content/components/floating-button/translate-button"
 import { shadowWrapper } from "@/entrypoints/side.content/index"
-import readFrogLogo from "@/fork/assets/renyimiao.svg?url&no-inline"
 import { useIsFullscreen } from "@/hooks/use-is-fullscreen"
 import { ANALYTICS_FEATURE, ANALYTICS_SURFACE } from "@/types/analytics"
 import { createFeatureUsageContext } from "@/utils/analytics"
 import { configFieldsAtomMap } from "@/utils/atoms/config"
 import { APP_NAME } from "@/utils/constants/app"
-import { buildFeaturebaseFeedbackMetadata, buildFeaturebasePortalUrl } from "@/utils/featurebase"
 import { i18n } from "@/utils/i18n"
-import { resolveUiLocale } from "@/utils/i18n/locale-map"
 import { sendMessage } from "@/utils/message"
 import { cn } from "@/utils/styles/utils"
 import { matchDomainPattern } from "@/utils/url"
 import HiddenButton from "./hidden-button"
+import closeIcon from "./images/close-icon.svg?url&no-inline"
+import floatingLogo from "./images/floating-logo.svg?url&no-inline"
+import lockedIcon from "./images/locked-icon.svg?url&no-inline"
+import settingsIcon from "./images/settings-icon.svg?url&no-inline"
+import translateIcon from "./images/translate-icon.svg?url&no-inline"
+import unlockedIcon from "./images/unlocked-icon.svg?url&no-inline"
 
-const readFrogLogoUrl = new URL(readFrogLogo, browser.runtime.getURL("/")).href
+const floatingLogoUrl = new URL(floatingLogo, browser.runtime.getURL("/")).href
+const closeIconUrl = new URL(closeIcon, browser.runtime.getURL("/")).href
+const lockedIconUrl = new URL(lockedIcon, browser.runtime.getURL("/")).href
+const unlockedIconUrl = new URL(unlockedIcon, browser.runtime.getURL("/")).href
+const settingsIconUrl = new URL(settingsIcon, browser.runtime.getURL("/")).href
+const translateIconUrl = new URL(translateIcon, browser.runtime.getURL("/")).href
 const LONG_PRESS_DELAY_MS = 350
 const DRAG_START_DISTANCE_PX = 6
 const MIN_FLOATING_CONTAINER_TOP_PX = 30
@@ -62,11 +69,11 @@ const floatingButtonControlClassName = cn(
 const floatingButtonControlOffsetClassNames = {
   right: {
     collapsed: "left-0",
-    expanded: "-left-8",
+    expanded: "-left-[37px]",
   },
   left: {
     collapsed: "right-0",
-    expanded: "-right-8",
+    expanded: "-right-[37px]",
   },
 } satisfies Record<FloatingButtonSide, { collapsed: string; expanded: string }>
 
@@ -125,7 +132,6 @@ function getNormalizedFloatingContainerTop(mainButtonTop: number, mainOffsetY: n
 
 export default function FloatingButton() {
   const [floatingButton, setFloatingButton] = useAtom(configFieldsAtomMap.floatingButton)
-  const uiLanguage = useAtomValue(configFieldsAtomMap.uiLanguage)
   const translationState = useAtomValue(enablePageTranslationAtom)
   const [isDraggingButton, setIsDraggingButton] = useAtom(isDraggingButtonAtom)
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
@@ -138,7 +144,6 @@ export default function FloatingButton() {
   const lastDragPreviewRef = useRef<DragPoint | null>(null)
   const floatingButtonSide = getFloatingButtonSide(floatingButton.side)
   const isFloatingButtonExpanded = isHitAreaExpanded || isDropdownOpen
-  const locale = resolveUiLocale(uiLanguage)
 
   useEffect(() => {
     if (!isDraggingButton) return undefined
@@ -212,20 +217,6 @@ export default function FloatingButton() {
         })
       }
     })
-  }
-
-  const handleFeedbackClick = () => {
-    const url = buildFeaturebasePortalUrl({
-      destination: "feedback",
-      locale,
-      metadata: buildFeaturebaseFeedbackMetadata({
-        browserName: import.meta.env.BROWSER,
-        extensionVersion: browser.runtime.getManifest().version,
-        pageUrl: window.location.href,
-      }),
-    })
-
-    void sendMessage("openPage", { url, active: true })
   }
 
   const startActiveDrag = () => {
@@ -392,22 +383,40 @@ export default function FloatingButton() {
             : "items-start",
         !isDraggingButton &&
           isFloatingButtonExpanded &&
-          (floatingButtonSide === "right" ? "pl-6" : "pr-6"),
+          (floatingButtonSide === "right" ? "pl-[37px]" : "pr-[37px]"),
       )}
       style={containerStyle}
       onMouseLeave={handleMouseLeave}
     >
       {!isDraggingButton && (
-        <TranslateButton side={floatingButtonSide} expanded={isFloatingButtonExpanded} />
+        <TranslateButton
+          side={floatingButtonSide}
+          expanded={isFloatingButtonExpanded}
+          icon={
+            <img
+              src={translateIconUrl}
+              alt=""
+              aria-hidden="true"
+              width={14}
+              height={14}
+              className="size-3.5"
+            />
+          }
+        />
       )}
-      <div className="relative">
+      <div
+        className={cn(
+          "relative",
+          !isDraggingButton && (floatingButtonSide === "right" ? "mr-[3px]" : "ml-[3px]"),
+        )}
+      >
         <button
           type="button"
           aria-label={APP_NAME}
           ref={mainButtonRef}
           data-testid="floating-main-button"
           className={cn(
-            "relative flex size-12 items-center justify-center rounded-full border border-black bg-black shadow-lg transition-[transform,opacity,box-shadow] duration-300 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+            "relative flex size-10 items-center justify-center rounded-full transition-[transform,opacity,box-shadow] duration-300 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
             isDraggingButton ? "cursor-grabbing touch-none opacity-100" : "cursor-pointer",
             !isDraggingButton && "translate-x-0 opacity-100",
           )}
@@ -423,12 +432,12 @@ export default function FloatingButton() {
           }}
         >
           <img
-            src={readFrogLogoUrl}
+            src={floatingLogoUrl}
             alt=""
             aria-hidden="true"
-            width={40}
-            height={40}
-            className="size-10 rounded-full invert"
+            width={55}
+            height={64}
+            className="pointer-events-none absolute -top-[2px] -left-[12px] h-16 w-[55px] max-w-none"
           />
         </button>
 
@@ -450,20 +459,20 @@ export default function FloatingButton() {
         <HiddenButton
           side={floatingButtonSide}
           expanded={isFloatingButtonExpanded}
-          icon={<IconSettings className="h-5 w-5" />}
+          icon={
+            <img
+              src={settingsIconUrl}
+              alt=""
+              aria-hidden="true"
+              width={14}
+              height={14}
+              className="size-3.5"
+            />
+          }
           label={i18n.t("options.floatingButton.tooltips.settings")}
           onClick={() => {
             void sendMessage("openOptionsPage", undefined)
           }}
-        />
-      )}
-      {!isDraggingButton && (
-        <HiddenButton
-          side={floatingButtonSide}
-          expanded={isFloatingButtonExpanded}
-          icon={<IconMessageCircle className="h-5 w-5" />}
-          label={i18n.t("options.floatingButton.tooltips.feedback")}
-          onClick={handleFeedbackClick}
         />
       )}
     </div>
@@ -516,7 +525,7 @@ function FloatingButtonCloseMenu({
             aria-label={i18n.t("options.floatingButton.tooltips.floatingButtonOptions")}
             className={cn(
               floatingButtonControlClassName,
-              "-top-2",
+              "-top-3",
               controlOffsetClassName,
               expanded && "pointer-events-auto visible",
               open && "pointer-events-auto visible",
@@ -524,7 +533,14 @@ function FloatingButtonCloseMenu({
           />
         }
       >
-        <IconX className="size-4" strokeWidth={3} />
+        <img
+          src={closeIconUrl}
+          alt=""
+          aria-hidden="true"
+          width={16}
+          height={16}
+          className="size-4"
+        />
       </DropdownMenuTrigger>
       <DropdownMenuContent
         container={shadowWrapper}
@@ -569,17 +585,20 @@ function FloatingButtonLockControl({ expanded, side }: FloatingButtonLockControl
       aria-label={label}
       className={cn(
         floatingButtonControlClassName,
-        "-bottom-2",
+        "-bottom-3",
         controlOffsetClassName,
         expanded && "pointer-events-auto visible",
       )}
       onClick={handleToggleLocked}
     >
-      {locked ? (
-        <IconLock className="size-4" strokeWidth={3} />
-      ) : (
-        <IconLockOpen className="size-4" strokeWidth={3} />
-      )}
+      <img
+        src={locked ? lockedIconUrl : unlockedIconUrl}
+        alt=""
+        aria-hidden="true"
+        width={16}
+        height={16}
+        className="size-4"
+      />
     </button>
   )
 }

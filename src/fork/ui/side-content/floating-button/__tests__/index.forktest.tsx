@@ -151,7 +151,6 @@ function mockRect(element: Element, rect: Partial<DOMRect>) {
 const TOOLTIP_CONTROL_LABELS = [
   "options.floatingButton.tooltips.togglePageTranslation",
   "options.floatingButton.tooltips.settings",
-  "options.floatingButton.tooltips.feedback",
 ] as const
 
 async function expectTooltipSide(label: string, side: "left" | "right") {
@@ -195,21 +194,22 @@ describe("fork floatingButton controls", () => {
     expect(document.body.style.cursor).not.toBe("grabbing")
     Object.defineProperty(document, "fullscreenElement", { configurable: true, value: null })
     fireEvent(document, new Event("fullscreenchange"))
-    expect(getMainButton()).toHaveClass("bg-black")
+    expect(getMainButton()).toBeVisible()
     expect(sendMessage).not.toHaveBeenCalled()
   })
   it("redirects the upstream entry to the fork component", () => {
     expect(FloatingButton).toBe(ForkFloatingButton)
   })
 
-  it("renders a black circle and dark actions while keeping current tooltips", () => {
+  it("renders the Figma brand asset and keeps action tooltips", () => {
     renderFloatingButton()
     const mainButton = getMainButton()
     expect(mainButton.tagName).toBe("BUTTON")
-    expect(mainButton).toHaveClass("size-12", "rounded-full", "bg-black")
-    expect(mainButton.querySelector("img")).toHaveClass("size-10", "invert")
+    expect(mainButton).toHaveClass("size-10", "rounded-full")
+    expect(mainButton.querySelector("img")).not.toHaveClass("invert")
+    expect(mainButton.querySelector("img")?.src).toContain("floating-logo.svg")
     for (const label of TOOLTIP_CONTROL_LABELS) {
-      expect(screen.getByRole("button", { name: label })).toHaveClass("bg-black", "text-white")
+      expect(screen.getByRole("button", { name: label })).toBeInTheDocument()
     }
   })
 
@@ -229,7 +229,7 @@ describe("fork floatingButton controls", () => {
 
     expect(mainButton).toHaveClass("transition-[transform,opacity,box-shadow]")
     expect(mainButton).toHaveClass("duration-300")
-    expect(closeTrigger).toHaveClass("-top-2")
+    expect(closeTrigger).toHaveClass("-top-3")
     expect(closeTrigger).toHaveClass("left-0")
     expect(closeTrigger).toHaveClass("invisible")
     expect(closeTrigger).toHaveClass("pointer-events-none")
@@ -243,7 +243,7 @@ describe("fork floatingButton controls", () => {
 
     expect(closeTrigger).toHaveClass("visible")
     expect(closeTrigger).toHaveClass("pointer-events-auto")
-    expect(closeTrigger).toHaveClass("-left-8")
+    expect(closeTrigger).toHaveClass("-left-[37px]")
   })
 
   it("renders a lock trigger at the lower-left corner and keeps controls expanded after entering the main button", () => {
@@ -256,7 +256,7 @@ describe("fork floatingButton controls", () => {
     const floatingButtonContainer = screen.getByTestId("floating-button-container")
 
     expect(lockTrigger).toHaveClass("left-0")
-    expect(lockTrigger).toHaveClass("-bottom-2")
+    expect(lockTrigger).toHaveClass("-bottom-3")
     expect(lockTrigger).toHaveClass("invisible")
     expect(lockTrigger).toHaveClass("pointer-events-none")
     expect(lockTrigger).toHaveClass("text-neutral-300")
@@ -270,7 +270,7 @@ describe("fork floatingButton controls", () => {
 
     expect(lockTrigger).toHaveClass("visible")
     expect(lockTrigger).toHaveClass("pointer-events-auto")
-    expect(lockTrigger).toHaveClass("-left-8")
+    expect(lockTrigger).toHaveClass("-left-[37px]")
     expect(mainButton).toHaveClass("translate-x-0")
 
     fireEvent.click(lockTrigger)
@@ -280,7 +280,7 @@ describe("fork floatingButton controls", () => {
     })
 
     expect(unlockTrigger).toHaveClass("text-neutral-300")
-    expect(unlockTrigger).toHaveClass("-left-8")
+    expect(unlockTrigger).toHaveClass("-left-[37px]")
     expect(mainButton).toHaveClass("translate-x-0")
     expect(mainButton).toHaveClass("opacity-100")
     expect(mainButton).not.toHaveClass("translate-x-6")
@@ -334,9 +334,9 @@ describe("fork floatingButton controls", () => {
     async ({ floatingSide, tooltipSide }) => {
       renderFloatingButton({ side: floatingSide })
       fireEvent.mouseEnter(getMainButton())
-      expect(TOOLTIP_CONTROL_LABELS).toHaveLength(3)
 
       for (const label of TOOLTIP_CONTROL_LABELS) {
+        expect(screen.getByRole("button", { name: label })).toBeInTheDocument()
         await expectTooltipSide(label, tooltipSide)
       }
     },
@@ -367,42 +367,19 @@ describe("fork floatingButton controls", () => {
     expect(sendMessage).toHaveBeenCalledWith("toggleSidePanel", undefined)
   })
 
-  it("places feedback after settings and opens the fork website with safe metadata", () => {
-    window.history.replaceState({}, "", "/private/path?token=secret#section")
+  it("does not expose feedback while keeping the settings action", () => {
     renderFloatingButton()
 
     const settingsButton = screen.getByRole("button", {
       name: "options.floatingButton.tooltips.settings",
     })
-    const feedbackButton = screen.getByRole("button", {
-      name: "options.floatingButton.tooltips.feedback",
-    })
-
     expect(
-      settingsButton.compareDocumentPosition(feedbackButton) & Node.DOCUMENT_POSITION_FOLLOWING,
-    ).toBeTruthy()
-
-    fireEvent.click(feedbackButton)
-
-    const openPageCall = vi
-      .mocked(sendMessage)
-      .mock.calls.find(([message]) => message === "openPage")
-    const openPagePayload = openPageCall?.[1] as { active: boolean; url: string } | undefined
-    expect(openPagePayload).toBeDefined()
-    const openedUrl = new URL(openPagePayload!.url)
-
-    expect(openedUrl.origin).toBe("https://www.translatebuff.cn")
-    expect(openedUrl.pathname).toBe("/feedback")
-    expect(Object.fromEntries(openedUrl.searchParams)).toEqual({
-      browser: "chrome",
-      extension_version: "1.0.0",
-      // The intent is query/hash stripping, not the origin itself.
-      page_url: `${window.location.origin}/private/path`,
-    })
-    expect(openPagePayload).toEqual({
-      url: openedUrl.toString(),
-      active: true,
-    })
+      screen.queryByRole("button", {
+        name: "options.floatingButton.tooltips.feedback",
+      }),
+    ).toBeNull()
+    fireEvent.click(settingsButton)
+    expect(sendMessage).toHaveBeenCalledWith("openOptionsPage", undefined)
   })
 
   it("shows a Firefox sidebar help link when the browser requires an extension user action", async () => {
@@ -531,7 +508,7 @@ describe("fork floatingButton controls", () => {
     renderFloatingButton()
 
     const mainButton = getMainButton()
-    expect(screen.getAllByRole("button")).toHaveLength(6)
+    expect(screen.getAllByRole("button")).toHaveLength(5)
 
     fireEvent.pointerDown(mainButton, {
       pointerId: 1,
@@ -696,8 +673,8 @@ describe("fork floatingButton controls", () => {
     fireEvent.mouseEnter(mainButton)
 
     expect(mainButton).toHaveClass("translate-x-0")
-    expect(closeTrigger).toHaveClass("-right-8")
-    expect(lockTrigger).toHaveClass("-right-8")
+    expect(closeTrigger).toHaveClass("-right-[37px]")
+    expect(lockTrigger).toHaveClass("-right-[37px]")
     for (const hiddenButton of hiddenButtons) {
       expect(hiddenButton).toHaveClass("translate-x-0")
     }

@@ -9,10 +9,12 @@ import { enablePageTranslationAtom } from "../../atoms"
 import HiddenButton from "./components/hidden-button"
 
 export default function TranslateButton({
+  icon,
   className,
   side = "right",
   expanded = false,
 }: {
+  icon?: React.ReactNode
   className?: string
   side?: FloatingButtonSide
   expanded?: boolean
@@ -22,7 +24,7 @@ export default function TranslateButton({
 
   return (
     <HiddenButton
-      icon={<RiTranslate className="h-5 w-5" />}
+      icon={icon ?? <RiTranslate className="h-5 w-5" />}
       label={i18n.t("options.floatingButton.tooltips.togglePageTranslation")}
       className={className}
       side={side}
