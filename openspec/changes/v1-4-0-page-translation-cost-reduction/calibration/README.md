@@ -123,6 +123,7 @@ React 真实页面、Google 线路，每档三次，按 2→4→6 的顺序交�
 - `used-collect.mjs` 为最终矩阵采集脚本；初始三页版本没有附加点击/输入/rAF 探针。该脚本会在隔离 profile 写入测试配置，不能直接移植为操作日常用户 profile 的脚本。
 - `used-matrix.mjs` 创建临时构建副本并调用采集脚本；`used-token-analysis.mjs` 是静态估算；`used-server.mjs` 是本地证据收集服务，不是完整的线上边界用例执行器。
 - 这些文件是本机实际使用脚本存档，保留了绝对 runtime、仓库和临时路径，**不是开箱即用的通用测试工具**。重跑需先调整路径/文件名和依赖，重新构建并核对 hash；不可把临时副本当发布包。
+- `evidence/*.json` 保留原始字节以匹配 manifest，四份 `used-*.mjs` 保留当时脚本内容；根 oxfmt/oxlint 配置仅对本目录这些存档设置检查排除。方案文档、业务源码与测试继续正常检查；重跑产生新证据时须重新核验 manifest 的字节数与 SHA-256。
 - 本轮追加回归：`SKIP_FREE_API=true pnpm run test src/fork/page-translation/__tests__ src/utils/request/__tests__/request-queue.test.ts`，9 文件、95 测试通过（2026-09-12 20:45）。本轮未重跑全量测试/三浏览器构建；此前结果见 [validation.md](../validation.md)。
 - 用户 Chrome 中临时 fetch 包装已恢复、消息观察器已移除、`__v140*` 全局已清理；未清除用户翻译缓存，保留其原 DevTools Network 记录和会员登录。测试只使用独立命名的缓存键。
 - 隔离测试浏览器和本地证据服务已关闭。18 份证据 hash 校验通过后，已删除 11 个隔离测试 profile 与三个临时构建副本；这些临时环境不保留恢复副本，可重新生成。原始证据/脚本、用户 Chrome 数据及正式产物均保留。

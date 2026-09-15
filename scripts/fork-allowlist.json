@@ -1,5 +1,7 @@
 {
   "files": [
+    ".oxfmtrc.json",
+    ".oxlintrc.json",
     "src/entrypoints/background/translation-queues.ts",
     "src/entrypoints/background/config.ts",
     "src/utils/request/request-queue.ts",
