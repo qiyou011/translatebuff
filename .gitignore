@@ -28,8 +28,10 @@ web-ext.config.ts
 *.sln
 *.sw?
 
-.env
 .env.*
+# Share test build configuration; never put secrets in these files.
+!.env
+!.env.global
 !.env.example
 !.env.local.example
 
