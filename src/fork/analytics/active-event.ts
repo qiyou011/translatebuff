@@ -1,3 +1,4 @@
+import type { ReportDeviceInfo } from "./device-info"
 import { SAAS_PRODUCT_LINE } from "@/fork/membership/api"
 
 // 中台活跃事件「translate_active」的报文组装。字段与《事件埋点标准文档 v2.0》逐项对应，
@@ -16,8 +17,8 @@ export interface TranslateActiveEvent {
   client_type: number
   product_line: string
   event_type: "custom"
-  /** Web 端设备属性的标准形态就是空对象：浏览器没有设备序列号，也不伪造占位值。 */
-  device_info: object
+  /** 自生成 Cookie 标识；Cookie 不可用时为空，不采集浏览器指纹。 */
+  device_info: ReportDeviceInfo
   action_extra_info: { is_active: true }
 }
 
@@ -30,7 +31,10 @@ function newTraceId(): string {
   }
 }
 
-export function buildTranslateActiveEvent(now: number): TranslateActiveEvent {
+export function buildTranslateActiveEvent(
+  now: number,
+  deviceInfo: ReportDeviceInfo = {},
+): TranslateActiveEvent {
   return {
     trace_id: newTraceId(),
     click_time: now,
@@ -38,7 +42,7 @@ export function buildTranslateActiveEvent(now: number): TranslateActiveEvent {
     client_type: 10,
     product_line: SAAS_PRODUCT_LINE,
     event_type: "custom",
-    device_info: {},
+    device_info: deviceInfo,
     action_extra_info: { is_active: true },
   }
 }

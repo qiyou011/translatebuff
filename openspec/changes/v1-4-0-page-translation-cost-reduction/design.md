@@ -12,9 +12,15 @@
 
 ## Context
 
+2026-09-15 增补（用户确认）：启动埋点与降本独立。`setupFork` 同步注册原生 onInstalled/onStartup 监听，只接收 install/update/startup，不在 Service Worker 普通唤醒时上报。事件时间在监听触发时采集。复用 postClickEvent 与现有会话/语言读取；event_type=lifecycle、client_type=10、product_line=AITRANS，client_version 取 readForkVersion，action_extra_info 包含 launch_type 与数值型 resolveChannelNumber()。不添加 launch_time、member、指纹属性，不重试、不离线补发、不跨事件去重。
+
+设备标识使用当前 edition 首个配置官网 origin 的 host-only Cookie `translatebuff_device_sn`，path=/、HTTPS secure、httpOnly、sameSite=lax，有效期400天。此命名和保留期为本次实现约定，不影响官网代码。读取已有值；缺失时 crypto.randomUUID 生成并写入；写失败或 API 不可用时返回空对象而不发送临时 sn。仅合并同一后台中并发读写，不长期内存缓存，清 Cookie 后下次事件重建；不使用扩展本地存储。两个事件共享该读取函数；活跃仍先按原身份/UTC日标记后上报。MUL-169 未完成不得上线，真实重装稳定性与中台收数单列待验。
+
 现有页面队列同时承接输入翻译；LLM 使用 %%，计数错配可整批重试三次。Google 单条、Microsoft 数组但不能处理 HTML。实际任译喵使用自有 openai-compatible 网关，不是上游 hosted JSON schema 路由；网关已有 json_schema 拒绝记录。
 
 ## Goals / Non-Goals
+
+本节以下原降本约束只适用于页面翻译部分；同版启动埋点按上方2026-09-15增补实施。埋点新增文件位于 src/fork/analytics 与 src/fork/background，发布记录 `.changeset/startup-tracking.md` 精确登记 allowlist；不运行 changeset version/release。
 
 实现协议降本、免费线路批量、真实在途约束、默认对迁移。保留选择引擎、缓存、模式、预翻译范围、sentinel、用户提示、用户推理选项和字幕行为。不修改后端计费路由、上游 schema/message/migration/constants，不新增用户配置、遥测、持久化能力探测或通用队列框架。
 

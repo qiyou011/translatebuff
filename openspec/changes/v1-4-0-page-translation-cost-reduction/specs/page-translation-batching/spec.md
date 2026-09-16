@@ -1,5 +1,28 @@
 ## ADDED Requirements
 
+### Requirement: fork-start-up-tracking 生命周期上报
+
+系统 SHALL 在 install/update/startup 时分别上报一次 app_start_up，过滤浏览器/共享模块更新，普通后台唤醒不报。复用 click_event，event_type=lifecycle、client_type=10、product_line=AITRANS；click_time 为触发时间，client_version 为 fork 真源，action_extra_info 为 launch_type 和数值 launch_channel_id。登录态仅进入凭据头，不重试、不触发登出。
+
+#### Scenario: 安装更新及冷启动
+
+- **WHEN** 原生安装事件原因是 install/update 或收到浏览器 onStartup
+- **THEN** 分别发送对应事件，不使用活跃日去重，不发送重复 launch_time 或 member
+
+### Requirement: fork-active-tracking 共享设备标识
+
+系统 SHALL 读当前 edition 官网 Cookie，缺失时生成 UUID 并持久化；启动与活跃事件均使用 device_info.sn。不采集指纹、不存扩展 local storage；原活跃触发、身份与 UTC 日去重保持不变。
+
+#### Scenario: 并发事件与 Cookie 不可用
+
+- **WHEN** 启动和活跃并发，或 Cookie 读写失败
+- **THEN** 并发共享同一标识；不可用时以空 device_info 上报，不阻断业务、不发送未持久化的临时 sn
+
+#### Scenario: 发布条件未满足
+
+- **WHEN** MUL-169 隐私条款、真实浏览器与中台验收尚未完成
+- **THEN** 不得发布，不能将自动化测试当作生产收数证据
+
 ### Requirement: 页面与交互调度隔离
 
 系统 SHALL 将页面 LLM 和免费 MT 分别聚合并共享页面在途上限；输入不等待页面队列，划词独立流式及字幕路径不变。

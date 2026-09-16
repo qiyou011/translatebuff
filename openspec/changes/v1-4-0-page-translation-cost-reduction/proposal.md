@@ -11,19 +11,23 @@ v1.4.0 同时降低页面翻译的 LLM 输入 token 和 Google / Microsoft 单�
 - 严格校验逐项输出，保留成功项，仅失败项一次降级；网络重试与协议失败分开。
 - `16 / 4000` 是目标候选，比较 `4 / 1000`、`8 / 2000` 后定档。新装及升级时只迁移精确旧默认对，其他配置保留；老二进制不变。
 - MT 候选 100 条并受编码后载荷限制；页面并发候选 4，比较 2/4/6。Microsoft 继续禁止 HTML，Google 保留语义换行。
-- 不新增设置、统计面板、遥测、后端路由或网络权限；设置项仍只影响 LLM，字幕文案不改。
+- 降本部分不新增设置、统计面板、遥测、后端路由或网络权限；设置项仍只影响 LLM，字幕文案不改。
+- 同版独立接入 `app_start_up`（install/update/startup），复用 click_event；官网 Cookie 生成并持久化设备标识，同时补入 `translate_active.device_info.sn`，不改活跃触发与去重。
 
 ## Capabilities
 
 ### New Capabilities
 
 - `page-translation-batching`：页面批量协议、失败隔离、交互隔离、并发、升级和可复现实测验收。
+- `fork-start-up-tracking`：新增生命周期事件（本次增量规格暂与页面规格同文件登记）。
 
 ### Modified Capabilities
 
-无。fork 边界仍要求精确白名单及评审，本次按现有规则审批增项。
+- `fork-active-tracking`：活跃事件补同源 sn，Cookie 不可用时保留空对象。
 
 ## Impact
+
+启动埋点仅改 fork 后台与 analytics，使用现有 cookies/host 权限、渠道解析和 fork 版本真源；不改会员 401 清态或翻译流程。MUL-169 隐私条款、真实浏览器与中台收数验证是发布前置条件，本次不发布。
 
 新增实现和测试集中于 `src/fork/page-translation/`。架构复审已批准后台队列、后台配置初始化、RequestQueue、Google/Microsoft 适配器的精确接入，以及本次 changeset 单文件例外；不改上游 config schema、message、迁移脚本、全局提示词或 package version。
 

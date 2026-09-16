@@ -14,6 +14,7 @@ import {
   writeLastReportedDate,
 } from "./active-dedup"
 import { buildTranslateActiveEvent } from "./active-event"
+import { getReportDeviceInfo } from "./device-info"
 import { postClickEvent } from "./report-client"
 
 // 活跃事件的编排：取身份 → 去重判定 → 标记 → 组装 → 上报。三条翻译通路都汇到这里，
@@ -52,7 +53,7 @@ export async function reportTranslateActive(now: number = Date.now()): Promise<v
     }
     await writeLastReportedDate(identity, todayKey)
 
-    await postClickEvent([buildTranslateActiveEvent(now)], {
+    await postClickEvent([buildTranslateActiveEvent(now, await getReportDeviceInfo())], {
       // 未登录也报：活跃口径含未登录用户，服务端按 UA / 设备归因。
       loginCredential: session?.loginCredential ?? null,
       clientLanguage: clientLanguageOf(config),

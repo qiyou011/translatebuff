@@ -9,6 +9,7 @@
     "src/utils/host/translate/api/microsoft.ts",
     ".changeset/page-translation-cost-reduction.md",
     ".changeset/floating-window-ui-refresh.md",
+    ".changeset/startup-tracking.md",
     "src/entrypoints/side.content/components/floating-button/translate-button.tsx",
     "wxt.config.ts",
     "src/entrypoints/background/index.ts",
