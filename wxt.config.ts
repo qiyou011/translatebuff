@@ -68,6 +68,11 @@ const forkChannelSuffix = forkChannelId ? `-${forkChannelId}` : "-{{browser}}"
 // 把上游 provider 选择器 / 选项 provider 页重定向到 fork 版（相对/@ import 都拦得住）。
 export const FORK_UI_REDIRECTS = [
   {
+    // options 文档主题作用域：包装上游 AppShell，不复制路由、导航或业务逻辑。
+    from: path.resolve(__dirname, "src/entrypoints/options/app-shell.tsx"),
+    to: path.resolve(__dirname, "src/fork/ui/options/app-shell.tsx"),
+  },
+  {
     from: path.resolve(
       __dirname,
       "src/entrypoints/options/pages/translation/translation-style/style-preview.tsx",

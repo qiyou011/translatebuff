@@ -4,7 +4,7 @@ import { describe, expect, it } from "vitest"
 import { OverlayFeaturePreview } from "../overlay-feature-preview"
 
 describe("UI-optimization feature previews", () => {
-  it("shows the circular floating widget with a larger inverted brand icon", () => {
+  it("uses the 944 × 248 Figma scene with a centered 672 × 176 browser", () => {
     const { container } = render(
       <OverlayFeaturePreview
         feature="floating-button"
@@ -12,23 +12,40 @@ describe("UI-optimization feature previews", () => {
         description="Preview"
       />,
     )
-    expect(container.querySelector(".size-12.bg-black.rounded-full")).not.toBeNull()
-    expect(container.querySelector("img.size-10.invert")).not.toBeNull()
+
+    expect(screen.getByRole("img", { name: "Floating button: Preview" })).toHaveClass(
+      "h-[248px]",
+      "max-w-none",
+    )
+    expect(container.querySelector('[data-slot="overlay-preview-browser"]')).toHaveClass(
+      "h-[176px]",
+      "w-[672px]",
+    )
+    expect(container.querySelector('[data-slot="overlay-preview-main-button"]')).toHaveClass(
+      "size-10",
+    )
+    expect(container.querySelectorAll('[data-slot="overlay-preview-tool-button"]')).toHaveLength(2)
   })
 
-  it("shows the three translation, speech and dictionary toolbar controls", () => {
+  it("uses the Figma selection toolbar dimensions and three controls", () => {
     const { container } = render(
       <OverlayFeaturePreview feature="selection-toolbar" title="Toolbar" description="Preview" />,
     )
-    expect(container.querySelectorAll("span.h-7")).toHaveLength(3)
-    expect(container.querySelector(".rotate-45")).toBeNull()
+    expect(container.querySelector('[data-slot="overlay-preview-selection-toolbar"]')).toHaveClass(
+      "h-9",
+      "w-28",
+    )
+    expect(container.querySelectorAll('[data-slot="overlay-preview-toolbar-action"]')).toHaveLength(
+      3,
+    )
   })
 
-  it("shows a native-style context menu with a copy shortcut", () => {
+  it("uses the Figma 192 × 136 context-menu illustration", () => {
     render(
       <OverlayFeaturePreview feature="context-menu" title="Context menu" description="Preview" />,
     )
-    expect(screen.getByText("Ctrl+C")).toBeInTheDocument()
+    expect(screen.getByText(/contextMenu\.translate|翻译/)).toBeInTheDocument()
+    expect(screen.getByTestId("overlay-preview-context-menu")).toHaveClass("h-[136px]", "w-48")
     expect(screen.getByRole("img", { name: "Context menu: Preview" })).toHaveAttribute(
       "data-fork-overlay-preview",
     )

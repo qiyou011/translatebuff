@@ -1,12 +1,23 @@
-import type { ReactNode } from "react"
 import { Icon } from "@iconify/react"
-import { RiTranslate } from "@remixicon/react"
-import { IconVolume, IconX } from "@tabler/icons-react"
+import { IconCheck, IconVolume, IconX } from "@tabler/icons-react"
 import { BrandMark } from "@/fork/components/brand-mark"
+import closeIcon from "@/fork/ui/side-content/floating-button/images/close-icon.svg?url&no-inline"
+import floatingLogo from "@/fork/ui/side-content/floating-button/images/floating-logo.svg?url&no-inline"
+import settingsIcon from "@/fork/ui/side-content/floating-button/images/settings-icon.svg?url&no-inline"
+import translateIcon from "@/fork/ui/side-content/floating-button/images/translate-icon.svg?url&no-inline"
+import unlockedIcon from "@/fork/ui/side-content/floating-button/images/unlocked-icon.svg?url&no-inline"
 import { i18n } from "@/utils/i18n"
 import { cn } from "@/utils/styles/utils"
 
 type OverlayFeature = "floating-button" | "selection-toolbar" | "context-menu"
+
+const previewGradient = [
+  "radial-gradient(ellipse 42% 120% at 4% 44%, rgb(255 91 91 / 34%), transparent 72%)",
+  "radial-gradient(ellipse 48% 130% at 26% 100%, rgb(84 230 143 / 28%), transparent 72%)",
+  "radial-gradient(ellipse 45% 130% at 52% 0%, rgb(27 199 255 / 26%), transparent 70%)",
+  "radial-gradient(ellipse 44% 125% at 78% 100%, rgb(141 92 255 / 28%), transparent 72%)",
+  "radial-gradient(ellipse 36% 110% at 100% 40%, rgb(255 91 218 / 30%), transparent 72%)",
+].join(", ")
 
 export function OverlayFeaturePreview({
   feature,
@@ -22,9 +33,10 @@ export function OverlayFeaturePreview({
       data-fork-overlay-preview
       role="img"
       aria-label={`${title}: ${description}`}
-      className="shadow-control relative h-44 w-full max-w-2xl overflow-hidden rounded-xl border border-border/80 bg-background"
+      className="relative -my-8 h-[248px] w-full max-w-none overflow-hidden rounded-xl bg-background"
+      style={{ backgroundImage: previewGradient }}
     >
-      <BrowserChrome />
+      <BrowserArticle selected={feature === "selection-toolbar"} />
       {feature === "floating-button" && <FloatingButtonScene />}
       {feature === "selection-toolbar" && <SelectionToolbarScene />}
       {feature === "context-menu" && <ContextMenuScene />}
@@ -32,155 +44,163 @@ export function OverlayFeaturePreview({
   )
 }
 
-function BrowserChrome() {
+function BrowserArticle({ selected = false }: { selected?: boolean }) {
   return (
-    <div className="flex h-8 items-center gap-1.5 border-b border-border/70 bg-muted/45 px-3">
-      <span className="size-2 rounded-full bg-foreground/15" />
-      <span className="size-2 rounded-full bg-foreground/10" />
-      <span className="size-2 rounded-full bg-foreground/10" />
-      <span className="ml-3 h-3.5 w-28 rounded-full bg-foreground/7" />
-    </div>
-  )
-}
+    <div
+      data-slot="overlay-preview-browser"
+      className="absolute top-9 left-1/2 h-[176px] w-[672px] -translate-x-1/2 overflow-hidden rounded-xl border border-border bg-background"
+    >
+      <div className="absolute -top-px -left-px h-8 w-[672px] bg-muted/45" />
+      <div className="absolute top-[30px] -left-px h-px w-[672px] bg-border/70" />
+      <span className="absolute top-[11px] left-[11px] size-2 rounded-full bg-foreground/15" />
+      <span className="absolute top-[11px] left-[25px] size-2 rounded-full bg-foreground/10" />
+      <span className="absolute top-[11px] left-[39px] size-2 rounded-full bg-foreground/10" />
+      <span className="absolute top-2 left-[65px] h-3.5 w-28 rounded-full bg-foreground/7" />
 
-function ArticleLines({ selected = false }: { selected?: boolean }) {
-  return (
-    <div className="space-y-2.5">
-      <div className="h-3 w-2/5 rounded-full bg-foreground/14" />
-      <div className="space-y-1.5">
-        <div className="flex gap-1.5">
-          <span className="h-2 w-16 rounded-full bg-foreground/8" />
-          <span
-            className={cn(
-              "h-2 w-24 rounded-full",
-              selected ? "bg-foreground/75 ring-2 ring-foreground/10" : "bg-foreground/8",
-            )}
-          />
-          <span className="h-2 w-20 rounded-full bg-foreground/8" />
-        </div>
-        <div className="h-2 w-11/12 rounded-full bg-foreground/8" />
-        <div className="h-2 w-4/5 rounded-full bg-foreground/8" />
+      <div className="absolute top-[51px] left-[31px] h-36 w-[560px] overflow-hidden">
+        <span className="absolute top-0 left-0 h-3 w-56 rounded-full bg-foreground/14" />
+        <span className="absolute top-[22px] left-0 h-2 w-16 rounded-full bg-foreground/8" />
+        <span
+          className={cn(
+            "absolute top-[22px] left-[70px] h-2 w-24 rounded-full",
+            selected ? "bg-[#dadada]/75" : "bg-foreground/8",
+          )}
+        />
+        <span className="absolute top-[22px] left-[172px] h-2 w-20 rounded-full bg-foreground/8" />
+        <span className="absolute top-9 left-0 h-2 w-[513px] rounded-full bg-foreground/8" />
+        <span className="absolute top-[50px] left-0 h-2 w-[448px] rounded-full bg-foreground/8" />
+        <span className="absolute top-[68px] left-0 h-14 w-[560px] rounded-lg border border-border/50 bg-muted/35" />
       </div>
-      <div className="h-14 rounded-lg border border-border/50 bg-muted/35" />
     </div>
   )
 }
 
 function FloatingButtonScene() {
   return (
-    <div className="relative h-[calc(100%-2rem)] overflow-hidden px-8 py-5 pr-20">
-      <ArticleLines />
-      <div className="absolute top-1 right-0 flex flex-col items-end gap-2">
-        <PreviewFloatingAction icon="tabler:language" />
-        <div className="relative">
-          <span className="absolute -top-1 -left-6 flex size-6 items-center justify-center text-neutral-300 dark:text-neutral-700">
-            <Icon icon="tabler:x" className="size-3" strokeWidth={3} />
-          </span>
-          <span className="absolute -bottom-1 -left-6 flex size-6 items-center justify-center text-neutral-300 dark:text-neutral-700">
-            <Icon icon="tabler:lock-open" className="size-3" strokeWidth={3} />
-          </span>
-          <span className="flex size-12 items-center justify-center rounded-full border border-black bg-black shadow-lg">
-            <BrandMark showName={false} iconClassName="size-10 rounded-full invert" />
-          </span>
-        </div>
-        <PreviewFloatingAction icon="tabler:settings" />
-      </div>
-    </div>
-  )
-}
-
-function SelectionToolbarScene() {
-  return (
-    <div className="relative h-[calc(100%-2rem)] px-8 py-5">
-      <ArticleLines selected />
-      <div className="group absolute top-9 left-[26%] flex items-center rounded-xl bg-popover p-1 shadow-floating">
-        <div className="flex items-center overflow-hidden rounded-xl">
-          <PreviewToolbarButton>
-            <RiTranslate className="size-4.5" />
-          </PreviewToolbarButton>
-          <PreviewToolbarButton>
-            <IconVolume className="size-4.5" strokeWidth={1.6} />
-          </PreviewToolbarButton>
-          <PreviewToolbarButton>
-            <Icon icon="tabler:book-2" className="size-4.5" strokeWidth={0.8} />
-          </PreviewToolbarButton>
-        </div>
-        <span className="absolute -top-1 -right-1 flex size-3.5 items-center justify-center rounded-full border border-border bg-neutral-100 dark:bg-neutral-900">
-          <IconX className="size-3 text-neutral-400 dark:text-neutral-600" />
+    <>
+      <PreviewFloatingAction className="top-[76px] left-[771px]" icon={translateIcon}>
+        <span className="absolute right-[-1px] bottom-[-3px] flex size-3 items-center justify-center rounded-full bg-[#00c950] text-white">
+          <IconCheck className="size-2.5" strokeWidth={2.5} />
         </span>
-      </div>
-    </div>
+      </PreviewFloatingAction>
+      <PreviewFloatingAction className="top-[160px] left-[771px]" icon={settingsIcon} />
+
+      <span className="absolute top-[100px] left-[728px] flex size-8 items-center justify-center">
+        <img src={closeIcon} alt="" aria-hidden="true" className="size-4" />
+      </span>
+      <span className="absolute top-[132px] left-[728px] flex size-8 items-center justify-center">
+        <img src={unlockedIcon} alt="" aria-hidden="true" className="size-4" />
+      </span>
+
+      <span
+        data-slot="overlay-preview-main-button"
+        className="absolute top-28 left-[765px] size-10 rounded-full"
+      >
+        <img
+          src={floatingLogo}
+          alt=""
+          aria-hidden="true"
+          className="absolute -top-0.5 -left-3 h-16 w-[55px] max-w-none"
+        />
+      </span>
+    </>
   )
 }
 
-function ContextMenuScene() {
+function PreviewFloatingAction({
+  className,
+  icon,
+  children,
+}: {
+  className: string
+  icon: string
+  children?: React.ReactNode
+}) {
   return (
-    <div className="relative h-[calc(100%-2rem)] overflow-hidden px-8 py-5 pr-52">
-      <ArticleLines />
-
-      <div className="absolute top-2 right-5 w-48 rounded-lg border border-black/10 bg-[#f7f7f7] p-1 text-[#202124] shadow-[0_8px_24px_rgba(0,0,0,0.22)] dark:border-white/10 dark:bg-[#292a2d] dark:text-[#e8eaed]">
-        <NativeContextMenuItem shortcut="Ctrl+C">{i18n.t("action.copy")}</NativeContextMenuItem>
-        <NativeContextMenuPlaceholder width="w-28" />
-        <div className="my-1 h-px bg-black/10 dark:bg-white/10" />
-        <NativeContextMenuPlaceholder width="w-32" />
-        <div className="my-1 h-px bg-black/10 dark:bg-white/10" />
-        <NativeContextMenuItem active>
-          <span className="flex min-w-0 items-center gap-2">
-            <BrandMark showName={false} iconClassName="size-3.5 rounded-[2px]" />
-            <span className="truncate">{i18n.t("contextMenu.translate")}</span>
-          </span>
-        </NativeContextMenuItem>
-        <div className="my-1 h-px bg-black/10 dark:bg-white/10" />
-        <NativeContextMenuPlaceholder width="w-20" />
-      </div>
-    </div>
-  )
-}
-
-function PreviewFloatingAction({ icon }: { icon: string }) {
-  return (
-    <span className="mr-2 flex size-[34px] items-center justify-center rounded-full border border-border bg-white text-neutral-600 shadow-lg dark:bg-neutral-900 dark:text-neutral-400">
-      <Icon icon={icon} className="size-5" />
-    </span>
-  )
-}
-
-function PreviewToolbarButton({ children }: { children: ReactNode }) {
-  return (
-    <span className="flex h-7 shrink-0 items-center justify-center px-2 text-foreground">
+    <span
+      data-slot="overlay-preview-tool-button"
+      className={cn(
+        "absolute flex size-7 items-center justify-center rounded-full border border-[#d4d4d4]/80 bg-white shadow-[0_4px_3px_rgb(0_0_0/10%),0_10px_7.5px_rgb(0_0_0/10%)] dark:border-white/10 dark:bg-neutral-900",
+        className,
+      )}
+    >
+      <img src={icon} alt="" aria-hidden="true" className="size-3.5" />
       {children}
     </span>
   )
 }
 
-function NativeContextMenuItem({
-  children,
-  shortcut,
-  active = false,
-}: {
-  children: ReactNode
-  shortcut?: string
-  active?: boolean
-}) {
+function SelectionToolbarScene() {
   return (
     <div
-      className={cn(
-        "flex h-5 items-center gap-2 rounded-[4px] px-2 text-[10px] leading-none",
-        active && "bg-[#e8eaed] dark:bg-[#3c4043]",
-      )}
+      data-slot="overlay-preview-selection-toolbar"
+      className="absolute top-[104px] left-[311px] h-9 w-28 rounded-xl bg-card shadow-[0_2px_4.5px_rgb(39_39_42/6%),0_16px_20px_rgb(39_39_42/12%)]"
     >
-      <span className="min-w-0 flex-1 truncate">{children}</span>
-      {shortcut && (
-        <span className="shrink-0 pl-3 text-black/55 dark:text-white/55">{shortcut}</span>
-      )}
+      <PreviewToolbarAction className="left-3">
+        <Icon icon="ri:translate" className="size-[18px]" />
+      </PreviewToolbarAction>
+      <PreviewToolbarAction className="left-[46px]">
+        <IconVolume className="size-[18px]" strokeWidth={1.6} />
+      </PreviewToolbarAction>
+      <PreviewToolbarAction className="left-20">
+        <Icon icon="tabler:book-2" className="size-[18px]" strokeWidth={1.4} />
+      </PreviewToolbarAction>
+      <span className="absolute -top-1 left-[102px] flex size-3.5 items-center justify-center rounded-full border border-border bg-muted">
+        <IconX className="size-3 text-muted-foreground" strokeWidth={1.5} />
+      </span>
     </div>
   )
 }
 
-function NativeContextMenuPlaceholder({ width }: { width: string }) {
+function PreviewToolbarAction({
+  className,
+  children,
+}: {
+  className: string
+  children: React.ReactNode
+}) {
   return (
-    <div className="flex h-5 items-center px-2">
-      <span className={cn("h-1.5 rounded-full bg-black/18 dark:bg-white/18", width)} />
+    <span
+      data-slot="overlay-preview-toolbar-action"
+      className={cn(
+        "absolute top-[9px] flex size-[18px] items-center justify-center text-foreground",
+        className,
+      )}
+    >
+      {children}
+    </span>
+  )
+}
+
+function ContextMenuScene() {
+  return (
+    <div
+      data-testid="overlay-preview-context-menu"
+      className="absolute top-[60px] left-[596px] h-[136px] w-48 overflow-hidden rounded-lg border border-border bg-sidebar shadow-[0_2px_9px_rgb(39_39_42/6%),0_16px_40px_rgb(39_39_42/12%)]"
+    >
+      <MenuPlaceholder className="top-[15px] w-28" />
+      <MenuPlaceholder className="top-[34px] w-28" />
+      <MenuDivider className="top-[47px]" />
+      <MenuPlaceholder className="top-[61px] w-32" />
+      <MenuDivider className="top-[77px]" />
+
+      <div className="absolute top-[81px] left-[3px] flex h-5 w-[184px] items-center rounded bg-accent px-2 text-[10px] text-foreground">
+        <BrandMark showName={false} iconClassName="size-3.5 rounded-[2px]" />
+        <span className="ml-2 leading-none">{i18n.t("contextMenu.translate")}</span>
+      </div>
+
+      <MenuDivider className="top-[105px]" />
+      <MenuPlaceholder className="top-[119px] w-20" />
     </div>
   )
+}
+
+function MenuPlaceholder({ className }: { className: string }) {
+  return (
+    <span className={cn("absolute left-[11px] h-1.5 rounded-full bg-foreground/18", className)} />
+  )
+}
+
+function MenuDivider({ className }: { className: string }) {
+  return <span className={cn("absolute left-[3px] h-px w-[184px] bg-border", className)} />
 }

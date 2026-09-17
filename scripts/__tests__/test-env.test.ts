@@ -1,9 +1,8 @@
 import { spawnSync } from "node:child_process"
 import process from "node:process"
-import { fileURLToPath } from "node:url"
 import { describe, expect, it } from "vitest"
 
-const preloadPath = fileURLToPath(new URL("../test-env.mjs", import.meta.url))
+const preloadPath = new URL("../test-env.mjs", import.meta.url).href
 
 describe("test environment preload", () => {
   it.each([
