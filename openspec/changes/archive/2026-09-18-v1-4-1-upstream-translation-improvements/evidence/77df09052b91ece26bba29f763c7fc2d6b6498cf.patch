@@ -1,0 +1,32 @@
+diff --git a/.changeset/collapsed-floating-button-hit-area.md b/.changeset/collapsed-floating-button-hit-area.md
+new file mode 100644
+index 00000000..8c41ef63
+--- /dev/null
++++ b/.changeset/collapsed-floating-button-hit-area.md
+@@ -0,0 +1,5 @@
++---
++"@read-frog/extension": patch
++---
++
++fix(floating-button): let clicks pass through collapsed controls
+diff --git a/src/entrypoints/side.content/components/floating-button/index.tsx b/src/entrypoints/side.content/components/floating-button/index.tsx
+index 71df5810..c95676d7 100644
+--- a/src/entrypoints/side.content/components/floating-button/index.tsx
++++ b/src/entrypoints/side.content/components/floating-button/index.tsx
+@@ -388,6 +388,7 @@ export default function FloatingButton() {
+       data-testid="floating-button-container"
+       className={cn(
+         "fixed z-2147483647 flex flex-col gap-2 print:hidden",
++        isFloatingButtonExpanded ? "pointer-events-auto" : "pointer-events-none",
+         isDraggingButton
+           ? "items-center"
+           : floatingButtonSide === "right"
+@@ -408,7 +409,7 @@ export default function FloatingButton() {
+           ref={mainButtonRef}
+           data-testid="floating-main-button"
+           className={cn(
+-            "relative flex h-10 items-center border-border bg-white shadow-lg transition-transform duration-300 dark:bg-neutral-900",
++            "pointer-events-auto relative flex h-10 items-center border-border bg-white shadow-lg transition-transform duration-300 dark:bg-neutral-900",
+             isDraggingButton
+               ? "w-10 cursor-grabbing touch-none justify-center rounded-full border opacity-100"
+               : floatingButtonSide === "right"

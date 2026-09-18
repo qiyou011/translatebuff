@@ -1,0 +1,65 @@
+{
+  "target": {
+    "id": "Function:src/utils/atoms/config.ts:buildConfigFieldsAtomMap",
+    "name": "buildConfigFieldsAtomMap",
+    "type": "Function",
+    "filePath": "src/utils/atoms/config.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 3,
+  "risk": "LOW",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 1,
+    "processes_affected": 0,
+    "modules_affected": 0
+  },
+  "byDepthCounts": {
+    "1": 1,
+    "2": 2
+  },
+  "affected_processes": [],
+  "affected_modules": [],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "File:src/utils/atoms/config.ts",
+        "name": "config.ts",
+        "filePath": "src/utils/atoms/config.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "File:src/utils/atoms/provider.ts",
+        "name": "provider.ts",
+        "filePath": "src/utils/atoms/provider.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/utils/constants/feature-providers.ts",
+        "name": "feature-providers.ts",
+        "filePath": "src/utils/constants/feature-providers.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      }
+    ]
+  },
+  "staleness": {
+    "commitsBehind": 1,
+    "hint": "⚠️ Index is 1 commit behind HEAD. Run analyze tool to update."
+  }
+}

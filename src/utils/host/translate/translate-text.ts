@@ -9,6 +9,7 @@ import { toastManager } from "@/components/ui/base-ui/toast"
 import { isAPIProviderConfig, isLLMProviderConfig } from "@/types/config/provider"
 import { isNoTranslationSentinel } from "@/utils/constants/prompt"
 import { detectLanguage } from "@/utils/content/language"
+import { canCacheInlineAtomTranslation } from "@/utils/host/translate/inline-atom-tokens"
 import { i18n } from "@/utils/i18n"
 import { logger } from "@/utils/logger"
 import { getTranslatePrompt } from "@/utils/prompts/translate"
@@ -376,7 +377,9 @@ export async function translateTextCore(options: TranslateTextOptions): Promise<
   if (sessionId !== undefined) {
     // Raw result, sentinel included, so a "no translation needed" verdict is
     // remembered too; the mapping below stays the single mapping point.
-    storeInMemoryTranslation(hash, result)
+    if (canCacheInlineAtomTranslation(preparedText, result)) {
+      storeInMemoryTranslation(hash, result)
+    }
   }
   // The sentinel must be mapped here and only here: every batch-pipeline
   // consumer (page paragraphs, document title, input translation, selection

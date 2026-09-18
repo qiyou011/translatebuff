@@ -1,0 +1,149 @@
+{
+  "target": {
+    "id": "Function:src/entrypoints/selection.content/selection-toolbar/atoms.ts:createSelectionToolbarTranslateRequestSliceAtom",
+    "name": "createSelectionToolbarTranslateRequestSliceAtom",
+    "type": "Function",
+    "filePath": "src/entrypoints/selection.content/selection-toolbar/atoms.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 12,
+  "risk": "LOW",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 1,
+    "processes_affected": 0,
+    "modules_affected": 0
+  },
+  "byDepthCounts": {
+    "1": 1,
+    "2": 8,
+    "3": 3
+  },
+  "affected_processes": [],
+  "affected_modules": [],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "File:src/entrypoints/selection.content/selection-toolbar/atoms.ts",
+        "name": "atoms.ts",
+        "filePath": "src/entrypoints/selection.content/selection-toolbar/atoms.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "File:src/entrypoints/selection.content/selection-toolbar/custom-action-button/provider.tsx",
+        "name": "provider.tsx",
+        "filePath": "src/entrypoints/selection.content/selection-toolbar/custom-action-button/provider.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/entrypoints/selection.content/selection-toolbar/custom-action-button/use-custom-action-execution.ts",
+        "name": "use-custom-action-execution.ts",
+        "filePath": "src/entrypoints/selection.content/selection-toolbar/custom-action-button/use-custom-action-execution.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/entrypoints/selection.content/selection-toolbar/index.tsx",
+        "name": "index.tsx",
+        "filePath": "src/entrypoints/selection.content/selection-toolbar/index.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/entrypoints/selection.content/selection-toolbar/note-suggestion/use-note-suggestion.ts",
+        "name": "use-note-suggestion.ts",
+        "filePath": "src/entrypoints/selection.content/selection-toolbar/note-suggestion/use-note-suggestion.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/entrypoints/selection.content/selection-toolbar/speak-button.tsx",
+        "name": "speak-button.tsx",
+        "filePath": "src/entrypoints/selection.content/selection-toolbar/speak-button.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/entrypoints/selection.content/selection-toolbar/translate-button/provider.tsx",
+        "name": "provider.tsx",
+        "filePath": "src/entrypoints/selection.content/selection-toolbar/translate-button/provider.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/entrypoints/selection.content/selection-toolbar/use-selection-open-request.ts",
+        "name": "use-selection-open-request.ts",
+        "filePath": "src/entrypoints/selection.content/selection-toolbar/use-selection-open-request.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/entrypoints/selection.content/selection-toolbar/use-selection-popover-snapshot.ts",
+        "name": "use-selection-popover-snapshot.ts",
+        "filePath": "src/entrypoints/selection.content/selection-toolbar/use-selection-popover-snapshot.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      }
+    ],
+    "3": [
+      {
+        "depth": 3,
+        "id": "File:src/entrypoints/selection.content/selection-toolbar/custom-action-button/custom-action-trigger.tsx",
+        "name": "custom-action-trigger.tsx",
+        "filePath": "src/entrypoints/selection.content/selection-toolbar/custom-action-button/custom-action-trigger.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/entrypoints/selection.content/selection-toolbar/note-suggestion/note-suggestion-card.tsx",
+        "name": "note-suggestion-card.tsx",
+        "filePath": "src/entrypoints/selection.content/selection-toolbar/note-suggestion/note-suggestion-card.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/entrypoints/selection.content/selection-toolbar/translate-button/index.tsx",
+        "name": "index.tsx",
+        "filePath": "src/entrypoints/selection.content/selection-toolbar/translate-button/index.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      }
+    ]
+  },
+  "staleness": {
+    "commitsBehind": 1,
+    "hint": "⚠️ Index is 1 commit behind HEAD. Run analyze tool to update."
+  }
+}

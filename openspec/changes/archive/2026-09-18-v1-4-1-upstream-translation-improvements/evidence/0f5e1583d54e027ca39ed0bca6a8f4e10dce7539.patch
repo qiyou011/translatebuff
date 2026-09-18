@@ -1,0 +1,2125 @@
+diff --git a/.changeset/inline-formula-atoms.md b/.changeset/inline-formula-atoms.md
+new file mode 100644
+index 00000000..d754fda1
+--- /dev/null
++++ b/.changeset/inline-formula-atoms.md
+@@ -0,0 +1,14 @@
++---
++"@read-frog/extension": patch
++---
++
++fix(translate): keep inline formulas in bilingual translations
++
++Bilingual page translation flattened every paragraph to plain text, so
++rendered formulas (native MathML on arXiv, KaTeX, MathJax, Wikipedia math)
++vanished from the translated line or leaked as glyph soup, and no site rule
++could bring them back. Formula elements are now "inline atoms": each is sent
++to the provider as a `{{n}}` placeholder and a sanitized clone of the
++original element is put back at the placeholder's translated position. A new
++`atomSelectors` site-rule family (seeded for the common renderers) decides
++what counts as an atom; paragraphs without atoms are unchanged.
+diff --git a/src/assets/styles/translation-node-preset.css b/src/assets/styles/translation-node-preset.css
+index 3bb7b638..ba1363d5 100644
+--- a/src/assets/styles/translation-node-preset.css
++++ b/src/assets/styles/translation-node-preset.css
+@@ -1,11 +1,20 @@
++/* Every `*` rule below excludes inline atoms (formula elements cloned into a
++ * translation, `.read-frog-inline-atom`) and their subtrees, so the page's own
++ * math CSS (KaTeX, MathJax, MathML) keeps rendering them. `:where()` adds no
++ * specificity, so prose cascades exactly as before. */
+ .read-frog-translated-content-wrapper,
+-.read-frog-translated-content-wrapper * {
++.read-frog-translated-content-wrapper
++  *:not(:where(.read-frog-inline-atom, .read-frog-inline-atom *)) {
+   overflow-wrap: anywhere;
+   word-break: normal;
+   user-select: text;
+   text-decoration-skip-ink: auto;
+ }
+ 
++.read-frog-inline-atom {
++  overflow-wrap: normal;
++}
++
+ .read-frog-translated-block-content {
+   display: inline-block;
+   margin: 8px 0 !important;
+@@ -26,7 +35,8 @@
+ 
+ /* Simplified Chinese - macOS > Windows > Cross-platform > Fallback */
+ .read-frog-translated-content-wrapper[lang="zh"],
+-.read-frog-translated-content-wrapper[lang="zh"] * {
++.read-frog-translated-content-wrapper[lang="zh"]
++  *:not(:where(.read-frog-inline-atom, .read-frog-inline-atom *)) {
+   font-family:
+     "PingFang SC",
+     "Microsoft YaHei",
+@@ -44,7 +54,8 @@
+ 
+ /* Traditional Chinese - macOS > Windows > Cross-platform > Fallback */
+ .read-frog-translated-content-wrapper[lang="zh-TW"],
+-.read-frog-translated-content-wrapper[lang="zh-TW"] * {
++.read-frog-translated-content-wrapper[lang="zh-TW"]
++  *:not(:where(.read-frog-inline-atom, .read-frog-inline-atom *)) {
+   font-family:
+     "PingFang TC",
+     "Microsoft JhengHei",
+@@ -65,7 +76,8 @@
+ 
+ /* Japanese - macOS/Windows high-quality > Cross-platform > Legacy > Fallback */
+ .read-frog-translated-content-wrapper[lang="ja"],
+-.read-frog-translated-content-wrapper[lang="ja"] * {
++.read-frog-translated-content-wrapper[lang="ja"]
++  *:not(:where(.read-frog-inline-atom, .read-frog-inline-atom *)) {
+   font-family:
+     "Hiragino Kaku Gothic ProN",
+     "Yu Gothic",
+@@ -86,11 +98,14 @@
+ 
+ /* Arabic script languages - common typography features */
+ .read-frog-translated-content-wrapper[lang="ar"],
+-.read-frog-translated-content-wrapper[lang="ar"] *,
++.read-frog-translated-content-wrapper[lang="ar"]
++  *:not(:where(.read-frog-inline-atom, .read-frog-inline-atom *)),
+ .read-frog-translated-content-wrapper[lang="fa"],
+-.read-frog-translated-content-wrapper[lang="fa"] *,
++.read-frog-translated-content-wrapper[lang="fa"]
++  *:not(:where(.read-frog-inline-atom, .read-frog-inline-atom *)),
+ .read-frog-translated-content-wrapper[lang="ur"],
+-.read-frog-translated-content-wrapper[lang="ur"] * {
++.read-frog-translated-content-wrapper[lang="ur"]
++  *:not(:where(.read-frog-inline-atom, .read-frog-inline-atom *)) {
+   font-feature-settings:
+     "rlig" 1,
+     "calt" 1;
+@@ -98,7 +113,8 @@
+ 
+ /* Arabic - macOS high-quality > Cross-platform > macOS legacy > Fallback */
+ .read-frog-translated-content-wrapper[lang="ar"],
+-.read-frog-translated-content-wrapper[lang="ar"] * {
++.read-frog-translated-content-wrapper[lang="ar"]
++  *:not(:where(.read-frog-inline-atom, .read-frog-inline-atom *)) {
+   font-family:
+     "SF Arabic", "Noto Sans Arabic", "Noto Naskh Arabic", "Geeza Pro", "Traditional Arabic",
+     "Segoe UI", Tahoma, Arial, sans-serif;
+@@ -106,7 +122,8 @@
+ 
+ /* Persian/Farsi - macOS > Cross-platform > Platform-specific > Fallback */
+ .read-frog-translated-content-wrapper[lang="fa"],
+-.read-frog-translated-content-wrapper[lang="fa"] * {
++.read-frog-translated-content-wrapper[lang="fa"]
++  *:not(:where(.read-frog-inline-atom, .read-frog-inline-atom *)) {
+   font-family:
+     "SF Arabic", "Noto Sans Arabic", "Geeza Pro", "Iranian Sans", "Segoe UI", Tahoma, Arial,
+     sans-serif !important;
+@@ -114,7 +131,8 @@
+ 
+ /* Urdu - Specialized Nastaliq > Cross-platform > Fallback */
+ .read-frog-translated-content-wrapper[lang="ur"],
+-.read-frog-translated-content-wrapper[lang="ur"] * {
++.read-frog-translated-content-wrapper[lang="ur"]
++  *:not(:where(.read-frog-inline-atom, .read-frog-inline-atom *)) {
+   font-family:
+     "Noto Nastaliq Urdu", "Jameel Noori Nastaleeq", "SF Arabic", "Noto Sans Arabic",
+     "Alvi Nastaleeq", "Segoe UI", Tahoma, Arial, sans-serif;
+diff --git a/src/entrypoints/background/__tests__/translation-queues.test.ts b/src/entrypoints/background/__tests__/translation-queues.test.ts
+index 8817fe9f..ef9c8409 100644
+--- a/src/entrypoints/background/__tests__/translation-queues.test.ts
++++ b/src/entrypoints/background/__tests__/translation-queues.test.ts
+@@ -672,6 +672,76 @@ describe("translation queue helpers", () => {
+     )
+   })
+ 
++  it("caches a translation whose inline atom placeholders all came back", async () => {
++    executeTranslateMock.mockResolvedValue("设 {{1}} 大于 {{0}}。")
++
++    const { setUpWebPageTranslationQueue } = await import("../translation-queues")
++    setUpWebPageTranslationQueue()
++
++    const handler = getRegisteredMessageHandler("enqueueTranslateRequest")
++    const result = await handler({
++      data: {
++        text: "Let {{0}} be smaller than {{1}}.",
++        langConfig: DEFAULT_CONFIG.language,
++        providerRef: localProviderRef(googleProvider),
++        scheduleAt: Date.now(),
++        hash: "atom-hash",
++      },
++    })
++
++    expect(result).toBe("设 {{1}} 大于 {{0}}。")
++    expect(translationCachePutMock).toHaveBeenCalledWith(
++      expect.objectContaining({ key: "atom-hash", translation: "设 {{1}} 大于 {{0}}。" }),
++    )
++  })
++
++  it("returns but does not cache a translation that lost an inline atom placeholder", async () => {
++    executeTranslateMock.mockResolvedValue("设 {{0}} 大于。")
++
++    const { setUpWebPageTranslationQueue } = await import("../translation-queues")
++    setUpWebPageTranslationQueue()
++
++    const handler = getRegisteredMessageHandler("enqueueTranslateRequest")
++    const result = await handler({
++      data: {
++        text: "Let {{0}} be smaller than {{1}}.",
++        langConfig: DEFAULT_CONFIG.language,
++        providerRef: localProviderRef(googleProvider),
++        scheduleAt: Date.now(),
++        hash: "atom-hash",
++      },
++    })
++
++    expect(result).toBe("设 {{0}} 大于。")
++    expect(translationCachePutMock).not.toHaveBeenCalled()
++  })
++
++  it("caches the no-translation sentinel for a paragraph that carried placeholders", async () => {
++    // The sentinel replaces the whole translation, so the placeholder audit sees
++    // a total loss. Failing it would make every already-in-target-language
++    // paragraph with a formula re-hit the provider on every page load.
++    executeTranslateMock.mockResolvedValue(NO_TRANSLATION_SENTINEL)
++
++    const { setUpWebPageTranslationQueue } = await import("../translation-queues")
++    setUpWebPageTranslationQueue()
++
++    const handler = getRegisteredMessageHandler("enqueueTranslateRequest")
++    const result = await handler({
++      data: {
++        text: "设 {{0}} 大于 {{1}}。",
++        langConfig: DEFAULT_CONFIG.language,
++        providerRef: localProviderRef(googleProvider),
++        scheduleAt: Date.now(),
++        hash: "atom-hash",
++      },
++    })
++
++    expect(result).toBe(NO_TRANSLATION_SENTINEL)
++    expect(translationCachePutMock).toHaveBeenCalledWith(
++      expect.objectContaining({ key: "atom-hash", translation: NO_TRANSLATION_SENTINEL }),
++    )
++  })
++
+   it("uses cached HTML translations when all attribute markers remain on their tags", async () => {
+     translationCacheGetMock.mockResolvedValueOnce({
+       key: "webpage-hash",
+diff --git a/src/entrypoints/background/translation-queues.ts b/src/entrypoints/background/translation-queues.ts
+index 6270a7d6..60e0d737 100644
+--- a/src/entrypoints/background/translation-queues.ts
++++ b/src/entrypoints/background/translation-queues.ts
+@@ -10,7 +10,11 @@ import { browser, storage } from "#imports"
+ import { isLLMProviderConfig } from "@/types/config/provider"
+ import { putBatchRequestRecord } from "@/utils/batch-request-record"
+ import { CONFIG_STORAGE_KEY, DEFAULT_CONFIG } from "@/utils/constants/config"
+-import { BATCH_SEPARATOR, BATCH_SEPARATOR_LINE_PATTERN } from "@/utils/constants/prompt"
++import {
++  BATCH_SEPARATOR,
++  BATCH_SEPARATOR_LINE_PATTERN,
++  isNoTranslationSentinel,
++} from "@/utils/constants/prompt"
+ import {
+   BATCH_TIMEOUT_BASE_MS,
+   BATCH_TIMEOUT_PER_CHAR_MS,
+@@ -27,6 +31,10 @@ import {
+   hasHtmlAttributeMarkerProtocol,
+   isHtmlAttributeMarkerIntegrityError,
+ } from "@/utils/host/translate/html-attribute-markers"
++import {
++  auditInlineAtomTokens,
++  hasInlineAtomTokens,
++} from "@/utils/host/translate/inline-atom-tokens"
+ import { normalizePromptContextValue } from "@/utils/host/translate/translate-text"
+ import { logger } from "@/utils/logger"
+ import { onMessage } from "@/utils/message"
+@@ -573,8 +581,23 @@ export function setUpWebPageTranslationQueue(): void {
+       assertHtmlAttributeMarkerIntegrity(text, result)
+     }
+ 
++    // A response that dropped, invented or duplicated an inline-atom
++    // placeholder is still rendered by the content script (the formulas are
++    // appended) but must not be persisted: the next visit deserves a fresh
++    // attempt instead of a permanently degraded paragraph. The sentinel is
++    // exempt — "no translation needed" carries no placeholders by definition,
++    // and auditing it as a total loss would make every already-in-target-language
++    // paragraph containing a formula re-hit the provider on every page load.
++    const inlineAtomTokensIntact =
++      !hasInlineAtomTokens(text) ||
++      isNoTranslationSentinel(result) ||
++      auditInlineAtomTokens(text, result).ok
++    if (result && !inlineAtomTokensIntact) {
++      logger.warn("Inline atom placeholders were not preserved; result not cached")
++    }
++
+     // Cache the translation result if successful
+-    if (result && hash) {
++    if (result && hash && inlineAtomTokensIntact) {
+       await db.translationCache.put({
+         key: hash,
+         translation: result,
+diff --git a/src/types/config/site-rules.ts b/src/types/config/site-rules.ts
+index ac72fae8..1cbf8d7c 100644
+--- a/src/types/config/site-rules.ts
++++ b/src/types/config/site-rules.ts
+@@ -44,6 +44,13 @@ export const siteRuleSchema = z.object({
+   preserveTextSelectors: z.array(z.string()).optional(),
+   "preserveTextSelectors.add": z.array(z.string()).optional(),
+   "preserveTextSelectors.remove": z.array(z.string()).optional(),
++  // Inline atoms: rendered formulas (KaTeX, MathJax, MathML, Wikipedia math)
++  // whose subtree is opaque to translation. Bilingual mode replaces each with a
++  // placeholder in the request and clones the original back into the
++  // translation. Atoms also block the walk like preserveTextSelectors.
++  atomSelectors: z.array(z.string()).optional(),
++  "atomSelectors.add": z.array(z.string()).optional(),
++  "atomSelectors.remove": z.array(z.string()).optional(),
+   // Tag-NAME lists (not CSS selectors) that patch the built-in DOM tag sets
+   // (see DEFAULT_TAG_SETS in utils/constants/dom-rules). Delta-only by design:
+   // there is deliberately no bare base key, so a rule can never be misread as
+diff --git a/src/utils/constants/dom-labels.ts b/src/utils/constants/dom-labels.ts
+index ffcbfc57..010ad74b 100644
+--- a/src/utils/constants/dom-labels.ts
++++ b/src/utils/constants/dom-labels.ts
+@@ -25,6 +25,11 @@ export const MARK_ATTRIBUTES = new Set([
+ 
+ export const NOTRANSLATE_CLASS = "notranslate"
+ 
++// Marks a formula element cloned into a bilingual translation (an "inline
++// atom"). The preset stylesheet excludes these subtrees from its wrapper-wide
++// typography rules so the page's own math CSS keeps rendering them.
++export const INLINE_ATOM_CLASS = "read-frog-inline-atom"
++
+ export const REACT_SHADOW_HOST_CLASS = "read-frog-react-shadow-host"
+ 
+ export const SPINNER_CLASS = "read-frog-spinner"
+diff --git a/src/utils/host/__tests__/translate.integration.test.tsx b/src/utils/host/__tests__/translate.integration.test.tsx
+index 4cd94e72..9b9f7531 100644
+--- a/src/utils/host/__tests__/translate.integration.test.tsx
++++ b/src/utils/host/__tests__/translate.integration.test.tsx
+@@ -10,6 +10,7 @@ import {
+   BLOCK_CONTENT_CLASS,
+   CONTENT_WRAPPER_CLASS,
+   FLOAT_WRAP_ATTRIBUTE,
++  INLINE_ATOM_CLASS,
+   INLINE_ATTRIBUTE,
+   INLINE_CONTENT_CLASS,
+   PARAGRAPH_ATTRIBUTE,
+@@ -2463,6 +2464,168 @@ describe("translate", () => {
+     })
+   })
+ 
++  describe("bilingual inline atoms (formulas)", () => {
++    const mathml = (id: string, symbol: string) =>
++      `<math id="${id}" class="ltx_Math" alttext="${symbol}" display="inline"><semantics><mi>${symbol}</mi><annotation encoding="application/x-tex">${symbol}</annotation></semantics></math>`
++    const katex = (symbol: string) =>
++      `<span class="katex"><span class="katex-mathml"><math><semantics><mi>${symbol}</mi><annotation encoding="application/x-tex">${symbol}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="mord mathnormal">${symbol}</span></span></span></span>`
++
++    beforeEach(() => {
++      vi.mocked(translateTextForPage).mockReset().mockResolvedValue(MOCK_TRANSLATION)
++    })
++
++    afterEach(() => {
++      vi.mocked(translateTextForPage).mockReset().mockResolvedValue(MOCK_TRANSLATION)
++    })
++
++    it("sends placeholders, clones the formulas at their translated positions and restores cleanly", async () => {
++      vi.mocked(translateTextForPage).mockImplementation(async (text) =>
++        text === "Let {{0}} be smaller than {{1}}." ? "设 {{1}} 大于 {{0}}。" : MOCK_TRANSLATION,
++      )
++      render(<p data-testid="test-node" />)
++      const node = screen.getByTestId("test-node")
++      node.innerHTML = `Let ${mathml("m1", "x")} be smaller than ${mathml("m2", "y")}.`
++      const sourceMath = [...node.querySelectorAll("math")]
++
++      await removeOrShowPageTranslation("bilingual", true)
++
++      expect(translateTextForPage).toHaveBeenCalledWith(
++        "Let {{0}} be smaller than {{1}}.",
++        "plain",
++        DEFAULT_PAGE_TRANSLATION_OPTIONS,
++      )
++      const wrapper = expectTranslationWrapper(node, "bilingual")!
++      const clones = [...wrapper.querySelectorAll("math")]
++      expect(clones).toHaveLength(2)
++      expect(clones[0]?.getAttribute("alttext")).toBe("y")
++      expect(clones[1]?.getAttribute("alttext")).toBe("x")
++      expect(
++        clones.every(
++          (clone) => clone.classList.contains(INLINE_ATOM_CLASS) && !clone.hasAttribute("id"),
++        ),
++      ).toBe(true)
++      expect(clones).not.toContain(sourceMath[0])
++      expect(clones).not.toContain(sourceMath[1])
++      expect(wrapper.textContent).toBe("设 y 大于 x。")
++      // The source formulas are untouched.
++      expect(sourceMath.every((math) => math.isConnected && math.hasAttribute("id"))).toBe(true)
++
++      await removeOrShowPageTranslation("bilingual", true)
++
++      expect(node.querySelector(`.${CONTENT_WRAPPER_CLASS}`)).toBeNull()
++      expect([...node.querySelectorAll("math")]).toEqual(sourceMath)
++    })
++
++    it("renders each KaTeX formula exactly once with no glyph soup in the request", async () => {
++      vi.mocked(translateTextForPage).mockImplementation(async (text) =>
++        text.includes("{{0}}") ? "时间常数为 {{0}}。" : MOCK_TRANSLATION,
++      )
++      render(<p data-testid="test-node" />)
++      const node = screen.getByTestId("test-node")
++      node.innerHTML = `The time constant was ${katex("τ")}.`
++
++      await removeOrShowPageTranslation("bilingual", true)
++
++      const [request] = vi.mocked(translateTextForPage).mock.calls[0]!
++      expect(request).toBe("The time constant was {{0}}.")
++      expect(request).not.toContain("τ")
++      const wrapper = expectTranslationWrapper(node, "bilingual")!
++      expect(wrapper.querySelectorAll(".katex")).toHaveLength(1)
++      expect(wrapper.querySelectorAll(".katex-mathml")).toHaveLength(0)
++      expect(wrapper.textContent).toBe("时间常数为 τ。")
++    })
++
++    it("never sends a formula-only run", async () => {
++      render(<p data-testid="test-node" />)
++      const node = screen.getByTestId("test-node")
++      node.innerHTML = `(${mathml("m1", "x")})`
++
++      await removeOrShowPageTranslation("bilingual", true)
++
++      expect(translateTextForPage).not.toHaveBeenCalled()
++      expect(node.querySelector(`.${CONTENT_WRAPPER_CLASS}`)).toBeNull()
++    })
++
++    it("hides an echoed translation that only returns the placeholders", async () => {
++      vi.mocked(translateTextForPage).mockImplementation(async (text) => text)
++      render(<p data-testid="test-node" />)
++      const node = screen.getByTestId("test-node")
++      node.innerHTML = `Let ${mathml("m1", "x")} be the mean.`
++
++      await removeOrShowPageTranslation("bilingual", true)
++
++      expect(translateTextForPage).toHaveBeenCalledWith(
++        "Let {{0}} be the mean.",
++        "plain",
++        DEFAULT_PAGE_TRANSLATION_OPTIONS,
++      )
++      expect(node.querySelector(`.${CONTENT_WRAPPER_CLASS}`)).toBeNull()
++    })
++
++    it("appends a formula whose placeholder the provider dropped", async () => {
++      vi.mocked(translateTextForPage).mockResolvedValue("设为均值。")
++      render(<p data-testid="test-node" />)
++      const node = screen.getByTestId("test-node")
++      node.innerHTML = `Let ${mathml("m1", "x")} be the mean.`
++
++      await removeOrShowPageTranslation("bilingual", true)
++
++      const wrapper = expectTranslationWrapper(node, "bilingual")!
++      expect(wrapper.querySelectorAll("math")).toHaveLength(1)
++      expect(wrapper.textContent).toBe("设为均值。 x")
++    })
++
++    it("keeps a newline-preserving container with a formula on the whole-run path", async () => {
++      vi.mocked(translateTextForPage).mockImplementation(async (text) =>
++        text.includes("{{0}}") ? "第一句 {{0}}。\n\n第二句。" : MOCK_TRANSLATION,
++      )
++      render(<div data-testid="test-node" style={{ whiteSpace: "pre-wrap" }} />)
++      const node = screen.getByTestId("test-node")
++      node.innerHTML = `First ${mathml("m1", "x")} sentence.\n\nSecond sentence.`
++
++      await removeOrShowPageTranslation("bilingual", true)
++
++      expect(vi.mocked(translateTextForPage).mock.calls).toEqual([
++        [
++          "First {{0}} sentence.\n\nSecond sentence.",
++          "plain",
++          PRESERVE_LINE_BREAKS_TRANSLATION_OPTIONS,
++        ],
++      ])
++      const wrapper = expectTranslationWrapper(node, "bilingual")!
++      expect(wrapper.hasAttribute(VIRTUAL_PARAGRAPH_ATTRIBUTE)).toBe(false)
++      expect(wrapper.querySelectorAll("math")).toHaveLength(1)
++      expect(wrapper.textContent).toContain("第二句")
++    })
++
++    it("still splits the same container into virtual paragraphs without a formula", async () => {
++      render(<div data-testid="test-node" style={{ whiteSpace: "pre-wrap" }} />)
++      const node = screen.getByTestId("test-node")
++      node.innerHTML = "First plain sentence.\n\nSecond sentence."
++
++      await removeOrShowPageTranslation("bilingual", true)
++
++      expect(vi.mocked(translateTextForPage).mock.calls).toHaveLength(2)
++      expect(
++        vi.mocked(translateTextForPage).mock.calls.every(([request]) => !request.includes("{{")),
++      ).toBe(true)
++    })
++
++    it("leaves translationOnly mode on its HTML path without placeholders", async () => {
++      render(<p data-testid="test-node" />)
++      const node = screen.getByTestId("test-node")
++      node.innerHTML = `Let ${mathml("m1", "x")} be the mean.`
++
++      await removeOrShowPageTranslation("translationOnly", true)
++
++      expect(translateTextForPage).toHaveBeenCalled()
++      const [request, textFormat] = vi.mocked(translateTextForPage).mock.calls[0]!
++      expect(textFormat).toBe("html")
++      expect(request).toContain("<math")
++      expect(request).not.toContain("{{0}}")
++    })
++  })
++
+   describe("translationOnly HTML attribute placeholders", () => {
+     beforeEach(() => {
+       vi.mocked(translateTextForPage).mockReset().mockResolvedValue(MOCK_TRANSLATION)
+diff --git a/src/utils/host/dom/__tests__/filter.test.ts b/src/utils/host/dom/__tests__/filter.test.ts
+index df4f680e..9cd51c50 100644
+--- a/src/utils/host/dom/__tests__/filter.test.ts
++++ b/src/utils/host/dom/__tests__/filter.test.ts
+@@ -10,6 +10,7 @@ import {
+ import {
+   isDontWalkIntoAndDontTranslateAsChildElement,
+   isDontWalkIntoButTranslateAsChildElement,
++  isInlineAtomElement,
+   isShallowBlockHTMLElement,
+   isShallowInlineHTMLElement,
+   isTranslatedContentNode,
+@@ -207,6 +208,49 @@ describe("isDontWalkIntoAndDontTranslateAsChildElement", () => {
+     expect(isDontWalkIntoAndDontTranslateAsChildElement(element, config)).toBe(false)
+   })
+ 
++  it("should treat atomSelectors as inline atoms that also block the walk", () => {
++    setHost("atom-example.org")
++    const config = configWithSiteRule({
++      id: "atoms",
++      matches: "atom-example.org",
++      atomSelectors: [".formula"],
++    })
++    const element = document.createElement("span")
++    element.classList.add("formula")
++
++    expect(isInlineAtomElement(element, config)).toBe(true)
++    expect(isDontWalkIntoButTranslateAsChildElement(element, config)).toBe(true)
++    expect(isDontWalkIntoAndDontTranslateAsChildElement(element, config)).toBe(false)
++
++    const plain = document.createElement("span")
++    expect(isInlineAtomElement(plain, config)).toBe(false)
++  })
++
++  it("should treat native <math> roots as inline atoms without any rule", () => {
++    setHost("atom-example.org")
++    const container = document.createElement("div")
++    container.innerHTML = "<math><mi>x</mi></math>"
++    const math = container.firstElementChild as HTMLElement
++
++    expect(isInlineAtomElement(math, DEFAULT_CONFIG)).toBe(true)
++    // Nested MathML nodes are not roots.
++    expect(isInlineAtomElement(math.firstElementChild as HTMLElement, DEFAULT_CONFIG)).toBe(false)
++  })
++
++  it("should let atomSelectors.remove turn a built-in atom off", () => {
++    setHost("atom-example.org")
++    const config = configWithSiteRule({
++      id: "no-katex-atoms",
++      matches: "atom-example.org",
++      "atomSelectors.remove": ["span.katex"],
++    })
++    const katex = document.createElement("span")
++    katex.classList.add("katex")
++
++    expect(isInlineAtomElement(katex, config)).toBe(false)
++    expect(isInlineAtomElement(katex, DEFAULT_CONFIG)).toBe(true)
++  })
++
+   it("should skip top-level <header> in main mode", () => {
+     const header = document.createElement("header")
+     document.body.appendChild(header)
+diff --git a/src/utils/host/dom/__tests__/traversal.test.ts b/src/utils/host/dom/__tests__/traversal.test.ts
+index 42f18e33..e66ff8df 100644
+--- a/src/utils/host/dom/__tests__/traversal.test.ts
++++ b/src/utils/host/dom/__tests__/traversal.test.ts
+@@ -222,6 +222,51 @@ describe("extractTextContent", () => {
+       expect(extractTextContent(div, DEFAULT_CONFIG)).toBe("OuterInner")
+     })
+   })
++
++  describe("replaceElement hook", () => {
++    it("substitutes the returned string for the element's whole subtree", () => {
++      const p = document.createElement("p")
++      p.innerHTML = 'Let <span class="formula"><i>x</i>+1</span> be the mean.'
++      const extracted = extractTextContent(p, DEFAULT_CONFIG, {
++        replaceElement: (element) => (element.classList.contains("formula") ? "{{0}}" : undefined),
++      })
++      expect(extracted).toBe("Let {{0}} be the mean.")
++    })
++
++    it("falls through to normal extraction when the hook returns undefined", () => {
++      const p = document.createElement("p")
++      p.innerHTML = 'Let <span class="formula"><i>x</i>+1</span> be the mean.'
++      const extracted = extractTextContent(p, DEFAULT_CONFIG, { replaceElement: () => undefined })
++      expect(extracted).toBe(extractTextContent(p, DEFAULT_CONFIG))
++    })
++
++    it("intercepts a dont-walk element such as <math> before it collapses to an empty string", () => {
++      const p = document.createElement("p")
++      p.innerHTML = "Let <math><mi>x</mi></math> be the mean."
++      expect(extractTextContent(p, DEFAULT_CONFIG)).toBe("Let  be the mean.")
++      const extracted = extractTextContent(p, DEFAULT_CONFIG, {
++        replaceElement: (element) => (element.localName === "math" ? "{{0}}" : undefined),
++      })
++      expect(extracted).toBe("Let {{0}} be the mean.")
++    })
++
++    it("is never consulted for our own translated wrappers or their contents", () => {
++      const p = document.createElement("p")
++      p.innerHTML =
++        'Host <math><mi>x</mi></math><span class="read-frog-translated-content-wrapper">译文 <math><mi>y</mi></math></span>'
++      const seen: string[] = []
++      const extracted = extractTextContent(p, DEFAULT_CONFIG, {
++        replaceElement: (element) => {
++          seen.push(element.localName)
++          return element.localName === "math" ? "{{0}}" : undefined
++        },
++      })
++      expect(extracted).toBe("Host {{0}}")
++      // The paragraph itself is offered to the hook; the wrapper and the
++      // <math> inside it never are.
++      expect(seen).toEqual(["p", "math"])
++    })
++  })
+ })
+ 
+ describe("site rule node selectors", () => {
+diff --git a/src/utils/host/dom/filter.ts b/src/utils/host/dom/filter.ts
+index af74c878..409596a9 100644
+--- a/src/utils/host/dom/filter.ts
++++ b/src/utils/host/dom/filter.ts
+@@ -192,6 +192,24 @@ export function isSiteRulePreserveTextElement(element: HTMLElement, config: Conf
+   return preserveTextSelector !== null && element.matches(preserveTextSelector)
+ }
+ 
++export function isSiteRuleAtomElement(element: HTMLElement, config: Config): boolean {
++  const { atomSelector } = getEffectiveSiteRule(config, window.location.href)
++  return atomSelector !== null && element.matches(atomSelector)
++}
++
++/**
++ * An inline atom is a rendered formula whose subtree is opaque to translation:
++ * bilingual mode sends a placeholder instead of its text and clones the
++ * element back into the translation. Native MathML roots are atoms by tag
++ * (MathML keeps lowercase local names inside an HTML document); everything
++ * else comes from the `atomSelectors` site-rule family. Atoms are already
++ * walk-blocked because the resolver folds atom selectors into
++ * `preserveTextSelector`, so this predicate is only consulted by extraction.
++ */
++export function isInlineAtomElement(element: HTMLElement, config: Config): boolean {
++  return element.localName === "math" || isSiteRuleAtomElement(element, config)
++}
++
+ /**
+  * Whitelist gate: when the effective site rule declares `includeSelectors`,
+  * only elements inside (or matching) one of them may become translation
+diff --git a/src/utils/host/dom/traversal.ts b/src/utils/host/dom/traversal.ts
+index 6fb983d1..88bcb414 100644
+--- a/src/utils/host/dom/traversal.ts
++++ b/src/utils/host/dom/traversal.ts
+@@ -24,7 +24,23 @@ import {
+ 
+ const NON_NEWLINE_WHITESPACE_RE = /[^\S\n]/
+ 
+-export function extractTextContent(node: TransNode, config: Config): string {
++export interface ExtractTextContentOptions {
++  /**
++   * Consulted for every element AFTER the translated-wrapper guard and BEFORE
++   * the dont-walk guard. Returning a string substitutes it for the element's
++   * whole subtree (the inline-atom placeholder); `undefined` means "extract
++   * normally". The position is load-bearing: earlier and clones inside our own
++   * wrappers would be re-tokenized, later and a `<math>` (a dont-walk tag) has
++   * already collapsed to "".
++   */
++  replaceElement?: (element: HTMLElement) => string | undefined
++}
++
++export function extractTextContent(
++  node: TransNode,
++  config: Config,
++  options: ExtractTextContentOptions = {},
++): string {
+   if (isTextNode(node)) {
+     const text = node.textContent ?? ""
+     const trimmed = text.trim()
+@@ -56,6 +72,11 @@ export function extractTextContent(node: TransNode, config: Config): string {
+     return ""
+   }
+ 
++  const replacement = options.replaceElement?.(node)
++  if (replacement !== undefined) {
++    return replacement
++  }
++
+   if (isDontWalkIntoAndDontTranslateAsChildElement(node, config)) {
+     return ""
+   }
+@@ -64,7 +85,7 @@ export function extractTextContent(node: TransNode, config: Config): string {
+   return childNodes.reduce((text: string, child: Node): string => {
+     // TODO: support SVGElement in the future
+     if (isTextNode(child) || isHTMLElement(child)) {
+-      return text + extractTextContent(child, config)
++      return text + extractTextContent(child, config, options)
+     }
+     return text
+   }, "")
+diff --git a/src/utils/host/translate/__tests__/inline-atom-tokens.test.ts b/src/utils/host/translate/__tests__/inline-atom-tokens.test.ts
+new file mode 100644
+index 00000000..64331fcd
+--- /dev/null
++++ b/src/utils/host/translate/__tests__/inline-atom-tokens.test.ts
+@@ -0,0 +1,143 @@
++import { describe, expect, it } from "vitest"
++import {
++  auditInlineAtomTokens,
++  decodeInlineAtomTokens,
++  encodeInlineAtomToken,
++  hasInlineAtomTokens,
++  INLINE_ATOM_TOKEN_DELIMITERS,
++  INLINE_ATOM_TOKEN_SYSTEM_PROMPT,
++  nextFreeInlineAtomIndex,
++} from "../inline-atom-tokens"
++
++const { open, close } = INLINE_ATOM_TOKEN_DELIMITERS
++
++describe("encodeInlineAtomToken", () => {
++  it("emits the delimiter constant around the index", () => {
++    expect(encodeInlineAtomToken(0)).toBe(`${open}0${close}`)
++    expect(encodeInlineAtomToken(12)).toBe(`${open}12${close}`)
++  })
++})
++
++describe("hasInlineAtomTokens", () => {
++  it("detects only the emitted shape", () => {
++    expect(hasInlineAtomTokens(`Let ${encodeInlineAtomToken(0)} be the mean.`)).toBe(true)
++    expect(hasInlineAtomTokens(encodeInlineAtomToken(3))).toBe(true)
++  })
++
++  it.each([
++    ["plain text", "Hello world"],
++    ["the no-translation sentinel", "{{NO_TRANSLATION_NEEDED}}"],
++    ["a named prompt token", "Translate {{input}} now"],
++    ["a spaced literal", "{{ 0 }}"],
++    ["a single-brace literal", "{0}"],
++    ["a citation", "as shown in [26]"],
++  ])("ignores %s", (_case, text) => {
++    expect(hasInlineAtomTokens(text)).toBe(false)
++  })
++})
++
++describe("nextFreeInlineAtomIndex", () => {
++  it("starts at zero for prose without token-shaped literals", () => {
++    expect(nextFreeInlineAtomIndex("")).toBe(0)
++    expect(nextFreeInlineAtomIndex("no tokens here")).toBe(0)
++  })
++
++  it("skips past the highest literal already in the prose", () => {
++    expect(nextFreeInlineAtomIndex("see {{3}} and {{1}}")).toBe(4)
++    expect(nextFreeInlineAtomIndex("{{0}}")).toBe(1)
++  })
++})
++
++describe("decodeInlineAtomTokens", () => {
++  it("splits text runs and tokens in order", () => {
++    expect(decodeInlineAtomTokens("设 {{0}} 为 {{1}}。")).toEqual([
++      { kind: "text", text: "设 " },
++      { kind: "atom", index: 0, raw: "{{0}}" },
++      { kind: "text", text: " 为 " },
++      { kind: "atom", index: 1, raw: "{{1}}" },
++      { kind: "text", text: "。" },
++    ])
++  })
++
++  it("returns a single text part when there are no tokens", () => {
++    expect(decodeInlineAtomTokens("nothing here")).toEqual([{ kind: "text", text: "nothing here" }])
++    expect(decodeInlineAtomTokens("")).toEqual([])
++  })
++
++  it("keeps reordered tokens in translation order", () => {
++    const indexes = decodeInlineAtomTokens("{{1}} before {{0}}")
++      .filter((part) => part.kind === "atom")
++      .map((part) => part.index)
++    expect(indexes).toEqual([1, 0])
++  })
++
++  // Only the emitted shape decodes. Anything else is page content: a decoder
++  // wider than `nextFreeInlineAtomIndex`'s numbering scan would render a
++  // formula over one of these literals and drop the real token as a duplicate.
++  it.each([
++    ["inner whitespace", "{{ 2 }}"],
++    ["fullwidth braces", "｛｛2｝｝"],
++    ["fullwidth digits", "{{２}}"],
++    ["mathematical white brackets", "⟦2⟧"],
++    ["double square brackets", "[[2]]"],
++    ["CJK lenticular brackets", "〖2〗"],
++    ["bare citation", "[26]"],
++    ["single braces", "{7}"],
++  ])("keeps %s as literal text", (_case, raw) => {
++    expect(decodeInlineAtomTokens(`x ${raw} y`)).toEqual([{ kind: "text", text: `x ${raw} y` }])
++  })
++
++  it("does not let a token-shaped literal in the prose swallow the real token", () => {
++    // The page wrote `[[0]]`; `{{0}}` is ours. Both survive, each as itself.
++    expect(decodeInlineAtomTokens("Reshape to [[0]] before applying {{0}}.")).toEqual([
++      { kind: "text", text: "Reshape to [[0]] before applying " },
++      { kind: "atom", index: 0, raw: "{{0}}" },
++      { kind: "text", text: "." },
++    ])
++  })
++})
++
++describe("auditInlineAtomTokens", () => {
++  const source = "Let {{0}} be {{1}} and {{2}}."
++
++  it("passes when every token comes back exactly once, in any order", () => {
++    expect(auditInlineAtomTokens(source, "设 {{2}} 与 {{0}} 为 {{1}}。")).toEqual({
++      ok: true,
++      missing: [],
++      unknown: [],
++      duplicates: [],
++    })
++  })
++
++  it("passes for a request without tokens", () => {
++    expect(auditInlineAtomTokens("plain", "纯文本").ok).toBe(true)
++  })
++
++  it("reports missing, unknown and duplicated tokens", () => {
++    expect(auditInlineAtomTokens(source, "设 {{0}} 为 {{0}}，{{7}}")).toEqual({
++      ok: false,
++      missing: [1, 2],
++      unknown: [7],
++      duplicates: [0],
++    })
++  })
++
++  it("refuses a response that reformatted the placeholders", () => {
++    // Never observed in the live probe, but if it happens the result is a
++    // degraded render that must not reach the cache.
++    expect(auditInlineAtomTokens(source, "｛｛０｝｝ ⟦1⟧ {{ 2 }}")).toEqual({
++      ok: false,
++      missing: [0, 1, 2],
++      unknown: [],
++      duplicates: [],
++    })
++  })
++})
++
++describe("INLINE_ATOM_TOKEN_SYSTEM_PROMPT", () => {
++  it("names both delimiters and carries no worked example", () => {
++    expect(INLINE_ATOM_TOKEN_SYSTEM_PROMPT).toContain(`\`${open}\``)
++    expect(INLINE_ATOM_TOKEN_SYSTEM_PROMPT).toContain(`\`${close}\``)
++    expect(INLINE_ATOM_TOKEN_SYSTEM_PROMPT).not.toMatch(/\{\{\d+\}\}/)
++  })
++})
+diff --git a/src/utils/host/translate/core/translation-modes.ts b/src/utils/host/translate/core/translation-modes.ts
+index e540620e..6f6534bf 100644
+--- a/src/utils/host/translate/core/translation-modes.ts
++++ b/src/utils/host/translate/core/translation-modes.ts
+@@ -29,6 +29,11 @@ import {
+ import { unwrapDeepestOnlyHTMLChild } from "../../dom/find"
+ import { getOwnerDocument } from "../../dom/node"
+ import { canSplitGiantWithoutStrandingOwnText, extractTextContent } from "../../dom/traversal"
++import {
++  containsInlineAtomOutsideWrappers,
++  extractInlineAtomText,
++  renderInlineAtomTranslation,
++} from "../dom/inline-atoms"
+ import {
+   buildVirtualParagraphPlan,
+   canMaterializeVirtualParagraphUnits,
+@@ -458,7 +463,15 @@ export async function translateNodesBilingualMode(
+ 
+     if (virtualLayoutSource) {
+       const virtualParagraphPlan = buildVirtualParagraphPlan(virtualLayoutSource, config)
+-      if (virtualParagraphPlan.units.length >= 2) {
++      // Virtual unit texts cannot carry inline-atom placeholders (the raw
++      // source collector drops atoms behind barriers), so a container that
++      // holds a formula stays on the whole-run path below, where the formulas
++      // are cloned into the translation. Checked only once a multi-unit plan
++      // exists, so ordinary containers pay nothing.
++      if (
++        virtualParagraphPlan.units.length >= 2 &&
++        !containsInlineAtomOutsideWrappers(virtualLayoutSource, config)
++      ) {
+         // Explicit blank-line boundaries represent block paragraphs even when
+         // an individual unit is short enough for the compact-label heuristic.
+         await translateVirtualParagraphs(
+@@ -518,11 +531,18 @@ export async function translateNodesBilingualMode(
+     const sourceTextBeforeFilter = isHTMLElement(layoutSource)
+       ? collectSourceTextExcludingWrappers(layoutSource)
+       : null
+-    const textContent = transNodes
+-      .map((node) => extractTextContent(node, config))
+-      .join("")
+-      .trim()
++    // One extraction yields two strings: `textContent` is the prose-only
++    // legacy string (atoms contribute "") that every filter below keeps
++    // seeing; `requestText` carries a {{n}} placeholder per inline atom
++    // (formula) and is what the provider, the echo check and the layout
++    // heuristic get. Without atoms the two are byte-identical.
++    const atomExtraction = extractInlineAtomText(transNodes, config)
++    const textContent = atomExtraction.filterText.trim()
++    const requestText = atomExtraction.requestText.trim()
+     if (!textContent || isNumericContent(textContent)) return
++    // A run whose only content is formulas (an equation cell, a bare
++    // display container) has nothing to translate; never send tokens alone.
++    if (atomExtraction.atoms.length > 0 && !atomExtraction.hasProse) return
+ 
+     let bilingualState: BilingualTranslationState | undefined
+     if (isHTMLElement(layoutSource) && sourceTextBeforeFilter !== null) {
+@@ -631,13 +651,13 @@ export async function translateNodesBilingualMode(
+ 
+     const realTranslatedText = await getTranslatedTextAndRemoveSpinner(
+       nodes,
+-      textContent,
++      requestText,
+       spinner,
+       translatedWrapperNode,
+       isCurrent,
+       "plain",
+       () =>
+-        translateTextForPage(textContent, "plain", {
++        translateTextForPage(requestText, "plain", {
+           preserveLineBreaks,
+           forceRetranslation,
+         }),
+@@ -648,7 +668,8 @@ export async function translateNodesBilingualMode(
+       return
+     }
+ 
+-    const translatedText = getDisplayTranslation(textContent, realTranslatedText)
++    // Compared on the tokenized strings: an echo comes back with its tokens.
++    const translatedText = getDisplayTranslation(requestText, realTranslatedText)
+ 
+     if (translatedText === "") {
+       removeTranslatedWrapperWithRestore(translatedWrapperNode)
+@@ -673,7 +694,15 @@ export async function translateNodesBilingualMode(
+         onContentInserted: (wrapper) => {
+           if (bilingualState) bilingualState.wrapperTextContent = wrapper.textContent
+         },
+-        sourceText: textContent,
++        // Inline atoms are cloned into the translated span at their
++        // placeholder positions; the tokenized text also stands in for the
++        // formulas' visible width in the short-inline layout heuristic.
++        renderTranslatedContent:
++          atomExtraction.atoms.length > 0
++            ? (translatedNode, text) =>
++                renderInlineAtomTranslation(translatedNode, text, atomExtraction)
++            : undefined,
++        sourceText: requestText,
+       },
+       translatedText,
+       config.pageTranslation.translationNodeStyle,
+diff --git a/src/utils/host/translate/dom/__tests__/inline-atoms.test.ts b/src/utils/host/translate/dom/__tests__/inline-atoms.test.ts
+new file mode 100644
+index 00000000..99045140
+--- /dev/null
++++ b/src/utils/host/translate/dom/__tests__/inline-atoms.test.ts
+@@ -0,0 +1,407 @@
++// @vitest-environment jsdom
++import type { Config } from "@/types/config/config"
++import { afterEach, describe, expect, it, vi } from "vitest"
++import { DEFAULT_CONFIG } from "@/utils/constants/config"
++import {
++  CONTENT_WRAPPER_CLASS,
++  INLINE_ATOM_CLASS,
++  WALKED_ATTRIBUTE,
++} from "@/utils/constants/dom-labels"
++import { logger } from "@/utils/logger"
++import { extractTextContent } from "../../../dom/traversal"
++import {
++  containsInlineAtomOutsideWrappers,
++  extractInlineAtomText,
++  isRenderableInlineAtom,
++  renderInlineAtomTranslation,
++  sanitizeInlineAtomClone,
++} from "../inline-atoms"
++
++// Trimmed one-formula snippets from the six renderer families captured on
++// 2026-09-04 (arXiv LaTeXML, KaTeX 0.16 CLI, MathJax 2.7.9 SVG, MathJax 3.2.2
++// CHTML/SVG, Wikipedia Parsoid). Structure is verbatim; long glyph lists cut.
++const ARXIV_P =
++  '<p id="S4.SS2.SSS0.Px3.p1.1" class="ltx_p">Our formulation not only enables conditioning on a single variable <math id="S4.SS2.SSS0.Px3.p1.m1" class="ltx_Math" alttext="\\omega" display="inline" intent=":literal"><semantics><mi>ω</mi><annotation encoding="application/x-tex">\\omega</annotation></semantics></math>, but also allows for other guidance-related factors. We can handle CFG interval <cite class="ltx_cite ltx_citemacro_cite">[<a href="#bib.bib48" title="" class="ltx_ref">26</a>]</cite> under the same paradigm.</p>'
++
++const KATEX_SPAN =
++  '<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>τ</mi><mn>1</mn></msub><mo>=</mo><mn>10.27</mn></mrow><annotation encoding="application/x-tex">\\tau_1 = 10.27</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.1132em;">τ</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span></span></span></span><span class="mrel">=</span><span class="mord">10.27</span></span></span></span>'
++const KATEX_P = `<p>Once fitted, the time constants were ${KATEX_SPAN} and ${KATEX_SPAN.replace("τ", "σ")}, which agree with the model.</p>`
++
++const MATHJAX2_FORMULA =
++  '<span class="MathJax_Preview" style="color: inherit;"></span><span class="MathJax_SVG" id="MathJax-Element-1-Frame" tabindex="0" data-mathml="&lt;math&gt;&lt;mi&gt;τ&lt;/mi&gt;&lt;/math&gt;" role="presentation" style="font-size: 100%; display: inline-block; position: relative;"><svg xmlns:xlink="http://www.w3.org/1999/xlink" width="1.5ex" height="1.8ex" viewBox="0 -500 660 780" role="img" focusable="false" style="vertical-align: -0.6ex;" aria-hidden="true"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)"><use xlink:href="#MJMATHI-3C4" x="0" y="0"></use></g></svg><span class="MJX_Assistive_MathML" role="presentation"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>τ</mi></math></span></span><script type="math/tex" id="MathJax-Element-1">\\tau</script>'
++const MATHJAX2_P = `<p id="target">The time constant ${MATHJAX2_FORMULA} was extracted from the decay.</p>`
++const SCIENCEDIRECT_P = `<p>The time constant <span class="math">${MATHJAX2_FORMULA}</span> was extracted from the decay.</p>`
++
++const MATHJAX3_CHTML =
++  '<mjx-container class="MathJax CtxtMenu_Attached_0" jax="CHTML" tabindex="0" ctxtmenu_counter="26" style="font-size: 119%; position: relative;"><mjx-math class="MJX-TEX" aria-hidden="true"><mjx-msub><mjx-mi class="mjx-i"><mjx-c class="mjx-c1D70B TEX-I"></mjx-c></mjx-mi><mjx-script style="vertical-align: -0.15em;"><mjx-mn class="mjx-n" size="s"><mjx-c class="mjx-c30"></mjx-c></mjx-mn></mjx-script></mjx-msub></mjx-math><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mi>π</mi><mn>0</mn></msub></math></mjx-assistive-mml></mjx-container>'
++const MATHJAX3_P = `<p>from the noise distribution ${MATHJAX3_CHTML} on the left.</p>`
++
++const MATHJAX3_SVG =
++  '<mjx-container class="MathJax" jax="SVG" tabindex="0" style="position: relative;"><svg xmlns="http://www.w3.org/2000/svg" width="1.5ex" height="1.8ex" viewBox="0 -500 660 780" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"><defs><path id="MJX-1-TEX-I-1D70F" d="M39 168Q39 225 58 272"></path></defs><g stroke="currentColor" fill="currentColor"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D70F" xlink:href="#MJX-1-TEX-I-1D70F"></use></g></g></g></svg><mjx-assistive-mml unselectable="on" display="inline"><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>τ</mi></math></mjx-assistive-mml></mjx-container>'
++const MATHJAX3_SVG_P = `<p>The measured constant ${MATHJAX3_SVG} agrees with the model.</p>`
++
++const WIKIPEDIA_P =
++  '<p id="mwaQ">Therefore, the mean lifetime <span class="mwe-math-element mwe-math-element-inline" typeof="mw:Extension/math" id="mwag"><span class="mwe-math-mathml-inline mwe-math-mathml-a11y" style="display: none;"><math xmlns="http://www.w3.org/1998/Math/MathML" class="mathjax_ignore" alttext="{\\displaystyle \\tau }"><semantics><mrow class="MJX-TeXAtom-ORD"><mstyle displaystyle="true" scriptlevel="0"><mi>τ<!-- τ --></mi></mstyle></mrow><annotation encoding="application/x-tex">{\\displaystyle \\tau }</annotation></semantics></math></span><img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/38a7" class="mwe-math-fallback-image-inline mw-invert skin-invert" aria-hidden="true" style="vertical-align: -0.338ex; width:1.202ex; height:1.676ex;" alt="{\\displaystyle \\tau }"/></span> is equal to the half-life divided by the natural log of 2, or:</p>'
++
++function paragraph(markup: string): HTMLElement {
++  const host = document.createElement("div")
++  host.innerHTML = markup
++  document.body.append(host)
++  return host.firstElementChild as HTMLElement
++}
++
++function setHost(host: string) {
++  Object.defineProperty(window, "location", {
++    value: new URL(`https://${host}/article`),
++    writable: true,
++    configurable: true,
++  })
++}
++
++function configWithSiteRule(rule: Config["siteRules"]["userRules"][number]): Config {
++  const config = structuredClone(DEFAULT_CONFIG)
++  config.siteRules = { userRules: [rule], disabledBuiltInRules: [] }
++  return config
++}
++
++afterEach(() => {
++  document.body.innerHTML = ""
++  setHost("neutral-test.example")
++  vi.restoreAllMocks()
++})
++
++describe("extractInlineAtomText", () => {
++  it("is byte-identical to the legacy extraction for a paragraph without atoms", () => {
++    const p = paragraph("<p>Hello <b>bold</b> and <a href='#'>link</a>.</p>")
++    const result = extractInlineAtomText([p], DEFAULT_CONFIG)
++    const legacy = extractTextContent(p, DEFAULT_CONFIG)
++    expect(result.filterText).toBe(legacy)
++    expect(result.requestText).toBe(legacy)
++    expect(result.atoms).toEqual([])
++    expect(result.baseIndex).toBe(0)
++    expect(result.hasProse).toBe(true)
++  })
++
++  it("replaces a native <math> root with a token while keeping the legacy filter text", () => {
++    const p = paragraph(ARXIV_P)
++    const result = extractInlineAtomText([p], DEFAULT_CONFIG)
++    expect(result.filterText).toBe(extractTextContent(p, DEFAULT_CONFIG))
++    expect(result.filterText).toContain("single variable , but also")
++    expect(result.requestText).toBe(
++      "Our formulation not only enables conditioning on a single variable {{0}}, but also allows for other guidance-related factors. We can handle CFG interval [26] under the same paradigm.",
++    )
++    expect(result.atoms).toHaveLength(1)
++    expect(result.atoms[0]).toBe(p.querySelector("math"))
++    expect(result.hasProse).toBe(true)
++  })
++
++  it("replaces KaTeX spans with tokens instead of leaking glyph soup", () => {
++    const p = paragraph(KATEX_P)
++    const result = extractInlineAtomText([p], DEFAULT_CONFIG)
++    expect(result.requestText).toBe(
++      "Once fitted, the time constants were {{0}} and {{1}}, which agree with the model.",
++    )
++    expect(result.filterText).not.toContain("τ")
++    expect(result.filterText).not.toContain("​")
++    expect(result.atoms.map((atom) => atom.className)).toEqual(["katex", "katex"])
++  })
++
++  it("emits one token per MathJax v2 formula: empty preview, SVG span, script", () => {
++    const p = paragraph(MATHJAX2_P)
++    const result = extractInlineAtomText([p], DEFAULT_CONFIG)
++    expect(result.requestText).toBe("The time constant {{0}} was extracted from the decay.")
++    expect(result.atoms).toHaveLength(1)
++    expect(result.atoms[0]?.classList.contains("MathJax_SVG")).toBe(true)
++  })
++
++  it("treats the ScienceDirect span.math wrapper as the atom on that site", () => {
++    setHost("www.sciencedirect.com")
++    const p = paragraph(SCIENCEDIRECT_P)
++    const result = extractInlineAtomText([p], DEFAULT_CONFIG)
++    expect(result.requestText).toBe("The time constant {{0}} was extracted from the decay.")
++    expect(result.atoms[0]?.classList.contains("math")).toBe(true)
++  })
++
++  it("emits one token for MathJax v3 CHTML and SVG containers", () => {
++    for (const markup of [MATHJAX3_P, MATHJAX3_SVG_P]) {
++      const p = paragraph(markup)
++      const result = extractInlineAtomText([p], DEFAULT_CONFIG)
++      expect(result.requestText).toMatch(/^[^{]+ \{\{0\}\} [^{]+$/)
++      expect(result.atoms).toHaveLength(1)
++      expect(result.atoms[0]?.localName).toBe("mjx-container")
++    }
++  })
++
++  it("emits one token for a Wikipedia math element and never counts the inner math or img", () => {
++    const p = paragraph(WIKIPEDIA_P)
++    const result = extractInlineAtomText([p], DEFAULT_CONFIG)
++    expect(result.requestText).toBe(
++      "Therefore, the mean lifetime {{0}} is equal to the half-life divided by the natural log of 2, or:",
++    )
++    expect(result.filterText).toBe(extractTextContent(p, DEFAULT_CONFIG))
++    expect(result.atoms).toHaveLength(1)
++  })
++
++  it("tokenizes atoms nested in inline formatting, at the edges, and back to back", () => {
++    const m = (symbol: string) =>
++      `<math class="ltx_Math" alttext="${symbol}"><semantics><mi>${symbol}</mi><annotation encoding="application/x-tex">${symbol}</annotation></semantics></math>`
++    const p = paragraph(
++      `<figcaption>${m("u")} predicts <span class="ltx_font_bold">average velocity</span> ${m("v")}${m("w")} via <em><a href="#x">${m("x")}<span class="ltx_font_bold">-loss re-parameterized by ${m("y")}-pred</span></a></em>, input ${m("z")}</figcaption>`,
++    )
++    const result = extractInlineAtomText([p], DEFAULT_CONFIG)
++    expect(result.requestText).toBe(
++      "{{0}} predicts average velocity {{1}}{{2}} via {{3}}-loss re-parameterized by {{4}}-pred, input {{5}}",
++    )
++    expect(result.atoms.map((atom) => atom.getAttribute("alttext"))).toEqual([
++      "u",
++      "v",
++      "w",
++      "x",
++      "y",
++      "z",
++    ])
++    expect(result.filterText).toBe(extractTextContent(p, DEFAULT_CONFIG))
++  })
++
++  it("reports no prose for a formula-only run", () => {
++    const p = paragraph("<p>(<math><mi>x</mi></math>)</p>")
++    const result = extractInlineAtomText([p], DEFAULT_CONFIG)
++    expect(result.atoms).toHaveLength(1)
++    expect(result.hasProse).toBe(false)
++  })
++
++  it("numbers tokens past a token-shaped literal already in the prose", () => {
++    const p = paragraph("<p>Use {{0}} in templates, unlike <math><mi>x</mi></math>.</p>")
++    const result = extractInlineAtomText([p], DEFAULT_CONFIG)
++    expect(result.baseIndex).toBe(1)
++    expect(result.requestText).toBe("Use {{0}} in templates, unlike {{1}}.")
++  })
++
++  it("falls back to the legacy string when the prose itself contains U+FFFC", () => {
++    const p = paragraph("<p>Object ￼ here <math><mi>x</mi></math>.</p>")
++    const result = extractInlineAtomText([p], DEFAULT_CONFIG)
++    expect(result.atoms).toEqual([])
++    expect(result.requestText).toBe(extractTextContent(p, DEFAULT_CONFIG))
++  })
++
++  it("drops a hidden atom exactly like the legacy extraction", () => {
++    const p = paragraph(
++      `<p>Hidden <span class="katex" style="display:none"><span class="katex-html">x</span></span> here.</p>`,
++    )
++    const result = extractInlineAtomText([p], DEFAULT_CONFIG)
++    expect(result.atoms).toEqual([])
++    expect(result.requestText).toBe("Hidden  here.")
++  })
++
++  it("honors atomSelectors.remove and never promotes a renderer's hidden <math> copy", () => {
++    setHost("plain.example")
++    const config = configWithSiteRule({
++      id: "no-katex",
++      matches: "plain.example",
++      "atomSelectors.remove": ["span.katex"],
++    })
++    const p = paragraph(KATEX_P)
++    const result = extractInlineAtomText([p], config)
++    // span.katex is still preserve-text, so its .katex-mathml <math> stays
++    // dropped as it always was instead of becoming an atom of its own.
++    expect(result.atoms).toEqual([])
++    expect(result.requestText).toBe(extractTextContent(p, config))
++    expect(result.requestText).toContain("τ1")
++  })
++
++  it("does not consult computed styles for atoms it can classify by tag", () => {
++    const p = paragraph(ARXIV_P)
++    const spy = vi.spyOn(window, "getComputedStyle")
++    extractInlineAtomText([p], DEFAULT_CONFIG)
++    const inspected = spy.mock.calls.map(([element]) => element.localName)
++    expect(inspected).not.toContain("math")
++  })
++})
++
++describe("isRenderableInlineAtom", () => {
++  it("rejects an empty MathJax preview span", () => {
++    const p = paragraph('<p><span class="MathJax_Preview" style="color: inherit;"></span></p>')
++    expect(isRenderableInlineAtom(p.firstElementChild as HTMLElement)).toBe(false)
++  })
++
++  it("accepts element children or text", () => {
++    const p = paragraph('<p><span class="a"><img src="x.svg"></span><span class="b">x</span></p>')
++    expect(isRenderableInlineAtom(p.children[0] as HTMLElement)).toBe(true)
++    expect(isRenderableInlineAtom(p.children[1] as HTMLElement)).toBe(true)
++  })
++})
++
++describe("sanitizeInlineAtomClone", () => {
++  it("strips ids, walk marks, handlers and unsafe URLs but keeps renderer attributes", () => {
++    const p = paragraph(
++      `<p><span class="katex" id="f1" tabindex="0" onclick="evil()" data-read-frog-walked="w" aria-labelledby="f1-label" style="color:red"><span class="katex-mathml"><math><mi>x</mi></math></span><span class="katex-html"><a href="javascript:alert(1)">x</a><img src="glyph.svg" onerror="evil()"><span class="mord">x</span></span><script>evil()</script></span></p>`,
++    )
++    const source = p.firstElementChild as HTMLElement
++    const before = source.outerHTML
++    const clone = sanitizeInlineAtomClone(source)
++
++    expect(source.outerHTML).toBe(before)
++    expect(clone).not.toBe(source)
++    expect(clone.hasAttribute("id")).toBe(false)
++    expect(clone.hasAttribute("tabindex")).toBe(false)
++    expect(clone.hasAttribute("onclick")).toBe(false)
++    expect(clone.hasAttribute(WALKED_ATTRIBUTE)).toBe(false)
++    expect(clone.hasAttribute("aria-labelledby")).toBe(false)
++    expect(clone.getAttribute("style")).toBe("color:red")
++    expect(clone.querySelector("script")).toBeNull()
++    expect(clone.querySelector(".katex-mathml")).toBeNull()
++    expect(clone.querySelector("a")?.hasAttribute("href")).toBe(false)
++    expect(clone.querySelector("img")?.getAttribute("src")).toBe("glyph.svg")
++    expect(clone.querySelector("img")?.hasAttribute("onerror")).toBe(false)
++    expect(clone.querySelector(".mord")?.textContent).toBe("x")
++    expect(clone.classList.contains(INLINE_ATOM_CLASS)).toBe(true)
++    expect(clone.classList.contains("mathjax_ignore")).toBe(true)
++    expect(clone.classList.contains("tex2jax_ignore")).toBe(true)
++    expect(clone.getAttribute("translate")).toBe("no")
++    expect(clone.getAttribute("aria-hidden")).toBe("true")
++    expect(clone.getAttribute("dir")).toBe("ltr")
++  })
++
++  it("keeps a native MathML clone renderable without its annotations", () => {
++    const p = paragraph(ARXIV_P)
++    const clone = sanitizeInlineAtomClone(p.querySelector("math") as HTMLElement)
++    expect(clone.localName).toBe("math")
++    expect(clone.querySelector("annotation")).toBeNull()
++    expect(clone.querySelector("mi")?.textContent).toBe("ω")
++    expect(clone.getAttribute("alttext")).toBe("\\omega")
++    expect(clone.hasAttribute("id")).toBe(false)
++  })
++
++  it("drops MathJax scripts and assistive copies and keeps document-level SVG references", () => {
++    const p = paragraph(MATHJAX2_P)
++    const clone = sanitizeInlineAtomClone(p.querySelector(".MathJax_SVG") as HTMLElement)
++    expect(clone.querySelector("script")).toBeNull()
++    expect(clone.querySelector(".MJX_Assistive_MathML")).toBeNull()
++    expect(clone.querySelector("use")?.getAttribute("xlink:href")).toBe("#MJMATHI-3C4")
++    expect(clone.querySelector("svg")).not.toBeNull()
++  })
++
++  it("renames locally referenced SVG ids so MathJax v3 SVG clones stay self-contained", () => {
++    const p = paragraph(MATHJAX3_SVG_P)
++    const clone = sanitizeInlineAtomClone(p.querySelector("mjx-container") as HTMLElement)
++    const path = clone.querySelector("path")
++    const use = clone.querySelector("use")
++    expect(path?.id).toMatch(/^MJX-1-TEX-I-1D70F-rf-atom-\d+$/)
++    expect(use?.getAttribute("xlink:href")).toBe(`#${path?.id}`)
++    expect(clone.querySelector("mjx-assistive-mml")).toBeNull()
++    expect(clone.querySelector("mjx-math, svg")).not.toBeNull()
++    // The source keeps its original ids.
++    expect(p.querySelector("path")?.id).toBe("MJX-1-TEX-I-1D70F")
++  })
++
++  it("keeps Wikipedia image fallbacks and drops the hidden MathML copy's annotation only", () => {
++    const p = paragraph(WIKIPEDIA_P)
++    const clone = sanitizeInlineAtomClone(p.querySelector(".mwe-math-element") as HTMLElement)
++    expect(clone.querySelector("img")?.getAttribute("src")).toContain("wikimedia.org")
++    expect(clone.querySelector("annotation")).toBeNull()
++    expect(clone.hasAttribute("id")).toBe(false)
++  })
++})
++
++describe("renderInlineAtomTranslation", () => {
++  function extract(markup: string) {
++    const p = paragraph(markup)
++    return { p, extraction: extractInlineAtomText([p], DEFAULT_CONFIG) }
++  }
++
++  it("places clones at the translated token positions, in translation order", () => {
++    const { p, extraction } = extract(
++      "<p>Let <math><mi>x</mi></math> be smaller than <math><mi>y</mi></math>.</p>",
++    )
++    expect(extraction.requestText).toBe("Let {{0}} be smaller than {{1}}.")
++    const container = document.createElement("span")
++    renderInlineAtomTranslation(container, "设 {{1}} 大于 {{0}}。", extraction)
++
++    expect(container.childNodes).toHaveLength(5)
++    expect(container.childNodes[0]?.textContent).toBe("设 ")
++    const clones = [...container.querySelectorAll("math")]
++    expect(clones).toHaveLength(2)
++    expect(clones[0]?.textContent).toBe("y")
++    expect(clones[1]?.textContent).toBe("x")
++    expect(clones[0]).not.toBe(p.querySelectorAll("math")[1])
++    expect(clones.every((clone) => clone.classList.contains(INLINE_ATOM_CLASS))).toBe(true)
++    expect(container.textContent).toBe("设 y 大于 x。")
++    // Source untouched.
++    expect(p.querySelectorAll("math")).toHaveLength(2)
++  })
++
++  it("renders a duplicated token once and keeps an unknown token as literal text", () => {
++    const { extraction } = extract("<p>Let <math><mi>x</mi></math> be.</p>")
++    const container = document.createElement("span")
++    renderInlineAtomTranslation(container, "设 {{0}} 和 {{0}} 与 {{9}}。", extraction)
++    expect(container.querySelectorAll("math")).toHaveLength(1)
++    expect(container.textContent).toBe("设 x 和  与 {{9}}。")
++  })
++
++  it("appends dropped atoms after the text and warns once", () => {
++    const warn = vi.spyOn(logger, "warn").mockImplementation(() => {})
++    const { extraction } = extract(
++      "<p>Let <math><mi>x</mi></math> and <math><mi>y</mi></math> be.</p>",
++    )
++    const container = document.createElement("span")
++    renderInlineAtomTranslation(container, "没有占位符。", extraction)
++    expect(container.textContent).toBe("没有占位符。 x y")
++    expect(container.querySelectorAll("math")).toHaveLength(2)
++    expect(warn).toHaveBeenCalledTimes(1)
++  })
++
++  it("resolves tokens against the collision offset", () => {
++    const { extraction } = extract("<p>Use {{0}} in templates, unlike <math><mi>x</mi></math>.</p>")
++    const container = document.createElement("span")
++    renderInlineAtomTranslation(container, "模板里用 {{0}}，不像 {{1}}。", extraction)
++    expect(container.textContent).toBe("模板里用 {{0}}，不像 x。")
++    expect(container.querySelectorAll("math")).toHaveLength(1)
++  })
++
++  it("keeps adjacent clones adjacent and honors an existing dir on the atom", () => {
++    const { extraction } = extract(
++      '<p>Let <math dir="rtl"><mi>x</mi></math><math><mi>y</mi></math> be.</p>',
++    )
++    const container = document.createElement("span")
++    renderInlineAtomTranslation(container, "设 {{0}}{{1}} 为。", extraction)
++    const clones = [...container.querySelectorAll("math")]
++    expect(clones).toHaveLength(2)
++    expect(clones[0]?.nextSibling).toBe(clones[1])
++    expect(clones[0]?.getAttribute("dir")).toBe("rtl")
++    expect(clones[1]?.getAttribute("dir")).toBe("ltr")
++  })
++
++  it("leaves a token-shaped literal from the page alone", () => {
++    // `[[0]]` is prose the provider faithfully returned, not a placeholder:
++    // the formula belongs at `{{0}}` and the literal must survive verbatim.
++    const { extraction } = extract(
++      "<p>Reshape to <code>[[0]]</code> before applying <math><mi>x</mi></math>.</p>",
++    )
++    const container = document.createElement("span")
++    renderInlineAtomTranslation(container, "在应用 {{0}} 前重塑为 [[0]]。", extraction)
++    expect(container.querySelectorAll("math")).toHaveLength(1)
++    expect(container.textContent).toBe("在应用 x 前重塑为 [[0]]。")
++  })
++})
++
++describe("containsInlineAtomOutsideWrappers", () => {
++  it("is true for host atoms and false for clones inside our own wrappers", () => {
++    const withAtom = paragraph(ARXIV_P)
++    expect(containsInlineAtomOutsideWrappers(withAtom, DEFAULT_CONFIG)).toBe(true)
++
++    const onlyClone = paragraph(
++      `<p>Host text<span class="${CONTENT_WRAPPER_CLASS}">译文 <math class="${INLINE_ATOM_CLASS}"><mi>x</mi></math></span></p>`,
++    )
++    expect(containsInlineAtomOutsideWrappers(onlyClone, DEFAULT_CONFIG)).toBe(false)
++  })
++
++  it("ignores atoms that would not render", () => {
++    const p = paragraph('<p>Text <span class="MathJax_Preview" style="color: inherit;"></span></p>')
++    expect(containsInlineAtomOutsideWrappers(p, DEFAULT_CONFIG)).toBe(false)
++  })
++
++  it("is false for containers without atoms", () => {
++    const p = paragraph('<p>Tweet text <img alt="😀" src="emoji.png"> more</p>')
++    expect(containsInlineAtomOutsideWrappers(p, DEFAULT_CONFIG)).toBe(false)
++  })
++})
+diff --git a/src/utils/host/translate/dom/inline-atoms.ts b/src/utils/host/translate/dom/inline-atoms.ts
+new file mode 100644
+index 00000000..d5c8fbd0
+--- /dev/null
++++ b/src/utils/host/translate/dom/inline-atoms.ts
+@@ -0,0 +1,297 @@
++import type { Config } from "@/types/config/config"
++import type { TransNode } from "@/types/dom"
++import {
++  CONTENT_WRAPPER_CLASS,
++  INLINE_ATOM_CLASS,
++  MARK_ATTRIBUTES,
++} from "@/utils/constants/dom-labels"
++import { logger } from "@/utils/logger"
++import { getEffectiveSiteRule } from "@/utils/site-rules/effective"
++import { isDontWalkIntoAndDontTranslateAsChildElement, isInlineAtomElement } from "../../dom/filter"
++import { extractTextContent } from "../../dom/traversal"
++import {
++  decodeInlineAtomTokens,
++  encodeInlineAtomToken,
++  nextFreeInlineAtomIndex,
++} from "../inline-atom-tokens"
++
++/**
++ * Inline atoms for bilingual page translation.
++ *
++ * A rendered formula (native MathML, KaTeX, MathJax, Wikipedia math) carries
++ * no translatable text, yet its subtree is exactly what the plain-text
++ * extractor cannot represent: dont-walk tags collapse to "" and KaTeX's glyph
++ * spans leak as soup. Instead of teaching the provider markup, the paragraph
++ * is extracted ONCE with every atom replaced by a `{{n}}` placeholder
++ * (`requestText`) while the prose-only string every existing filter already
++ * sees is kept alongside (`filterText`). After translation the placeholders
++ * are located again and sanitized clones of the original elements are put in
++ * their place. Paragraphs without atoms are byte-identical to the legacy path.
++ */
++export interface InlineAtomExtraction {
++  /** Legacy extraction: atoms contribute "". Feeds the numeric/small-paragraph/language filters. */
++  filterText: string
++  /** Prose with one `{{n}}` per renderable atom. Sent to the provider. */
++  requestText: string
++  /** Source elements in document order; never clones. */
++  atoms: readonly HTMLElement[]
++  /** Token numbering starts here so token-shaped literals in the prose never collide. */
++  baseIndex: number
++  /** Whether `filterText` contains any letter — token-only runs must not be sent. */
++  hasProse: boolean
++}
++
++// OBJECT REPLACEMENT CHARACTER: an in-band marker for the single extraction
++// pass, swapped for real tokens once the collision offset is known.
++const ATOM_SENTINEL = "￼"
++const ATOM_SENTINEL_RE = /￼/g
++const PROSE_RE = /\p{L}/u
++
++/**
++ * An atom worth a placeholder must render something. MathJax v2 leaves an
++ * empty `span.MathJax_Preview` beside every typeset formula; cloning it would
++ * only add a token the provider can drop.
++ */
++export function isRenderableInlineAtom(element: HTMLElement): boolean {
++  return element.firstElementChild !== null || (element.textContent ?? "").trim() !== ""
++}
++
++export function extractInlineAtomText(
++  nodes: readonly TransNode[],
++  config: Config,
++): InlineAtomExtraction {
++  const atoms: HTMLElement[] = []
++
++  const replaceElement = (element: HTMLElement): string | undefined => {
++    if (!isInlineAtomElement(element, config)) return undefined
++    if (element.localName === "math") {
++      // A <math> nested inside a renderer wrapper the walk already treats as
++      // one unit (KaTeX's .katex-mathml, MathJax's assistive MathML) is the
++      // hidden accessible copy of a formula that wrapper renders. Cloning it
++      // next to the wrapper's own text would show the formula twice, so it
++      // stays dropped exactly as before; the wrapper is the atom when a rule
++      // says so. Native <math> also never reaches getComputedStyle, which
++      // some environments refuse for MathML.
++      const { preserveTextSelector } = getEffectiveSiteRule(config, window.location.href)
++      if (preserveTextSelector !== null && element.parentElement?.closest(preserveTextSelector)) {
++        return ""
++      }
++    } else if (isDontWalkIntoAndDontTranslateAsChildElement(element, config)) {
++      // Hidden or site-excluded atoms keep today's behavior (dropped).
++      return ""
++    }
++    if (!isRenderableInlineAtom(element)) return ""
++    atoms.push(element)
++    return ATOM_SENTINEL
++  }
++
++  const raw = nodes.map((node) => extractTextContent(node, config, { replaceElement })).join("")
++  if (atoms.length === 0) {
++    return { filterText: raw, requestText: raw, atoms, baseIndex: 0, hasProse: PROSE_RE.test(raw) }
++  }
++
++  const sentinelCount = raw.split(ATOM_SENTINEL).length - 1
++  if (sentinelCount !== atoms.length) {
++    // The page text itself contains U+FFFC, so atoms cannot be told apart from
++    // it. Fall back to the legacy string rather than guess.
++    const legacy = nodes.map((node) => extractTextContent(node, config)).join("")
++    return {
++      filterText: legacy,
++      requestText: legacy,
++      atoms: [],
++      baseIndex: 0,
++      hasProse: PROSE_RE.test(legacy),
++    }
++  }
++
++  const filterText = raw.replace(ATOM_SENTINEL_RE, "")
++  const baseIndex = nextFreeInlineAtomIndex(filterText)
++  let nextIndex = baseIndex
++  const requestText = raw.replace(ATOM_SENTINEL_RE, () => encodeInlineAtomToken(nextIndex++))
++
++  return { filterText, requestText, atoms, baseIndex, hasProse: PROSE_RE.test(filterText) }
++}
++
++// Subtrees a clone must not carry: executable or resource-loading elements,
++// and the hidden accessible copies every renderer ships next to its visible
++// output (they would double the clone's text and, for MathJax, invite a
++// second typeset). `<semantics>` renders its first child, so dropping the
++// annotations keeps native MathML intact.
++const REMOVED_DESCENDANT_SELECTOR = [
++  "script",
++  "noscript",
++  "template",
++  "style",
++  "link",
++  "meta",
++  "iframe",
++  "object",
++  "embed",
++  "mjx-assistive-mml",
++  ".MJX_Assistive_MathML",
++  ".katex-mathml",
++  "annotation",
++  "annotation-xml",
++].join(",")
++
++const REMOVED_ATTRIBUTE_NAMES = new Set([
++  "id",
++  "tabindex",
++  "contenteditable",
++  "draggable",
++  "srcdoc",
++  "aria-labelledby",
++  "aria-describedby",
++  ...MARK_ATTRIBUTES,
++])
++
++const URL_ATTRIBUTE_NAMES = new Set(["href", "xlink:href", "src", "action", "formaction", "data"])
++const UNSAFE_URL_RE = /^\s*(?:javascript:|data:text\/html)/i
++
++// Classes every MathJax generation and its preprocessors honor as "leave this
++// subtree alone", so a page-side typesetter never re-renders our clone.
++const TYPESET_IGNORE_CLASSES = [
++  "mathjax_ignore",
++  "tex2jax_ignore",
++  "mml2jax_ignore",
++  "asciimath2jax_ignore",
++]
++
++let cloneSequence = 0
++
++/**
++ * Deep-clone an atom for insertion into a translated span. Keeps everything
++ * the renderer's CSS depends on (classes, inline styles, `<img src>`, SVG
++ * `<use xlink:href>`), drops ids and anything executable, and marks the root
++ * so the preset stylesheet, MathJax and assistive technology all leave it
++ * alone. The source element is never touched.
++ */
++export function sanitizeInlineAtomClone(source: HTMLElement): HTMLElement {
++  const clone = source.cloneNode(true) as HTMLElement
++
++  for (const removed of [...clone.querySelectorAll(REMOVED_DESCENDANT_SELECTOR)]) {
++    removed.remove()
++  }
++
++  const elements: Element[] = [clone, ...clone.querySelectorAll("*")]
++
++  // MathJax SVG output with a local font cache references `<defs>` inside the
++  // same formula by id. Those references must keep resolving inside the clone,
++  // so referenced ids are renamed (unique per clone) instead of stripped.
++  const idOwners = new Map<string, Element>()
++  for (const element of elements) {
++    const id = element.getAttribute("id")
++    if (id && !idOwners.has(id)) idOwners.set(id, element)
++  }
++  const renamedIds = new Map<string, string>()
++  for (const element of elements) {
++    for (const name of ["href", "xlink:href"]) {
++      const value = element.getAttribute(name)
++      if (!value?.startsWith("#")) continue
++      const id = value.slice(1)
++      if (idOwners.has(id) && !renamedIds.has(id)) {
++        cloneSequence += 1
++        renamedIds.set(id, `${id}-rf-atom-${cloneSequence}`)
++      }
++    }
++  }
++
++  for (const element of elements) {
++    for (const attribute of [...element.attributes]) {
++      const name = attribute.name.toLowerCase()
++      if (name === "id") {
++        const renamed = renamedIds.get(attribute.value)
++        if (renamed) {
++          element.setAttribute("id", renamed)
++        } else {
++          element.removeAttributeNode(attribute)
++        }
++        continue
++      }
++      if (REMOVED_ATTRIBUTE_NAMES.has(name) || name.startsWith("on")) {
++        element.removeAttributeNode(attribute)
++        continue
++      }
++      if (URL_ATTRIBUTE_NAMES.has(name)) {
++        if (UNSAFE_URL_RE.test(attribute.value)) {
++          element.removeAttributeNode(attribute)
++        } else if (attribute.value.startsWith("#")) {
++          const renamed = renamedIds.get(attribute.value.slice(1))
++          if (renamed) element.setAttribute(attribute.name, `#${renamed}`)
++        }
++      }
++    }
++  }
++
++  clone.classList.add(INLINE_ATOM_CLASS, ...TYPESET_IGNORE_CLASSES)
++  clone.setAttribute("translate", "no")
++  // The original formula directly above stays the accessible copy.
++  clone.setAttribute("aria-hidden", "true")
++  clone.setAttribute("role", "presentation")
++  // Math renders left-to-right even inside an RTL translation.
++  if (!clone.hasAttribute("dir")) clone.setAttribute("dir", "ltr")
++  return clone
++}
++
++/**
++ * Rebuild the translated span from the provider's text: literal runs become
++ * text nodes and every placeholder becomes a clone of its atom, in the order
++ * the target language put them. Tolerates what providers do to placeholders:
++ * a repeated index renders once (first wins), an index we never issued stays
++ * as literal text (never eat page content), and atoms whose placeholder was
++ * dropped are appended after the text so the formula is never lost.
++ */
++export function renderInlineAtomTranslation(
++  container: HTMLElement,
++  translatedText: string,
++  extraction: Pick<InlineAtomExtraction, "atoms" | "baseIndex">,
++): void {
++  const { atoms, baseIndex } = extraction
++  const ownerDoc = container.ownerDocument
++  const fragment = ownerDoc.createDocumentFragment()
++  const inserted = new Set<number>()
++
++  for (const part of decodeInlineAtomTokens(translatedText)) {
++    if (part.kind === "text") {
++      fragment.append(ownerDoc.createTextNode(part.text))
++      continue
++    }
++    const atomIndex = part.index - baseIndex
++    const source = atomIndex >= 0 && atomIndex < atoms.length ? atoms[atomIndex] : undefined
++    if (!source) {
++      fragment.append(ownerDoc.createTextNode(part.raw))
++      continue
++    }
++    if (inserted.has(atomIndex)) continue
++    inserted.add(atomIndex)
++    fragment.append(sanitizeInlineAtomClone(source))
++  }
++
++  const missing = atoms.map((_, index) => index).filter((index) => !inserted.has(index))
++  if (missing.length > 0) {
++    logger.warn(
++      `[inline-atoms] translation dropped ${missing.length} placeholder(s); appending the formulas`,
++    )
++    for (const index of missing) {
++      fragment.append(ownerDoc.createTextNode(" "))
++      fragment.append(sanitizeInlineAtomClone(atoms[index]!))
++    }
++  }
++
++  container.replaceChildren(fragment)
++}
++
++/**
++ * Whether `root` holds a renderable atom that is host content (clones inside
++ * our own wrappers never count). Used to keep atom-bearing containers off the
++ * virtual-paragraph path, whose unit texts cannot carry placeholders.
++ */
++export function containsInlineAtomOutsideWrappers(root: HTMLElement, config: Config): boolean {
++  const { atomSelector } = getEffectiveSiteRule(config, window.location.href)
++  const selector = atomSelector ? `math,${atomSelector}` : "math"
++  for (const element of root.querySelectorAll<HTMLElement>(selector)) {
++    if (element.closest(`.${CONTENT_WRAPPER_CLASS}`) !== null) continue
++    if (isRenderableInlineAtom(element)) return true
++  }
++  return false
++}
+diff --git a/src/utils/host/translate/dom/translation-insertion.ts b/src/utils/host/translate/dom/translation-insertion.ts
+index c77bd0c7..6d871168 100644
+--- a/src/utils/host/translate/dom/translation-insertion.ts
++++ b/src/utils/host/translate/dom/translation-insertion.ts
+@@ -27,6 +27,14 @@ interface TranslationInsertionContext {
+   // expected content. Not fired on the no-append early return, so stray empty
+   // wrappers never enter tamper surveillance.
+   onContentInserted?: (wrapper: HTMLElement) => void
++  /**
++   * Fills the translated span. Defaults to a single text node; bilingual
++   * paragraphs with inline atoms (formulas) pass a renderer that rebuilds the
++   * text around cloned formula elements. Runs on the still-detached span, so
++   * the wrapper still receives ONE append and the #1918 snapshot below sees
++   * the final content.
++   */
++  renderTranslatedContent?: (translatedNode: HTMLElement, translatedText: string) => void
+ }
+ 
+ function sourceRunMatchesSelector(sources: readonly TransNode[], selector: string | null): boolean {
+@@ -131,6 +139,7 @@ export async function insertTranslatedNodeIntoWrapper(
+     sourceText,
+     isCurrent,
+     onContentInserted,
++    renderTranslatedContent,
+   }: TranslationInsertionContext,
+   translatedText: string,
+   translationNodeStyle: TranslationNodeStyleConfig,
+@@ -184,7 +193,11 @@ export async function insertTranslatedNodeIntoWrapper(
+     return
+   }
+ 
+-  translatedNode.textContent = translatedText
++  if (renderTranslatedContent) {
++    renderTranslatedContent(translatedNode, translatedText)
++  } else {
++    translatedNode.textContent = translatedText
++  }
+   translatedWrapperNode.appendChild(translatedNode)
+   // Synchronous, pre-await: see TranslationInsertionContext.onContentInserted.
+   onContentInserted?.(translatedWrapperNode)
+diff --git a/src/utils/host/translate/inline-atom-tokens.ts b/src/utils/host/translate/inline-atom-tokens.ts
+new file mode 100644
+index 00000000..f4bb4a60
+--- /dev/null
++++ b/src/utils/host/translate/inline-atom-tokens.ts
+@@ -0,0 +1,151 @@
++import { BATCH_SEPARATOR } from "@/utils/constants/prompt"
++
++/**
++ * Plain-text placeholder protocol for inline atoms (rendered formulas) in
++ * bilingual page translation. An atom is replaced by `{{n}}` in the request
++ * text; the translation comes back with the token moved to wherever the target
++ * language puts the formula, and the DOM side clones the original element into
++ * that position (see `dom/inline-atoms.ts`).
++ *
++ * This module is DOM-free on purpose: the content script encodes and decodes,
++ * the background audits provider output before caching it, and the prompt
++ * builder gates its placeholder rule on the same detector.
++ *
++ * ONE token grammar, shared by all four sides: what we emit, what we decode,
++ * which literals we number around, and what the audit counts. Keeping them
++ * identical is the invariant that makes the protocol safe — see
++ * INLINE_ATOM_TOKEN_STRICT_RE.
++ */
++export const INLINE_ATOM_TOKEN_DELIMITERS = { open: "{{", close: "}}" } as const
++
++function escapeRegExp(value: string): string {
++  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
++}
++
++const STRICT_TOKEN_SOURCE = `${escapeRegExp(INLINE_ATOM_TOKEN_DELIMITERS.open)}(\\d+)${escapeRegExp(INLINE_ATOM_TOKEN_DELIMITERS.close)}`
++
++/**
++ * The one token grammar: exactly the shape we emit — digits only, no inner
++ * whitespace.
++ *
++ * INVARIANT: the decoder, `nextFreeInlineAtomIndex` and `auditInlineAtomTokens`
++ * must all match on THIS pattern. A decoder that accepts a spelling the
++ * numbering scan does not reserve around will mistake page content for a
++ * placeholder — it renders the formula over the literal and silently drops both
++ * the literal and the token that was really ours.
++ *
++ * An earlier revision also decoded `[[n]]`, `⟦n⟧`, `｛｛n｝｝` and `〖n〗`, in case a
++ * provider curled the brackets. A live probe of 739 requests (14 models across
++ * 7 vendors, 6 target languages, tokens at every sentence position, up to ten
++ * per segment, adjacent, quoted, and in batches) returned `{{n}}` verbatim
++ * every time, so those spellings only ever fired on page text that happened to
++ * look like a token. If a provider is ever caught mangling one, widen this
++ * pattern — never the decoder alone.
++ */
++export const INLINE_ATOM_TOKEN_STRICT_RE = new RegExp(STRICT_TOKEN_SOURCE)
++
++export function encodeInlineAtomToken(index: number): string {
++  return `${INLINE_ATOM_TOKEN_DELIMITERS.open}${index}${INLINE_ATOM_TOKEN_DELIMITERS.close}`
++}
++
++/**
++ * True when `text` carries at least one emitted-shape token. Used to gate the
++ * LLM placeholder rule and the background cache audit, so a page that merely
++ * mentions `{{input}}` or the `{{NO_TRANSLATION_NEEDED}}` sentinel never
++ * triggers either.
++ */
++export function hasInlineAtomTokens(text: string): boolean {
++  return INLINE_ATOM_TOKEN_STRICT_RE.test(text)
++}
++
++/**
++ * First index that cannot collide with a token-shaped literal already present
++ * in the prose (template docs print `{{0}}`-style text). Tokens are numbered
++ * from this offset so a literal is never mistaken for an atom on decode — which
++ * holds only while this scan and `decodeInlineAtomTokens` share one pattern.
++ */
++export function nextFreeInlineAtomIndex(text: string): number {
++  let next = 0
++  for (const match of text.matchAll(new RegExp(STRICT_TOKEN_SOURCE, "g"))) {
++    next = Math.max(next, Number.parseInt(match[1]!, 10) + 1)
++  }
++  return next
++}
++
++export type DecodedInlineAtomPart =
++  | { kind: "text"; text: string }
++  | { kind: "atom"; index: number; raw: string }
++
++/**
++ * Split translated text into literal runs and tokens. Anything that is not
++ * exactly a token stays text, so a `[[0]]` the page itself wrote survives the
++ * round trip untouched. `raw` keeps the matched text so a caller can re-emit an
++ * index we never issued verbatim instead of eating page content.
++ */
++export function decodeInlineAtomTokens(text: string): DecodedInlineAtomPart[] {
++  const parts: DecodedInlineAtomPart[] = []
++  let cursor = 0
++  for (const match of text.matchAll(new RegExp(STRICT_TOKEN_SOURCE, "g"))) {
++    const start = match.index ?? 0
++    if (start > cursor) {
++      parts.push({ kind: "text", text: text.slice(cursor, start) })
++    }
++    parts.push({ kind: "atom", index: Number.parseInt(match[1]!, 10), raw: match[0] })
++    cursor = start + match[0].length
++  }
++  if (cursor < text.length) {
++    parts.push({ kind: "text", text: text.slice(cursor) })
++  }
++  return parts
++}
++
++export interface InlineAtomTokenAudit {
++  ok: boolean
++  missing: number[]
++  unknown: number[]
++  duplicates: number[]
++}
++
++/**
++ * Compare the tokens a request carried with the tokens its translation
++ * returned. `ok` means the translation can be persisted: every token came back
++ * exactly once and nothing was invented. The renderer still copes with a
++ * failed audit (append missing, keep unknown literal); the audit only decides
++ * whether the result deserves the cache.
++ */
++export function auditInlineAtomTokens(source: string, output: string): InlineAtomTokenAudit {
++  const expected = new Set<number>()
++  for (const match of source.matchAll(new RegExp(STRICT_TOKEN_SOURCE, "g"))) {
++    expected.add(Number.parseInt(match[1]!, 10))
++  }
++
++  const seen = new Map<number, number>()
++  for (const part of decodeInlineAtomTokens(output)) {
++    if (part.kind === "atom") {
++      seen.set(part.index, (seen.get(part.index) ?? 0) + 1)
++    }
++  }
++
++  const missing = [...expected].filter((index) => !seen.has(index)).sort((a, b) => a - b)
++  const unknown = [...seen.keys()].filter((index) => !expected.has(index)).sort((a, b) => a - b)
++  const duplicates = [...seen.entries()]
++    .filter(([index, count]) => expected.has(index) && count > 1)
++    .map(([index]) => index)
++    .sort((a, b) => a - b)
++
++  return {
++    ok: missing.length === 0 && unknown.length === 0 && duplicates.length === 0,
++    missing,
++    unknown,
++    duplicates,
++  }
++}
++
++// No worked example on purpose: a marker slot inside an example teaches models
++// a base rate for emitting the marker (see the sentinel notes in
++// utils/constants/prompt.ts).
++export const INLINE_ATOM_TOKEN_SYSTEM_PROMPT = `## Protected Placeholder Rules
++These mandatory rules override any conflicting instructions above:
++1. A placeholder is \`${INLINE_ATOM_TOKEN_DELIMITERS.open}\` immediately followed by a number and \`${INLINE_ATOM_TOKEN_DELIMITERS.close}\`. It stands for an inline formula or symbol and is not text to translate.
++2. Within each input segment (segments are separated by a standalone ${BATCH_SEPARATOR} line when present), copy every placeholder into that segment's output exactly once, character for character: same number, same brackets, no spaces inside.
++3. Never translate, renumber, drop, add, merge, or reformat a placeholder. A placeholder may move within its segment to follow the target-language word order.`
+diff --git a/src/utils/prompts/__tests__/translate.test.ts b/src/utils/prompts/__tests__/translate.test.ts
+index a2ed092a..b103c959 100644
+--- a/src/utils/prompts/__tests__/translate.test.ts
++++ b/src/utils/prompts/__tests__/translate.test.ts
+@@ -242,6 +242,55 @@ describe("translate prompt tokens", () => {
+     expect(result.systemPrompt).not.toContain("## Protected HTML Marker Rules")
+   })
+ 
++  it("appends placeholder rules only when the input carries an inline atom token", () => {
++    const withToken = getTranslatePromptFromConfig(
++      defaultTranslatePromptConfig,
++      "Chinese",
++      "Let {{0}} be the mean.",
++    )
++    expect(withToken.systemPrompt).toContain("## Protected Placeholder Rules")
++    expect(withToken.systemPrompt).toContain("may move within its segment")
++    expect(withToken.systemPrompt).not.toMatch(/Rules[\s\S]*\{\{\d+\}\}/)
++
++    const without = getTranslatePromptFromConfig(
++      defaultTranslatePromptConfig,
++      "Chinese",
++      "Let x be the mean.",
++    )
++    expect(without.systemPrompt).not.toContain("## Protected Placeholder Rules")
++    // Byte-identical to the pre-feature prompt: the LLM cache hash of every
++    // paragraph without atoms must not change.
++    expect(without.systemPrompt).toBe(
++      getTranslatePromptFromConfig(defaultTranslatePromptConfig, "Chinese", "other").systemPrompt,
++    )
++  })
++
++  it.each([
++    ["the no-translation sentinel", `Prefix ${NO_TRANSLATION_SENTINEL}`],
++    ["a template literal with spaces", "Use {{ count }} in the template"],
++    ["a named prompt token", "Translate {{input}} please"],
++    ["a single-brace literal", "Format {0} here"],
++  ])("does not append placeholder rules for %s", (_case, input) => {
++    const result = getTranslatePromptFromConfig(defaultTranslatePromptConfig, "Chinese", input)
++
++    expect(result.systemPrompt).not.toContain("## Protected Placeholder Rules")
++  })
++
++  it("orders placeholder rules after marker and batch rules", () => {
++    const input = `<span ${HTML_ATTRIBUTE_MARKER}="0">First {{0}}</span>\n\n%%\n\nSecond {{0}}`
++
++    const result = getTranslatePromptFromConfig(defaultTranslatePromptConfig, "French", input, {
++      isBatch: true,
++    })
++
++    const batchRulesIndex = result.systemPrompt.indexOf("## Multi-paragraph Translation Rules")
++    const markerRulesIndex = result.systemPrompt.indexOf("## Protected HTML Marker Rules")
++    const placeholderRulesIndex = result.systemPrompt.indexOf("## Protected Placeholder Rules")
++    expect(batchRulesIndex).toBeGreaterThan(-1)
++    expect(markerRulesIndex).toBeGreaterThan(batchRulesIndex)
++    expect(placeholderRulesIndex).toBeGreaterThan(markerRulesIndex)
++  })
++
+   it("replaces new subtitle prompt tokens from stored config", async () => {
+     mockGetLocalConfig.mockResolvedValue({
+       ...DEFAULT_CONFIG,
+diff --git a/src/utils/prompts/translate.ts b/src/utils/prompts/translate.ts
+index ff21b7d1..2feb56b6 100644
+--- a/src/utils/prompts/translate.ts
++++ b/src/utils/prompts/translate.ts
+@@ -5,6 +5,10 @@ import {
+   HTML_ATTRIBUTE_MARKER,
+   parseHtmlAttributeMarkers,
+ } from "@/utils/host/translate/html-attribute-markers"
++import {
++  hasInlineAtomTokens,
++  INLINE_ATOM_TOKEN_SYSTEM_PROMPT,
++} from "@/utils/host/translate/inline-atom-tokens"
+ import { DEFAULT_CONFIG } from "../constants/config"
+ import {
+   BATCH_SEPARATOR,
+@@ -87,6 +91,15 @@ ${DEFAULT_SENTINEL_TRANSLATE_PROMPT}`
+ ${HTML_ATTRIBUTE_MARKER_SYSTEM_PROMPT}`
+   }
+ 
++  // Inline-atom placeholders ({{n}}) stand for formulas cloned back after
++  // translation. The rule is appended only when the input carries one, so the
++  // system prompt — and with it the LLM cache hash — is untouched otherwise.
++  if (hasInlineAtomTokens(input)) {
++    systemPrompt = `${systemPrompt}
++
++${INLINE_ATOM_TOKEN_SYSTEM_PROMPT}`
++  }
++
+   // Build title and summary replacement values
+   const title = resolvePromptReplacementValue(options?.context?.webTitle, "No title available")
+   const description = resolvePromptReplacementValue(
+diff --git a/src/utils/site-rules/__tests__/built-in.test.ts b/src/utils/site-rules/__tests__/built-in.test.ts
+index cfec8ed1..9cdee41d 100644
+--- a/src/utils/site-rules/__tests__/built-in.test.ts
++++ b/src/utils/site-rules/__tests__/built-in.test.ts
+@@ -67,10 +67,24 @@ function allSelectors(rule: (typeof BUILT_IN_SITE_RULES)[number]): string[] {
+     ...(rule.preserveTextSelectors ?? []),
+     ...(rule["preserveTextSelectors.add"] ?? []),
+     ...(rule["preserveTextSelectors.remove"] ?? []),
++    ...(rule.atomSelectors ?? []),
++    ...(rule["atomSelectors.add"] ?? []),
++    ...(rule["atomSelectors.remove"] ?? []),
+   ]
+ }
+ 
+ describe("built-in site rules", () => {
++  it("resolves the inline atom defaults on any URL and folds them into preserve-text", () => {
++    const resolved = resolveSiteRule("https://example.com/article", BUILT_IN_SITE_RULES, [], [])
++    const atomSelectors = resolved.atomSelector?.split(",") ?? []
++    expect(atomSelectors).toEqual(
++      expect.arrayContaining(["span.katex", "mjx-container", ".ltx_Math"]),
++    )
++    // Atoms must stop the walk exactly like preserve-text elements.
++    const preserveTextSelectors = resolved.preserveTextSelector?.split(",") ?? []
++    expect(preserveTextSelectors).toEqual(expect.arrayContaining(atomSelectors))
++  })
++
+   it("all rules pass the schema", () => {
+     for (const rule of BUILT_IN_SITE_RULES) {
+       const result = siteRuleSchema.safeParse(rule)
+diff --git a/src/utils/site-rules/__tests__/resolve.test.ts b/src/utils/site-rules/__tests__/resolve.test.ts
+index 95c697f8..03097316 100644
+--- a/src/utils/site-rules/__tests__/resolve.test.ts
++++ b/src/utils/site-rules/__tests__/resolve.test.ts
+@@ -153,6 +153,9 @@ describe("resolveSiteRule", () => {
+           preserveTextSelectors: [".code"],
+           "preserveTextSelectors.add": [".math"],
+           "preserveTextSelectors.remove": [".code"],
++          atomSelectors: [".formula"],
++          "atomSelectors.add": [".formula-added"],
++          "atomSelectors.remove": [".formula"],
+         }),
+       ],
+       [],
+@@ -164,7 +167,21 @@ describe("resolveSiteRule", () => {
+     expect(resolved.forceBlockStyleSelector).toBe(".block-style-added")
+     expect(resolved.forceInlineNodeSelector).toBe(".inline-node-added")
+     expect(resolved.forceInlineStyleSelector).toBe(".inline-style-added")
+-    expect(resolved.preserveTextSelector).toBe(".math")
++    expect(resolved.atomSelector).toBe(".formula-added")
++    // Atom selectors are folded into preserve-text so atoms stop the walk.
++    expect(resolved.preserveTextSelector).toBe(".math,.formula-added")
++  })
++
++  it("keeps atom selectors walk-blocked without any preserve-text rule", () => {
++    const resolved = resolveSiteRule(
++      URL_ON_SITE,
++      [rule({ id: "built-in", atomSelectors: ["span.katex", "bad-atom["] })],
++      [rule({ id: "user", "atomSelectors.add": ["mjx-container"] })],
++      [],
++    )
++
++    expect(resolved.atomSelector).toBe("span.katex,mjx-container")
++    expect(resolved.preserveTextSelector).toBe("span.katex,mjx-container")
+   })
+ 
+   it("merges all four force selector axes independently", () => {
+diff --git a/src/utils/site-rules/built-in/rules.json b/src/utils/site-rules/built-in/rules.json
+index 8445dde1..2195d99a 100644
+--- a/src/utils/site-rules/built-in/rules.json
++++ b/src/utils/site-rules/built-in/rules.json
+@@ -37,6 +37,29 @@
+       "table.processedcode"
+     ]
+   },
++  {
++    "id": "readfrog-atom-defaults",
++    "description": "Keep rendered inline formulas as opaque atoms inside bilingual translations",
++    "matches": "*",
++    "atomSelectors": [
++      "span.katex",
++      "mjx-container",
++      ".MathJax",
++      ".MathJax_SVG",
++      ".MathJax_CHTML",
++      ".MathJax_Preview",
++      ".MathJax_Display",
++      "math-renderer",
++      "[aria-labelledby^=\"MathJax-SVG\"]",
++      ".mwe-math-element",
++      ".ltx_Math",
++      "span.math.inline",
++      "span.math.display",
++      ".mathjax-block",
++      "span.pretex-inline",
++      "span.math-inline"
++    ]
++  },
+   {
+     "id": "pdf",
+     "matches": "https://app.infread.com/pdf/*",
+@@ -1570,6 +1593,7 @@
+     "forceBlockNodeSelectors.add": ["span.display", "span.captions", "span[id^=cap]"],
+     "forceBlockStyleSelectors.add": ["span.display", "span.captions", "span[id^=cap]"],
+     "preserveTextSelectors": ["span.display", "span.math"],
++    "atomSelectors.add": ["span.math"],
+     "injectedCss.add": [
+       "h2 {font-size:unset;}",
+       ".u-clamp-2-lines {-webkit-line-clamp:unset!important;}"
+diff --git a/src/utils/site-rules/resolve.ts b/src/utils/site-rules/resolve.ts
+index 4f2fffe6..649d0d6b 100644
+--- a/src/utils/site-rules/resolve.ts
++++ b/src/utils/site-rules/resolve.ts
+@@ -16,7 +16,14 @@ export interface ResolvedSiteRule {
+   forceBlockStyleSelector: string | null
+   forceInlineNodeSelector: string | null
+   forceInlineStyleSelector: string | null
++  /**
++   * Also contains every atom selector: atoms must stop the walk exactly like
++   * preserve-text elements, and folding them in here keeps the hot-path
++   * predicate at a single `matches()` call.
++   */
+   preserveTextSelector: string | null
++  /** Inline atoms only (formula renderers); consumed by bilingual extraction. */
++  atomSelector: string | null
+   /**
+    * Tag-set families: `null` means no matched rule touched the family, so
+    * consumers fall back to the shipped constant Set (hot path unchanged).
+@@ -50,6 +57,7 @@ export const EMPTY_RESOLVED_SITE_RULE: ResolvedSiteRule = {
+   forceInlineNodeSelector: null,
+   forceInlineStyleSelector: null,
+   preserveTextSelector: null,
++  atomSelector: null,
+   dontWalkTags: null,
+   dontWalkTagsExplicitAdds: null,
+   dontWalkButTranslateTags: null,
+@@ -114,12 +122,12 @@ function joinSelectors(selectors: Iterable<string>): string | null {
+   return merged.size > 0 ? [...merged].join(",") : null
+ }
+ 
+-function mergeSelectorDelta(
++function mergeSelectorDeltaSet(
+   matched: SiteRule[],
+   baseKey: keyof SiteRule,
+   addKey: keyof SiteRule,
+   removeKey: keyof SiteRule,
+-): string | null {
++): Set<string> {
+   const merged = new Set<string>()
+ 
+   const addSelectors = (selectors: unknown) => {
+@@ -146,7 +154,16 @@ function mergeSelectorDelta(
+     removeSelectors(rule[removeKey])
+   }
+ 
+-  return joinSelectors(merged)
++  return merged
++}
++
++function mergeSelectorDelta(
++  matched: SiteRule[],
++  baseKey: keyof SiteRule,
++  addKey: keyof SiteRule,
++  removeKey: keyof SiteRule,
++): string | null {
++  return joinSelectors(mergeSelectorDeltaSet(matched, baseKey, addKey, removeKey))
+ }
+ 
+ const TAG_NAME_RE = /^[a-z][a-z0-9-]*$/i
+@@ -265,6 +282,19 @@ export function resolveSiteRule(
+     }
+   }
+ 
++  const preserveTextSelectors = mergeSelectorDeltaSet(
++    matched,
++    "preserveTextSelectors",
++    "preserveTextSelectors.add",
++    "preserveTextSelectors.remove",
++  )
++  const atomSelectors = mergeSelectorDeltaSet(
++    matched,
++    "atomSelectors",
++    "atomSelectors.add",
++    "atomSelectors.remove",
++  )
++
+   return {
+     matchedRuleIds: matched.map((rule) => rule.id),
+     excludeSelector: mergeSelectorDelta(
+@@ -303,12 +333,8 @@ export function resolveSiteRule(
+       "forceInlineStyleSelectors.add",
+       "forceInlineStyleSelectors.remove",
+     ),
+-    preserveTextSelector: mergeSelectorDelta(
+-      matched,
+-      "preserveTextSelectors",
+-      "preserveTextSelectors.add",
+-      "preserveTextSelectors.remove",
+-    ),
++    preserveTextSelector: joinSelectors([...preserveTextSelectors, ...atomSelectors]),
++    atomSelector: joinSelectors(atomSelectors),
+     dontWalkTags: mergeTagSetDelta(
+       matched,
+       "dontWalkTags.add",

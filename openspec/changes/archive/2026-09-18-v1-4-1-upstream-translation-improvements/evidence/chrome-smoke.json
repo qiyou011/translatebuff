@@ -1,0 +1,94 @@
+{
+  "browser": "153.0.8010.36",
+  "profile": "C:\\Users\\susu\\AppData\\Local\\Temp\\translatebuff-upstream-browser-dQz7nG",
+  "extensionId": "dpjljamigpipdclbdjeoapiflkpkihge",
+  "configInfo": {
+    "exists": true,
+    "keys": [
+      "betaExperience",
+      "contextMenu",
+      "floatingButton",
+      "inputTranslation",
+      "language",
+      "languageDetection",
+      "pageTranslation",
+      "providersConfig",
+      "selectionToolbar",
+      "sideContent",
+      "siteControl",
+      "siteRules",
+      "translationHub",
+      "tts",
+      "uiLanguage",
+      "videoSubtitles"
+    ],
+    "providers": [
+      {
+        "id": "google-translate-default",
+        "provider": "google-translate",
+        "enabled": true
+      },
+      {
+        "id": "microsoft-translate-default",
+        "provider": "microsoft-translate",
+        "enabled": true
+      },
+      {
+        "id": "openai-default",
+        "provider": "openai",
+        "enabled": true
+      },
+      {
+        "id": "jalapenocloud-default",
+        "provider": "jalapenocloud",
+        "enabled": true
+      },
+      {
+        "id": "atlascloud-default",
+        "provider": "atlascloud",
+        "enabled": true
+      },
+      {
+        "id": "renyimiao-Deepseek-V4-Flash",
+        "provider": "openai-compatible",
+        "enabled": true
+      }
+    ]
+  },
+  "initial": {
+    "clickCount": "1",
+    "overlays": [
+      {
+        "width": 0,
+        "height": 0
+      },
+      {
+        "width": 360,
+        "height": 0
+      }
+    ],
+    "floating": [
+      {
+        "pointerEvents": "none"
+      }
+    ],
+    "math": 1
+  },
+  "events": [
+    "pointerdown",
+    "pointermove",
+    "pointermove",
+    "pointermove",
+    "pointermove",
+    "pointermove",
+    "pointermove",
+    "pointermove",
+    "pointermove",
+    "pointermove",
+    "pointermove",
+    "pointermove",
+    "pointerup"
+  ],
+  "errors": [],
+  "optionsTitle": "Settings | TranslateBuff"
+}

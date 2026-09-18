@@ -1,0 +1,44 @@
+{
+  "environment": "testsite",
+  "cases": [
+    {
+      "input": "OpenAI API GitHub",
+      "output": "OpenAI API GitHub"
+    },
+    {
+      "input": "const answer = 42;",
+      "error": "Task 0a0e66a0-da0d-48db-a4c9-013afff42530 timed out after 20270ms"
+    },
+    {
+      "input": "OpenAI released a new model for scientific research.",
+      "output": "OpenAI 发布了一款用于科学研究的新模型。"
+    }
+  ],
+  "segmentation": {
+    "input": [
+      {
+        "s": 1000,
+        "e": 2600,
+        "t": "This is the first sentence."
+      },
+      {
+        "s": 6000,
+        "e": 7800,
+        "t": "This is the first sentence."
+      },
+      {
+        "s": 8000,
+        "e": 8200,
+        "t": "And"
+      },
+      {
+        "s": 8200,
+        "e": 11000,
+        "t": "this is the second sentence."
+      }
+    ],
+    "error": "",
+    "status": 504
+  },
+  "limitation": "Single live samples; model responses are nondeterministic."
+}

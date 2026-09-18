@@ -1,0 +1,675 @@
+{
+  "sources": [
+    {
+      "sha": "0e21ebff986db878c8fa64a3a90897a6be807bbb",
+      "subject": "fix(site-rules): translate the Details body on Alibaba RFQ pages (#2152)",
+      "status": "applied"
+    },
+    {
+      "sha": "0284b5afd302810af73e628e3adef2f5fe6aa36c",
+      "subject": "fix(selection): collapse idle overlay so page touch drag gestures are not stolen (#2103)",
+      "status": "applied"
+    },
+    {
+      "sha": "9ae2760e8bb0777b4f238fbc995ed9b3ff6f3ea8",
+      "subject": "fix(options): preserve IME input and autosaved drafts (#2156)",
+      "status": "applied"
+    },
+    {
+      "sha": "03c3a86f5855c5aadb4db3533e2b24bed88bef16",
+      "subject": "fix(translation): explain the disabled translation-only mode in a tooltip (#2157)",
+      "status": "applied"
+    },
+    {
+      "sha": "0f5e1583d54e027ca39ed0bca6a8f4e10dce7539",
+      "subject": "fix: formula translation loss (#2155)",
+      "status": "applied"
+    },
+    {
+      "sha": "ba71ebaaad1737bfe342cf9d137434bf2fac8a71",
+      "subject": "fix(subtitles): periodically clean up AI segmentation cache (#2159)",
+      "status": "applied"
+    },
+    {
+      "sha": "77df09052b91ece26bba29f763c7fc2d6b6498cf",
+      "subject": "fix(floating-button): let clicks pass through collapsed controls (#2161)",
+      "status": "applied"
+    },
+    {
+      "sha": "fcb54e066ace35413d8486ebbfd0b31e8e99af9d",
+      "subject": "fix(site-rules): prevent overlapping arXiv heading translations (#2166)",
+      "status": "applied"
+    },
+    {
+      "sha": "a250e6c41f5460b6a8b28bbe6004b5c254307370",
+      "subject": "fix(translation): distinguish preserved names from foreign prose (#2177)",
+      "status": "applied"
+    },
+    {
+      "sha": "94201a3fcfc82ee3443ebdeb2fd8866d66d742b7",
+      "subject": "fix(translate): exclude the entire Substack video player from translation (#2189)",
+      "status": "applied"
+    },
+    {
+      "sha": "514188603026bf4783864072f53d288bb8a0f331",
+      "subject": "fix(subtitles): keep YouTube subtitles on screen after the miniplayer leaves a stray progress bar (#2193)",
+      "status": "applied"
+    },
+    {
+      "sha": "a6384f633609973a2161e8f47414331454538779",
+      "subject": "fix(subtitles): rank cue length above sentence completeness in AI segmentation (#2194)",
+      "status": "applied"
+    }
+  ],
+  "files": [
+    {
+      "path": ".changeset/ai-segmentation-cache-cleanup.md",
+      "sources": ["ba71ebaaad1737bfe342cf9d137434bf2fac8a71"],
+      "sha256": "3072a7feae47850bba4c4575ae6dcf249195d382461a8d171eb304d6e0162133"
+    },
+    {
+      "path": ".changeset/alibaba-rfq-pre-details.md",
+      "sources": ["0e21ebff986db878c8fa64a3a90897a6be807bbb"],
+      "sha256": "c6ca2ae3eb71e982f1ba3cb797077f211899cc2155d05dfa5bbc381dd9ffc990"
+    },
+    {
+      "path": ".changeset/collapsed-floating-button-hit-area.md",
+      "sources": ["77df09052b91ece26bba29f763c7fc2d6b6498cf"],
+      "sha256": "d1e09dcb5042f29bff13057c9827834193d1d1587d10871a0e3a1d20fa21fc0b"
+    },
+    {
+      "path": ".changeset/fork-upstream-translation-adaptations.md",
+      "sources": ["0f5e1583d54e027ca39ed0bca6a8f4e10dce7539"],
+      "sha256": "0ded77ab30b40840d38b16fbe783bef5a438377c0ef1c32961b591bbd6140d2b"
+    },
+    {
+      "path": ".changeset/inline-formula-atoms.md",
+      "sources": ["0f5e1583d54e027ca39ed0bca6a8f4e10dce7539"],
+      "sha256": "215d8d4318f3eb4af24473ef8f935bc00deddecd72cd0ba7ab880c7e7f54b5b5"
+    },
+    {
+      "path": ".changeset/quiet-arxiv-headings.md",
+      "sources": ["fcb54e066ace35413d8486ebbfd0b31e8e99af9d"],
+      "sha256": "a3ffcdea4e0a67d81a8e7942f887e36fb323027b9980e10ffb9a35dcb8c5eafb"
+    },
+    {
+      "path": ".changeset/quiet-players-rest.md",
+      "sources": ["94201a3fcfc82ee3443ebdeb2fd8866d66d742b7"],
+      "sha256": "a3e8322468fea5297c9697cac40ff1452c114134fbe09782b06bc64ca316e4ff"
+    },
+    {
+      "path": ".changeset/safer-target-language-sentinel.md",
+      "sources": ["a250e6c41f5460b6a8b28bbe6004b5c254307370"],
+      "sha256": "d57cd03a7eb78dbea7d87964a4604178a15e983e757688116f3f00d1e7509d12"
+    },
+    {
+      "path": ".changeset/selection-overlay-touch-gesture.md",
+      "sources": ["0284b5afd302810af73e628e3adef2f5fe6aa36c"],
+      "sha256": "775b7a68a61d3519db1dfce8a18befcfffecbb0941ccd5cb4b0a51ffca65f6be"
+    },
+    {
+      "path": ".changeset/subtitles-segmentation-length-priority.md",
+      "sources": ["a6384f633609973a2161e8f47414331454538779"],
+      "sha256": "8944e058e8f5966c0c11fe8dacf44e9b001f7036d02d52c822c7ffd0e105d973"
+    },
+    {
+      "path": ".changeset/tidy-frogs-compose.md",
+      "sources": ["9ae2760e8bb0777b4f238fbc995ed9b3ff6f3ea8"],
+      "sha256": "c54d18aa6555b160f55abec74f72c909122175b40cd938ebba7bae2a6a74f7b7"
+    },
+    {
+      "path": ".changeset/translation-only-blocked-tooltip.md",
+      "sources": ["03c3a86f5855c5aadb4db3533e2b24bed88bef16"],
+      "sha256": "8f1800e7d821d60430bd5afa71562633b5c02a63bb153257d474aa5a1adda854"
+    },
+    {
+      "path": ".changeset/youtube-controls-height-miniplayer.md",
+      "sources": ["514188603026bf4783864072f53d288bb8a0f331"],
+      "sha256": "b682caaf2591ac3cc500a41b4016f9453e32a7c2c0708c35527af9e24002830d"
+    },
+    {
+      "path": "src/assets/styles/translation-node-preset.css",
+      "sources": ["0f5e1583d54e027ca39ed0bca6a8f4e10dce7539"],
+      "sha256": "37b13944c0b429c7a603491894f925453d4669b4920d918a1ca8c9d683bfca17"
+    },
+    {
+      "path": "src/components/form/__tests__/autosave-controller.test.ts",
+      "sources": ["9ae2760e8bb0777b4f238fbc995ed9b3ff6f3ea8"],
+      "sha256": "b4ecf621dc8681b92014136f0a66b4b4882a6f8ae7ead47cedd19c577468b064"
+    },
+    {
+      "path": "src/components/form/__tests__/autosave-integration.test.tsx",
+      "sources": ["9ae2760e8bb0777b4f238fbc995ed9b3ff6f3ea8"],
+      "sha256": "b3a8f91b5ac026f71ea5b80f8c42f274c1c7073845a8f00bd6ba0a954cbdc8a2"
+    },
+    {
+      "path": "src/components/form/autosave-controller.ts",
+      "sources": ["9ae2760e8bb0777b4f238fbc995ed9b3ff6f3ea8"],
+      "sha256": "32ff6d3a246fe477e97af9d5c84e62a714ba3e8237c034d9f0510a17b001a9e0"
+    },
+    {
+      "path": "src/components/form/autosave-navigation.tsx",
+      "sources": ["9ae2760e8bb0777b4f238fbc995ed9b3ff6f3ea8"],
+      "sha256": "c922a93f80163d61e44b333d7afe4593b64ead9b36a9d197d3a971c8971eb99b"
+    },
+    {
+      "path": "src/components/form/autosave.md",
+      "sources": ["9ae2760e8bb0777b4f238fbc995ed9b3ff6f3ea8"],
+      "sha256": "6d8b0141b3aa22fb70137e35ac44fb2c0e975cb441bc19ca084f6871f2d253df"
+    },
+    {
+      "path": "src/components/form/input-field-auto-save.tsx",
+      "sources": ["9ae2760e8bb0777b4f238fbc995ed9b3ff6f3ea8"],
+      "sha256": "962ab1ae51c491ef09f874b895faebfc8b80b07db125c788d7bfd3954fca03e5"
+    },
+    {
+      "path": "src/components/form/quick-insertable-textarea-field-auto-save.tsx",
+      "sources": ["9ae2760e8bb0777b4f238fbc995ed9b3ff6f3ea8"],
+      "sha256": "44c1cb90ecf0488b252e83477e1be4964cbc1e464e6f29ce42c7dc51ea216025"
+    },
+    {
+      "path": "src/components/form/select-field-auto-save.tsx",
+      "sources": ["9ae2760e8bb0777b4f238fbc995ed9b3ff6f3ea8"],
+      "sha256": "debed9ecdd370f3798adbaae3c2c5815ed93965541a218de013c7cff2241fde2"
+    },
+    {
+      "path": "src/components/form/use-autosave.tsx",
+      "sources": ["9ae2760e8bb0777b4f238fbc995ed9b3ff6f3ea8"],
+      "sha256": "ad0452127d2719b37a42a45b666862530e0cb3bb4c861bc7b7fe7b3f025361b0"
+    },
+    {
+      "path": "src/entrypoints/background/__tests__/db-cleanup.test.ts",
+      "sources": ["ba71ebaaad1737bfe342cf9d137434bf2fac8a71"],
+      "sha256": "1cd2752ee7b497828d11f4792857dc2e52ac7c58d0aa6cb2bd8bcdcc240d80d2"
+    },
+    {
+      "path": "src/entrypoints/background/__tests__/translation-queues.test.ts",
+      "sources": ["0f5e1583d54e027ca39ed0bca6a8f4e10dce7539"],
+      "sha256": "c5262a634db4d418849b5b3b9e12a67ef28861e1fed206560c20a0c663e80d45"
+    },
+    {
+      "path": "src/entrypoints/background/db-cleanup.ts",
+      "sources": ["ba71ebaaad1737bfe342cf9d137434bf2fac8a71"],
+      "sha256": "91cbef0041d87e36b414634e76d078095d7b7c9aa9d5bf6eb7d639900e211e4a"
+    },
+    {
+      "path": "src/entrypoints/background/translation-queues.ts",
+      "sources": ["0f5e1583d54e027ca39ed0bca6a8f4e10dce7539"],
+      "sha256": "4706fe17900ba85695fb73699087a346da157e9f41ebcf6cf0345bc0bf339261"
+    },
+    {
+      "path": "src/entrypoints/host.content/translation-control/bind-translation-mode-shortcut.ts",
+      "sources": ["03c3a86f5855c5aadb4db3533e2b24bed88bef16"],
+      "sha256": "677f1dc8f2ba60642128e39d20c1c4c822dc27fe0693198055daa73f9a50de45"
+    },
+    {
+      "path": "src/entrypoints/options/main.tsx",
+      "sources": ["9ae2760e8bb0777b4f238fbc995ed9b3ff6f3ea8"],
+      "sha256": "801bdea5913cab4d4f947032675e90851ad81d410ede4422016224bf6256614e"
+    },
+    {
+      "path": "src/entrypoints/options/pages/__tests__/editor-context.test.tsx",
+      "sources": ["9ae2760e8bb0777b4f238fbc995ed9b3ff6f3ea8"],
+      "sha256": "ff796bdcef2859a460fd5910606c5f527db0418e19b4b6b0cd4531c5ab28e05d"
+    },
+    {
+      "path": "src/entrypoints/options/pages/api-providers/providers-config/__tests__/providers-config.test.tsx",
+      "sources": ["9ae2760e8bb0777b4f238fbc995ed9b3ff6f3ea8"],
+      "sha256": "7f0d9b6f681896a7b64a9b1a436c1b4669215776c5fa34a4457271acf7ddfe2c"
+    },
+    {
+      "path": "src/entrypoints/options/pages/api-providers/providers-config/add-provider-dialog.tsx",
+      "sources": ["9ae2760e8bb0777b4f238fbc995ed9b3ff6f3ea8"],
+      "sha256": "1ccebae72b57de4d1f2db299185100db0ba931892bf9a402b0c3fcd21e8a895f"
+    },
+    {
+      "path": "src/entrypoints/options/pages/api-providers/providers-config/atoms.ts",
+      "sources": ["9ae2760e8bb0777b4f238fbc995ed9b3ff6f3ea8"],
+      "sha256": "e688a74b9c198f451589bc943669bc1714bdef5b346010447335a407f44de438"
+    },
+    {
+      "path": "src/entrypoints/options/pages/api-providers/providers-config/index.tsx",
+      "sources": ["9ae2760e8bb0777b4f238fbc995ed9b3ff6f3ea8"],
+      "sha256": "2d64e7ab2fad6a04948f8c9c2062c89070291fc86d0ca5fdaa61f255b4b4c1f4"
+    },
+    {
+      "path": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/__tests__/provider-headers-field.test.tsx",
+      "sources": ["9ae2760e8bb0777b4f238fbc995ed9b3ff6f3ea8"],
+      "sha256": "f5d2c9c0f263b6584578b5b3adf7cb41784f90aec4b271e43998354b9429040d"
+    },
+    {
+      "path": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/__tests__/provider-options-field.test.tsx",
+      "sources": ["9ae2760e8bb0777b4f238fbc995ed9b3ff6f3ea8"],
+      "sha256": "f03022192089bf2c1612dbfac91cedb95321b74ff0722f57bb5704576fa7c91a"
+    },
+    {
+      "path": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/__tests__/provider-specific-settings-field.test.tsx",
+      "sources": ["9ae2760e8bb0777b4f238fbc995ed9b3ff6f3ea8"],
+      "sha256": "f7acda63e4078ec985302eaf38edf640f6c7969fd131ef6e96b523b721f66e8c"
+    },
+    {
+      "path": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/__tests__/provider-url-field.test.tsx",
+      "sources": ["9ae2760e8bb0777b4f238fbc995ed9b3ff6f3ea8"],
+      "sha256": "463beb09b27093b3440cf9bc29d697da6cd950fd773ac4c4829d3fd1858aca7f"
+    },
+    {
+      "path": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/__tests__/translate-model-selector.test.tsx",
+      "sources": ["9ae2760e8bb0777b4f238fbc995ed9b3ff6f3ea8"],
+      "sha256": "8e5f1f23306b142e4c32de849eb8be88e80d7403848c581498c46c3264f6451f"
+    },
+    {
+      "path": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/api-key-field.tsx",
+      "sources": ["9ae2760e8bb0777b4f238fbc995ed9b3ff6f3ea8"],
+      "sha256": "6edc24f5eb496eec4ea59f9bbea0c20bead05845ee268ee51254fb0fcc2ca270"
+    },
+    {
+      "path": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/components/autosaved-json-code-editor-field.tsx",
+      "sources": ["9ae2760e8bb0777b4f238fbc995ed9b3ff6f3ea8"],
+      "sha256": "5cc623cb1c4069d7335e12939a6990948b69447db4d293a5537cceaed67cac45"
+    },
+    {
+      "path": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/index.tsx",
+      "sources": ["9ae2760e8bb0777b4f238fbc995ed9b3ff6f3ea8"],
+      "sha256": "cbf33d6520172a93a1202c2664b3f65c75e131509d6037fee6bb4a0154ee9888"
+    },
+    {
+      "path": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/provider-headers-field.tsx",
+      "sources": ["9ae2760e8bb0777b4f238fbc995ed9b3ff6f3ea8"],
+      "sha256": "560fff67e2fdd7ea293c2b50498558858d644bbd0472a58eba7ffd1a090fb9b0"
+    },
+    {
+      "path": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/provider-options-field.tsx",
+      "sources": ["9ae2760e8bb0777b4f238fbc995ed9b3ff6f3ea8"],
+      "sha256": "afbcd1100e54d9545eafaaf961d2498c2e7c5f1f58a9e363ec0dccd2b045e554"
+    },
+    {
+      "path": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/provider-specific-settings-field.tsx",
+      "sources": ["9ae2760e8bb0777b4f238fbc995ed9b3ff6f3ea8"],
+      "sha256": "f7427b4b830ac39d4c26243284d87ee733fc861ccdbbda74ceec113d78bb71fd"
+    },
+    {
+      "path": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/provider-url-field.tsx",
+      "sources": ["9ae2760e8bb0777b4f238fbc995ed9b3ff6f3ea8"],
+      "sha256": "96170eb76d4dafaaeff51bef46fbd5bceb5290ab87e5d54a3ab911f8bbc72823"
+    },
+    {
+      "path": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/reasoning-field.tsx",
+      "sources": ["9ae2760e8bb0777b4f238fbc995ed9b3ff6f3ea8"],
+      "sha256": "48aea4e9dd34dd4ad0c99c6be7ef824f2b9fbd325506a555452bcb526f997f81"
+    },
+    {
+      "path": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/temperature-field.tsx",
+      "sources": ["9ae2760e8bb0777b4f238fbc995ed9b3ff6f3ea8"],
+      "sha256": "8cd4a53e10e423a018b8be8db02e9d97d911b666f3ea3b5a76e877e59d2afead"
+    },
+    {
+      "path": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/translate-model-selector.tsx",
+      "sources": ["9ae2760e8bb0777b4f238fbc995ed9b3ff6f3ea8"],
+      "sha256": "f7d7dd62f1a4e87df3a0a96f2e40726e6c0beb8dbc14d06939ba681534d0017e"
+    },
+    {
+      "path": "src/entrypoints/options/pages/api-providers/providers-config/provider-editor.tsx",
+      "sources": ["9ae2760e8bb0777b4f238fbc995ed9b3ff6f3ea8"],
+      "sha256": "6208a1708f7c89575683b886363822bb2f5b219d7345a008dbfa41ef567fb52f"
+    },
+    {
+      "path": "src/entrypoints/options/pages/custom-actions/action-config-form/__tests__/beta-gating.test.tsx",
+      "sources": ["9ae2760e8bb0777b4f238fbc995ed9b3ff6f3ea8"],
+      "sha256": "e67c366816ffaa661648f87d04b893fa4f2952778b4e6898153b3e7d34db6de8"
+    },
+    {
+      "path": "src/entrypoints/options/pages/custom-actions/action-config-form/__tests__/output-schema-autosave.test.tsx",
+      "sources": ["9ae2760e8bb0777b4f238fbc995ed9b3ff6f3ea8"],
+      "sha256": "446b30281fefc1fb32b4fde188c11baaafb8f3e13a73aed7be808f4291bfc324"
+    },
+    {
+      "path": "src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx",
+      "sources": ["9ae2760e8bb0777b4f238fbc995ed9b3ff6f3ea8"],
+      "sha256": "d59f60829f3bd6470f1a90f1e8d35408916992fddbe96ca54fe9639c4739d2ea"
+    },
+    {
+      "path": "src/entrypoints/options/pages/custom-actions/action-config-form/icon-field.tsx",
+      "sources": ["9ae2760e8bb0777b4f238fbc995ed9b3ff6f3ea8"],
+      "sha256": "21f6663fa719e90d09ef1a18e7c022eb30fb6b1aae08dcba6fd00f59081cd66c"
+    },
+    {
+      "path": "src/entrypoints/options/pages/custom-actions/action-config-form/index.tsx",
+      "sources": ["9ae2760e8bb0777b4f238fbc995ed9b3ff6f3ea8"],
+      "sha256": "7e1edce153edb114041e10e9b312aaafd3a62de05fef166376f584ac6980f58f"
+    },
+    {
+      "path": "src/entrypoints/options/pages/custom-actions/action-config-form/name-field.tsx",
+      "sources": ["9ae2760e8bb0777b4f238fbc995ed9b3ff6f3ea8"],
+      "sha256": "7915acaaa1f9a7bde0757c47eb18e5b867b66a5f719b01983bcdc3579f110186"
+    },
+    {
+      "path": "src/entrypoints/options/pages/custom-actions/action-config-form/notebase-connection-field.tsx",
+      "sources": ["9ae2760e8bb0777b4f238fbc995ed9b3ff6f3ea8"],
+      "sha256": "ec7ab0fb870eeaa48fb3f6a609c447516363d98901d24bb7b0ad749db4c3a168"
+    },
+    {
+      "path": "src/entrypoints/options/pages/custom-actions/action-config-form/output-schema-field.tsx",
+      "sources": ["9ae2760e8bb0777b4f238fbc995ed9b3ff6f3ea8"],
+      "sha256": "41d6df1a8a047e429b3b6b57f615a7c40658aab7ee41c464b3b146373b898015"
+    },
+    {
+      "path": "src/entrypoints/options/pages/custom-actions/action-config-form/provider-field.tsx",
+      "sources": ["9ae2760e8bb0777b4f238fbc995ed9b3ff6f3ea8"],
+      "sha256": "3d2e4d6a95cb4e330b10ae99f48e8a8593a88a4267309cb8a1981d8d643f8564"
+    },
+    {
+      "path": "src/entrypoints/options/pages/custom-actions/atoms.ts",
+      "sources": ["9ae2760e8bb0777b4f238fbc995ed9b3ff6f3ea8"],
+      "sha256": "9d6cee3c0f07781a9ee5840dcf22732d11e57fa37dbf8bf15c32779181611a64"
+    },
+    {
+      "path": "src/entrypoints/options/pages/custom-actions/components/action-card-list.tsx",
+      "sources": ["9ae2760e8bb0777b4f238fbc995ed9b3ff6f3ea8"],
+      "sha256": "4bffd6ea8506a95e2294daf5bfc32c04ac934cc7d991924731f5f3070517f39e"
+    },
+    {
+      "path": "src/entrypoints/options/pages/translation/preference/translation-mode-select.tsx",
+      "sources": ["03c3a86f5855c5aadb4db3533e2b24bed88bef16"],
+      "sha256": "015fe9482aae22ead2f9653801101e80e6304f944d28f2e2173daee6ab9cadda"
+    },
+    {
+      "path": "src/entrypoints/popup/components/translation-mode-selector.tsx",
+      "sources": ["03c3a86f5855c5aadb4db3533e2b24bed88bef16"],
+      "sha256": "3d4073aff4f4ffc778f50271e2c63e479a89c4b7df68b3b2ee7a76bf4664126a"
+    },
+    {
+      "path": "src/entrypoints/selection.content/selection-toolbar/__tests__/external-selection.test.tsx",
+      "sources": ["0284b5afd302810af73e628e3adef2f5fe6aa36c"],
+      "sha256": "ab9212b0d98d17b39eedbdd63d9b1be4c14f4d169d487478c0bda0eb0c1c2e8c"
+    },
+    {
+      "path": "src/entrypoints/selection.content/selection-toolbar/__tests__/selection-toolbar.test.tsx",
+      "sources": ["0284b5afd302810af73e628e3adef2f5fe6aa36c"],
+      "sha256": "2eed50bccba48b69ee6e17c4a2cf0d19ef1ab5436d2430993681a25a523f5719"
+    },
+    {
+      "path": "src/entrypoints/selection.content/selection-toolbar/atoms.ts",
+      "sources": ["0284b5afd302810af73e628e3adef2f5fe6aa36c"],
+      "sha256": "4455c999c6eb6aba44d9c788e9dbc3fc35c24031ca9421a2631e5bad6c9aba4f"
+    },
+    {
+      "path": "src/entrypoints/selection.content/selection-toolbar/custom-action-button/provider.tsx",
+      "sources": ["0284b5afd302810af73e628e3adef2f5fe6aa36c"],
+      "sha256": "ae3d3a625b9d0167c0c3589ac698ca95734d086a7a9ced811946b7781a3eced8"
+    },
+    {
+      "path": "src/entrypoints/selection.content/selection-toolbar/index.tsx",
+      "sources": ["0284b5afd302810af73e628e3adef2f5fe6aa36c"],
+      "sha256": "8b26705605efc2c42df1850c5e29eff716118ec3538704b9cd299793253cfb0b"
+    },
+    {
+      "path": "src/entrypoints/selection.content/selection-toolbar/translate-button/provider.tsx",
+      "sources": ["0284b5afd302810af73e628e3adef2f5fe6aa36c"],
+      "sha256": "eb2d867b77ab258ae75bf2d053059e429dad6e997dbfa8b207a06a6ae0a3aff6"
+    },
+    {
+      "path": "src/entrypoints/side.content/components/floating-button/index.tsx",
+      "sources": ["77df09052b91ece26bba29f763c7fc2d6b6498cf"],
+      "sha256": "7c44dbdb298700082be0421639505d7e6964ac1056dcf2b8dd7118ab1336256f"
+    },
+    {
+      "path": "src/entrypoints/subtitles.content/platforms/youtube/__tests__/controls-height.test.ts",
+      "sources": ["514188603026bf4783864072f53d288bb8a0f331"],
+      "sha256": "73318ec2e4d64c3855edd56e5b02bc0c3b998f41feea101237d5fe2dc5d8487d"
+    },
+    {
+      "path": "src/entrypoints/subtitles.content/platforms/youtube/config.ts",
+      "sources": ["514188603026bf4783864072f53d288bb8a0f331"],
+      "sha256": "5b83005f0fd26728358b7e4a6140a21b2c76de8f65f66584e57aba0e739729c8"
+    },
+    {
+      "path": "src/entrypoints/subtitles.content/ui/__tests__/use-controls-visible.test.tsx",
+      "sources": ["514188603026bf4783864072f53d288bb8a0f331"],
+      "sha256": "8ae874361d9aa7179cff5f5448909fca78a04531eac91f08806243707b0de2b6"
+    },
+    {
+      "path": "src/entrypoints/subtitles.content/ui/use-controls-visible.ts",
+      "sources": ["514188603026bf4783864072f53d288bb8a0f331"],
+      "sha256": "1ed18ebffa91116830a827a3f00b471193ea5493e1476ba7a1360d86c69922cf"
+    },
+    {
+      "path": "src/locales/en.yml",
+      "sources": [
+        "9ae2760e8bb0777b4f238fbc995ed9b3ff6f3ea8",
+        "03c3a86f5855c5aadb4db3533e2b24bed88bef16"
+      ],
+      "sha256": "e2c1695164339a0a88f52151aac01155782a7deb4d25ceca2872df2f14a6528d"
+    },
+    {
+      "path": "src/locales/es.yml",
+      "sources": [
+        "9ae2760e8bb0777b4f238fbc995ed9b3ff6f3ea8",
+        "03c3a86f5855c5aadb4db3533e2b24bed88bef16"
+      ],
+      "sha256": "fb67c2f7f6009c2506545c69380b233af8b9c7e1f879ce2bb077e4467fa2dc22"
+    },
+    {
+      "path": "src/locales/ja.yml",
+      "sources": [
+        "9ae2760e8bb0777b4f238fbc995ed9b3ff6f3ea8",
+        "03c3a86f5855c5aadb4db3533e2b24bed88bef16"
+      ],
+      "sha256": "39096d2ab6094da879b4badaf7dd293f132f06eaf0676d5d48c8c1dcd7daf4bf"
+    },
+    {
+      "path": "src/locales/ko.yml",
+      "sources": [
+        "9ae2760e8bb0777b4f238fbc995ed9b3ff6f3ea8",
+        "03c3a86f5855c5aadb4db3533e2b24bed88bef16"
+      ],
+      "sha256": "fd1f6af88e93ca6305caf23410eea78ec06e9fcbfecc79ef79248d37e5f2113c"
+    },
+    {
+      "path": "src/locales/ru.yml",
+      "sources": [
+        "9ae2760e8bb0777b4f238fbc995ed9b3ff6f3ea8",
+        "03c3a86f5855c5aadb4db3533e2b24bed88bef16"
+      ],
+      "sha256": "c38d94f1e773f46398a73e550ae07d0d26f5859f643bf7f504c67a6093380b4f"
+    },
+    {
+      "path": "src/locales/tr.yml",
+      "sources": [
+        "9ae2760e8bb0777b4f238fbc995ed9b3ff6f3ea8",
+        "03c3a86f5855c5aadb4db3533e2b24bed88bef16"
+      ],
+      "sha256": "b4b2e65a3e88bdd2967eb7aadb1a1a4fca4aec7b51aade70c2b6889cf21ec3d8"
+    },
+    {
+      "path": "src/locales/vi.yml",
+      "sources": [
+        "9ae2760e8bb0777b4f238fbc995ed9b3ff6f3ea8",
+        "03c3a86f5855c5aadb4db3533e2b24bed88bef16"
+      ],
+      "sha256": "aebb4b3d945ccef12f1ab6ec7f1698ce72a159ab02402e6c953702cb8b3f4975"
+    },
+    {
+      "path": "src/locales/zh-CN.yml",
+      "sources": [
+        "9ae2760e8bb0777b4f238fbc995ed9b3ff6f3ea8",
+        "03c3a86f5855c5aadb4db3533e2b24bed88bef16"
+      ],
+      "sha256": "ce3ec753c03035a16c3fb4f3c457e1f9061608796bacec12c272010cb7ca27fb"
+    },
+    {
+      "path": "src/locales/zh-TW.yml",
+      "sources": [
+        "9ae2760e8bb0777b4f238fbc995ed9b3ff6f3ea8",
+        "03c3a86f5855c5aadb4db3533e2b24bed88bef16"
+      ],
+      "sha256": "42e43e3a95aeabe101b0583ed8b044fd8ec23bbfb650d0c64ee477527e0ed5b7"
+    },
+    {
+      "path": "src/types/config/site-rules.ts",
+      "sources": ["0f5e1583d54e027ca39ed0bca6a8f4e10dce7539"],
+      "sha256": "bbd5dd61d955c6894604171e4778331b8deec9ba09a4693236ebf2e2870ed49b"
+    },
+    {
+      "path": "src/utils/atoms/__tests__/config-sync.test.ts",
+      "sources": ["9ae2760e8bb0777b4f238fbc995ed9b3ff6f3ea8"],
+      "sha256": "83a67353c25c109bc1cdca13eb4ceef3bb6a305e3d959b238bc53076729f27a3"
+    },
+    {
+      "path": "src/utils/atoms/config.ts",
+      "sources": ["9ae2760e8bb0777b4f238fbc995ed9b3ff6f3ea8"],
+      "sha256": "5400709983aaa0a82daa288b6734ce2f675b220b039b938373e3847df01df3ee"
+    },
+    {
+      "path": "src/utils/atoms/entity-config.ts",
+      "sources": ["9ae2760e8bb0777b4f238fbc995ed9b3ff6f3ea8"],
+      "sha256": "0f723c41bdf96d2f50215a32d39c34d6795afe85d970a59e3a5718354f428005"
+    },
+    {
+      "path": "src/utils/constants/dom-labels.ts",
+      "sources": ["0f5e1583d54e027ca39ed0bca6a8f4e10dce7539"],
+      "sha256": "b3502383623333c70db9ef5bfb6574558e9a8fbf5e138a1cae9a86f4aa8b3317"
+    },
+    {
+      "path": "src/utils/constants/prompt.ts",
+      "sources": [
+        "a250e6c41f5460b6a8b28bbe6004b5c254307370",
+        "a6384f633609973a2161e8f47414331454538779"
+      ],
+      "sha256": "d6cd0179db3b83134d9b3efcf9e3d4d3a11566c46e77704406bdc6c639a2efda"
+    },
+    {
+      "path": "src/utils/constants/subtitles.ts",
+      "sources": [
+        "514188603026bf4783864072f53d288bb8a0f331",
+        "a6384f633609973a2161e8f47414331454538779"
+      ],
+      "sha256": "a532a69e8f13ed9cacb82d1ff07b2e9153511f5dcbf6757fe143c6559170e2a5"
+    },
+    {
+      "path": "src/utils/custom-actions.ts",
+      "sources": ["9ae2760e8bb0777b4f238fbc995ed9b3ff6f3ea8"],
+      "sha256": "da49f04c1b44adb35015e0c08c9b50b0697a9556c0b3a457bde1b52b44bb9a6f"
+    },
+    {
+      "path": "src/utils/host/__tests__/translate.integration.test.tsx",
+      "sources": ["0f5e1583d54e027ca39ed0bca6a8f4e10dce7539"],
+      "sha256": "616f14c3d3a7641724503fccbd7012087ce7650a2476e7a9b2c9ccf739a43ade"
+    },
+    {
+      "path": "src/utils/host/dom/__tests__/filter.test.ts",
+      "sources": ["0f5e1583d54e027ca39ed0bca6a8f4e10dce7539"],
+      "sha256": "d261ada235b8113029a40f71a532d968dbb005709f85245c0fc9fbd7f5e2512d"
+    },
+    {
+      "path": "src/utils/host/dom/__tests__/traversal.test.ts",
+      "sources": ["0f5e1583d54e027ca39ed0bca6a8f4e10dce7539"],
+      "sha256": "2f5191f0c6c3bcd9c25882faed69a01d004b8cd1b89d4c444cd6f0176926c429"
+    },
+    {
+      "path": "src/utils/host/dom/filter.ts",
+      "sources": ["0f5e1583d54e027ca39ed0bca6a8f4e10dce7539"],
+      "sha256": "a4391f8fbbaca6d4966e5660e852768977c1f968a2199a233cc391cf8d45c711"
+    },
+    {
+      "path": "src/utils/host/dom/traversal.ts",
+      "sources": ["0f5e1583d54e027ca39ed0bca6a8f4e10dce7539"],
+      "sha256": "52b29be647879c993979bd45807b02f42243bd02a0a25034422044b9149982b7"
+    },
+    {
+      "path": "src/utils/host/translate/__tests__/in-memory-translation-cache.test.ts",
+      "sources": ["0f5e1583d54e027ca39ed0bca6a8f4e10dce7539"],
+      "sha256": "79c717cab33d86d9609be684312a3bb635fd1d2d734c6c1683055c21c66eb4f5"
+    },
+    {
+      "path": "src/utils/host/translate/__tests__/inline-atom-tokens.test.ts",
+      "sources": ["0f5e1583d54e027ca39ed0bca6a8f4e10dce7539"],
+      "sha256": "0ddb3bb7563292463bf290ba49c47c60cb9c2158e4bb4ce984614a6d35fd96eb"
+    },
+    {
+      "path": "src/utils/host/translate/core/translation-modes.ts",
+      "sources": ["0f5e1583d54e027ca39ed0bca6a8f4e10dce7539"],
+      "sha256": "e4fac8436aeb11672bd0f9bbeecf53be9ea649dfe969a02f4635f0a9201add34"
+    },
+    {
+      "path": "src/utils/host/translate/dom/__tests__/inline-atoms.test.ts",
+      "sources": ["0f5e1583d54e027ca39ed0bca6a8f4e10dce7539"],
+      "sha256": "22e9e401df11f6160a8ab63ac03ddbb3f19917dbe77bf7d0f48ab5c513da6d81"
+    },
+    {
+      "path": "src/utils/host/translate/dom/inline-atoms.ts",
+      "sources": ["0f5e1583d54e027ca39ed0bca6a8f4e10dce7539"],
+      "sha256": "b89850b921ec6e9812bf7111d52b2992d2ab17b7dc39b8656e6e22fff0ae9049"
+    },
+    {
+      "path": "src/utils/host/translate/dom/translation-insertion.ts",
+      "sources": ["0f5e1583d54e027ca39ed0bca6a8f4e10dce7539"],
+      "sha256": "c9a270893362b8c797bfe787ed7fc17154b6ceeaeca57c14bd7fab834eac482d"
+    },
+    {
+      "path": "src/utils/host/translate/inline-atom-tokens.ts",
+      "sources": ["0f5e1583d54e027ca39ed0bca6a8f4e10dce7539"],
+      "sha256": "515c2d5dd5c025a010770e2e88cb4cf40c183847561f0a65f1b93fe637a7af27"
+    },
+    {
+      "path": "src/utils/host/translate/translate-text.ts",
+      "sources": ["0f5e1583d54e027ca39ed0bca6a8f4e10dce7539"],
+      "sha256": "9242c8d49752d87c34d73e98b4982fc5f4ab13d24f55853835291d5a50c311ad"
+    },
+    {
+      "path": "src/utils/prompts/__tests__/subtitles-segmentation.test.ts",
+      "sources": ["a6384f633609973a2161e8f47414331454538779"],
+      "sha256": "da47993733ad5dcc00a27fad3d6f309f65b8c15825c9396fa614368e00977e57"
+    },
+    {
+      "path": "src/utils/prompts/__tests__/translate.test.ts",
+      "sources": [
+        "0f5e1583d54e027ca39ed0bca6a8f4e10dce7539",
+        "a250e6c41f5460b6a8b28bbe6004b5c254307370"
+      ],
+      "sha256": "6130a6225149e8c100b5ebe25e1a03827193db0a729ea37458a047e66b27fa07"
+    },
+    {
+      "path": "src/utils/prompts/translate.ts",
+      "sources": ["0f5e1583d54e027ca39ed0bca6a8f4e10dce7539"],
+      "sha256": "84fb8a6f86607fbcf40599078b4a6543f77f637551ec23f8c1695f15e10f9f63"
+    },
+    {
+      "path": "src/utils/providers/__tests__/translation-only-gate.test.ts",
+      "sources": ["03c3a86f5855c5aadb4db3533e2b24bed88bef16"],
+      "sha256": "eccb5e4596e2373a41681050c529ccf938396c9d582fcc4c22be8a0e51ab1aa1"
+    },
+    {
+      "path": "src/utils/providers/translation-only-gate.ts",
+      "sources": ["03c3a86f5855c5aadb4db3533e2b24bed88bef16"],
+      "sha256": "f987c2fe3b210d9ad96f372f280d7cec635948dfe9a0d33aa85f899d19f7ed7f"
+    },
+    {
+      "path": "src/utils/site-rules/__tests__/built-in.test.ts",
+      "sources": [
+        "0e21ebff986db878c8fa64a3a90897a6be807bbb",
+        "0f5e1583d54e027ca39ed0bca6a8f4e10dce7539"
+      ],
+      "sha256": "e612c4706a26adc37e4ee2c121eb11a34c368e9670cb46fbfb88428aadf582b0"
+    },
+    {
+      "path": "src/utils/site-rules/__tests__/resolve.test.ts",
+      "sources": ["0f5e1583d54e027ca39ed0bca6a8f4e10dce7539"],
+      "sha256": "24725f07165d13bc54842dce756edc19304cf57b09bde29fa131b9817a8046de"
+    },
+    {
+      "path": "src/utils/site-rules/built-in/rules.json",
+      "sources": [
+        "0e21ebff986db878c8fa64a3a90897a6be807bbb",
+        "0f5e1583d54e027ca39ed0bca6a8f4e10dce7539",
+        "fcb54e066ace35413d8486ebbfd0b31e8e99af9d",
+        "94201a3fcfc82ee3443ebdeb2fd8866d66d742b7"
+      ],
+      "sha256": "a2cbfbe1af17ee0a55d508035b9f1c73eb733959d5a74da26057851cdd6007c8"
+    },
+    {
+      "path": "src/utils/site-rules/resolve.ts",
+      "sources": ["0f5e1583d54e027ca39ed0bca6a8f4e10dce7539"],
+      "sha256": "37b5bd95ff806cbe35e62ea632dc366d4c4cc407b65fcede7ef552eecb11ad8c"
+    }
+  ]
+}

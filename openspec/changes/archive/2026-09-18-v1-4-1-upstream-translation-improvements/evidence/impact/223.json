@@ -1,0 +1,153 @@
+{
+  "target": {
+    "id": "Function:src/utils/host/dom/filter.ts:isWalkBlockedElement",
+    "name": "isWalkBlockedElement",
+    "type": "Function",
+    "filePath": "src/utils/host/dom/filter.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 5,
+  "risk": "LOW",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 4,
+    "processes_affected": 1,
+    "modules_affected": 1
+  },
+  "byDepthCounts": {
+    "1": 4,
+    "2": 1
+  },
+  "affected_processes": [
+    {
+      "name": "removeOrShowNodeTranslation",
+      "type": "Function",
+      "filePath": "src/utils/host/translate/node-manipulation.ts",
+      "affected_process_count": 9,
+      "total_hits": 9,
+      "earliest_broken_step": 1
+    }
+  ],
+  "affected_modules": [
+    {
+      "name": "Dom",
+      "hits": 5,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/utils/host/dom/filter.ts:hasNoWalkAncestor",
+        "name": "hasNoWalkAncestor",
+        "filePath": "src/utils/host/dom/filter.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/utils/host/dom/traversal.ts:walkAndLabelElement",
+        "name": "walkAndLabelElement",
+        "filePath": "src/utils/host/dom/traversal.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/utils/host/dom/traversal.ts:walkAndLabelElementChunked",
+        "name": "walkAndLabelElementChunked",
+        "filePath": "src/utils/host/dom/traversal.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/utils/host/dom/traversal.ts:walkNode",
+        "name": "walkNode",
+        "filePath": "src/utils/host/dom/traversal.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "Function:src/utils/host/translate/node-manipulation.ts:removeOrShowNodeTranslation",
+        "name": "removeOrShowNodeTranslation",
+        "filePath": "src/utils/host/translate/node-manipulation.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_153_removeorshownodetran",
+            "label": "RemoveOrShowNodeTranslation → MayHaveRemovedTranslation",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_99_removeorshownodetran",
+            "label": "RemoveOrShowNodeTranslation → IsInlineDisplay",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_6_removeorshownodetran",
+            "label": "RemoveOrShowNodeTranslation → IsDocumentRoot",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_24_removeorshownodetran",
+            "label": "RemoveOrShowNodeTranslation → IsHTMLElement",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_25_removeorshownodetran",
+            "label": "RemoveOrShowNodeTranslation → IsTextNode",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_466_removeorshownodetran",
+            "label": "RemoveOrShowNodeTranslation → RawT",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_98_removeorshownodetran",
+            "label": "RemoveOrShowNodeTranslation → GetEffectiveTagSet",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_48_removeorshownodetran",
+            "label": "RemoveOrShowNodeTranslation → GetPageTranslationSessionId",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_100_removeorshownodetran",
+            "label": "RemoveOrShowNodeTranslation → HasVisibleTranslation",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      }
+    ]
+  },
+  "staleness": {
+    "commitsBehind": 1,
+    "hint": "⚠️ Index is 1 commit behind HEAD. Run analyze tool to update."
+  }
+}

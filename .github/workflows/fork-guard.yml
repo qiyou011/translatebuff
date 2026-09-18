@@ -16,6 +16,10 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      - name: Fetch official upstream sources
+        run: |
+          git remote add upstream https://github.com/mengxi-ream/read-frog.git
+          git fetch --no-tags upstream +refs/heads/main:refs/remotes/upstream/main
       # 同步分支合完上游后三点差集等于全量上游改动，用增量模式会把同步 PR 自己判红；
       # 故按分支名分流。推导失败硬失败退出，不回落增量模式（静默降级 = 不做检查）。
       - name: Fork boundary check

@@ -1,0 +1,243 @@
+{
+  "target": {
+    "id": "Function:src/entrypoints/subtitles.content/ui/use-controls-visible.ts:useControlsInfo",
+    "name": "useControlsInfo",
+    "type": "Function",
+    "filePath": "src/entrypoints/subtitles.content/ui/use-controls-visible.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 6,
+  "risk": "HIGH",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 2,
+    "processes_affected": 1,
+    "modules_affected": 3
+  },
+  "byDepthCounts": {
+    "1": 2,
+    "2": 2,
+    "3": 2
+  },
+  "affected_processes": [
+    {
+      "name": "initialize",
+      "type": "Function",
+      "filePath": "src/entrypoints/subtitles.content/universal-adapter.ts",
+      "affected_process_count": 8,
+      "total_hits": 20,
+      "earliest_broken_step": 3
+    }
+  ],
+  "affected_modules": [
+    {
+      "name": "Ui",
+      "hits": 4,
+      "impact": "direct"
+    },
+    {
+      "name": "Renderer",
+      "hits": 1,
+      "impact": "indirect"
+    },
+    {
+      "name": "Subtitles-settings-panel",
+      "hits": 1,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/subtitles.content/ui/subtitles-settings-panel/panel-shell.tsx:PanelShell",
+        "name": "PanelShell",
+        "filePath": "src/entrypoints/subtitles.content/ui/subtitles-settings-panel/panel-shell.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_7_initialize",
+            "label": "Initialize → CheckVisibility",
+            "processType": "cross_community",
+            "step": 5
+          },
+          {
+            "id": "proc_16_initialize",
+            "label": "Initialize → FindVideoContainer",
+            "processType": "cross_community",
+            "step": 5
+          },
+          {
+            "id": "proc_26_initialize",
+            "label": "Initialize → TransitionContent",
+            "processType": "cross_community",
+            "step": 5
+          },
+          {
+            "id": "proc_51_initialize",
+            "label": "Initialize → UseSubtitlesPanelDismiss",
+            "processType": "cross_community",
+            "step": 5
+          },
+          {
+            "id": "proc_52_initialize",
+            "label": "Initialize → UseSubtitlesUI",
+            "processType": "cross_community",
+            "step": 5
+          },
+          {
+            "id": "proc_8_initialize",
+            "label": "Initialize → MeasureHeight",
+            "processType": "cross_community",
+            "step": 5
+          }
+        ]
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/subtitles.content/ui/use-vertical-drag.ts:useVerticalDrag",
+        "name": "useVerticalDrag",
+        "filePath": "src/entrypoints/subtitles.content/ui/use-vertical-drag.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "Function:src/entrypoints/subtitles.content/ui/subtitles-settings-panel/index.tsx:SubtitlesSettingsPanel",
+        "name": "SubtitlesSettingsPanel",
+        "filePath": "src/entrypoints/subtitles.content/ui/subtitles-settings-panel/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_51_initialize",
+            "label": "Initialize → UseSubtitlesPanelDismiss",
+            "processType": "cross_community",
+            "step": 4
+          },
+          {
+            "id": "proc_8_initialize",
+            "label": "Initialize → MeasureHeight",
+            "processType": "cross_community",
+            "step": 4
+          },
+          {
+            "id": "proc_7_initialize",
+            "label": "Initialize → CheckVisibility",
+            "processType": "cross_community",
+            "step": 4
+          },
+          {
+            "id": "proc_52_initialize",
+            "label": "Initialize → UseSubtitlesUI",
+            "processType": "cross_community",
+            "step": 4
+          },
+          {
+            "id": "proc_26_initialize",
+            "label": "Initialize → TransitionContent",
+            "processType": "cross_community",
+            "step": 4
+          },
+          {
+            "id": "proc_16_initialize",
+            "label": "Initialize → FindVideoContainer",
+            "processType": "cross_community",
+            "step": 4
+          }
+        ]
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/entrypoints/subtitles.content/ui/subtitles-view.tsx:SubtitlesView",
+        "name": "SubtitlesView",
+        "filePath": "src/entrypoints/subtitles.content/ui/subtitles-view.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "3": [
+      {
+        "depth": 3,
+        "id": "Function:src/entrypoints/subtitles.content/renderer/render-translate-button.tsx:renderSubtitlesTranslateButton",
+        "name": "renderSubtitlesTranslateButton",
+        "filePath": "src/entrypoints/subtitles.content/renderer/render-translate-button.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_8_initialize",
+            "label": "Initialize → MeasureHeight",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_16_initialize",
+            "label": "Initialize → FindVideoContainer",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_26_initialize",
+            "label": "Initialize → TransitionContent",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_51_initialize",
+            "label": "Initialize → UseSubtitlesPanelDismiss",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_164_initialize",
+            "label": "Initialize → SubtitlesProviders",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_163_initialize",
+            "label": "Initialize → SubtitlesTranslateButton",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_52_initialize",
+            "label": "Initialize → UseSubtitlesUI",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_7_initialize",
+            "label": "Initialize → CheckVisibility",
+            "processType": "cross_community",
+            "step": 3
+          }
+        ]
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/entrypoints/subtitles.content/ui/subtitles-container.tsx:SubtitlesContainer",
+        "name": "SubtitlesContainer",
+        "filePath": "src/entrypoints/subtitles.content/ui/subtitles-container.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ]
+  },
+  "staleness": {
+    "commitsBehind": 1,
+    "hint": "⚠️ Index is 1 commit behind HEAD. Run analyze tool to update."
+  }
+}

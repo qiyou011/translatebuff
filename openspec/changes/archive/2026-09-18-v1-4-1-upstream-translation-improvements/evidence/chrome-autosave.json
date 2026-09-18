@@ -1,0 +1,7 @@
+{
+  "browser": "153.0.8010.36",
+  "syntheticCompositionEvents": true,
+  "during": ["Custom AI Action"],
+  "after": ["上游验收草稿"],
+  "navigation": "chrome-extension://ogkokegjofdpdfggbdiobbpnkkhpifoa/options.html#/page-translation"
+}

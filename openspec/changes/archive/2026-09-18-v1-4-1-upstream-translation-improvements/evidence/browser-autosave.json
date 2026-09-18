@@ -1,0 +1,7 @@
+{
+  "browser": "153.0.4234.32",
+  "syntheticCompositionEvents": true,
+  "during": ["Custom AI Action"],
+  "after": ["测试草稿"],
+  "navigation": "chrome-extension://dpjljamigpipdclbdjeoapiflkpkihge/options.html#/page-translation"
+}

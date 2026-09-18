@@ -7,7 +7,7 @@ import {
 } from "@/entrypoints/selection.content/overlay-layers"
 import {
   clearSelectionStateAtom,
-  isSelectionToolbarVisibleAtom,
+  isSelectionToolbarOpenAtom as isSelectionToolbarVisibleAtom,
   setSelectionStateAtom,
 } from "@/entrypoints/selection.content/selection-toolbar/atoms"
 import {
@@ -518,7 +518,15 @@ export function SelectionToolbar() {
   return (
     <div
       ref={tooltipContainerRef}
-      className={`${NOTRANSLATE_CLASS} pointer-events-none fixed inset-0 ${SELECTION_CONTENT_OVERLAY_LAYERS.selectionOverlay}`}
+      className={cn(
+        NOTRANSLATE_CLASS,
+        isSelectionToolbarVisible &&
+          selectionToolbar.enabled &&
+          !isSiteDisabled &&
+          hasAnyEnabledFeature
+          ? `pointer-events-none fixed inset-0 ${SELECTION_CONTENT_OVERLAY_LAYERS.selectionOverlay}`
+          : "pointer-events-none fixed h-0 w-0",
+      )}
       {...{ [SELECTION_CONTENT_OVERLAY_ROOT_ATTRIBUTE]: "" }}
     >
       {selectionToolbar.enabled && !isSiteDisabled && hasAnyEnabledFeature && (

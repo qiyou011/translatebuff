@@ -1,0 +1,247 @@
+{
+  "target": {
+    "id": "Function:src/utils/host/dom/filter.ts:isInlineDisplay",
+    "name": "isInlineDisplay",
+    "type": "Function",
+    "filePath": "src/utils/host/dom/filter.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 10,
+  "risk": "LOW",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 2,
+    "processes_affected": 1,
+    "modules_affected": 1
+  },
+  "byDepthCounts": {
+    "1": 2,
+    "2": 4,
+    "3": 4
+  },
+  "affected_processes": [
+    {
+      "name": "removeOrShowNodeTranslation",
+      "type": "Function",
+      "filePath": "src/utils/host/translate/node-manipulation.ts",
+      "affected_process_count": 4,
+      "total_hits": 16,
+      "earliest_broken_step": 2
+    }
+  ],
+  "affected_modules": [
+    {
+      "name": "Dom",
+      "hits": 10,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/utils/host/dom/filter.ts:isShallowBlockHTMLElement",
+        "name": "isShallowBlockHTMLElement",
+        "filePath": "src/utils/host/dom/filter.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/utils/host/dom/filter.ts:isShallowInlineHTMLElement",
+        "name": "isShallowInlineHTMLElement",
+        "filePath": "src/utils/host/dom/filter.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_99_removeorshownodetran",
+            "label": "RemoveOrShowNodeTranslation → IsInlineDisplay",
+            "processType": "cross_community",
+            "step": 4
+          },
+          {
+            "id": "proc_24_removeorshownodetran",
+            "label": "RemoveOrShowNodeTranslation → IsHTMLElement",
+            "processType": "cross_community",
+            "step": 4
+          },
+          {
+            "id": "proc_98_removeorshownodetran",
+            "label": "RemoveOrShowNodeTranslation → GetEffectiveTagSet",
+            "processType": "cross_community",
+            "step": 4
+          },
+          {
+            "id": "proc_25_removeorshownodetran",
+            "label": "RemoveOrShowNodeTranslation → IsTextNode",
+            "processType": "cross_community",
+            "step": 4
+          }
+        ]
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "Function:src/utils/host/dom/filter.ts:isShallowBlockTransNode",
+        "name": "isShallowBlockTransNode",
+        "filePath": "src/utils/host/dom/filter.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/utils/host/dom/filter.ts:isShallowInlineTransNode",
+        "name": "isShallowInlineTransNode",
+        "filePath": "src/utils/host/dom/filter.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_25_removeorshownodetran",
+            "label": "RemoveOrShowNodeTranslation → IsTextNode",
+            "processType": "cross_community",
+            "step": 6
+          },
+          {
+            "id": "proc_24_removeorshownodetran",
+            "label": "RemoveOrShowNodeTranslation → IsHTMLElement",
+            "processType": "cross_community",
+            "step": 6
+          }
+        ]
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/utils/host/dom/find.ts:findNearestAncestorBlockNodeFor",
+        "name": "findNearestAncestorBlockNodeFor",
+        "filePath": "src/utils/host/dom/find.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_25_removeorshownodetran",
+            "label": "RemoveOrShowNodeTranslation → IsTextNode",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_98_removeorshownodetran",
+            "label": "RemoveOrShowNodeTranslation → GetEffectiveTagSet",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_99_removeorshownodetran",
+            "label": "RemoveOrShowNodeTranslation → IsInlineDisplay",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_24_removeorshownodetran",
+            "label": "RemoveOrShowNodeTranslation → IsHTMLElement",
+            "processType": "cross_community",
+            "step": 3
+          }
+        ]
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/utils/host/dom/traversal.ts:walkNode",
+        "name": "walkNode",
+        "filePath": "src/utils/host/dom/traversal.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "3": [
+      {
+        "depth": 3,
+        "id": "Function:src/utils/host/dom/filter.ts:isLargeInitialFloatingLetter",
+        "name": "isLargeInitialFloatingLetter",
+        "filePath": "src/utils/host/dom/filter.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_24_removeorshownodetran",
+            "label": "RemoveOrShowNodeTranslation → IsHTMLElement",
+            "processType": "cross_community",
+            "step": 5
+          },
+          {
+            "id": "proc_25_removeorshownodetran",
+            "label": "RemoveOrShowNodeTranslation → IsTextNode",
+            "processType": "cross_community",
+            "step": 5
+          }
+        ]
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/utils/host/dom/find.ts:findNearestAncestorBlockNodeAt",
+        "name": "findNearestAncestorBlockNodeAt",
+        "filePath": "src/utils/host/dom/find.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_98_removeorshownodetran",
+            "label": "RemoveOrShowNodeTranslation → GetEffectiveTagSet",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_24_removeorshownodetran",
+            "label": "RemoveOrShowNodeTranslation → IsHTMLElement",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_25_removeorshownodetran",
+            "label": "RemoveOrShowNodeTranslation → IsTextNode",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_99_removeorshownodetran",
+            "label": "RemoveOrShowNodeTranslation → IsInlineDisplay",
+            "processType": "cross_community",
+            "step": 2
+          }
+        ]
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/utils/host/dom/traversal.ts:walkAndLabelElement",
+        "name": "walkAndLabelElement",
+        "filePath": "src/utils/host/dom/traversal.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/utils/host/dom/traversal.ts:walkAndLabelElementChunked",
+        "name": "walkAndLabelElementChunked",
+        "filePath": "src/utils/host/dom/traversal.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ]
+  },
+  "staleness": {
+    "commitsBehind": 1,
+    "hint": "⚠️ Index is 1 commit behind HEAD. Run analyze tool to update."
+  }
+}

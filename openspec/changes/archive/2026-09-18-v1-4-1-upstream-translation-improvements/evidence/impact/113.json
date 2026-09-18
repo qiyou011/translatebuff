@@ -1,0 +1,201 @@
+{
+  "target": {
+    "id": "Function:src/entrypoints/options/pages/custom-actions/action-config-form/index.tsx:CustomActionConfigForm",
+    "name": "CustomActionConfigForm",
+    "type": "Function",
+    "filePath": "src/entrypoints/options/pages/custom-actions/action-config-form/index.tsx"
+  },
+  "direction": "upstream",
+  "impactedCount": 2,
+  "risk": "LOW",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 1,
+    "processes_affected": 2,
+    "modules_affected": 1
+  },
+  "byDepthCounts": {
+    "1": 1,
+    "2": 1
+  },
+  "affected_processes": [
+    {
+      "name": "CustomActionsPage",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/custom-actions/index.tsx",
+      "affected_process_count": 9,
+      "total_hits": 17,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "CustomActionsConfig",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/custom-actions/custom-actions-config.tsx",
+      "affected_process_count": 3,
+      "total_hits": 3,
+      "earliest_broken_step": 1
+    }
+  ],
+  "affected_modules": [
+    {
+      "name": "Voice",
+      "hits": 2,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/options/pages/custom-actions/custom-actions-config.tsx:CustomActionsConfig",
+        "name": "CustomActionsConfig",
+        "filePath": "src/entrypoints/options/pages/custom-actions/custom-actions-config.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_69_customactionspage",
+            "label": "CustomActionsPage → HandleScroll",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_284_customactionsconfig",
+            "label": "CustomActionsConfig → Identity",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_285_customactionsconfig",
+            "label": "CustomActionsConfig → Toggle",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_71_customactionspage",
+            "label": "CustomActionsPage → Content",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_72_customactionspage",
+            "label": "CustomActionsPage → Identity",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_73_customactionspage",
+            "label": "CustomActionsPage → Toggle",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_360_customactionspage",
+            "label": "CustomActionsPage → ConfigItem",
+            "processType": "intra_community",
+            "step": 2
+          },
+          {
+            "id": "proc_283_customactionsconfig",
+            "label": "CustomActionsConfig → Content",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_195_customactionspage",
+            "label": "CustomActionsPage → EntityEditorLayout",
+            "processType": "intra_community",
+            "step": 2
+          },
+          {
+            "id": "proc_70_customactionspage",
+            "label": "CustomActionsPage → Root",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_268_customactionspage",
+            "label": "CustomActionsPage → RawT",
+            "processType": "cross_community",
+            "step": 2
+          }
+        ]
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "Function:src/entrypoints/options/pages/custom-actions/index.tsx:CustomActionsPage",
+        "name": "CustomActionsPage",
+        "filePath": "src/entrypoints/options/pages/custom-actions/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_73_customactionspage",
+            "label": "CustomActionsPage → Toggle",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_360_customactionspage",
+            "label": "CustomActionsPage → ConfigItem",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_195_customactionspage",
+            "label": "CustomActionsPage → EntityEditorLayout",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_69_customactionspage",
+            "label": "CustomActionsPage → HandleScroll",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_71_customactionspage",
+            "label": "CustomActionsPage → Content",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_72_customactionspage",
+            "label": "CustomActionsPage → Identity",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_350_customactionspage",
+            "label": "CustomActionsPage → ConfigLayout",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_268_customactionspage",
+            "label": "CustomActionsPage → RawT",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_70_customactionspage",
+            "label": "CustomActionsPage → Root",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      }
+    ]
+  },
+  "staleness": {
+    "commitsBehind": 1,
+    "hint": "⚠️ Index is 1 commit behind HEAD. Run analyze tool to update."
+  }
+}

@@ -1,0 +1,25 @@
+diff --git a/.changeset/quiet-arxiv-headings.md b/.changeset/quiet-arxiv-headings.md
+new file mode 100644
+index 00000000..baec19ad
+--- /dev/null
++++ b/.changeset/quiet-arxiv-headings.md
+@@ -0,0 +1,5 @@
++---
++"@read-frog/extension": patch
++---
++
++fix(site-rules): prevent overlapping arXiv heading translations
+diff --git a/src/utils/site-rules/built-in/rules.json b/src/utils/site-rules/built-in/rules.json
+index 2195d99a..6bb741a5 100644
+--- a/src/utils/site-rules/built-in/rules.json
++++ b/src/utils/site-rules/built-in/rules.json
+@@ -3286,6 +3286,9 @@
+   {
+     "id": "arxiv",
+     "matches": ["https://browse.arxiv.org", "https://arxiv.org/html/*"],
++    "injectedCss.add": [
++      ".ltx_title .read-frog-translated-inline-content, .ltx_title .read-frog-translated-block-content { line-height: 1.5; }"
++    ],
+     "excludeSelectors.add": [
+       ".desktop_header",
+       "[class*='ltx_lst_language_']",

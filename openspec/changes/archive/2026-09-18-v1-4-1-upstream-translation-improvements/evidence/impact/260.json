@@ -1,0 +1,97 @@
+{
+  "target": {
+    "id": "Function:src/utils/host/translate/core/translation-modes.ts:translateTranslationOnlyRun",
+    "name": "translateTranslationOnlyRun",
+    "type": "Function",
+    "filePath": "src/utils/host/translate/core/translation-modes.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 5,
+  "risk": "LOW",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 3,
+    "processes_affected": 0,
+    "modules_affected": 2
+  },
+  "byDepthCounts": {
+    "1": 3,
+    "2": 1,
+    "3": 1
+  },
+  "affected_processes": [],
+  "affected_modules": [
+    {
+      "name": "Dom",
+      "hits": 4,
+      "impact": "direct"
+    },
+    {
+      "name": "Translation-control",
+      "hits": 1,
+      "impact": "indirect"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/utils/host/translate/core/translation-modes.ts:maybeTranslateVirtualUnitRuns",
+        "name": "maybeTranslateVirtualUnitRuns",
+        "filePath": "src/utils/host/translate/core/translation-modes.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/utils/host/translate/core/translation-modes.ts:translateNodeTranslationOnlyMode",
+        "name": "translateNodeTranslationOnlyMode",
+        "filePath": "src/utils/host/translate/core/translation-modes.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/utils/host/translate/core/translation-modes.ts:translateNonMaterializableGiant",
+        "name": "translateNonMaterializableGiant",
+        "filePath": "src/utils/host/translate/core/translation-modes.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "Function:src/utils/host/translate/core/translation-modes.ts:translateNodes",
+        "name": "translateNodes",
+        "filePath": "src/utils/host/translate/core/translation-modes.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "3": [
+      {
+        "depth": 3,
+        "id": "Function:src/utils/host/translate/core/translation-walker.ts:translateWalkedElement",
+        "name": "translateWalkedElement",
+        "filePath": "src/utils/host/translate/core/translation-walker.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ]
+  },
+  "staleness": {
+    "commitsBehind": 1,
+    "hint": "⚠️ Index is 1 commit behind HEAD. Run analyze tool to update."
+  }
+}

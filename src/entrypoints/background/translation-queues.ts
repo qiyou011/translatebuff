@@ -30,6 +30,7 @@ import {
   hasHtmlAttributeMarkerProtocol,
   isHtmlAttributeMarkerIntegrityError,
 } from "@/utils/host/translate/html-attribute-markers"
+import { canCacheInlineAtomTranslation } from "@/utils/host/translate/inline-atom-tokens"
 import { normalizePromptContextValue } from "@/utils/host/translate/translate-text"
 import { logger } from "@/utils/logger"
 import { onMessage } from "@/utils/message"
@@ -641,7 +642,7 @@ export function setUpWebPageTranslationQueue(
     }
 
     // Cache the translation result if successful
-    if (result && hash) {
+    if (result && hash && canCacheInlineAtomTranslation(text, result)) {
       await db.translationCache.put({
         key: hash,
         translation: result,

@@ -1,0 +1,389 @@
+diff --git a/.changeset/translation-only-blocked-tooltip.md b/.changeset/translation-only-blocked-tooltip.md
+new file mode 100644
+index 00000000..96d23441
+--- /dev/null
++++ b/.changeset/translation-only-blocked-tooltip.md
+@@ -0,0 +1,11 @@
++---
++"@read-frog/extension": patch
++---
++
++fix(translation): explain the disabled translation-only mode in a tooltip
++
++The reason "Translation only" is greyed out never reached the screen: a disabled
++select row is `pointer-events-none`, so the browser never rendered its native
++`title`. Show it in a real tooltip instead, and build the sentence from whichever
++provider blocks the mode, so the popup toggle, the mode shortcut and the options
++select all stay correct as that list changes.
+diff --git a/src/entrypoints/host.content/translation-control/bind-translation-mode-shortcut.ts b/src/entrypoints/host.content/translation-control/bind-translation-mode-shortcut.ts
+index c0ce5c64..2432d874 100644
+--- a/src/entrypoints/host.content/translation-control/bind-translation-mode-shortcut.ts
++++ b/src/entrypoints/host.content/translation-control/bind-translation-mode-shortcut.ts
+@@ -8,7 +8,7 @@ import {
+   isPageTranslationShortcutEmpty,
+   isValidConfiguredPageTranslationShortcut,
+ } from "@/utils/page-translation-shortcut"
+-import { canEnterTranslationOnlyMode } from "@/utils/providers/translation-only-gate"
++import { getTranslationOnlyBlockedReason } from "@/utils/providers/translation-only-gate"
+ 
+ const NEXT_MODE: Record<TranslationMode, TranslationMode> = {
+   bilingual: "translationOnly",
+@@ -38,11 +38,10 @@ export async function bindTranslationModeShortcutKey() {
+       // Entering translationOnly is blocked while the page-translate provider
+       // has no markup support (translation-only-gate.ts) — keep the mode and
+       // surface the reason instead.
+-      if (nextMode === "translationOnly" && !canEnterTranslationOnlyMode(currentConfig)) {
+-        toastManager.add({
+-          type: "info",
+-          title: i18n.t("options.translation.preference.translationMode.microsoftNotSupported"),
+-        })
++      const blockedReason =
++        nextMode === "translationOnly" ? getTranslationOnlyBlockedReason(currentConfig) : null
++      if (blockedReason !== null) {
++        toastManager.add({ type: "info", title: blockedReason })
+         return
+       }
+ 
+diff --git a/src/entrypoints/options/pages/translation/preference/translation-mode-select.tsx b/src/entrypoints/options/pages/translation/preference/translation-mode-select.tsx
+index 2ca97147..47c645d3 100644
+--- a/src/entrypoints/options/pages/translation/preference/translation-mode-select.tsx
++++ b/src/entrypoints/options/pages/translation/preference/translation-mode-select.tsx
+@@ -8,10 +8,11 @@ import {
+   SelectTrigger,
+   SelectValue,
+ } from "@/components/ui/base-ui/select"
++import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/base-ui/tooltip"
+ import { TRANSLATION_MODES } from "@/types/config/translate"
+ import { configAtom, configFieldsAtomMap } from "@/utils/atoms/config"
+ import { i18n } from "@/utils/i18n"
+-import { canEnterTranslationOnlyMode } from "@/utils/providers/translation-only-gate"
++import { getTranslationOnlyBlockedReason } from "@/utils/providers/translation-only-gate"
+ import { SELECT_CONTENT_PROPS } from "../../../components/select-content-props"
+ 
+ /** Bare translation-mode control. Callers own the surrounding label and layout. */
+@@ -19,16 +20,16 @@ export function TranslationModeSelect() {
+   const [translateConfig, setTranslateConfig] = useAtom(configFieldsAtomMap.pageTranslation)
+   const config = useAtomValue(configAtom)
+   const { mode } = translateConfig
+-  // translationOnly is unavailable while the page-translate provider has no
+-  // markup support (translation-only-gate.ts).
+-  const translationOnlyBlocked = !canEnterTranslationOnlyMode(config)
++  // translationOnly is unavailable while the page-translate provider has no markup
++  // support; the reason names that provider (translation-only-gate.ts).
++  const translationOnlyBlockedReason = getTranslationOnlyBlockedReason(config)
+ 
+   return (
+     <Select
+       value={mode}
+       onValueChange={(nextMode: TranslationMode | null) => {
+         if (!nextMode) return
+-        if (nextMode === "translationOnly" && translationOnlyBlocked) return
++        if (nextMode === "translationOnly" && translationOnlyBlockedReason !== null) return
+         void setTranslateConfig({ mode: nextMode })
+       }}
+     >
+@@ -40,19 +41,27 @@ export function TranslationModeSelect() {
+       <SelectContent {...SELECT_CONTENT_PROPS}>
+         <SelectGroup>
+           {TRANSLATION_MODES.map((item) => {
+-            const disabled = item === "translationOnly" && translationOnlyBlocked
++            const blockedReason = item === "translationOnly" ? translationOnlyBlockedReason : null
+             return (
+-              <SelectItem
+-                key={item}
+-                value={item}
+-                disabled={disabled}
+-                title={
+-                  disabled
+-                    ? i18n.t("options.translation.preference.translationMode.microsoftNotSupported")
+-                    : undefined
+-                }
+-              >
++              <SelectItem key={item} value={item} disabled={blockedReason !== null}>
+                 {i18n.t(`options.translation.preference.translationMode.mode.${item}`)}
++                {blockedReason !== null && (
++                  <Tooltip>
++                    {/* A disabled SelectItem is pointer-events-none — which is exactly why
++                        the native `title` this replaces never appeared. This hit area opts
++                        back in and covers the whole row (the item is `relative`), so the
++                        explanation shows wherever the pointer lands. Safe: base-ui blocks
++                        selection in the item's own handlers, so the CSS is cosmetic only.
++                        Rendered as a span, not the trigger's default <button>: a focusable
++                        descendant of a `role="option"` breaks listbox keyboard navigation. */}
++                    <TooltipTrigger
++                      render={<span className="pointer-events-auto absolute inset-0" />}
++                    />
++                    {/* Beside the popup, not above it: a top-anchored tooltip covers the
++                        other mode row, which is the one the reader has to move to next. */}
++                    <TooltipContent side="left">{blockedReason}</TooltipContent>
++                  </Tooltip>
++                )}
+               </SelectItem>
+             )
+           })}
+diff --git a/src/entrypoints/popup/components/translation-mode-selector.tsx b/src/entrypoints/popup/components/translation-mode-selector.tsx
+index 76ec723c..5c3b24c4 100644
+--- a/src/entrypoints/popup/components/translation-mode-selector.tsx
++++ b/src/entrypoints/popup/components/translation-mode-selector.tsx
+@@ -8,7 +8,7 @@ import { configAtom, configFieldsAtomMap } from "@/utils/atoms/config"
+ import { i18n } from "@/utils/i18n"
+ import { formatHotkeyParts } from "@/utils/os"
+ import { isPageTranslationShortcutEmpty } from "@/utils/page-translation-shortcut"
+-import { canEnterTranslationOnlyMode } from "@/utils/providers/translation-only-gate"
++import { getTranslationOnlyBlockedReason } from "@/utils/providers/translation-only-gate"
+ import { cn } from "@/utils/styles/utils"
+ 
+ const TABLER_ICON_STROKE_WIDTH_CLASS = "[&_path]:[stroke-width:1.2]"
+@@ -45,7 +45,9 @@ export default function TranslationModeSelector() {
+   // no markup support (translation-only-gate.ts). Native `disabled` would
+   // swallow the hover events the tooltip needs, so the button stays focusable
+   // and the click becomes a no-op with the reason shown in the tooltip.
+-  const nextModeBlocked = nextMode === "translationOnly" && !canEnterTranslationOnlyMode(config)
++  const blockedReason =
++    nextMode === "translationOnly" ? getTranslationOnlyBlockedReason(config) : null
++  const nextModeBlocked = blockedReason !== null
+   const actionLabel = i18n.t(tooltipKey.action)
+   const shortcutParts = isPageTranslationShortcutEmpty(translateConfig.modeShortcut)
+     ? []
+@@ -81,11 +83,7 @@ export default function TranslationModeSelector() {
+             wrap inside the 320px popup instead of forcing one clipped line. */}
+         <div className={cn("whitespace-nowrap", nextModeBlocked && "max-w-64 whitespace-normal")}>
+           <p>{i18n.t(tooltipKey.current)}</p>
+-          {nextModeBlocked ? (
+-            <p>{i18n.t("options.translation.preference.translationMode.microsoftNotSupported")}</p>
+-          ) : (
+-            <p>{actionLabel}</p>
+-          )}
++          {nextModeBlocked ? <p>{blockedReason}</p> : <p>{actionLabel}</p>}
+           {!nextModeBlocked && shortcutParts.length > 0 && (
+             <KbdGroup className="mt-1.5">
+               {shortcutParts.map((part) => (
+diff --git a/src/locales/en.yml b/src/locales/en.yml
+index e4b0257f..eca27bf2 100644
+--- a/src/locales/en.yml
++++ b/src/locales/en.yml
+@@ -845,7 +845,7 @@ options:
+           bilingual: Bilingual
+           translationOnly: Translation only
+         switched: "Translation mode: $1"
+-        microsoftNotSupported: Microsoft Translator doesn't support translation-only mode. To enable it, switch to another provider.
++        providerNotSupported: $1 doesn't support translation-only mode. To enable it, switch to another provider.
+       translateRange:
+         title: Translation range
+         description: Select whether to translate only the main content or all content on the page.
+diff --git a/src/locales/es.yml b/src/locales/es.yml
+index 4372ac7c..a52d3200 100644
+--- a/src/locales/es.yml
++++ b/src/locales/es.yml
+@@ -845,7 +845,7 @@ options:
+           bilingual: Bilingüe
+           translationOnly: Solo traducción
+         switched: "Modo de traducción: $1"
+-        microsoftNotSupported: Microsoft Translator no admite el modo de solo traducción. Para activarlo, cambia a otro proveedor.
++        providerNotSupported: $1 no admite el modo de solo traducción. Para activarlo, cambia a otro proveedor.
+       translateRange:
+         title: Alcance de la traducción
+         description: Selecciona si traducir solo el contenido principal o todo el contenido de la página.
+diff --git a/src/locales/ja.yml b/src/locales/ja.yml
+index d20d9386..e3577ed3 100644
+--- a/src/locales/ja.yml
++++ b/src/locales/ja.yml
+@@ -729,7 +729,7 @@ options:
+           bilingual: バイリンガル
+           translationOnly: 翻訳のみ
+         switched: 翻訳モード：$1
+-        microsoftNotSupported: Microsoft 翻訳は「翻訳のみ」モードに対応していません。有効にするには他のプロバイダーに切り替えてください。
++        providerNotSupported: $1 は「翻訳のみ」モードに対応していません。有効にするには他のプロバイダーに切り替えてください。
+       translateRange:
+         title: 翻訳範囲
+         description: ページのメインコンテンツのみを翻訳するか、すべてのコンテンツを翻訳するかを選択します。
+diff --git a/src/locales/ko.yml b/src/locales/ko.yml
+index 195f9580..6b19690a 100644
+--- a/src/locales/ko.yml
++++ b/src/locales/ko.yml
+@@ -729,7 +729,7 @@ options:
+           bilingual: 이중 언어
+           translationOnly: 번역만
+         switched: "번역 모드: $1"
+-        microsoftNotSupported: Microsoft 번역기는 번역만 모드를 지원하지 않습니다. 사용하려면 다른 제공업체로 전환하세요.
++        providerNotSupported: $1에서는 번역만 모드를 지원하지 않습니다. 사용하려면 다른 제공업체로 전환하세요.
+       translateRange:
+         title: 번역 범위
+         description: 페이지의 주요 내용만 번역할지 모든 내용을 번역할지 선택합니다.
+diff --git a/src/locales/ru.yml b/src/locales/ru.yml
+index ebdcf8ed..3311720f 100644
+--- a/src/locales/ru.yml
++++ b/src/locales/ru.yml
+@@ -729,7 +729,7 @@ options:
+           bilingual: Двуязычный
+           translationOnly: Только перевод
+         switched: "Режим перевода: $1"
+-        microsoftNotSupported: Microsoft Translator не поддерживает режим «только перевод». Чтобы включить его, переключитесь на другого провайдера.
++        providerNotSupported: $1 не поддерживает режим «только перевод». Чтобы включить его, переключитесь на другого провайдера.
+       translateRange:
+         title: Охват перевода
+         description: Выберите, переводить только основное содержимое или всё содержимое на странице.
+diff --git a/src/locales/tr.yml b/src/locales/tr.yml
+index 12ea9f31..fa5849bc 100644
+--- a/src/locales/tr.yml
++++ b/src/locales/tr.yml
+@@ -729,7 +729,7 @@ options:
+           bilingual: İki dilli
+           translationOnly: Yalnızca çeviri
+         switched: "Çeviri modu: $1"
+-        microsoftNotSupported: Microsoft Çevirmen yalnızca çeviri modunu desteklemez. Etkinleştirmek için başka bir sağlayıcıya geçin.
++        providerNotSupported: $1 yalnızca çeviri modunu desteklemez. Etkinleştirmek için başka bir sağlayıcıya geçin.
+       translateRange:
+         title: Çeviri kapsamı
+         description: Sayfadaki yalnızca ana içeriğin mi yoksa tüm içeriğin mi çevrileceğini seçin.
+diff --git a/src/locales/vi.yml b/src/locales/vi.yml
+index 229da2ca..f594312e 100644
+--- a/src/locales/vi.yml
++++ b/src/locales/vi.yml
+@@ -729,7 +729,7 @@ options:
+           bilingual: Song ngữ
+           translationOnly: Chỉ bản dịch
+         switched: "Chế độ dịch: $1"
+-        microsoftNotSupported: Microsoft Translator không hỗ trợ chế độ chỉ bản dịch. Để bật, hãy chuyển sang nhà cung cấp khác.
++        providerNotSupported: $1 không hỗ trợ chế độ chỉ bản dịch. Để bật, hãy chuyển sang nhà cung cấp khác.
+       translateRange:
+         title: Phạm vi dịch
+         description: Chọn chỉ dịch nội dung chính hay tất cả nội dung trên trang.
+diff --git a/src/locales/zh-CN.yml b/src/locales/zh-CN.yml
+index d7c1bab1..e25caa16 100644
+--- a/src/locales/zh-CN.yml
++++ b/src/locales/zh-CN.yml
+@@ -845,7 +845,7 @@ options:
+           bilingual: 双语对照
+           translationOnly: 仅显示翻译
+         switched: 翻译模式：$1
+-        microsoftNotSupported: Microsoft 翻译不支持仅译文模式，若想开启请切换其他提供商。
++        providerNotSupported: $1 不支持仅译文模式，若想开启请切换其他提供商。
+       translateRange:
+         title: 翻译范围
+         description: 选择是仅翻译主要内容还是翻译页面上的所有内容。
+diff --git a/src/locales/zh-TW.yml b/src/locales/zh-TW.yml
+index b67d86cb..80687360 100644
+--- a/src/locales/zh-TW.yml
++++ b/src/locales/zh-TW.yml
+@@ -845,7 +845,7 @@ options:
+           bilingual: 雙語對照
+           translationOnly: 僅顯示翻譯
+         switched: 翻譯模式：$1
+-        microsoftNotSupported: Microsoft 翻譯不支援僅譯文模式，若想開啟請切換其他提供商。
++        providerNotSupported: $1 不支援僅譯文模式，若想開啟請切換其他提供商。
+       translateRange:
+         title: 翻譯範圍
+         description: 選擇是僅翻譯主要內容還是翻譯頁面上的所有內容。
+diff --git a/src/utils/providers/__tests__/translation-only-gate.test.ts b/src/utils/providers/__tests__/translation-only-gate.test.ts
+new file mode 100644
+index 00000000..b306500c
+--- /dev/null
++++ b/src/utils/providers/__tests__/translation-only-gate.test.ts
+@@ -0,0 +1,49 @@
++import { describe, expect, it } from "vitest"
++import { DEFAULT_CONFIG } from "@/utils/constants/config"
++import { GOOGLE_TRANSLATE_PROVIDER_ID } from "@/utils/constants/providers"
++import {
++  getTranslationOnlyBlockedReason,
++  providerSupportsTranslationOnlyMode,
++} from "../translation-only-gate"
++
++// `@/utils/i18n` is globally mocked to echo the key, so the reason's wording is
++// unassertable here — only whether one is produced. The rendered sentence is
++// verified in the browser.
++
++describe("providerSupportsTranslationOnlyMode", () => {
++  it("refuses the providers whose endpoint cannot preserve markup", () => {
++    expect(providerSupportsTranslationOnlyMode("microsoft-translate")).toBe(false)
++  })
++
++  it("allows every provider not on that list", () => {
++    expect(providerSupportsTranslationOnlyMode("google-translate")).toBe(true)
++    expect(providerSupportsTranslationOnlyMode("deeplx")).toBe(true)
++  })
++})
++
++describe("getTranslationOnlyBlockedReason", () => {
++  it("blocks a fresh profile, which ships on Microsoft", () => {
++    expect(getTranslationOnlyBlockedReason(DEFAULT_CONFIG)).not.toBeNull()
++  })
++
++  it("clears once page translation moves to a provider that keeps markup", () => {
++    const config = {
++      ...DEFAULT_CONFIG,
++      pageTranslation: {
++        ...DEFAULT_CONFIG.pageTranslation,
++        providerId: GOOGLE_TRANSLATE_PROVIDER_ID,
++      },
++    }
++
++    expect(getTranslationOnlyBlockedReason(config)).toBeNull()
++  })
++
++  it("stays out of the way when the assigned provider no longer exists", () => {
++    const config = {
++      ...DEFAULT_CONFIG,
++      pageTranslation: { ...DEFAULT_CONFIG.pageTranslation, providerId: "deleted-provider" },
++    }
++
++    expect(getTranslationOnlyBlockedReason(config)).toBeNull()
++  })
++})
+diff --git a/src/utils/providers/translation-only-gate.ts b/src/utils/providers/translation-only-gate.ts
+index 242d8089..4d5df030 100644
+--- a/src/utils/providers/translation-only-gate.ts
++++ b/src/utils/providers/translation-only-gate.ts
+@@ -1,21 +1,41 @@
+ import type { Config } from "@/types/config/config"
++import type { AllProviderTypes } from "@/types/config/provider"
+ import { resolveProviderConfigOrNull } from "@/utils/constants/feature-providers"
++import { PROVIDER_ITEMS } from "@/utils/constants/providers"
++import { i18n } from "@/utils/i18n"
+ 
+ /**
+- * Microsoft's unauthenticated translate endpoint has no markup-preserving
+- * mode, and translationOnly page mode re-renders provider output via
+- * innerHTML, so the pairing would corrupt pages (see api/microsoft.ts). The
+- * combination is blocked from forming instead: provider pickers hide
+- * Microsoft while translationOnly is active, mode controls refuse to enter
+- * translationOnly while Microsoft is active, and migration v093 rewrites
+- * configs that already contain the pairing.
++ * Providers whose translate endpoint has no markup-preserving mode. translationOnly
++ * page mode re-renders provider output via innerHTML, so the pairing would corrupt
++ * pages (Microsoft's unauthenticated endpoint eats tags and translates attribute
++ * names — see api/microsoft.ts). The combination is blocked from forming instead:
++ * provider pickers hide these while translationOnly is active, mode controls refuse
++ * to enter translationOnly while one is active, and migration v093 rewrites configs
++ * that already contain the pairing.
++ *
++ * This list is the whole knob. Every mode control renders its reason through
++ * `getTranslationOnlyBlockedReason`, which names the provider from PROVIDER_ITEMS,
++ * so adding one here needs no UI change and no new copy.
+  */
++const PROVIDERS_WITHOUT_MARKUP_SUPPORT: readonly AllProviderTypes[] = ["microsoft-translate"]
++
++const providersWithoutMarkupSupport: ReadonlySet<string> = new Set(PROVIDERS_WITHOUT_MARKUP_SUPPORT)
++
+ export function providerSupportsTranslationOnlyMode(provider: string): boolean {
+-  return provider !== "microsoft-translate"
++  return !providersWithoutMarkupSupport.has(provider)
+ }
+ 
+-/** Whether the page-translate feature's current provider allows entering translationOnly mode. */
+-export function canEnterTranslationOnlyMode(config: Config): boolean {
++/**
++ * The localized reason the page-translate feature cannot enter translationOnly mode,
++ * or null when it can. Shared by every mode control so the wording — and the provider
++ * it names — stays in one place.
++ */
++export function getTranslationOnlyBlockedReason(config: Config): string | null {
+   const providerConfig = resolveProviderConfigOrNull(config, "pageTranslation")
+-  return providerConfig === null || providerSupportsTranslationOnlyMode(providerConfig.provider)
++  if (!providerConfig || providerSupportsTranslationOnlyMode(providerConfig.provider)) {
++    return null
++  }
++  return i18n.t("options.translation.preference.translationMode.providerNotSupported", [
++    PROVIDER_ITEMS[providerConfig.provider].name,
++  ])
+ }

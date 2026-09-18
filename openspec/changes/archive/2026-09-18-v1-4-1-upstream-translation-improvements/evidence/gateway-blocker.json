@@ -1,0 +1,24 @@
+{
+  "date": "2026-09-18",
+  "authenticated": true,
+  "path": "extension enqueueTranslateRequest -> real translation gateway",
+  "statusCode": 401,
+  "message": "该令牌额度已用尽",
+  "result": "blocked; not passed",
+  "configRestored": true,
+  "accountSwitchRecheck": {
+    "date": "2026-09-18",
+    "popupReloaded": true,
+    "authenticated": true,
+    "statusCode": 401,
+    "message": "该令牌额度已用尽",
+    "requestId": "202609180543175872741323209479",
+    "result": "blocked; not passed"
+  },
+  "resolvedBy": {
+    "environment": "testsite",
+    "accountSuffix": "0012",
+    "result": "real gateway translation successful",
+    "evidence": "chrome-testsite-gateway-pages.json"
+  }
+}

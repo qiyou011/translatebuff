@@ -1,0 +1,4369 @@
+diff --git a/.changeset/tidy-frogs-compose.md b/.changeset/tidy-frogs-compose.md
+new file mode 100644
+index 00000000..4879a43d
+--- /dev/null
++++ b/.changeset/tidy-frogs-compose.md
+@@ -0,0 +1,5 @@
++---
++"@read-frog/extension": patch
++---
++
++fix(options): preserve IME input and autosaved drafts
+diff --git a/src/components/form/__tests__/autosave-controller.test.ts b/src/components/form/__tests__/autosave-controller.test.ts
+new file mode 100644
+index 00000000..5395c47f
+--- /dev/null
++++ b/src/components/form/__tests__/autosave-controller.test.ts
+@@ -0,0 +1,289 @@
++import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
++import { createAutosaveController } from "../autosave-controller"
++
++function deferred() {
++  let resolve!: () => void
++  let reject!: (error: Error) => void
++  const promise = new Promise<void>((yes, no) => {
++    resolve = yes
++    reject = no
++  })
++  return { promise, resolve, reject }
++}
++
++function harness(initial = { name: "Original", description: "", model: { id: "a" } }) {
++  let draft = structuredClone(initial)
++  let validation: (() => Promise<void>) | undefined
++  let valid = true
++  const persist = vi.fn<
++    (snapshot: typeof initial, changes: Partial<typeof initial>) => Promise<void>
++  >(async () => {})
++  const controller = createAutosaveController({
++    initialValue: initial,
++    getDraft: () => draft,
++    setField: (key, value) => {
++      draft = { ...draft, [key]: value }
++    },
++    reset: (value) => {
++      draft = structuredClone(value)
++    },
++    submit: async (revision) => {
++      await validation?.()
++      if (valid) await controller.commit(draft, revision)
++    },
++    persist,
++  })
++  return {
++    controller,
++    persist,
++    get draft() {
++      return draft
++    },
++    update: (changes: Partial<typeof initial>) => {
++      draft = { ...draft, ...changes }
++    },
++    edit: (changes: Partial<typeof initial>, immediate = false) =>
++      controller.edit(
++        () => {
++          draft = { ...draft, ...changes }
++        },
++        { immediate },
++      ),
++    validateWith: (fn: () => Promise<void>) => {
++      validation = fn
++    },
++    setValid: (value: boolean) => {
++      valid = value
++    },
++  }
++}
++
++async function tick(ms = 500) {
++  await vi.advanceTimersByTimeAsync(ms)
++}
++
++describe("autosave controller", () => {
++  beforeEach(() => vi.useFakeTimers())
++  afterEach(() => vi.useRealTimers())
++
++  it("updates synchronously and saves only after the final 500ms pause", async () => {
++    const h = harness()
++    h.edit({ name: "one" })
++    expect(h.draft.name).toBe("one")
++    await tick(400)
++    h.edit({ name: "two" })
++    await tick(499)
++    expect(h.persist).not.toHaveBeenCalled()
++    await tick(1)
++    expect(h.persist).toHaveBeenCalledExactlyOnceWith(h.draft, { name: "two" })
++    expect(h.controller.getSnapshot().dirty).toBe(false)
++  })
++
++  it("pauses the whole form during composition, including a pending blur flush", async () => {
++    const h = harness()
++    h.edit({ description: "changed" })
++    h.controller.beginComposition("name")
++    h.edit({ name: "nihao" })
++    const flushed = h.controller.flush()
++    await tick(2000)
++    expect(h.persist).not.toHaveBeenCalled()
++    h.controller.endComposition("name", () => h.update({ name: "你好" }))
++    expect(await flushed).toBe("saved")
++    expect(h.persist).toHaveBeenCalledExactlyOnceWith(h.draft, {
++      name: "你好",
++      description: "changed",
++    })
++    h.edit({ name: "你好" })
++    await tick()
++    expect(h.persist).toHaveBeenCalledTimes(1)
++  })
++
++  it("preserves a newer draft when an optimistic echo and delayed save complete", async () => {
++    const h = harness()
++    const storage = deferred()
++    h.persist.mockImplementationOnce(async (snapshot) => {
++      h.controller.reconcile(snapshot)
++      await storage.promise
++    })
++    h.edit({ name: "first" })
++    await tick()
++    h.controller.beginComposition("name")
++    h.edit({ name: "firstni" })
++    storage.resolve()
++    await tick(0)
++    expect(h.draft.name).toBe("firstni")
++    expect(h.controller.getSnapshot().dirty).toBe(true)
++    h.controller.endComposition("name", () => h.update({ name: "first你" }))
++    await tick()
++    expect(h.persist).toHaveBeenCalledTimes(2)
++    expect(h.persist.mock.lastCall?.[0].name).toBe("first你")
++  })
++
++  it("invalidates an attempt when composition starts during async validation", async () => {
++    const h = harness()
++    const validation = deferred()
++    h.validateWith(() => validation.promise)
++    h.edit({ name: "first" })
++    await tick()
++    h.controller.beginComposition("name")
++    h.edit({ name: "ni" })
++    validation.resolve()
++    await tick(0)
++    expect(h.persist).not.toHaveBeenCalled()
++    h.controller.endComposition("name", () => h.update({ name: "你" }))
++    await tick()
++    expect(h.persist.mock.lastCall?.[0].name).toBe("你")
++  })
++
++  it("coalesces changes during saving and flush waits for the last one", async () => {
++    const h = harness()
++    const storage = deferred()
++    h.persist.mockImplementationOnce(() => storage.promise)
++    h.edit({ name: "first" }, true)
++    await tick(0)
++    h.edit({ name: "second" })
++    h.edit({ name: "third" })
++    const flush = h.controller.flush()
++    expect(h.persist).toHaveBeenCalledTimes(1)
++    storage.resolve()
++    expect(await flush).toBe("saved")
++    expect(h.persist).toHaveBeenCalledTimes(2)
++    expect(h.persist.mock.lastCall?.[0].name).toBe("third")
++  })
++
++  it("does not mistake validation failure for success and retries after correction", async () => {
++    const h = harness()
++    h.setValid(false)
++    h.edit({ name: "" })
++    expect(await h.controller.flush()).toBe("invalid")
++    expect(h.controller.getSnapshot()).toMatchObject({ dirty: true, error: "invalid" })
++    expect(h.persist).not.toHaveBeenCalled()
++    h.setValid(true)
++    h.edit({ name: "valid" })
++    expect(await h.controller.flush()).toBe("saved")
++  })
++
++  it("preserves failed drafts without an infinite retry loop", async () => {
++    const h = harness()
++    h.persist.mockRejectedValueOnce(new Error("offline"))
++    h.edit({ name: "keep me" })
++    expect(await h.controller.flush()).toBe("failed")
++    await tick(10000)
++    expect(h.persist).toHaveBeenCalledTimes(1)
++    expect(h.draft.name).toBe("keep me")
++    expect(await h.controller.flush()).toBe("saved")
++  })
++
++  it("merges pristine external fields and keeps local conflicts, including nested objects", async () => {
++    const h = harness()
++    h.edit({ name: "local" })
++    h.controller.reconcile({ name: "remote", description: "new description", model: { id: "b" } })
++    expect(h.draft).toEqual({ name: "local", description: "new description", model: { id: "b" } })
++    await h.controller.flush()
++    expect(h.persist.mock.lastCall?.[1]).toEqual({ name: "local" })
++  })
++
++  it("does not save a reverted draft or a discarded pending change", async () => {
++    const h = harness()
++    h.edit({ name: "other" })
++    h.edit({ name: "Original" })
++    expect(await h.controller.flush()).toBe("unchanged")
++    h.edit({ name: "discard" })
++    await h.controller.discard()
++    await tick()
++    expect(h.draft.name).toBe("Original")
++    expect(h.persist).not.toHaveBeenCalled()
++  })
++
++  it("waits for an in-flight save before discarding newer edits", async () => {
++    const h = harness()
++    const storage = deferred()
++    h.persist.mockImplementationOnce(() => storage.promise)
++    h.edit({ name: "saved" }, true)
++    await tick(0)
++    h.edit({ name: "discard" })
++    const discard = h.controller.discard()
++    storage.resolve()
++    await discard
++    expect(h.draft.name).toBe("saved")
++    expect(h.persist).toHaveBeenCalledTimes(1)
++  })
++
++  it("retains deleted-entity drafts and never recreates the entity", async () => {
++    const h = harness()
++    h.edit({ name: "keep me" })
++    h.controller.reconcile(undefined)
++    expect(await h.controller.flush()).toBe("failed")
++    await tick()
++    expect(h.draft.name).toBe("keep me")
++    expect(h.persist).not.toHaveBeenCalled()
++    expect(h.controller.getSnapshot().error).toBe("deleted")
++  })
++
++  it("prepares the latest raw editor text and acknowledges the saved raw snapshot", async () => {
++    const h = harness()
++    let raw = "Original"
++    let saved = raw
++    h.controller.registerSource("name", {
++      isDirty: () => raw !== saved,
++      snapshot: () => raw,
++      prepare: () => {
++        if (raw === "invalid") return false
++        h.update({ name: raw })
++        return true
++      },
++      acknowledge: (value) => {
++        saved = value
++      },
++      reset: (value) => {
++        raw = saved = String(value)
++      },
++    })
++    h.controller.edit(() => {
++      raw = "invalid"
++    })
++    expect(await h.controller.flush()).toBe("invalid")
++    expect(h.persist).not.toHaveBeenCalled()
++    h.controller.edit(() => {
++      raw = "latest"
++    })
++    expect(await h.controller.flush()).toBe("saved")
++    expect(saved).toBe("latest")
++  })
++
++  it("lets an explicit form command replace an incomplete raw draft", async () => {
++    const h = harness()
++    let raw = "Original"
++    let saved = raw
++    h.controller.registerSource("name", {
++      isDirty: () => raw !== saved,
++      snapshot: () => raw,
++      prepare: () => raw !== "invalid",
++      acknowledge: (value) => {
++        saved = value
++      },
++      reset: (value) => {
++        raw = saved = String(value)
++      },
++    })
++    h.controller.edit(() => {
++      raw = "invalid"
++    })
++    h.edit({ name: "recommended" })
++    expect(raw).toBe("recommended")
++    expect(await h.controller.flush()).toBe("saved")
++    expect(h.persist.mock.lastCall?.[0].name).toBe("recommended")
++  })
++
++  it("cancels scheduled writes on teardown and can reactivate for Strict Mode", async () => {
++    const h = harness()
++    h.edit({ name: "pending" })
++    h.controller.deactivate()
++    await tick()
++    expect(h.persist).not.toHaveBeenCalled()
++    h.controller.activate()
++    h.edit({ name: "next" })
++    await tick()
++    expect(h.persist).toHaveBeenCalledTimes(1)
++  })
++})
+diff --git a/src/components/form/__tests__/autosave-integration.test.tsx b/src/components/form/__tests__/autosave-integration.test.tsx
+new file mode 100644
+index 00000000..02052ced
+--- /dev/null
++++ b/src/components/form/__tests__/autosave-integration.test.tsx
+@@ -0,0 +1,222 @@
++// @vitest-environment jsdom
++import type { AutosaveController } from "../autosave-controller"
++import { createFormHook } from "@tanstack/react-form"
++import { act, fireEvent, render, screen, waitFor } from "@testing-library/react"
++import { createStore, Provider } from "jotai"
++import { StrictMode, useState } from "react"
++import { createMemoryRouter, Link, RouterProvider } from "react-router"
++import { describe, expect, it, vi } from "vitest"
++import { ToastProvider } from "@/components/ui/base-ui/toast"
++import {
++  AutosaveBoundary,
++  AutosaveNavigation,
++  requestEditorNavigationAtom,
++} from "../autosave-navigation"
++import { fieldContext, formContext } from "../form-context"
++import { InputFieldAutoSave } from "../input-field-auto-save"
++import { QuickInsertableTextareaFieldAutoSave } from "../quick-insertable-textarea-field-auto-save"
++import { toAutosaveSession, useAutosave } from "../use-autosave"
++
++type Draft = { id: string; name: string; prompt: string; amount: number | undefined }
++const initial: Draft = { id: "one", name: "Initial", prompt: "", amount: 1 }
++const { useAppForm } = createFormHook({
++  fieldContext,
++  formContext,
++  fieldComponents: { InputFieldAutoSave },
++  formComponents: {},
++})
++
++function Editor({
++  save,
++  onSave,
++}: {
++  save?: (value: Draft) => Promise<void>
++  onSave?: (value: Draft) => void
++}) {
++  const [saved, setSaved] = useState(initial)
++  const form = useAppForm({
++    defaultValues: initial,
++    validators: { onChange: ({ value }) => (value.name ? undefined : "Name required") },
++    onSubmitMeta: { revision: 0 },
++    onSubmit: async ({ value, meta }) => autosave.commit(value, meta.revision),
++  })
++  const autosave: AutosaveController<Draft> = useAutosave({
++    initialValue: initial,
++    getDraft: () => form.state.values,
++    setField: (key, value) => form.setFieldValue(key, value as never),
++    reset: (value) => form.reset(value),
++    submit: (revision) => form.handleSubmit({ revision }),
++    persist: async (value) => {
++      await save?.(value)
++      setSaved(value)
++      onSave?.(value)
++    },
++  })
++  return (
++    <AutosaveBoundary session={toAutosaveSession(autosave)}>
++      <form.AppField name="name">
++        {(field) => <field.InputFieldAutoSave label="Name" />}
++      </form.AppField>
++      <form.AppField name="prompt">
++        {() => (
++          <QuickInsertableTextareaFieldAutoSave
++            label="Prompt"
++            insertCells={[{ text: "{{selection}}", description: "Insert selection" }]}
++          />
++        )}
++      </form.AppField>
++      <form.AppField name="amount">
++        {(field) => <field.InputFieldAutoSave label="Amount" type="number" />}
++      </form.AppField>
++      <output aria-label="saved-name">{saved.name}</output>
++      <output aria-label="saved-prompt">{saved.prompt}</output>
++      <output aria-label="saved-amount">{String(saved.amount)}</output>
++      <Link to="/other">Leave editor</Link>
++    </AutosaveBoundary>
++  )
++}
++
++function setup(save?: (value: Draft) => Promise<void>) {
++  const onSave = vi.fn<(value: Draft) => void>()
++  const store = createStore()
++  const router = createMemoryRouter([
++    {
++      element: (
++        <>
++          <AutosaveNavigation />
++          <Editor save={save} onSave={onSave} />
++        </>
++      ),
++      path: "/",
++    },
++    {
++      path: "/other",
++      element: (
++        <>
++          <AutosaveNavigation />
++          <p>Other page</p>
++        </>
++      ),
++    },
++  ])
++  render(
++    <StrictMode>
++      <Provider store={store}>
++        <ToastProvider>
++          <RouterProvider router={router} />
++        </ToastProvider>
++      </Provider>
++    </StrictMode>,
++  )
++  return { router, store, onSave }
++}
++
++describe("real form autosave integration", () => {
++  it("keeps Chinese composition in the input and saves only the committed value on blur", async () => {
++    const { onSave } = setup()
++    const input = screen.getByRole("textbox", { name: "Name" })
++    fireEvent.compositionStart(input)
++    fireEvent.change(input, { target: { value: "nihao" } })
++    expect(input).toHaveValue("nihao")
++    fireEvent.blur(input)
++    await act(async () => {
++      await Promise.resolve()
++    })
++    expect(onSave).not.toHaveBeenCalled()
++    fireEvent.compositionEnd(input, { target: { value: "你好" } })
++    await waitFor(() => expect(screen.getByLabelText("saved-name")).toHaveTextContent("你好"))
++    expect(input).toHaveValue("你好")
++    expect(onSave).toHaveBeenCalledTimes(1)
++  })
++
++  it("protects prompt composition and saves token insertion through the same controller", async () => {
++    const { onSave } = setup()
++    const input = screen.getByRole("textbox", { name: "Prompt" })
++    fireEvent.compositionStart(input)
++    fireEvent.change(input, { target: { value: "fanyi" } })
++    fireEvent.blur(input)
++    await act(async () => {
++      await Promise.resolve()
++    })
++    expect(onSave).not.toHaveBeenCalled()
++    fireEvent.compositionEnd(input, { target: { value: "翻译" } })
++    await waitFor(() => expect(screen.getByLabelText("saved-prompt")).toHaveTextContent("翻译"))
++    fireEvent.click(screen.getByRole("button", { name: "{{selection}}" }))
++    fireEvent.blur(input)
++    await waitFor(() =>
++      expect(screen.getByLabelText("saved-prompt")).toHaveTextContent("{{selection}}"),
++    )
++  })
++
++  it("waits for saving before allowing a route change", async () => {
++    let finish!: () => void
++    const save = vi.fn<(value: Draft) => Promise<void>>(
++      () =>
++        new Promise((resolve) => {
++          finish = resolve
++        }),
++    )
++    const { router } = setup(save)
++    fireEvent.change(screen.getByRole("textbox", { name: "Name" }), {
++      target: { value: "Updated" },
++    })
++    fireEvent.click(screen.getByRole("link", { name: "Leave editor" }))
++    await waitFor(() => expect(save).toHaveBeenCalledTimes(1))
++    expect(router.state.location.pathname).toBe("/")
++    await act(async () => {
++      finish()
++    })
++    await waitFor(() => expect(router.state.location.pathname).toBe("/other"))
++  })
++
++  it("blocks invalid navigation, keeps the draft, and supports explicit discard", async () => {
++    const { router, onSave } = setup()
++    fireEvent.change(screen.getByRole("textbox", { name: "Name" }), { target: { value: "" } })
++    fireEvent.click(screen.getByRole("link", { name: "Leave editor" }))
++    await screen.findByRole("alertdialog")
++    expect(router.state.location.pathname).toBe("/")
++    expect(onSave).not.toHaveBeenCalled()
++    expect(screen.queryByText("options.autosave.invalid")).not.toBeInTheDocument()
++    fireEvent.click(screen.getByRole("button", { name: "options.autosave.keepEditing" }))
++    await waitFor(() => expect(screen.queryByRole("alertdialog")).not.toBeInTheDocument())
++    expect(screen.getByRole("textbox", { name: "Name" })).toHaveValue("")
++    fireEvent.click(screen.getByRole("link", { name: "Leave editor" }))
++    await screen.findByRole("alertdialog")
++    fireEvent.click(screen.getByRole("button", { name: "options.autosave.discard" }))
++    await waitFor(() => expect(router.state.location.pathname).toBe("/other"))
++  })
++
++  it("reports failed saves in a toast and retries without losing the draft", async () => {
++    const save = vi
++      .fn<(value: Draft) => Promise<void>>()
++      .mockRejectedValueOnce(new Error("offline"))
++      .mockResolvedValue(undefined)
++    const { store } = setup(save)
++    const create = vi.fn<() => void>()
++    fireEvent.change(screen.getByRole("textbox", { name: "Name" }), { target: { value: "Keep" } })
++    let navigation!: Promise<boolean>
++    await act(async () => {
++      navigation = store.set(requestEditorNavigationAtom, create)
++    })
++    await screen.findByRole("alertdialog")
++    expect(create).not.toHaveBeenCalled()
++    expect(
++      screen.getByText("options.autosave.failed").closest('[data-slot="toast-content"]'),
++    ).not.toBeNull()
++    fireEvent.click(screen.getByRole("button", { name: "options.autosave.keepEditing" }))
++    expect(await navigation).toBe(false)
++    expect(screen.getByRole("textbox", { name: "Name" })).toHaveValue("Keep")
++    fireEvent.click(screen.getByRole("button", { name: "options.autosave.retry" }))
++    await waitFor(() => expect(screen.getByLabelText("saved-name")).toHaveTextContent("Keep"))
++  })
++
++  it("keeps numeric clearing semantics and flushes without waiting 500ms", async () => {
++    setup()
++    const input = screen.getByRole("spinbutton", { name: "Amount" })
++    fireEvent.change(input, { target: { value: "" } })
++    fireEvent.blur(input)
++    await waitFor(() =>
++      expect(screen.getByLabelText("saved-amount")).toHaveTextContent("undefined"),
++    )
++  })
++})
+diff --git a/src/components/form/autosave-controller.ts b/src/components/form/autosave-controller.ts
+new file mode 100644
+index 00000000..06201b35
+--- /dev/null
++++ b/src/components/form/autosave-controller.ts
+@@ -0,0 +1,301 @@
++import { dequal } from "dequal"
++
++export type FlushResult = "saved" | "unchanged" | "invalid" | "failed"
++export interface AutosaveState {
++  dirty: boolean
++  busy: boolean
++  composing: boolean
++  error: "invalid" | "failed" | "deleted" | null
++}
++
++/** Raw editor text can be invalid even while the form still contains a valid value. */
++export interface AutosaveDraftSource {
++  isDirty: () => boolean
++  prepare: () => boolean
++  snapshot: () => string
++  acknowledge: (snapshot: string) => void
++  reset: (value: unknown) => void
++}
++
++export interface AutosaveOptions<T extends object> {
++  initialValue: T
++  getDraft: () => T
++  setField: (key: keyof T, value: T[keyof T]) => void
++  reset: (value: T) => void
++  submit: (revision: number) => Promise<void>
++  persist: (snapshot: T, changes: Partial<T>) => Promise<void>
++  delay?: number
++}
++
++function keys<T extends object>(value: T): (keyof T)[] {
++  return Object.keys(value) as (keyof T)[]
++}
++
++/** Top-level objects/arrays are logical fields; undefined deliberately removes a field. */
++export function changedFields<T extends object>(baseline: T, draft: T): Partial<T> {
++  const changes: Partial<T> = {}
++  for (const key of new Set([...keys(baseline), ...keys(draft)])) {
++    if (!dequal(baseline[key], draft[key])) changes[key] = draft[key]
++  }
++  return changes
++}
++
++/** One controller per entity. It schedules commits, never owns the editable form values. */
++export function createAutosaveController<T extends object>(options: AutosaveOptions<T>) {
++  let baseline = structuredClone(options.initialValue)
++  let external: T | undefined = baseline
++  let revision = 0
++  let timer: ReturnType<typeof setTimeout> | undefined
++  let busy = false
++  let ready = false
++  let active = true
++  let discarding = false
++  let flushRequested = false
++  let running: Promise<void> | undefined
++  let outcome: FlushResult | undefined
++  let inFlightChanges: Partial<T> | undefined
++  let error: AutosaveState["error"] = null
++  const composing = new Set<string>()
++  const sources = new Map<keyof T, AutosaveDraftSource>()
++  const listeners = new Set<() => void>()
++  const waiters: ((result: FlushResult) => void)[] = []
++  let state: AutosaveState = { dirty: false, busy: false, composing: false, error: null }
++
++  const isDirty = () =>
++    Object.keys(changedFields(baseline, options.getDraft())).length > 0 ||
++    [...sources.values()].some((source) => source.isDirty())
++
++  function publish() {
++    const next = { dirty: isDirty(), busy, composing: composing.size > 0, error }
++    if (dequal(state, next)) return
++    state = next
++    listeners.forEach((listener) => listener())
++  }
++
++  function cancelTimer() {
++    clearTimeout(timer)
++    timer = undefined
++  }
++
++  function settle(result: FlushResult) {
++    flushRequested = false
++    waiters.splice(0).forEach((resolve) => resolve(result))
++  }
++
++  function schedule(immediate = false) {
++    cancelTimer()
++    ready = false
++    if (!active || discarding || !external) return
++    if (composing.size > 0) return
++    if (immediate || flushRequested) {
++      ready = true
++      void drain()
++    } else {
++      timer = setTimeout(() => {
++        timer = undefined
++        ready = true
++        void drain()
++      }, options.delay ?? 500)
++    }
++  }
++
++  async function drain() {
++    if (!active || discarding || busy || !ready || composing.size > 0) return
++    ready = false
++    if (!external) {
++      error = "deleted"
++      publish()
++      settle("failed")
++      return
++    }
++    // Parse the latest raw text before validation; never submit a stale debounced value.
++    const before = options.getDraft()
++    let valid = true
++    for (const source of sources.values()) {
++      if (!source.prepare()) valid = false
++    }
++    if (!dequal(before, options.getDraft())) revision++
++    if (!valid) {
++      error = "invalid"
++      publish()
++      settle("invalid")
++      return
++    }
++    if (!isDirty()) {
++      error = null
++      publish()
++      settle("unchanged")
++      return
++    }
++
++    busy = true
++    error = null
++    outcome = undefined
++    const ticket = revision
++    publish()
++    // Deferring invocation lets running be installed before onSubmit can run.
++    running = Promise.resolve().then(() => options.submit(ticket))
++    try {
++      await running
++      if (!discarding && ticket === revision && !composing.size && !outcome) {
++        outcome = "invalid" // TanStack validation prevented onSubmit.
++        error = "invalid"
++      }
++    } catch {
++      outcome = "failed"
++      error = external ? "failed" : "deleted"
++    } finally {
++      busy = false
++      running = undefined
++      inFlightChanges = undefined
++      publish()
++      if (discarding || !active) {
++        // Lifecycle cleanup owns settlement while detached/discarding.
++      } else if (ticket === revision && (outcome === "failed" || outcome === "invalid")) {
++        ready = false
++        cancelTimer()
++        settle(outcome)
++      } else if (!isDirty() && !composing.size) {
++        ready = false
++        cancelTimer()
++        settle(outcome ?? "unchanged")
++      } else if (ready || flushRequested) {
++        ready = true
++        void drain()
++      }
++    }
++  }
++
++  return {
++    subscribe(listener: () => void) {
++      listeners.add(listener)
++      return () => {
++        listeners.delete(listener)
++      }
++    },
++    getSnapshot: () => state,
++    edit(update: () => void, settings?: { immediate?: boolean }) {
++      const before = options.getDraft()
++      const rawBefore = [...sources.values()].map((source) => source.snapshot())
++      update()
++      // Explicit commands (e.g. applying recommended JSON) replace the raw editor
++      // too. External reconciliation intentionally does not take this path.
++      const after = options.getDraft()
++      for (const [key, source] of sources) {
++        if (!dequal(before[key], after[key])) source.reset(after[key])
++      }
++      const rawAfter = [...sources.values()].map((source) => source.snapshot())
++      if (dequal(before, options.getDraft()) && dequal(rawBefore, rawAfter)) return
++      revision++
++      error = external ? null : "deleted"
++      publish()
++      schedule(settings?.immediate)
++    },
++    beginComposition(fieldId: string) {
++      composing.add(fieldId)
++      revision++ // Invalidates validation that began before this composition session.
++      cancelTimer()
++      ready = false
++      publish()
++    },
++    endComposition(fieldId: string, update: () => void) {
++      update()
++      composing.delete(fieldId)
++      revision++
++      publish()
++      schedule()
++    },
++    flush(): Promise<FlushResult> {
++      if (!external) return Promise.resolve("failed")
++      if (!active || discarding) return Promise.resolve("unchanged")
++      flushRequested = true
++      const result = new Promise<FlushResult>((resolve) => waiters.push(resolve))
++      schedule(true)
++      return result
++    },
++    /** Called only by TanStack onSubmit, after all field/form validation has passed. */
++    async commit(value: T, ticket: number) {
++      if (!active || discarding || composing.size || ticket !== revision || !external) return
++      const snapshot = structuredClone(value)
++      const changes = changedFields(baseline, snapshot)
++      const raw = new Map([...sources].map(([key, source]) => [key, source.snapshot()]))
++      inFlightChanges = changes
++      if (Object.keys(changes).length > 0) {
++        await options.persist(snapshot, changes)
++        baseline = { ...baseline, ...changes }
++        if (external) external = { ...external, ...changes }
++        outcome = "saved"
++      } else {
++        outcome = "unchanged"
++      }
++      for (const [key, text] of raw) sources.get(key)?.acknowledge(text)
++      publish()
++    },
++    reconcile(next: T | undefined) {
++      external = next === undefined ? undefined : structuredClone(next)
++      if (!next) {
++        revision++
++        error = "deleted"
++        cancelTimer()
++        ready = false
++        publish()
++        if (!busy) settle("failed")
++        return
++      }
++      const draft = options.getDraft()
++      let changed = false
++      for (const key of new Set([...keys(baseline), ...keys(next)])) {
++        // An optimistic echo is not a persistence acknowledgement.
++        if (inFlightChanges && Object.hasOwn(inFlightChanges, key)) continue
++        if (sources.get(key)?.isDirty()) continue
++        if (dequal(draft[key], baseline[key]) || dequal(draft[key], next[key])) {
++          if (!dequal(draft[key], next[key])) {
++            options.setField(key, next[key])
++            changed = true
++          }
++          baseline = { ...baseline, [key]: next[key] }
++        }
++      }
++      if (changed) {
++        revision++
++        if (isDirty()) schedule(flushRequested)
++      }
++      publish()
++    },
++    registerSource(key: keyof T, source: AutosaveDraftSource) {
++      sources.set(key, source)
++      publish()
++      return () => {
++        if (sources.get(key) === source) sources.delete(key)
++      }
++    },
++    async discard() {
++      discarding = true
++      cancelTimer()
++      ready = false
++      composing.clear()
++      revision++
++      await running?.catch(() => {})
++      if (external) {
++        baseline = structuredClone(external)
++        options.reset(baseline)
++        for (const [key, source] of sources) source.reset(baseline[key])
++      }
++      error = external ? null : "deleted"
++      discarding = false
++      settle("unchanged")
++      publish()
++    },
++    activate() {
++      active = true
++    },
++    deactivate() {
++      active = false
++      cancelTimer()
++      ready = false
++      settle("unchanged")
++    },
++  }
++}
++
++export type AutosaveController<T extends object> = ReturnType<typeof createAutosaveController<T>>
+diff --git a/src/components/form/autosave-navigation.tsx b/src/components/form/autosave-navigation.tsx
+new file mode 100644
+index 00000000..54e624bf
+--- /dev/null
++++ b/src/components/form/autosave-navigation.tsx
+@@ -0,0 +1,185 @@
++import type { ReactNode } from "react"
++import type { AutosaveSession } from "./use-autosave"
++import { atom, useAtom, useAtomValue, useSetAtom } from "jotai"
++import { useEffect, useId, useLayoutEffect } from "react"
++import { useBlocker } from "react-router"
++import {
++  AlertDialog,
++  AlertDialogContent,
++  AlertDialogDescription,
++  AlertDialogFooter,
++  AlertDialogHeader,
++  AlertDialogTitle,
++} from "@/components/ui/base-ui/alert-dialog"
++import { Button } from "@/components/ui/base-ui/button"
++import { toastManager } from "@/components/ui/base-ui/toast"
++import { i18n } from "@/utils/i18n"
++import { AutosaveContext, useAutosaveState } from "./use-autosave"
++
++export const activeAutosaveAtom = atom<AutosaveSession | null>(null)
++const navigationBusyAtom = atom(false)
++const navigationProceedingAtom = atom(false)
++const blockedNavigationAtom = atom<{
++  session: AutosaveSession
++  proceed: () => void | Promise<void>
++  resolve: (proceeded: boolean) => void
++} | null>(null)
++
++export const requestEditorNavigationAtom = atom(
++  null,
++  async (get, set, proceed: () => void | Promise<void>) => {
++    if (get(navigationProceedingAtom)) {
++      await proceed()
++      return true
++    }
++    if (get(navigationBusyAtom)) return false
++    set(navigationBusyAtom, true)
++    const run = async () => {
++      set(navigationProceedingAtom, true)
++      try {
++        await proceed()
++      } finally {
++        set(navigationProceedingAtom, false)
++      }
++    }
++    try {
++      const session = get(activeAutosaveAtom)
++      if (session) {
++        const state = session.getSnapshot()
++        if (state.dirty || state.busy || state.composing) {
++          if (document.activeElement instanceof HTMLElement) document.activeElement.blur()
++          const result = await session.flush()
++          if (result === "invalid" || result === "failed") {
++            return await new Promise<boolean>((resolve) => {
++              set(blockedNavigationAtom, { session, proceed: run, resolve })
++            })
++          }
++        }
++      }
++      await run()
++      return true
++    } finally {
++      set(navigationBusyAtom, false)
++    }
++  },
++)
++
++export function AutosaveBoundary({
++  session,
++  children,
++}: {
++  session: AutosaveSession
++  children: ReactNode
++}) {
++  const setActive = useSetAtom(activeAutosaveAtom)
++  useLayoutEffect(() => {
++    setActive(session)
++    return () => setActive((current) => (current === session ? null : current))
++  }, [session, setActive])
++  const state = useAutosaveState(session)
++  const toastId = useId()
++  useEffect(() => {
++    const error = state.error
++    // Validation belongs beside its field. Persistence errors use the existing
++    // toast surface so editing never inserts a banner or shifts the form.
++    if (error !== "failed" && error !== "deleted") return undefined
++    toastManager.add({
++      id: toastId,
++      type: "error",
++      title: i18n.t(`options.autosave.${error}`),
++      ...(error === "failed"
++        ? {
++            actionProps: {
++              children: i18n.t("options.autosave.retry"),
++              onClick: () => {
++                void session.flush()
++              },
++            },
++          }
++        : {}),
++    })
++    return () => {
++      toastManager.close(toastId)
++    }
++  }, [session, state.error, toastId])
++  return <AutosaveContext value={session}>{children}</AutosaveContext>
++}
++
++const idle = {
++  subscribe: () => () => {},
++  getSnapshot: () => idleState,
++}
++const idleState = { dirty: false, busy: false, composing: false, error: null }
++
++/** Mounted once under the data router, including when the active editor changes. */
++export function AutosaveNavigation() {
++  const session = useAtomValue(activeAutosaveAtom)
++  const state = useAutosaveState(session ?? idle)
++  const [blocked, setBlocked] = useAtom(blockedNavigationAtom)
++  const requestNavigation = useSetAtom(requestEditorNavigationAtom)
++  const shouldBlock = state.dirty || state.busy || state.composing
++  const blocker = useBlocker(shouldBlock)
++
++  useEffect(() => {
++    if (blocker.state !== "blocked") return undefined
++    let cancelled = false
++    void requestNavigation(() => {
++      if (!cancelled) blocker.proceed()
++    }).then((proceeded) => {
++      if (!proceeded && !cancelled) blocker.reset()
++    })
++    return () => {
++      cancelled = true
++    }
++  }, [blocker, requestNavigation])
++
++  useEffect(() => {
++    if (!shouldBlock) return undefined
++    const onBeforeUnload = (event: BeforeUnloadEvent) => {
++      event.preventDefault()
++      event.returnValue = ""
++    }
++    window.addEventListener("beforeunload", onBeforeUnload)
++    return () => window.removeEventListener("beforeunload", onBeforeUnload)
++  }, [shouldBlock])
++
++  const stay = () => {
++    blocked?.resolve(false)
++    setBlocked(null)
++  }
++  return (
++    <AlertDialog
++      open={!!blocked}
++      onOpenChange={(open) => {
++        if (!open) stay()
++      }}
++    >
++      <AlertDialogContent>
++        <AlertDialogHeader>
++          <AlertDialogTitle>{i18n.t("options.autosave.leaveTitle")}</AlertDialogTitle>
++          <AlertDialogDescription>
++            {i18n.t("options.autosave.leaveDescription")}
++          </AlertDialogDescription>
++        </AlertDialogHeader>
++        <AlertDialogFooter>
++          <Button type="button" variant="outline" onClick={stay}>
++            {i18n.t("options.autosave.keepEditing")}
++          </Button>
++          <Button
++            type="button"
++            variant="destructive"
++            onClick={async () => {
++              if (!blocked) return
++              await blocked.session.discard()
++              setBlocked(null)
++              await blocked.proceed()
++              blocked.resolve(true)
++            }}
++          >
++            {i18n.t("options.autosave.discard")}
++          </Button>
++        </AlertDialogFooter>
++      </AlertDialogContent>
++    </AlertDialog>
++  )
++}
+diff --git a/src/components/form/autosave.md b/src/components/form/autosave.md
+new file mode 100644
+index 00000000..3916b5f6
+--- /dev/null
++++ b/src/components/form/autosave.md
+@@ -0,0 +1,55 @@
++# Options autosave
++
++Provider and Custom AI Action editors keep their editable values in TanStack Form.
++`configAtom` is the shared optimistic configuration; it is not a persistence receipt.
++
++```mermaid
++flowchart LR
++  Input[Input / IME events] --> Draft[TanStack Form draft]
++  Draft --> Schedule[Autosave controller]
++  Schedule --> Validate[TanStack handleSubmit + revision]
++  Validate --> Patch[Entity ID + changed logical fields]
++  Patch --> Config[Jotai optimistic configuration]
++  Config --> Storage[Serialized storage writes]
++  Storage --> Ack[Confirm submitted draft]
++  Storage --> Refresh[Invalidate and reread latest config]
++  Refresh --> Reconcile[Merge pristine fields; preserve local edits]
++  Reconcile --> Draft
++```
++
++## Controller and React integration
++
++- `createAutosaveController` is independent of React and never stores the live input value.
++- `useAutosave` binds current form/persistence callbacks and manages controller lifetime.
++- `AutosaveContext` provides shared field operations. `useAutosaveState` subscribes through React's `useSyncExternalStore`.
++- `edit(update, { immediate? })` executes updates synchronously. Text changes restart one 500ms timer; discrete changes request an immediate submission.
++- `beginComposition` suspends pending submissions for the entire form. `endComposition` commits the final field value and resumes scheduling.
++- `flush` waits for pending edits and returns `saved`, `unchanged`, `invalid`, or `failed`. A pending flush remains pending until composition ends.
++- `commit(value, revision)` is called by TanStack's validated `onSubmit`. It rechecks the revision and composition state, snapshots the draft, and persists only changed logical fields.
++- `discard` cancels scheduled work, waits for in-flight writes, and restores the latest configuration. Completed saves are not undone.
++
++`busy` and `composing` are independent: a previous write may complete while the user composes a new word. Its acknowledgement only advances the saved baseline; it never resets the live draft. TanStack's `isDirty` records interaction history and is deliberately not used as the unsaved-changes indicator.
++
++## Raw JSON editors
++
++CodeMirror retains raw text independently because incomplete JSON cannot be represented by the parsed form value. A registered draft source supplies current text, parsing, acknowledgement and reset operations. Flush parses the latest text before TanStack validates the form. Invalid JSON blocks saving/navigation; successful writes preserve formatting and newer raw edits.
++
++## Persistence and external updates
++
++`ConfigUpdate` accepts legacy object patches or a pure updater. An updater is evaluated both for the optimistic state and against fresh storage when its queue turn executes. Updaters support explicit `undefined` to remove optional fields; legacy object patches retain their previous merge semantics.
++
++Entity writes find the provider/action by ID, shallow-apply changed logical fields, and retain siblings and ordering. Nested models, JSON records and action schema/connection structures are atomic logical fields. Missing entities are rejected instead of recreated.
++
++Storage notifications invalidate a read instead of applying their potentially old payload. Reads wait for local writes and check write/read generations before publishing. Initial load and visibility refresh use the same protection. This coordinates one extension context; simultaneous cross-context writes are not transactions.
++
++## Navigation and lifetime
++
++An active session registers through `AutosaveBoundary`. Validation messages remain next to their fields; persistence failures use an existing toast with Retry, without inserting a banner into the editor. Entity selection, creation and duplication use `requestEditorNavigationAtom`. The settings data router uses `useBlocker` to cover links, command navigation and history. A valid draft is flushed before proceeding; invalid/failed drafts remain mounted with an explicit continue-editing/discard choice.
++
++The confirmed delete action discards pending edits and drains started writes before deleting. `beforeunload` only requests the browser's native warning while work is pending. Cleanup never starts a write. Draft recovery after a forced close, reload or crash is not provided.
++
++## Verification
++
++Controller tests cover timers, composition, async validation, delayed writes, retries, reconciliation, raw editors and disposal. Integration tests use real TanStack forms, Jotai and a data router. Storage tests mock only the adapter boundary. Browser checks use the built extension and compare input values against `chrome.storage.local`.
++
++Synthetic composition events verify application event handling but do not replace a human test with an operating-system IME. Keep those two forms of evidence separate.
+diff --git a/src/components/form/input-field-auto-save.tsx b/src/components/form/input-field-auto-save.tsx
+index caacdd6b..bbaf04fd 100644
+--- a/src/components/form/input-field-auto-save.tsx
++++ b/src/components/form/input-field-auto-save.tsx
+@@ -2,16 +2,19 @@ import { useSelector } from "@tanstack/react-store"
+ import { Field, FieldError, FieldLabel } from "@/components/ui/base-ui/field"
+ import { Input } from "@/components/ui/base-ui/input"
+ import { useFieldContext } from "./form-context"
++import { useAutosaveContext } from "./use-autosave"
+ 
+ export function InputFieldAutoSave({
+-  formForSubmit,
+   label,
+   labelAfter,
+   labelExtra,
+   type,
++  onChange,
++  onBlur,
++  onCompositionStart,
++  onCompositionEnd,
+   ...props
+ }: {
+-  formForSubmit: { handleSubmit: () => void }
+   label: React.ReactNode
+   /**
+    * Sits immediately beside the label, outside the `<label>` element — a link or button nested
+@@ -20,27 +23,23 @@ export function InputFieldAutoSave({
+   labelAfter?: React.ReactNode
+   labelExtra?: React.ReactNode
+ } & React.InputHTMLAttributes<HTMLInputElement>) {
++  const autosave = useAutosaveContext()
+   const field = useFieldContext<string | number | undefined>()
+   const errors = useSelector(field.store, (state) => state.meta.errors)
+   const hasError = errors.length > 0
+ 
+-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+-    const value = e.target.value
+-
++  const updateValue = (value: string) => {
+     if (type === "number") {
+-      if (value === "") {
+-        field.handleChange(undefined)
+-      } else {
+-        const num = Number(value)
+-        if (!Number.isNaN(num)) {
+-          field.handleChange(num)
+-        }
+-      }
+-    } else {
+-      field.handleChange(value)
+-    }
+-
+-    formForSubmit.handleSubmit()
++      if (value === "") field.handleChange(undefined)
++      else if (!Number.isNaN(Number(value))) field.handleChange(Number(value))
++    } else field.handleChange(value)
++  }
++  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
++    const value = event.currentTarget.value
++    autosave.edit(() => {
++      updateValue(value)
++      onChange?.(event)
++    })
+   }
+ 
+   return (
+@@ -53,13 +52,28 @@ export function InputFieldAutoSave({
+         {labelExtra}
+       </div>
+       <Input
++        {...props}
+         id={field.name}
+         type={type}
+         value={field.state.value ?? ""}
+-        onBlur={field.handleBlur}
++        onBlur={(event) => {
++          field.handleBlur()
++          onBlur?.(event)
++          void autosave.flush()
++        }}
++        onCompositionStart={(event) => {
++          autosave.beginComposition(field.name)
++          onCompositionStart?.(event)
++        }}
++        onCompositionEnd={(event) => {
++          const value = event.currentTarget.value
++          autosave.endComposition(field.name, () => {
++            updateValue(value)
++            onCompositionEnd?.(event)
++          })
++        }}
+         onChange={handleChange}
+         aria-invalid={hasError}
+-        {...props}
+       />
+       <FieldError>
+         {errors.map((error) => (typeof error === "string" ? error : error?.message)).join(", ")}
+diff --git a/src/components/form/quick-insertable-textarea-field-auto-save.tsx b/src/components/form/quick-insertable-textarea-field-auto-save.tsx
+index cd2d2871..2812dee7 100644
+--- a/src/components/form/quick-insertable-textarea-field-auto-save.tsx
++++ b/src/components/form/quick-insertable-textarea-field-auto-save.tsx
+@@ -3,9 +3,9 @@ import { useSelector } from "@tanstack/react-store"
+ import { Field, FieldError, FieldLabel } from "@/components/ui/base-ui/field"
+ import { QuickInsertableTextarea } from "@/components/ui/insertable-textarea"
+ import { useFieldContext } from "./form-context"
++import { useAutosaveContext } from "./use-autosave"
+ 
+ interface QuickInsertableTextareaFieldAutoSaveProps {
+-  formForSubmit: { handleSubmit: () => void }
+   label: React.ReactNode
+   insertCells?: InsertCell[]
+   className?: string
+@@ -13,12 +13,12 @@ interface QuickInsertableTextareaFieldAutoSaveProps {
+ }
+ 
+ export function QuickInsertableTextareaFieldAutoSave({
+-  formForSubmit,
+   label,
+   insertCells,
+   className,
+   readOnly,
+ }: QuickInsertableTextareaFieldAutoSaveProps) {
++  const autosave = useAutosaveContext()
+   const field = useFieldContext<string>()
+   const errors = useSelector(field.store, (state) => state.meta.errors)
+   const hasError = errors.length > 0
+@@ -30,8 +30,17 @@ export function QuickInsertableTextareaFieldAutoSave({
+         id={field.name}
+         value={field.state.value}
+         onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) => {
+-          field.handleChange(event.target.value)
+-          formForSubmit.handleSubmit()
++          const value = event.currentTarget.value
++          autosave.edit(() => field.handleChange(value))
++        }}
++        onCompositionStart={() => autosave.beginComposition(field.name)}
++        onCompositionEnd={(event) => {
++          const value = event.currentTarget.value
++          autosave.endComposition(field.name, () => field.handleChange(value))
++        }}
++        onBlur={() => {
++          field.handleBlur()
++          void autosave.flush()
+         }}
+         aria-invalid={hasError}
+         className={className}
+diff --git a/src/components/form/select-field-auto-save.tsx b/src/components/form/select-field-auto-save.tsx
+index 7894c797..eb8dfc8b 100644
+--- a/src/components/form/select-field-auto-save.tsx
++++ b/src/components/form/select-field-auto-save.tsx
+@@ -4,30 +4,36 @@ import { useCallback } from "react"
+ import { Field, FieldError, FieldTitle } from "@/components/ui/base-ui/field"
+ import { Select } from "@/components/ui/base-ui/select"
+ import { useFieldContext } from "./form-context"
++import { useAutosaveContext } from "./use-autosave"
+ 
+ type SelectFieldAutoSaveProps = React.ComponentProps<typeof Select> & {
+-  formForSubmit: { handleSubmit: () => void }
+   label: React.ReactNode
+   labelExtra?: React.ReactNode
+ }
+ 
+ export function SelectFieldAutoSave({
+-  formForSubmit,
+   label,
+   labelExtra,
++  onValueChange,
+   ...props
+ }: SelectFieldAutoSaveProps) {
++  const autosave = useAutosaveContext()
+   const field = useFieldContext<string | undefined>()
+   const errors = useSelector(field.store, (state) => state.meta.errors)
+   const hasError = errors.length > 0
+ 
+   const handleValueChange = useCallback(
+-    (value: unknown) => {
++    (...[value, details]: Parameters<NonNullable<SelectFieldAutoSaveProps["onValueChange"]>>) => {
+       if (typeof value !== "string") return
+-      field.handleChange(value)
+-      formForSubmit.handleSubmit()
++      autosave.edit(
++        () => {
++          field.handleChange(value)
++          onValueChange?.(value, details)
++        },
++        { immediate: true },
++      )
+     },
+-    [field, formForSubmit],
++    [field, autosave, onValueChange],
+   )
+ 
+   return (
+@@ -36,7 +42,7 @@ export function SelectFieldAutoSave({
+         <FieldTitle>{label}</FieldTitle>
+         {labelExtra}
+       </div>
+-      <Select value={field.state.value} onValueChange={handleValueChange} {...props}>
++      <Select {...props} value={field.state.value} onValueChange={handleValueChange}>
+         {props.children}
+       </Select>
+       <FieldError>
+diff --git a/src/components/form/use-autosave.tsx b/src/components/form/use-autosave.tsx
+new file mode 100644
+index 00000000..2bd6212e
+--- /dev/null
++++ b/src/components/form/use-autosave.tsx
+@@ -0,0 +1,55 @@
++import type {
++  AutosaveController,
++  AutosaveOptions,
++  AutosaveDraftSource,
++} from "./autosave-controller"
++import { createContext, use, useLayoutEffect, useRef, useState, useSyncExternalStore } from "react"
++import { createAutosaveController } from "./autosave-controller"
++
++export type AutosaveSession = Pick<
++  AutosaveController<object>,
++  "edit" | "beginComposition" | "endComposition" | "flush" | "discard" | "subscribe" | "getSnapshot"
++> & { registerSource: (key: string, source: AutosaveDraftSource) => () => void }
++
++export const AutosaveContext = createContext<AutosaveSession | null>(null)
++export const useOptionalAutosave = () => use(AutosaveContext)
++export function useAutosaveContext() {
++  const value = useOptionalAutosave()
++  if (!value) throw new Error("Autosaved fields require an AutosaveContext")
++  return value
++}
++
++export function useAutosave<T extends object>(options: AutosaveOptions<T>) {
++  const latest = useRef(options)
++  useLayoutEffect(() => {
++    latest.current = options
++  })
++  // oxlint-disable-next-line react/refs -- The factory stores callbacks; refs are read only when events/effects invoke them.
++  const [controller] = useState(() =>
++    createAutosaveController<T>({
++      initialValue: options.initialValue,
++      getDraft: () => latest.current.getDraft(),
++      setField: (key, value) => latest.current.setField(key, value),
++      reset: (value) => latest.current.reset(value),
++      submit: (revision) => latest.current.submit(revision),
++      persist: (snapshot, changes) => latest.current.persist(snapshot, changes),
++      delay: options.delay,
++    }),
++  )
++  useLayoutEffect(() => {
++    controller.activate()
++    return () => controller.deactivate()
++  }, [controller])
++  return controller
++}
++
++export function useAutosaveState(session: Pick<AutosaveSession, "subscribe" | "getSnapshot">) {
++  return useSyncExternalStore(session.subscribe, session.getSnapshot, session.getSnapshot)
++}
++
++/** Preserve typed form adapters, exposing only string field names to shared UI. */
++export function toAutosaveSession<T extends object>(
++  controller: AutosaveController<T>,
++): AutosaveSession {
++  return controller as unknown as AutosaveSession
++}
+diff --git a/src/entrypoints/options/main.tsx b/src/entrypoints/options/main.tsx
+index c294f87b..d42f41f2 100644
+--- a/src/entrypoints/options/main.tsx
++++ b/src/entrypoints/options/main.tsx
+@@ -5,7 +5,8 @@ import { QueryClientProvider } from "@tanstack/react-query"
+ import { Provider as JotaiProvider } from "jotai"
+ import { useHydrateAtoms } from "jotai/utils"
+ import * as React from "react"
+-import { HashRouter } from "react-router"
++import { createHashRouter, RouterProvider } from "react-router"
++import { AutosaveNavigation } from "@/components/form/autosave-navigation"
+ import { ThemeProvider } from "@/components/providers/theme-provider"
+ import { RecoveryBoundary } from "@/components/recovery/recovery-boundary"
+ import { SidebarProvider } from "@/components/ui/base-ui/sidebar"
+@@ -50,6 +51,34 @@ async function initApp() {
+ 
+   applyTheme(document.documentElement, isDarkMode(themeMode) ? "dark" : "light")
+ 
++  const router = createHashRouter([
++    {
++      path: "*",
++      element: (
++        <SidebarProvider>
++          <ThemeProvider>
++            <TooltipProvider>
++              <LocaleBoundary>
++                <ToastProvider>
++                  <AnchoredToastProvider>
++                    <RecoveryBoundary>
++                      <ScrollRestoration />
++                      <AutosaveNavigation />
++                      <AppShell>
++                        <App />
++                      </AppShell>
++                      <SettingsSearch />
++                    </RecoveryBoundary>
++                  </AnchoredToastProvider>
++                </ToastProvider>
++              </LocaleBoundary>
++            </TooltipProvider>
++          </ThemeProvider>
++        </SidebarProvider>
++      ),
++    },
++  ])
++
+   renderPersistentReactRoot(
+     root,
+     <React.StrictMode>
+@@ -61,27 +90,7 @@ async function initApp() {
+           ]}
+         >
+           <QueryClientProvider client={queryClient}>
+-            <HashRouter>
+-              <SidebarProvider>
+-                <ThemeProvider>
+-                  <TooltipProvider>
+-                    <LocaleBoundary>
+-                      <ToastProvider>
+-                        <AnchoredToastProvider>
+-                          <RecoveryBoundary>
+-                            <ScrollRestoration />
+-                            <AppShell>
+-                              <App />
+-                            </AppShell>
+-                            <SettingsSearch />
+-                          </RecoveryBoundary>
+-                        </AnchoredToastProvider>
+-                      </ToastProvider>
+-                    </LocaleBoundary>
+-                  </TooltipProvider>
+-                </ThemeProvider>
+-              </SidebarProvider>
+-            </HashRouter>
++            <RouterProvider router={router} />
+           </QueryClientProvider>
+         </HydrateAtoms>
+       </JotaiProvider>
+diff --git a/src/entrypoints/options/pages/__tests__/editor-context.test.tsx b/src/entrypoints/options/pages/__tests__/editor-context.test.tsx
+index ffd258fe..51c582ee 100644
+--- a/src/entrypoints/options/pages/__tests__/editor-context.test.tsx
++++ b/src/entrypoints/options/pages/__tests__/editor-context.test.tsx
+@@ -1,9 +1,10 @@
+-// @vitest-environment jsdom
+-
++import type { Config as SeedConfig } from "@/types/config/config"
+ import type { APIProviderConfig } from "@/types/config/provider"
++// @vitest-environment jsdom
+ import { fireEvent, render, screen, waitFor } from "@testing-library/react"
+ import { createStore, Provider } from "jotai"
+ import { describe, expect, it } from "vitest"
++import { fakeBrowser } from "wxt/testing/fake-browser"
+ import { ThemeProvider } from "@/components/providers/theme-provider"
+ import { isAPIProviderConfig } from "@/types/config/provider"
+ import { configAtom } from "@/utils/atoms/config"
+@@ -25,6 +26,11 @@ import {
+   useActionEditor,
+ } from "../custom-actions/action-config-form/action-editor"
+ 
++function seedConfig(store: ReturnType<typeof createStore>, config: SeedConfig) {
++  void fakeBrowser.storage.local.set({ config })
++  store.set(configAtom, config)
++}
++
+ function ActionContextProbe() {
+   useActionEditor()
+   return null
+@@ -50,12 +56,12 @@ function DeleteActionProbe() {
+ 
+ function createConfigStore() {
+   const store = createStore()
+-  store.set(configAtom, structuredClone(DEFAULT_CONFIG))
++  seedConfig(store, structuredClone(DEFAULT_CONFIG))
+   return store
+ }
+ 
+ function CustomProviderAssignments({ providerConfig }: { providerConfig: APIProviderConfig }) {
+-  const form = useProviderForm(providerConfig, async () => {})
++  const { form } = useProviderForm(providerConfig, async () => {})
+ 
+   return (
+     <CustomProviderEditor.Provider
+@@ -136,7 +142,7 @@ describe("editor compound component contexts", () => {
+     }
+     config.selectionToolbar.customActions = [action]
+     config.selectionToolbar.noteSuggestion.actionId = action.id
+-    store.set(configAtom, config)
++    seedConfig(store, config)
+ 
+     render(
+       <Provider store={store}>
+@@ -167,7 +173,7 @@ describe("editor compound component contexts", () => {
+     config.providersConfig = config.providersConfig.map((provider) =>
+       provider.id === providerConfig.id ? { ...provider, enabled: false } : provider,
+     )
+-    store.set(configAtom, config)
++    seedConfig(store, config)
+     const dictionary = getBuiltInDictionaryAction(config.selectionToolbar)
+ 
+     render(
+diff --git a/src/entrypoints/options/pages/api-providers/providers-config/__tests__/providers-config.test.tsx b/src/entrypoints/options/pages/api-providers/providers-config/__tests__/providers-config.test.tsx
+index 147dcd92..9e9095b6 100644
+--- a/src/entrypoints/options/pages/api-providers/providers-config/__tests__/providers-config.test.tsx
++++ b/src/entrypoints/options/pages/api-providers/providers-config/__tests__/providers-config.test.tsx
+@@ -117,8 +117,8 @@ vi.mock("@/utils/atoms/config", () => ({
+   writeConfigAtom,
+ }))
+ 
+-vi.mock("@/utils/atoms/provider", () => ({
+-  providerConfigAtom: () => providerWriteAtom,
++vi.mock("@/utils/atoms/entity-config", () => ({
++  patchProviderConfigAtom: providerWriteAtom,
+ }))
+ 
+ vi.mock("@/utils/config/helpers", () => ({
+diff --git a/src/entrypoints/options/pages/api-providers/providers-config/add-provider-dialog.tsx b/src/entrypoints/options/pages/api-providers/providers-config/add-provider-dialog.tsx
+index 31b6af81..e17206ef 100644
+--- a/src/entrypoints/options/pages/api-providers/providers-config/add-provider-dialog.tsx
++++ b/src/entrypoints/options/pages/api-providers/providers-config/add-provider-dialog.tsx
+@@ -1,6 +1,7 @@
+ import type { APIProviderTypes } from "@/types/config/provider"
+-import { useAtom, useSetAtom } from "jotai"
++import { useSetAtom, useStore } from "jotai"
+ import { SponsorBadge } from "@/components/badges/sponsor-badge"
++import { requestEditorNavigationAtom } from "@/components/form/autosave-navigation"
+ import ProviderIcon from "@/components/provider-icon"
+ import { useTheme } from "@/components/providers/theme-provider"
+ import { DialogContent, DialogHeader, DialogTitle } from "@/components/ui/base-ui/dialog"
+@@ -15,12 +16,21 @@ import { selectedProviderIdAtom } from "./atoms"
+ import { addProvider } from "./utils"
+ 
+ export default function AddProviderDialog({ onClose }: { onClose: () => void }) {
+-  const [providersConfig, setProvidersConfig] = useAtom(configFieldsAtomMap.providersConfig)
++  const store = useStore()
++  const requestNavigation = useSetAtom(requestEditorNavigationAtom)
++  const setProvidersConfig = useSetAtom(configFieldsAtomMap.providersConfig)
+   const setSelectedProviderId = useSetAtom(selectedProviderIdAtom)
+ 
+   const handleAddProvider = async (providerType: APIProviderTypes) => {
+-    await addProvider(providerType, providersConfig, setProvidersConfig, setSelectedProviderId)
+-    onClose()
++    await requestNavigation(async () => {
++      await addProvider(
++        providerType,
++        store.get(configFieldsAtomMap.providersConfig),
++        setProvidersConfig,
++        setSelectedProviderId,
++      )
++      onClose()
++    })
+   }
+ 
+   return (
+diff --git a/src/entrypoints/options/pages/api-providers/providers-config/atoms.ts b/src/entrypoints/options/pages/api-providers/providers-config/atoms.ts
+index 003df86d..15d22e03 100644
+--- a/src/entrypoints/options/pages/api-providers/providers-config/atoms.ts
++++ b/src/entrypoints/options/pages/api-providers/providers-config/atoms.ts
+@@ -1,4 +1,5 @@
+ import { atom } from "jotai"
++import { requestEditorNavigationAtom } from "@/components/form/autosave-navigation"
+ import { configFieldsAtomMap } from "@/utils/atoms/config"
+ import { getAPIProvidersConfig } from "@/utils/config/helpers"
+ import { BUILT_IN_AI_PROVIDER_ID } from "@/utils/providers/provider-registry"
+@@ -32,7 +33,10 @@ export const selectedProviderIdAtom = atom(
+       apiProvidersConfig.length > 0 ? apiProvidersConfig[0]!.id : BUILT_IN_AI_PROVIDER_ID
+     return firstProviderId
+   },
+-  (_get, set, newValue: string | undefined) => {
+-    set(internalSelectedProviderIdAtom, newValue)
++  (get, set, newValue: string | undefined) => {
++    if (get(internalSelectedProviderIdAtom) === newValue) return Promise.resolve(true)
++    return set(requestEditorNavigationAtom, () => {
++      set(internalSelectedProviderIdAtom, newValue)
++    })
+   },
+ )
+diff --git a/src/entrypoints/options/pages/api-providers/providers-config/index.tsx b/src/entrypoints/options/pages/api-providers/providers-config/index.tsx
+index 49237087..0d9f03b0 100644
+--- a/src/entrypoints/options/pages/api-providers/providers-config/index.tsx
++++ b/src/entrypoints/options/pages/api-providers/providers-config/index.tsx
+@@ -16,7 +16,7 @@ import { anchoredToastManager } from "@/components/ui/base-ui/toast"
+ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/base-ui/tooltip"
+ import { isAPIProvider, isAPIProviderConfig } from "@/types/config/provider"
+ import { configAtom, configFieldsAtomMap } from "@/utils/atoms/config"
+-import { providerConfigAtom } from "@/utils/atoms/provider"
++import { patchProviderConfigAtom } from "@/utils/atoms/entity-config"
+ import { getAPIProvidersConfig, getProviderConfigById } from "@/utils/config/helpers"
+ import {
+   FEATURE_KEYS,
+@@ -87,7 +87,7 @@ function useRequestedProvider() {
+       }
+ 
+       handledLocationRef.current = marker
+-      setSelectedProviderId(providerId)
++      void setSelectedProviderId(providerId)
+       highlightRequestedField()
+       return
+     }
+@@ -103,7 +103,7 @@ function useRequestedProvider() {
+       (provider) => provider.provider === requestedType,
+     )
+     if (existingProvider) {
+-      setSelectedProviderId(existingProvider.id)
++      void setSelectedProviderId(existingProvider.id)
+       highlightRequestedField()
+       return
+     }
+@@ -182,7 +182,7 @@ function ProviderCardList() {
+   useEffect(() => {
+     if (didLockInitialSelectionRef.current) return
+     if (selectedProviderId) {
+-      setSelectedProviderId(selectedProviderId)
++      void setSelectedProviderId(selectedProviderId)
+       didLockInitialSelectionRef.current = true
+     }
+   }, [selectedProviderId, setSelectedProviderId])
+@@ -223,7 +223,7 @@ function ProviderCard({ providerConfig }: { providerConfig: APIProviderConfig })
+   const { id, name, provider, enabled } = providerConfig
+   const { theme } = useTheme()
+   const [selectedProviderId, setSelectedProviderId] = useAtom(selectedProviderIdAtom)
+-  const setProviderConfig = useSetAtom(providerConfigAtom(id))
++  const patchProviderConfig = useSetAtom(patchProviderConfigAtom)
+   const config = useAtomValue(configAtom)
+   const sponsor = API_PROVIDER_ITEMS[provider].sponsor
+   const switchRef = useRef<HTMLButtonElement>(null)
+@@ -258,7 +258,7 @@ function ProviderCard({ providerConfig }: { providerConfig: APIProviderConfig })
+       return
+     }
+ 
+-    void setProviderConfig({ ...providerConfig, enabled: checked })
++    void patchProviderConfig({ id, changes: { enabled: checked } })
+   }
+ 
+   return (
+diff --git a/src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/__tests__/provider-headers-field.test.tsx b/src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/__tests__/provider-headers-field.test.tsx
+index d5acb823..4f01ed41 100644
+--- a/src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/__tests__/provider-headers-field.test.tsx
++++ b/src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/__tests__/provider-headers-field.test.tsx
+@@ -4,7 +4,8 @@ import type { APIProviderConfig } from "@/types/config/provider"
+ import { act, fireEvent, render, screen } from "@testing-library/react"
+ import { useEffect, useState } from "react"
+ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
+-import { formOpts, useAppForm } from "../form"
++import { AutosaveContext, toAutosaveSession } from "@/components/form/use-autosave"
++import { useProviderForm } from "../../provider-editor"
+ import { ProviderHeadersField } from "../provider-headers-field"
+ 
+ vi.mock("#imports", () => ({
+@@ -73,52 +74,35 @@ const anthropicProviderConfig: APIProviderConfig = {
+ 
+ function ProviderHeadersFieldHarness({ initialConfig }: { initialConfig: APIProviderConfig }) {
+   const [providerConfig, setProviderConfig] = useState(initialConfig)
+-  const form = useAppForm({
+-    ...formOpts,
+-    defaultValues: providerConfig,
+-    onSubmit: async ({ value }) => {
+-      setProviderConfig(value)
+-    },
++  const { form, autosave } = useProviderForm(providerConfig, async (value) => {
++    setProviderConfig(value)
+   })
+ 
+   useEffect(() => {
+-    form.reset(providerConfig)
+-  }, [providerConfig, form])
++    autosave.reconcile(providerConfig)
++  }, [providerConfig, autosave])
+ 
+   return (
+-    <>
+-      <ProviderHeadersField form={form} />
+-      <output aria-label="persisted-headers">
+-        {JSON.stringify(providerConfig.headers ?? null)}
+-      </output>
+-    </>
++    <AutosaveContext value={toAutosaveSession(autosave)}>
++      <>
++        <ProviderHeadersField form={form} />
++        <output aria-label="persisted-headers">
++          {JSON.stringify(providerConfig.headers ?? null)}
++        </output>
++      </>
++    </AutosaveContext>
+   )
+ }
+ 
+ function ProviderHeadersFieldSwitchHarness() {
+   const [providerConfig, setProviderConfig] = useState(baseProviderConfig)
+-  const form = useAppForm({
+-    ...formOpts,
+-    defaultValues: providerConfig,
+-    onSubmit: async ({ value }) => {
+-      setProviderConfig(value)
+-    },
+-  })
+-
+-  useEffect(() => {
+-    form.reset(providerConfig)
+-  }, [providerConfig, form])
+-
+   return (
+     <>
+       <button type="button" onClick={() => setProviderConfig(anthropicProviderConfig)}>
+         switch-provider
+       </button>
+-      <ProviderHeadersField form={form} />
+       <output aria-label="persisted-provider-id">{providerConfig.id}</output>
+-      <output aria-label="persisted-headers">
+-        {JSON.stringify(providerConfig.headers ?? null)}
+-      </output>
++      <ProviderHeadersFieldHarness key={providerConfig.id} initialConfig={providerConfig} />
+     </>
+   )
+ }
+diff --git a/src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/__tests__/provider-options-field.test.tsx b/src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/__tests__/provider-options-field.test.tsx
+index 3b3c8261..e08bb682 100644
+--- a/src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/__tests__/provider-options-field.test.tsx
++++ b/src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/__tests__/provider-options-field.test.tsx
+@@ -4,8 +4,9 @@ import type { APIProviderConfig } from "@/types/config/provider"
+ import { act, fireEvent, render, screen } from "@testing-library/react"
+ import { useEffect, useState } from "react"
+ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
++import { AutosaveContext, toAutosaveSession } from "@/components/form/use-autosave"
+ import { updateProviderConfig } from "@/utils/atoms/provider"
+-import { formOpts, useAppForm } from "../form"
++import { useProviderForm } from "../../provider-editor"
+ import { ProviderOptionsField } from "../provider-options-field"
+ 
+ vi.mock("#imports", () => ({
+@@ -66,42 +67,40 @@ function ProviderOptionsFieldHarness({
+   submitDelayMs?: number
+ }) {
+   const [providerConfig, setProviderConfig] = useState(initialConfig)
+-  const form = useAppForm({
+-    ...formOpts,
+-    defaultValues: providerConfig,
+-    onSubmit: async ({ value }) => {
+-      if (submitDelayMs > 0) {
+-        await new Promise((resolve) => window.setTimeout(resolve, submitDelayMs))
+-      }
+-
+-      setProviderConfig(submitDelayMs > 0 ? structuredClone(value) : value)
+-    },
++  const { form, autosave } = useProviderForm(providerConfig, async (value) => {
++    if (submitDelayMs > 0) {
++      await new Promise((resolve) => window.setTimeout(resolve, submitDelayMs))
++    }
++
++    setProviderConfig(submitDelayMs > 0 ? structuredClone(value) : value)
+   })
+ 
+   useEffect(() => {
+-    form.reset(providerConfig)
+-  }, [providerConfig, form])
++    autosave.reconcile(providerConfig)
++  }, [providerConfig, autosave])
+ 
+   return (
+-    <>
+-      <ProviderOptionsField form={form} />
+-      <button
+-        type="button"
+-        onClick={() => {
+-          if (externalProviderOptions === undefined) {
+-            return
+-          }
+-
+-          setProviderConfig(
+-            updateProviderConfig(providerConfig, {
+-              providerOptions: externalProviderOptions,
+-            }) as APIProviderConfig,
+-          )
+-        }}
+-      >
+-        apply-external
+-      </button>
+-    </>
++    <AutosaveContext value={toAutosaveSession(autosave)}>
++      <>
++        <ProviderOptionsField form={form} />
++        <button
++          type="button"
++          onClick={() => {
++            if (externalProviderOptions === undefined) {
++              return
++            }
++
++            setProviderConfig(
++              updateProviderConfig(providerConfig, {
++                providerOptions: externalProviderOptions,
++              }) as APIProviderConfig,
++            )
++          }}
++        >
++          apply-external
++        </button>
++      </>
++    </AutosaveContext>
+   )
+ }
+ 
+@@ -208,7 +207,7 @@ describe("providerOptionsField", () => {
+     )
+   })
+ 
+-  it("syncs the editor when an external update arrives, even if the saved value is unchanged", async () => {
++  it("preserves an incomplete local JSON draft when an external update arrives", async () => {
+     const externalProviderOptions = { enableThinking: false }
+ 
+     render(
+@@ -230,8 +229,21 @@ describe("providerOptionsField", () => {
+       await Promise.resolve()
+     })
+ 
++    expect(screen.getByLabelText("provider-options-editor")).toHaveValue("{")
++  })
++
++  it("accepts external JSON when the editor has no local changes", async () => {
++    render(
++      <ProviderOptionsFieldHarness
++        initialConfig={baseProviderConfig}
++        externalProviderOptions={{ temperature: 0 }}
++      />,
++    )
++    await act(async () => {
++      fireEvent.click(screen.getByRole("button", { name: "apply-external" }))
++    })
+     expect(screen.getByLabelText("provider-options-editor")).toHaveValue(
+-      JSON.stringify(externalProviderOptions, null, 2),
++      JSON.stringify({ temperature: 0 }, null, 2),
+     )
+   })
+ 
+diff --git a/src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/__tests__/provider-specific-settings-field.test.tsx b/src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/__tests__/provider-specific-settings-field.test.tsx
+index 6f1e1d58..4ba10f55 100644
+--- a/src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/__tests__/provider-specific-settings-field.test.tsx
++++ b/src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/__tests__/provider-specific-settings-field.test.tsx
+@@ -3,8 +3,9 @@ import type { APIProviderConfig } from "@/types/config/provider"
+ import { act, fireEvent, render, screen } from "@testing-library/react"
+ import { useEffect, useState } from "react"
+ import { beforeEach, describe, expect, it, vi } from "vitest"
++import { AutosaveContext, toAutosaveSession } from "@/components/form/use-autosave"
+ import { DEFAULT_PROVIDER_CONFIG } from "@/utils/constants/providers"
+-import { formOpts, useAppForm } from "../form"
++import { useProviderForm } from "../../provider-editor"
+ import { ProviderSpecificSettingsField } from "../provider-specific-settings-field"
+ 
+ vi.mock("#imports", () => ({
+@@ -19,29 +20,27 @@ function ProviderSpecificSettingsFieldHarness({
+   initialConfig?: APIProviderConfig
+ }) {
+   const [providerConfig, setProviderConfig] = useState(initialConfig)
+-  const form = useAppForm({
+-    ...formOpts,
+-    defaultValues: providerConfig,
+-    onSubmit: async ({ value }) => {
+-      setProviderConfig(value)
+-    },
++  const { form, autosave } = useProviderForm(providerConfig, async (value) => {
++    setProviderConfig(value)
+   })
+ 
+   useEffect(() => {
+-    form.reset(providerConfig)
+-  }, [providerConfig, form])
++    autosave.reconcile(providerConfig)
++  }, [providerConfig, autosave])
+ 
+   return (
+-    <>
+-      <ProviderSpecificSettingsField form={form} />
+-      <output aria-label="persisted-provider-specific-settings">
+-        {JSON.stringify(
+-          "providerSpecificSettings" in providerConfig
+-            ? providerConfig.providerSpecificSettings
+-            : null,
+-        )}
+-      </output>
+-    </>
++    <AutosaveContext value={toAutosaveSession(autosave)}>
++      <>
++        <ProviderSpecificSettingsField form={form} />
++        <output aria-label="persisted-provider-specific-settings">
++          {JSON.stringify(
++            "providerSpecificSettings" in providerConfig
++              ? providerConfig.providerSpecificSettings
++              : null,
++          )}
++        </output>
++      </>
++    </AutosaveContext>
+   )
+ }
+ 
+diff --git a/src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/__tests__/provider-url-field.test.tsx b/src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/__tests__/provider-url-field.test.tsx
+index 3b4bbe1f..edefcabe 100644
+--- a/src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/__tests__/provider-url-field.test.tsx
++++ b/src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/__tests__/provider-url-field.test.tsx
+@@ -3,18 +3,19 @@
+ import type { APIProviderConfig } from "@/types/config/provider"
+ import { render, screen } from "@testing-library/react"
+ import { describe, expect, it } from "vitest"
++import { AutosaveContext, toAutosaveSession } from "@/components/form/use-autosave"
+ import { DEFAULT_PROVIDER_CONFIG } from "@/utils/constants/providers"
+-import { formOpts, useAppForm } from "../form"
++import { useProviderForm } from "../../provider-editor"
+ import { ProviderURLField } from "../provider-url-field"
+ 
+ function ProviderURLFieldHarness({ providerConfig }: { providerConfig: APIProviderConfig }) {
+-  const form = useAppForm({
+-    ...formOpts,
+-    defaultValues: providerConfig,
+-    onSubmit: async () => {},
+-  })
++  const { form, autosave } = useProviderForm(providerConfig, async () => {})
+ 
+-  return <ProviderURLField form={form} />
++  return (
++    <AutosaveContext value={toAutosaveSession(autosave)}>
++      <ProviderURLField form={form} />
++    </AutosaveContext>
++  )
+ }
+ 
+ describe("ProviderURLField", () => {
+diff --git a/src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/__tests__/translate-model-selector.test.tsx b/src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/__tests__/translate-model-selector.test.tsx
+index 8287d4b4..040d371f 100644
+--- a/src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/__tests__/translate-model-selector.test.tsx
++++ b/src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/__tests__/translate-model-selector.test.tsx
+@@ -4,7 +4,8 @@ import { useSelector } from "@tanstack/react-store"
+ import { act, fireEvent, render, screen } from "@testing-library/react"
+ import { useEffect, useState } from "react"
+ import { describe, expect, it, vi } from "vitest"
+-import { formOpts, useAppForm } from "../form"
++import { AutosaveContext, toAutosaveSession } from "@/components/form/use-autosave"
++import { useProviderForm } from "../../provider-editor"
+ import { TranslateModelSelector } from "../translate-model-selector"
+ 
+ vi.mock("#imports", () => ({
+@@ -60,52 +61,50 @@ function TranslateModelSelectorHarness({
+ }) {
+   const [providerConfig, setProviderConfig] = useState(initialConfig)
+   const [submitCount, setSubmitCount] = useState(0)
+-  const form = useAppForm({
+-    ...formOpts,
+-    defaultValues: providerConfig,
+-    onSubmit: async ({ value }) => {
+-      setSubmitCount((count) => count + 1)
+-      setProviderConfig(value)
+-    },
++  const { form, autosave } = useProviderForm(providerConfig, async (value) => {
++    setSubmitCount((count) => count + 1)
++    setProviderConfig(value)
+   })
+   const formValues = useSelector(form.store, (state) => state.values)
+ 
+   useEffect(() => {
+-    form.reset(providerConfig)
+-  }, [providerConfig, form])
++    autosave.reconcile(providerConfig)
++  }, [providerConfig, autosave])
+ 
+   return (
+-    <form.AppForm>
+-      <form.AppField
+-        name="name"
+-        validators={{
+-          onChange: ({ value }) =>
+-            value === duplicateProviderName ? "Duplicate provider name" : undefined,
+-        }}
+-      >
+-        {(field) => (
+-          <input
+-            aria-label="provider-name"
+-            value={field.state.value}
+-            onBlur={field.handleBlur}
+-            onChange={(event) => {
+-              field.handleChange(event.target.value)
+-              void form.handleSubmit()
+-            }}
+-          />
+-        )}
+-      </form.AppField>
+-      <TranslateModelSelector form={form} />
+-      <output aria-label="form-name">{formValues.name}</output>
+-      <output aria-label="form-provider-options">
+-        {JSON.stringify(formValues.providerOptions ?? null)}
+-      </output>
+-      <output aria-label="persisted-name">{providerConfig.name}</output>
+-      <output aria-label="persisted-provider-options">
+-        {JSON.stringify(providerConfig.providerOptions ?? null)}
+-      </output>
+-      <output aria-label="submit-count">{String(submitCount)}</output>
+-    </form.AppForm>
++    <AutosaveContext value={toAutosaveSession(autosave)}>
++      <form.AppForm>
++        <form.AppField
++          name="name"
++          validators={{
++            onChange: ({ value }) =>
++              value === duplicateProviderName ? "Duplicate provider name" : undefined,
++          }}
++        >
++          {(field) => (
++            <input
++              aria-label="provider-name"
++              value={field.state.value}
++              onBlur={field.handleBlur}
++              onChange={(event) => {
++                const value = event.currentTarget.value
++                autosave.edit(() => field.handleChange(value), { immediate: true })
++              }}
++            />
++          )}
++        </form.AppField>
++        <TranslateModelSelector form={form} />
++        <output aria-label="form-name">{formValues.name}</output>
++        <output aria-label="form-provider-options">
++          {JSON.stringify(formValues.providerOptions ?? null)}
++        </output>
++        <output aria-label="persisted-name">{providerConfig.name}</output>
++        <output aria-label="persisted-provider-options">
++          {JSON.stringify(providerConfig.providerOptions ?? null)}
++        </output>
++        <output aria-label="submit-count">{String(submitCount)}</output>
++      </form.AppForm>
++    </AutosaveContext>
+   )
+ }
+ 
+diff --git a/src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/api-key-field.tsx b/src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/api-key-field.tsx
+index cf21ac1d..3cbe93c8 100644
+--- a/src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/api-key-field.tsx
++++ b/src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/api-key-field.tsx
+@@ -40,7 +40,6 @@ export const APIKeyField = withForm({
+         {(field) => (
+           <div className="flex flex-col gap-2">
+             <field.InputFieldAutoSave
+-              formForSubmit={form}
+               label="API Key"
+               labelAfter={<GetAPIKeyButton providerType={providerType} />}
+               labelExtra={<ConnectionTestButton providerConfig={providerConfig} />}
+diff --git a/src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/components/autosaved-json-code-editor-field.tsx b/src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/components/autosaved-json-code-editor-field.tsx
+index ad35f41c..87e4032c 100644
+--- a/src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/components/autosaved-json-code-editor-field.tsx
++++ b/src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/components/autosaved-json-code-editor-field.tsx
+@@ -1,8 +1,9 @@
+ import type { ReactNode } from "react"
+-import { useCallback, useEffect, useEffectEvent, useMemo, useRef, useState } from "react"
++import { dequal } from "dequal"
++import { useEffect, useLayoutEffect, useRef, useState } from "react"
++import { useAutosaveContext } from "@/components/form/use-autosave"
+ import { Field, FieldError, FieldTitle } from "@/components/ui/base-ui/field"
+ import { JSONCodeEditor } from "@/components/ui/json-code-editor"
+-import { useDebouncedValue } from "@/hooks/use-debounced-value"
+ 
+ export type JsonEditorParseResult<TValue> =
+   | { valid: true; value: TValue | undefined }
+@@ -13,11 +14,9 @@ interface AutosavedJsonCodeEditorFieldProps<TValue extends Record<string, unknow
+   label: ReactNode
+   placeholder: string
+   editorAriaLabel: string
+-  resetKey: string
+-  syncSignal?: unknown
++  fieldName: string
+   parse: (input: string) => JsonEditorParseResult<TValue>
+   onCommit: (value: TValue | undefined) => void
+-  onSubmit: () => void | Promise<void>
+   serialize?: (value: TValue | undefined) => string
+   height?: string
+ }
+@@ -31,107 +30,80 @@ export function AutosavedJsonCodeEditorField<TValue extends Record<string, unkno
+   label,
+   placeholder,
+   editorAriaLabel,
+-  resetKey,
+-  syncSignal = value,
++  fieldName,
+   parse,
+   onCommit,
+-  onSubmit,
+   serialize = defaultSerializeJson,
+   height = "150px",
+ }: AutosavedJsonCodeEditorFieldProps<TValue>) {
+-  const externalJson = serialize(value)
+-  const [jsonInput, setJsonInput] = useState(() => externalJson)
+-  const lastCommittedJsonRef = useRef(externalJson)
+-  const pendingEditorCommitRef = useRef(false)
+-  const editorFocusedRef = useRef(false)
+-
+-  const syncJsonInput = useEffectEvent((nextJson: string) => {
+-    // eslint-disable-next-line react/set-state-in-effect
+-    setJsonInput(nextJson)
+-  })
+-
+-  const resetSyncState = useEffectEvent(() => {
+-    lastCommittedJsonRef.current = externalJson
+-    pendingEditorCommitRef.current = false
+-    syncJsonInput(externalJson)
++  const autosave = useAutosaveContext()
++  const [jsonInput, setJsonInput] = useState(() => serialize(value))
++  const [jsonError, setJsonError] = useState<string | null>(null)
++  const textRef = useRef(jsonInput)
++  const savedTextRef = useRef(jsonInput)
++  const latest = useRef({ value, parse, onCommit, serialize })
++  useLayoutEffect(() => {
++    latest.current = { value, parse, onCommit, serialize }
+   })
+ 
+-  const readJsonInput = useEffectEvent(() => jsonInput)
+-
+-  const handleJsonInputChange = useCallback((nextJson: string) => {
+-    setJsonInput(nextJson)
+-  }, [])
+-
+-  const handleEditorFocus = useCallback(() => {
+-    editorFocusedRef.current = true
+-  }, [])
+-
+-  const handleEditorBlur = useCallback(() => {
+-    editorFocusedRef.current = false
+-  }, [])
+-
+-  useEffect(() => {
+-    // oxlint-disable-next-line react/set-state-in-effect -- a new resetKey is the reset signal
+-    resetSyncState()
+-    // oxlint-disable-next-line react/exhaustive-effect-dependencies -- the dependencies are re-run triggers, not values the effect body reads
+-  }, [resetKey])
+-
+-  useEffect(() => {
+-    if (pendingEditorCommitRef.current && externalJson === lastCommittedJsonRef.current) {
+-      pendingEditorCommitRef.current = false
+-      return
+-    }
+-
+-    pendingEditorCommitRef.current = false
+-
+-    const currentJsonInput = readJsonInput()
+-    if (editorFocusedRef.current && currentJsonInput !== lastCommittedJsonRef.current) {
+-      return
+-    }
+-
+-    lastCommittedJsonRef.current = externalJson
+-
+-    if (currentJsonInput !== externalJson) {
+-      // oxlint-disable-next-line react/set-state-in-effect -- re-syncs the editor from the external value when it changes elsewhere
+-      syncJsonInput(externalJson)
+-    }
+-    // oxlint-disable-next-line react/exhaustive-effect-dependencies -- the dependencies are re-run triggers, not values the effect body reads
+-  }, [syncSignal, externalJson])
+-
+-  const debouncedJsonInput = useDebouncedValue(jsonInput, 500)
+-  const parseResult = useMemo(() => parse(debouncedJsonInput), [debouncedJsonInput, parse])
++  useLayoutEffect(
++    () =>
++      autosave.registerSource(fieldName, {
++        isDirty: () => textRef.current !== savedTextRef.current,
++        snapshot: () => textRef.current,
++        prepare: () => {
++          const result = latest.current.parse(textRef.current)
++          setJsonError(result.valid ? null : result.error)
++          if (!result.valid) return false
++          if (!dequal(result.value, latest.current.value)) latest.current.onCommit(result.value)
++          return true
++        },
++        acknowledge: (snapshot) => {
++          savedTextRef.current = snapshot
++        },
++        reset: (nextValue) => {
++          const text = latest.current.serialize(nextValue as TValue | undefined)
++          textRef.current = savedTextRef.current = text
++          setJsonInput(text)
++          setJsonError(null)
++        },
++      }),
++    [autosave, fieldName],
++  )
+ 
+   useEffect(() => {
+-    if (!parseResult.valid) {
+-      return
+-    }
+-
+-    const normalizedJson = serialize(parseResult.value)
+-    if (normalizedJson === lastCommittedJsonRef.current) {
+-      return
+-    }
+-
+-    lastCommittedJsonRef.current = normalizedJson
+-    pendingEditorCommitRef.current = true
+-    onCommit(parseResult.value)
+-    void onSubmit()
+-  }, [onCommit, onSubmit, parseResult, serialize])
+-
+-  const jsonError = !parseResult.valid ? parseResult.error : null
+-
++    const current = parse(textRef.current)
++    // Keep formatting after our own commit. Only pristine raw drafts accept external values.
++    if (current.valid && dequal(current.value, value)) return
++    if (textRef.current !== savedTextRef.current) return
++    const text = serialize(value)
++    textRef.current = savedTextRef.current = text
++    setJsonInput(text)
++    setJsonError(null)
++  }, [value, parse, serialize])
++
++  const updateText = (text: string) => {
++    textRef.current = text
++    setJsonInput(text)
++    setJsonError(null)
++  }
+   return (
+     <Field data-invalid={!!jsonError}>
+       <FieldTitle>{label}</FieldTitle>
+-      <JSONCodeEditor
+-        aria-label={editorAriaLabel}
+-        value={jsonInput}
+-        onChange={handleJsonInputChange}
+-        onFocus={handleEditorFocus}
+-        onBlur={handleEditorBlur}
+-        placeholder={placeholder}
+-        hasError={!!jsonError}
+-        height={height}
+-      />
++      <div
++        onCompositionStartCapture={() => autosave.beginComposition(fieldName)}
++        onCompositionEndCapture={() => autosave.endComposition(fieldName, () => {})}
++      >
++        <JSONCodeEditor
++          aria-label={editorAriaLabel}
++          value={jsonInput}
++          onChange={(text) => autosave.edit(() => updateText(text))}
++          onBlur={() => void autosave.flush()}
++          placeholder={placeholder}
++          hasError={!!jsonError}
++          height={height}
++        />
++      </div>
+       {jsonError && <FieldError>{jsonError}</FieldError>}
+     </Field>
+   )
+diff --git a/src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/index.tsx b/src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/index.tsx
+index 49ab1e99..e82eca54 100644
+--- a/src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/index.tsx
++++ b/src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/index.tsx
+@@ -1,6 +1,12 @@
+ import type { APIProviderConfig, ProvidersConfig } from "@/types/config/provider"
+-import { useAtom, useAtomValue, useSetAtom } from "jotai"
+-import { useEffect } from "react"
++import { dequal } from "dequal"
++import { useAtomValue, useSetAtom, useStore } from "jotai"
++import { useEffect, useState } from "react"
++import {
++  AutosaveBoundary,
++  requestEditorNavigationAtom,
++} from "@/components/form/autosave-navigation"
++import { toAutosaveSession } from "@/components/form/use-autosave"
+ import { useHostedAiStatus } from "@/components/llm-providers/use-hosted-ai-status"
+ import { toastManager } from "@/components/ui/base-ui/toast"
+ import {
+@@ -10,6 +16,7 @@ import {
+   isTranslateProvider,
+ } from "@/types/config/provider"
+ import { configAtom, configFieldsAtomMap, writeConfigAtom } from "@/utils/atoms/config"
++import { patchProviderConfigAtom } from "@/utils/atoms/entity-config"
+ import { providerConfigAtom } from "@/utils/atoms/provider"
+ import {
+   computeLanguageDetectionFallbackAfterDeletion,
+@@ -34,32 +41,51 @@ export function ProviderConfigForm() {
+   const selectedProviderId = useAtomValue(selectedProviderIdAtom)
+   const providerConfig = useAtomValue(providerConfigAtom(selectedProviderId ?? ""))
+ 
+-  if (!providerConfig || !isAPIProviderConfig(providerConfig)) {
++  const [lastProvider, setLastProvider] = useState<APIProviderConfig | undefined>(undefined)
++  if (
++    providerConfig &&
++    isAPIProviderConfig(providerConfig) &&
++    !dequal(providerConfig, lastProvider)
++  ) {
++    setLastProvider(providerConfig)
++  }
++  const editorProvider =
++    providerConfig && isAPIProviderConfig(providerConfig)
++      ? providerConfig
++      : lastProvider?.id === selectedProviderId
++        ? lastProvider
++        : undefined
++  if (!editorProvider) {
+     return null
+   }
+ 
+-  return <EditableProviderConfig key={providerConfig.id} providerConfig={providerConfig} />
++  return <EditableProviderConfig key={editorProvider.id} providerConfig={editorProvider} />
+ }
+ 
+ function EditableProviderConfig({ providerConfig }: { providerConfig: APIProviderConfig }) {
++  const store = useStore()
++  const requestNavigation = useSetAtom(requestEditorNavigationAtom)
+   const setSelectedProviderId = useSetAtom(selectedProviderIdAtom)
+-  const [currentProviderConfig, setProviderConfig] = useAtom(providerConfigAtom(providerConfig.id))
+-  const [allProvidersConfig, setAllProvidersConfig] = useAtom(configFieldsAtomMap.providersConfig)
++  const currentProviderConfig = useAtomValue(providerConfigAtom(providerConfig.id))
++  const setAllProvidersConfig = useSetAtom(configFieldsAtomMap.providersConfig)
+   const setConfig = useSetAtom(writeConfigAtom)
+   const config = useAtomValue(configAtom)
+   // Decides which built-in tiers count as usable below. Unknown status reads as
+   // usable, so an unreachable status endpoint never traps someone with a
+   // credential they want gone.
+   const { status: hostedAiStatus } = useHostedAiStatus()
+-  const form = useProviderForm(providerConfig, async (nextProviderConfig) => {
+-    await setProviderConfig(nextProviderConfig)
++  const patchProvider = useSetAtom(patchProviderConfigAtom)
++  const { form, autosave } = useProviderForm(providerConfig, async (_snapshot, changes) => {
++    await patchProvider({ id: providerConfig.id, changes })
+   })
+ 
+   useEffect(() => {
+-    if (currentProviderConfig && isAPIProviderConfig(currentProviderConfig)) {
+-      form.reset(currentProviderConfig)
+-    }
+-  }, [currentProviderConfig, form])
++    autosave.reconcile(
++      currentProviderConfig && isAPIProviderConfig(currentProviderConfig)
++        ? currentProviderConfig
++        : undefined,
++    )
++  }, [currentProviderConfig, autosave])
+ 
+   const chooseNextProviderConfig = (providersConfig: ProvidersConfig) => {
+     const firstProvider = providersConfig.find((provider) => !isNonAPIProvider(provider.provider))
+@@ -67,18 +93,23 @@ function EditableProviderConfig({ providerConfig }: { providerConfig: APIProvide
+   }
+ 
+   const handleDuplicate = async () => {
+-    await duplicateProvider(
+-      providerConfig,
+-      allProvidersConfig,
+-      setAllProvidersConfig,
+-      setSelectedProviderId,
+-    )
++    await requestNavigation(async () => {
++      const latest = store.get(providerConfigAtom(providerConfig.id))
++      if (!latest || !isAPIProviderConfig(latest)) return
++      await duplicateProvider(
++        latest,
++        store.get(configFieldsAtomMap.providersConfig),
++        setAllProvidersConfig,
++        setSelectedProviderId,
++      )
++    })
+   }
+ 
+   const handleDelete = async () => {
+-    const updatedAllProviders = allProvidersConfig.filter(
+-      (provider) => provider.id !== providerConfig.id,
+-    )
++    await autosave.discard()
++    const updatedAllProviders = store
++      .get(configFieldsAtomMap.providersConfig)
++      .filter((provider) => provider.id !== providerConfig.id)
+ 
+     const unsatisfied = findFeatureMissingProvider(updatedAllProviders, config, hostedAiStatus)
+     if (unsatisfied) {
+@@ -151,7 +182,7 @@ function EditableProviderConfig({ providerConfig }: { providerConfig: APIProvide
+     await setAllProvidersConfig(updatedAllProviders)
+     const nextProvider = chooseNextProviderConfig(updatedAllProviders)
+     if (nextProvider) {
+-      setSelectedProviderId(nextProvider.id)
++      await setSelectedProviderId(nextProvider.id)
+     }
+   }
+ 
+@@ -163,36 +194,38 @@ function EditableProviderConfig({ providerConfig }: { providerConfig: APIProvide
+     FEATURE_KEYS.some((featureKey) => FEATURE_PROVIDER_DEFS[featureKey].isProvider(providerType))
+ 
+   return (
+-    <CustomProviderEditor.Provider
+-      providerConfig={providerConfig}
+-      form={form}
+-      duplicate={handleDuplicate}
+-      delete={handleDelete}
+-    >
+-      <ProviderEditor.Form>
+-        <EntityEditor.Root>
+-          <EntityEditor.Body>
+-            <ProviderEditor.ConfigHeader />
+-            <ProviderEditor.NameField />
+-            <ProviderEditor.DescriptionField />
+-            <ProviderEditor.ConnectionFields />
+-            <ProviderEditor.ProviderSpecificFields />
+-            {hasTranslationModelFields && <ProviderEditor.TranslationModelFields />}
+-            {hasAssignments && (
+-              <ProviderEditor.Assignments>
+-                <ProviderEditor.CompatibleFeatureAssignments />
+-                <ProviderEditor.LanguageDetectionAssignment />
+-                <ProviderEditor.CustomActionAssignments />
+-              </ProviderEditor.Assignments>
+-            )}
+-            {hasAdvancedFields && <ProviderEditor.AdvancedFields />}
+-          </EntityEditor.Body>
+-          <EntityEditor.Footer>
+-            <ProviderEditor.DuplicateButton />
+-            <ProviderEditor.DeleteButton />
+-          </EntityEditor.Footer>
+-        </EntityEditor.Root>
+-      </ProviderEditor.Form>
+-    </CustomProviderEditor.Provider>
++    <AutosaveBoundary session={toAutosaveSession(autosave)}>
++      <CustomProviderEditor.Provider
++        providerConfig={providerConfig}
++        form={form}
++        duplicate={handleDuplicate}
++        delete={handleDelete}
++      >
++        <ProviderEditor.Form>
++          <EntityEditor.Root>
++            <EntityEditor.Body>
++              <ProviderEditor.ConfigHeader />
++              <ProviderEditor.NameField />
++              <ProviderEditor.DescriptionField />
++              <ProviderEditor.ConnectionFields />
++              <ProviderEditor.ProviderSpecificFields />
++              {hasTranslationModelFields && <ProviderEditor.TranslationModelFields />}
++              {hasAssignments && (
++                <ProviderEditor.Assignments>
++                  <ProviderEditor.CompatibleFeatureAssignments />
++                  <ProviderEditor.LanguageDetectionAssignment />
++                  <ProviderEditor.CustomActionAssignments />
++                </ProviderEditor.Assignments>
++              )}
++              {hasAdvancedFields && <ProviderEditor.AdvancedFields />}
++            </EntityEditor.Body>
++            <EntityEditor.Footer>
++              <ProviderEditor.DuplicateButton />
++              <ProviderEditor.DeleteButton />
++            </EntityEditor.Footer>
++          </EntityEditor.Root>
++        </ProviderEditor.Form>
++      </CustomProviderEditor.Provider>
++    </AutosaveBoundary>
+   )
+ }
+diff --git a/src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/provider-headers-field.tsx b/src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/provider-headers-field.tsx
+index b4fe5d86..8d68dbff 100644
+--- a/src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/provider-headers-field.tsx
++++ b/src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/provider-headers-field.tsx
+@@ -55,8 +55,6 @@ export const ProviderHeadersField = withForm({
+       [form],
+     )
+ 
+-    const handleSubmit = useCallback(() => form.handleSubmit(), [form])
+-
+     if (!isLLMProvider) {
+       return null
+     }
+@@ -70,12 +68,10 @@ export const ProviderHeadersField = withForm({
+     return (
+       <AutosavedJsonCodeEditorField
+         value={providerConfig.headers}
+-        resetKey={providerConfig.id}
+-        syncSignal={providerConfig.headers}
++        fieldName="headers"
+         parse={parseHeadersJson}
+         serialize={toJson}
+         onCommit={handleHeadersCommit}
+-        onSubmit={handleSubmit}
+         editorAriaLabel="provider-headers-editor"
+         placeholder={placeholderText}
+         label={
+diff --git a/src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/provider-options-field.tsx b/src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/provider-options-field.tsx
+index 436c49b5..223f1d55 100644
+--- a/src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/provider-options-field.tsx
++++ b/src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/provider-options-field.tsx
+@@ -39,8 +39,6 @@ export const ProviderOptionsField = withForm({
+       [form],
+     )
+ 
+-    const handleSubmit = useCallback(() => form.handleSubmit(), [form])
+-
+     if (!isLLMProvider) {
+       return null
+     }
+@@ -56,12 +54,10 @@ export const ProviderOptionsField = withForm({
+     return (
+       <AutosavedJsonCodeEditorField
+         value={providerConfig.providerOptions}
+-        resetKey={providerConfig.id}
+-        syncSignal={providerConfig.providerOptions}
++        fieldName="providerOptions"
+         parse={parseJson}
+         serialize={toJson}
+         onCommit={handleProviderOptionsCommit}
+-        onSubmit={handleSubmit}
+         editorAriaLabel="provider-options-editor"
+         placeholder={placeholderText}
+         label={
+diff --git a/src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/provider-specific-settings-field.tsx b/src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/provider-specific-settings-field.tsx
+index 38408801..4ea77ef8 100644
+--- a/src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/provider-specific-settings-field.tsx
++++ b/src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/provider-specific-settings-field.tsx
+@@ -1,6 +1,7 @@
+ import type { APIProviderConfig, ProviderSpecificSettingField } from "@/types/config/provider"
+ import { useSelector } from "@tanstack/react-store"
+-import { useEffect, useEffectEvent, useMemo, useState } from "react"
++import { useMemo } from "react"
++import { useAutosaveContext } from "@/components/form/use-autosave"
+ import { Field, FieldGroup, FieldLabel } from "@/components/ui/base-ui/field"
+ import { Input } from "@/components/ui/base-ui/input"
+ import {
+@@ -11,7 +12,6 @@ import {
+   SelectTrigger,
+   SelectValue,
+ } from "@/components/ui/base-ui/select"
+-import { useDebouncedValue } from "@/hooks/use-debounced-value"
+ import {
+   getProviderSpecificSettingFields,
+   isLLMProvider,
+@@ -32,42 +32,22 @@ export const ProviderSpecificSettingsField = withForm({
+   render: function Render({ form }) {
+     const providerConfig = useSelector(form.store, (state) => state.values)
+     const providerType = providerConfig.provider
+-    const [localSettings, setLocalSettings] = useState<Record<string, unknown>>(() =>
+-      getProviderSpecificSettings(providerConfig),
+-    )
+-
+-    // Sync local state when switching provider
+-    const syncLocalSettings = useEffectEvent(() => {
+-      // eslint-disable-next-line react/set-state-in-effect
+-      setLocalSettings(getProviderSpecificSettings(providerConfig))
+-    })
+-
+-    useEffect(() => {
+-      syncLocalSettings()
+-    }, [providerConfig.id])
+-
+-    const debouncedSettings = useDebouncedValue(localSettings, 500)
+-
++    const autosave = useAutosaveContext()
++    const localSettings: Record<string, unknown> = getProviderSpecificSettings(providerConfig)
+     const settingsSchema = useMemo(() => {
+       if (!isLLMProvider(providerType)) return null
+       return PROVIDER_SPECIFIC_SETTINGS_SCHEMAS[providerType] ?? null
+     }, [providerType])
+-
+-    // Submit when debounced value changes
+-    useEffect(() => {
+-      if (!settingsSchema) return
+-
+-      const compacted = compactObject(debouncedSettings)
+-      const setProviderSpecificSettings = form.setFieldValue as unknown as (
+-        field: "providerSpecificSettings",
+-        value: Record<string, unknown> | undefined,
+-      ) => void
+-      setProviderSpecificSettings(
++    const updateSetting = (key: string, value: unknown) => {
++      const settings = compactObject({
++        ...getProviderSpecificSettings(form.state.values),
++        [key]: value,
++      })
++      form.setFieldValue(
+         "providerSpecificSettings",
+-        Object.keys(compacted).length > 0 ? compacted : undefined,
++        (Object.keys(settings).length ? settings : undefined) as never,
+       )
+-      void form.handleSubmit()
+-    }, [debouncedSettings, form, settingsSchema])
++    }
+ 
+     const fieldDefs = useMemo(() => {
+       const defs = settingsSchema ? getProviderSpecificSettingFields(settingsSchema) : null
+@@ -92,7 +72,9 @@ export const ProviderSpecificSettingsField = withForm({
+             <FieldLabel htmlFor={fieldId}>{fieldLabel}</FieldLabel>
+             <Select
+               value={selectedValue}
+-              onValueChange={(value) => setLocalSettings((prev) => ({ ...prev, [def.key]: value }))}
++              onValueChange={(value) =>
++                autosave.edit(() => updateSetting(def.key, value), { immediate: true })
++              }
+             >
+               <SelectTrigger id={fieldId} className="w-full">
+                 <SelectValue placeholder={def.placeholder}>
+@@ -127,7 +109,16 @@ export const ProviderSpecificSettingsField = withForm({
+             type={def.type}
+             value={typeof fieldValue === "string" ? fieldValue : ""}
+             placeholder={def.placeholder}
+-            onChange={(e) => setLocalSettings((prev) => ({ ...prev, [def.key]: e.target.value }))}
++            onChange={(e) => {
++              const value = e.currentTarget.value
++              autosave.edit(() => updateSetting(def.key, value))
++            }}
++            onCompositionStart={() => autosave.beginComposition(fieldId)}
++            onCompositionEnd={(event) => {
++              const value = event.currentTarget.value
++              autosave.endComposition(fieldId, () => updateSetting(def.key, value))
++            }}
++            onBlur={() => void autosave.flush()}
+           />
+         </Field>
+       )
+diff --git a/src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/provider-url-field.tsx b/src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/provider-url-field.tsx
+index 85ef9430..259bbdb7 100644
+--- a/src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/provider-url-field.tsx
++++ b/src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/provider-url-field.tsx
+@@ -21,7 +21,6 @@ export const ProviderURLField = withForm({
+         <form.AppField name="url">
+           {(field) => (
+             <field.InputFieldAutoSave
+-              formForSubmit={form}
+               label={i18n.t("options.apiProviders.form.fields.url")}
+               placeholder={PROVIDER_URL_PLACEHOLDERS[providerType]}
+             />
+@@ -39,7 +38,6 @@ export const ProviderURLField = withForm({
+       <form.AppField name="baseURL">
+         {(field) => (
+           <field.InputFieldAutoSave
+-            formForSubmit={form}
+             label={labelText}
+             placeholder={PROVIDER_URL_PLACEHOLDERS[providerType]}
+             labelExtra={
+diff --git a/src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/reasoning-field.tsx b/src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/reasoning-field.tsx
+index 6cb4c8dc..49900f4d 100644
+--- a/src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/reasoning-field.tsx
++++ b/src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/reasoning-field.tsx
+@@ -30,10 +30,7 @@ export const ReasoningField = withForm({
+     return (
+       <form.AppField name="reasoning">
+         {(field) => (
+-          <field.SelectFieldAutoSave
+-            formForSubmit={form}
+-            label={i18n.t("options.apiProviders.form.reasoning.title")}
+-          >
++          <field.SelectFieldAutoSave label={i18n.t("options.apiProviders.form.reasoning.title")}>
+             <SelectTrigger className="w-full">
+               <SelectValue placeholder="provider-default" />
+             </SelectTrigger>
+diff --git a/src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/temperature-field.tsx b/src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/temperature-field.tsx
+index 1679d610..eb94fcbf 100644
+--- a/src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/temperature-field.tsx
++++ b/src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/temperature-field.tsx
+@@ -19,7 +19,6 @@ export const TemperatureField = withForm({
+       <form.AppField name="temperature">
+         {(field) => (
+           <field.InputFieldAutoSave
+-            formForSubmit={form}
+             label={
+               <div className="flex items-center gap-1.5">
+                 <span>{i18n.t("options.apiProviders.form.temperature")}</span>
+diff --git a/src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/translate-model-selector.tsx b/src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/translate-model-selector.tsx
+index c53221ca..0a6a5c6e 100644
+--- a/src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/translate-model-selector.tsx
++++ b/src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/translate-model-selector.tsx
+@@ -1,6 +1,6 @@
+ import type { APIProviderConfig } from "@/types/config/provider"
+ import { useSelector } from "@tanstack/react-store"
+-import { useSetAtom } from "jotai"
++import { useAutosaveContext } from "@/components/form/use-autosave"
+ import { Checkbox } from "@/components/ui/base-ui/checkbox"
+ import {
+   SelectContent,
+@@ -9,14 +9,12 @@ import {
+   SelectTrigger,
+   SelectValue,
+ } from "@/components/ui/base-ui/select"
+-import { toastManager } from "@/components/ui/base-ui/toast"
+ import {
+   isCustomModelOnlyProvider,
+   isLLMProviderConfig,
+   isProtocolCompatibleLLMProviderConfig,
+   LLM_PROVIDER_MODELS,
+ } from "@/types/config/provider"
+-import { providerConfigAtom, updateLLMProviderConfig } from "@/utils/atoms/provider"
+ import { i18n } from "@/utils/i18n"
+ import { resolveModelId } from "@/utils/providers/model-id"
+ import { ModelSuggestionButton } from "./components/model-suggestion-button"
+@@ -27,15 +25,14 @@ export const TranslateModelSelector = withForm({
+   ...{ defaultValues: {} as APIProviderConfig },
+   render: function Render({ form }) {
+     const providerConfig = useSelector(form.store, (state) => state.values)
+-    const setProviderConfig = useSetAtom(providerConfigAtom(providerConfig.id))
++    const autosave = useAutosaveContext()
+     if (!isLLMProviderConfig(providerConfig)) return null
+ 
+     const modelId = resolveModelId(providerConfig.model)
+     const { isCustomModel, customModel, model } = providerConfig.model
+ 
+     const applyRecommendedProviderOptions = (options: Record<string, unknown>) => {
+-      form.setFieldValue("providerOptions", options)
+-      void form.handleSubmit()
++      autosave.edit(() => form.setFieldValue("providerOptions", options), { immediate: true })
+     }
+ 
+     const recommendationTrigger = (
+@@ -53,7 +50,6 @@ export const TranslateModelSelector = withForm({
+           <form.AppField name="model.customModel">
+             {(field) => (
+               <field.InputFieldAutoSave
+-                formForSubmit={form}
+                 label={i18n.t("options.apiProviders.form.models.label")}
+                 labelExtra={
+                   <div className="flex items-center gap-2">
+@@ -62,8 +58,9 @@ export const TranslateModelSelector = withForm({
+                       <ModelSuggestionButton
+                         providerConfig={providerConfig}
+                         onSelect={(selectedModel) => {
+-                          field.handleChange(selectedModel)
+-                          void form.handleSubmit()
++                          autosave.edit(() => field.handleChange(selectedModel), {
++                            immediate: true,
++                          })
+                         }}
+                       />
+                     )}
+@@ -77,7 +74,6 @@ export const TranslateModelSelector = withForm({
+           <form.AppField name="model.model">
+             {(field) => (
+               <field.SelectFieldAutoSave
+-                formForSubmit={form}
+                 label={i18n.t("options.apiProviders.form.models.label")}
+                 labelExtra={recommendationTrigger}
+               >
+@@ -107,33 +103,13 @@ export const TranslateModelSelector = withForm({
+                   id="isCustomModel-translate"
+                   checked={field.state.value}
+                   onCheckedChange={(checked) => {
+-                    try {
+-                      if (!checked) {
+-                        void setProviderConfig(
+-                          updateLLMProviderConfig(providerConfig, {
+-                            model: {
+-                              customModel: null,
+-                              isCustomModel: false,
+-                            },
+-                          }),
+-                        )
+-                      } else if (checked) {
+-                        void setProviderConfig(
+-                          updateLLMProviderConfig(providerConfig, {
+-                            model: {
+-                              customModel: model,
+-                              isCustomModel: true,
+-                            },
+-                          }),
+-                        )
+-                      }
+-                    } catch (error) {
+-                      toastManager.add({
+-                        type: "error",
+-                        title:
+-                          error instanceof Error ? error.message : "Failed to update configuration",
+-                      })
+-                    }
++                    autosave.edit(
++                      () => {
++                        form.setFieldValue("model.isCustomModel", checked)
++                        form.setFieldValue("model.customModel", checked ? model : null)
++                      },
++                      { immediate: true },
++                    )
+                   }}
+                 />
+                 <label
+diff --git a/src/entrypoints/options/pages/api-providers/providers-config/provider-editor.tsx b/src/entrypoints/options/pages/api-providers/providers-config/provider-editor.tsx
+index 29bac6c6..b1e37946 100644
+--- a/src/entrypoints/options/pages/api-providers/providers-config/provider-editor.tsx
++++ b/src/entrypoints/options/pages/api-providers/providers-config/provider-editor.tsx
+@@ -1,3 +1,4 @@
++import type { AutosaveController } from "@/components/form/autosave-controller"
+ import type { APIProviderConfig } from "@/types/config/provider"
+ import type { FeatureKey } from "@/utils/constants/feature-providers"
+ import type { BuiltInAiProviderId } from "@/utils/constants/provider-ids"
+@@ -6,6 +7,7 @@ import { useSelector } from "@tanstack/react-store"
+ import { useAtomValue, useSetAtom } from "jotai"
+ import { createContext, use, useState } from "react"
+ import { PlanBadge } from "@/components/badges/plan-badge"
++import { useAutosave } from "@/components/form/use-autosave"
+ import ProviderIcon from "@/components/provider-icon"
+ import { useTheme } from "@/components/providers/theme-provider"
+ import {
+@@ -185,18 +187,29 @@ function BuiltInProvider({
+ 
+ export function useProviderForm(
+   providerConfig: APIProviderConfig,
+-  save: (providerConfig: APIProviderConfig) => Promise<void>,
++  save: (providerConfig: APIProviderConfig, changes: Partial<APIProviderConfig>) => Promise<void>,
+ ) {
+-  return useAppForm({
++  const form = useAppForm({
+     ...formOpts,
+     defaultValues: providerConfig,
+-    onSubmit: async ({ value }) => {
+-      await save(value)
++    onSubmitMeta: { revision: 0 },
++    onSubmit: async ({ value, meta }) => {
++      await autosave.commit(value, meta.revision)
+     },
+   })
++  const autosave: AutosaveController<APIProviderConfig> = useAutosave({
++    initialValue: providerConfig,
++    getDraft: () => form.state.values,
++    setField: (key, value) =>
++      form.setFieldValue(key, value as never, { dontUpdateMeta: true, dontRunListeners: true }),
++    reset: (value) => form.reset(value),
++    submit: (revision) => form.handleSubmit({ revision }),
++    persist: save,
++  })
++  return { form, autosave }
+ }
+ 
+-type ProviderForm = ReturnType<typeof useProviderForm>
++type ProviderForm = ReturnType<typeof useProviderForm>["form"]
+ 
+ const ApiProviderFormContext = createContext<ProviderForm | null>(null)
+ 
+@@ -289,10 +302,7 @@ function NameField() {
+       }}
+     >
+       {(field) => (
+-        <field.InputFieldAutoSave
+-          formForSubmit={form}
+-          label={i18n.t("options.apiProviders.form.fields.name")}
+-        />
++        <field.InputFieldAutoSave label={i18n.t("options.apiProviders.form.fields.name")} />
+       )}
+     </form.AppField>
+   )
+@@ -303,10 +313,7 @@ function DescriptionField() {
+   return (
+     <form.AppField name="description">
+       {(field) => (
+-        <field.InputFieldAutoSave
+-          formForSubmit={form}
+-          label={i18n.t("options.apiProviders.form.fields.description")}
+-        />
++        <field.InputFieldAutoSave label={i18n.t("options.apiProviders.form.fields.description")} />
+       )}
+     </form.AppField>
+   )
+diff --git a/src/entrypoints/options/pages/custom-actions/action-config-form/__tests__/beta-gating.test.tsx b/src/entrypoints/options/pages/custom-actions/action-config-form/__tests__/beta-gating.test.tsx
+index 90421623..8659eacb 100644
+--- a/src/entrypoints/options/pages/custom-actions/action-config-form/__tests__/beta-gating.test.tsx
++++ b/src/entrypoints/options/pages/custom-actions/action-config-form/__tests__/beta-gating.test.tsx
+@@ -1,9 +1,11 @@
+ // @vitest-environment jsdom
+ import type { ReactNode } from "react"
++import type { Config as SeedConfig } from "@/types/config/config"
+ import type { Config } from "@/types/config/config"
+ import { fireEvent, render, screen, waitFor } from "@testing-library/react"
+ import { createStore, Provider } from "jotai"
+ import { describe, expect, it, vi } from "vitest"
++import { fakeBrowser } from "wxt/testing/fake-browser"
+ import { TooltipProvider } from "@/components/ui/base-ui/tooltip"
+ import { configAtom } from "@/utils/atoms/config"
+ import { DEFAULT_CONFIG } from "@/utils/constants/config"
+@@ -51,6 +53,11 @@ vi.mock("../notebase-connection-field", () => ({
+   ),
+ }))
+ 
++function seedConfig(store: ReturnType<typeof createStore>, config: SeedConfig) {
++  void fakeBrowser.storage.local.set({ config })
++  store.set(configAtom, config)
++}
++
+ function cloneConfig(config: Config): Config {
+   return JSON.parse(JSON.stringify(config)) as Config
+ }
+@@ -70,7 +77,7 @@ describe("customActionConfigForm notebase availability", () => {
+       },
+       mappings: [],
+     }
+-    store.set(configAtom, config)
++    seedConfig(store, config)
+ 
+     render(
+       <Provider store={store}>
+@@ -112,7 +119,7 @@ describe("customActionConfigForm notebase availability", () => {
+ 
+   it("explains that customizing creates an editable built-in action copy", async () => {
+     const store = createStore()
+-    store.set(configAtom, cloneConfig(DEFAULT_CONFIG))
++    seedConfig(store, cloneConfig(DEFAULT_CONFIG))
+ 
+     render(
+       <Provider store={store}>
+@@ -163,8 +170,8 @@ describe("customActionConfigForm notebase availability", () => {
+       },
+     ]
+ 
+-    store.set(configAtom, config)
+-    store.set(selectedCustomActionIdAtom, "action-1")
++    seedConfig(store, config)
++    void store.set(selectedCustomActionIdAtom, "action-1")
+ 
+     render(
+       <Provider store={store}>
+@@ -210,8 +217,8 @@ describe("customActionConfigForm notebase availability", () => {
+       },
+     }
+     config.selectionToolbar.customActions = [action]
+-    store.set(configAtom, config)
+-    store.set(selectedCustomActionIdAtom, action.id)
++    seedConfig(store, config)
++    void store.set(selectedCustomActionIdAtom, action.id)
+ 
+     render(
+       <Provider store={store}>
+diff --git a/src/entrypoints/options/pages/custom-actions/action-config-form/__tests__/output-schema-autosave.test.tsx b/src/entrypoints/options/pages/custom-actions/action-config-form/__tests__/output-schema-autosave.test.tsx
+new file mode 100644
+index 00000000..f19ef6b4
+--- /dev/null
++++ b/src/entrypoints/options/pages/custom-actions/action-config-form/__tests__/output-schema-autosave.test.tsx
+@@ -0,0 +1,164 @@
++// @vitest-environment jsdom
++import type { SelectionToolbarCustomAction } from "@/types/config/selection-toolbar"
++import { fireEvent, render, screen, waitFor, within } from "@testing-library/react"
++import { createStore, Provider } from "jotai"
++import { StrictMode } from "react"
++import { createMemoryRouter, Link, RouterProvider } from "react-router"
++import { afterEach, describe, expect, it, vi } from "vitest"
++import { fakeBrowser } from "wxt/testing/fake-browser"
++import { AutosaveNavigation } from "@/components/form/autosave-navigation"
++import { ToastProvider } from "@/components/ui/base-ui/toast"
++import { TooltipProvider } from "@/components/ui/base-ui/tooltip"
++import { configSchema } from "@/types/config/config"
++import { selectionToolbarCustomActionSchema } from "@/types/config/selection-toolbar"
++import { configAtom } from "@/utils/atoms/config"
++import { CONFIG_STORAGE_KEY, DEFAULT_CONFIG } from "@/utils/constants/config"
++import { CustomActionConfigForm } from ".."
++import { selectedCustomActionIdAtom } from "../../atoms"
++
++// Keep remote discovery/auth out of this test. The schema editor, parent form,
++// validation, autosave controller, entity writer and navigation are all real.
++vi.mock("../provider-field", () => ({ ProviderField: () => null }))
++vi.mock("../notebase-connection-field", () => ({ NotebaseConnectionField: () => null }))
++
++function createAction(): SelectionToolbarCustomAction {
++  return {
++    id: "mapped-action",
++    name: "Vocabulary",
++    icon: "tabler:book",
++    providerId: "read-frog-free-ai",
++    systemPrompt: "Explain the selected text.",
++    prompt: "{{selection}}",
++    outputSchema: ["meaning", "example"].map((id) => ({
++      id,
++      name: id,
++      type: "string",
++      description: id,
++      speaking: false,
++    })),
++    notebaseConnection: {
++      notebaseId: "words",
++      notebaseNameSnapshot: "Words",
++      connectedAccount: { id: "reader", name: "Reader", email: "reader@example.com" },
++      mappings: ["meaning", "example"].map((id) => ({
++        id: `${id}-mapping`,
++        localFieldId: id,
++        notebaseColumnId: `${id}-column`,
++        notebaseColumnNameSnapshot: id,
++      })),
++    },
++  }
++}
++
++async function setup(action: SelectionToolbarCustomAction) {
++  const config = structuredClone(DEFAULT_CONFIG)
++  config.selectionToolbar.customActions = [action]
++  await fakeBrowser.storage.local.set({ [CONFIG_STORAGE_KEY]: config })
++  const store = createStore()
++  store.set(configAtom, config)
++  await store.set(selectedCustomActionIdAtom, action.id)
++  const router = createMemoryRouter([
++    {
++      path: "/",
++      element: (
++        <>
++          <AutosaveNavigation />
++          <CustomActionConfigForm />
++          <Link to="/done">Leave editor</Link>
++        </>
++      ),
++    },
++    { path: "/done", element: <p>Left editor</p> },
++  ])
++  render(
++    <StrictMode>
++      <Provider store={store}>
++        <ToastProvider>
++          <TooltipProvider>
++            <RouterProvider router={router} />
++          </TooltipProvider>
++        </ToastProvider>
++      </Provider>
++    </StrictMode>,
++  )
++  return { router, store }
++}
++
++async function deleteMeaning() {
++  const row = screen.getByText("meaning", { selector: "span.font-medium" }).parentElement!
++  const deleteButton = within(row).getAllByRole("button")[1]!
++  fireEvent.click(deleteButton)
++  const dialog = await screen.findByRole("alertdialog")
++  fireEvent.click(
++    within(dialog).getByRole("button", {
++      name: "options.selectionToolbar.customActions.form.deleteFieldDialog.confirm",
++    }),
++  )
++}
++
++async function getPersistedAction(): Promise<SelectionToolbarCustomAction> {
++  const stored = await fakeBrowser.storage.local.get(CONFIG_STORAGE_KEY)
++  return configSchema.parse(stored[CONFIG_STORAGE_KEY]).selectionToolbar.customActions[0]!
++}
++
++describe("output schema autosave", () => {
++  afterEach(() => vi.restoreAllMocks())
++  it("persists mapped-field deletion and removes its mapping before form validation", async () => {
++    const action = createAction()
++    const { router, store } = await setup(action)
++    const writes = vi.spyOn(fakeBrowser.storage.local, "set")
++    const expected: SelectionToolbarCustomAction = {
++      ...action,
++      outputSchema: [action.outputSchema[1]!],
++      notebaseConnection: {
++        ...action.notebaseConnection!,
++        mappings: [action.notebaseConnection!.mappings[1]!],
++      },
++    }
++
++    await deleteMeaning()
++
++    await waitFor(async () => expect(await getPersistedAction()).toEqual(expected))
++    expect(selectionToolbarCustomActionSchema.safeParse(await getPersistedAction()).success).toBe(
++      true,
++    )
++    expect(store.get(configAtom).selectionToolbar.customActions[0]).toEqual(expected)
++    const configWrites = writes.mock.calls.filter(([items]) =>
++      Object.hasOwn(items, CONFIG_STORAGE_KEY),
++    )
++    expect(configWrites).toHaveLength(1)
++    expect(configWrites[0]![0]).toMatchObject({
++      [CONFIG_STORAGE_KEY]: { selectionToolbar: { customActions: [expected] } },
++    })
++
++    fireEvent.click(screen.getByRole("link", { name: "Leave editor" }))
++    await waitFor(() => expect(router.state.location.pathname).toBe("/done"))
++    expect(screen.queryByText("options.autosave.leaveTitle")).not.toBeInTheDocument()
++  })
++
++  it("preserves the connection and remaining mapping when deleting an unmapped field", async () => {
++    const action = createAction()
++    action.notebaseConnection!.mappings = [action.notebaseConnection!.mappings[1]!]
++    await setup(action)
++
++    await deleteMeaning()
++
++    await waitFor(async () =>
++      expect((await getPersistedAction()).outputSchema).toEqual([action.outputSchema[1]!]),
++    )
++    expect((await getPersistedAction()).notebaseConnection).toEqual(action.notebaseConnection)
++  })
++
++  it("deletes a field normally when no Notebase is connected", async () => {
++    const action = createAction()
++    delete action.notebaseConnection
++    await setup(action)
++
++    await deleteMeaning()
++
++    await waitFor(async () =>
++      expect((await getPersistedAction()).outputSchema).toEqual([action.outputSchema[1]!]),
++    )
++    expect((await getPersistedAction()).notebaseConnection).toBeUndefined()
++  })
++})
+diff --git a/src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx b/src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx
+index 85771728..cd49deeb 100644
+--- a/src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx
++++ b/src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx
+@@ -1,7 +1,14 @@
++import type { AutosaveController } from "@/components/form/autosave-controller"
+ import type { SelectionToolbarCustomAction } from "@/types/config/selection-toolbar"
+-import { useAtom, useSetAtom } from "jotai"
++import { useAtom, useSetAtom, useStore } from "jotai"
+ import { createContext, use, useEffect, useState } from "react"
++import {
++  AutosaveBoundary,
++  requestEditorNavigationAtom,
++  activeAutosaveAtom,
++} from "@/components/form/autosave-navigation"
+ import { QuickInsertableTextareaFieldAutoSave } from "@/components/form/quick-insertable-textarea-field-auto-save"
++import { toAutosaveSession, useAutosave } from "@/components/form/use-autosave"
+ import {
+   AlertDialog,
+   AlertDialogAction,
+@@ -16,18 +23,14 @@ import {
+ import { Button } from "@/components/ui/base-ui/button"
+ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/base-ui/tooltip"
+ import { configFieldsAtomMap } from "@/utils/atoms/config"
++import { patchActionConfigAtom } from "@/utils/atoms/entity-config"
+ import {
+   BUILT_IN_DICTIONARY_ACTION_ID,
+   getSelectionToolbarCustomActionTokenCellText,
+   SELECTION_TOOLBAR_CUSTOM_ACTION_TOKENS,
+ } from "@/utils/constants/custom-action"
+-import {
+-  duplicateSelectionToolbarAction,
+-  getSelectionToolbarActions,
+-  replaceSelectionToolbarAction,
+-} from "@/utils/custom-actions"
++import { duplicateSelectionToolbarAction, getSelectionToolbarActions } from "@/utils/custom-actions"
+ import { i18n } from "@/utils/i18n"
+-import { sanitizeSelectionToolbarCustomAction } from "@/utils/notebase/connection"
+ import { selectedCustomActionIdAtom } from "../atoms"
+ import { formOpts, useAppForm } from "./form"
+ import { IconField as IconFormField } from "./icon-field"
+@@ -41,24 +44,39 @@ import { ProviderField as ProviderFormField } from "./provider-field"
+ 
+ function useActionForm(
+   action: SelectionToolbarCustomAction,
+-  save: (nextAction: SelectionToolbarCustomAction) => Promise<void>,
++  save: (
++    nextAction: SelectionToolbarCustomAction,
++    changes: Partial<SelectionToolbarCustomAction>,
++  ) => Promise<void>,
+ ) {
+-  return useAppForm({
++  const form = useAppForm({
+     ...formOpts,
+     defaultValues: action,
+-    onSubmit: async ({ value }) => {
+-      await save(sanitizeSelectionToolbarCustomAction(value))
++    onSubmitMeta: { revision: 0 },
++    onSubmit: async ({ value, meta }) => {
++      await autosave.commit(value, meta.revision)
+     },
+   })
++  const autosave: AutosaveController<SelectionToolbarCustomAction> = useAutosave({
++    initialValue: action,
++    getDraft: () => form.state.values,
++    setField: (key, value) =>
++      form.setFieldValue(key, value as never, { dontUpdateMeta: true, dontRunListeners: true }),
++    reset: (value) => form.reset(value),
++    submit: (revision) => form.handleSubmit({ revision }),
++    persist: save,
++  })
++  return { form, autosave }
+ }
+ 
+-type ActionForm = ReturnType<typeof useActionForm>
++type ActionForm = ReturnType<typeof useActionForm>["form"]
+ 
+ interface ActionEditorContextValue {
+   state: {
+     action: SelectionToolbarCustomAction
+     allActions: SelectionToolbarCustomAction[]
+     form: ActionForm
++    autosave: AutosaveController<SelectionToolbarCustomAction>
+   }
+   actions: {
+     submit: () => Promise<void>
+@@ -89,16 +107,21 @@ function useActionEditorController(
+   action: SelectionToolbarCustomAction,
+   deleteAction?: () => Promise<void>,
+ ): ActionEditorContextValue {
++  const store = useStore()
++  const requestNavigation = useSetAtom(requestEditorNavigationAtom)
+   const [selectionToolbar, setSelectionToolbar] = useAtom(configFieldsAtomMap.selectionToolbar)
+   const setSelectedActionId = useSetAtom(selectedCustomActionIdAtom)
+ 
+-  const form = useActionForm(action, async (nextAction) => {
+-    await setSelectionToolbar(replaceSelectionToolbarAction(selectionToolbar, nextAction))
++  const patchAction = useSetAtom(patchActionConfigAtom)
++  const { form, autosave } = useActionForm(action, async (_snapshot, changes) => {
++    await patchAction({ id: action.id, changes })
+   })
+ 
+   useEffect(() => {
+-    form.reset(action)
+-  }, [action, form])
++    autosave.reconcile(
++      getSelectionToolbarActions(selectionToolbar).find((item) => item.id === action.id),
++    )
++  }, [action.id, selectionToolbar, autosave])
+ 
+   const allActions = getSelectionToolbarActions(selectionToolbar)
+ 
+@@ -107,18 +130,25 @@ function useActionEditorController(
+       action,
+       allActions,
+       form,
++      autosave,
+     },
+     actions: {
+       submit: async () => {
+-        await form.handleSubmit()
++        await autosave.flush()
+       },
+       duplicate: async () => {
+-        const duplicatedAction = duplicateSelectionToolbarAction(action, allActions)
+-        await setSelectionToolbar({
+-          ...selectionToolbar,
+-          customActions: [...selectionToolbar.customActions, duplicatedAction],
++        await requestNavigation(async () => {
++          const current = store.get(configFieldsAtomMap.selectionToolbar)
++          const currentActions = getSelectionToolbarActions(current)
++          const source = currentActions.find((item) => item.id === action.id)
++          if (!source) return
++          const duplicatedAction = duplicateSelectionToolbarAction(source, currentActions)
++          await setSelectionToolbar((latest) => ({
++            ...latest,
++            customActions: [...latest.customActions, duplicatedAction],
++          }))
++          await setSelectedActionId(duplicatedAction.id)
+         })
+-        setSelectedActionId(duplicatedAction.id)
+       },
+       ...(deleteAction ? { delete: deleteAction } : {}),
+     },
+@@ -133,7 +163,11 @@ function BuiltInProvider({
+   children: React.ReactNode
+ }) {
+   const value = useActionEditorController(action)
+-  return <ActionEditorContext value={value}>{children}</ActionEditorContext>
++  return (
++    <AutosaveBoundary session={toAutosaveSession(value.state.autosave)}>
++      <ActionEditorContext value={value}>{children}</ActionEditorContext>
++    </AutosaveBoundary>
++  )
+ }
+ 
+ function CustomProvider({
+@@ -143,10 +177,13 @@ function CustomProvider({
+   action: SelectionToolbarCustomAction
+   children: React.ReactNode
+ }) {
+-  const [selectionToolbar, setSelectionToolbar] = useAtom(configFieldsAtomMap.selectionToolbar)
++  const store = useStore()
++  const setSelectionToolbar = useSetAtom(configFieldsAtomMap.selectionToolbar)
+   const setSelectedActionId = useSetAtom(selectedCustomActionIdAtom)
+ 
+   const deleteAction = async () => {
++    await store.get(activeAutosaveAtom)?.discard()
++    const selectionToolbar = store.get(configFieldsAtomMap.selectionToolbar)
+     const currentIndex = selectionToolbar.customActions.findIndex((item) => item.id === action.id)
+     if (currentIndex < 0) {
+       return
+@@ -166,11 +203,15 @@ function CustomProvider({
+             }
+           : selectionToolbar.noteSuggestion,
+     })
+-    setSelectedActionId(nextSelectedAction?.id)
++    await setSelectedActionId(nextSelectedAction?.id)
+   }
+ 
+   const value = useActionEditorController(action, deleteAction)
+-  return <ActionEditorContext value={value}>{children}</ActionEditorContext>
++  return (
++    <AutosaveBoundary session={toAutosaveSession(value.state.autosave)}>
++      <ActionEditorContext value={value}>{children}</ActionEditorContext>
++    </AutosaveBoundary>
++  )
+ }
+ 
+ function Form({ children }: { children: React.ReactNode }) {
+@@ -212,7 +253,6 @@ function SystemPromptField({ readOnly }: { readOnly?: boolean }) {
+     <form.AppField name="systemPrompt">
+       {() => (
+         <QuickInsertableTextareaFieldAutoSave
+-          formForSubmit={form}
+           label={i18n.t("options.selectionToolbar.customActions.form.systemPrompt")}
+           className="max-h-80 min-h-36"
+           insertCells={getActionInsertCells()}
+@@ -229,7 +269,6 @@ function PromptField({ readOnly }: { readOnly?: boolean }) {
+     <form.AppField name="prompt">
+       {() => (
+         <QuickInsertableTextareaFieldAutoSave
+-          formForSubmit={form}
+           label={i18n.t("options.selectionToolbar.customActions.form.prompt")}
+           className="max-h-80 min-h-28"
+           insertCells={getActionInsertCells()}
+diff --git a/src/entrypoints/options/pages/custom-actions/action-config-form/icon-field.tsx b/src/entrypoints/options/pages/custom-actions/action-config-form/icon-field.tsx
+index 41073368..af6f9255 100644
+--- a/src/entrypoints/options/pages/custom-actions/action-config-form/icon-field.tsx
++++ b/src/entrypoints/options/pages/custom-actions/action-config-form/icon-field.tsx
+@@ -2,6 +2,7 @@ import type { SelectionToolbarCustomAction } from "@/types/config/selection-tool
+ import { Icon } from "@iconify/react"
+ import { useSelector } from "@tanstack/react-store"
+ import { useState } from "react"
++import { useAutosaveContext } from "@/components/form/use-autosave"
+ import { Button } from "@/components/ui/base-ui/button"
+ import { Field, FieldTitle } from "@/components/ui/base-ui/field"
+ import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/base-ui/input-group"
+@@ -140,6 +141,7 @@ export const IconField = withForm({
+     readOnly: false as boolean,
+   },
+   render: function Render({ form, readOnly }) {
++    const autosave = useAutosaveContext()
+     const iconValue = useSelector(form.store, (state) => state.values.icon)
+     const [iconPickerOpen, setIconPickerOpen] = useState(false)
+     const hasError = !ICON_PATTERN.test(iconValue?.trim() ?? "")
+@@ -168,8 +170,7 @@ export const IconField = withForm({
+                 selectedIcon={field.state.value}
+                 disabled={readOnly}
+                 onSelect={(icon) => {
+-                  field.handleChange(icon)
+-                  void form.handleSubmit()
++                  autosave.edit(() => field.handleChange(icon), { immediate: true })
+                   setIconPickerOpen(false)
+                 }}
+               />
+@@ -182,10 +183,18 @@ export const IconField = withForm({
+                   )}
+                   aria-invalid={hasError}
+                   readOnly={readOnly}
+-                  onBlur={field.handleBlur}
++                  onBlur={() => {
++                    field.handleBlur()
++                    void autosave.flush()
++                  }}
++                  onCompositionStart={() => autosave.beginComposition(field.name)}
++                  onCompositionEnd={(event) => {
++                    const value = event.currentTarget.value
++                    autosave.endComposition(field.name, () => field.handleChange(value))
++                  }}
+                   onChange={(e) => {
+-                    field.handleChange(e.target.value)
+-                    void form.handleSubmit()
++                    const value = e.currentTarget.value
++                    autosave.edit(() => field.handleChange(value))
+                   }}
+                 />
+                 <InputGroupAddon align="inline-end">
+diff --git a/src/entrypoints/options/pages/custom-actions/action-config-form/index.tsx b/src/entrypoints/options/pages/custom-actions/action-config-form/index.tsx
+index 754ad9aa..91c75b77 100644
+--- a/src/entrypoints/options/pages/custom-actions/action-config-form/index.tsx
++++ b/src/entrypoints/options/pages/custom-actions/action-config-form/index.tsx
+@@ -1,5 +1,7 @@
+ import type { SelectionToolbarCustomAction } from "@/types/config/selection-toolbar"
++import { dequal } from "dequal"
+ import { useAtomValue } from "jotai"
++import { useState } from "react"
+ import { configFieldsAtomMap } from "@/utils/atoms/config"
+ import { BUILT_IN_DICTIONARY_ACTION_ID } from "@/utils/constants/custom-action"
+ import { findSelectionToolbarAction } from "@/utils/custom-actions"
+@@ -11,10 +13,14 @@ import { ActionEditor, BuiltInActionEditor, CustomActionEditor } from "./action-
+ export function CustomActionConfigForm() {
+   const selectionToolbarConfig = useAtomValue(configFieldsAtomMap.selectionToolbar)
+   const selectedCustomActionId = useAtomValue(selectedCustomActionIdAtom)
+-  const selectedAction = selectedCustomActionId
++  const currentAction = selectedCustomActionId
+     ? findSelectionToolbarAction(selectionToolbarConfig, selectedCustomActionId)
+     : undefined
+ 
++  const [lastAction, setLastAction] = useState<SelectionToolbarCustomAction | undefined>(undefined)
++  if (currentAction && !dequal(currentAction, lastAction)) setLastAction(currentAction)
++  const selectedAction =
++    currentAction ?? (lastAction?.id === selectedCustomActionId ? lastAction : undefined)
+   if (!selectedAction) {
+     return (
+       <EntityEditor.Empty>
+diff --git a/src/entrypoints/options/pages/custom-actions/action-config-form/name-field.tsx b/src/entrypoints/options/pages/custom-actions/action-config-form/name-field.tsx
+index 5015cd86..fca465de 100644
+--- a/src/entrypoints/options/pages/custom-actions/action-config-form/name-field.tsx
++++ b/src/entrypoints/options/pages/custom-actions/action-config-form/name-field.tsx
+@@ -36,7 +36,6 @@ export const NameField = withForm({
+       >
+         {(field) => (
+           <field.InputFieldAutoSave
+-            formForSubmit={form}
+             label={i18n.t("options.selectionToolbar.customActions.form.name")}
+             labelExtra={labelExtra}
+             readOnly={readOnly}
+diff --git a/src/entrypoints/options/pages/custom-actions/action-config-form/notebase-connection-field.tsx b/src/entrypoints/options/pages/custom-actions/action-config-form/notebase-connection-field.tsx
+index e40da202..74f47de1 100644
+--- a/src/entrypoints/options/pages/custom-actions/action-config-form/notebase-connection-field.tsx
++++ b/src/entrypoints/options/pages/custom-actions/action-config-form/notebase-connection-field.tsx
+@@ -17,6 +17,7 @@ import { useQuery } from "@tanstack/react-query"
+ import { useSelector } from "@tanstack/react-store"
+ import { dequal } from "dequal"
+ import { useCallback, useEffect, useMemo } from "react"
++import { useAutosaveContext } from "@/components/form/use-autosave"
+ import { Alert, AlertAction, AlertDescription, AlertTitle } from "@/components/ui/base-ui/alert"
+ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/base-ui/avatar"
+ import { Button } from "@/components/ui/base-ui/button"
+@@ -225,6 +226,7 @@ function getRemoteFieldSelectItems(
+ export const NotebaseConnectionField = withForm({
+   ...{ defaultValues: {} as SelectionToolbarCustomAction },
+   render: function Render({ form }) {
++    const autosave = useAutosaveContext()
+     const action = useSelector(form.store, (state) => state.values)
+     const outputSchema = action.outputSchema
+     const connection = action.notebaseConnection
+@@ -239,10 +241,11 @@ export const NotebaseConnectionField = withForm({
+ 
+     const updateConnection = useCallback(
+       (nextConnection: SelectionToolbarCustomActionNotebaseConnection | undefined) => {
+-        form.setFieldValue("notebaseConnection", nextConnection)
+-        void form.handleSubmit()
++        autosave.edit(() => form.setFieldValue("notebaseConnection", nextConnection), {
++          immediate: true,
++        })
+       },
+-      [form],
++      [form, autosave],
+     )
+ 
+     const listQuery = useQuery(
+@@ -282,13 +285,6 @@ export const NotebaseConnectionField = withForm({
+       }),
+     )
+ 
+-    useEffect(() => {
+-      if (!dequal(connection, sanitizedConnection)) {
+-        form.setFieldValue("notebaseConnection", sanitizedConnection)
+-        void form.handleSubmit()
+-      }
+-    }, [connection, form, sanitizedConnection])
+-
+     useEffect(() => {
+       if (!isOwnedConnection || !sanitizedConnection || !currentAccount) {
+         return
+diff --git a/src/entrypoints/options/pages/custom-actions/action-config-form/output-schema-field.tsx b/src/entrypoints/options/pages/custom-actions/action-config-form/output-schema-field.tsx
+index afbf4563..b0f1b0d4 100644
+--- a/src/entrypoints/options/pages/custom-actions/action-config-form/output-schema-field.tsx
++++ b/src/entrypoints/options/pages/custom-actions/action-config-form/output-schema-field.tsx
+@@ -9,6 +9,7 @@ import { fieldContext as FieldContext } from "@/components/form/form-context"
+ import { InputField } from "@/components/form/input-field"
+ import { QuickInsertableTextareaField } from "@/components/form/quick-insertable-textarea-field"
+ import { SelectField } from "@/components/form/select-field"
++import { useAutosaveContext } from "@/components/form/use-autosave"
+ import { SortableList } from "@/components/sortable-list"
+ import {
+   AlertDialog,
+@@ -48,6 +49,7 @@ import {
+   SELECTION_TOOLBAR_CUSTOM_ACTION_TOKENS,
+ } from "@/utils/constants/custom-action"
+ import { i18n } from "@/utils/i18n"
++import { sanitizeCustomActionNotebaseConnection } from "@/utils/notebase/connection"
+ import { withForm } from "./form"
+ 
+ type CustomActionFormKey =
+@@ -289,6 +291,7 @@ export function ReadOnlyOutputSchemaField({
+ export const OutputSchemaField = withForm({
+   ...{ defaultValues: {} as SelectionToolbarCustomAction },
+   render: function Render({ form }) {
++    const autosave = useAutosaveContext()
+     const [editingField, setEditingField] =
+       useState<SelectionToolbarCustomActionOutputField | null>(null)
+     const [addingField, setAddingField] = useState<SelectionToolbarCustomActionOutputField | null>(
+@@ -348,8 +351,7 @@ export const OutputSchemaField = withForm({
+               <SortableList
+                 list={outputSchema}
+                 setList={(newList) => {
+-                  field.handleChange(newList)
+-                  void form.handleSubmit()
++                  autosave.edit(() => field.handleChange(newList), { immediate: true })
+                 }}
+                 className="flex flex-col gap-2"
+                 renderItem={(outputField) => (
+@@ -400,8 +402,9 @@ export const OutputSchemaField = withForm({
+                     if (!open) setAddingField(null)
+                   }}
+                   onSave={(created) => {
+-                    field.handleChange([...outputSchema, created])
+-                    void form.handleSubmit()
++                    autosave.edit(() => field.handleChange([...outputSchema, created]), {
++                      immediate: true,
++                    })
+                     setAddingField(null)
+                   }}
+                 />
+@@ -420,8 +423,7 @@ export const OutputSchemaField = withForm({
+                     const nextOutputSchema = outputSchema.map((item) =>
+                       item.id === updated.id ? updated : item,
+                     )
+-                    field.handleChange(nextOutputSchema)
+-                    void form.handleSubmit()
++                    autosave.edit(() => field.handleChange(nextOutputSchema), { immediate: true })
+                     setEditingField(null)
+                   }}
+                 />
+@@ -434,8 +436,24 @@ export const OutputSchemaField = withForm({
+                 }}
+                 onConfirm={() => {
+                   if (deletingFieldId) {
+-                    field.handleChange(outputSchema.filter((item) => item.id !== deletingFieldId))
+-                    void form.handleSubmit()
++                    autosave.edit(
++                      () => {
++                        const nextOutputSchema = field.state.value.filter(
++                          (item) => item.id !== deletingFieldId,
++                        )
++                        const connection = form.state.values.notebaseConnection
++                        if (connection) {
++                          // Drop references before field validation runs; the persistence
++                          // sanitizer cannot repair a draft rejected by handleSubmit.
++                          form.setFieldValue(
++                            "notebaseConnection",
++                            sanitizeCustomActionNotebaseConnection(connection, nextOutputSchema),
++                          )
++                        }
++                        field.handleChange(nextOutputSchema)
++                      },
++                      { immediate: true },
++                    )
+                     setDeletingFieldId(null)
+                   }
+                 }}
+diff --git a/src/entrypoints/options/pages/custom-actions/action-config-form/provider-field.tsx b/src/entrypoints/options/pages/custom-actions/action-config-form/provider-field.tsx
+index 8e02ef89..efe44e56 100644
+--- a/src/entrypoints/options/pages/custom-actions/action-config-form/provider-field.tsx
++++ b/src/entrypoints/options/pages/custom-actions/action-config-form/provider-field.tsx
+@@ -1,6 +1,7 @@
+ import type { SelectionToolbarCustomAction } from "@/types/config/selection-toolbar"
+ import { useAtomValue } from "jotai"
+ import { useMemo } from "react"
++import { useAutosaveContext } from "@/components/form/use-autosave"
+ import ProviderSelector from "@/components/llm-providers/provider-selector"
+ import { useHostedAiProviderOptions } from "@/components/llm-providers/use-hosted-ai-provider-options"
+ import { Field, FieldTitle } from "@/components/ui/base-ui/field"
+@@ -15,6 +16,7 @@ import { withForm } from "./form"
+ export const ProviderField = withForm({
+   ...{ defaultValues: {} as SelectionToolbarCustomAction },
+   render: function Render({ form }) {
++    const autosave = useAutosaveContext()
+     const providersConfig = useAtomValue(configFieldsAtomMap.providersConfig)
+ 
+     const baseCustomActionProviders = useMemo(
+@@ -54,8 +56,7 @@ export const ProviderField = withForm({
+               providers={customActionProviders}
+               value={field.state.value}
+               onChange={(id) => {
+-                field.handleChange(id)
+-                void form.handleSubmit()
++                autosave.edit(() => field.handleChange(id), { immediate: true })
+               }}
+               placeholder={i18n.t("options.selectionToolbar.customActions.form.selectProvider")}
+             />
+diff --git a/src/entrypoints/options/pages/custom-actions/atoms.ts b/src/entrypoints/options/pages/custom-actions/atoms.ts
+index 53905b95..a0d097e6 100644
+--- a/src/entrypoints/options/pages/custom-actions/atoms.ts
++++ b/src/entrypoints/options/pages/custom-actions/atoms.ts
+@@ -1,24 +1,21 @@
+ import { atom } from "jotai"
+-import { configFieldsAtomMap } from "@/utils/atoms/config"
++import { requestEditorNavigationAtom } from "@/components/form/autosave-navigation"
+ import { BUILT_IN_DICTIONARY_ACTION_ID } from "@/utils/constants/custom-action"
+ 
+ const internalSelectedCustomActionIdAtom = atom<string | undefined>(undefined)
+ 
+ export const selectedCustomActionIdAtom = atom(
+   (get) => {
+-    const customActions = get(configFieldsAtomMap.selectionToolbar).customActions
+     const selected = get(internalSelectedCustomActionIdAtom)
+ 
+-    if (
+-      selected === BUILT_IN_DICTIONARY_ACTION_ID ||
+-      (selected && customActions.some((action) => action.id === selected))
+-    ) {
+-      return selected
+-    }
++    if (selected) return selected
+ 
+     return BUILT_IN_DICTIONARY_ACTION_ID
+   },
+-  (_get, set, newValue: string | undefined) => {
+-    set(internalSelectedCustomActionIdAtom, newValue)
++  (get, set, newValue: string | undefined) => {
++    if (get(internalSelectedCustomActionIdAtom) === newValue) return Promise.resolve(true)
++    return set(requestEditorNavigationAtom, () => {
++      set(internalSelectedCustomActionIdAtom, newValue)
++    })
+   },
+ )
+diff --git a/src/entrypoints/options/pages/custom-actions/components/action-card-list.tsx b/src/entrypoints/options/pages/custom-actions/components/action-card-list.tsx
+index 6897f199..f85c127d 100644
+--- a/src/entrypoints/options/pages/custom-actions/components/action-card-list.tsx
++++ b/src/entrypoints/options/pages/custom-actions/components/action-card-list.tsx
+@@ -4,6 +4,7 @@ import { Icon } from "@iconify/react"
+ import { useAtom, useAtomValue, useSetAtom } from "jotai"
+ import { useEffect, useMemo, useState } from "react"
+ import { useLocation, useNavigate } from "react-router"
++import { requestEditorNavigationAtom } from "@/components/form/autosave-navigation"
+ import { SortableList } from "@/components/sortable-list"
+ import { Button } from "@/components/ui/base-ui/button"
+ import { Dialog, DialogTrigger } from "@/components/ui/base-ui/dialog"
+@@ -22,6 +23,7 @@ export function CustomActionCardList() {
+   const [selectionToolbarConfig, setSelectionToolbarConfig] = useAtom(
+     configFieldsAtomMap.selectionToolbar,
+   )
++  const requestNavigation = useSetAtom(requestEditorNavigationAtom)
+   const setSelectedCustomActionId = useSetAtom(selectedCustomActionIdAtom)
+   const providersConfig = useAtomValue(configFieldsAtomMap.providersConfig)
+   const { search } = useLocation()
+@@ -38,7 +40,7 @@ export function CustomActionCardList() {
+       actionId === BUILT_IN_DICTIONARY_ACTION_ID ||
+       (actionId && customActions.some((action) => action.id === actionId))
+     ) {
+-      setSelectedCustomActionId(actionId)
++      void setSelectedCustomActionId(actionId)
+     }
+ 
+     if (params.has("addAction") || params.has("actionId")) {
+@@ -56,19 +58,22 @@ export function CustomActionCardList() {
+ 
+   const handleTemplateSelect = (template: CustomActionTemplate) => {
+     if (customActionProviders.length === 0) return
+-
+-    const newAction = template.createAction(customActionProviders[0]!.id)
+-
+-    const existingNames = new Set(customActions.map((action) => action.name))
+-    const baseName = template.id === "blank" ? DEFAULT_ACTION_NAME : newAction.name
+-    newAction.name = getUniqueName(baseName, existingNames)
+-
+-    void setSelectionToolbarConfig({
+-      ...selectionToolbarConfig,
+-      customActions: [...customActions, newAction],
++    void requestNavigation(async () => {
++      const newAction = template.createAction(customActionProviders[0]!.id)
++      const baseName = template.id === "blank" ? DEFAULT_ACTION_NAME : newAction.name
++      await setSelectionToolbarConfig((current) => ({
++        ...current,
++        customActions: [
++          ...current.customActions,
++          {
++            ...newAction,
++            name: getUniqueName(baseName, new Set(current.customActions.map((item) => item.name))),
++          },
++        ],
++      }))
++      await setSelectedCustomActionId(newAction.id)
++      setDialogOpen(false)
+     })
+-    setSelectedCustomActionId(newAction.id)
+-    setDialogOpen(false)
+   }
+ 
+   const handleReorder = (newList: SelectionToolbarCustomAction[]) => {
+@@ -128,9 +133,7 @@ export function CustomActionCardList() {
+ }
+ 
+ function BuiltInDictionaryCard({ action }: { action: SelectionToolbarCustomAction }) {
+-  const [selectionToolbarConfig, setSelectionToolbarConfig] = useAtom(
+-    configFieldsAtomMap.selectionToolbar,
+-  )
++  const setSelectionToolbarConfig = useSetAtom(configFieldsAtomMap.selectionToolbar)
+   const [selectedCustomActionId, setSelectedCustomActionId] = useAtom(selectedCustomActionIdAtom)
+ 
+   return (
+@@ -149,8 +152,8 @@ function BuiltInDictionaryCard({ action }: { action: SelectionToolbarCustomActio
+           aria-label={action.name}
+           checked={action.enabled !== false}
+           onCheckedChange={(enabled) => {
+-            void setSelectionToolbarConfig(
+-              patchSelectionToolbarAction(selectionToolbarConfig, action.id, { enabled }),
++            void setSelectionToolbarConfig((current) =>
++              patchSelectionToolbarAction(current, action.id, { enabled }),
+             )
+           }}
+         />
+@@ -160,9 +163,7 @@ function BuiltInDictionaryCard({ action }: { action: SelectionToolbarCustomActio
+ }
+ 
+ function CustomActionCard({ action }: { action: SelectionToolbarCustomAction }) {
+-  const [selectionToolbarConfig, setSelectionToolbarConfig] = useAtom(
+-    configFieldsAtomMap.selectionToolbar,
+-  )
++  const setSelectionToolbarConfig = useSetAtom(configFieldsAtomMap.selectionToolbar)
+   const [selectedCustomActionId, setSelectedCustomActionId] = useAtom(selectedCustomActionIdAtom)
+ 
+   return (
+@@ -182,8 +183,8 @@ function CustomActionCard({ action }: { action: SelectionToolbarCustomAction })
+           aria-label={action.name}
+           checked={action.enabled !== false}
+           onCheckedChange={(enabled) => {
+-            void setSelectionToolbarConfig(
+-              patchSelectionToolbarAction(selectionToolbarConfig, action.id, { enabled }),
++            void setSelectionToolbarConfig((current) =>
++              patchSelectionToolbarAction(current, action.id, { enabled }),
+             )
+           }}
+         />
+diff --git a/src/locales/en.yml b/src/locales/en.yml
+index 10324539..e4b0257f 100644
+--- a/src/locales/en.yml
++++ b/src/locales/en.yml
+@@ -84,6 +84,15 @@ errorRecovery:
+     confirm: Reset
+     cancel: Cancel
+ options:
++  autosave:
++    invalid: Please correct the highlighted fields before leaving.
++    failed: Your changes could not be saved. They are still available here.
++    deleted: This item was deleted elsewhere. Your unsaved edits have been kept.
++    retry: Retry
++    leaveTitle: Changes have not been saved
++    leaveDescription: Continue editing to fix the problem, or discard the changes that have not been saved.
++    keepEditing: Continue editing
++    discard: Discard unsaved changes
+   batchSavings:
+     savedCost: Saved approx. $1% on API costs
+   commandPalette:
+diff --git a/src/locales/es.yml b/src/locales/es.yml
+index 1a475340..4372ac7c 100644
+--- a/src/locales/es.yml
++++ b/src/locales/es.yml
+@@ -84,6 +84,15 @@ errorRecovery:
+     confirm: Restablecer
+     cancel: Cancelar
+ options:
++  autosave:
++    invalid: Corrige los campos señalados antes de salir.
++    failed: No se pudieron guardar los cambios. Se han conservado aquí.
++    deleted: Este elemento se eliminó en otra página. Se han conservado tus cambios sin guardar.
++    retry: Reintentar
++    leaveTitle: Los cambios no se han guardado
++    leaveDescription: Puedes seguir editando para corregir el problema o descartar los cambios sin guardar.
++    keepEditing: Seguir editando
++    discard: Descartar cambios sin guardar
+   batchSavings:
+     savedCost: Ahorro aprox. del $1% en costes de API
+   commandPalette:
+diff --git a/src/locales/ja.yml b/src/locales/ja.yml
+index c3445e2f..d20d9386 100644
+--- a/src/locales/ja.yml
++++ b/src/locales/ja.yml
+@@ -84,6 +84,15 @@ errorRecovery:
+     confirm: リセット
+     cancel: キャンセル
+ options:
++  autosave:
++    invalid: 移動する前に、エラーのある項目を修正してください。
++    failed: 変更を保存できませんでした。編集中の内容は保持されています。
++    deleted: この項目は別のページで削除されました。未保存の編集内容は保持されています。
++    retry: 再試行
++    leaveTitle: 変更が保存されていません
++    leaveDescription: 編集を続けて問題を修正するか、未保存の変更を破棄してください。
++    keepEditing: 編集を続ける
++    discard: 未保存の変更を破棄
+   batchSavings:
+     savedCost: API コストを約 $1% 削減
+   commandPalette:
+diff --git a/src/locales/ko.yml b/src/locales/ko.yml
+index 884b56c0..195f9580 100644
+--- a/src/locales/ko.yml
++++ b/src/locales/ko.yml
+@@ -84,6 +84,15 @@ errorRecovery:
+     confirm: 초기화
+     cancel: 취소
+ options:
++  autosave:
++    invalid: 이동하기 전에 표시된 필드를 수정해 주세요.
++    failed: 변경 사항을 저장하지 못했습니다. 편집 내용은 유지됩니다.
++    deleted: 다른 페이지에서 이 항목이 삭제되었습니다. 저장하지 않은 편집 내용은 유지됩니다.
++    retry: 다시 시도
++    leaveTitle: 변경 사항이 저장되지 않았습니다
++    leaveDescription: 계속 편집하여 문제를 수정하거나 저장하지 않은 변경 사항을 버릴 수 있습니다.
++    keepEditing: 계속 편집
++    discard: 저장하지 않은 변경 사항 버리기
+   batchSavings:
+     savedCost: API 비용 약 $1% 절감
+   commandPalette:
+diff --git a/src/locales/ru.yml b/src/locales/ru.yml
+index 461b9c5e..ebdcf8ed 100644
+--- a/src/locales/ru.yml
++++ b/src/locales/ru.yml
+@@ -84,6 +84,15 @@ errorRecovery:
+     confirm: Сбросить
+     cancel: Отмена
+ options:
++  autosave:
++    invalid: Исправьте отмеченные поля перед выходом.
++    failed: Не удалось сохранить изменения. Введённые данные сохранены в редакторе.
++    deleted: Этот элемент удалён на другой странице. Несохранённые изменения оставлены в редакторе.
++    retry: Повторить
++    leaveTitle: Изменения не сохранены
++    leaveDescription: Продолжите редактирование, чтобы исправить проблему, или отмените несохранённые изменения.
++    keepEditing: Продолжить редактирование
++    discard: Отменить несохранённые изменения
+   batchSavings:
+     savedCost: Сэкономлено примерно $1% расходов на API
+   commandPalette:
+diff --git a/src/locales/tr.yml b/src/locales/tr.yml
+index 621fa78d..12ea9f31 100644
+--- a/src/locales/tr.yml
++++ b/src/locales/tr.yml
+@@ -84,6 +84,15 @@ errorRecovery:
+     confirm: Sıfırla
+     cancel: İptal
+ options:
++  autosave:
++    invalid: Ayrılmadan önce işaretli alanları düzeltin.
++    failed: Değişiklikler kaydedilemedi. Düzenlemeleriniz burada korunuyor.
++    deleted: Bu öğe başka bir sayfada silindi. Kaydedilmemiş düzenlemeleriniz korunuyor.
++    retry: Yeniden dene
++    leaveTitle: Değişiklikler kaydedilmedi
++    leaveDescription: Sorunu düzeltmek için düzenlemeye devam edin veya kaydedilmemiş değişiklikleri iptal edin.
++    keepEditing: Düzenlemeye devam et
++    discard: Kaydedilmemiş değişiklikleri iptal et
+   batchSavings:
+     savedCost: API maliyetlerinde yaklaşık %$1 tasarruf
+   commandPalette:
+diff --git a/src/locales/vi.yml b/src/locales/vi.yml
+index bbbec7d5..229da2ca 100644
+--- a/src/locales/vi.yml
++++ b/src/locales/vi.yml
+@@ -84,6 +84,15 @@ errorRecovery:
+     confirm: Đặt lại
+     cancel: Hủy
+ options:
++  autosave:
++    invalid: Hãy sửa các trường được đánh dấu trước khi rời đi.
++    failed: Không thể lưu thay đổi. Nội dung chỉnh sửa vẫn được giữ lại.
++    deleted: Mục này đã bị xóa ở trang khác. Các chỉnh sửa chưa lưu vẫn được giữ lại.
++    retry: Thử lại
++    leaveTitle: Thay đổi chưa được lưu
++    leaveDescription: Tiếp tục chỉnh sửa để khắc phục vấn đề hoặc bỏ các thay đổi chưa lưu.
++    keepEditing: Tiếp tục chỉnh sửa
++    discard: Bỏ thay đổi chưa lưu
+   batchSavings:
+     savedCost: Tiết kiệm khoảng $1% chi phí API
+   commandPalette:
+diff --git a/src/locales/zh-CN.yml b/src/locales/zh-CN.yml
+index b1bc52ad..d7c1bab1 100644
+--- a/src/locales/zh-CN.yml
++++ b/src/locales/zh-CN.yml
+@@ -84,6 +84,15 @@ errorRecovery:
+     confirm: 重置
+     cancel: 取消
+ options:
++  autosave:
++    invalid: 请修正标出的字段后再离开。
++    failed: 修改保存失败，编辑内容已保留。
++    deleted: 此项目已在其他页面删除，未保存的编辑内容已保留。
++    retry: 重试
++    leaveTitle: 修改尚未保存
++    leaveDescription: 你可以继续编辑并修正问题，或放弃尚未保存的修改。
++    keepEditing: 继续编辑
++    discard: 放弃未保存修改
+   batchSavings:
+     savedCost: 约省 $1% API 费用
+   commandPalette:
+diff --git a/src/locales/zh-TW.yml b/src/locales/zh-TW.yml
+index 155186eb..b67d86cb 100644
+--- a/src/locales/zh-TW.yml
++++ b/src/locales/zh-TW.yml
+@@ -84,6 +84,15 @@ errorRecovery:
+     confirm: 重設
+     cancel: 取消
+ options:
++  autosave:
++    invalid: 請修正標示的欄位後再離開。
++    failed: 變更儲存失敗，編輯內容已保留。
++    deleted: 此項目已在其他頁面刪除，未儲存的編輯內容已保留。
++    retry: 重試
++    leaveTitle: 變更尚未儲存
++    leaveDescription: 你可以繼續編輯並修正問題，或捨棄尚未儲存的變更。
++    keepEditing: 繼續編輯
++    discard: 捨棄未儲存變更
+   batchSavings:
+     savedCost: 約省 $1% API 費用
+   commandPalette:
+diff --git a/src/utils/atoms/__tests__/config-sync.test.ts b/src/utils/atoms/__tests__/config-sync.test.ts
+new file mode 100644
+index 00000000..4394852c
+--- /dev/null
++++ b/src/utils/atoms/__tests__/config-sync.test.ts
+@@ -0,0 +1,195 @@
++// @vitest-environment jsdom
++// oxlint-disable typescript/unbound-method -- The storage methods are vi.fn mocks and have no receiver.
++import type { Config } from "@/types/config/config"
++import { createStore } from "jotai"
++import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
++import { DEFAULT_CONFIG } from "@/utils/constants/config"
++import { configAtom, writeConfigAtom } from "../config"
++import { patchActionConfigAtom, patchProviderConfigAtom } from "../entity-config"
++import { storageAdapter } from "../storage-adapter"
++
++const storage = vi.hoisted(() => ({ value: {} as Config, watchers: new Set<() => void>() }))
++vi.mock("../storage-adapter", () => ({
++  storageAdapter: {
++    get: vi.fn<() => Promise<Config>>(async () => structuredClone(storage.value)),
++    set: vi.fn<(key: string, value: Config) => Promise<void>>(async (_key, value) => {
++      storage.value = structuredClone(value)
++      storage.watchers.forEach((notify) => notify())
++    }),
++    setMeta: vi.fn<() => Promise<void>>(async () => {}),
++    watch: (_key: string, notify: () => void) => {
++      storage.watchers.add(notify)
++      return () => storage.watchers.delete(notify)
++    },
++  },
++}))
++
++function deferred<T>() {
++  let resolve!: (value: T) => void
++  const promise = new Promise<T>((yes) => {
++    resolve = yes
++  })
++  return { promise, resolve }
++}
++const tick = () => new Promise<void>((resolve) => setTimeout(resolve, 0))
++const unsubs: (() => void)[] = []
++function mountStore() {
++  const store = createStore()
++  store.set(configAtom, structuredClone(storage.value))
++  unsubs.push(store.sub(configAtom, () => {}))
++  return store
++}
++
++describe("config persistence and invalidation", () => {
++  beforeEach(() => {
++    storage.value = structuredClone(DEFAULT_CONFIG)
++    vi.mocked(storageAdapter.get).mockClear()
++    vi.mocked(storageAdapter.set).mockClear()
++    vi.mocked(storageAdapter.setMeta).mockClear()
++  })
++  afterEach(() => {
++    unsubs.splice(0).forEach((unsubscribe) => unsubscribe())
++  })
++
++  it("re-evaluates a pure updater against fresh storage and preserves unrelated changes", async () => {
++    const store = mountStore()
++    await tick()
++    const source = storage.value.providersConfig.find((provider) => provider.provider === "openai")!
++    storage.value.providersConfig = storage.value.providersConfig.map((provider) =>
++      provider.id === source.id
++        ? { ...provider, description: "external", headers: { old: "value" } }
++        : provider,
++    )
++    await store.set(patchProviderConfigAtom, {
++      id: source.id,
++      changes: { name: "local", headers: undefined },
++    })
++    const result = storage.value.providersConfig.find((provider) => provider.id === source.id)
++    expect(result).toMatchObject({ name: "local", description: "external" })
++    expect(result).toHaveProperty("headers", undefined)
++    expect(store.get(configAtom)).toEqual(storage.value)
++  })
++
++  it("preserves concurrent sibling changes and continues after a failed write", async () => {
++    const store = mountStore()
++    await tick()
++    vi.mocked(storageAdapter.set).mockRejectedValueOnce(new Error("failed write"))
++    const first = store.set(writeConfigAtom, { betaExperience: { enabled: true } })
++    const failure = first.catch((error: unknown) => error)
++    const second = store.set(writeConfigAtom, { uiLanguage: "zh-CN" })
++    expect(await failure).toEqual(new Error("failed write"))
++    await second
++    await tick()
++    expect(storage.value.uiLanguage).toBe("zh-CN")
++    expect(store.get(configAtom)).toEqual(storage.value)
++  })
++
++  it("does not let an initial read overwrite a newer local write", async () => {
++    const staleRead = deferred<Config>()
++    const stale = structuredClone(storage.value)
++    vi.mocked(storageAdapter.get).mockImplementationOnce(() => staleRead.promise)
++    const store = mountStore()
++    await tick()
++    await store.set(writeConfigAtom, { uiLanguage: "zh-CN" })
++    staleRead.resolve(stale)
++    await tick()
++    expect(store.get(configAtom).uiLanguage).toBe("zh-CN")
++  })
++
++  it("treats delayed notifications as invalidation and rereads the latest value", async () => {
++    const store = mountStore()
++    await tick()
++    await store.set(writeConfigAtom, { uiLanguage: "zh-CN" })
++    await store.set(writeConfigAtom, { uiLanguage: "ja" })
++    storage.watchers.forEach((notify) => notify())
++    await tick()
++    expect(store.get(configAtom).uiLanguage).toBe("ja")
++    storage.value = { ...storage.value, uiLanguage: "ko" }
++    storage.watchers.forEach((notify) => notify())
++    await tick()
++    expect(store.get(configAtom).uiLanguage).toBe("ko")
++  })
++
++  it("does not replace optimistic state while a storage write is pending", async () => {
++    const store = mountStore()
++    await tick()
++    const pending = deferred<void>()
++    vi.mocked(storageAdapter.set).mockImplementationOnce(async (_key, value) => {
++      await pending.promise
++      storage.value = value as Config
++    })
++    const write = store.set(writeConfigAtom, { uiLanguage: "zh-CN" })
++    storage.watchers.forEach((notify) => notify())
++    await tick()
++    expect(store.get(configAtom).uiLanguage).toBe("zh-CN")
++    pending.resolve()
++    await write
++    await tick()
++    expect(store.get(configAtom).uiLanguage).toBe("zh-CN")
++  })
++
++  it("patches only the edited action fields without replacing siblings or order", async () => {
++    const action = {
++      id: "a",
++      name: "A",
++      icon: "tabler:sparkles",
++      providerId: "read-frog-free-ai",
++      systemPrompt: "",
++      prompt: "x",
++      outputSchema: [
++        {
++          id: "result",
++          name: "result",
++          type: "string" as const,
++          description: "Result",
++          speaking: false,
++        },
++      ],
++    }
++    storage.value.selectionToolbar.customActions = [action, { ...action, id: "b", name: "B" }]
++    const store = mountStore()
++    await tick()
++    storage.value.selectionToolbar.customActions = [
++      { ...action, id: "b", name: "external B" },
++      { ...action, prompt: "external prompt" },
++    ]
++    await store.set(patchActionConfigAtom, { id: "a", changes: { name: "local A" } })
++    expect(storage.value.selectionToolbar.customActions.map(({ id }) => id)).toEqual(["b", "a"])
++    expect(storage.value.selectionToolbar.customActions[0]?.name).toBe("external B")
++    expect(storage.value.selectionToolbar.customActions[1]).toMatchObject({
++      name: "local A",
++      prompt: "external prompt",
++    })
++  })
++
++  it("removes a built-in action connection rather than deep-merging the old value back", async () => {
++    storage.value.selectionToolbar.builtInActions.dictionary.notebaseConnection = {
++      notebaseId: "table",
++      notebaseNameSnapshot: "Words",
++      connectedAccount: { id: "user", name: "Reader", email: "reader@example.com" },
++      mappings: [],
++    }
++    const store = mountStore()
++    await tick()
++    await store.set(patchActionConfigAtom, {
++      id: "default-dictionary",
++      changes: { notebaseConnection: undefined },
++    })
++    expect(
++      storage.value.selectionToolbar.builtInActions.dictionary.notebaseConnection,
++    ).toBeUndefined()
++  })
++
++  it("rejects an entity deleted before the queued update instead of recreating it", async () => {
++    const store = mountStore()
++    await tick()
++    const source = storage.value.providersConfig.find((provider) => provider.provider === "openai")!
++    storage.value.providersConfig = storage.value.providersConfig.filter(
++      (provider) => provider.id !== source.id,
++    )
++    await expect(
++      store.set(patchProviderConfigAtom, { id: source.id, changes: { name: "local" } }),
++    ).rejects.toThrow("no longer exists")
++    expect(storage.value.providersConfig.some((provider) => provider.id === source.id)).toBe(false)
++  })
++})
+diff --git a/src/utils/atoms/config.ts b/src/utils/atoms/config.ts
+index 2373db8a..36a22adf 100644
+--- a/src/utils/atoms/config.ts
++++ b/src/utils/atoms/config.ts
+@@ -1,10 +1,10 @@
+ import type { Config } from "@/types/config/config"
+ import { deepmergeCustom } from "deepmerge-ts"
++import { dequal } from "dequal"
+ import { atom } from "jotai"
+ import { selectAtom } from "jotai/utils"
+ import { configSchema } from "@/types/config/config"
+ import { CONFIG_STORAGE_KEY, DEFAULT_CONFIG } from "../constants/config"
+-import { logger } from "../logger"
+ import { storageAdapter } from "./storage-adapter"
+ 
+ export const configAtom = atom<Config>(DEFAULT_CONFIG)
+@@ -14,141 +14,109 @@ export const mergeWithArrayOverwrite = deepmergeCustom({
+   mergeArrays: (values) => values[values.length - 1],
+ })
+ 
+-/**
+- * Promise-chain queue for serializing storage writes.
+- *
+- * Each write chains onto the previous via `.then()`, ensuring sequential execution:
+- *   Promise.resolve() → task1 → task2 → task3 → ...
+- *
+- * This prevents race conditions when multiple writes happen in quick succession.
+- * Even if a write fails, the queue continues (see `.catch(() => {})` below).
+- */
+-let writeQueue: Promise<void> = Promise.resolve()
++// Updaters deliberately use undefined to clear optional fields. Keep legacy
++// object-patch semantics unchanged for the other configuration consumers.
++const mergeUpdaterResult = deepmergeCustom({
++  mergeArrays: (values) => values[values.length - 1],
++  filterValues: false,
++})
+ 
+-/**
+- * Global counter to detect stale writes.
+- *
+- * Each write captures its version at invocation time. After async storage completes,
+- * we compare captured vs current version to determine if this is still the latest write.
+- * This prevents older writes from overwriting the optimistic UI state.
+- */
++export type ConfigUpdate = Partial<Config> | ((current: Config) => Partial<Config>)
++
++// Shared by writers in this extension context. Other contexts remain independent.
++let writeQueue: Promise<void> = Promise.resolve()
+ let writeVersion = 0
++let pendingWrites = 0
++const refreshListeners = new Set<() => void>()
+ 
+-export const writeConfigAtom = atom(null, async (get, set, patch: Partial<Config>) => {
+-  // ─────────────────────────────────────────────────────────────────────────
+-  // STEP 1: Optimistic update (immediate UI feedback)
+-  // ─────────────────────────────────────────────────────────────────────────
+-  const localPrev = get(configAtom)
+-  const optimisticNext = mergeWithArrayOverwrite(localPrev, patch)
+-  set(configAtom, optimisticNext)
+-
+-  // Capture version for this write (used for stale-write detection later)
+-  const currentWriteVersion = ++writeVersion
+-
+-  // ─────────────────────────────────────────────────────────────────────────
+-  // STEP 2: Queue the actual storage write
+-  // ─────────────────────────────────────────────────────────────────────────
+-  // Chain onto writeQueue so writes execute in order.
+-  // Note: `.then(callback)` schedules callback to microtask queue (async),
+-  // but `writeQueue = task` assignment happens synchronously.
+-  const task = writeQueue.then(async () => {
+-    // Always read fresh from storage to capture any writes that completed before us.
+-    // This ensures we don't lose concurrent field updates:
+-    //   write({x:1}) then write({y:2}) → storage ends up with {x:1, y:2}
+-    const configInStorage = await storageAdapter.get<Config>(
+-      CONFIG_STORAGE_KEY,
+-      DEFAULT_CONFIG,
+-      configSchema,
+-    )
+-    const nextToPersist = mergeWithArrayOverwrite(configInStorage, patch)
++function applyUpdate(current: Config, update: ConfigUpdate): Config {
++  return typeof update === "function"
++    ? mergeUpdaterResult(current, update(current))
++    : mergeWithArrayOverwrite(current, update)
++}
++
++export const writeConfigAtom = atom(null, async (get, set, update: ConfigUpdate) => {
++  const optimistic = applyUpdate(get(configAtom), update)
++  set(configAtom, optimistic)
++  const version = ++writeVersion
++  pendingWrites++
+ 
++  const task = writeQueue.then(async () => {
++    let stored: Config | undefined
+     try {
+-      // Storage write always executes (not affected by version check)
+-      await storageAdapter.set(CONFIG_STORAGE_KEY, nextToPersist, configSchema)
++      stored = await storageAdapter.get(CONFIG_STORAGE_KEY, DEFAULT_CONFIG, configSchema)
++      const next = applyUpdate(stored, update)
++      await storageAdapter.set(CONFIG_STORAGE_KEY, next, configSchema)
+       await storageAdapter.setMeta(CONFIG_STORAGE_KEY, { lastModifiedAt: Date.now() })
+-
+-      // ───────────────────────────────────────────────────────────────────
+-      // STEP 3: Reconcile atom with persisted value (stale-write check)
+-      // ───────────────────────────────────────────────────────────────────
+-      // Only update atom if no newer writes happened since we started.
+-      // If a newer write exists, its optimistic update already set the correct UI state,
+-      // so we skip to avoid "flashing back" to this older value.
+-      if (currentWriteVersion === writeVersion) {
+-        set(configAtom, nextToPersist)
+-      }
++      if (version === writeVersion && !dequal(get(configAtom), next)) set(configAtom, next)
+     } catch (error) {
+-      console.error("Failed to set config to storage:", nextToPersist, error)
+-
+-      // Roll back to storage value on error, but only if we're still the latest write.
+-      if (currentWriteVersion === writeVersion) {
+-        set(configAtom, configInStorage)
+-      }
+-
++      if (version === writeVersion && stored) set(configAtom, stored)
+       throw error
++    } finally {
++      pendingWrites--
++      refreshListeners.forEach((refresh) => refresh())
+     }
+   })
+-
+-  // Update queue head. Use `.catch(() => {})` to ensure queue continues even if this write fails.
+   writeQueue = task.catch(() => {})
+-
+   return task
+ })
+ 
+-/**
+- * Initialize atom state from storage and set up cross-context sync.
+- *
+- * This handles three sync scenarios:
+- * 1. Initial load: Read from storage when atom first mounts
+- * 2. Cross-context updates: Watch for changes from other extension contexts (popup, options, etc.)
+- * 3. Tab reactivation: Reload when tab becomes visible (inactive tabs may miss watch events)
+- */
+-configAtom.onMount = (setAtom: (newValue: Config) => void) => {
+-  // Flag to avoid race condition: if watch fires before initial get() resolves,
+-  // don't overwrite the fresher watch value with the stale get() result.
+-  let didReceiveStorageUpdate = false
+-
+-  // Initial load from storage
+-  void storageAdapter
+-    .get<Config>(CONFIG_STORAGE_KEY, DEFAULT_CONFIG, configSchema)
+-    .then((value) => {
+-      if (!didReceiveStorageUpdate) {
+-        setAtom(value)
++// Watch notifications invalidate a read. Their payload may describe an older write,
++// and must never replace a newer optimistic update or an already persisted value.
++configAtom.onMount = (setAtom) => {
++  let active = true
++  let requested = false
++  let reading = false
++  let generation = 0
++
++  async function refresh() {
++    if (reading) return
++    reading = true
++    try {
++      while (requested) {
++        if (!active) return
++        await writeQueue
++        if (!active) return
++        if (pendingWrites > 0) continue
++        requested = false
++        const readGeneration = generation
++        const readVersion = writeVersion
++        const value = await storageAdapter.get(CONFIG_STORAGE_KEY, DEFAULT_CONFIG, configSchema)
++        if (!active) return
++        if (readGeneration !== generation || readVersion !== writeVersion || pendingWrites > 0) {
++          requested = true
++          continue
++        }
++        setAtom((previous) => (dequal(previous, value) ? previous : value))
+       }
+-    })
+-
+-  // Watch for changes from other extension contexts (popup, options page, other tabs)
+-  const unwatch = storageAdapter.watch<Config>(CONFIG_STORAGE_KEY, (value) => {
+-    didReceiveStorageUpdate = true
+-    setAtom(value)
+-  })
+-
+-  // Handle tab reactivation - inactive tabs may miss storage watch events,
+-  // so we reload from storage when the tab becomes visible again.
+-  // See: https://github.com/mengxi-ream/read-frog/issues/435
+-  const handleVisibilityChange = () => {
+-    if (document.visibilityState === "visible") {
+-      logger.info("configAtom onMount handleVisibilityChange when: ", new Date())
+-      void storageAdapter
+-        .get<Config>(CONFIG_STORAGE_KEY, DEFAULT_CONFIG, configSchema)
+-        .then(setAtom)
++    } catch {
++      // A later notification/visibility change retries reads; retain the current UI.
++    } finally {
++      reading = false
+     }
+   }
+-  document.addEventListener("visibilitychange", handleVisibilityChange)
++
++  const requestRefresh = () => {
++    generation++
++    requested = true
++    void refresh()
++  }
++  refreshListeners.add(requestRefresh)
++  const unwatch = storageAdapter.watch<Config>(CONFIG_STORAGE_KEY, requestRefresh)
++  const onVisibilityChange = () => {
++    if (document.visibilityState === "visible") requestRefresh()
++  }
++  document.addEventListener("visibilitychange", onVisibilityChange)
++  requestRefresh()
+ 
+   return () => {
++    active = false
++    refreshListeners.delete(requestRefresh)
+     unwatch()
+-    document.removeEventListener("visibilitychange", handleVisibilityChange)
++    document.removeEventListener("visibilitychange", onVisibilityChange)
+   }
+ }
+ 
+-// export const configFieldAtom = <K extends Keys>(key: K) => {
+-//   const readAtom = selectAtom(configAtom, (c) => c[key]); // 现在是同步
+-//   const writeAtom = atom(null, (_get, set, val: Config[K]) =>
+-//     set(writeConfigAtom, { [key]: val })
+-//   );
+-//   return [readAtom, writeAtom] as const;
+-// };
+-
+ type Keys = keyof Config
+ 
+ export function getConfigFieldAtom<K extends Keys>(key: K) {
+@@ -158,7 +126,13 @@ export function getConfigFieldAtom<K extends Keys>(key: K) {
+ 
+   return atom(
+     (get) => get(sliceAtom),
+-    (_get, set, newVal: Partial<Config[K]>) => set(writeConfigAtom, { [key]: newVal }),
++    (_get, set, newVal: Partial<Config[K]> | ((current: Config[K]) => Partial<Config[K]>)) =>
++      set(
++        writeConfigAtom,
++        typeof newVal === "function"
++          ? (current) => ({ [key]: newVal(current[key]) })
++          : { [key]: newVal },
++      ),
+   )
+ }
+ 
+diff --git a/src/utils/atoms/entity-config.ts b/src/utils/atoms/entity-config.ts
+new file mode 100644
+index 00000000..421435a9
+--- /dev/null
++++ b/src/utils/atoms/entity-config.ts
+@@ -0,0 +1,37 @@
++import type { APIProviderConfig } from "@/types/config/provider"
++import type { SelectionToolbarCustomAction } from "@/types/config/selection-toolbar"
++import { atom } from "jotai"
++import { isAPIProviderConfig } from "@/types/config/provider"
++import { findSelectionToolbarAction, replaceSelectionToolbarAction } from "@/utils/custom-actions"
++import { sanitizeSelectionToolbarCustomAction } from "@/utils/notebase/connection"
++import { writeConfigAtom } from "./config"
++
++export const patchProviderConfigAtom = atom(
++  null,
++  async (_get, set, { id, changes }: { id: string; changes: Partial<APIProviderConfig> }) => {
++    await set(writeConfigAtom, (current) => {
++      const provider = current.providersConfig.find((item) => item.id === id)
++      if (!provider || !isAPIProviderConfig(provider)) throw new Error("Provider no longer exists")
++      const next = { ...provider, ...changes, id } as APIProviderConfig
++      return {
++        providersConfig: current.providersConfig.map((item) => (item.id === id ? next : item)),
++      }
++    })
++  },
++)
++
++export const patchActionConfigAtom = atom(
++  null,
++  async (
++    _get,
++    set,
++    { id, changes }: { id: string; changes: Partial<SelectionToolbarCustomAction> },
++  ) => {
++    await set(writeConfigAtom, (current) => {
++      const action = findSelectionToolbarAction(current.selectionToolbar, id)
++      if (!action) throw new Error("Action no longer exists")
++      const next = sanitizeSelectionToolbarCustomAction({ ...action, ...changes, id })
++      return { selectionToolbar: replaceSelectionToolbarAction(current.selectionToolbar, next) }
++    })
++  },
++)
+diff --git a/src/utils/custom-actions.ts b/src/utils/custom-actions.ts
+index 80a766bf..5818f856 100644
+--- a/src/utils/custom-actions.ts
++++ b/src/utils/custom-actions.ts
+@@ -65,7 +65,7 @@ function toBuiltInDictionaryState(
+   return {
+     enabled: action.enabled !== false,
+     providerId: action.providerId,
+-    ...(action.notebaseConnection ? { notebaseConnection: action.notebaseConnection } : {}),
++    notebaseConnection: action.notebaseConnection,
+   }
+ }
+ 

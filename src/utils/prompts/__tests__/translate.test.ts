@@ -242,6 +242,55 @@ describe("translate prompt tokens", () => {
     expect(result.systemPrompt).not.toContain("## Protected HTML Marker Rules")
   })
 
+  it("appends placeholder rules only when the input carries an inline atom token", () => {
+    const withToken = getTranslatePromptFromConfig(
+      defaultTranslatePromptConfig,
+      "Chinese",
+      "Let {{0}} be the mean.",
+    )
+    expect(withToken.systemPrompt).toContain("## Protected Placeholder Rules")
+    expect(withToken.systemPrompt).toContain("may move within its segment")
+    expect(withToken.systemPrompt).not.toMatch(/Rules[\s\S]*\{\{\d+\}\}/)
+
+    const without = getTranslatePromptFromConfig(
+      defaultTranslatePromptConfig,
+      "Chinese",
+      "Let x be the mean.",
+    )
+    expect(without.systemPrompt).not.toContain("## Protected Placeholder Rules")
+    // Byte-identical to the pre-feature prompt: the LLM cache hash of every
+    // paragraph without atoms must not change.
+    expect(without.systemPrompt).toBe(
+      getTranslatePromptFromConfig(defaultTranslatePromptConfig, "Chinese", "other").systemPrompt,
+    )
+  })
+
+  it.each([
+    ["the no-translation sentinel", `Prefix ${NO_TRANSLATION_SENTINEL}`],
+    ["a template literal with spaces", "Use {{ count }} in the template"],
+    ["a named prompt token", "Translate {{input}} please"],
+    ["a single-brace literal", "Format {0} here"],
+  ])("does not append placeholder rules for %s", (_case, input) => {
+    const result = getTranslatePromptFromConfig(defaultTranslatePromptConfig, "Chinese", input)
+
+    expect(result.systemPrompt).not.toContain("## Protected Placeholder Rules")
+  })
+
+  it("orders placeholder rules after marker and batch rules", () => {
+    const input = `<span ${HTML_ATTRIBUTE_MARKER}="0">First {{0}}</span>\n\n%%\n\nSecond {{0}}`
+
+    const result = getTranslatePromptFromConfig(defaultTranslatePromptConfig, "French", input, {
+      isBatch: true,
+    })
+
+    const batchRulesIndex = result.systemPrompt.indexOf("## Multi-paragraph Translation Rules")
+    const markerRulesIndex = result.systemPrompt.indexOf("## Protected HTML Marker Rules")
+    const placeholderRulesIndex = result.systemPrompt.indexOf("## Protected Placeholder Rules")
+    expect(batchRulesIndex).toBeGreaterThan(-1)
+    expect(markerRulesIndex).toBeGreaterThan(batchRulesIndex)
+    expect(placeholderRulesIndex).toBeGreaterThan(markerRulesIndex)
+  })
+
   it("replaces new subtitle prompt tokens from stored config", async () => {
     mockGetLocalConfig.mockResolvedValue({
       ...DEFAULT_CONFIG,
@@ -301,18 +350,19 @@ describe("no-translation sentinel", () => {
     customPromptsConfig: { promptId: DEFAULT_TRANSLATE_PROMPT_ID, patterns: [] },
   }
 
-  it("appends the sentinel rule to batch prompts with the target language substituted", () => {
-    const result = getTranslatePromptFromConfig(defaultPromptsConfig, "Simplified Chinese", "Hi", {
-      isBatch: true,
-    })
+  it.each(["Simplified Chinese", "English", "Japanese"])(
+    "appends the sentinel rule to batch prompts with %s substituted",
+    (targetLanguage) => {
+      const result = getTranslatePromptFromConfig(defaultPromptsConfig, targetLanguage, "Hi", {
+        isBatch: true,
+      })
 
-    expect(result.systemPrompt).toContain("Already-translated Input Rule")
-    expect(result.systemPrompt).toContain(NO_TRANSLATION_SENTINEL)
-    expect(result.systemPrompt).toContain(
-      "only when every word of it is already Simplified Chinese",
-    )
-    expect(result.systemPrompt).not.toContain("{{targetLanguage}}")
-  })
+      expect(result.systemPrompt).toContain("Already-translated Input Rule")
+      expect(result.systemPrompt).toContain(NO_TRANSLATION_SENTINEL)
+      expect(result.systemPrompt).toContain(`differ from ${targetLanguage}`)
+      expect(result.systemPrompt).not.toContain("{{targetLanguage}}")
+    },
+  )
 
   it("keeps the marker out of the batch format example", () => {
     const result = getTranslatePromptFromConfig(defaultPromptsConfig, "Simplified Chinese", "Hi", {
@@ -329,26 +379,16 @@ describe("no-translation sentinel", () => {
     expect(result.systemPrompt).toContain(DEFAULT_BATCH_TRANSLATE_PROMPT)
   })
 
-  it("keeps the marker rule small and free of the wordings that misfired", () => {
-    // Three wordings this block has already been burned by, none of them
-    // visible to a behavioural test, so pin the shape instead:
-    //   - "and needs no translation" let models treat "untranslatable" as a
-    //     trigger — the wording that caused the missing-paragraph bug;
-    //   - enumerating the misfiring shapes (headings, API names, bibliography
-    //     entries, error messages) primes small models to skip them;
-    //   - "instead of repeating the paragraph" pushed models to render
-    //     already-target-language paragraphs back into the source language.
-    // The body is deliberately ONE line: a list would be appended as further
-    // lines, which a sentence count split on ". " cannot see.
+  it("keeps the selected marker rule small and pins its safety boundary", () => {
     const lines = DEFAULT_SENTINEL_TRANSLATE_PROMPT.split("\n")
     expect(lines).toHaveLength(2)
     expect(lines[1]!.length).toBeLessThan(240)
-    expect(DEFAULT_SENTINEL_TRANSLATE_PROMPT).not.toContain("needs no translation")
-    expect(DEFAULT_SENTINEL_TRANSLATE_PROMPT).not.toContain("instead of repeating the paragraph")
-    // The one clause in here that is not part of the language test. Without it
-    // a model can mix the marker into otherwise translated output, which
-    // isNoTranslationSentinel (exact match only) would then render verbatim.
-    expect(DEFAULT_SENTINEL_TRANSLATE_PROMPT).toContain("Never mix the marker with translated text")
+    expect(DEFAULT_SENTINEL_TRANSLATE_PROMPT).toContain(
+      "names, brands, handles, URLs, numbers, or code",
+    )
+    expect(DEFAULT_SENTINEL_TRANSLATE_PROMPT).toContain(
+      "A foreign-language phrase or clause must be translated",
+    )
   })
 
   it("never leaks the sentinel into subtitle prompts, which share the batch rules", async () => {

@@ -1,0 +1,195 @@
+{
+  "target": {
+    "id": "Function:src/utils/host/dom/filter.ts:isInsideContentContainer",
+    "name": "isInsideContentContainer",
+    "type": "Function",
+    "filePath": "src/utils/host/dom/filter.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 14,
+  "risk": "LOW",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 1,
+    "processes_affected": 1,
+    "modules_affected": 1
+  },
+  "byDepthCounts": {
+    "1": 1,
+    "2": 5,
+    "3": 8
+  },
+  "affected_processes": [
+    {
+      "name": "translateNodesBilingualMode",
+      "type": "Function",
+      "filePath": "src/utils/host/translate/core/translation-modes.ts",
+      "affected_process_count": 2,
+      "total_hits": 2,
+      "earliest_broken_step": 1
+    }
+  ],
+  "affected_modules": [
+    {
+      "name": "Dom",
+      "hits": 14,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/utils/host/dom/filter.ts:isDontWalkIntoAndDontTranslateAsChildElement",
+        "name": "isDontWalkIntoAndDontTranslateAsChildElement",
+        "filePath": "src/utils/host/dom/filter.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "Function:src/utils/host/dom/filter.ts:isWalkBlockedElement",
+        "name": "isWalkBlockedElement",
+        "filePath": "src/utils/host/dom/filter.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/utils/host/dom/find.ts:unwrapDeepestOnlyHTMLChild.shouldKeepNode@176:4",
+        "name": "shouldKeepNode",
+        "filePath": "src/utils/host/dom/find.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/utils/host/dom/traversal.ts:extractTextContent",
+        "name": "extractTextContent",
+        "filePath": "src/utils/host/dom/traversal.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/utils/host/translate/dom/paragraph-segmentation.ts:collectRawSource",
+        "name": "collectRawSource",
+        "filePath": "src/utils/host/translate/dom/paragraph-segmentation.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/utils/host/translate/dom/paragraph-segmentation.ts:contributesNoText",
+        "name": "contributesNoText",
+        "filePath": "src/utils/host/translate/dom/paragraph-segmentation.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "3": [
+      {
+        "depth": 3,
+        "id": "Function:src/utils/host/dom/filter.ts:hasNoWalkAncestor",
+        "name": "hasNoWalkAncestor",
+        "filePath": "src/utils/host/dom/filter.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/utils/host/dom/traversal.ts:walkAndLabelElement",
+        "name": "walkAndLabelElement",
+        "filePath": "src/utils/host/dom/traversal.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/utils/host/dom/traversal.ts:walkAndLabelElementChunked",
+        "name": "walkAndLabelElementChunked",
+        "filePath": "src/utils/host/dom/traversal.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/utils/host/dom/traversal.ts:walkNode",
+        "name": "walkNode",
+        "filePath": "src/utils/host/dom/traversal.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/utils/host/translate/core/translation-modes.ts:translateNodesBilingualMode",
+        "name": "translateNodesBilingualMode",
+        "filePath": "src/utils/host/translate/core/translation-modes.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_270_translatenodesbiling",
+            "label": "TranslateNodesBilingualMode → IsTextNode",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_320_translatenodesbiling",
+            "label": "TranslateNodesBilingualMode → IsHTMLElement",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/utils/host/translate/core/translation-modes.ts:translateTranslationOnlyRun",
+        "name": "translateTranslationOnlyRun",
+        "filePath": "src/utils/host/translate/core/translation-modes.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/utils/host/translate/dom/paragraph-segmentation.ts:buildVirtualParagraphPlan",
+        "name": "buildVirtualParagraphPlan",
+        "filePath": "src/utils/host/translate/dom/paragraph-segmentation.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/utils/host/translate/dom/paragraph-segmentation.ts:unitRangeNodes",
+        "name": "unitRangeNodes",
+        "filePath": "src/utils/host/translate/dom/paragraph-segmentation.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ]
+  },
+  "staleness": {
+    "commitsBehind": 1,
+    "hint": "⚠️ Index is 1 commit behind HEAD. Run analyze tool to update."
+  }
+}

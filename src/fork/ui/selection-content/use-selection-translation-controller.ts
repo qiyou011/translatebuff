@@ -13,7 +13,7 @@ import { useAtomValue, useSetAtom } from "jotai"
 import { useCallback, useEffect, useEffectEvent, useMemo, useRef, useState } from "react"
 import { toastManager } from "@/components/ui/base-ui/toast"
 import {
-  isSelectionToolbarVisibleAtom,
+  isSelectionToolbarOpenAtom as isSelectionToolbarVisibleAtom,
   selectionSessionAtom,
   selectionToolbarTranslateRequestAtom,
 } from "@/entrypoints/selection.content/selection-toolbar/atoms"

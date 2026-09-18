@@ -1,0 +1,80 @@
+{
+  "target": {
+    "id": "Function:src/utils/custom-actions.ts:getBuiltInDictionaryAction",
+    "name": "getBuiltInDictionaryAction",
+    "type": "Function",
+    "filePath": "src/utils/custom-actions.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 4,
+  "risk": "LOW",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 2,
+    "processes_affected": 0,
+    "modules_affected": 1
+  },
+  "byDepthCounts": {
+    "1": 2,
+    "2": 2
+  },
+  "affected_processes": [],
+  "affected_modules": [
+    {
+      "name": "Cluster_396",
+      "hits": 4,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/utils/custom-actions.ts:findSelectionToolbarAction",
+        "name": "findSelectionToolbarAction",
+        "filePath": "src/utils/custom-actions.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/utils/custom-actions.ts:getSelectionToolbarActions",
+        "name": "getSelectionToolbarActions",
+        "filePath": "src/utils/custom-actions.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "Function:src/utils/custom-actions.ts:patchSelectionToolbarAction",
+        "name": "patchSelectionToolbarAction",
+        "filePath": "src/utils/custom-actions.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/utils/custom-actions.ts:resolveNoteSuggestionAction",
+        "name": "resolveNoteSuggestionAction",
+        "filePath": "src/utils/custom-actions.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ]
+  },
+  "staleness": {
+    "commitsBehind": 1,
+    "hint": "⚠️ Index is 1 commit behind HEAD. Run analyze tool to update."
+  }
+}

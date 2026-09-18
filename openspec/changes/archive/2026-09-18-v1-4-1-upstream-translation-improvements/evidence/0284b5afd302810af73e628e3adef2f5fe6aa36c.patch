@@ -1,0 +1,417 @@
+diff --git a/.changeset/selection-overlay-touch-gesture.md b/.changeset/selection-overlay-touch-gesture.md
+new file mode 100644
+index 00000000..14d00036
+--- /dev/null
++++ b/.changeset/selection-overlay-touch-gesture.md
+@@ -0,0 +1,11 @@
++---
++"@read-frog/extension": patch
++---
++
++fix(selection): collapse idle selection overlay so page touch drag gestures are not stolen
++
++The selection toolbar's always-mounted full-viewport `fixed inset-0` layer
++made Chrome claim horizontal touch pans on pages using `touch-action:
++manipulation`, firing `pointercancel` and breaking touch drag gestures
++(e.g. carousels). Collapse the overlay root to 0x0 while the toolbar is
++idle; it expands back to full viewport when the toolbar becomes visible.
+diff --git a/src/entrypoints/selection.content/selection-toolbar/__tests__/external-selection.test.tsx b/src/entrypoints/selection.content/selection-toolbar/__tests__/external-selection.test.tsx
+index 8c7f91d2..cfc142c5 100644
+--- a/src/entrypoints/selection.content/selection-toolbar/__tests__/external-selection.test.tsx
++++ b/src/entrypoints/selection.content/selection-toolbar/__tests__/external-selection.test.tsx
+@@ -7,7 +7,7 @@ import {
+   EXTERNAL_SELECTION_CLEAR_EVENT,
+   EXTERNAL_SELECTION_OPEN_EVENT,
+ } from "@/utils/constants/selection"
+-import { isSelectionToolbarVisibleAtom, selectionSessionAtom } from "../atoms"
++import { isSelectionToolbarOpenAtom, selectionSessionAtom } from "../atoms"
+ import { SelectionToolbar } from "../index"
+ 
+ // Mock child components
+@@ -83,7 +83,7 @@ describe("selectionToolbar - external selection source", () => {
+ 
+   beforeEach(() => {
+     store.set(selectionSessionAtom, null)
+-    store.set(isSelectionToolbarVisibleAtom, false)
++    store.set(isSelectionToolbarOpenAtom, false)
+   })
+ 
+   afterEach(() => {
+diff --git a/src/entrypoints/selection.content/selection-toolbar/__tests__/selection-toolbar.test.tsx b/src/entrypoints/selection.content/selection-toolbar/__tests__/selection-toolbar.test.tsx
+index 5927f382..08e088ba 100644
+--- a/src/entrypoints/selection.content/selection-toolbar/__tests__/selection-toolbar.test.tsx
++++ b/src/entrypoints/selection.content/selection-toolbar/__tests__/selection-toolbar.test.tsx
+@@ -1,8 +1,9 @@
+ // @vitest-environment jsdom
+ import { act, cleanup, render, screen, waitFor } from "@testing-library/react"
+-import { atom, useAtomValue } from "jotai"
++import { atom, getDefaultStore, useAtomValue } from "jotai"
+ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
+ import { SELECTION_CONTENT_OVERLAY_ROOT_ATTRIBUTE } from "@/entrypoints/selection.content/overlay-layers"
++import { configFieldsAtomMap } from "@/utils/atoms/config"
+ import { selectionSessionAtom } from "../atoms"
+ import { SelectionToolbar } from "../index"
+ import { MODAL_DIALOG_HOST_SLOT_ATTRIBUTE } from "../modal-dialog-host"
+@@ -52,12 +53,20 @@ vi.mock("@/utils/atoms/config", async (importOriginal) => {
+   }
+ })
+ 
++const store = getDefaultStore()
++const DEFAULT_SELECTION_TOOLBAR_CONFIG = store.get(configFieldsAtomMap.selectionToolbar)
++
+ describe("selectionToolbar - isInputOrTextarea logic", () => {
+   let originalRequestAnimationFrame: typeof requestAnimationFrame
+   let rafCallbacks: FrameRequestCallback[]
+   let mockSelectionToString: () => string
+ 
+-  beforeEach(() => {
++  beforeEach(async () => {
++    await store.set(
++      configFieldsAtomMap.selectionToolbar,
++      structuredClone(DEFAULT_SELECTION_TOOLBAR_CONFIG),
++    )
++
+     // Mock requestAnimationFrame to execute callbacks synchronously
+     rafCallbacks = []
+     originalRequestAnimationFrame = window.requestAnimationFrame
+@@ -145,6 +154,15 @@ describe("selectionToolbar - isInputOrTextarea logic", () => {
+   const getToolbarSurface = () =>
+     document.querySelector<HTMLElement>("[data-slot='selection-toolbar-surface']")
+ 
++  const getOverlayRoot = () =>
++    document.querySelector<HTMLElement>(`[${SELECTION_CONTENT_OVERLAY_ROOT_ATTRIBUTE}]`)
++
++  const expectOverlayCollapsed = () => {
++    expect(getOverlayRoot()).toHaveClass("h-0")
++    expect(getOverlayRoot()).toHaveClass("w-0")
++    expect(getOverlayRoot()).not.toHaveClass("inset-0")
++  }
++
+   it("applies configured opacity on the toolbar surface instead of the overlay host", () => {
+     render(<SelectionToolbar />)
+ 
+@@ -152,6 +170,93 @@ describe("selectionToolbar - isInputOrTextarea logic", () => {
+     expect(getToolbarSurface()?.style.opacity).toBe("var(--rf-selection-opacity, 1)")
+   })
+ 
++  it("collapses the overlay root to 0x0 while idle so touch gestures are not stolen", async () => {
++    render(
++      <div>
++        <SelectionToolbar />
++        <div data-testid="test-element">{MOCK_SELECTED_TEXT}</div>
++      </div>,
++    )
++
++    // Idle: no full-viewport fixed layer. A persistent inset-0 layer makes
++    // Chrome claim horizontal touch pans on `touch-action: manipulation`
++    // pages and fires pointercancel at page drag gestures (e.g. carousels).
++    expectOverlayCollapsed()
++
++    await triggerMouseUpWithSelection(screen.getByTestId("test-element"))
++    await waitFor(() => {
++      expect(getOverlayRoot()).toHaveClass("inset-0")
++      expect(getOverlayRoot()).not.toHaveClass("h-0")
++    })
++  })
++
++  it("keeps the overlay root collapsed when the toolbar is disabled", async () => {
++    await store.set(configFieldsAtomMap.selectionToolbar, {
++      ...DEFAULT_SELECTION_TOOLBAR_CONFIG,
++      enabled: false,
++    })
++    render(
++      <div>
++        <SelectionToolbar />
++        <div data-testid="test-element">{MOCK_SELECTED_TEXT}</div>
++      </div>,
++    )
++
++    await triggerMouseUpWithSelection(screen.getByTestId("test-element"))
++
++    expect(getOverlayRoot()).toHaveClass("h-0", "w-0")
++    expect(getOverlayRoot()).not.toHaveClass("inset-0")
++  })
++
++  it("keeps the overlay root collapsed when the current site is disabled", async () => {
++    await store.set(configFieldsAtomMap.selectionToolbar, {
++      ...DEFAULT_SELECTION_TOOLBAR_CONFIG,
++      disabledSelectionToolbarPatterns: [window.location.hostname],
++    })
++    render(
++      <div>
++        <SelectionToolbar />
++        <div data-testid="test-element">{MOCK_SELECTED_TEXT}</div>
++      </div>,
++    )
++
++    await triggerMouseUpWithSelection(screen.getByTestId("test-element"))
++
++    expect(getOverlayRoot()).toHaveClass("h-0", "w-0")
++    expect(getOverlayRoot()).not.toHaveClass("inset-0")
++  })
++
++  it("keeps the overlay root collapsed when no toolbar feature is enabled", async () => {
++    await store.set(configFieldsAtomMap.selectionToolbar, {
++      ...DEFAULT_SELECTION_TOOLBAR_CONFIG,
++      features: {
++        translate: {
++          ...DEFAULT_SELECTION_TOOLBAR_CONFIG.features.translate,
++          enabled: false,
++        },
++        speak: { enabled: false },
++      },
++      builtInActions: {
++        dictionary: {
++          enabled: false,
++          providerId: "google-translate-default",
++        },
++      },
++      customActions: [],
++    })
++    render(
++      <div>
++        <SelectionToolbar />
++        <div data-testid="test-element">{MOCK_SELECTED_TEXT}</div>
++      </div>,
++    )
++
++    await triggerMouseUpWithSelection(screen.getByTestId("test-element"))
++
++    expect(getOverlayRoot()).toHaveClass("h-0", "w-0")
++    expect(getOverlayRoot()).not.toHaveClass("inset-0")
++  })
++
+   it("should show toolbar when selecting text in a normal div element", async () => {
+     render(
+       <div>
+diff --git a/src/entrypoints/selection.content/selection-toolbar/atoms.ts b/src/entrypoints/selection.content/selection-toolbar/atoms.ts
+index 2066a01b..9d426fa9 100644
+--- a/src/entrypoints/selection.content/selection-toolbar/atoms.ts
++++ b/src/entrypoints/selection.content/selection-toolbar/atoms.ts
+@@ -67,7 +67,7 @@ export const contextAtom = atom(
+     set(selectionSessionAtom, createSelectionSession(currentSelection, nextContext))
+   },
+ )
+-export const isSelectionToolbarVisibleAtom = atom<boolean>(false)
++export const isSelectionToolbarOpenAtom = atom<boolean>(false)
+ 
+ export const selectionContentAtom = atom((get) => get(selectionAtom)?.text ?? null)
+ 
+diff --git a/src/entrypoints/selection.content/selection-toolbar/custom-action-button/provider.tsx b/src/entrypoints/selection.content/selection-toolbar/custom-action-button/provider.tsx
+index 531fffb7..148361bc 100644
+--- a/src/entrypoints/selection.content/selection-toolbar/custom-action-button/provider.tsx
++++ b/src/entrypoints/selection.content/selection-toolbar/custom-action-button/provider.tsx
+@@ -23,7 +23,7 @@ import { SelectionToolbarTitleContent } from "../../components/selection-toolbar
+ import { normalizeSelectedText } from "../../utils"
+ import {
+   contextAtom,
+-  isSelectionToolbarVisibleAtom,
++  isSelectionToolbarOpenAtom,
+   selectionAtom,
+   selectionSessionAtom,
+ } from "../atoms"
+@@ -98,7 +98,7 @@ export function SelectionCustomActionProvider({ children }: { children: ReactNod
+   const selectionToolbarConfig = useAtomValue(configFieldsAtomMap.selectionToolbar)
+   const providersConfig = useAtomValue(configFieldsAtomMap.providersConfig)
+   const language = useAtomValue(configFieldsAtomMap.language)
+-  const setIsSelectionToolbarVisible = useSetAtom(isSelectionToolbarVisibleAtom)
++  const setIsSelectionToolbarOpen = useSetAtom(isSelectionToolbarOpenAtom)
+   const setConfig = useSetAtom(writeConfigAtom)
+   const isSaveToNotebaseDialogOpen = useAtomValue(isSaveToNotebaseDialogOpenAtom)
+   const bodyRef = useRef<HTMLDivElement>(null)
+@@ -183,9 +183,9 @@ export function SelectionCustomActionProvider({ children }: { children: ReactNod
+     setActiveSession(pendingRequest?.session ?? selectionSession)
+     setActiveActionId(pendingRequest?.actionId ?? null)
+     setSourceSurface(pendingRequest?.surface ?? ANALYTICS_SURFACE.SELECTION_TOOLBAR)
+-    setIsSelectionToolbarVisible(false)
++    setIsSelectionToolbarOpen(false)
+     pendingOpenRequestRef.current = null
+-  }, [selectionSession, setIsSelectionToolbarVisible])
++  }, [selectionSession, setIsSelectionToolbarOpen])
+ 
+   const handleOpenChange = useCallback(
+     (nextOpen: boolean) => {
+diff --git a/src/entrypoints/selection.content/selection-toolbar/index.tsx b/src/entrypoints/selection.content/selection-toolbar/index.tsx
+index f4856a01..7c4144e6 100644
+--- a/src/entrypoints/selection.content/selection-toolbar/index.tsx
++++ b/src/entrypoints/selection.content/selection-toolbar/index.tsx
+@@ -20,11 +20,7 @@ import { getSelectionToolbarActions } from "@/utils/custom-actions"
+ import { cn } from "@/utils/styles/utils"
+ import { matchDomainPattern } from "@/utils/url"
+ import { buildContextSnapshot, readSelectionSnapshot } from "../utils"
+-import {
+-  clearSelectionStateAtom,
+-  isSelectionToolbarVisibleAtom,
+-  setSelectionStateAtom,
+-} from "./atoms"
++import { clearSelectionStateAtom, isSelectionToolbarOpenAtom, setSelectionStateAtom } from "./atoms"
+ import { CloseButton, DropEvent } from "./close-button"
+ import { SelectionToolbarCustomActionButtons } from "./custom-action-button"
+ import { createModalDialogHostController } from "./modal-dialog-host"
+@@ -208,12 +204,20 @@ export function SelectionToolbar() {
+   const modalDialogHostControllerRef = useRef<ModalDialogHostController>(null)
+   const isPointerDownInsideOverlayRef = useRef(false)
+   const preserveSelectionStateRef = useRef(false)
+-  const [isSelectionToolbarVisible, setIsSelectionToolbarVisible] = useAtom(
+-    isSelectionToolbarVisibleAtom,
+-  )
++  const [isSelectionToolbarOpen, setIsSelectionToolbarOpen] = useAtom(isSelectionToolbarOpenAtom)
+   const setSelectionState = useSetAtom(setSelectionStateAtom)
+   const clearSelectionState = useSetAtom(clearSelectionStateAtom)
+   const selectionToolbar = useAtomValue(configFieldsAtomMap.selectionToolbar)
++  const isSiteDisabled = selectionToolbar.disabledSelectionToolbarPatterns?.some((pattern) =>
++    matchDomainPattern(window.location.href, pattern),
++  )
++  const { features } = selectionToolbar
++  const hasAnyEnabledFeature =
++    features.translate.enabled ||
++    features.speak.enabled ||
++    getSelectionToolbarActions(selectionToolbar).some((action) => action.enabled !== false)
++  const isSelectionToolbarVisible =
++    isSelectionToolbarOpen && selectionToolbar.enabled && !isSiteDisabled && hasAnyEnabledFeature
+   const dropdownOpenRef = useRef(false)
+   // Bumped per external (ebook bridge) selection so the position is re-applied
+   // even when the toolbar is already visible (visibility doesn't flip then).
+@@ -261,7 +265,7 @@ export function SelectionToolbar() {
+           selectionScrollTargetsRef.current = []
+           selectionPositionRef.current = null
+           clearSelectionState()
+-          setIsSelectionToolbarVisible(false)
++          setIsSelectionToolbarOpen(false)
+           return
+         }
+ 
+@@ -290,7 +294,7 @@ export function SelectionToolbar() {
+       tooltip.style.top = `${hostPosition.y}px`
+       tooltip.style.left = `${hostPosition.x}px`
+     },
+-    [clearSelectionState, isSelectionToolbarVisible, setIsSelectionToolbarVisible],
++    [clearSelectionState, isSelectionToolbarVisible, setIsSelectionToolbarOpen],
+   )
+ 
+   useLayoutEffect(() => {
+@@ -427,7 +431,7 @@ export function SelectionToolbar() {
+           selectionScrollTargetsRef.current = collectSelectionScrollTargets(
+             selectionSnapshot.ranges,
+           )
+-          setIsSelectionToolbarVisible(true)
++          setIsSelectionToolbarOpen(true)
+         }
+       })
+     }
+@@ -458,7 +462,7 @@ export function SelectionToolbar() {
+       selectionScrollTargetsRef.current = []
+ 
+       clearSelectionState()
+-      setIsSelectionToolbarVisible(false)
++      setIsSelectionToolbarOpen(false)
+     }
+ 
+     const handleSelectionChange = () => {
+@@ -484,7 +488,7 @@ export function SelectionToolbar() {
+         selectionScrollTargetsRef.current = []
+         // Don't hide toolbar when dropdown is open to prevent unwanted dismissal
+         // (Firefox clears selection when dropdown gains focus)
+-        if (!dropdownOpenRef.current) setIsSelectionToolbarVisible(false)
++        if (!dropdownOpenRef.current) setIsSelectionToolbarOpen(false)
+       }
+     }
+ 
+@@ -497,7 +501,7 @@ export function SelectionToolbar() {
+       document.removeEventListener("mousedown", handleMouseDown)
+       document.removeEventListener("selectionchange", handleSelectionChange)
+     }
+-  }, [clearSelectionState, placeHostForSelection, setIsSelectionToolbarVisible, setSelectionState])
++  }, [clearSelectionState, placeHostForSelection, setIsSelectionToolbarOpen, setSelectionState])
+ 
+   useEffect(() => {
+     const handler = (e: Event) => {
+@@ -532,8 +536,8 @@ export function SelectionToolbar() {
+       selectionPositionRef.current = detail.anchor
+       selectionAnchorTrackerRef.current = null
+       selectionScrollTargetsRef.current = []
+-      setIsSelectionToolbarVisible(true)
+-      // Force a reposition: visibility may already be true, in which case the
++      setIsSelectionToolbarOpen(true)
++      // Force a reposition: the toolbar may already be open, in which case the
+       // updatePosition layout effect would not re-run on its own.
+       setExternalSelectionTick((tick) => tick + 1)
+     }
+@@ -550,7 +554,7 @@ export function SelectionToolbar() {
+       selectionAnchorTrackerRef.current = null
+       selectionScrollTargetsRef.current = []
+       // Don't hide toolbar when dropdown is open to prevent unwanted dismissal
+-      if (!dropdownOpenRef.current) setIsSelectionToolbarVisible(false)
++      if (!dropdownOpenRef.current) setIsSelectionToolbarOpen(false)
+     }
+ 
+     window.addEventListener(EXTERNAL_SELECTION_OPEN_EVENT, handleExternalSelectionOpen)
+@@ -560,23 +564,21 @@ export function SelectionToolbar() {
+       window.removeEventListener(EXTERNAL_SELECTION_OPEN_EVENT, handleExternalSelectionOpen)
+       window.removeEventListener(EXTERNAL_SELECTION_CLEAR_EVENT, handleExternalSelectionClear)
+     }
+-  }, [clearSelectionState, setIsSelectionToolbarVisible, setSelectionState])
+-
+-  // Check if current site is disabled
+-  const isSiteDisabled = selectionToolbar.disabledSelectionToolbarPatterns?.some((pattern) =>
+-    matchDomainPattern(window.location.href, pattern),
+-  )
+-
+-  const { features } = selectionToolbar
+-  const hasAnyEnabledFeature =
+-    features.translate.enabled ||
+-    features.speak.enabled ||
+-    getSelectionToolbarActions(selectionToolbar).some((action) => action.enabled !== false)
++  }, [clearSelectionState, setIsSelectionToolbarOpen, setSelectionState])
+ 
+   return (
+     <div
+       ref={tooltipContainerRef}
+-      className={`${NOTRANSLATE_CLASS} pointer-events-none fixed inset-0 ${SELECTION_CONTENT_OVERLAY_LAYERS.selectionOverlay}`}
++      className={cn(
++        NOTRANSLATE_CLASS,
++        // Collapse to 0x0 while idle: a persistent full-viewport fixed layer
++        // makes Chrome claim horizontal touch pans on pages using
++        // `touch-action: manipulation`, firing pointercancel and breaking
++        // touch drag gestures (e.g. carousels) outside the toolbar.
++        isSelectionToolbarVisible
++          ? `pointer-events-none fixed inset-0 ${SELECTION_CONTENT_OVERLAY_LAYERS.selectionOverlay}`
++          : "pointer-events-none fixed h-0 w-0",
++      )}
+       {...{ [SELECTION_CONTENT_OVERLAY_ROOT_ATTRIBUTE]: "" }}
+     >
+       {selectionToolbar.enabled && !isSiteDisabled && hasAnyEnabledFeature && (
+diff --git a/src/entrypoints/selection.content/selection-toolbar/translate-button/provider.tsx b/src/entrypoints/selection.content/selection-toolbar/translate-button/provider.tsx
+index 510ef75a..dc735639 100644
+--- a/src/entrypoints/selection.content/selection-toolbar/translate-button/provider.tsx
++++ b/src/entrypoints/selection.content/selection-toolbar/translate-button/provider.tsx
+@@ -55,7 +55,7 @@ import { SelectionToolbarErrorAlert } from "../../components/selection-toolbar-e
+ import { SelectionToolbarFooterContent } from "../../components/selection-toolbar-footer-content"
+ import { SelectionToolbarTitleContent } from "../../components/selection-toolbar-title-content"
+ import {
+-  isSelectionToolbarVisibleAtom,
++  isSelectionToolbarOpenAtom,
+   noteSuggestionProviderAtom,
+   selectionSessionAtom,
+   selectionToolbarTranslateRequestAtom,
+@@ -342,7 +342,7 @@ export function SelectionTranslationProvider({ children }: { children: ReactNode
+   const noteSuggestionProvider = useAtomValue(noteSuggestionProviderAtom)
+   const providersConfig = useAtomValue(configFieldsAtomMap.providersConfig)
+   const selectionToolbar = useAtomValue(configFieldsAtomMap.selectionToolbar)
+-  const setIsSelectionToolbarVisible = useSetAtom(isSelectionToolbarVisibleAtom)
++  const setIsSelectionToolbarOpen = useSetAtom(isSelectionToolbarOpenAtom)
+   const setConfig = useSetAtom(writeConfigAtom)
+   const abortControllerRef = useRef<AbortController | null>(null)
+   const pendingOpenRequestRef = useRef<SelectionTranslatePendingOpenRequest | null>(null)
+@@ -426,9 +426,9 @@ export function SelectionTranslationProvider({ children }: { children: ReactNode
+ 
+     setActiveSession(pendingRequest?.session ?? selectionSession)
+     setSourceSurface(pendingRequest?.surface ?? ANALYTICS_SURFACE.SELECTION_TOOLBAR)
+-    setIsSelectionToolbarVisible(false)
++    setIsSelectionToolbarOpen(false)
+     pendingOpenRequestRef.current = null
+-  }, [selectionSession, setIsSelectionToolbarVisible])
++  }, [selectionSession, setIsSelectionToolbarOpen])
+ 
+   const handleProviderChange = useCallback(
+     (providerId: string) => {

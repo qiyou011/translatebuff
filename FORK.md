@@ -5,6 +5,25 @@ Translatebuff 是 read-frog 的软 fork（上游：mengxi-ream/read-frog）。
 
 ## 同步仪式（按上游 changeset release，或每周一次）
 
+### 1.4.1 选择性修复例外
+
+`v1-4-1-upstream-translation-improvements` 批准的 12 条修复使用逐条补丁移植；3 条延期仍不引入。完整上游同步继续使用 merge，选择性移植不推进 `upstream-baseline.json`。
+
+`selective-upstream-patches.json` 使用唯一来源 SHA 和唯一文件路径；同一文件列出全部贡献来源，SHA256 对最终累计内容做 LF 归一化。删除文件用 `deleted: true` 且不含 sha256。门禁先预检整个账本，再分类修改文件，不能通过刷新指纹接受未审查漂移。
+
+运行门禁前必须从固定官方仓库准备来源：
+
+```sh
+git remote add upstream https://github.com/mengxi-ream/read-frog.git
+git fetch --no-tags upstream +refs/heads/main:refs/remotes/upstream/main
+```
+
+已有 upstream 时先确认 URL 相同，不重复添加。官方最新 main 用于证明来源；完整同步基线用于判断来源是否已经被完整吸收。Git 查询错误必须失败，不能按普通非祖先处理。
+
+完整 merge 后，先重建最终累计内容，清除已吸收来源及无剩余贡献的文件例外，再验证账本。撤销单条来源也须重建共享文件的剩余补丁结果、重新审查指纹与贡献关系，不能只删来源行。
+
+默认边界差集为提交范围 `base...HEAD`；未提交修改不能仅凭该检查宣称通过。检查记录必须说明实际范围，提交前另行核对工作区 diff 与全账本内容，提交后再检查真实提交范围。
+
 同步时同时复查 [上游问题跟进记录](UPSTREAM_FOLLOW_UPS.md)，其中包含暂缓本地修复的已知事项及 fork 副本对账要求。
 
 1. `git fetch upstream`

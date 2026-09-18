@@ -1,0 +1,66 @@
+{
+  "target": {
+    "id": "Function:src/entrypoints/options/pages/api-providers/providers-config/add-provider-dialog.tsx:ProviderButtonGroup",
+    "name": "ProviderButtonGroup",
+    "type": "Function",
+    "filePath": "src/entrypoints/options/pages/api-providers/providers-config/add-provider-dialog.tsx"
+  },
+  "direction": "upstream",
+  "impactedCount": 1,
+  "risk": "LOW",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 1,
+    "processes_affected": 1,
+    "modules_affected": 1
+  },
+  "byDepthCounts": {
+    "1": 1
+  },
+  "affected_processes": [
+    {
+      "name": "AddProviderDialog",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/api-providers/providers-config/add-provider-dialog.tsx",
+      "affected_process_count": 1,
+      "total_hits": 1,
+      "earliest_broken_step": 1
+    }
+  ],
+  "affected_modules": [
+    {
+      "name": "Providers-config",
+      "hits": 1,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/options/pages/api-providers/providers-config/add-provider-dialog.tsx:AddProviderDialog",
+        "name": "AddProviderDialog",
+        "filePath": "src/entrypoints/options/pages/api-providers/providers-config/add-provider-dialog.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_68_addproviderdialog",
+            "label": "AddProviderDialog → AddProvider",
+            "processType": "intra_community",
+            "step": 1
+          }
+        ]
+      }
+    ]
+  },
+  "staleness": {
+    "commitsBehind": 1,
+    "hint": "⚠️ Index is 1 commit behind HEAD. Run analyze tool to update."
+  }
+}

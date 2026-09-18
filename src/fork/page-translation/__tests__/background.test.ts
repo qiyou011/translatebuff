@@ -87,6 +87,29 @@ it("routes input immediately even while the page lane is occupied", async () => 
   await vi.advanceTimersByTimeAsync(0)
   expect(await page).toBe("page translated")
 })
+
+it.each(["formula lost", "{{0}} {{0}}", "{{0}} {{9}}"])(
+  "does not persist damaged formula tokens through the injected fork queue: %s",
+  async (result) => {
+    mocks.generate.mockResolvedValue({ text: JSON.stringify({ t0: result }) })
+    setUpWebPageTranslationQueue(createPageTranslationQueues)
+    const request = mocks.handlers.get("enqueueTranslateRequest")!(message("Formula {{0}}"))
+    await vi.advanceTimersByTimeAsync(100)
+    expect(await request).toBe(result)
+    expect(mocks.put).not.toHaveBeenCalled()
+  },
+)
+
+it("persists the formula sentinel through the injected fork queue", async () => {
+  mocks.generate.mockResolvedValue({ text: '{"t0":"{{NO_TRANSLATION_NEEDED}}"}' })
+  setUpWebPageTranslationQueue(createPageTranslationQueues)
+  const request = mocks.handlers.get("enqueueTranslateRequest")!(message("Formula {{0}}"))
+  await vi.advanceTimersByTimeAsync(100)
+  expect(await request).toBe("{{NO_TRANSLATION_NEEDED}}")
+  expect(mocks.put).toHaveBeenCalledWith(
+    expect.objectContaining({ translation: "{{NO_TRANSLATION_NEEDED}}" }),
+  )
+})
 it("does not cache a late response for a cancelled page", async () => {
   let finish!: (value: any) => void
   mocks.generate.mockImplementation(

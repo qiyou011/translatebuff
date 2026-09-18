@@ -1,0 +1,2289 @@
+{
+  "summary": {
+    "changed_count": 179,
+    "affected_count": 75,
+    "changed_files": 136,
+    "risk_level": "critical"
+  },
+  "changed_symbols": [
+    {
+      "id": "Section:FORK.md:L1:Translatebuff Fork Playbook",
+      "name": "Translatebuff Fork Playbook",
+      "type": "Section",
+      "filePath": "FORK.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:FORK.md:L6:同步仪式（按上游 changeset release，或每周一次）",
+      "name": "同步仪式（按上游 changeset release，或每周一次）",
+      "type": "Section",
+      "filePath": "FORK.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:FORK.md:L24:绝不编辑（每次同步 take-theirs）",
+      "name": "绝不编辑（每次同步 take-theirs）",
+      "type": "Section",
+      "filePath": "FORK.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:scripts/check-fork-boundary.d.mts:resolveSyncBase",
+      "name": "resolveSyncBase",
+      "type": "Function",
+      "filePath": "scripts/check-fork-boundary.d.mts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:scripts/check-fork-boundary.d.mts:resolveUpstreamRef",
+      "name": "resolveUpstreamRef",
+      "type": "Function",
+      "filePath": "scripts/check-fork-boundary.d.mts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:scripts/check-fork-boundary.mjs:classifyChangedFiles",
+      "name": "classifyChangedFiles",
+      "type": "Function",
+      "filePath": "scripts/check-fork-boundary.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:scripts/check-fork-boundary.mjs:classifyChangedFiles.violations@40:11",
+      "name": "violations",
+      "type": "Property",
+      "filePath": "scripts/check-fork-boundary.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:scripts/check-fork-boundary.mjs:resolveUpstreamRef",
+      "name": "resolveUpstreamRef",
+      "type": "Function",
+      "filePath": "scripts/check-fork-boundary.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:scripts/check-fork-boundary.mjs:resolveSyncBase",
+      "name": "resolveSyncBase",
+      "type": "Function",
+      "filePath": "scripts/check-fork-boundary.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:scripts/check-fork-boundary.mjs:resolveSyncBase.isAncestor@73:2",
+      "name": "isAncestor",
+      "type": "Function",
+      "filePath": "scripts/check-fork-boundary.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:scripts/check-fork-boundary.mjs:resolveSyncBase.validate@81:2",
+      "name": "validate",
+      "type": "Function",
+      "filePath": "scripts/check-fork-boundary.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/components/form/input-field-auto-save.tsx:InputFieldAutoSave",
+      "name": "InputFieldAutoSave",
+      "type": "Function",
+      "filePath": "src/components/form/input-field-auto-save.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/components/form/input-field-auto-save.tsx:InputFieldAutoSave.handleChange@26:2",
+      "name": "handleChange",
+      "type": "Function",
+      "filePath": "src/components/form/input-field-auto-save.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Interface:src/components/form/quick-insertable-textarea-field-auto-save.tsx:QuickInsertableTextareaFieldAutoSaveProps",
+      "name": "QuickInsertableTextareaFieldAutoSaveProps",
+      "type": "Interface",
+      "filePath": "src/components/form/quick-insertable-textarea-field-auto-save.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/components/form/quick-insertable-textarea-field-auto-save.tsx:QuickInsertableTextareaFieldAutoSaveProps.formForSubmit",
+      "name": "formForSubmit",
+      "type": "Property",
+      "filePath": "src/components/form/quick-insertable-textarea-field-auto-save.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/components/form/quick-insertable-textarea-field-auto-save.tsx:QuickInsertableTextareaFieldAutoSave",
+      "name": "QuickInsertableTextareaFieldAutoSave",
+      "type": "Function",
+      "filePath": "src/components/form/quick-insertable-textarea-field-auto-save.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "TypeAlias:src/components/form/select-field-auto-save.tsx:SelectFieldAutoSaveProps",
+      "name": "SelectFieldAutoSaveProps",
+      "type": "TypeAlias",
+      "filePath": "src/components/form/select-field-auto-save.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/components/form/select-field-auto-save.tsx:SelectFieldAutoSave",
+      "name": "SelectFieldAutoSave",
+      "type": "Function",
+      "filePath": "src/components/form/select-field-auto-save.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/components/form/select-field-auto-save.tsx:SelectFieldAutoSave.handleValueChange@23:2",
+      "name": "handleValueChange",
+      "type": "Function",
+      "filePath": "src/components/form/select-field-auto-save.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/background/db-cleanup.ts:setUpDatabaseCleanup",
+      "name": "setUpDatabaseCleanup",
+      "type": "Function",
+      "filePath": "src/entrypoints/background/db-cleanup.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/background/db-cleanup.ts:cleanupOldTranslationCache",
+      "name": "cleanupOldTranslationCache",
+      "type": "Function",
+      "filePath": "src/entrypoints/background/db-cleanup.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/background/db-cleanup.ts:cleanupAllTranslationCache",
+      "name": "cleanupAllTranslationCache",
+      "type": "Function",
+      "filePath": "src/entrypoints/background/db-cleanup.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/background/db-cleanup.ts:cleanupOldRequestRecords",
+      "name": "cleanupOldRequestRecords",
+      "type": "Function",
+      "filePath": "src/entrypoints/background/db-cleanup.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/background/db-cleanup.ts:cleanupOldSummaryCache",
+      "name": "cleanupOldSummaryCache",
+      "type": "Function",
+      "filePath": "src/entrypoints/background/db-cleanup.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/background/translation-queues.ts:setUpWebPageTranslationQueue",
+      "name": "setUpWebPageTranslationQueue",
+      "type": "Function",
+      "filePath": "src/entrypoints/background/translation-queues.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/host.content/translation-control/bind-translation-mode-shortcut.ts:bindTranslationModeShortcutKey",
+      "name": "bindTranslationModeShortcutKey",
+      "type": "Function",
+      "filePath": "src/entrypoints/host.content/translation-control/bind-translation-mode-shortcut.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/host.content/translation-control/bind-translation-mode-shortcut.ts:bindTranslationModeShortcutKey.registration@28:2",
+      "name": "registration",
+      "type": "Function",
+      "filePath": "src/entrypoints/host.content/translation-control/bind-translation-mode-shortcut.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/main.tsx:initApp",
+      "name": "initApp",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/main.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/api-providers/providers-config/add-provider-dialog.tsx:AddProviderDialog",
+      "name": "AddProviderDialog",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/api-providers/providers-config/add-provider-dialog.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/api-providers/providers-config/add-provider-dialog.tsx:AddProviderDialog.handleAddProvider@20:2",
+      "name": "handleAddProvider",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/api-providers/providers-config/add-provider-dialog.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/api-providers/providers-config/atoms.ts:selectedProviderIdAtom",
+      "name": "selectedProviderIdAtom",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/api-providers/providers-config/atoms.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/api-providers/providers-config/index.tsx:useRequestedProvider",
+      "name": "useRequestedProvider",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/api-providers/providers-config/index.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/api-providers/providers-config/index.tsx:ProviderCardList",
+      "name": "ProviderCardList",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/api-providers/providers-config/index.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/api-providers/providers-config/index.tsx:ProviderCard",
+      "name": "ProviderCard",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/api-providers/providers-config/index.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/api-providers/providers-config/index.tsx:ProviderCard.handleProviderEnabledChange@241:2",
+      "name": "handleProviderEnabledChange",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/api-providers/providers-config/index.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/api-key-field.tsx:APIKeyField",
+      "name": "APIKeyField",
+      "type": "Const",
+      "filePath": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/api-key-field.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/api-key-field.tsx:APIKeyField.render",
+      "name": "render",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/api-key-field.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Interface:src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/components/autosaved-json-code-editor-field.tsx:AutosavedJsonCodeEditorFieldProps",
+      "name": "AutosavedJsonCodeEditorFieldProps",
+      "type": "Interface",
+      "filePath": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/components/autosaved-json-code-editor-field.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/components/autosaved-json-code-editor-field.tsx:AutosavedJsonCodeEditorFieldProps.syncSignal",
+      "name": "syncSignal",
+      "type": "Property",
+      "filePath": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/components/autosaved-json-code-editor-field.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/components/autosaved-json-code-editor-field.tsx:AutosavedJsonCodeEditorFieldProps.onCommit",
+      "name": "onCommit",
+      "type": "Property",
+      "filePath": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/components/autosaved-json-code-editor-field.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/components/autosaved-json-code-editor-field.tsx:AutosavedJsonCodeEditorField",
+      "name": "AutosavedJsonCodeEditorField",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/components/autosaved-json-code-editor-field.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/components/autosaved-json-code-editor-field.tsx:AutosavedJsonCodeEditorField.syncJsonInput@47:2",
+      "name": "syncJsonInput",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/components/autosaved-json-code-editor-field.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/components/autosaved-json-code-editor-field.tsx:AutosavedJsonCodeEditorField.resetSyncState@52:2",
+      "name": "resetSyncState",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/components/autosaved-json-code-editor-field.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/components/autosaved-json-code-editor-field.tsx:AutosavedJsonCodeEditorField.readJsonInput@58:2",
+      "name": "readJsonInput",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/components/autosaved-json-code-editor-field.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/components/autosaved-json-code-editor-field.tsx:AutosavedJsonCodeEditorField.handleJsonInputChange@60:2",
+      "name": "handleJsonInputChange",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/components/autosaved-json-code-editor-field.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/components/autosaved-json-code-editor-field.tsx:AutosavedJsonCodeEditorField.handleEditorFocus@64:2",
+      "name": "handleEditorFocus",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/components/autosaved-json-code-editor-field.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/components/autosaved-json-code-editor-field.tsx:AutosavedJsonCodeEditorField.handleEditorBlur@68:2",
+      "name": "handleEditorBlur",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/components/autosaved-json-code-editor-field.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/components/autosaved-json-code-editor-field.tsx:AutosavedJsonCodeEditorField.parseResult@97:2",
+      "name": "parseResult",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/components/autosaved-json-code-editor-field.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/index.tsx:EditableProviderConfig",
+      "name": "EditableProviderConfig",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/index.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/index.tsx:EditableProviderConfig.form@53:2",
+      "name": "form",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/index.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/index.tsx:EditableProviderConfig.chooseNextProviderConfig@63:2",
+      "name": "chooseNextProviderConfig",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/index.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/index.tsx:EditableProviderConfig.handleDuplicate@68:2",
+      "name": "handleDuplicate",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/index.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/index.tsx:EditableProviderConfig.handleDelete@77:2",
+      "name": "handleDelete",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/index.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/provider-headers-field.tsx:ProviderHeadersField",
+      "name": "ProviderHeadersField",
+      "type": "Const",
+      "filePath": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/provider-headers-field.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/provider-headers-field.tsx:ProviderHeadersField.render",
+      "name": "render",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/provider-headers-field.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/provider-options-field.tsx:ProviderOptionsField",
+      "name": "ProviderOptionsField",
+      "type": "Const",
+      "filePath": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/provider-options-field.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/provider-options-field.tsx:ProviderOptionsField.render",
+      "name": "render",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/provider-options-field.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/provider-specific-settings-field.tsx:ProviderSpecificSettingsField",
+      "name": "ProviderSpecificSettingsField",
+      "type": "Const",
+      "filePath": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/provider-specific-settings-field.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/provider-specific-settings-field.tsx:ProviderSpecificSettingsField.render",
+      "name": "render",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/provider-specific-settings-field.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/provider-specific-settings-field.tsx:ProviderSpecificSettingsField.render.syncLocalSettings@39:4",
+      "name": "syncLocalSettings",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/provider-specific-settings-field.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/provider-specific-settings-field.tsx:ProviderSpecificSettingsField.render.fieldDefs@71:4",
+      "name": "fieldDefs",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/provider-specific-settings-field.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/provider-specific-settings-field.tsx:ProviderSpecificSettingsField.render.renderField@78:4",
+      "name": "renderField",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/provider-specific-settings-field.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/provider-url-field.tsx:ProviderURLField",
+      "name": "ProviderURLField",
+      "type": "Const",
+      "filePath": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/provider-url-field.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/provider-url-field.tsx:ProviderURLField.render",
+      "name": "render",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/provider-url-field.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/reasoning-field.tsx:ReasoningField",
+      "name": "ReasoningField",
+      "type": "Const",
+      "filePath": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/reasoning-field.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/reasoning-field.tsx:ReasoningField.render",
+      "name": "render",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/reasoning-field.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/temperature-field.tsx:TemperatureField",
+      "name": "TemperatureField",
+      "type": "Const",
+      "filePath": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/temperature-field.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/temperature-field.tsx:TemperatureField.render",
+      "name": "render",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/temperature-field.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/translate-model-selector.tsx:TranslateModelSelector",
+      "name": "TranslateModelSelector",
+      "type": "Const",
+      "filePath": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/translate-model-selector.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/translate-model-selector.tsx:TranslateModelSelector.render",
+      "name": "render",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/translate-model-selector.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/api-providers/providers-config/provider-editor.tsx:useProviderForm",
+      "name": "useProviderForm",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/api-providers/providers-config/provider-editor.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/api-providers/providers-config/provider-editor.tsx:useProviderForm.onSubmit@192:4",
+      "name": "onSubmit",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/api-providers/providers-config/provider-editor.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:src/entrypoints/options/pages/api-providers/providers-config/provider-editor.tsx:ApiProviderFormContext",
+      "name": "ApiProviderFormContext",
+      "type": "Const",
+      "filePath": "src/entrypoints/options/pages/api-providers/providers-config/provider-editor.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/api-providers/providers-config/provider-editor.tsx:useApiProviderForm",
+      "name": "useApiProviderForm",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/api-providers/providers-config/provider-editor.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/api-providers/providers-config/provider-editor.tsx:CustomProvider",
+      "name": "CustomProvider",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/api-providers/providers-config/provider-editor.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/api-providers/providers-config/provider-editor.tsx:DescriptionField",
+      "name": "DescriptionField",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/api-providers/providers-config/provider-editor.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/api-providers/providers-config/provider-editor.tsx:ConnectionFields",
+      "name": "ConnectionFields",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/api-providers/providers-config/provider-editor.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx:useActionForm",
+      "name": "useActionForm",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx:useActionForm.onSubmit@48:4",
+      "name": "onSubmit",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "TypeAlias:src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx:ActionForm",
+      "name": "ActionForm",
+      "type": "TypeAlias",
+      "filePath": "src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Interface:src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx:ActionEditorContextValue",
+      "name": "ActionEditorContextValue",
+      "type": "Interface",
+      "filePath": "src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx:ActionEditorContextValue.state",
+      "name": "state",
+      "type": "Property",
+      "filePath": "src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx:ActionEditorContextValue.actions",
+      "name": "actions",
+      "type": "Property",
+      "filePath": "src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx:useActionEditor",
+      "name": "useActionEditor",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx:useActionEditorController",
+      "name": "useActionEditorController",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx:useActionEditorController.state@105:4",
+      "name": "state",
+      "type": "Property",
+      "filePath": "src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx:useActionEditorController.actions@110:4",
+      "name": "actions",
+      "type": "Property",
+      "filePath": "src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx:useActionEditorController.duplicate@114:6",
+      "name": "duplicate",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx:BuiltInProvider",
+      "name": "BuiltInProvider",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx:CustomProvider",
+      "name": "CustomProvider",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx:CustomProvider.deleteAction@148:2",
+      "name": "deleteAction",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx:NameField",
+      "name": "NameField",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx:getActionInsertCells",
+      "name": "getActionInsertCells",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx:SystemPromptField",
+      "name": "SystemPromptField",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx:NotebaseConnectionField",
+      "name": "NotebaseConnectionField",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx:CustomizeButton",
+      "name": "CustomizeButton",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:src/entrypoints/options/pages/custom-actions/action-config-form/icon-field.tsx:IconField",
+      "name": "IconField",
+      "type": "Const",
+      "filePath": "src/entrypoints/options/pages/custom-actions/action-config-form/icon-field.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/custom-actions/action-config-form/icon-field.tsx:IconField.render",
+      "name": "render",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/custom-actions/action-config-form/icon-field.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/custom-actions/action-config-form/index.tsx:CustomActionConfigForm",
+      "name": "CustomActionConfigForm",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/custom-actions/action-config-form/index.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:src/entrypoints/options/pages/custom-actions/action-config-form/name-field.tsx:NameField",
+      "name": "NameField",
+      "type": "Const",
+      "filePath": "src/entrypoints/options/pages/custom-actions/action-config-form/name-field.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/custom-actions/action-config-form/name-field.tsx:NameField.render",
+      "name": "render",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/custom-actions/action-config-form/name-field.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:src/entrypoints/options/pages/custom-actions/action-config-form/notebase-connection-field.tsx:NotebaseConnectionField",
+      "name": "NotebaseConnectionField",
+      "type": "Const",
+      "filePath": "src/entrypoints/options/pages/custom-actions/action-config-form/notebase-connection-field.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/custom-actions/action-config-form/notebase-connection-field.tsx:NotebaseConnectionField.render",
+      "name": "render",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/custom-actions/action-config-form/notebase-connection-field.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/custom-actions/action-config-form/notebase-connection-field.tsx:NotebaseConnectionField.render.updateConnection@239:4",
+      "name": "updateConnection",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/custom-actions/action-config-form/notebase-connection-field.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:src/entrypoints/options/pages/custom-actions/action-config-form/output-schema-field.tsx:OutputSchemaField",
+      "name": "OutputSchemaField",
+      "type": "Const",
+      "filePath": "src/entrypoints/options/pages/custom-actions/action-config-form/output-schema-field.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/custom-actions/action-config-form/output-schema-field.tsx:OutputSchemaField.render",
+      "name": "render",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/custom-actions/action-config-form/output-schema-field.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:src/entrypoints/options/pages/custom-actions/action-config-form/provider-field.tsx:ProviderField",
+      "name": "ProviderField",
+      "type": "Const",
+      "filePath": "src/entrypoints/options/pages/custom-actions/action-config-form/provider-field.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/custom-actions/action-config-form/provider-field.tsx:ProviderField.render",
+      "name": "render",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/custom-actions/action-config-form/provider-field.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/custom-actions/atoms.ts:selectedCustomActionIdAtom",
+      "name": "selectedCustomActionIdAtom",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/custom-actions/atoms.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/custom-actions/components/action-card-list.tsx:CustomActionCardList",
+      "name": "CustomActionCardList",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/custom-actions/components/action-card-list.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/custom-actions/components/action-card-list.tsx:CustomActionCardList.handleTemplateSelect@56:2",
+      "name": "handleTemplateSelect",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/custom-actions/components/action-card-list.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/custom-actions/components/action-card-list.tsx:CustomActionCardList.handleReorder@73:2",
+      "name": "handleReorder",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/custom-actions/components/action-card-list.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/custom-actions/components/action-card-list.tsx:BuiltInDictionaryCard",
+      "name": "BuiltInDictionaryCard",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/custom-actions/components/action-card-list.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/custom-actions/components/action-card-list.tsx:CustomActionCard",
+      "name": "CustomActionCard",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/custom-actions/components/action-card-list.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/translation/preference/translation-mode-select.tsx:TranslationModeSelect",
+      "name": "TranslationModeSelect",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/translation/preference/translation-mode-select.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/popup/components/translation-mode-selector.tsx:TranslationModeSelector",
+      "name": "TranslationModeSelector",
+      "type": "Function",
+      "filePath": "src/entrypoints/popup/components/translation-mode-selector.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:src/entrypoints/selection.content/selection-toolbar/atoms.ts:isSelectionToolbarVisibleAtom",
+      "name": "isSelectionToolbarVisibleAtom",
+      "type": "Const",
+      "filePath": "src/entrypoints/selection.content/selection-toolbar/atoms.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/selection.content/selection-toolbar/custom-action-button/provider.tsx:SelectionCustomActionProvider",
+      "name": "SelectionCustomActionProvider",
+      "type": "Function",
+      "filePath": "src/entrypoints/selection.content/selection-toolbar/custom-action-button/provider.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/selection.content/selection-toolbar/custom-action-button/provider.tsx:SelectionCustomActionProvider.applyPendingSession@179:2",
+      "name": "applyPendingSession",
+      "type": "Function",
+      "filePath": "src/entrypoints/selection.content/selection-toolbar/custom-action-button/provider.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/selection.content/selection-toolbar/index.tsx:SelectionToolbar",
+      "name": "SelectionToolbar",
+      "type": "Function",
+      "filePath": "src/entrypoints/selection.content/selection-toolbar/index.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/selection.content/selection-toolbar/index.tsx:SelectionToolbar.updatePosition@242:2",
+      "name": "updatePosition",
+      "type": "Function",
+      "filePath": "src/entrypoints/selection.content/selection-toolbar/index.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/selection.content/selection-toolbar/index.tsx:SelectionToolbar.fn@351:12.handleSelectionChange@463:4",
+      "name": "handleSelectionChange",
+      "type": "Function",
+      "filePath": "src/entrypoints/selection.content/selection-toolbar/index.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/selection.content/selection-toolbar/index.tsx:SelectionToolbar.fn@501:12.handler@502:4",
+      "name": "handler",
+      "type": "Function",
+      "filePath": "src/entrypoints/selection.content/selection-toolbar/index.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/selection.content/selection-toolbar/index.tsx:SelectionToolbar.fn@512:12.handleExternalSelectionOpen@513:4",
+      "name": "handleExternalSelectionOpen",
+      "type": "Function",
+      "filePath": "src/entrypoints/selection.content/selection-toolbar/index.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/selection.content/selection-toolbar/translate-button/provider.tsx:SelectionTranslationProvider",
+      "name": "SelectionTranslationProvider",
+      "type": "Function",
+      "filePath": "src/entrypoints/selection.content/selection-toolbar/translate-button/provider.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/selection.content/selection-toolbar/translate-button/provider.tsx:SelectionTranslationProvider.applyPendingSession@423:2",
+      "name": "applyPendingSession",
+      "type": "Function",
+      "filePath": "src/entrypoints/selection.content/selection-toolbar/translate-button/provider.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/side.content/components/floating-button/index.tsx:FloatingButton",
+      "name": "FloatingButton",
+      "type": "Function",
+      "filePath": "src/entrypoints/side.content/components/floating-button/index.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:src/entrypoints/subtitles.content/platforms/youtube/config.ts:YOUTUBE_MODE_CONFIGS",
+      "name": "YOUTUBE_MODE_CONFIGS",
+      "type": "Const",
+      "filePath": "src/entrypoints/subtitles.content/platforms/youtube/config.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/entrypoints/subtitles.content/platforms/youtube/config.ts:YOUTUBE_MODE_CONFIGS.watch",
+      "name": "watch",
+      "type": "Property",
+      "filePath": "src/entrypoints/subtitles.content/platforms/youtube/config.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/subtitles.content/platforms/youtube/config.ts:measureHeight",
+      "name": "measureHeight",
+      "type": "Function",
+      "filePath": "src/entrypoints/subtitles.content/platforms/youtube/config.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/entrypoints/subtitles.content/platforms/youtube/config.ts:YOUTUBE_MODE_CONFIGS.embed",
+      "name": "embed",
+      "type": "Property",
+      "filePath": "src/entrypoints/subtitles.content/platforms/youtube/config.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/subtitles.content/ui/use-controls-visible.ts:useControlsInfo",
+      "name": "useControlsInfo",
+      "type": "Function",
+      "filePath": "src/entrypoints/subtitles.content/ui/use-controls-visible.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/subtitles.content/ui/use-controls-visible.ts:useControlsInfo.updateInfo@15:2",
+      "name": "updateInfo",
+      "type": "Function",
+      "filePath": "src/entrypoints/subtitles.content/ui/use-controls-visible.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/subtitles.content/ui/use-controls-visible.ts:useControlsInfo.setupObserver@24:2",
+      "name": "setupObserver",
+      "type": "Function",
+      "filePath": "src/entrypoints/subtitles.content/ui/use-controls-visible.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/fork/ui/popup/translation-mode-selector.tsx:TranslationModeSelector",
+      "name": "TranslationModeSelector",
+      "type": "Function",
+      "filePath": "src/fork/ui/popup/translation-mode-selector.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/fork/ui/selection-content/SelectionToolbar.tsx:SelectionToolbar",
+      "name": "SelectionToolbar",
+      "type": "Function",
+      "filePath": "src/fork/ui/selection-content/SelectionToolbar.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/fork/ui/side-content/floating-button/index.tsx:FloatingButton",
+      "name": "FloatingButton",
+      "type": "Function",
+      "filePath": "src/fork/ui/side-content/floating-button/index.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:src/types/config/site-rules.ts:siteRuleSchema",
+      "name": "siteRuleSchema",
+      "type": "Const",
+      "filePath": "src/types/config/site-rules.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:src/utils/atoms/config.ts:writeQueue",
+      "name": "writeQueue",
+      "type": "Const",
+      "filePath": "src/utils/atoms/config.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:src/utils/atoms/config.ts:writeVersion",
+      "name": "writeVersion",
+      "type": "Const",
+      "filePath": "src/utils/atoms/config.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/utils/atoms/config.ts:writeConfigAtom",
+      "name": "writeConfigAtom",
+      "type": "Function",
+      "filePath": "src/utils/atoms/config.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/utils/atoms/config.ts:writeConfigAtom.task@53:2",
+      "name": "task",
+      "type": "Function",
+      "filePath": "src/utils/atoms/config.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/utils/atoms/config.ts:fn@104:21.handleVisibilityChange@127:2",
+      "name": "handleVisibilityChange",
+      "type": "Function",
+      "filePath": "src/utils/atoms/config.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:src/utils/constants/dom-labels.ts:REACT_SHADOW_HOST_CLASS",
+      "name": "REACT_SHADOW_HOST_CLASS",
+      "type": "Const",
+      "filePath": "src/utils/constants/dom-labels.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:src/utils/constants/dom-labels.ts:SPINNER_CLASS",
+      "name": "SPINNER_CLASS",
+      "type": "Const",
+      "filePath": "src/utils/constants/dom-labels.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:src/utils/constants/dom-labels.ts:TRANSLATION_ERROR_CONTAINER_CLASS",
+      "name": "TRANSLATION_ERROR_CONTAINER_CLASS",
+      "type": "Const",
+      "filePath": "src/utils/constants/dom-labels.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:src/utils/constants/prompt.ts:WEB_PAGE_PROMPT_TOKENS",
+      "name": "WEB_PAGE_PROMPT_TOKENS",
+      "type": "Const",
+      "filePath": "src/utils/constants/prompt.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:src/utils/constants/prompt.ts:DEFAULT_SENTINEL_TRANSLATE_PROMPT",
+      "name": "DEFAULT_SENTINEL_TRANSLATE_PROMPT",
+      "type": "Const",
+      "filePath": "src/utils/constants/prompt.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:src/utils/constants/prompt.ts:DEFAULT_SUBTITLES_SEGMENTATION_SYSTEM_PROMPT",
+      "name": "DEFAULT_SUBTITLES_SEGMENTATION_SYSTEM_PROMPT",
+      "type": "Const",
+      "filePath": "src/utils/constants/prompt.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:src/utils/constants/prompt.ts:DEFAULT_SUBTITLES_SEGMENTATION_PROMPT",
+      "name": "DEFAULT_SUBTITLES_SEGMENTATION_PROMPT",
+      "type": "Const",
+      "filePath": "src/utils/constants/prompt.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/utils/custom-actions.ts:toBuiltInDictionaryState",
+      "name": "toBuiltInDictionaryState",
+      "type": "Function",
+      "filePath": "src/utils/custom-actions.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/utils/host/dom/filter.ts:isWithinIncludeScope",
+      "name": "isWithinIncludeScope",
+      "type": "Function",
+      "filePath": "src/utils/host/dom/filter.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/utils/host/dom/filter.ts:isDontWalkIntoButTranslateAsChildElement",
+      "name": "isDontWalkIntoButTranslateAsChildElement",
+      "type": "Function",
+      "filePath": "src/utils/host/dom/filter.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/utils/host/dom/traversal.ts:extractTextContent",
+      "name": "extractTextContent",
+      "type": "Function",
+      "filePath": "src/utils/host/dom/traversal.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Interface:src/utils/host/dom/traversal.ts:WalkResult",
+      "name": "WalkResult",
+      "type": "Interface",
+      "filePath": "src/utils/host/dom/traversal.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/utils/host/dom/traversal.ts:WalkResult.isInlineNode",
+      "name": "isInlineNode",
+      "type": "Property",
+      "filePath": "src/utils/host/dom/traversal.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Interface:src/utils/host/dom/traversal.ts:WalkCallbacks",
+      "name": "WalkCallbacks",
+      "type": "Interface",
+      "filePath": "src/utils/host/dom/traversal.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/utils/host/translate/core/translation-modes.ts:translateNodesBilingualMode",
+      "name": "translateNodesBilingualMode",
+      "type": "Function",
+      "filePath": "src/utils/host/translate/core/translation-modes.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/utils/host/translate/core/translation-modes.ts:findRunTranslationOnlyWrapper",
+      "name": "findRunTranslationOnlyWrapper",
+      "type": "Function",
+      "filePath": "src/utils/host/translate/core/translation-modes.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/utils/host/translate/core/translation-modes.ts:findRunTranslationOnlyWrapper.isForeignWrapper@700:2",
+      "name": "isForeignWrapper",
+      "type": "Function",
+      "filePath": "src/utils/host/translate/core/translation-modes.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Interface:src/utils/host/translate/dom/translation-insertion.ts:TranslationInsertionContext",
+      "name": "TranslationInsertionContext",
+      "type": "Interface",
+      "filePath": "src/utils/host/translate/dom/translation-insertion.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/utils/host/translate/dom/translation-insertion.ts:sourceRunMatchesSelector",
+      "name": "sourceRunMatchesSelector",
+      "type": "Function",
+      "filePath": "src/utils/host/translate/dom/translation-insertion.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/utils/host/translate/dom/translation-insertion.ts:insertTranslatedNodeIntoWrapper",
+      "name": "insertTranslatedNodeIntoWrapper",
+      "type": "Function",
+      "filePath": "src/utils/host/translate/dom/translation-insertion.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/utils/host/translate/translate-text.ts:translateTextCore",
+      "name": "translateTextCore",
+      "type": "Function",
+      "filePath": "src/utils/host/translate/translate-text.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/utils/prompts/translate.ts:getTranslatePromptFromConfig",
+      "name": "getTranslatePromptFromConfig",
+      "type": "Function",
+      "filePath": "src/utils/prompts/translate.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/utils/providers/translation-only-gate.ts:providerSupportsTranslationOnlyMode",
+      "name": "providerSupportsTranslationOnlyMode",
+      "type": "Function",
+      "filePath": "src/utils/providers/translation-only-gate.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/utils/providers/translation-only-gate.ts:canEnterTranslationOnlyMode",
+      "name": "canEnterTranslationOnlyMode",
+      "type": "Function",
+      "filePath": "src/utils/providers/translation-only-gate.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Interface:src/utils/site-rules/resolve.ts:ResolvedSiteRule",
+      "name": "ResolvedSiteRule",
+      "type": "Interface",
+      "filePath": "src/utils/site-rules/resolve.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/utils/site-rules/resolve.ts:ResolvedSiteRule.preserveTextSelector",
+      "name": "preserveTextSelector",
+      "type": "Property",
+      "filePath": "src/utils/site-rules/resolve.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/utils/site-rules/resolve.ts:ResolvedSiteRule.dontWalkTags",
+      "name": "dontWalkTags",
+      "type": "Property",
+      "filePath": "src/utils/site-rules/resolve.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:src/utils/site-rules/resolve.ts:EMPTY_RESOLVED_SITE_RULE",
+      "name": "EMPTY_RESOLVED_SITE_RULE",
+      "type": "Const",
+      "filePath": "src/utils/site-rules/resolve.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/utils/site-rules/resolve.ts:EMPTY_RESOLVED_SITE_RULE.minWords",
+      "name": "minWords",
+      "type": "Property",
+      "filePath": "src/utils/site-rules/resolve.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/utils/site-rules/resolve.ts:mergeSelectorDelta",
+      "name": "mergeSelectorDelta",
+      "type": "Function",
+      "filePath": "src/utils/site-rules/resolve.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/utils/site-rules/resolve.ts:mergeSelectorDelta.addSelectors@124:2",
+      "name": "addSelectors",
+      "type": "Function",
+      "filePath": "src/utils/site-rules/resolve.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/utils/site-rules/resolve.ts:resolveSiteRule",
+      "name": "resolveSiteRule",
+      "type": "Function",
+      "filePath": "src/utils/site-rules/resolve.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/utils/site-rules/resolve.ts:resolveSiteRule.forceBlockNodeSelector@281:4",
+      "name": "forceBlockNodeSelector",
+      "type": "Property",
+      "filePath": "src/utils/site-rules/resolve.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/utils/site-rules/resolve.ts:resolveSiteRule.forceBlockStyleSelector@287:4",
+      "name": "forceBlockStyleSelector",
+      "type": "Property",
+      "filePath": "src/utils/site-rules/resolve.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/utils/site-rules/resolve.ts:resolveSiteRule.forceInlineNodeSelector@293:4",
+      "name": "forceInlineNodeSelector",
+      "type": "Property",
+      "filePath": "src/utils/site-rules/resolve.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/utils/site-rules/resolve.ts:resolveSiteRule.forceBlockTags@332:4",
+      "name": "forceBlockTags",
+      "type": "Property",
+      "filePath": "src/utils/site-rules/resolve.ts",
+      "change_type": "touched"
+    }
+  ],
+  "affected_processes": [
+    {
+      "id": "proc_7_initialize",
+      "name": "Initialize → CheckVisibility",
+      "process_type": "cross_community",
+      "step_count": 9,
+      "changed_steps": [
+        {
+          "symbol": "setupObserver",
+          "step": 7
+        },
+        {
+          "symbol": "updateInfo",
+          "step": 8
+        },
+        {
+          "symbol": "useControlsInfo",
+          "step": 6
+        }
+      ]
+    },
+    {
+      "id": "proc_8_initialize",
+      "name": "Initialize → MeasureHeight",
+      "process_type": "cross_community",
+      "step_count": 9,
+      "changed_steps": [
+        {
+          "symbol": "setupObserver",
+          "step": 7
+        },
+        {
+          "symbol": "updateInfo",
+          "step": 8
+        },
+        {
+          "symbol": "useControlsInfo",
+          "step": 6
+        }
+      ]
+    },
+    {
+      "id": "proc_14_selectioncustomactio",
+      "name": "SelectionCustomActionProvider → FormatYamlMultiline",
+      "process_type": "cross_community",
+      "step_count": 8,
+      "changed_steps": [
+        {
+          "symbol": "SelectionCustomActionProvider",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_15_selectioncustomactio",
+      "name": "SelectionCustomActionProvider → ReplaceSelectionToolbarCustomActionPromptTokens",
+      "process_type": "cross_community",
+      "step_count": 8,
+      "changed_steps": [
+        {
+          "symbol": "SelectionCustomActionProvider",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_16_initialize",
+      "name": "Initialize → FindVideoContainer",
+      "process_type": "cross_community",
+      "step_count": 8,
+      "changed_steps": [
+        {
+          "symbol": "setupObserver",
+          "step": 7
+        },
+        {
+          "symbol": "useControlsInfo",
+          "step": 6
+        }
+      ]
+    },
+    {
+      "id": "proc_22_selectioncustomactio",
+      "name": "SelectionCustomActionProvider → RawT",
+      "process_type": "cross_community",
+      "step_count": 7,
+      "changed_steps": [
+        {
+          "symbol": "SelectionCustomActionProvider",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_33_subtitlescustomcsspa",
+      "name": "SubtitlesCustomCssPage → DeleteAction",
+      "process_type": "cross_community",
+      "step_count": 6,
+      "changed_steps": [
+        {
+          "symbol": "deleteAction",
+          "step": 6
+        }
+      ]
+    },
+    {
+      "id": "proc_64_apiproviderspage",
+      "name": "ApiProvidersPage → Body",
+      "process_type": "cross_community",
+      "step_count": 5,
+      "changed_steps": [
+        {
+          "symbol": "EditableProviderConfig",
+          "step": 4
+        }
+      ]
+    },
+    {
+      "id": "proc_65_apiproviderspage",
+      "name": "ApiProvidersPage → Root",
+      "process_type": "cross_community",
+      "step_count": 5,
+      "changed_steps": [
+        {
+          "symbol": "EditableProviderConfig",
+          "step": 4
+        }
+      ]
+    },
+    {
+      "id": "proc_66_apiproviderspage",
+      "name": "ApiProvidersPage → Provider",
+      "process_type": "cross_community",
+      "step_count": 5,
+      "changed_steps": [
+        {
+          "symbol": "EditableProviderConfig",
+          "step": 4
+        }
+      ]
+    },
+    {
+      "id": "proc_67_apiproviderspage",
+      "name": "ApiProvidersPage → Form",
+      "process_type": "cross_community",
+      "step_count": 5,
+      "changed_steps": [
+        {
+          "symbol": "EditableProviderConfig",
+          "step": 4
+        }
+      ]
+    },
+    {
+      "id": "proc_68_addproviderdialog",
+      "name": "AddProviderDialog → AddProvider",
+      "process_type": "intra_community",
+      "step_count": 5,
+      "changed_steps": [
+        {
+          "symbol": "handleAddProvider",
+          "step": 4
+        },
+        {
+          "symbol": "AddProviderDialog",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_69_customactionspage",
+      "name": "CustomActionsPage → HandleScroll",
+      "process_type": "cross_community",
+      "step_count": 5,
+      "changed_steps": [
+        {
+          "symbol": "CustomActionCardList",
+          "step": 3
+        }
+      ]
+    },
+    {
+      "id": "proc_70_customactionspage",
+      "name": "CustomActionsPage → Root",
+      "process_type": "cross_community",
+      "step_count": 5,
+      "changed_steps": [
+        {
+          "symbol": "BuiltInDictionaryCard",
+          "step": 4
+        },
+        {
+          "symbol": "CustomActionCardList",
+          "step": 3
+        }
+      ]
+    },
+    {
+      "id": "proc_71_customactionspage",
+      "name": "CustomActionsPage → Content",
+      "process_type": "cross_community",
+      "step_count": 5,
+      "changed_steps": [
+        {
+          "symbol": "CustomActionCard",
+          "step": 4
+        },
+        {
+          "symbol": "CustomActionCardList",
+          "step": 3
+        }
+      ]
+    },
+    {
+      "id": "proc_72_customactionspage",
+      "name": "CustomActionsPage → Identity",
+      "process_type": "cross_community",
+      "step_count": 5,
+      "changed_steps": [
+        {
+          "symbol": "CustomActionCard",
+          "step": 4
+        },
+        {
+          "symbol": "CustomActionCardList",
+          "step": 3
+        }
+      ]
+    },
+    {
+      "id": "proc_73_customactionspage",
+      "name": "CustomActionsPage → Toggle",
+      "process_type": "cross_community",
+      "step_count": 5,
+      "changed_steps": [
+        {
+          "symbol": "CustomActionCard",
+          "step": 4
+        },
+        {
+          "symbol": "CustomActionCardList",
+          "step": 3
+        }
+      ]
+    },
+    {
+      "id": "proc_79_selectioncustomactio",
+      "name": "SelectionCustomActionProvider → NormalizeExecutionKeyValue",
+      "process_type": "cross_community",
+      "step_count": 5,
+      "changed_steps": [
+        {
+          "symbol": "SelectionCustomActionProvider",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_80_selectiontoolbar",
+      "name": "SelectionToolbar → GetPointToRectDistanceSquared",
+      "process_type": "cross_community",
+      "step_count": 5,
+      "changed_steps": [
+        {
+          "symbol": "updatePosition",
+          "step": 2
+        },
+        {
+          "symbol": "SelectionToolbar",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_81_selectiontoolbar",
+      "name": "SelectionToolbar → HasArea",
+      "process_type": "cross_community",
+      "step_count": 5,
+      "changed_steps": [
+        {
+          "symbol": "updatePosition",
+          "step": 2
+        },
+        {
+          "symbol": "SelectionToolbar",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_82_selectiontoolbar",
+      "name": "SelectionToolbar → ToLiveRange",
+      "process_type": "cross_community",
+      "step_count": 5,
+      "changed_steps": [
+        {
+          "symbol": "updatePosition",
+          "step": 2
+        },
+        {
+          "symbol": "SelectionToolbar",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_85_selectiontranslation",
+      "name": "SelectionTranslationProvider → RegisterAbortController",
+      "process_type": "cross_community",
+      "step_count": 5,
+      "changed_steps": [
+        {
+          "symbol": "SelectionTranslationProvider",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_86_selectiontranslation",
+      "name": "SelectionTranslationProvider → GetSelectionWebPagePromptContext",
+      "process_type": "cross_community",
+      "step_count": 5,
+      "changed_steps": [
+        {
+          "symbol": "SelectionTranslationProvider",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_87_selectiontranslation",
+      "name": "SelectionTranslationProvider → ThrowIfAborted",
+      "process_type": "cross_community",
+      "step_count": 5,
+      "changed_steps": [
+        {
+          "symbol": "SelectionTranslationProvider",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_122_apiproviderspage",
+      "name": "ApiProvidersPage → HighlightRequestedField",
+      "process_type": "cross_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "useRequestedProvider",
+          "step": 3
+        }
+      ]
+    },
+    {
+      "id": "proc_123_render",
+      "name": "Render → SyncJsonInput",
+      "process_type": "intra_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "resetSyncState",
+          "step": 3
+        },
+        {
+          "symbol": "syncJsonInput",
+          "step": 4
+        },
+        {
+          "symbol": "AutosavedJsonCodeEditorField",
+          "step": 2
+        },
+        {
+          "symbol": "render",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_137_selectioncustomactio",
+      "name": "SelectionCustomActionProvider → IsAbortError",
+      "process_type": "cross_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "SelectionCustomActionProvider",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_138_selectiontoolbar",
+      "name": "SelectionToolbar → Clamp",
+      "process_type": "cross_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "updatePosition",
+          "step": 2
+        },
+        {
+          "symbol": "SelectionToolbar",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_139_selectiontoolbar",
+      "name": "SelectionToolbar → IsRectVisible",
+      "process_type": "cross_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "updatePosition",
+          "step": 2
+        },
+        {
+          "symbol": "SelectionToolbar",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_140_selectiontoolbar",
+      "name": "SelectionToolbar → GetBoundingClientRect",
+      "process_type": "cross_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "updatePosition",
+          "step": 2
+        },
+        {
+          "symbol": "SelectionToolbar",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_141_selectiontoolbar",
+      "name": "SelectionToolbar → SelectionTooltip",
+      "process_type": "cross_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "SelectionToolbar",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_142_selectiontoolbar",
+      "name": "SelectionToolbar → UseSelectionTranslationContext",
+      "process_type": "intra_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "SelectionToolbar",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_145_selectiontranslation",
+      "name": "SelectionTranslationProvider → ResetTranslationState",
+      "process_type": "cross_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "SelectionTranslationProvider",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_183_render",
+      "name": "Render → ConnectionFeedbackIcon",
+      "process_type": "intra_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "render",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_184_render",
+      "name": "Render → ClearFeedbackTimeout",
+      "process_type": "cross_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "render",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_185_render",
+      "name": "Render → ReadJsonInput",
+      "process_type": "intra_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "readJsonInput",
+          "step": 3
+        },
+        {
+          "symbol": "AutosavedJsonCodeEditorField",
+          "step": 2
+        },
+        {
+          "symbol": "render",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_186_render",
+      "name": "Render → GetProviderSpecificSettings",
+      "process_type": "intra_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "syncLocalSettings",
+          "step": 2
+        },
+        {
+          "symbol": "render",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_187_render",
+      "name": "Render → ClosePopover",
+      "process_type": "cross_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "render",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_188_render",
+      "name": "Render → StartFlashing",
+      "process_type": "cross_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "render",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_189_render",
+      "name": "Render → StopFlashing",
+      "process_type": "cross_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "render",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_190_customactionconfigfo",
+      "name": "CustomActionConfigForm → Form",
+      "process_type": "intra_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "CustomActionConfigForm",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_191_customactionconfigfo",
+      "name": "CustomActionConfigForm → Provider",
+      "process_type": "intra_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "CustomActionConfigForm",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_192_customactionconfigfo",
+      "name": "CustomActionConfigForm → Provider",
+      "process_type": "intra_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "CustomActionConfigForm",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_193_render",
+      "name": "Render → GetAccountFallback",
+      "process_type": "intra_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "render",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_194_handlenotebasechange",
+      "name": "HandleNotebaseChange → UpdateConnection",
+      "process_type": "intra_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "updateConnection",
+          "step": 3
+        }
+      ]
+    },
+    {
+      "id": "proc_207_selectiontoolbar",
+      "name": "SelectionToolbar → GetViewportRect",
+      "process_type": "cross_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "updatePosition",
+          "step": 2
+        },
+        {
+          "symbol": "SelectionToolbar",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_211_selectiontranslation",
+      "name": "SelectionTranslationProvider → FireNoteSuggestion",
+      "process_type": "cross_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "SelectionTranslationProvider",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_268_customactionspage",
+      "name": "CustomActionsPage → RawT",
+      "process_type": "cross_community",
+      "step_count": 6,
+      "changed_steps": [
+        {
+          "symbol": "CustomActionCardList",
+          "step": 3
+        }
+      ]
+    },
+    {
+      "id": "proc_270_translatenodesbiling",
+      "name": "TranslateNodesBilingualMode → IsTextNode",
+      "process_type": "cross_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "translateNodesBilingualMode",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_276_subtitlesstylepage",
+      "name": "SubtitlesStylePage → DeleteAction",
+      "process_type": "cross_community",
+      "step_count": 6,
+      "changed_steps": [
+        {
+          "symbol": "deleteAction",
+          "step": 6
+        }
+      ]
+    },
+    {
+      "id": "proc_280_customactionconfigfo",
+      "name": "CustomActionConfigForm → Body",
+      "process_type": "intra_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "CustomActionConfigForm",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_281_customactionconfigfo",
+      "name": "CustomActionConfigForm → Root",
+      "process_type": "intra_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "CustomActionConfigForm",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_282_apiproviderspage",
+      "name": "ApiProvidersPage → AddProvider",
+      "process_type": "cross_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "useRequestedProvider",
+          "step": 3
+        }
+      ]
+    },
+    {
+      "id": "proc_283_customactionsconfig",
+      "name": "CustomActionsConfig → Content",
+      "process_type": "cross_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "BuiltInDictionaryCard",
+          "step": 3
+        },
+        {
+          "symbol": "CustomActionCardList",
+          "step": 2
+        }
+      ]
+    },
+    {
+      "id": "proc_284_customactionsconfig",
+      "name": "CustomActionsConfig → Identity",
+      "process_type": "cross_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "BuiltInDictionaryCard",
+          "step": 3
+        },
+        {
+          "symbol": "CustomActionCardList",
+          "step": 2
+        }
+      ]
+    },
+    {
+      "id": "proc_285_customactionsconfig",
+      "name": "CustomActionsConfig → Toggle",
+      "process_type": "cross_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "BuiltInDictionaryCard",
+          "step": 3
+        },
+        {
+          "symbol": "CustomActionCardList",
+          "step": 2
+        }
+      ]
+    },
+    {
+      "id": "proc_296_render",
+      "name": "Render → SyncJsonInput",
+      "process_type": "intra_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "resetSyncState",
+          "step": 3
+        },
+        {
+          "symbol": "syncJsonInput",
+          "step": 4
+        },
+        {
+          "symbol": "AutosavedJsonCodeEditorField",
+          "step": 2
+        },
+        {
+          "symbol": "render",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_306_render",
+      "name": "Render → ConnectionFeedbackIcon",
+      "process_type": "intra_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "render",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_308_render",
+      "name": "Render → ReadJsonInput",
+      "process_type": "intra_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "readJsonInput",
+          "step": 3
+        },
+        {
+          "symbol": "AutosavedJsonCodeEditorField",
+          "step": 2
+        },
+        {
+          "symbol": "render",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_320_translatenodesbiling",
+      "name": "TranslateNodesBilingualMode → IsHTMLElement",
+      "process_type": "cross_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "translateNodesBilingualMode",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_322_removealltranslatedw",
+      "name": "RemoveAllTranslatedWrapperNodes → DeleteAction",
+      "process_type": "cross_community",
+      "step_count": 6,
+      "changed_steps": [
+        {
+          "symbol": "deleteAction",
+          "step": 6
+        }
+      ]
+    },
+    {
+      "id": "proc_331_render",
+      "name": "Render → ClearFeedbackTimeout",
+      "process_type": "cross_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "render",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_336_translationmessage",
+      "name": "TranslationMessage → DeleteAction",
+      "process_type": "cross_community",
+      "step_count": 5,
+      "changed_steps": [
+        {
+          "symbol": "deleteAction",
+          "step": 5
+        }
+      ]
+    },
+    {
+      "id": "proc_337_selectiontoolbar",
+      "name": "SelectionToolbar → UseSelectionPopoverRootContext",
+      "process_type": "cross_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "SelectionToolbar",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_343_selectiontranslation",
+      "name": "SelectionTranslationProvider → RawT",
+      "process_type": "cross_community",
+      "step_count": 6,
+      "changed_steps": [
+        {
+          "symbol": "SelectionTranslationProvider",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_344_enqueue",
+      "name": "Enqueue → DeleteAction",
+      "process_type": "cross_community",
+      "step_count": 5,
+      "changed_steps": [
+        {
+          "symbol": "deleteAction",
+          "step": 5
+        }
+      ]
+    },
+    {
+      "id": "proc_387_render",
+      "name": "Render → RawT",
+      "process_type": "cross_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "render",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_437_render",
+      "name": "Render → RawT",
+      "process_type": "intra_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "render",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_438_render",
+      "name": "Render → RawT",
+      "process_type": "intra_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "render",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_439_render",
+      "name": "Render → RawT",
+      "process_type": "intra_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "render",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_441_render",
+      "name": "Render → RawT",
+      "process_type": "intra_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "render",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_442_render",
+      "name": "Render → RawT",
+      "process_type": "cross_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "render",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_459_selectiontoolbar",
+      "name": "SelectionToolbar → RawT",
+      "process_type": "cross_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "SelectionToolbar",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_460_floatingbutton",
+      "name": "FloatingButton → RawT",
+      "process_type": "cross_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "FloatingButton",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_465_floatingbutton",
+      "name": "FloatingButton → RawT",
+      "process_type": "cross_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "FloatingButton",
+          "step": 1
+        }
+      ]
+    }
+  ]
+}

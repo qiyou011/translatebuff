@@ -1,0 +1,32 @@
+{
+  "url": "https://www.youtube.com/",
+  "classes": "html5-video-player ytp-transparent ytp-exp-bottom-control-flexbox ytp-modern-caption ytp-exp-ppp-update ytp-livebadge-color ytp-grid-scrollable ytp-delhi-modern ytp-delhi-modern-icons ytp-delhi-horizontal-volume-controls ytp-delhi-modern-compact-controls ytp-fit-cover-video ytp-cards-teaser-dismissible ytp-hide-info-bar ytp-disable-bottom-gradient ytp-heat-map ytp-menu-shown ytp-player-minimized ytp-xsmall-width-mode ytp-autonav-endscreen-cancelled-state ad-created ad-showing ad-interrupting playing-mode buffering-mode unstarted-mode",
+  "playerHeight": 225,
+  "controlsHeight": 0,
+  "progressBars": [
+    {
+      "parent": "html5-video-player ytp-transparent ytp-exp-bottom-control-flexbox ytp-modern-caption ytp-exp-ppp-update ytp-livebadge-color ytp-grid-scrollable ytp-delhi-modern ytp-delhi-modern-icons ytp-delhi-horizontal-volume-controls ytp-delhi-modern-compact-controls ytp-fit-cover-video ytp-cards-teaser-dismissible ytp-hide-info-bar ytp-disable-bottom-gradient ytp-heat-map ytp-menu-shown ytp-player-minimized ytp-xsmall-width-mode ytp-autonav-endscreen-cancelled-state ad-created ad-showing ad-interrupting playing-mode buffering-mode unstarted-mode",
+      "height": 225
+    },
+    {
+      "parent": "ytp-chrome-bottom",
+      "height": 0
+    }
+  ],
+  "afterExpand": {
+    "classes": "html5-video-player ytp-transparent ytp-exp-bottom-control-flexbox ytp-modern-caption ytp-exp-ppp-update ytp-livebadge-color ytp-grid-scrollable ytp-delhi-modern ytp-delhi-modern-icons ytp-delhi-horizontal-volume-controls ytp-delhi-modern-compact-controls ytp-fit-cover-video ytp-cards-teaser-dismissible ytp-hide-info-bar ytp-disable-bottom-gradient ytp-heat-map ytp-autonav-endscreen-cancelled-state ad-created playing-mode ytp-hide-fullscreen-title ytp-fullscreen-metadata-top ytp-branding-shown ytp-autohide ytp-autohide-active ytp-large-width-mode",
+    "playerHeight": 461.25,
+    "controlsHeight": 59,
+    "progressBars": [
+      {
+        "parent": "html5-video-player ytp-transparent ytp-exp-bottom-control-flexbox ytp-modern-caption ytp-exp-ppp-update ytp-livebadge-color ytp-grid-scrollable ytp-delhi-modern ytp-delhi-modern-icons ytp-delhi-horizontal-volume-controls ytp-delhi-modern-compact-controls ytp-fit-cover-video ytp-cards-teaser-dismissible ytp-hide-info-bar ytp-disable-bottom-gradient ytp-heat-map ytp-autonav-endscreen-cancelled-state ad-created playing-mode ytp-hide-fullscreen-title ytp-fullscreen-metadata-top ytp-branding-shown ytp-autohide ytp-autohide-active ytp-large-width-mode",
+        "height": 461.25
+      },
+      {
+        "parent": "ytp-chrome-bottom",
+        "height": 59
+      }
+    ]
+  },
+  "method": "Live YouTube miniplayer and return; actual source getYoutubeConfig measured DOM. No claim about unavailable native captions."
+}

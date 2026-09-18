@@ -4,6 +4,17 @@ export function classifyChangedFiles(
   divergesFromUpstream?: (file: string) => boolean,
 ): { violations: string[] }
 
+export function validateSelectivePatches(
+  ledger: unknown,
+  options: { readFile: (path: string) => string | null; verifySource: (sha: string) => void },
+): string[]
+
+export function verifySelectiveSource(
+  sha: string,
+  git: (args: string[]) => string,
+  baselineRefs: string[],
+): void
+
 export function resolveSyncBase(
   git: (args: string[]) => string,
   baseRef: string,

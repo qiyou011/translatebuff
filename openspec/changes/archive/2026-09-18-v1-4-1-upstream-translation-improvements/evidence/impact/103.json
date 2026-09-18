@@ -1,0 +1,69 @@
+{
+  "status": "ambiguous",
+  "message": "Found 2 symbols matching 'NotebaseConnectionField'. Blast radius differs per candidate (max 7 impacted at risk LOW). Disambiguate with target_uid (or file_path/kind) for a single authoritative result.",
+  "target": {
+    "name": "NotebaseConnectionField"
+  },
+  "direction": "upstream",
+  "totalCandidates": 2,
+  "impactedCount": null,
+  "risk": "UNKNOWN",
+  "maxImpactedCount": 7,
+  "maxRisk": "LOW",
+  "candidates": [
+    {
+      "uid": "Function:src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx:NotebaseConnectionField",
+      "name": "NotebaseConnectionField",
+      "kind": "Function",
+      "filePath": "src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx",
+      "line": 253,
+      "score": 0.96,
+      "impactedCount": 7,
+      "risk": "LOW",
+      "riskSharedAxes": "LOW",
+      "riskScale": {
+        "comparableAcrossKinds": false,
+        "unusedAxes": [
+          {
+            "axis": "processes",
+            "reason": "enrichment-skipped"
+          },
+          {
+            "axis": "modules",
+            "reason": "enrichment-skipped"
+          }
+        ]
+      },
+      "direct": 3
+    },
+    {
+      "uid": "Property:src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx:ActionEditor.NotebaseConnectionField",
+      "name": "NotebaseConnectionField",
+      "kind": "",
+      "filePath": "src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx",
+      "line": 328,
+      "score": 0.9,
+      "impactedCount": 4,
+      "risk": "LOW",
+      "riskSharedAxes": "LOW",
+      "riskScale": {
+        "comparableAcrossKinds": false,
+        "unusedAxes": [
+          {
+            "axis": "processes",
+            "reason": "enrichment-skipped"
+          },
+          {
+            "axis": "modules",
+            "reason": "enrichment-skipped"
+          }
+        ]
+      },
+      "direct": 2
+    }
+  ],
+  "staleness": {
+    "commitsBehind": 1,
+    "hint": "⚠️ Index is 1 commit behind HEAD. Run analyze tool to update."
+  }
+}

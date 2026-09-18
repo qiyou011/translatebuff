@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { toastManager } from "@/components/ui/base-ui/toast"
 import {
   contextAtom,
-  isSelectionToolbarVisibleAtom,
+  isSelectionToolbarOpenAtom as isSelectionToolbarVisibleAtom,
   selectionAtom,
   selectionSessionAtom,
 } from "@/entrypoints/selection.content/selection-toolbar/atoms"

@@ -1,0 +1,43 @@
+{
+  "environment": "testsite",
+  "cases": [
+    {
+      "input": "OpenAI API GitHub",
+      "output": "OpenAI API GitHub"
+    },
+    {
+      "input": "const answer = 42;",
+      "output": "const answer = 42;"
+    },
+    {
+      "input": "OpenAI released a new model for scientific research.",
+      "output": "OpenAI发布了一个用于科学研究的新模型。"
+    }
+  ],
+  "segmentation": {
+    "input": [
+      {
+        "s": 1000,
+        "e": 2600,
+        "t": "This is the first sentence."
+      },
+      {
+        "s": 6000,
+        "e": 7800,
+        "t": "This is the first sentence."
+      },
+      {
+        "s": 8000,
+        "e": 8200,
+        "t": "And"
+      },
+      {
+        "s": 8200,
+        "e": 11000,
+        "t": "this is the second sentence."
+      }
+    ],
+    "output": "WEBVTT\n\n1000 --> 2600\nThis is the first sentence.\n\n6000 --> 7800\nThis is the first sentence.\n\n8000 --> 11000\nAnd this is the second sentence."
+  },
+  "limitation": "Single live samples; model responses are nondeterministic."
+}

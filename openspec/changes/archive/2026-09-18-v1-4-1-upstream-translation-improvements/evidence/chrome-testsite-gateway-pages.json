@@ -1,0 +1,91 @@
+[
+  {
+    "name": "formula",
+    "url": "https://example.com/upstream-formula",
+    "fixture": true,
+    "timeout": false,
+    "translated": {
+      "text": "The energy is \n𝐸\n=\n𝑚\n𝑐\n2\n in this physical experiment.\n在这个物理实验中，能量是\n𝐸\n=\n𝑚\n𝑐\n2\n。",
+      "html": "The energy is <math><mi>E</mi><mo>=</mo><mi>m</mi><msup><mi>c</mi><mn>2</mn></msup></math> in this physical experiment.<span class=\"notranslate read-frog-translated-content-wrapper\" data-read-frog-translation-mode=\"bilingual\" data-read-frog-walked=\"b3adaacc-41bb-4f2a-bfeb-f01765c452aa\" dir=\"ltr\" lang=\"zh\"><br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-custom-translation-style=\"textColor\">在这个物理实验中，能量是<math class=\"read-frog-inline-atom mathjax_ignore tex2jax_ignore mml2jax_ignore asciimath2jax_ignore\" translate=\"no\" aria-hidden=\"true\" role=\"presentation\" dir=\"ltr\"><mi>E</mi><mo>=</mo><mi>m</mi><msup><mi>c</mi><mn>2</mn></msup></math>。</span></span>",
+      "math": 2,
+      "styles": [
+        {
+          "lineHeight": "normal",
+          "fontSize": "16px"
+        }
+      ]
+    },
+    "restored": {
+      "text": "The energy is \n𝐸\n=\n𝑚\n𝑐\n2\n in this physical experiment.",
+      "math": 1,
+      "wrappers": 0
+    }
+  },
+  {
+    "name": "alibaba",
+    "url": "https://sourcing.alibaba.com/rfq_detail.htm?id=upstream-test",
+    "fixture": true,
+    "timeout": false,
+    "translated": {
+      "text": "We need five hundred steel bolts for our new construction project. Please provide the delivery schedule.\n我们的新建筑项目需要五百个钢制螺栓。请提供交付计划。",
+      "html": "We need five hundred steel bolts for our new construction project. Please provide the delivery schedule.<span class=\"notranslate read-frog-translated-content-wrapper\" data-read-frog-translation-mode=\"bilingual\" data-read-frog-walked=\"f0e082d7-a62e-40a8-a9a0-d160b3214398\" dir=\"ltr\" lang=\"zh\"><br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-custom-translation-style=\"textColor\">我们的新建筑项目需要五百个钢制螺栓。请提供交付计划。</span></span>",
+      "math": 0,
+      "styles": [
+        {
+          "lineHeight": "normal",
+          "fontSize": "16px"
+        }
+      ]
+    },
+    "restored": {
+      "text": "We need five hundred steel bolts for our new construction project. Please provide the delivery schedule.",
+      "math": 0,
+      "wrappers": 0
+    }
+  },
+  {
+    "name": "arxiv",
+    "url": "https://arxiv.org/html/2601.00001v1",
+    "fixture": true,
+    "timeout": false,
+    "translated": {
+      "text": "A new mathematical approach to efficient language translation in scientific research\n一种用于科学研究中高效语言翻译的新数学方法",
+      "html": "A new mathematical approach to efficient language translation in scientific research<span class=\"notranslate read-frog-translated-content-wrapper\" data-read-frog-translation-mode=\"bilingual\" data-read-frog-walked=\"f6b82afe-2811-458d-98fc-1f11455ecf2c\" dir=\"ltr\" lang=\"zh\"><br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-custom-translation-style=\"textColor\">一种用于科学研究中高效语言翻译的新数学方法</span></span>",
+      "math": 0,
+      "styles": [
+        {
+          "lineHeight": "36px",
+          "fontSize": "24px"
+        }
+      ]
+    },
+    "restored": {
+      "text": "A new mathematical approach to efficient language translation in scientific research",
+      "math": 0,
+      "wrappers": 0
+    }
+  },
+  {
+    "name": "substack",
+    "url": "https://upstream-validation.substack.com/p/test",
+    "fixture": true,
+    "timeout": false,
+    "translated": {
+      "text": "The research team published a new article about language translation and scientific discovery.\n研究团队发表了一篇关于语言翻译与科学发现的新文章。",
+      "html": "The research team published a new article about language translation and scientific discovery.<span class=\"notranslate read-frog-translated-content-wrapper\" data-read-frog-translation-mode=\"bilingual\" data-read-frog-walked=\"d999f767-cd08-41df-974a-7142876c58e6\" dir=\"ltr\" lang=\"zh\"><br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-custom-translation-style=\"textColor\">研究团队发表了一篇关于语言翻译与科学发现的新文章。</span></span>",
+      "math": 0,
+      "player": "This video player should remain unchanged.",
+      "styles": [
+        {
+          "lineHeight": "normal",
+          "fontSize": "16px"
+        }
+      ]
+    },
+    "restored": {
+      "text": "The research team published a new article about language translation and scientific discovery.",
+      "math": 0,
+      "wrappers": 0
+    }
+  }
+]

@@ -67,10 +67,24 @@ function allSelectors(rule: (typeof BUILT_IN_SITE_RULES)[number]): string[] {
     ...(rule.preserveTextSelectors ?? []),
     ...(rule["preserveTextSelectors.add"] ?? []),
     ...(rule["preserveTextSelectors.remove"] ?? []),
+    ...(rule.atomSelectors ?? []),
+    ...(rule["atomSelectors.add"] ?? []),
+    ...(rule["atomSelectors.remove"] ?? []),
   ]
 }
 
 describe("built-in site rules", () => {
+  it("resolves the inline atom defaults on any URL and folds them into preserve-text", () => {
+    const resolved = resolveSiteRule("https://example.com/article", BUILT_IN_SITE_RULES, [], [])
+    const atomSelectors = resolved.atomSelector?.split(",") ?? []
+    expect(atomSelectors).toEqual(
+      expect.arrayContaining(["span.katex", "mjx-container", ".ltx_Math"]),
+    )
+    // Atoms must stop the walk exactly like preserve-text elements.
+    const preserveTextSelectors = resolved.preserveTextSelector?.split(",") ?? []
+    expect(preserveTextSelectors).toEqual(expect.arrayContaining(atomSelectors))
+  })
+
   it("all rules pass the schema", () => {
     for (const rule of BUILT_IN_SITE_RULES) {
       const result = siteRuleSchema.safeParse(rule)
@@ -515,6 +529,41 @@ describe("built-in site rules", () => {
       ["sillytavern"],
     )
     expect(disabled.dontWalkButTranslateTags).toBeNull()
+  })
+
+  // Alibaba's RFQ detail page renders the buyer's hand-written request body in
+  // `<pre class="value">` (Details / 详细描述). PRE sits in
+  // DONT_WALK_AND_TRANSLATE_TAGS and the plain-text exemption in
+  // `utils/host/dom/filter` only fires for `text/plain` documents, so on this
+  // text/html page the whole body was dropped from the walk while every sibling
+  // field (Product Name, Category, Quantity) translated normally.
+  it("un-blocks PRE on Alibaba's RFQ sourcing portal", () => {
+    const resolved = resolveSiteRule(
+      "https://sourcing.alibaba.com/rfq_detail.htm?p=ID1op9Nz9xuJFsQZPZUe4DBR",
+      BUILT_IN_SITE_RULES,
+      [],
+      [],
+    )
+
+    expect(resolved.matchedRuleIds).toContain("alibaba-sourcing-rfq")
+    expect(resolved.dontWalkTags).not.toBeNull()
+    expect(resolved.dontWalkTags!.has("PRE")).toBe(false)
+    expect(resolved.dontWalkTags!.has("SCRIPT")).toBe(true)
+    // Removal must not register as an explicit add, or the plain-text `<pre>`
+    // exemption in `utils/host/dom/filter` would read it as an authoring
+    // decision to keep PRE blocked.
+    expect(resolved.dontWalkTagsExplicitAdds?.has("PRE") ?? false).toBe(false)
+
+    const elsewhere = resolveSiteRule("https://www.alibaba.com/", BUILT_IN_SITE_RULES, [], [])
+    expect(elsewhere.dontWalkTags).toBeNull()
+
+    const disabled = resolveSiteRule(
+      "https://sourcing.alibaba.com/rfq_detail.htm",
+      BUILT_IN_SITE_RULES,
+      [],
+      ["alibaba-sourcing-rfq"],
+    )
+    expect(disabled.dontWalkTags).toBeNull()
   })
 
   it("retains independently verified content roots that cover their full match scope", () => {

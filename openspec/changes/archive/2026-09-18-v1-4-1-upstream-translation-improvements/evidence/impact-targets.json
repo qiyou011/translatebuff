@@ -1,0 +1,1626 @@
+[
+  {
+    "name": "InputFieldAutoSave",
+    "path": "src/components/form/input-field-auto-save.tsx"
+  },
+  {
+    "name": "QuickInsertableTextareaFieldAutoSave",
+    "path": "src/components/form/quick-insertable-textarea-field-auto-save.tsx"
+  },
+  {
+    "name": "SelectFieldAutoSave",
+    "path": "src/components/form/select-field-auto-save.tsx"
+  },
+  {
+    "name": "CHECK_INTERVAL_MINUTES",
+    "path": "src/entrypoints/background/db-cleanup.ts"
+  },
+  {
+    "name": "TRANSLATION_CACHE_CLEANUP_ALARM",
+    "path": "src/entrypoints/background/db-cleanup.ts"
+  },
+  {
+    "name": "TRANSLATION_CACHE_MAX_AGE_MINUTES",
+    "path": "src/entrypoints/background/db-cleanup.ts"
+  },
+  {
+    "name": "REQUEST_RECORD_CLEANUP_ALARM",
+    "path": "src/entrypoints/background/db-cleanup.ts"
+  },
+  {
+    "name": "REQUEST_RECORD_MAX_COUNT",
+    "path": "src/entrypoints/background/db-cleanup.ts"
+  },
+  {
+    "name": "REQUEST_RECORD_MAX_AGE_DAYS",
+    "path": "src/entrypoints/background/db-cleanup.ts"
+  },
+  {
+    "name": "SUMMARY_CACHE_CLEANUP_ALARM",
+    "path": "src/entrypoints/background/db-cleanup.ts"
+  },
+  {
+    "name": "SUMMARY_CACHE_MAX_AGE_MINUTES",
+    "path": "src/entrypoints/background/db-cleanup.ts"
+  },
+  {
+    "name": "setUpDatabaseCleanup",
+    "path": "src/entrypoints/background/db-cleanup.ts"
+  },
+  {
+    "name": "cleanupOldTranslationCache",
+    "path": "src/entrypoints/background/db-cleanup.ts"
+  },
+  {
+    "name": "cleanupAllTranslationCache",
+    "path": "src/entrypoints/background/db-cleanup.ts"
+  },
+  {
+    "name": "cleanupOldRequestRecords",
+    "path": "src/entrypoints/background/db-cleanup.ts"
+  },
+  {
+    "name": "cleanupAllRequestRecords",
+    "path": "src/entrypoints/background/db-cleanup.ts"
+  },
+  {
+    "name": "cleanupOldSummaryCache",
+    "path": "src/entrypoints/background/db-cleanup.ts"
+  },
+  {
+    "name": "cleanupAllSummaryCache",
+    "path": "src/entrypoints/background/db-cleanup.ts"
+  },
+  {
+    "name": "cleanupAllAiSegmentationCache",
+    "path": "src/entrypoints/background/db-cleanup.ts"
+  },
+  {
+    "name": "isSerializedPageProvider",
+    "path": "src/entrypoints/background/translation-queues.ts"
+  },
+  {
+    "name": "getLocalProviderConfig",
+    "path": "src/entrypoints/background/translation-queues.ts"
+  },
+  {
+    "name": "getQueuedProviderId",
+    "path": "src/entrypoints/background/translation-queues.ts"
+  },
+  {
+    "name": "executeQueuedTranslation",
+    "path": "src/entrypoints/background/translation-queues.ts"
+  },
+  {
+    "name": "parseBatchResult",
+    "path": "src/entrypoints/background/translation-queues.ts"
+  },
+  {
+    "name": "shouldUseBatchQueue",
+    "path": "src/entrypoints/background/translation-queues.ts"
+  },
+  {
+    "name": "getValidatedCachedTranslation",
+    "path": "src/entrypoints/background/translation-queues.ts"
+  },
+  {
+    "name": "executeBatchTranslation",
+    "path": "src/entrypoints/background/translation-queues.ts"
+  },
+  {
+    "name": "getOrGenerateSummary",
+    "path": "src/entrypoints/background/translation-queues.ts"
+  },
+  {
+    "name": "buildTranslationScopeKey",
+    "path": "src/entrypoints/background/translation-queues.ts"
+  },
+  {
+    "name": "createTranslationQueues",
+    "path": "src/entrypoints/background/translation-queues.ts"
+  },
+  {
+    "name": "loadQueueSetupConfig",
+    "path": "src/entrypoints/background/translation-queues.ts"
+  },
+  {
+    "name": "watchQueueConfig",
+    "path": "src/entrypoints/background/translation-queues.ts"
+  },
+  {
+    "name": "setUpWebPageTranslationQueue",
+    "path": "src/entrypoints/background/translation-queues.ts"
+  },
+  {
+    "name": "setUpSubtitlesTranslationQueue",
+    "path": "src/entrypoints/background/translation-queues.ts"
+  },
+  {
+    "name": "bindTranslationModeShortcutKey",
+    "path": "src/entrypoints/host.content/translation-control/bind-translation-mode-shortcut.ts"
+  },
+  {
+    "name": "HydrateAtoms",
+    "path": "src/entrypoints/options/main.tsx"
+  },
+  {
+    "name": "initApp",
+    "path": "src/entrypoints/options/main.tsx"
+  },
+  {
+    "name": "ProviderButtonGroup",
+    "path": "src/entrypoints/options/pages/api-providers/providers-config/add-provider-dialog.tsx"
+  },
+  {
+    "name": "ProviderButton",
+    "path": "src/entrypoints/options/pages/api-providers/providers-config/add-provider-dialog.tsx"
+  },
+  {
+    "name": "highlightedProviderFieldAtom",
+    "path": "src/entrypoints/options/pages/api-providers/providers-config/atoms.ts"
+  },
+  {
+    "name": "PROVIDER_FIELD_HIGHLIGHT_DURATION_MS",
+    "path": "src/entrypoints/options/pages/api-providers/providers-config/atoms.ts"
+  },
+  {
+    "name": "selectedProviderIdAtom",
+    "path": "src/entrypoints/options/pages/api-providers/providers-config/atoms.ts"
+  },
+  {
+    "name": "useRequestedProvider",
+    "path": "src/entrypoints/options/pages/api-providers/providers-config/index.tsx"
+  },
+  {
+    "name": "ProvidersConfig",
+    "path": "src/entrypoints/options/pages/api-providers/providers-config/index.tsx"
+  },
+  {
+    "name": "ProviderCardList",
+    "path": "src/entrypoints/options/pages/api-providers/providers-config/index.tsx"
+  },
+  {
+    "name": "ProviderCard",
+    "path": "src/entrypoints/options/pages/api-providers/providers-config/index.tsx"
+  },
+  {
+    "name": "FeatureCountBadge",
+    "path": "src/entrypoints/options/pages/api-providers/providers-config/index.tsx"
+  },
+  {
+    "name": "BuiltInProviderSection",
+    "path": "src/entrypoints/options/pages/api-providers/providers-config/index.tsx"
+  },
+  {
+    "name": "BuiltInProviderCard",
+    "path": "src/entrypoints/options/pages/api-providers/providers-config/index.tsx"
+  },
+  {
+    "name": "BuiltInProviderPanel",
+    "path": "src/entrypoints/options/pages/api-providers/providers-config/index.tsx"
+  },
+  {
+    "name": "APIKeyField",
+    "path": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/api-key-field.tsx"
+  },
+  {
+    "name": "defaultSerializeJson",
+    "path": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/components/autosaved-json-code-editor-field.tsx"
+  },
+  {
+    "name": "AutosavedJsonCodeEditorField",
+    "path": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/components/autosaved-json-code-editor-field.tsx"
+  },
+  {
+    "name": "ProviderConfigForm",
+    "path": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/index.tsx"
+  },
+  {
+    "name": "EditableProviderConfig",
+    "path": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/index.tsx"
+  },
+  {
+    "name": "isPlainObject",
+    "path": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/provider-headers-field.tsx"
+  },
+  {
+    "name": "parseHeadersJson",
+    "path": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/provider-headers-field.tsx"
+  },
+  {
+    "name": "toJson",
+    "path": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/provider-headers-field.tsx"
+  },
+  {
+    "name": "ProviderHeadersField",
+    "path": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/provider-headers-field.tsx"
+  },
+  {
+    "name": "parseJson",
+    "path": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/provider-options-field.tsx"
+  },
+  {
+    "name": "toJson",
+    "path": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/provider-options-field.tsx"
+  },
+  {
+    "name": "ProviderOptionsField",
+    "path": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/provider-options-field.tsx"
+  },
+  {
+    "name": "getProviderSpecificSettings",
+    "path": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/provider-specific-settings-field.tsx"
+  },
+  {
+    "name": "ProviderSpecificSettingsField",
+    "path": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/provider-specific-settings-field.tsx"
+  },
+  {
+    "name": "ProviderURLField",
+    "path": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/provider-url-field.tsx"
+  },
+  {
+    "name": "ReasoningField",
+    "path": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/reasoning-field.tsx"
+  },
+  {
+    "name": "TemperatureField",
+    "path": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/temperature-field.tsx"
+  },
+  {
+    "name": "TranslateModelSelector",
+    "path": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/translate-model-selector.tsx"
+  },
+  {
+    "name": "useProviderEditor",
+    "path": "src/entrypoints/options/pages/api-providers/providers-config/provider-editor.tsx"
+  },
+  {
+    "name": "useRequiredProviderCommand",
+    "path": "src/entrypoints/options/pages/api-providers/providers-config/provider-editor.tsx"
+  },
+  {
+    "name": "useProviderEditorValue",
+    "path": "src/entrypoints/options/pages/api-providers/providers-config/provider-editor.tsx"
+  },
+  {
+    "name": "BuiltInProvider",
+    "path": "src/entrypoints/options/pages/api-providers/providers-config/provider-editor.tsx"
+  },
+  {
+    "name": "useProviderForm",
+    "path": "src/entrypoints/options/pages/api-providers/providers-config/provider-editor.tsx"
+  },
+  {
+    "name": "useApiProviderForm",
+    "path": "src/entrypoints/options/pages/api-providers/providers-config/provider-editor.tsx"
+  },
+  {
+    "name": "CustomProvider",
+    "path": "src/entrypoints/options/pages/api-providers/providers-config/provider-editor.tsx"
+  },
+  {
+    "name": "Form",
+    "path": "src/entrypoints/options/pages/api-providers/providers-config/provider-editor.tsx"
+  },
+  {
+    "name": "Identity",
+    "path": "src/entrypoints/options/pages/api-providers/providers-config/provider-editor.tsx"
+  },
+  {
+    "name": "Attribution",
+    "path": "src/entrypoints/options/pages/api-providers/providers-config/provider-editor.tsx"
+  },
+  {
+    "name": "ConfigHeader",
+    "path": "src/entrypoints/options/pages/api-providers/providers-config/provider-editor.tsx"
+  },
+  {
+    "name": "NameField",
+    "path": "src/entrypoints/options/pages/api-providers/providers-config/provider-editor.tsx"
+  },
+  {
+    "name": "DescriptionField",
+    "path": "src/entrypoints/options/pages/api-providers/providers-config/provider-editor.tsx"
+  },
+  {
+    "name": "ConnectionFields",
+    "path": "src/entrypoints/options/pages/api-providers/providers-config/provider-editor.tsx"
+  },
+  {
+    "name": "ProviderSpecificFields",
+    "path": "src/entrypoints/options/pages/api-providers/providers-config/provider-editor.tsx"
+  },
+  {
+    "name": "TranslationModelFields",
+    "path": "src/entrypoints/options/pages/api-providers/providers-config/provider-editor.tsx"
+  },
+  {
+    "name": "AdvancedFields",
+    "path": "src/entrypoints/options/pages/api-providers/providers-config/provider-editor.tsx"
+  },
+  {
+    "name": "Assignments",
+    "path": "src/entrypoints/options/pages/api-providers/providers-config/provider-editor.tsx"
+  },
+  {
+    "name": "AssignmentRow",
+    "path": "src/entrypoints/options/pages/api-providers/providers-config/provider-editor.tsx"
+  },
+  {
+    "name": "CompatibleFeatureAssignments",
+    "path": "src/entrypoints/options/pages/api-providers/providers-config/provider-editor.tsx"
+  },
+  {
+    "name": "LanguageDetectionAssignment",
+    "path": "src/entrypoints/options/pages/api-providers/providers-config/provider-editor.tsx"
+  },
+  {
+    "name": "FeatureAssignment",
+    "path": "src/entrypoints/options/pages/api-providers/providers-config/provider-editor.tsx"
+  },
+  {
+    "name": "CustomActionAssignments",
+    "path": "src/entrypoints/options/pages/api-providers/providers-config/provider-editor.tsx"
+  },
+  {
+    "name": "DuplicateButton",
+    "path": "src/entrypoints/options/pages/api-providers/providers-config/provider-editor.tsx"
+  },
+  {
+    "name": "DeleteButton",
+    "path": "src/entrypoints/options/pages/api-providers/providers-config/provider-editor.tsx"
+  },
+  {
+    "name": "ProviderEditor",
+    "path": "src/entrypoints/options/pages/api-providers/providers-config/provider-editor.tsx"
+  },
+  {
+    "name": "BuiltInProviderEditor",
+    "path": "src/entrypoints/options/pages/api-providers/providers-config/provider-editor.tsx"
+  },
+  {
+    "name": "CustomProviderEditor",
+    "path": "src/entrypoints/options/pages/api-providers/providers-config/provider-editor.tsx"
+  },
+  {
+    "name": "useActionForm",
+    "path": "src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx"
+  },
+  {
+    "name": "useActionEditor",
+    "path": "src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx"
+  },
+  {
+    "name": "useRequiredActionEditorCommand",
+    "path": "src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx"
+  },
+  {
+    "name": "useActionEditorController",
+    "path": "src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx"
+  },
+  {
+    "name": "BuiltInProvider",
+    "path": "src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx"
+  },
+  {
+    "name": "CustomProvider",
+    "path": "src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx"
+  },
+  {
+    "name": "Form",
+    "path": "src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx"
+  },
+  {
+    "name": "NameField",
+    "path": "src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx"
+  },
+  {
+    "name": "IconField",
+    "path": "src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx"
+  },
+  {
+    "name": "ProviderField",
+    "path": "src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx"
+  },
+  {
+    "name": "getActionInsertCells",
+    "path": "src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx"
+  },
+  {
+    "name": "SystemPromptField",
+    "path": "src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx"
+  },
+  {
+    "name": "PromptField",
+    "path": "src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx"
+  },
+  {
+    "name": "EditableOutputSchema",
+    "path": "src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx"
+  },
+  {
+    "name": "ReadOnlyOutputSchema",
+    "path": "src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx"
+  },
+  {
+    "name": "NotebaseConnectionField",
+    "path": "src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx"
+  },
+  {
+    "name": "DuplicateButton",
+    "path": "src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx"
+  },
+  {
+    "name": "CustomizeButton",
+    "path": "src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx"
+  },
+  {
+    "name": "DeleteButton",
+    "path": "src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx"
+  },
+  {
+    "name": "ActionEditor",
+    "path": "src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx"
+  },
+  {
+    "name": "BuiltInActionEditor",
+    "path": "src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx"
+  },
+  {
+    "name": "CustomActionEditor",
+    "path": "src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx"
+  },
+  {
+    "name": "IconPickerPopover",
+    "path": "src/entrypoints/options/pages/custom-actions/action-config-form/icon-field.tsx"
+  },
+  {
+    "name": "IconHelpPopover",
+    "path": "src/entrypoints/options/pages/custom-actions/action-config-form/icon-field.tsx"
+  },
+  {
+    "name": "IconField",
+    "path": "src/entrypoints/options/pages/custom-actions/action-config-form/icon-field.tsx"
+  },
+  {
+    "name": "CustomActionConfigForm",
+    "path": "src/entrypoints/options/pages/custom-actions/action-config-form/index.tsx"
+  },
+  {
+    "name": "BuiltInDictionaryEditor",
+    "path": "src/entrypoints/options/pages/custom-actions/action-config-form/index.tsx"
+  },
+  {
+    "name": "EditableActionEditor",
+    "path": "src/entrypoints/options/pages/custom-actions/action-config-form/index.tsx"
+  },
+  {
+    "name": "NameField",
+    "path": "src/entrypoints/options/pages/custom-actions/action-config-form/name-field.tsx"
+  },
+  {
+    "name": "t",
+    "path": "src/entrypoints/options/pages/custom-actions/action-config-form/notebase-connection-field.tsx"
+  },
+  {
+    "name": "getAccountFallback",
+    "path": "src/entrypoints/options/pages/custom-actions/action-config-form/notebase-connection-field.tsx"
+  },
+  {
+    "name": "ConnectedAccountDisplay",
+    "path": "src/entrypoints/options/pages/custom-actions/action-config-form/notebase-connection-field.tsx"
+  },
+  {
+    "name": "getMappingStatusMessage",
+    "path": "src/entrypoints/options/pages/custom-actions/action-config-form/notebase-connection-field.tsx"
+  },
+  {
+    "name": "getSelectableLocalFields",
+    "path": "src/entrypoints/options/pages/custom-actions/action-config-form/notebase-connection-field.tsx"
+  },
+  {
+    "name": "getSelectableRemoteColumns",
+    "path": "src/entrypoints/options/pages/custom-actions/action-config-form/notebase-connection-field.tsx"
+  },
+  {
+    "name": "getNextDefaultMapping",
+    "path": "src/entrypoints/options/pages/custom-actions/action-config-form/notebase-connection-field.tsx"
+  },
+  {
+    "name": "getNotebaseSelectItems",
+    "path": "src/entrypoints/options/pages/custom-actions/action-config-form/notebase-connection-field.tsx"
+  },
+  {
+    "name": "getLocalFieldSelectItems",
+    "path": "src/entrypoints/options/pages/custom-actions/action-config-form/notebase-connection-field.tsx"
+  },
+  {
+    "name": "getRemoteFieldSelectItems",
+    "path": "src/entrypoints/options/pages/custom-actions/action-config-form/notebase-connection-field.tsx"
+  },
+  {
+    "name": "NotebaseConnectionField",
+    "path": "src/entrypoints/options/pages/custom-actions/action-config-form/notebase-connection-field.tsx"
+  },
+  {
+    "name": "t",
+    "path": "src/entrypoints/options/pages/custom-actions/action-config-form/output-schema-field.tsx"
+  },
+  {
+    "name": "FieldDialog",
+    "path": "src/entrypoints/options/pages/custom-actions/action-config-form/output-schema-field.tsx"
+  },
+  {
+    "name": "DeleteFieldDialog",
+    "path": "src/entrypoints/options/pages/custom-actions/action-config-form/output-schema-field.tsx"
+  },
+  {
+    "name": "OutputSchemaRow",
+    "path": "src/entrypoints/options/pages/custom-actions/action-config-form/output-schema-field.tsx"
+  },
+  {
+    "name": "ReadOnlyOutputSchemaField",
+    "path": "src/entrypoints/options/pages/custom-actions/action-config-form/output-schema-field.tsx"
+  },
+  {
+    "name": "OutputSchemaField",
+    "path": "src/entrypoints/options/pages/custom-actions/action-config-form/output-schema-field.tsx"
+  },
+  {
+    "name": "ProviderField",
+    "path": "src/entrypoints/options/pages/custom-actions/action-config-form/provider-field.tsx"
+  },
+  {
+    "name": "selectedCustomActionIdAtom",
+    "path": "src/entrypoints/options/pages/custom-actions/atoms.ts"
+  },
+  {
+    "name": "CustomActionCardList",
+    "path": "src/entrypoints/options/pages/custom-actions/components/action-card-list.tsx"
+  },
+  {
+    "name": "BuiltInDictionaryCard",
+    "path": "src/entrypoints/options/pages/custom-actions/components/action-card-list.tsx"
+  },
+  {
+    "name": "CustomActionCard",
+    "path": "src/entrypoints/options/pages/custom-actions/components/action-card-list.tsx"
+  },
+  {
+    "name": "TranslationModeSelect",
+    "path": "src/entrypoints/options/pages/translation/preference/translation-mode-select.tsx"
+  },
+  {
+    "name": "createSelectionSession",
+    "path": "src/entrypoints/selection.content/selection-toolbar/atoms.ts"
+  },
+  {
+    "name": "selectionSessionAtom",
+    "path": "src/entrypoints/selection.content/selection-toolbar/atoms.ts"
+  },
+  {
+    "name": "selectionAtom",
+    "path": "src/entrypoints/selection.content/selection-toolbar/atoms.ts"
+  },
+  {
+    "name": "contextAtom",
+    "path": "src/entrypoints/selection.content/selection-toolbar/atoms.ts"
+  },
+  {
+    "name": "isSelectionToolbarVisibleAtom",
+    "path": "src/entrypoints/selection.content/selection-toolbar/atoms.ts"
+  },
+  {
+    "name": "selectionContentAtom",
+    "path": "src/entrypoints/selection.content/selection-toolbar/atoms.ts"
+  },
+  {
+    "name": "setSelectionStateAtom",
+    "path": "src/entrypoints/selection.content/selection-toolbar/atoms.ts"
+  },
+  {
+    "name": "clearSelectionStateAtom",
+    "path": "src/entrypoints/selection.content/selection-toolbar/atoms.ts"
+  },
+  {
+    "name": "createSelectionToolbarTranslateRequestSliceAtom",
+    "path": "src/entrypoints/selection.content/selection-toolbar/atoms.ts"
+  },
+  {
+    "name": "createSelectionToolbarCustomActionRequestSliceAtom",
+    "path": "src/entrypoints/selection.content/selection-toolbar/atoms.ts"
+  },
+  {
+    "name": "selectionToolbarTranslateRequestAtom",
+    "path": "src/entrypoints/selection.content/selection-toolbar/atoms.ts"
+  },
+  {
+    "name": "noteSuggestionProviderAtom",
+    "path": "src/entrypoints/selection.content/selection-toolbar/atoms.ts"
+  },
+  {
+    "name": "selectionToolbarCustomActionRequestAtomFamily",
+    "path": "src/entrypoints/selection.content/selection-toolbar/atoms.ts"
+  },
+  {
+    "name": "CustomActionFooterContent",
+    "path": "src/entrypoints/selection.content/selection-toolbar/custom-action-button/provider.tsx"
+  },
+  {
+    "name": "useSelectionCustomActionContext",
+    "path": "src/entrypoints/selection.content/selection-toolbar/custom-action-button/provider.tsx"
+  },
+  {
+    "name": "useSelectionCustomActionPopover",
+    "path": "src/entrypoints/selection.content/selection-toolbar/custom-action-button/provider.tsx"
+  },
+  {
+    "name": "SelectionCustomActionProvider",
+    "path": "src/entrypoints/selection.content/selection-toolbar/custom-action-button/provider.tsx"
+  },
+  {
+    "name": "getInteractiveGuardTarget",
+    "path": "src/entrypoints/selection.content/selection-toolbar/index.tsx"
+  },
+  {
+    "name": "getSelectionOverlayShadowRoot",
+    "path": "src/entrypoints/selection.content/selection-toolbar/index.tsx"
+  },
+  {
+    "name": "getNearestSelectionOverlayElement",
+    "path": "src/entrypoints/selection.content/selection-toolbar/index.tsx"
+  },
+  {
+    "name": "isNodeInsideSelectionOverlay",
+    "path": "src/entrypoints/selection.content/selection-toolbar/index.tsx"
+  },
+  {
+    "name": "collectSelectionBoundaryNodes",
+    "path": "src/entrypoints/selection.content/selection-toolbar/index.tsx"
+  },
+  {
+    "name": "isSelectionInsideSelectionOverlay",
+    "path": "src/entrypoints/selection.content/selection-toolbar/index.tsx"
+  },
+  {
+    "name": "isMouseEventInsideSelectionOverlay",
+    "path": "src/entrypoints/selection.content/selection-toolbar/index.tsx"
+  },
+  {
+    "name": "SelectionToolbar",
+    "path": "src/entrypoints/selection.content/selection-toolbar/index.tsx"
+  },
+  {
+    "name": "getSelectionWebPagePromptContext",
+    "path": "src/entrypoints/selection.content/selection-toolbar/translate-button/provider.tsx"
+  },
+  {
+    "name": "translateWithTextStream",
+    "path": "src/entrypoints/selection.content/selection-toolbar/translate-button/provider.tsx"
+  },
+  {
+    "name": "translateWithHostedTextStream",
+    "path": "src/entrypoints/selection.content/selection-toolbar/translate-button/provider.tsx"
+  },
+  {
+    "name": "translateWithStandardProvider",
+    "path": "src/entrypoints/selection.content/selection-toolbar/translate-button/provider.tsx"
+  },
+  {
+    "name": "TranslateFooterContent",
+    "path": "src/entrypoints/selection.content/selection-toolbar/translate-button/provider.tsx"
+  },
+  {
+    "name": "useSelectionTranslationContext",
+    "path": "src/entrypoints/selection.content/selection-toolbar/translate-button/provider.tsx"
+  },
+  {
+    "name": "useSelectionTranslationPopover",
+    "path": "src/entrypoints/selection.content/selection-toolbar/translate-button/provider.tsx"
+  },
+  {
+    "name": "SelectionTranslationProvider",
+    "path": "src/entrypoints/selection.content/selection-toolbar/translate-button/provider.tsx"
+  },
+  {
+    "name": "FirefoxSidebarHelpToast",
+    "path": "src/entrypoints/side.content/components/floating-button/index.tsx"
+  },
+  {
+    "name": "getFloatingButtonSide",
+    "path": "src/entrypoints/side.content/components/floating-button/index.tsx"
+  },
+  {
+    "name": "clamp",
+    "path": "src/entrypoints/side.content/components/floating-button/index.tsx"
+  },
+  {
+    "name": "getPointerDistance",
+    "path": "src/entrypoints/side.content/components/floating-button/index.tsx"
+  },
+  {
+    "name": "getDragPreviewPosition",
+    "path": "src/entrypoints/side.content/components/floating-button/index.tsx"
+  },
+  {
+    "name": "getNormalizedFloatingContainerTop",
+    "path": "src/entrypoints/side.content/components/floating-button/index.tsx"
+  },
+  {
+    "name": "FloatingButtonCloseMenu",
+    "path": "src/entrypoints/side.content/components/floating-button/index.tsx"
+  },
+  {
+    "name": "FloatingButtonLockControl",
+    "path": "src/entrypoints/side.content/components/floating-button/index.tsx"
+  },
+  {
+    "name": "createYoutubeAiSubtitlesContext",
+    "path": "src/entrypoints/subtitles.content/platforms/youtube/config.ts"
+  },
+  {
+    "name": "isYoutubeAdPlaying",
+    "path": "src/entrypoints/subtitles.content/platforms/youtube/config.ts"
+  },
+  {
+    "name": "getYoutubeConfig",
+    "path": "src/entrypoints/subtitles.content/platforms/youtube/config.ts"
+  },
+  {
+    "name": "useControlsInfo",
+    "path": "src/entrypoints/subtitles.content/ui/use-controls-visible.ts"
+  },
+  {
+    "name": "siteRuleSchema",
+    "path": "src/types/config/site-rules.ts"
+  },
+  {
+    "name": "MAX_SITE_RULES_JSON_LENGTH",
+    "path": "src/types/config/site-rules.ts"
+  },
+  {
+    "name": "MAX_USER_SITE_RULES",
+    "path": "src/types/config/site-rules.ts"
+  },
+  {
+    "name": "siteRulesConfigSchema",
+    "path": "src/types/config/site-rules.ts"
+  },
+  {
+    "name": "configAtom",
+    "path": "src/utils/atoms/config.ts"
+  },
+  {
+    "name": "mergeWithArrayOverwrite",
+    "path": "src/utils/atoms/config.ts"
+  },
+  {
+    "name": "writeConfigAtom",
+    "path": "src/utils/atoms/config.ts"
+  },
+  {
+    "name": "getConfigFieldAtom",
+    "path": "src/utils/atoms/config.ts"
+  },
+  {
+    "name": "buildConfigFieldsAtomMap",
+    "path": "src/utils/atoms/config.ts"
+  },
+  {
+    "name": "configFieldsAtomMap",
+    "path": "src/utils/atoms/config.ts"
+  },
+  {
+    "name": "CONTENT_WRAPPER_CLASS",
+    "path": "src/utils/constants/dom-labels.ts"
+  },
+  {
+    "name": "INLINE_CONTENT_CLASS",
+    "path": "src/utils/constants/dom-labels.ts"
+  },
+  {
+    "name": "BLOCK_CONTENT_CLASS",
+    "path": "src/utils/constants/dom-labels.ts"
+  },
+  {
+    "name": "FLOAT_WRAP_ATTRIBUTE",
+    "path": "src/utils/constants/dom-labels.ts"
+  },
+  {
+    "name": "WALKED_ATTRIBUTE",
+    "path": "src/utils/constants/dom-labels.ts"
+  },
+  {
+    "name": "PARAGRAPH_ATTRIBUTE",
+    "path": "src/utils/constants/dom-labels.ts"
+  },
+  {
+    "name": "BLOCK_ATTRIBUTE",
+    "path": "src/utils/constants/dom-labels.ts"
+  },
+  {
+    "name": "INLINE_ATTRIBUTE",
+    "path": "src/utils/constants/dom-labels.ts"
+  },
+  {
+    "name": "TRANSLATION_MODE_ATTRIBUTE",
+    "path": "src/utils/constants/dom-labels.ts"
+  },
+  {
+    "name": "VIRTUAL_PARAGRAPH_ATTRIBUTE",
+    "path": "src/utils/constants/dom-labels.ts"
+  },
+  {
+    "name": "TRANSLATION_ONLY_ATTRIBUTE",
+    "path": "src/utils/constants/dom-labels.ts"
+  },
+  {
+    "name": "MARK_ATTRIBUTES",
+    "path": "src/utils/constants/dom-labels.ts"
+  },
+  {
+    "name": "NOTRANSLATE_CLASS",
+    "path": "src/utils/constants/dom-labels.ts"
+  },
+  {
+    "name": "REACT_SHADOW_HOST_CLASS",
+    "path": "src/utils/constants/dom-labels.ts"
+  },
+  {
+    "name": "SPINNER_CLASS",
+    "path": "src/utils/constants/dom-labels.ts"
+  },
+  {
+    "name": "TRANSLATION_ERROR_CONTAINER_CLASS",
+    "path": "src/utils/constants/dom-labels.ts"
+  },
+  {
+    "name": "WEB_PAGE_PROMPT_TOKENS",
+    "path": "src/utils/constants/prompt.ts"
+  },
+  {
+    "name": "SUBTITLE_PROMPT_TOKENS",
+    "path": "src/utils/constants/prompt.ts"
+  },
+  {
+    "name": "TOKENS",
+    "path": "src/utils/constants/prompt.ts"
+  },
+  {
+    "name": "BATCH_SEPARATOR",
+    "path": "src/utils/constants/prompt.ts"
+  },
+  {
+    "name": "BATCH_SEPARATOR_LINE_PATTERN",
+    "path": "src/utils/constants/prompt.ts"
+  },
+  {
+    "name": "NO_TRANSLATION_SENTINEL",
+    "path": "src/utils/constants/prompt.ts"
+  },
+  {
+    "name": "isNoTranslationSentinel",
+    "path": "src/utils/constants/prompt.ts"
+  },
+  {
+    "name": "TARGET_LANGUAGE",
+    "path": "src/utils/constants/prompt.ts"
+  },
+  {
+    "name": "INPUT",
+    "path": "src/utils/constants/prompt.ts"
+  },
+  {
+    "name": "WEB_TITLE",
+    "path": "src/utils/constants/prompt.ts"
+  },
+  {
+    "name": "WEB_DESCRIPTION",
+    "path": "src/utils/constants/prompt.ts"
+  },
+  {
+    "name": "WEB_CONTENT",
+    "path": "src/utils/constants/prompt.ts"
+  },
+  {
+    "name": "WEB_SUMMARY",
+    "path": "src/utils/constants/prompt.ts"
+  },
+  {
+    "name": "SUBTITLE_TARGET_LANGUAGE",
+    "path": "src/utils/constants/prompt.ts"
+  },
+  {
+    "name": "SUBTITLE_INPUT",
+    "path": "src/utils/constants/prompt.ts"
+  },
+  {
+    "name": "SUBTITLE_WEB_TITLE",
+    "path": "src/utils/constants/prompt.ts"
+  },
+  {
+    "name": "SUBTITLE_WEB_DESCRIPTION",
+    "path": "src/utils/constants/prompt.ts"
+  },
+  {
+    "name": "VIDEO_SUMMARY",
+    "path": "src/utils/constants/prompt.ts"
+  },
+  {
+    "name": "getTokenCellText",
+    "path": "src/utils/constants/prompt.ts"
+  },
+  {
+    "name": "DEFAULT_TRANSLATE_SYSTEM_PROMPT",
+    "path": "src/utils/constants/prompt.ts"
+  },
+  {
+    "name": "DEFAULT_SUBTITLE_TRANSLATE_SYSTEM_PROMPT",
+    "path": "src/utils/constants/prompt.ts"
+  },
+  {
+    "name": "DEFAULT_TRANSLATE_PROMPT",
+    "path": "src/utils/constants/prompt.ts"
+  },
+  {
+    "name": "DEFAULT_SUBTITLE_TRANSLATE_PROMPT",
+    "path": "src/utils/constants/prompt.ts"
+  },
+  {
+    "name": "PRECISION_REWRITE_TRANSLATE_SYSTEM_PROMPT",
+    "path": "src/utils/constants/prompt.ts"
+  },
+  {
+    "name": "PRECISION_REWRITE_TRANSLATE_PROMPT",
+    "path": "src/utils/constants/prompt.ts"
+  },
+  {
+    "name": "DEFAULT_TRANSLATE_PROMPT_ID",
+    "path": "src/utils/constants/prompt.ts"
+  },
+  {
+    "name": "PRECISION_REWRITE_TRANSLATE_PROMPT_ID",
+    "path": "src/utils/constants/prompt.ts"
+  },
+  {
+    "name": "BUILT_IN_PAGE_TRANSLATE_PROMPTS",
+    "path": "src/utils/constants/prompt.ts"
+  },
+  {
+    "name": "BUILT_IN_SUBTITLE_TRANSLATE_PROMPTS",
+    "path": "src/utils/constants/prompt.ts"
+  },
+  {
+    "name": "BUILT_IN_PAGE_TRANSLATE_PROMPT_IDS",
+    "path": "src/utils/constants/prompt.ts"
+  },
+  {
+    "name": "BUILT_IN_SUBTITLE_TRANSLATE_PROMPT_IDS",
+    "path": "src/utils/constants/prompt.ts"
+  },
+  {
+    "name": "DEFAULT_TRANSLATE_PROMPTS_CONFIG",
+    "path": "src/utils/constants/prompt.ts"
+  },
+  {
+    "name": "DEFAULT_SUBTITLE_TRANSLATE_PROMPTS_CONFIG",
+    "path": "src/utils/constants/prompt.ts"
+  },
+  {
+    "name": "DEFAULT_BATCH_TRANSLATE_PROMPT",
+    "path": "src/utils/constants/prompt.ts"
+  },
+  {
+    "name": "DEFAULT_SENTINEL_TRANSLATE_PROMPT",
+    "path": "src/utils/constants/prompt.ts"
+  },
+  {
+    "name": "DEFAULT_SUBTITLES_SEGMENTATION_SYSTEM_PROMPT",
+    "path": "src/utils/constants/prompt.ts"
+  },
+  {
+    "name": "DEFAULT_SUBTITLES_SEGMENTATION_PROMPT",
+    "path": "src/utils/constants/prompt.ts"
+  },
+  {
+    "name": "NAVIGATION_HANDLER_DELAY",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "FETCH_CHECK_INTERVAL",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "FETCH_SUBTITLES_TIMEOUT",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "MAX_GAP_MS",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "PAUSE_TIMEOUT_MS",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "MAX_WORDS",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "MAX_CHARS_CJK",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "SENTENCE_END_PATTERN",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "TRANSLATION_BATCH_SIZE",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "TRANSLATE_LOOK_AHEAD_MS",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "PROCESS_LOOK_AHEAD_MS",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "MAX_LOOKAHEAD_RATE",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "READ_FROG_SUBTITLES_UI_HOST_ID",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "TRANSLATE_BUTTON_CONTAINER_ID",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "HIDE_NATIVE_CAPTIONS_STYLE_ID",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "SUBTITLES_VIEW_CLASS",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "SUBTITLES_BOX_CLASS",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "STATE_MESSAGE_CLASS",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "TRANSLATE_BUTTON_CLASS",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "YOUTUBE_WATCH_URL_PATTERN",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "YOUTUBE_EMBED_PATH_PATTERN",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "YOUTUBE_SHORTS_PATH_PATTERN",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "YOUTUBE_LIVE_PATH_PATTERN",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "YOUTUBE_NAVIGATE_START_EVENT",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "YOUTUBE_NAVIGATE_FINISH_EVENT",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "YOUTUBE_NATIVE_SUBTITLES_CLASS",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "PLAYER_DATA_REQUEST_TYPE",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "PLAYER_DATA_RESPONSE_TYPE",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "WAIT_TIMEDTEXT_REQUEST_TYPE",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "WAIT_TIMEDTEXT_RESPONSE_TYPE",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "TIMEDTEXT_WAIT_TIMEOUT_MS",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "ENSURE_SUBTITLES_REQUEST_TYPE",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "ENSURE_SUBTITLES_RESPONSE_TYPE",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "POST_MESSAGE_TIMEOUT_MS",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "MAX_PLAYER_WAIT_ATTEMPTS",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "PLAYER_WAIT_INTERVAL_MS",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "MAX_STATE_WAIT_ATTEMPTS",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "STATE_WAIT_INTERVAL_MS",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "MAX_FETCH_RETRIES",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "FETCH_RETRY_DELAY_MS",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "MAX_POT_WAIT_ATTEMPTS",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "POT_WAIT_INTERVAL_MS",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "MAX_SELECTED_TRACK_WAIT_ATTEMPTS",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "SELECTED_TRACK_WAIT_INTERVAL_MS",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "MIN_FONT_SCALE",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "MAX_FONT_SCALE",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "DEFAULT_FONT_SCALE",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "MIN_FONT_WEIGHT",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "MAX_FONT_WEIGHT",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "DEFAULT_FONT_WEIGHT",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "MIN_BACKGROUND_OPACITY",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "MAX_BACKGROUND_OPACITY",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "DEFAULT_BACKGROUND_OPACITY",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "DEFAULT_FONT_FAMILY",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "DEFAULT_SUBTITLE_COLOR",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "DEFAULT_DISPLAY_MODE",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "DEFAULT_TRANSLATION_POSITION",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "DEFAULT_CONTROLS_HEIGHT",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "DEFAULT_SUBTITLE_POSITION",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "DEFAULT_SUBTITLES_TOGGLE_SHORTCUT_KEY",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "SUBTITLES_THEME",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "SUBTITLE_FONT_FAMILIES",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "SUBTITLE_CSS_PRESET_IDS",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "SUBTITLE_CSS_PRESETS",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "SUBTITLES_SOURCE",
+    "path": "src/utils/constants/subtitles.ts"
+  },
+  {
+    "name": "getBuiltInDictionaryAction",
+    "path": "src/utils/custom-actions.ts"
+  },
+  {
+    "name": "getSelectionToolbarActions",
+    "path": "src/utils/custom-actions.ts"
+  },
+  {
+    "name": "findSelectionToolbarAction",
+    "path": "src/utils/custom-actions.ts"
+  },
+  {
+    "name": "resolveNoteSuggestionAction",
+    "path": "src/utils/custom-actions.ts"
+  },
+  {
+    "name": "toBuiltInDictionaryState",
+    "path": "src/utils/custom-actions.ts"
+  },
+  {
+    "name": "replaceSelectionToolbarAction",
+    "path": "src/utils/custom-actions.ts"
+  },
+  {
+    "name": "patchSelectionToolbarAction",
+    "path": "src/utils/custom-actions.ts"
+  },
+  {
+    "name": "duplicateSelectionToolbarAction",
+    "path": "src/utils/custom-actions.ts"
+  },
+  {
+    "name": "usesIconFont",
+    "path": "src/utils/host/dom/filter.ts"
+  },
+  {
+    "name": "isEditable",
+    "path": "src/utils/host/dom/filter.ts"
+  },
+  {
+    "name": "isShallowInlineTransNode",
+    "path": "src/utils/host/dom/filter.ts"
+  },
+  {
+    "name": "isLargeInitialFloatingLetter",
+    "path": "src/utils/host/dom/filter.ts"
+  },
+  {
+    "name": "isInlineDisplay",
+    "path": "src/utils/host/dom/filter.ts"
+  },
+  {
+    "name": "isShallowInlineHTMLElement",
+    "path": "src/utils/host/dom/filter.ts"
+  },
+  {
+    "name": "isShallowBlockTransNode",
+    "path": "src/utils/host/dom/filter.ts"
+  },
+  {
+    "name": "isShallowBlockHTMLElement",
+    "path": "src/utils/host/dom/filter.ts"
+  },
+  {
+    "name": "getEffectiveTagSet",
+    "path": "src/utils/host/dom/filter.ts"
+  },
+  {
+    "name": "isSiteRuleExcludedElement",
+    "path": "src/utils/host/dom/filter.ts"
+  },
+  {
+    "name": "isSiteRuleForceBlockNodeElement",
+    "path": "src/utils/host/dom/filter.ts"
+  },
+  {
+    "name": "isSiteRuleForceBlockStyleElement",
+    "path": "src/utils/host/dom/filter.ts"
+  },
+  {
+    "name": "isSiteRuleForceInlineNodeElement",
+    "path": "src/utils/host/dom/filter.ts"
+  },
+  {
+    "name": "isSiteRuleForceInlineStyleElement",
+    "path": "src/utils/host/dom/filter.ts"
+  },
+  {
+    "name": "isSiteRulePreserveTextElement",
+    "path": "src/utils/host/dom/filter.ts"
+  },
+  {
+    "name": "isWithinIncludeScope",
+    "path": "src/utils/host/dom/filter.ts"
+  },
+  {
+    "name": "isDontWalkIntoButTranslateAsChildElement",
+    "path": "src/utils/host/dom/filter.ts"
+  },
+  {
+    "name": "isPlainTextDocumentPre",
+    "path": "src/utils/host/dom/filter.ts"
+  },
+  {
+    "name": "isInsideContentContainer",
+    "path": "src/utils/host/dom/filter.ts"
+  },
+  {
+    "name": "isDontWalkIntoAndDontTranslateAsChildElement",
+    "path": "src/utils/host/dom/filter.ts"
+  },
+  {
+    "name": "isWalkBlockedElement",
+    "path": "src/utils/host/dom/filter.ts"
+  },
+  {
+    "name": "isInlineTransNode",
+    "path": "src/utils/host/dom/filter.ts"
+  },
+  {
+    "name": "isBlockTransNode",
+    "path": "src/utils/host/dom/filter.ts"
+  },
+  {
+    "name": "setNaturalTransNodeKind",
+    "path": "src/utils/host/dom/filter.ts"
+  },
+  {
+    "name": "isNaturalInlineTransNode",
+    "path": "src/utils/host/dom/filter.ts"
+  },
+  {
+    "name": "isNaturalBlockTransNode",
+    "path": "src/utils/host/dom/filter.ts"
+  },
+  {
+    "name": "isHTMLElement",
+    "path": "src/utils/host/dom/filter.ts"
+  },
+  {
+    "name": "isElement",
+    "path": "src/utils/host/dom/filter.ts"
+  },
+  {
+    "name": "isTextNode",
+    "path": "src/utils/host/dom/filter.ts"
+  },
+  {
+    "name": "isTransNode",
+    "path": "src/utils/host/dom/filter.ts"
+  },
+  {
+    "name": "isIFrameElement",
+    "path": "src/utils/host/dom/filter.ts"
+  },
+  {
+    "name": "isTranslatedWrapperNode",
+    "path": "src/utils/host/dom/filter.ts"
+  },
+  {
+    "name": "isTranslatedContentNode",
+    "path": "src/utils/host/dom/filter.ts"
+  },
+  {
+    "name": "hasNoWalkAncestor",
+    "path": "src/utils/host/dom/filter.ts"
+  },
+  {
+    "name": "extractTextContent",
+    "path": "src/utils/host/dom/traversal.ts"
+  },
+  {
+    "name": "walkAndLabelElement",
+    "path": "src/utils/host/dom/traversal.ts"
+  },
+  {
+    "name": "walkAndLabelElementChunked",
+    "path": "src/utils/host/dom/traversal.ts"
+  },
+  {
+    "name": "canSplitGiantWithoutStrandingOwnText",
+    "path": "src/utils/host/dom/traversal.ts"
+  },
+  {
+    "name": "translateTextForAction",
+    "path": "src/utils/host/translate/core/translation-modes.ts"
+  },
+  {
+    "name": "createDeepLXHtmlAttributeProbe",
+    "path": "src/utils/host/translate/core/translation-modes.ts"
+  },
+  {
+    "name": "finishDeepLXHtmlAttributeProbe",
+    "path": "src/utils/host/translate/core/translation-modes.ts"
+  },
+  {
+    "name": "acquireDeepLXHtmlAttributeProbe",
+    "path": "src/utils/host/translate/core/translation-modes.ts"
+  },
+  {
+    "name": "getDeepLXHtmlAttributeProviderKey",
+    "path": "src/utils/host/translate/core/translation-modes.ts"
+  },
+  {
+    "name": "getDisplayTranslation",
+    "path": "src/utils/host/translate/core/translation-modes.ts"
+  },
+  {
+    "name": "createBilingualWrapper",
+    "path": "src/utils/host/translate/core/translation-modes.ts"
+  },
+  {
+    "name": "filterVirtualParagraphUnits",
+    "path": "src/utils/host/translate/core/translation-modes.ts"
+  },
+  {
+    "name": "translateVirtualParagraph",
+    "path": "src/utils/host/translate/core/translation-modes.ts"
+  },
+  {
+    "name": "translateVirtualParagraphs",
+    "path": "src/utils/host/translate/core/translation-modes.ts"
+  },
+  {
+    "name": "translateNodes",
+    "path": "src/utils/host/translate/core/translation-modes.ts"
+  },
+  {
+    "name": "translateNodesBilingualMode",
+    "path": "src/utils/host/translate/core/translation-modes.ts"
+  },
+  {
+    "name": "findRunTranslationOnlyWrapper",
+    "path": "src/utils/host/translate/core/translation-modes.ts"
+  },
+  {
+    "name": "translateNodeTranslationOnlyMode",
+    "path": "src/utils/host/translate/core/translation-modes.ts"
+  },
+  {
+    "name": "isGiantParagraphUnit",
+    "path": "src/utils/host/translate/core/translation-modes.ts"
+  },
+  {
+    "name": "collectTopLevelParagraphDescendants",
+    "path": "src/utils/host/translate/core/translation-modes.ts"
+  },
+  {
+    "name": "translateNonMaterializableGiant",
+    "path": "src/utils/host/translate/core/translation-modes.ts"
+  },
+  {
+    "name": "maybeTranslateVirtualUnitRuns",
+    "path": "src/utils/host/translate/core/translation-modes.ts"
+  },
+  {
+    "name": "endVirtualTranslationOnlyGeneration",
+    "path": "src/utils/host/translate/core/translation-modes.ts"
+  },
+  {
+    "name": "translateTranslationOnlyRun",
+    "path": "src/utils/host/translate/core/translation-modes.ts"
+  },
+  {
+    "name": "sourceRunMatchesSelector",
+    "path": "src/utils/host/translate/dom/translation-insertion.ts"
+  },
+  {
+    "name": "resolveLineHeight",
+    "path": "src/utils/host/translate/dom/translation-insertion.ts"
+  },
+  {
+    "name": "measureContentBottomBeforeWrapper",
+    "path": "src/utils/host/translate/dom/translation-insertion.ts"
+  },
+  {
+    "name": "isDisplacedBelowFloat",
+    "path": "src/utils/host/translate/dom/translation-insertion.ts"
+  },
+  {
+    "name": "addInlineTranslation",
+    "path": "src/utils/host/translate/dom/translation-insertion.ts"
+  },
+  {
+    "name": "addBlockTranslation",
+    "path": "src/utils/host/translate/dom/translation-insertion.ts"
+  },
+  {
+    "name": "insertTranslatedNodeIntoWrapper",
+    "path": "src/utils/host/translate/dom/translation-insertion.ts"
+  },
+  {
+    "name": "resolvePromptReplacementValue",
+    "path": "src/utils/prompts/translate.ts"
+  },
+  {
+    "name": "getTranslatePromptFromConfig",
+    "path": "src/utils/prompts/translate.ts"
+  },
+  {
+    "name": "getTranslatePrompt",
+    "path": "src/utils/prompts/translate.ts"
+  },
+  {
+    "name": "providerSupportsTranslationOnlyMode",
+    "path": "src/utils/providers/translation-only-gate.ts"
+  },
+  {
+    "name": "canEnterTranslationOnlyMode",
+    "path": "src/utils/providers/translation-only-gate.ts"
+  },
+  {
+    "name": "EMPTY_RESOLVED_SITE_RULE",
+    "path": "src/utils/site-rules/resolve.ts"
+  },
+  {
+    "name": "PROTECTED_DONT_WALK_TAGS",
+    "path": "src/utils/site-rules/resolve.ts"
+  },
+  {
+    "name": "isValidSelector",
+    "path": "src/utils/site-rules/resolve.ts"
+  },
+  {
+    "name": "joinSelectors",
+    "path": "src/utils/site-rules/resolve.ts"
+  },
+  {
+    "name": "mergeSelectorDelta",
+    "path": "src/utils/site-rules/resolve.ts"
+  },
+  {
+    "name": "mergeTagSetDelta",
+    "path": "src/utils/site-rules/resolve.ts"
+  },
+  {
+    "name": "resolveSiteRule",
+    "path": "src/utils/site-rules/resolve.ts"
+  }
+]

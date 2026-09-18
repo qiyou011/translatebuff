@@ -8,7 +8,7 @@ import { configAtom, configFieldsAtomMap } from "@/utils/atoms/config"
 import { i18n } from "@/utils/i18n"
 import { formatHotkeyParts } from "@/utils/os"
 import { isPageTranslationShortcutEmpty } from "@/utils/page-translation-shortcut"
-import { canEnterTranslationOnlyMode } from "@/utils/providers/translation-only-gate"
+import { getTranslationOnlyBlockedReason } from "@/utils/providers/translation-only-gate"
 import { cn } from "@/utils/styles/utils"
 
 // fork 版 popup 模式切换按钮（换皮上游 entrypoints/popup/components/translation-mode-selector）：
@@ -47,7 +47,8 @@ export default function TranslationModeSelector() {
   const tooltipKey = MODE_TOOLTIP_KEY[currentMode]
   // 原生 disabled 会吞掉 tooltip 需要的 hover 事件，所以按钮保持可聚焦，
   // 点击变成空操作，理由放在 tooltip 里。
-  const nextModeBlocked = nextMode === "translationOnly" && !canEnterTranslationOnlyMode(config)
+  const blockedReason = getTranslationOnlyBlockedReason(config)
+  const nextModeBlocked = nextMode === "translationOnly" && blockedReason !== null
   const actionLabel = i18n.t(tooltipKey.action)
   const shortcutParts = isPageTranslationShortcutEmpty(translateConfig.modeShortcut)
     ? []
@@ -86,11 +87,7 @@ export default function TranslationModeSelector() {
         {/* 拦截理由比模式标签长得多，让它在 320px 的 popup 里换行，别挤成一行截断 */}
         <div className={cn("whitespace-nowrap", nextModeBlocked && "max-w-64 whitespace-normal")}>
           <p>{i18n.t(tooltipKey.current)}</p>
-          {nextModeBlocked ? (
-            <p>{i18n.t("options.translation.preference.translationMode.microsoftNotSupported")}</p>
-          ) : (
-            <p>{actionLabel}</p>
-          )}
+          {nextModeBlocked ? <p>{blockedReason}</p> : <p>{actionLabel}</p>}
           {!nextModeBlocked && shortcutParts.length > 0 && (
             <KbdGroup className="mt-1.5">
               {shortcutParts.map((part) => (

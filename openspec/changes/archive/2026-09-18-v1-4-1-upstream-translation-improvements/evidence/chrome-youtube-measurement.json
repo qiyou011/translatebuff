@@ -1,0 +1,11 @@
+{
+  "browser": "153.0.8010.36",
+  "method": "Real Chrome layout fixture executing bundled actual getYoutubeConfig source; not live YouTube playback",
+  "before": {
+    "height": 59,
+    "visible": true,
+    "embedHeight": 59
+  },
+  "hidden": false,
+  "strayProgressParentHeight": 495
+}

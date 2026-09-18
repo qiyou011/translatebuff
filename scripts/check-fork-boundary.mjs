@@ -1,4 +1,5 @@
 import { execFileSync, execSync } from "node:child_process"
+import { createHash } from "node:crypto"
 import { readFileSync } from "node:fs"
 import { pathToFileURL } from "node:url"
 
@@ -16,6 +17,91 @@ const FORK_ROOT_FILES = new Set([
   ".gitattributes",
   "vitest.fork.config.ts",
 ])
+
+/** Validate the entire ledger before using any of its path exceptions. */
+export function validateSelectivePatches(ledger, { readFile, verifySource }) {
+  const fail = (reason) => {
+    throw new Error(`Selective patches: ${reason}`)
+  }
+  if (!ledger || !Array.isArray(ledger.sources) || !Array.isArray(ledger.files)) {
+    fail("invalid ledger")
+  }
+  const sources = new Set()
+  for (const source of ledger.sources) {
+    if (
+      !source ||
+      !/^[a-f0-9]{40}$/.test(source.sha) ||
+      sources.has(source.sha) ||
+      source.status !== "applied" ||
+      typeof source.subject !== "string" ||
+      !source.subject.trim()
+    ) {
+      fail("invalid or duplicate source")
+    }
+    sources.add(source.sha)
+    verifySource(source.sha)
+  }
+  const paths = new Set()
+  const used = new Set()
+  for (const file of ledger.files) {
+    const path = file?.path
+    if (
+      typeof path !== "string" ||
+      !path ||
+      file.path.includes("\\") ||
+      file.path.includes(":") ||
+      file.path.includes("\0") ||
+      file.path
+        .split("/")
+        .some((part) => !part || part === "." || part === ".." || part === ".git") ||
+      paths.has(file.path)
+    )
+      fail("invalid or duplicate path")
+    if (
+      !Array.isArray(file.sources) ||
+      !file.sources.length ||
+      new Set(file.sources).size !== file.sources.length ||
+      file.sources.some((sha) => !sources.has(sha))
+    )
+      fail(`unknown or duplicate source: ${file.path}`)
+    for (const sha of file.sources) used.add(sha)
+    const content = readFile(file.path)
+    if (file.deleted === true) {
+      if (file.sha256 !== undefined || content !== null) fail(`deleted file exists: ${file.path}`)
+    } else {
+      if (file.deleted !== undefined || !/^[a-f0-9]{64}$/.test(file.sha256) || content === null) {
+        fail(`invalid fingerprint: ${file.path}`)
+      }
+      const hash = createHash("sha256").update(content.replace(/\r\n/g, "\n")).digest("hex")
+      if (hash !== file.sha256) fail(`fingerprint drift: ${file.path}`)
+    }
+    paths.add(file.path)
+  }
+  if ([...sources].some((sha) => !used.has(sha))) fail("source has no contributing files")
+  return [...paths]
+}
+
+export function verifySelectiveSource(sha, git, baselineRefs) {
+  if (
+    git(["remote", "get-url", "upstream"]).trim() !== "https://github.com/mengxi-ream/read-frog.git"
+  ) {
+    throw new Error("Selective patches: untrusted upstream remote")
+  }
+  git(["cat-file", "-e", `${sha}^{commit}`])
+  const isAncestor = (ref) => {
+    try {
+      git(["merge-base", "--is-ancestor", sha, ref])
+      return true
+    } catch (error) {
+      if (error.status === 1) return false
+      throw error
+    }
+  }
+  if (!isAncestor("refs/remotes/upstream/main")) throw new Error(`Nonofficial source: ${sha}`)
+  for (const ref of new Set(baselineRefs)) {
+    if (isAncestor(ref)) throw new Error(`Stale selective source: ${sha} is already in ${ref}`)
+  }
+}
 
 /**
  * 判定改动文件是否越界：允许 src/fork/** 与 allowlist 内的上游文件。
@@ -159,6 +245,27 @@ if (import.meta.url === pathToFileURL(process.argv[1]).href) {
     base,
     JSON.parse(readFileSync("src/fork/identity/upstream-baseline.json", "utf8")),
   )
+  let ledger
+  try {
+    ledger = JSON.parse(readFileSync("src/fork/identity/selective-upstream-patches.json", "utf8"))
+  } catch (error) {
+    if (error.code !== "ENOENT") throw error
+  }
+  if (ledger) {
+    const baseline = JSON.parse(readFileSync("src/fork/identity/upstream-baseline.json", "utf8"))
+    const approvedPaths = validateSelectivePatches(ledger, {
+      readFile: (path) => {
+        try {
+          return readFileSync(path, "utf8")
+        } catch (error) {
+          if (error.code === "ENOENT") return null
+          throw error
+        }
+      },
+      verifySource: (sha) => verifySelectiveSource(sha, git, [upstreamRef, baseline.lastSyncedSha]),
+    })
+    allowlist.push(...approvedPaths)
+  }
   const divergesFromUpstream = (file) => {
     const diff = execFileSync("git", ["diff", "--name-only", upstreamRef, "HEAD", "--", file], {
       encoding: "utf8",

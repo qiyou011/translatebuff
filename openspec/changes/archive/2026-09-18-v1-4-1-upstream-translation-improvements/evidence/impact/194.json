@@ -1,0 +1,272 @@
+{
+  "target": {
+    "id": "Function:src/utils/constants/prompt.ts:getTokenCellText",
+    "name": "getTokenCellText",
+    "type": "Function",
+    "filePath": "src/utils/constants/prompt.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 25,
+  "risk": "LOW",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 4,
+    "processes_affected": 0,
+    "modules_affected": 1
+  },
+  "byDepthCounts": {
+    "1": 4,
+    "2": 6,
+    "3": 15
+  },
+  "affected_processes": [],
+  "affected_modules": [
+    {
+      "name": "Prompts",
+      "hits": 6,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "File:src/utils/constants/prompt.ts",
+        "name": "prompt.ts",
+        "filePath": "src/utils/constants/prompt.ts",
+        "relationType": "CALLS",
+        "confidence": 0.8,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/utils/prompts/subtitles-segmentation.ts:getSubtitlesSegmentationPrompt",
+        "name": "getSubtitlesSegmentationPrompt",
+        "filePath": "src/utils/prompts/subtitles-segmentation.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/utils/prompts/subtitles.ts:getSubtitlesTranslatePrompt.replaceTokens@59:2",
+        "name": "replaceTokens",
+        "filePath": "src/utils/prompts/subtitles.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/utils/prompts/translate.ts:getTranslatePromptFromConfig.replaceTokens@105:2",
+        "name": "replaceTokens",
+        "filePath": "src/utils/prompts/translate.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "File:src/utils/constants/config.ts",
+        "name": "config.ts",
+        "filePath": "src/utils/constants/config.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/utils/prompts/subtitles-segmentation.ts",
+        "name": "subtitles-segmentation.ts",
+        "filePath": "src/utils/prompts/subtitles-segmentation.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/utils/prompts/subtitles.ts",
+        "name": "subtitles.ts",
+        "filePath": "src/utils/prompts/subtitles.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/utils/prompts/translate.ts",
+        "name": "translate.ts",
+        "filePath": "src/utils/prompts/translate.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/utils/prompts/subtitles.ts:getSubtitlesTranslatePrompt",
+        "name": "getSubtitlesTranslatePrompt",
+        "filePath": "src/utils/prompts/subtitles.ts",
+        "relationType": "CALLS",
+        "confidence": 0.8,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/utils/prompts/translate.ts:getTranslatePromptFromConfig",
+        "name": "getTranslatePromptFromConfig",
+        "filePath": "src/utils/prompts/translate.ts",
+        "relationType": "CALLS",
+        "confidence": 0.8,
+        "processes": []
+      }
+    ],
+    "3": [
+      {
+        "depth": 3,
+        "id": "File:src/utils/atoms/config.ts",
+        "name": "config.ts",
+        "filePath": "src/utils/atoms/config.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/utils/atoms/detected-code.ts",
+        "name": "detected-code.ts",
+        "filePath": "src/utils/atoms/detected-code.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/utils/atoms/last-sync-time.ts",
+        "name": "last-sync-time.ts",
+        "filePath": "src/utils/atoms/last-sync-time.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/utils/atoms/theme.ts",
+        "name": "theme.ts",
+        "filePath": "src/utils/atoms/theme.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/utils/config/init.ts",
+        "name": "init.ts",
+        "filePath": "src/utils/config/init.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/utils/config/languages.ts",
+        "name": "languages.ts",
+        "filePath": "src/utils/config/languages.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/utils/config/migration.ts",
+        "name": "migration.ts",
+        "filePath": "src/utils/config/migration.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/utils/config/storage.ts",
+        "name": "storage.ts",
+        "filePath": "src/utils/config/storage.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/utils/config/sync.ts",
+        "name": "sync.ts",
+        "filePath": "src/utils/config/sync.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/utils/google-drive/auth.ts",
+        "name": "auth.ts",
+        "filePath": "src/utils/google-drive/auth.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/utils/google-drive/storage.ts",
+        "name": "storage.ts",
+        "filePath": "src/utils/google-drive/storage.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/utils/google-drive/sync.ts",
+        "name": "sync.ts",
+        "filePath": "src/utils/google-drive/sync.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/utils/providers/model.ts",
+        "name": "model.ts",
+        "filePath": "src/utils/providers/model.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/utils/theme.ts",
+        "name": "theme.ts",
+        "filePath": "src/utils/theme.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/utils/prompts/translate.ts:getTranslatePrompt",
+        "name": "getTranslatePrompt",
+        "filePath": "src/utils/prompts/translate.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ]
+  },
+  "staleness": {
+    "commitsBehind": 1,
+    "hint": "⚠️ Index is 1 commit behind HEAD. Run analyze tool to update."
+  }
+}

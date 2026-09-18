@@ -1,0 +1,6 @@
+{
+  "tooltip": "当前为双语对照\n\nMicrosoft Translator 不支持仅译文模式，若想开启请切换其他提供商。",
+  "blockedMode": "bilingual",
+  "allowedMode": "translationOnly",
+  "restored": true
+}

@@ -1,0 +1,20 @@
+[
+  {
+    "name": "formula",
+    "url": "https://example.com/upstream-formula",
+    "fixture": true,
+    "timeout": false,
+    "translated": {
+      "errors": [[]],
+      "text": "The energy is \n𝐸\n=\n𝑚\n𝑐\n2\n in this physical experiment.",
+      "html": "The energy is <math><mi>E</mi><mo>=</mo><mi>m</mi><msup><mi>c</mi><mn>2</mn></msup></math> in this physical experiment.<span class=\"notranslate read-frog-translated-content-wrapper\" data-read-frog-translation-mode=\"bilingual\" data-read-frog-walked=\"bf4aa23e-425c-4f4f-9aa2-6ae90aae9c7f\" dir=\"ltr\" lang=\"zh\"><div class=\"read-frog-translation-error-container read-frog-react-shadow-host\" style=\"display: inline;\"></div></span>",
+      "math": 1,
+      "styles": []
+    },
+    "restored": {
+      "text": "The energy is \n𝐸\n=\n𝑚\n𝑐\n2\n in this physical experiment.",
+      "math": 1,
+      "wrappers": 0
+    }
+  }
+]

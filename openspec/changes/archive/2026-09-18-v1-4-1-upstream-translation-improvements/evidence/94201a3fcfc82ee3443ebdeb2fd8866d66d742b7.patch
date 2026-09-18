@@ -1,0 +1,23 @@
+diff --git a/.changeset/quiet-players-rest.md b/.changeset/quiet-players-rest.md
+new file mode 100644
+index 00000000..250f41fa
+--- /dev/null
++++ b/.changeset/quiet-players-rest.md
+@@ -0,0 +1,5 @@
++---
++"@read-frog/extension": patch
++---
++
++fix(translate): exclude the entire Substack video player from translation
+diff --git a/src/utils/site-rules/built-in/rules.json b/src/utils/site-rules/built-in/rules.json
+index 6bb741a5..dbdba241 100644
+--- a/src/utils/site-rules/built-in/rules.json
++++ b/src/utils/site-rules/built-in/rules.json
+@@ -882,6 +882,7 @@
+     "id": "substack",
+     "matches": ["*.substack.com", "newsletter.rootsofprogress.org", "www.lennysnewsletter.com"],
+     "excludeSelectors": [
++      ".shows-video-player-container",
+       ".publication-footer",
+       ".subscribe-footer",
+       ".main-menu",

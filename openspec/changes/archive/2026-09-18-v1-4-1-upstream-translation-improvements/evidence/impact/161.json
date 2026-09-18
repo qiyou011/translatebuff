@@ -1,0 +1,130 @@
+{
+  "target": {
+    "id": "Function:src/entrypoints/selection.content/selection-toolbar/index.tsx:collectSelectionBoundaryNodes",
+    "name": "collectSelectionBoundaryNodes",
+    "type": "Function",
+    "filePath": "src/entrypoints/selection.content/selection-toolbar/index.tsx"
+  },
+  "direction": "upstream",
+  "impactedCount": 3,
+  "risk": "LOW",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 1,
+    "processes_affected": 1,
+    "modules_affected": 1
+  },
+  "byDepthCounts": {
+    "1": 1,
+    "2": 2
+  },
+  "affected_processes": [
+    {
+      "name": "handleMouseUp",
+      "type": "Function",
+      "filePath": "src/entrypoints/selection.content/selection-toolbar/index.tsx",
+      "affected_process_count": 6,
+      "total_hits": 8,
+      "earliest_broken_step": 1
+    }
+  ],
+  "affected_modules": [
+    {
+      "name": "Selection-toolbar",
+      "hits": 3,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/selection.content/selection-toolbar/index.tsx:isSelectionInsideSelectionOverlay",
+        "name": "isSelectionInsideSelectionOverlay",
+        "filePath": "src/entrypoints/selection.content/selection-toolbar/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_143_handlemouseup",
+            "label": "HandleMouseUp → GetNearestSelectionOverlayElement",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_208_handlemouseup",
+            "label": "HandleMouseUp → CollectSelectionBoundaryNodes",
+            "processType": "intra_community",
+            "step": 2
+          }
+        ]
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "Function:src/entrypoints/selection.content/selection-toolbar/index.tsx:SelectionToolbar.fn@351:12.handleMouseUp@352:4",
+        "name": "handleMouseUp",
+        "filePath": "src/entrypoints/selection.content/selection-toolbar/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_143_handlemouseup",
+            "label": "HandleMouseUp → GetNearestSelectionOverlayElement",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_83_handlemouseup",
+            "label": "HandleMouseUp → CollectSelectionBoundaryNodes",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_209_handlemouseup",
+            "label": "HandleMouseUp → NormalizeSelectedText",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_144_handlemouseup",
+            "label": "HandleMouseUp → CreateRangeSnapshot",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_208_handlemouseup",
+            "label": "HandleMouseUp → CollectSelectionBoundaryNodes",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_84_handlemouseup",
+            "label": "HandleMouseUp → GetReadFrogSubtitleShadowRoot",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/entrypoints/selection.content/selection-toolbar/index.tsx:SelectionToolbar.fn@351:12.handleSelectionChange@463:4",
+        "name": "handleSelectionChange",
+        "filePath": "src/entrypoints/selection.content/selection-toolbar/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ]
+  },
+  "staleness": {
+    "commitsBehind": 1,
+    "hint": "⚠️ Index is 1 commit behind HEAD. Run analyze tool to update."
+  }
+}

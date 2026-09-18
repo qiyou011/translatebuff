@@ -1,0 +1,50 @@
+{
+  "target": {
+    "id": "Function:src/entrypoints/background/translation-queues.ts:getQueuedProviderId",
+    "name": "getQueuedProviderId",
+    "type": "Function",
+    "filePath": "src/entrypoints/background/translation-queues.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 1,
+  "risk": "LOW",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 1,
+    "processes_affected": 0,
+    "modules_affected": 1
+  },
+  "byDepthCounts": {
+    "1": 1
+  },
+  "affected_processes": [],
+  "affected_modules": [
+    {
+      "name": "Background",
+      "hits": 1,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/background/translation-queues.ts:createTranslationQueues.getBatchKey@319:4",
+        "name": "getBatchKey",
+        "filePath": "src/entrypoints/background/translation-queues.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ]
+  },
+  "staleness": {
+    "commitsBehind": 1,
+    "hint": "⚠️ Index is 1 commit behind HEAD. Run analyze tool to update."
+  }
+}

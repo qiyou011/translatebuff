@@ -1,0 +1,110 @@
+{
+  "target": {
+    "id": "Function:src/entrypoints/side.content/components/floating-button/index.tsx:clamp",
+    "name": "clamp",
+    "type": "Function",
+    "filePath": "src/entrypoints/side.content/components/floating-button/index.tsx"
+  },
+  "direction": "upstream",
+  "impactedCount": 7,
+  "risk": "LOW",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 2,
+    "processes_affected": 0,
+    "modules_affected": 1
+  },
+  "byDepthCounts": {
+    "1": 2,
+    "2": 3,
+    "3": 2
+  },
+  "affected_processes": [],
+  "affected_modules": [
+    {
+      "name": "Floating-button",
+      "hits": 7,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/side.content/components/floating-button/index.tsx:getDragPreviewPosition",
+        "name": "getDragPreviewPosition",
+        "filePath": "src/entrypoints/side.content/components/floating-button/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/side.content/components/floating-button/index.tsx:getNormalizedFloatingContainerTop",
+        "name": "getNormalizedFloatingContainerTop",
+        "filePath": "src/entrypoints/side.content/components/floating-button/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "Function:src/entrypoints/side.content/components/floating-button/index.tsx:FloatingButton.finishPointerInteraction@300:2",
+        "name": "finishPointerInteraction",
+        "filePath": "src/entrypoints/side.content/components/floating-button/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/entrypoints/side.content/components/floating-button/index.tsx:FloatingButton.handlePointerMove@274:2",
+        "name": "handlePointerMove",
+        "filePath": "src/entrypoints/side.content/components/floating-button/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/entrypoints/side.content/components/floating-button/index.tsx:FloatingButton.startActiveDrag@232:2",
+        "name": "startActiveDrag",
+        "filePath": "src/entrypoints/side.content/components/floating-button/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "3": [
+      {
+        "depth": 3,
+        "id": "Function:src/entrypoints/side.content/components/floating-button/index.tsx:FloatingButton.handlePointerCancel@343:2",
+        "name": "handlePointerCancel",
+        "filePath": "src/entrypoints/side.content/components/floating-button/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.8,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/entrypoints/side.content/components/floating-button/index.tsx:FloatingButton.handlePointerUp@339:2",
+        "name": "handlePointerUp",
+        "filePath": "src/entrypoints/side.content/components/floating-button/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.8,
+        "processes": []
+      }
+    ]
+  },
+  "staleness": {
+    "commitsBehind": 1,
+    "hint": "⚠️ Index is 1 commit behind HEAD. Run analyze tool to update."
+  }
+}

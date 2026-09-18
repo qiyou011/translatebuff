@@ -1,0 +1,175 @@
+{
+  "target": {
+    "id": "Function:src/entrypoints/options/pages/api-providers/providers-config/index.tsx:ProviderCardList",
+    "name": "ProviderCardList",
+    "type": "Function",
+    "filePath": "src/entrypoints/options/pages/api-providers/providers-config/index.tsx"
+  },
+  "direction": "upstream",
+  "impactedCount": 2,
+  "risk": "LOW",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 1,
+    "processes_affected": 1,
+    "modules_affected": 1
+  },
+  "byDepthCounts": {
+    "1": 1,
+    "2": 1
+  },
+  "affected_processes": [
+    {
+      "name": "ApiProvidersPage",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/api-providers/index.tsx",
+      "affected_process_count": 9,
+      "total_hits": 17,
+      "earliest_broken_step": 1
+    }
+  ],
+  "affected_modules": [
+    {
+      "name": "Voice",
+      "hits": 2,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/options/pages/api-providers/providers-config/index.tsx:ProvidersConfig",
+        "name": "ProvidersConfig",
+        "filePath": "src/entrypoints/options/pages/api-providers/providers-config/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_67_apiproviderspage",
+            "label": "ApiProvidersPage → Form",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_64_apiproviderspage",
+            "label": "ApiProvidersPage → Body",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_120_apiproviderspage",
+            "label": "ApiProvidersPage → Provider",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_122_apiproviderspage",
+            "label": "ApiProvidersPage → HighlightRequestedField",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_65_apiproviderspage",
+            "label": "ApiProvidersPage → Root",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_121_apiproviderspage",
+            "label": "ApiProvidersPage → Identity",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_282_apiproviderspage",
+            "label": "ApiProvidersPage → AddProvider",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_66_apiproviderspage",
+            "label": "ApiProvidersPage → Provider",
+            "processType": "cross_community",
+            "step": 2
+          }
+        ]
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "Function:src/entrypoints/options/pages/api-providers/index.tsx:ApiProvidersPage",
+        "name": "ApiProvidersPage",
+        "filePath": "src/entrypoints/options/pages/api-providers/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_330_apiproviderspage",
+            "label": "ApiProvidersPage → ConfigLayout",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_122_apiproviderspage",
+            "label": "ApiProvidersPage → HighlightRequestedField",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_120_apiproviderspage",
+            "label": "ApiProvidersPage → Provider",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_64_apiproviderspage",
+            "label": "ApiProvidersPage → Body",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_67_apiproviderspage",
+            "label": "ApiProvidersPage → Form",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_66_apiproviderspage",
+            "label": "ApiProvidersPage → Provider",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_121_apiproviderspage",
+            "label": "ApiProvidersPage → Identity",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_282_apiproviderspage",
+            "label": "ApiProvidersPage → AddProvider",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_65_apiproviderspage",
+            "label": "ApiProvidersPage → Root",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      }
+    ]
+  },
+  "staleness": {
+    "commitsBehind": 1,
+    "hint": "⚠️ Index is 1 commit behind HEAD. Run analyze tool to update."
+  }
+}

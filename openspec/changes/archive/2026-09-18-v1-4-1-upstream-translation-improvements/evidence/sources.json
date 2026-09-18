@@ -1,0 +1,197 @@
+[
+  {
+    "sha": "0e21ebff986db878c8fa64a3a90897a6be807bbb",
+    "subject": "fix(site-rules): translate the Details body on Alibaba RFQ pages (#2152)",
+    "files": [
+      "A\t.changeset/alibaba-rfq-pre-details.md",
+      "M\tsrc/utils/site-rules/__tests__/built-in.test.ts",
+      "M\tsrc/utils/site-rules/built-in/rules.json"
+    ]
+  },
+  {
+    "sha": "0284b5afd302810af73e628e3adef2f5fe6aa36c",
+    "subject": "fix(selection): collapse idle overlay so page touch drag gestures are not stolen (#2103)",
+    "files": [
+      "A\t.changeset/selection-overlay-touch-gesture.md",
+      "M\tsrc/entrypoints/selection.content/selection-toolbar/__tests__/external-selection.test.tsx",
+      "M\tsrc/entrypoints/selection.content/selection-toolbar/__tests__/selection-toolbar.test.tsx",
+      "M\tsrc/entrypoints/selection.content/selection-toolbar/atoms.ts",
+      "M\tsrc/entrypoints/selection.content/selection-toolbar/custom-action-button/provider.tsx",
+      "M\tsrc/entrypoints/selection.content/selection-toolbar/index.tsx",
+      "M\tsrc/entrypoints/selection.content/selection-toolbar/translate-button/provider.tsx"
+    ]
+  },
+  {
+    "sha": "9ae2760e8bb0777b4f238fbc995ed9b3ff6f3ea8",
+    "subject": "fix(options): preserve IME input and autosaved drafts (#2156)",
+    "files": [
+      "A\t.changeset/tidy-frogs-compose.md",
+      "A\tsrc/components/form/__tests__/autosave-controller.test.ts",
+      "A\tsrc/components/form/__tests__/autosave-integration.test.tsx",
+      "A\tsrc/components/form/autosave-controller.ts",
+      "A\tsrc/components/form/autosave-navigation.tsx",
+      "A\tsrc/components/form/autosave.md",
+      "M\tsrc/components/form/input-field-auto-save.tsx",
+      "M\tsrc/components/form/quick-insertable-textarea-field-auto-save.tsx",
+      "M\tsrc/components/form/select-field-auto-save.tsx",
+      "A\tsrc/components/form/use-autosave.tsx",
+      "M\tsrc/entrypoints/options/main.tsx",
+      "M\tsrc/entrypoints/options/pages/__tests__/editor-context.test.tsx",
+      "M\tsrc/entrypoints/options/pages/api-providers/providers-config/__tests__/providers-config.test.tsx",
+      "M\tsrc/entrypoints/options/pages/api-providers/providers-config/add-provider-dialog.tsx",
+      "M\tsrc/entrypoints/options/pages/api-providers/providers-config/atoms.ts",
+      "M\tsrc/entrypoints/options/pages/api-providers/providers-config/index.tsx",
+      "M\tsrc/entrypoints/options/pages/api-providers/providers-config/provider-config-form/__tests__/provider-headers-field.test.tsx",
+      "M\tsrc/entrypoints/options/pages/api-providers/providers-config/provider-config-form/__tests__/provider-options-field.test.tsx",
+      "M\tsrc/entrypoints/options/pages/api-providers/providers-config/provider-config-form/__tests__/provider-specific-settings-field.test.tsx",
+      "M\tsrc/entrypoints/options/pages/api-providers/providers-config/provider-config-form/__tests__/provider-url-field.test.tsx",
+      "M\tsrc/entrypoints/options/pages/api-providers/providers-config/provider-config-form/__tests__/translate-model-selector.test.tsx",
+      "M\tsrc/entrypoints/options/pages/api-providers/providers-config/provider-config-form/api-key-field.tsx",
+      "M\tsrc/entrypoints/options/pages/api-providers/providers-config/provider-config-form/components/autosaved-json-code-editor-field.tsx",
+      "M\tsrc/entrypoints/options/pages/api-providers/providers-config/provider-config-form/index.tsx",
+      "M\tsrc/entrypoints/options/pages/api-providers/providers-config/provider-config-form/provider-headers-field.tsx",
+      "M\tsrc/entrypoints/options/pages/api-providers/providers-config/provider-config-form/provider-options-field.tsx",
+      "M\tsrc/entrypoints/options/pages/api-providers/providers-config/provider-config-form/provider-specific-settings-field.tsx",
+      "M\tsrc/entrypoints/options/pages/api-providers/providers-config/provider-config-form/provider-url-field.tsx",
+      "M\tsrc/entrypoints/options/pages/api-providers/providers-config/provider-config-form/reasoning-field.tsx",
+      "M\tsrc/entrypoints/options/pages/api-providers/providers-config/provider-config-form/temperature-field.tsx",
+      "M\tsrc/entrypoints/options/pages/api-providers/providers-config/provider-config-form/translate-model-selector.tsx",
+      "M\tsrc/entrypoints/options/pages/api-providers/providers-config/provider-editor.tsx",
+      "M\tsrc/entrypoints/options/pages/custom-actions/action-config-form/__tests__/beta-gating.test.tsx",
+      "A\tsrc/entrypoints/options/pages/custom-actions/action-config-form/__tests__/output-schema-autosave.test.tsx",
+      "M\tsrc/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx",
+      "M\tsrc/entrypoints/options/pages/custom-actions/action-config-form/icon-field.tsx",
+      "M\tsrc/entrypoints/options/pages/custom-actions/action-config-form/index.tsx",
+      "M\tsrc/entrypoints/options/pages/custom-actions/action-config-form/name-field.tsx",
+      "M\tsrc/entrypoints/options/pages/custom-actions/action-config-form/notebase-connection-field.tsx",
+      "M\tsrc/entrypoints/options/pages/custom-actions/action-config-form/output-schema-field.tsx",
+      "M\tsrc/entrypoints/options/pages/custom-actions/action-config-form/provider-field.tsx",
+      "M\tsrc/entrypoints/options/pages/custom-actions/atoms.ts",
+      "M\tsrc/entrypoints/options/pages/custom-actions/components/action-card-list.tsx",
+      "M\tsrc/locales/en.yml",
+      "M\tsrc/locales/es.yml",
+      "M\tsrc/locales/ja.yml",
+      "M\tsrc/locales/ko.yml",
+      "M\tsrc/locales/ru.yml",
+      "M\tsrc/locales/tr.yml",
+      "M\tsrc/locales/vi.yml",
+      "M\tsrc/locales/zh-CN.yml",
+      "M\tsrc/locales/zh-TW.yml",
+      "A\tsrc/utils/atoms/__tests__/config-sync.test.ts",
+      "M\tsrc/utils/atoms/config.ts",
+      "A\tsrc/utils/atoms/entity-config.ts",
+      "M\tsrc/utils/custom-actions.ts"
+    ]
+  },
+  {
+    "sha": "03c3a86f5855c5aadb4db3533e2b24bed88bef16",
+    "subject": "fix(translation): explain the disabled translation-only mode in a tooltip (#2157)",
+    "files": [
+      "A\t.changeset/translation-only-blocked-tooltip.md",
+      "M\tsrc/entrypoints/host.content/translation-control/bind-translation-mode-shortcut.ts",
+      "M\tsrc/entrypoints/options/pages/translation/preference/translation-mode-select.tsx",
+      "M\tsrc/entrypoints/popup/components/translation-mode-selector.tsx",
+      "M\tsrc/locales/en.yml",
+      "M\tsrc/locales/es.yml",
+      "M\tsrc/locales/ja.yml",
+      "M\tsrc/locales/ko.yml",
+      "M\tsrc/locales/ru.yml",
+      "M\tsrc/locales/tr.yml",
+      "M\tsrc/locales/vi.yml",
+      "M\tsrc/locales/zh-CN.yml",
+      "M\tsrc/locales/zh-TW.yml",
+      "A\tsrc/utils/providers/__tests__/translation-only-gate.test.ts",
+      "M\tsrc/utils/providers/translation-only-gate.ts"
+    ]
+  },
+  {
+    "sha": "0f5e1583d54e027ca39ed0bca6a8f4e10dce7539",
+    "subject": "fix: formula translation loss (#2155)",
+    "files": [
+      "A\t.changeset/inline-formula-atoms.md",
+      "M\tsrc/assets/styles/translation-node-preset.css",
+      "M\tsrc/entrypoints/background/__tests__/translation-queues.test.ts",
+      "M\tsrc/entrypoints/background/translation-queues.ts",
+      "M\tsrc/types/config/site-rules.ts",
+      "M\tsrc/utils/constants/dom-labels.ts",
+      "M\tsrc/utils/host/__tests__/translate.integration.test.tsx",
+      "M\tsrc/utils/host/dom/__tests__/filter.test.ts",
+      "M\tsrc/utils/host/dom/__tests__/traversal.test.ts",
+      "M\tsrc/utils/host/dom/filter.ts",
+      "M\tsrc/utils/host/dom/traversal.ts",
+      "A\tsrc/utils/host/translate/__tests__/inline-atom-tokens.test.ts",
+      "M\tsrc/utils/host/translate/core/translation-modes.ts",
+      "A\tsrc/utils/host/translate/dom/__tests__/inline-atoms.test.ts",
+      "A\tsrc/utils/host/translate/dom/inline-atoms.ts",
+      "M\tsrc/utils/host/translate/dom/translation-insertion.ts",
+      "A\tsrc/utils/host/translate/inline-atom-tokens.ts",
+      "M\tsrc/utils/prompts/__tests__/translate.test.ts",
+      "M\tsrc/utils/prompts/translate.ts",
+      "M\tsrc/utils/site-rules/__tests__/built-in.test.ts",
+      "M\tsrc/utils/site-rules/__tests__/resolve.test.ts",
+      "M\tsrc/utils/site-rules/built-in/rules.json",
+      "M\tsrc/utils/site-rules/resolve.ts"
+    ]
+  },
+  {
+    "sha": "ba71ebaaad1737bfe342cf9d137434bf2fac8a71",
+    "subject": "fix(subtitles): periodically clean up AI segmentation cache (#2159)",
+    "files": [
+      "A\t.changeset/ai-segmentation-cache-cleanup.md",
+      "M\tsrc/entrypoints/background/__tests__/db-cleanup.test.ts",
+      "M\tsrc/entrypoints/background/db-cleanup.ts"
+    ]
+  },
+  {
+    "sha": "77df09052b91ece26bba29f763c7fc2d6b6498cf",
+    "subject": "fix(floating-button): let clicks pass through collapsed controls (#2161)",
+    "files": [
+      "A\t.changeset/collapsed-floating-button-hit-area.md",
+      "M\tsrc/entrypoints/side.content/components/floating-button/index.tsx"
+    ]
+  },
+  {
+    "sha": "fcb54e066ace35413d8486ebbfd0b31e8e99af9d",
+    "subject": "fix(site-rules): prevent overlapping arXiv heading translations (#2166)",
+    "files": [
+      "A\t.changeset/quiet-arxiv-headings.md",
+      "M\tsrc/utils/site-rules/built-in/rules.json"
+    ]
+  },
+  {
+    "sha": "a250e6c41f5460b6a8b28bbe6004b5c254307370",
+    "subject": "fix(translation): distinguish preserved names from foreign prose (#2177)",
+    "files": [
+      "A\t.changeset/safer-target-language-sentinel.md",
+      "M\tsrc/utils/constants/prompt.ts",
+      "M\tsrc/utils/prompts/__tests__/translate.test.ts"
+    ]
+  },
+  {
+    "sha": "94201a3fcfc82ee3443ebdeb2fd8866d66d742b7",
+    "subject": "fix(translate): exclude the entire Substack video player from translation (#2189)",
+    "files": ["A\t.changeset/quiet-players-rest.md", "M\tsrc/utils/site-rules/built-in/rules.json"]
+  },
+  {
+    "sha": "514188603026bf4783864072f53d288bb8a0f331",
+    "subject": "fix(subtitles): keep YouTube subtitles on screen after the miniplayer leaves a stray progress bar (#2193)",
+    "files": [
+      "A\t.changeset/youtube-controls-height-miniplayer.md",
+      "A\tsrc/entrypoints/subtitles.content/platforms/youtube/__tests__/controls-height.test.ts",
+      "M\tsrc/entrypoints/subtitles.content/platforms/youtube/config.ts",
+      "A\tsrc/entrypoints/subtitles.content/ui/__tests__/use-controls-visible.test.tsx",
+      "M\tsrc/entrypoints/subtitles.content/ui/use-controls-visible.ts",
+      "M\tsrc/utils/constants/subtitles.ts"
+    ]
+  },
+  {
+    "sha": "a6384f633609973a2161e8f47414331454538779",
+    "subject": "fix(subtitles): rank cue length above sentence completeness in AI segmentation (#2194)",
+    "files": [
+      "A\t.changeset/subtitles-segmentation-length-priority.md",
+      "M\tsrc/utils/constants/prompt.ts",
+      "M\tsrc/utils/constants/subtitles.ts",
+      "A\tsrc/utils/prompts/__tests__/subtitles-segmentation.test.ts"
+    ]
+  }
+]

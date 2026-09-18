@@ -1,0 +1,8 @@
+{
+  "translation": [
+    "Translation\n简体中文\nPin popover\nClose\n\nScientific research improves our understanding of the world.\n\n思考完成\n\n科学研究增进我们对世界的理解。\n\ndeepseek-v4-flash"
+  ],
+  "action": [
+    "上游验收草稿\nPin popover\nClose\n\nScientific research improves our understanding of the world.\n\n思考完成\n结果\n科学研究提高了我们对世界的理解。\ndeepseek-v4-flash"
+  ]
+}

@@ -1,0 +1,163 @@
+{
+  "target": {
+    "id": "Function:src/entrypoints/selection.content/selection-toolbar/translate-button/provider.tsx:useSelectionTranslationPopover",
+    "name": "useSelectionTranslationPopover",
+    "type": "Function",
+    "filePath": "src/entrypoints/selection.content/selection-toolbar/translate-button/provider.tsx"
+  },
+  "direction": "upstream",
+  "impactedCount": 2,
+  "risk": "LOW",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 1,
+    "processes_affected": 1,
+    "modules_affected": 1
+  },
+  "byDepthCounts": {
+    "1": 1,
+    "2": 1
+  },
+  "affected_processes": [
+    {
+      "name": "SelectionToolbar",
+      "type": "Function",
+      "filePath": "src/entrypoints/selection.content/selection-toolbar/index.tsx",
+      "affected_process_count": 11,
+      "total_hits": 15,
+      "earliest_broken_step": 1
+    }
+  ],
+  "affected_modules": [
+    {
+      "name": "Selection-toolbar",
+      "hits": 2,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/selection.content/selection-toolbar/translate-button/index.tsx:TranslateButton",
+        "name": "TranslateButton",
+        "filePath": "src/entrypoints/selection.content/selection-toolbar/translate-button/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_459_selectiontoolbar",
+            "label": "SelectionToolbar → RawT",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_141_selectiontoolbar",
+            "label": "SelectionToolbar → SelectionTooltip",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_142_selectiontoolbar",
+            "label": "SelectionToolbar → UseSelectionTranslationContext",
+            "processType": "intra_community",
+            "step": 2
+          },
+          {
+            "id": "proc_337_selectiontoolbar",
+            "label": "SelectionToolbar → UseSelectionPopoverRootContext",
+            "processType": "cross_community",
+            "step": 2
+          }
+        ]
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "Function:src/entrypoints/selection.content/selection-toolbar/index.tsx:SelectionToolbar",
+        "name": "SelectionToolbar",
+        "filePath": "src/entrypoints/selection.content/selection-toolbar/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_80_selectiontoolbar",
+            "label": "SelectionToolbar → GetPointToRectDistanceSquared",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_82_selectiontoolbar",
+            "label": "SelectionToolbar → ToLiveRange",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_140_selectiontoolbar",
+            "label": "SelectionToolbar → GetBoundingClientRect",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_141_selectiontoolbar",
+            "label": "SelectionToolbar → SelectionTooltip",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_142_selectiontoolbar",
+            "label": "SelectionToolbar → UseSelectionTranslationContext",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_337_selectiontoolbar",
+            "label": "SelectionToolbar → UseSelectionPopoverRootContext",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_81_selectiontoolbar",
+            "label": "SelectionToolbar → HasArea",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_139_selectiontoolbar",
+            "label": "SelectionToolbar → IsRectVisible",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_207_selectiontoolbar",
+            "label": "SelectionToolbar → GetViewportRect",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_138_selectiontoolbar",
+            "label": "SelectionToolbar → Clamp",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_459_selectiontoolbar",
+            "label": "SelectionToolbar → RawT",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      }
+    ]
+  },
+  "staleness": {
+    "commitsBehind": 1,
+    "hint": "⚠️ Index is 1 commit behind HEAD. Run analyze tool to update."
+  }
+}

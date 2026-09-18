@@ -1,0 +1,349 @@
+{
+  "target": {
+    "id": "Function:src/entrypoints/subtitles.content/platforms/youtube/config.ts:createYoutubeAiSubtitlesContext",
+    "name": "createYoutubeAiSubtitlesContext",
+    "type": "Function",
+    "filePath": "src/entrypoints/subtitles.content/platforms/youtube/config.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 15,
+  "risk": "HIGH",
+  "riskSharedAxes": "MEDIUM",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 5,
+    "processes_affected": 3,
+    "modules_affected": 2
+  },
+  "byDepthCounts": {
+    "1": 5,
+    "2": 5,
+    "3": 5
+  },
+  "affected_processes": [
+    {
+      "name": "initialize",
+      "type": "Function",
+      "filePath": "src/entrypoints/subtitles.content/universal-adapter.ts",
+      "affected_process_count": 4,
+      "total_hits": 8,
+      "earliest_broken_step": 2
+    },
+    {
+      "name": "refreshSourceTrackIfNeeded",
+      "type": "Function",
+      "filePath": "src/entrypoints/subtitles.content/universal-adapter.ts",
+      "affected_process_count": 5,
+      "total_hits": 7,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "startTranslation",
+      "type": "Function",
+      "filePath": "src/entrypoints/subtitles.content/universal-adapter.ts",
+      "affected_process_count": 5,
+      "total_hits": 7,
+      "earliest_broken_step": 1
+    }
+  ],
+  "affected_modules": [
+    {
+      "name": "Subtitles.content",
+      "hits": 9,
+      "impact": "direct"
+    },
+    {
+      "name": "Ai",
+      "hits": 3,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "File:src/entrypoints/subtitles.content/platforms/youtube/config.ts",
+        "name": "config.ts",
+        "filePath": "src/entrypoints/subtitles.content/platforms/youtube/config.ts",
+        "relationType": "USES",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Method:src/utils/subtitles/fetchers/ai/index.ts:AiSubtitlesFetcher.fetch#0",
+        "name": "fetch",
+        "filePath": "src/utils/subtitles/fetchers/ai/index.ts",
+        "relationType": "CALLS",
+        "confidence": 0.7,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Method:src/utils/subtitles/fetchers/ai/index.ts:AiSubtitlesFetcher.hasAvailableSubtitles#0",
+        "name": "hasAvailableSubtitles",
+        "filePath": "src/utils/subtitles/fetchers/ai/index.ts",
+        "relationType": "CALLS",
+        "confidence": 0.7,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Method:src/utils/subtitles/fetchers/ai/index.ts:AiSubtitlesFetcher.runRequest#2",
+        "name": "runRequest",
+        "filePath": "src/utils/subtitles/fetchers/ai/index.ts",
+        "relationType": "CALLS",
+        "confidence": 0.7,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Method:src/utils/subtitles/fetchers/ai/index.ts:AiSubtitlesFetcher.shouldUseSameTrack#0",
+        "name": "shouldUseSameTrack",
+        "filePath": "src/utils/subtitles/fetchers/ai/index.ts",
+        "relationType": "CALLS",
+        "confidence": 0.7,
+        "processes": [
+          {
+            "id": "proc_238_refreshsourcetrackif",
+            "label": "RefreshSourceTrackIfNeeded → CreateYoutubeAiSubtitlesContext",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_311_starttranslation",
+            "label": "StartTranslation → CreateYoutubeAiSubtitlesContext",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_312_starttranslation",
+            "label": "StartTranslation → CreateAiSubtitlesContext",
+            "processType": "intra_community",
+            "step": 2
+          },
+          {
+            "id": "proc_239_refreshsourcetrackif",
+            "label": "RefreshSourceTrackIfNeeded → CreateAiSubtitlesContext",
+            "processType": "intra_community",
+            "step": 2
+          }
+        ]
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "Class:src/entrypoints/subtitles.content/translated-subtitles-downloader.ts:TranslatedSubtitlesDownloader",
+        "name": "TranslatedSubtitlesDownloader",
+        "filePath": "src/entrypoints/subtitles.content/translated-subtitles-downloader.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_160_initialize",
+            "label": "Initialize → SetStatus",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_162_initialize",
+            "label": "Initialize → GetFetcher",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_159_initialize",
+            "label": "Initialize → ClearSuccessTimeout",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_161_initialize",
+            "label": "Initialize → GetVideoId",
+            "processType": "cross_community",
+            "step": 3
+          }
+        ]
+      },
+      {
+        "depth": 2,
+        "id": "File:src/entrypoints/subtitles.content/init-youtube-subtitles.ts",
+        "name": "init-youtube-subtitles.ts",
+        "filePath": "src/entrypoints/subtitles.content/init-youtube-subtitles.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Method:src/entrypoints/subtitles.content/universal-adapter.ts:UniversalVideoAdapter.getOrLoadSourceSubtitles#0",
+        "name": "getOrLoadSourceSubtitles",
+        "filePath": "src/entrypoints/subtitles.content/universal-adapter.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Method:src/entrypoints/subtitles.content/universal-adapter.ts:UniversalVideoAdapter.refreshSourceTrackIfNeeded#0",
+        "name": "refreshSourceTrackIfNeeded",
+        "filePath": "src/entrypoints/subtitles.content/universal-adapter.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_238_refreshsourcetrackif",
+            "label": "RefreshSourceTrackIfNeeded → CreateYoutubeAiSubtitlesContext",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_103_refreshsourcetrackif",
+            "label": "RefreshSourceTrackIfNeeded → GetDefaultTrack",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_239_refreshsourcetrackif",
+            "label": "RefreshSourceTrackIfNeeded → CreateAiSubtitlesContext",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_102_refreshsourcetrackif",
+            "label": "RefreshSourceTrackIfNeeded → PostMessageRequest",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_165_refreshsourcetrackif",
+            "label": "RefreshSourceTrackIfNeeded → BuildTrackHash",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 2,
+        "id": "Method:src/entrypoints/subtitles.content/universal-adapter.ts:UniversalVideoAdapter.startTranslation#1",
+        "name": "startTranslation",
+        "filePath": "src/entrypoints/subtitles.content/universal-adapter.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_294_starttranslation",
+            "label": "StartTranslation → PostMessageRequest",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_295_starttranslation",
+            "label": "StartTranslation → GetDefaultTrack",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_311_starttranslation",
+            "label": "StartTranslation → CreateYoutubeAiSubtitlesContext",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_302_starttranslation",
+            "label": "StartTranslation → BuildTrackHash",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_312_starttranslation",
+            "label": "StartTranslation → CreateAiSubtitlesContext",
+            "processType": "intra_community",
+            "step": 1
+          }
+        ]
+      }
+    ],
+    "3": [
+      {
+        "depth": 3,
+        "id": "Class:src/entrypoints/subtitles.content/universal-adapter.ts:UniversalVideoAdapter",
+        "name": "UniversalVideoAdapter",
+        "filePath": "src/entrypoints/subtitles.content/universal-adapter.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/entrypoints/subtitles.content/runtime.ts",
+        "name": "runtime.ts",
+        "filePath": "src/entrypoints/subtitles.content/runtime.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Method:src/entrypoints/subtitles.content/universal-adapter.ts:UniversalVideoAdapter.handleSourceTrackChanged#0",
+        "name": "handleSourceTrackChanged",
+        "filePath": "src/entrypoints/subtitles.content/universal-adapter.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Method:src/entrypoints/subtitles.content/universal-adapter.ts:UniversalVideoAdapter.initializeTranslatedSubtitlesDownloader#0",
+        "name": "initializeTranslatedSubtitlesDownloader",
+        "filePath": "src/entrypoints/subtitles.content/universal-adapter.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_159_initialize",
+            "label": "Initialize → ClearSuccessTimeout",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_161_initialize",
+            "label": "Initialize → GetVideoId",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_162_initialize",
+            "label": "Initialize → GetFetcher",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_160_initialize",
+            "label": "Initialize → SetStatus",
+            "processType": "cross_community",
+            "step": 2
+          }
+        ]
+      },
+      {
+        "depth": 3,
+        "id": "Method:src/entrypoints/subtitles.content/universal-adapter.ts:UniversalVideoAdapter.switchSubtitlesFetcher#2",
+        "name": "switchSubtitlesFetcher",
+        "filePath": "src/entrypoints/subtitles.content/universal-adapter.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ]
+  },
+  "staleness": {
+    "commitsBehind": 1,
+    "hint": "⚠️ Index is 1 commit behind HEAD. Run analyze tool to update."
+  }
+}

@@ -1,0 +1,74 @@
+diff --git a/.changeset/alibaba-rfq-pre-details.md b/.changeset/alibaba-rfq-pre-details.md
+new file mode 100644
+index 00000000..e3ff47e1
+--- /dev/null
++++ b/.changeset/alibaba-rfq-pre-details.md
+@@ -0,0 +1,5 @@
++---
++"@read-frog/extension": patch
++---
++
++fix(site-rules): translate the Details body on Alibaba RFQ pages
+diff --git a/src/utils/site-rules/__tests__/built-in.test.ts b/src/utils/site-rules/__tests__/built-in.test.ts
+index 05348c12..cfec8ed1 100644
+--- a/src/utils/site-rules/__tests__/built-in.test.ts
++++ b/src/utils/site-rules/__tests__/built-in.test.ts
+@@ -517,6 +517,41 @@ describe("built-in site rules", () => {
+     expect(disabled.dontWalkButTranslateTags).toBeNull()
+   })
+ 
++  // Alibaba's RFQ detail page renders the buyer's hand-written request body in
++  // `<pre class="value">` (Details / 详细描述). PRE sits in
++  // DONT_WALK_AND_TRANSLATE_TAGS and the plain-text exemption in
++  // `utils/host/dom/filter` only fires for `text/plain` documents, so on this
++  // text/html page the whole body was dropped from the walk while every sibling
++  // field (Product Name, Category, Quantity) translated normally.
++  it("un-blocks PRE on Alibaba's RFQ sourcing portal", () => {
++    const resolved = resolveSiteRule(
++      "https://sourcing.alibaba.com/rfq_detail.htm?p=ID1op9Nz9xuJFsQZPZUe4DBR",
++      BUILT_IN_SITE_RULES,
++      [],
++      [],
++    )
++
++    expect(resolved.matchedRuleIds).toContain("alibaba-sourcing-rfq")
++    expect(resolved.dontWalkTags).not.toBeNull()
++    expect(resolved.dontWalkTags!.has("PRE")).toBe(false)
++    expect(resolved.dontWalkTags!.has("SCRIPT")).toBe(true)
++    // Removal must not register as an explicit add, or the plain-text `<pre>`
++    // exemption in `utils/host/dom/filter` would read it as an authoring
++    // decision to keep PRE blocked.
++    expect(resolved.dontWalkTagsExplicitAdds?.has("PRE") ?? false).toBe(false)
++
++    const elsewhere = resolveSiteRule("https://www.alibaba.com/", BUILT_IN_SITE_RULES, [], [])
++    expect(elsewhere.dontWalkTags).toBeNull()
++
++    const disabled = resolveSiteRule(
++      "https://sourcing.alibaba.com/rfq_detail.htm",
++      BUILT_IN_SITE_RULES,
++      [],
++      ["alibaba-sourcing-rfq"],
++    )
++    expect(disabled.dontWalkTags).toBeNull()
++  })
++
+   it("retains independently verified content roots that cover their full match scope", () => {
+     const paulGraham = resolveSiteRule(
+       "https://paulgraham.com/greatwork.html",
+diff --git a/src/utils/site-rules/built-in/rules.json b/src/utils/site-rules/built-in/rules.json
+index e33f12e6..8445dde1 100644
+--- a/src/utils/site-rules/built-in/rules.json
++++ b/src/utils/site-rules/built-in/rules.json
+@@ -4539,6 +4539,12 @@
+     "matches": ["localhost", "127.0.0.1"],
+     "dontWalkButTranslateTags.remove": ["CODE"]
+   },
++  {
++    "id": "alibaba-sourcing-rfq",
++    "description": "Alibaba's RFQ portal renders the buyer's hand-written request body in <pre class=\"value\"> (the Details / 详细描述 field). PRE is hard-blocked by default for authored code, so the entire request body was dropped from the walk while every field around it translated. This host serves sourcing pages only, no code",
++    "matches": "sourcing.alibaba.com",
++    "dontWalkTags.remove": ["PRE"]
++  },
+   {
+     "id": "readfrog-x-chat",
+     "description": "Skip the X Chat message footer (send time + delivery receipt). It renders twice inside the bubble — once as an aria-hidden opacity-0 spacer in the text flow, once in the absolutely positioned overlay — so both copies otherwise land in the message's translation unit. Target the footer root only: excluding its `.absolute.bottom-0.inset-e-0` wrapper too would hide that wrapper from unwrapDeepestOnlyHTMLChild, turning the bubble row into an only-child chain and moving the translation wrapper down into the pre-wrap text block",

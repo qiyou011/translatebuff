@@ -1,0 +1,102 @@
+{
+  "target": {
+    "id": "Function:src/entrypoints/options/pages/translation/preference/translation-mode-select.tsx:TranslationModeSelect",
+    "name": "TranslationModeSelect",
+    "type": "Function",
+    "filePath": "src/entrypoints/options/pages/translation/preference/translation-mode-select.tsx"
+  },
+  "direction": "upstream",
+  "impactedCount": 2,
+  "risk": "LOW",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 1,
+    "processes_affected": 1,
+    "modules_affected": 1
+  },
+  "byDepthCounts": {
+    "1": 1,
+    "2": 1
+  },
+  "affected_processes": [
+    {
+      "name": "TranslationPage",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/translation/index.tsx",
+      "affected_process_count": 5,
+      "total_hits": 5,
+      "earliest_broken_step": 1
+    }
+  ],
+  "affected_modules": [
+    {
+      "name": "Voice",
+      "hits": 2,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/options/pages/translation/preference/index.tsx:PreferenceSection",
+        "name": "PreferenceSection",
+        "filePath": "src/entrypoints/options/pages/translation/preference/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "Function:src/entrypoints/options/pages/translation/index.tsx:TranslationPage",
+        "name": "TranslationPage",
+        "filePath": "src/entrypoints/options/pages/translation/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_127_translationpage",
+            "label": "TranslationPage → BuildSectionSearch",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_413_translationpage",
+            "label": "TranslationPage → RawT",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_400_translationpage",
+            "label": "TranslationPage → ConfigLayout",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_390_translationpage",
+            "label": "TranslationPage → ConfigItem",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_373_translationpage",
+            "label": "TranslationPage → ConfigSection",
+            "processType": "intra_community",
+            "step": 1
+          }
+        ]
+      }
+    ]
+  },
+  "staleness": {
+    "commitsBehind": 1,
+    "hint": "⚠️ Index is 1 commit behind HEAD. Run analyze tool to update."
+  }
+}

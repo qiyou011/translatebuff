@@ -52,6 +52,16 @@ describe("in-memory translation tier in translateTextCore", () => {
     vi.clearAllMocks()
   })
 
+  it.each(["missing formula", "{{0}} {{0}}", "{{0}} {{99}}"])(
+    "retries instead of caching damaged formula response: %s",
+    async (damaged) => {
+      const { sendMessage, translate } = await setup()
+      sendMessage.mockResolvedValueOnce(damaged).mockResolvedValueOnce("公式 {{0}}")
+      await expect(translate("Formula {{0}}")).resolves.toBe(damaged)
+      await expect(translate("Formula {{0}}")).resolves.toBe("公式 {{0}}")
+    },
+  )
+
   it("serves a repeated page request from memory without a second background round trip", async () => {
     const { sendMessage, translate } = await setup()
     sendMessage.mockResolvedValue("你好")

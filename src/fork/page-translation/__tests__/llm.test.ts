@@ -36,6 +36,16 @@ describe("page LLM boundary", () => {
     vi.clearAllMocks()
     mocks.generate.mockResolvedValue({ text: '{"t0":"ok"}' })
   })
+  it.each([false, true])(
+    "preserves formula instructions on the actual page prompt (individual=%s)",
+    (individual) => {
+      const item = { ...data(), text: "Formula {{0}}", textFormat: "plain" as const }
+      const prompt = buildPageLlmPrompt([item], individual)
+      expect(prompt.prompt).toContain("{{0}}")
+      expect(prompt.systemPrompt).toContain("Protected Placeholder Rules")
+      expect(prompt.systemPrompt).toContain("exactly once")
+    },
+  )
   it("default prompt sends compact object, preserves sentinel and does not send old marker block", () => {
     const prompt = buildPageLlmPrompt([data()])
     expect(prompt.structured).toBe(true)
