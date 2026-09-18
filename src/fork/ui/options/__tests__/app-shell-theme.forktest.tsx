@@ -3,7 +3,9 @@
 import { readFileSync } from "node:fs"
 import { resolve } from "node:path"
 import { cleanup, render } from "@testing-library/react"
+import { generate, parse, walk } from "css-tree"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
+import { Button } from "@/components/ui/base-ui/button"
 import { AppShell } from "@/entrypoints/options/app-shell"
 
 const optionsThemeCss = readFileSync(
@@ -31,6 +33,37 @@ afterEach(() => {
 })
 
 describe("options 文档主题作用域", () => {
+  it("实际 Button 类名中的 SVG 尺寸选择器不会让文字按钮漏掉主题尺寸", () => {
+    const { getByRole } = render(
+      <AppShell>
+        <Button>
+          <svg aria-hidden="true" />
+          导出
+        </Button>
+        <Button size="icon-sm" aria-label="查看">
+          <svg aria-hidden="true" />
+        </Button>
+      </AppShell>,
+    )
+    const textButton = getByRole("button", { name: "导出" })
+    const iconButton = getByRole("button", { name: "查看" })
+    const textButtonSizeRules: string[] = []
+    walk(parse(optionsThemeCss), {
+      visit: "Rule",
+      enter(node) {
+        if (node.prelude.type !== "SelectorList") return
+        const declarations = generate(node.block)
+        if (declarations.includes("min-width:132px") && declarations.includes("height:40px")) {
+          node.prelude.children.forEach((selector) => textButtonSizeRules.push(generate(selector)))
+        }
+      },
+    })
+    expect(textButtonSizeRules.some((selector) => textButton.matches(selector))).toBe(true)
+    expect(textButtonSizeRules.some((selector) => iconButton.matches(selector))).toBe(false)
+    document.documentElement.removeAttribute(OPTIONS_THEME_ATTRIBUTE)
+    expect(textButtonSizeRules.some((selector) => textButton.matches(selector))).toBe(false)
+  })
+
   it("随 AppShell 挂载和清理且保留现有主题状态", () => {
     const { unmount } = render(
       <AppShell>

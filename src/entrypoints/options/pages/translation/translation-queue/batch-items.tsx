@@ -14,15 +14,20 @@ type KeyOfBatchQueueConfig = keyof BatchQueueConfig
 /** How much text rides along in one request — the two limits that cap a batch. */
 export function BatchTranslationItems() {
   return (
-    <>
-      <ConfigItem
-        id="request-batch"
-        title={
+    <section className="options-detail-setting-group">
+      <h3 className="options-detail-group-title">
+        {
           <span className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
             {i18n.t("options.translation.translationQueue.batchQueueConfig.title")}
             <BatchSavingsNote />
           </span>
         }
+      </h3>
+      <ConfigItem
+        id="request-batch"
+        title={i18n.t(
+          "options.translation.translationQueue.batchQueueConfig.maxCharactersPerBatch.title",
+        )}
         description={i18n.t(
           "options.translation.translationQueue.batchQueueConfig.maxCharactersPerBatch.description",
         )}
@@ -30,13 +35,16 @@ export function BatchTranslationItems() {
         <BatchNumberInput property="maxCharactersPerBatch" />
       </ConfigItem>
       <ConfigItem
+        title={i18n.t(
+          "options.translation.translationQueue.batchQueueConfig.maxItemsPerBatch.title",
+        )}
         description={i18n.t(
           "options.translation.translationQueue.batchQueueConfig.maxItemsPerBatch.description",
         )}
       >
         <BatchNumberInput property="maxItemsPerBatch" />
       </ConfigItem>
-    </>
+    </section>
   )
 }
 

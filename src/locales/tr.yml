@@ -731,6 +731,7 @@ options:
   translation:
     title: Sayfa Çevirisi
     pageDescription: Sayfaların nasıl çevrileceğini belirleyin — mod, kapsam, istemler ve istek limitleri.
+    controlsAndRequests: Kontroller ve istekler
     preference:
       title: Temel ayarlar
       translationMode:
@@ -865,9 +866,11 @@ options:
         title: Kısa metin filtresi
         description: Bu genel varsayılanlar, eşiklerden daha az karakter veya sözcük içeren metin düğümlerinin çevirisini atlar. Eşleşen site kuralları bunları geçersiz kılabilir (0 = devre dışı)
         minCharacters:
-          description: "Minimum karakter: daha kısa metinler çevrilmez. Her şeyi çevirmek için 0 girin"
+          title: "Minimum karakter"
+          description: "daha kısa metinler çevrilmez. Her şeyi çevirmek için 0 girin"
         minWords:
-          description: "Minimum kelime: daha az kelimeli metinler çevrilmez"
+          title: "Minimum kelime"
+          description: "daha az kelimeli metinler çevrilmez"
         error: Değer $1 ile $2 arasında olmalıdır
     translationQueue:
       title: Çeviri kuyruğu
@@ -876,23 +879,29 @@ options:
       requestQueueConfig:
         title: Çeviri hızı
         capacity:
-          description: "Maksimum ani istek: aynı anda kaç istek gönderilebilir"
+          title: "Maksimum ani istek"
+          description: "aynı anda kaç istek gönderilebilir"
         rate:
-          description: "Saniyedeki istek: sonrasındaki sabit hız. Ondalık da olur, 0.25 her 4 saniyede bir istek demek"
+          title: "Saniyedeki istek"
+          description: "sonrasındaki sabit hız. Ondalık da olur, 0.25 her 4 saniyede bir istek demek"
       batchQueueConfig:
         title: Toplu çeviri
         description: Toplu çeviri için karakter limitleri ve maksimum paragraf sayısını yapılandırın (yalnızca LLM çevirisi için geçerlidir)
         maxCharactersPerBatch:
-          description: "Maksimum karakter: tek bir yapay zekâ isteği ne kadar metin taşır"
+          title: "Maksimum karakter"
+          description: "tek bir yapay zekâ isteği ne kadar metin taşır"
         maxItemsPerBatch:
-          description: "Maksimum paragraf: tek istekte kaç paragraf birleşir. Yapay zekâ olmayan sağlayıcılar ikisini de yok sayar"
+          title: "Maksimum paragraf"
+          description: "tek istekte kaç paragraf birleşir. Yapay zekâ olmayan sağlayıcılar ikisini de yok sayar"
       preloadConfig:
         title: Ön çeviri aralığı
         description: API maliyetlerinden tasarruf etmek için görünüm alanının altındaki ne kadar içeriğin önceden çevrileceğini kontrol edin
         margin:
-          description: "Ön çeviri mesafesi: ekranın altında kaç piksellik içerik önceden çevrilir. Azaltmak API maliyetini düşürür"
+          title: "Ön çeviri mesafesi"
+          description: "ekranın altında kaç piksellik içerik önceden çevrilir. Azaltmak API maliyetini düşürür"
         threshold:
-          description: "Görünürlük eşiği: paragrafın ne kadarı ekranda olunca çevrilsin, 0 ile 1 arasında"
+          title: "Görünürlük eşiği"
+          description: "paragrafın ne kadarı ekranda olunca çevrilsin, 0 ile 1 arasında"
     cache:
       title: Önbellek
       clearCache:
@@ -1006,6 +1015,15 @@ options:
       color: Renk
       fontWeight: Yazı kalınlığı
       backgroundOpacity: Arka plan şeffaflığı
+      fieldDescriptions:
+        displayMode: "Altyazıların nasıl gösterileceğini seçin."
+        translationPosition: "Çevirinin ana altyazıya göre konumu."
+        backgroundOpacity: "Altyazı arka planının opaklığı."
+        mainFont: "Ana altyazının yazı tipi."
+        translationFont: "Çevrilen altyazının yazı tipi."
+        fontScale: "Varsayılan boyuta göre oran."
+        fontWeight: "CSS font-weight özelliği."
+        color: "Onaltılık renk."
       reset: Varsayılana sıfırla
       customCSS:
         title: Özel CSS
@@ -1056,16 +1074,20 @@ options:
       requestQueueConfig:
         title: Çeviri hızı
         capacity:
-          description: "Maksimum ani istek: aynı anda kaç istek gönderilebilir"
+          title: "Maksimum ani istek"
+          description: "aynı anda kaç istek gönderilebilir"
         rate:
-          description: "Saniyedeki istek: sonrasındaki sabit hız. Ondalık da olur, 0.25 her 4 saniyede bir istek demek"
+          title: "Saniyedeki istek"
+          description: "sonrasındaki sabit hız. Ondalık da olur, 0.25 her 4 saniyede bir istek demek"
       batchQueueConfig:
         title: Toplu çeviri
         description: Toplu çeviri için karakter limitleri ve maksimum altyazı satırı sayısını yapılandırın (yalnızca LLM çevirisi için geçerlidir)
         maxCharactersPerBatch:
-          description: "Maksimum karakter: tek bir yapay zekâ isteği ne kadar metin taşır"
+          title: "Maksimum karakter"
+          description: "tek bir yapay zekâ isteği ne kadar metin taşır"
         maxItemsPerBatch:
-          description: "Maksimum altyazı satırı: tek istekte kaç satır birleşir. Yapay zekâ olmayan sağlayıcılar ikisini de yok sayar"
+          title: "Maksimum altyazı satırı"
+          description: "tek istekte kaç satır birleşir. Yapay zekâ olmayan sağlayıcılar ikisini de yok sayar"
     cache:
       title: Önbellek
       clearCache:

@@ -12,7 +12,7 @@ export function TranslationControlSection() {
     <ConfigSection title={i18n.t("options.translation.translationControl.title")}>
       <ConfigNavItem
         to="/page-translation/translation-control"
-        title={i18n.t("options.translation.translationControl.manageControls")}
+        title={i18n.t("options.translation.translationControl.title")}
         description={i18n.t("options.translation.translationControl.description")}
       />
     </ConfigSection>

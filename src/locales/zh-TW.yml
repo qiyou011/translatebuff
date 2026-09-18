@@ -847,6 +847,7 @@ options:
   translation:
     title: 網頁翻譯
     pageDescription: 控制頁面翻譯的方式：模式、範圍、提示詞和請求限制。
+    controlsAndRequests: 控制與請求
     preference:
       title: 基礎設定
       translationMode:
@@ -981,9 +982,11 @@ options:
         title: 小段落過濾
         description: 這些全域預設值會略過翻譯少於指定字元數或詞數的文字節點；相符的網站規則可以覆寫它們（0 = 停用）
         minCharacters:
-          description: 最小字元數：比這更短的文字不翻譯，設為 0 則全部翻譯
+          title: "最小字元數"
+          description: "比這更短的文字不翻譯，設為 0 則全部翻譯"
         minWords:
-          description: 最小詞數：詞數比這更少的文字不翻譯
+          title: "最小詞數"
+          description: "詞數比這更少的文字不翻譯"
         error: 數值必須在 $1 到 $2 之間
     translationQueue:
       title: 翻譯佇列
@@ -992,23 +995,29 @@ options:
       requestQueueConfig:
         title: 翻譯速率
         capacity:
-          description: 最大突發請求數：同一時刻最多能送出多少個請求
+          title: "最大突發請求數"
+          description: "同一時刻最多能送出多少個請求"
         rate:
-          description: 每秒請求數：突發之後的穩定速度。可以填小數，0.25 表示每 4 秒送出一個請求
+          title: "每秒請求數"
+          description: "突發之後的穩定速度。可以填小數，0.25 表示每 4 秒送出一個請求"
       batchQueueConfig:
         title: 批次翻譯
         description: 設定批次翻譯時的字元數限制和最大段落數量（僅對大型語言模型翻譯有效）
         maxCharactersPerBatch:
-          description: 最大字元數：一次 AI 請求最多帶多少文字
+          title: "最大字元數"
+          description: "一次 AI 請求最多帶多少文字"
         maxItemsPerBatch:
-          description: 最大段落數：多少個段落合併成一次請求。非 AI 的翻譯服務不受這兩項影響
+          title: "最大段落數"
+          description: "多少個段落合併成一次請求。非 AI 的翻譯服務不受這兩項影響"
       preloadConfig:
         title: 預翻譯範圍
         description: 控制可視區域下方多少內容會被預先翻譯，以節省 API 費用
         margin:
-          description: 預翻譯距離：螢幕下方多少像素內的內容提前翻譯。調小更省 API 費用
+          title: "預翻譯距離"
+          description: "螢幕下方多少像素內的內容提前翻譯。調小更省 API 費用"
         threshold:
-          description: 可見比例：段落露出多少才開始翻譯，數值 0 到 1
+          title: "可見比例"
+          description: "段落露出多少才開始翻譯，數值 0 到 1"
     cache:
       title: 快取
       clearCache:
@@ -1122,6 +1131,15 @@ options:
       color: 顏色
       fontWeight: 字重
       backgroundOpacity: 背景透明度
+      fieldDescriptions:
+        displayMode: "選擇字幕顯示方式。"
+        translationPosition: "譯文相對主字幕的位置。"
+        backgroundOpacity: "字幕背景透明程度。"
+        mainFont: "主字幕字型。"
+        translationFont: "翻譯字幕字型。"
+        fontScale: "相對預設大小。"
+        fontWeight: "CSS font-weight。"
+        color: "十六進位色彩。"
       reset: 重設為預設值
       customCSS:
         title: 自訂 CSS
@@ -1172,16 +1190,20 @@ options:
       requestQueueConfig:
         title: 翻譯速率
         capacity:
-          description: 最大突發請求數：同一時刻最多能送出多少個請求
+          title: "最大突發請求數"
+          description: "同一時刻最多能送出多少個請求"
         rate:
-          description: 每秒請求數：突發之後的穩定速度。可以填小數，0.25 表示每 4 秒送出一個請求
+          title: "每秒請求數"
+          description: "突發之後的穩定速度。可以填小數，0.25 表示每 4 秒送出一個請求"
       batchQueueConfig:
         title: 批次翻譯
         description: 設定批次翻譯時的字元數限制和最大字幕條數（僅對大型語言模型翻譯有效）
         maxCharactersPerBatch:
-          description: 最大字元數：一次 AI 請求最多帶多少文字
+          title: "最大字元數"
+          description: "一次 AI 請求最多帶多少文字"
         maxItemsPerBatch:
-          description: 最大字幕條數：多少條字幕合併成一次請求。非 AI 的翻譯服務不受這兩項影響
+          title: "最大字幕條數"
+          description: "多少條字幕合併成一次請求。非 AI 的翻譯服務不受這兩項影響"
     cache:
       title: 快取
       clearCache:

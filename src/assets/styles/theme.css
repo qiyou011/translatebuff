@@ -3,6 +3,8 @@
 @import "shadcn/tailwind.css";
 @import "./glass-badge.css";
 @import "./subtitle-lines.css";
+@import "../../fork/ui/dialog-theme.css";
+@import "../../fork/ui/sheet-theme.css";
 
 @source not "../../**/__tests__";
 @source not "../../**/*.test.*";

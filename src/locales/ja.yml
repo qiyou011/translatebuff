@@ -731,6 +731,7 @@ options:
   translation:
     title: ページ翻訳
     pageDescription: ページ翻訳の方法を設定します。モード、範囲、プロンプト、リクエスト制限など。
+    controlsAndRequests: 制御とリクエスト
     preference:
       title: 基本設定
       translationMode:
@@ -865,9 +866,11 @@ options:
         title: 短いテキストフィルター
         description: これらのグローバル既定値を使用して、指定した文字数または単語数より少ないテキストノードの翻訳をスキップします。一致するサイトルールで上書きできます（0 = 無効）
         minCharacters:
-          description: 最小文字数：これより短いテキストは翻訳しません。0 にするとすべて翻訳します
+          title: "最小文字数"
+          description: "これより短いテキストは翻訳しません。0 にするとすべて翻訳します"
         minWords:
-          description: 最小単語数：これより単語が少ないテキストは翻訳しません
+          title: "最小単語数"
+          description: "これより単語が少ないテキストは翻訳しません"
         error: 値は $1 から $2 の間である必要があります
     translationQueue:
       title: 翻訳キュー
@@ -876,23 +879,29 @@ options:
       requestQueueConfig:
         title: 翻訳速度
         capacity:
-          description: 最大バーストリクエスト数：一度に送れるリクエストの数
+          title: "最大バーストリクエスト数"
+          description: "一度に送れるリクエストの数"
         rate:
-          description: 1 秒あたりのリクエスト数：バースト後の一定ペース。小数も使え、0.25 なら 4 秒に 1 回送ります
+          title: "1 秒あたりのリクエスト数"
+          description: "バースト後の一定ペース。小数も使え、0.25 なら 4 秒に 1 回送ります"
       batchQueueConfig:
         title: バッチ翻訳
         description: バッチ翻訳時の文字数制限と最大段落数を設定（大規模言語モデル翻訳でのみ有効）
         maxCharactersPerBatch:
-          description: 最大文字数：1 回の AI リクエストで送るテキストの量
+          title: "最大文字数"
+          description: "1 回の AI リクエストで送るテキストの量"
         maxItemsPerBatch:
-          description: 最大段落数：1 回のリクエストにまとめる段落の数。AI 以外の翻訳サービスには効きません
+          title: "最大段落数"
+          description: "1 回のリクエストにまとめる段落の数。AI 以外の翻訳サービスには効きません"
       preloadConfig:
         title: 事前翻訳範囲
         description: ビューポート下のコンテンツをどれだけ事前翻訳するかを制御し、API コストを節約します
         margin:
-          description: 先読み距離：画面の下どこまで先に翻訳するか（ピクセル）。小さくすると API 費用を抑えられます
+          title: "先読み距離"
+          description: "画面の下どこまで先に翻訳するか（ピクセル）。小さくすると API 費用を抑えられます"
         threshold:
-          description: 表示のしきい値：段落がどれだけ見えたら翻訳するか。0〜1 で指定します
+          title: "表示のしきい値"
+          description: "段落がどれだけ見えたら翻訳するか。0〜1 で指定します"
     cache:
       title: キャッシュ
       clearCache:
@@ -1006,6 +1015,15 @@ options:
       color: 色
       fontWeight: フォントウェイト
       backgroundOpacity: 背景の透明度
+      fieldDescriptions:
+        displayMode: "字幕の表示方法を選択します。"
+        translationPosition: "主字幕に対する翻訳の位置。"
+        backgroundOpacity: "字幕背景の不透明度。"
+        mainFont: "主字幕のフォント。"
+        translationFont: "翻訳字幕のフォント。"
+        fontScale: "既定サイズに対する倍率。"
+        fontWeight: "CSS の font-weight。"
+        color: "16 進数の色。"
       reset: デフォルトにリセット
       customCSS:
         title: カスタム CSS
@@ -1056,16 +1074,20 @@ options:
       requestQueueConfig:
         title: 翻訳速度
         capacity:
-          description: 最大バーストリクエスト数：一度に送れるリクエストの数
+          title: "最大バーストリクエスト数"
+          description: "一度に送れるリクエストの数"
         rate:
-          description: 1 秒あたりのリクエスト数：バースト後の一定ペース。小数も使え、0.25 なら 4 秒に 1 回送ります
+          title: "1 秒あたりのリクエスト数"
+          description: "バースト後の一定ペース。小数も使え、0.25 なら 4 秒に 1 回送ります"
       batchQueueConfig:
         title: バッチ翻訳
         description: バッチ翻訳時の文字数制限と最大字幕行数を設定（大規模言語モデル翻訳でのみ有効）
         maxCharactersPerBatch:
-          description: 最大文字数：1 回の AI リクエストで送るテキストの量
+          title: "最大文字数"
+          description: "1 回の AI リクエストで送るテキストの量"
         maxItemsPerBatch:
-          description: 最大字幕行数：1 回のリクエストにまとめる字幕の数。AI 以外の翻訳サービスには効きません
+          title: "最大字幕行数"
+          description: "1 回のリクエストにまとめる字幕の数。AI 以外の翻訳サービスには効きません"
     cache:
       title: キャッシュ
       clearCache:

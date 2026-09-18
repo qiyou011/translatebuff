@@ -38,7 +38,7 @@ export function CacheSection() {
     <ConfigSection id="cache" title={i18n.t("options.translation.cache.title")}>
       <ConfigItem
         id="clear-cache"
-        title={i18n.t("options.translation.cache.clearCache.title")}
+        title={i18n.t("options.translation.cache.title")}
         description={i18n.t("options.translation.cache.clearCache.description")}
       >
         <AlertDialog open={open} onOpenChange={setOpen}>

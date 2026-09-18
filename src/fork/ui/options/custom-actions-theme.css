@@ -1,0 +1,447 @@
+/* Figma 458:5002. Scope the editor presentation to this page; the existing
+ * form, autosave, sortables, dialogs and action handlers remain untouched. */
+html[data-translatebuff-options-theme] #custom-actions {
+  padding: 0;
+  gap: 30px;
+  background: transparent;
+}
+
+/* 208px list + 24px gutter + 712px editor, with 24px trailing space. */
+html[data-translatebuff-options-theme] #custom-actions > div:last-child > div {
+  gap: 24px;
+  align-items: flex-start;
+}
+
+html[data-translatebuff-options-theme] #custom-actions > div:last-child > div > div:first-child {
+  width: 208px;
+  flex: 0 0 208px;
+}
+
+html[data-translatebuff-options-theme] #custom-actions > div:last-child > div > div:last-child {
+  padding-right: 24px;
+}
+
+html[data-translatebuff-options-theme] #custom-actions .min-w-0.flex-1 > .flex.flex-col {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+html[data-translatebuff-options-theme] #custom-actions .min-w-0.flex-1 > div > .flex.flex-col {
+  gap: 16px;
+}
+
+html[data-translatebuff-options-theme] #custom-actions [data-slot="field"] {
+  gap: 10px;
+}
+
+html[data-translatebuff-options-theme] #custom-actions [data-slot="field-label"] {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 24px;
+}
+
+html[data-translatebuff-options-theme]
+  #custom-actions
+  :is(
+    [data-slot="input"],
+    [data-slot="input-group"],
+    [data-slot="select-trigger"],
+    [data-slot="textarea"]
+  ) {
+  width: 100%;
+  max-width: none;
+}
+
+/* Action rail: solid add button, borderless rows and muted selection. */
+html[data-translatebuff-options-theme] #custom-actions [data-slot="dialog-trigger"] {
+  width: 200px;
+  max-width: 100%;
+  padding: 0 16px;
+  border: 1px solid var(--rf-primary);
+  background: var(--rf-primary);
+  color: var(--rf-primary-foreground);
+  box-shadow: none;
+}
+
+html[data-translatebuff-options-theme] #custom-actions [data-slot="dialog-trigger"]:hover {
+  background: var(--rf-accent-blue-hover);
+}
+
+html[data-translatebuff-options-theme] #custom-actions [data-slot="dialog-trigger"] svg {
+  display: none;
+}
+
+html[data-translatebuff-options-theme] #custom-actions .relative.cursor-pointer.rounded-xl {
+  min-height: 44px;
+  padding: 10px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+}
+
+html[data-translatebuff-options-theme] #custom-actions .relative.cursor-pointer.border-primary {
+  background: var(--rf-muted);
+}
+
+html[data-translatebuff-options-theme] #custom-actions .relative.cursor-pointer:hover {
+  background: var(--rf-muted);
+}
+
+html[data-translatebuff-options-theme] #custom-actions .relative.cursor-pointer .min-w-0 {
+  gap: 6px;
+}
+
+html[data-translatebuff-options-theme]
+  #custom-actions
+  .relative.cursor-pointer
+  .min-w-0
+  > :first-child,
+html[data-translatebuff-options-theme] #custom-actions .relative.cursor-pointer .min-w-0 svg {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  color: var(--rf-muted-foreground);
+}
+
+html[data-translatebuff-options-theme] #custom-actions .relative.cursor-pointer span {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 24px;
+}
+
+html[data-translatebuff-options-theme] #custom-actions [data-action-id] span {
+  font-size: 15px;
+}
+
+html[data-translatebuff-options-theme] #custom-actions section.flex.flex-col {
+  gap: 6px;
+  padding-top: 2px;
+}
+
+html[data-translatebuff-options-theme] #custom-actions section > h3 {
+  padding: 0;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 24px;
+}
+
+/* Place the existing picker inside the input's trailing edge, and its help
+ * trigger beside the label. Both remain real, keyboard-accessible buttons. */
+html[data-translatebuff-options-theme]
+  #custom-actions
+  [data-slot="field"]:has([data-slot="input-group"]) {
+  position: relative;
+}
+
+html[data-translatebuff-options-theme]
+  #custom-actions
+  [data-slot="field"]
+  > div:has(> [data-slot="popover-trigger"]) {
+  position: relative;
+  gap: 0;
+}
+
+html[data-translatebuff-options-theme]
+  #custom-actions
+  [data-slot="field"]
+  > div
+  > [data-slot="popover-trigger"] {
+  position: absolute;
+  z-index: 1;
+  top: 4px;
+  right: 8px;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+html[data-translatebuff-options-theme] #custom-actions [data-slot="input-group-addon"] {
+  position: absolute;
+  top: -34px;
+  right: 0;
+  height: 24px;
+  padding: 0;
+}
+
+html[data-translatebuff-options-theme] #custom-actions [data-slot="input-group-addon"] button {
+  width: 24px;
+  height: 24px;
+}
+
+html[data-translatebuff-options-theme] #custom-actions [data-slot="popover-trigger"] svg {
+  width: 24px;
+  height: 24px;
+}
+
+html[data-translatebuff-options-theme] #custom-actions [data-slot="input-group-control"] {
+  padding: 0 48px 0 14px;
+}
+
+/* 458:5022 / 458:5025: real editable textareas, 42px visual gutter. */
+html[data-translatebuff-options-theme] #custom-actions :is(#systemPrompt, #prompt) {
+  field-sizing: fixed;
+  min-height: 0;
+  max-height: none;
+  padding: 10px 14px 10px 54px;
+  border-color: var(--rf-border);
+  background: linear-gradient(to right, #f0f5fa 41px, #f8fafc 41px);
+  color: var(--rf-foreground);
+  font-size: 13px;
+  line-height: 20px;
+  box-shadow: none;
+}
+
+html[data-translatebuff-options-theme] #custom-actions #systemPrompt {
+  height: 380px;
+}
+
+html[data-translatebuff-options-theme] #custom-actions #prompt {
+  height: 140px;
+}
+
+html.dark[data-translatebuff-options-theme] #custom-actions :is(#systemPrompt, #prompt) {
+  background: linear-gradient(to right, #171c22 41px, #131417 41px);
+}
+
+html[data-translatebuff-options-theme] #custom-actions [data-slot="textarea"] + div {
+  display: grid;
+  grid-template-columns: repeat(3, max-content);
+  justify-content: start;
+  gap: 0 8px;
+  margin-top: 16px;
+}
+
+html[data-translatebuff-options-theme] #custom-actions [data-slot="textarea"] + div button {
+  width: auto;
+  min-width: 0;
+  height: 24px;
+  min-height: 24px;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--rf-muted-foreground);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 24px;
+  box-shadow: none;
+  opacity: 1;
+}
+
+html[data-translatebuff-options-theme]
+  #custom-actions
+  [data-slot="field"]:has(> label[for="systemPrompt"]) {
+  margin-bottom: -4px;
+}
+
+/* Schema cards retain the sortable wrapper and existing edit/delete controls. */
+html[data-translatebuff-options-theme]
+  #custom-actions
+  [data-slot="field"]:has([data-slot="badge"]) {
+  gap: 6px;
+  margin-top: 2px;
+}
+
+html[data-translatebuff-options-theme]
+  #custom-actions
+  [data-slot="field"]:has([data-slot="badge"])
+  [data-slot="field-label"] {
+  font-size: 18px;
+  line-height: 28px;
+}
+
+html[data-translatebuff-options-theme]
+  #custom-actions
+  [data-slot="field"]:has([data-slot="badge"])
+  > .flex.flex-col {
+  gap: 12px;
+}
+
+html[data-translatebuff-options-theme]
+  #custom-actions
+  [data-slot="field"]:has([data-slot="badge"])
+  > div
+  > button
+  svg {
+  display: none;
+}
+
+html[data-translatebuff-options-theme]
+  #custom-actions
+  .rounded-lg.border:has(> [data-slot="badge"]) {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 84px;
+  align-content: start;
+  min-height: 92px;
+  gap: 8px 12px;
+  padding: 9px 14px 25px;
+  border-radius: 6px;
+  background: var(--rf-background);
+}
+
+html[data-translatebuff-options-theme]
+  #custom-actions
+  .rounded-lg.border:has(> [data-slot="badge"])
+  > svg {
+  position: absolute;
+  top: 12px;
+  left: -26px;
+  width: 24px;
+  height: 24px;
+}
+
+html[data-translatebuff-options-theme]
+  #custom-actions
+  .rounded-lg.border:has(> [data-slot="badge"])
+  > span:first-of-type {
+  min-width: 0;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 24px;
+  overflow-wrap: anywhere;
+}
+
+html[data-translatebuff-options-theme] #custom-actions .rounded-lg.border > [data-slot="badge"] {
+  width: 70px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--rf-muted-foreground);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 24px;
+}
+
+html[data-translatebuff-options-theme]
+  #custom-actions
+  .rounded-lg.border:has(> [data-slot="badge"])
+  > span:last-of-type {
+  grid-column: 1 / -1;
+  padding-right: 112px;
+  overflow: visible;
+  white-space: normal;
+  font-size: 14px;
+  line-height: 24px;
+  overflow-wrap: anywhere;
+}
+
+html[data-translatebuff-options-theme]
+  #custom-actions
+  .rounded-lg.border:has(> [data-slot="badge"])
+  > div:last-child {
+  position: absolute;
+  top: 42px;
+  right: 34px;
+  gap: 10px;
+}
+
+html[data-translatebuff-options-theme]
+  #custom-actions
+  .rounded-lg.border:has(> [data-slot="badge"])
+  button {
+  width: 32px;
+  min-width: 32px;
+  height: 32px;
+  min-height: 32px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--rf-muted-foreground);
+  box-shadow: none;
+}
+
+html[data-translatebuff-options-theme]
+  #custom-actions
+  .rounded-lg.border:has(> [data-slot="badge"])
+  button:first-child
+  svg {
+  width: 24px;
+  height: 24px;
+}
+
+html[data-translatebuff-options-theme]
+  #custom-actions
+  .rounded-lg.border:has(> [data-slot="badge"])
+  button:last-child
+  svg {
+  width: 16px;
+  height: 16px;
+}
+
+html[data-translatebuff-options-theme] #custom-actions .min-w-0.flex-1 > div > .mt-8 {
+  justify-content: flex-end;
+  gap: 20px;
+  margin-top: 36px;
+  padding-right: 8px;
+}
+
+html[data-translatebuff-options-theme] #custom-actions .mt-8 > button {
+  width: 132px;
+  border-color: var(--rf-border);
+  background: var(--rf-background);
+  color: var(--rf-foreground);
+}
+
+html[data-translatebuff-options-theme] #custom-actions .mt-8 > button:hover {
+  background: var(--rf-muted);
+}
+
+@media (max-width: 63.999rem) {
+  html[data-translatebuff-options-theme] #custom-actions > div:last-child > div {
+    flex-direction: column;
+  }
+
+  html[data-translatebuff-options-theme] #custom-actions > div:last-child > div > div:first-child {
+    flex-basis: auto;
+  }
+
+  html[data-translatebuff-options-theme] #custom-actions > div:last-child > div > div:last-child {
+    width: 100%;
+    padding: 0;
+  }
+
+  html[data-translatebuff-options-theme] #custom-actions [data-slot="textarea"] + div {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  html[data-translatebuff-options-theme]
+    #custom-actions
+    .rounded-lg.border:has(> [data-slot="badge"])
+    > svg {
+    top: 9px;
+    left: 8px;
+  }
+
+  html[data-translatebuff-options-theme]
+    #custom-actions
+    .rounded-lg.border:has(> [data-slot="badge"])
+    > svg
+    + span {
+    padding-left: 24px;
+  }
+
+  html[data-translatebuff-options-theme]
+    #custom-actions
+    .rounded-lg.border:has(> [data-slot="badge"])
+    > span:last-of-type {
+    padding-right: 0;
+    padding-bottom: 32px;
+  }
+
+  html[data-translatebuff-options-theme]
+    #custom-actions
+    .rounded-lg.border:has(> [data-slot="badge"])
+    > div:last-child {
+    top: auto;
+    right: 14px;
+    bottom: 8px;
+  }
+}

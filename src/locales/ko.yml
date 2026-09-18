@@ -731,6 +731,7 @@ options:
   translation:
     title: 페이지 번역
     pageDescription: 페이지 번역 방식을 설정하세요 — 모드, 범위, 프롬프트, 요청 제한.
+    controlsAndRequests: 제어 및 요청
     preference:
       title: 기본 설정
       translationMode:
@@ -865,9 +866,11 @@ options:
         title: 짧은 텍스트 필터
         description: 이 전역 기본값을 사용하여 지정한 문자 수 또는 단어 수보다 적은 텍스트 노드의 번역을 건너뜁니다. 일치하는 사이트 규칙에서 재정의할 수 있습니다 (0 = 비활성화)
         minCharacters:
-          description: "최소 문자 수: 이보다 짧은 텍스트는 번역하지 않습니다. 0이면 전부 번역합니다"
+          title: "최소 문자 수"
+          description: "이보다 짧은 텍스트는 번역하지 않습니다. 0이면 전부 번역합니다"
         minWords:
-          description: "최소 단어 수: 이보다 단어가 적은 텍스트는 번역하지 않습니다"
+          title: "최소 단어 수"
+          description: "이보다 단어가 적은 텍스트는 번역하지 않습니다"
         error: 값은 $1에서 $2 사이여야 합니다
     translationQueue:
       title: 번역 대기열
@@ -876,23 +879,29 @@ options:
       requestQueueConfig:
         title: 번역 속도
         capacity:
-          description: "최대 순간 요청 수: 한 번에 내보낼 수 있는 요청 개수"
+          title: "최대 순간 요청 수"
+          description: "한 번에 내보낼 수 있는 요청 개수"
         rate:
-          description: "초당 요청 수: 그 뒤로 유지되는 속도. 소수도 되며 0.25는 4초에 한 번 보냅니다"
+          title: "초당 요청 수"
+          description: "그 뒤로 유지되는 속도. 소수도 되며 0.25는 4초에 한 번 보냅니다"
       batchQueueConfig:
         title: 배치 번역
         description: 배치 번역 시 문자 수 제한 및 최대 단락 수 구성 (대규모 언어 모델 번역에서만 유효)
         maxCharactersPerBatch:
-          description: "최대 문자 수: 한 번의 AI 요청에 담는 텍스트 양"
+          title: "최대 문자 수"
+          description: "한 번의 AI 요청에 담는 텍스트 양"
         maxItemsPerBatch:
-          description: "최대 단락 수: 한 요청에 묶는 단락 수. AI가 아닌 번역 서비스에는 적용되지 않습니다"
+          title: "최대 단락 수"
+          description: "한 요청에 묶는 단락 수. AI가 아닌 번역 서비스에는 적용되지 않습니다"
       preloadConfig:
         title: 사전 번역 범위
         description: API 비용을 절약하기 위해 뷰포트 아래 콘텐츠를 얼마나 사전 번역할지 제어합니다
         margin:
-          description: "미리 번역 거리: 화면 아래 몇 픽셀까지 미리 번역할지. 줄이면 API 비용이 절약됩니다"
+          title: "미리 번역 거리"
+          description: "화면 아래 몇 픽셀까지 미리 번역할지. 줄이면 API 비용이 절약됩니다"
         threshold:
-          description: "표시 기준: 단락이 얼마나 보여야 번역할지, 0에서 1 사이"
+          title: "표시 기준"
+          description: "단락이 얼마나 보여야 번역할지, 0에서 1 사이"
     cache:
       title: 캐시
       clearCache:
@@ -1006,6 +1015,15 @@ options:
       color: 색상
       fontWeight: 글꼴 굵기
       backgroundOpacity: 배경 투명도
+      fieldDescriptions:
+        displayMode: "자막 표시 방식을 선택합니다."
+        translationPosition: "주 자막을 기준으로 한 번역 위치입니다."
+        backgroundOpacity: "자막 배경의 불투명도입니다."
+        mainFont: "주 자막의 글꼴입니다."
+        translationFont: "번역 자막의 글꼴입니다."
+        fontScale: "기본 크기에 대한 비율입니다."
+        fontWeight: "CSS font-weight입니다."
+        color: "16진수 색상입니다."
       reset: 기본값으로 재설정
       customCSS:
         title: 사용자 지정 CSS
@@ -1056,16 +1074,20 @@ options:
       requestQueueConfig:
         title: 번역 속도
         capacity:
-          description: "최대 순간 요청 수: 한 번에 내보낼 수 있는 요청 개수"
+          title: "최대 순간 요청 수"
+          description: "한 번에 내보낼 수 있는 요청 개수"
         rate:
-          description: "초당 요청 수: 그 뒤로 유지되는 속도. 소수도 되며 0.25는 4초에 한 번 보냅니다"
+          title: "초당 요청 수"
+          description: "그 뒤로 유지되는 속도. 소수도 되며 0.25는 4초에 한 번 보냅니다"
       batchQueueConfig:
         title: 배치 번역
         description: 배치 번역 시 문자 수 제한 및 최대 자막 줄 수 구성 (대규모 언어 모델 번역에서만 유효)
         maxCharactersPerBatch:
-          description: "최대 문자 수: 한 번의 AI 요청에 담는 텍스트 양"
+          title: "최대 문자 수"
+          description: "한 번의 AI 요청에 담는 텍스트 양"
         maxItemsPerBatch:
-          description: "최대 자막 줄 수: 한 요청에 묶는 자막 수. AI가 아닌 번역 서비스에는 적용되지 않습니다"
+          title: "최대 자막 줄 수"
+          description: "한 요청에 묶는 자막 수. AI가 아닌 번역 서비스에는 적용되지 않습니다"
     cache:
       title: 캐시
       clearCache:

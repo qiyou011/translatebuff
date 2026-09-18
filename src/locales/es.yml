@@ -847,6 +847,7 @@ options:
   translation:
     title: Traducción de páginas
     pageDescription: Controla cómo se traducen las páginas — modo, alcance, prompts y límites de solicitudes.
+    controlsAndRequests: Controles y solicitudes
     preference:
       title: Aspectos básicos
       translationMode:
@@ -981,9 +982,11 @@ options:
         title: Filtro de párrafos pequeños
         description: Estos valores predeterminados globales omiten la traducción de nodos de texto con menos caracteres o palabras que los umbrales. Las reglas de sitio coincidentes pueden anularlos (0 = desactivado)
         minCharacters:
-          description: "Caracteres mínimos: el texto más corto no se traduce. Usa 0 para traducirlo todo"
+          title: "Caracteres mínimos"
+          description: "el texto más corto no se traduce. Usa 0 para traducirlo todo"
         minWords:
-          description: "Palabras mínimas: el texto con menos palabras no se traduce"
+          title: "Palabras mínimas"
+          description: "el texto con menos palabras no se traduce"
         error: El valor debe estar entre $1 y $2
     translationQueue:
       title: Cola de traducción
@@ -992,23 +995,29 @@ options:
       requestQueueConfig:
         title: Tasa de traducción
         capacity:
-          description: "Solicitudes máximas en ráfaga: cuántas pueden salir a la vez"
+          title: "Solicitudes máximas en ráfaga"
+          description: "cuántas pueden salir a la vez"
         rate:
-          description: "Solicitudes por segundo: el ritmo estable tras la ráfaga. Admite decimales, así que 0.25 envía una solicitud cada 4 segundos"
+          title: "Solicitudes por segundo"
+          description: "el ritmo estable tras la ráfaga. Admite decimales, así que 0.25 envía una solicitud cada 4 segundos"
       batchQueueConfig:
         title: Traducción por lotes
         description: Configura límites de caracteres y recuento máximo de párrafos para la traducción por lotes (solo efectivo para traducción LLM)
         maxCharactersPerBatch:
-          description: "Caracteres máximos: cuánto texto lleva cada solicitud a la IA"
+          title: "Caracteres máximos"
+          description: "cuánto texto lleva cada solicitud a la IA"
         maxItemsPerBatch:
-          description: "Párrafos máximos: cuántos párrafos comparten una solicitud. Los proveedores que no son de IA ignoran ambos"
+          title: "Párrafos máximos"
+          description: "cuántos párrafos comparten una solicitud. Los proveedores que no son de IA ignoran ambos"
       preloadConfig:
         title: Rango de pretraducción
         description: Controla cuánto contenido por debajo de la ventana visible se pretraduce para ahorrar costes de API
         margin:
-          description: "Distancia de precarga: cuántos píxeles por debajo de la pantalla se traducen por adelantado. Menos ahorra costes de API"
+          title: "Distancia de precarga"
+          description: "cuántos píxeles por debajo de la pantalla se traducen por adelantado. Menos ahorra costes de API"
         threshold:
-          description: "Umbral de visibilidad: qué parte del párrafo debe verse antes de traducirlo, de 0 a 1"
+          title: "Umbral de visibilidad"
+          description: "qué parte del párrafo debe verse antes de traducirlo, de 0 a 1"
     cache:
       title: Caché
       clearCache:
@@ -1122,6 +1131,15 @@ options:
       color: Color
       fontWeight: Grosor de fuente
       backgroundOpacity: Opacidad del fondo
+      fieldDescriptions:
+        displayMode: "Elige cómo se muestran los subtítulos."
+        translationPosition: "Posición de la traducción respecto al subtítulo principal."
+        backgroundOpacity: "Opacidad del fondo de los subtítulos."
+        mainFont: "Fuente del subtítulo principal."
+        translationFont: "Fuente del subtítulo traducido."
+        fontScale: "En relación con el tamaño predeterminado."
+        fontWeight: "Propiedad CSS font-weight."
+        color: "Color hexadecimal."
       reset: Restablecer a predeterminado
       customCSS:
         title: CSS personalizado
@@ -1172,16 +1190,20 @@ options:
       requestQueueConfig:
         title: Tasa de traducción
         capacity:
-          description: "Solicitudes máximas en ráfaga: cuántas pueden salir a la vez"
+          title: "Solicitudes máximas en ráfaga"
+          description: "cuántas pueden salir a la vez"
         rate:
-          description: "Solicitudes por segundo: el ritmo estable tras la ráfaga. Admite decimales, así que 0.25 envía una solicitud cada 4 segundos"
+          title: "Solicitudes por segundo"
+          description: "el ritmo estable tras la ráfaga. Admite decimales, así que 0.25 envía una solicitud cada 4 segundos"
       batchQueueConfig:
         title: Traducción por lotes
         description: Configura límites de caracteres y recuento máximo de líneas de subtítulos para la traducción por lotes (solo efectivo para traducción LLM)
         maxCharactersPerBatch:
-          description: "Caracteres máximos: cuánto texto lleva cada solicitud a la IA"
+          title: "Caracteres máximos"
+          description: "cuánto texto lleva cada solicitud a la IA"
         maxItemsPerBatch:
-          description: "Líneas máximas: cuántas líneas de subtítulos comparten una solicitud. Los proveedores que no son de IA ignoran ambos"
+          title: "Líneas máximas"
+          description: "cuántas líneas de subtítulos comparten una solicitud. Los proveedores que no son de IA ignoran ambos"
     cache:
       title: Caché
       clearCache:

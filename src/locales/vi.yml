@@ -731,6 +731,7 @@ options:
   translation:
     title: Dịch trang
     pageDescription: Kiểm soát cách dịch trang — chế độ, phạm vi, prompt và giới hạn yêu cầu.
+    controlsAndRequests: Điều khiển và yêu cầu
     preference:
       title: Cơ bản
       translationMode:
@@ -865,9 +866,11 @@ options:
         title: Bộ lọc văn bản ngắn
         description: Các giá trị mặc định toàn cục này bỏ qua việc dịch các nút văn bản có ít ký tự hoặc từ hơn ngưỡng. Quy tắc trang web phù hợp có thể ghi đè chúng (0 = tắt)
         minCharacters:
-          description: "Số ký tự tối thiểu: văn bản ngắn hơn sẽ không được dịch. Đặt 0 để dịch tất cả"
+          title: "Số ký tự tối thiểu"
+          description: "văn bản ngắn hơn sẽ không được dịch. Đặt 0 để dịch tất cả"
         minWords:
-          description: "Số từ tối thiểu: văn bản có ít từ hơn sẽ không được dịch"
+          title: "Số từ tối thiểu"
+          description: "văn bản có ít từ hơn sẽ không được dịch"
         error: Giá trị phải từ $1 đến $2
     translationQueue:
       title: Hàng đợi dịch
@@ -876,23 +879,29 @@ options:
       requestQueueConfig:
         title: Tốc độ dịch
         capacity:
-          description: "Số yêu cầu tối đa cùng lúc: bao nhiêu yêu cầu được gửi đi một lượt"
+          title: "Số yêu cầu tối đa cùng lúc"
+          description: "bao nhiêu yêu cầu được gửi đi một lượt"
         rate:
-          description: "Số yêu cầu mỗi giây: tốc độ đều sau đợt gửi dồn. Dùng được số thập phân, 0.25 là 4 giây một yêu cầu"
+          title: "Số yêu cầu mỗi giây"
+          description: "tốc độ đều sau đợt gửi dồn. Dùng được số thập phân, 0.25 là 4 giây một yêu cầu"
       batchQueueConfig:
         title: Dịch theo lô
         description: Cấu hình giới hạn ký tự và số đoạn văn tối đa cho dịch theo lô (chỉ có hiệu lực với dịch LLM)
         maxCharactersPerBatch:
-          description: "Số ký tự tối đa: mỗi yêu cầu tới AI mang bao nhiêu văn bản"
+          title: "Số ký tự tối đa"
+          description: "mỗi yêu cầu tới AI mang bao nhiêu văn bản"
         maxItemsPerBatch:
-          description: "Số đoạn tối đa: bao nhiêu đoạn gộp chung một yêu cầu. Nhà cung cấp không dùng AI bỏ qua cả hai"
+          title: "Số đoạn tối đa"
+          description: "bao nhiêu đoạn gộp chung một yêu cầu. Nhà cung cấp không dùng AI bỏ qua cả hai"
       preloadConfig:
         title: Phạm vi dịch trước
         description: Kiểm soát lượng nội dung bên dưới vùng nhìn được dịch trước để tiết kiệm chi phí API
         margin:
-          description: "Khoảng dịch trước: dịch trước nội dung cách dưới màn hình bao nhiêu pixel. Giảm để tiết kiệm chi phí API"
+          title: "Khoảng dịch trước"
+          description: "dịch trước nội dung cách dưới màn hình bao nhiêu pixel. Giảm để tiết kiệm chi phí API"
         threshold:
-          description: "Ngưỡng hiển thị: đoạn văn phải lộ ra bao nhiêu mới được dịch, từ 0 đến 1"
+          title: "Ngưỡng hiển thị"
+          description: "đoạn văn phải lộ ra bao nhiêu mới được dịch, từ 0 đến 1"
     cache:
       title: Bộ nhớ đệm
       clearCache:
@@ -1006,6 +1015,15 @@ options:
       color: Màu sắc
       fontWeight: Độ đậm chữ
       backgroundOpacity: Độ trong suốt nền
+      fieldDescriptions:
+        displayMode: "Chọn cách hiển thị phụ đề."
+        translationPosition: "Vị trí bản dịch so với phụ đề chính."
+        backgroundOpacity: "Độ mờ của nền phụ đề."
+        mainFont: "Phông chữ của phụ đề chính."
+        translationFont: "Phông chữ của phụ đề dịch."
+        fontScale: "Tỷ lệ so với kích thước mặc định."
+        fontWeight: "Thuộc tính CSS font-weight."
+        color: "Màu thập lục phân."
       reset: Đặt lại về mặc định
       customCSS:
         title: CSS tùy chỉnh
@@ -1056,16 +1074,20 @@ options:
       requestQueueConfig:
         title: Tốc độ dịch
         capacity:
-          description: "Số yêu cầu tối đa cùng lúc: bao nhiêu yêu cầu được gửi đi một lượt"
+          title: "Số yêu cầu tối đa cùng lúc"
+          description: "bao nhiêu yêu cầu được gửi đi một lượt"
         rate:
-          description: "Số yêu cầu mỗi giây: tốc độ đều sau đợt gửi dồn. Dùng được số thập phân, 0.25 là 4 giây một yêu cầu"
+          title: "Số yêu cầu mỗi giây"
+          description: "tốc độ đều sau đợt gửi dồn. Dùng được số thập phân, 0.25 là 4 giây một yêu cầu"
       batchQueueConfig:
         title: Dịch theo lô
         description: Cấu hình giới hạn ký tự và số dòng phụ đề tối đa cho dịch theo lô (chỉ có hiệu lực với dịch LLM)
         maxCharactersPerBatch:
-          description: "Số ký tự tối đa: mỗi yêu cầu tới AI mang bao nhiêu văn bản"
+          title: "Số ký tự tối đa"
+          description: "mỗi yêu cầu tới AI mang bao nhiêu văn bản"
         maxItemsPerBatch:
-          description: "Số dòng tối đa: bao nhiêu dòng phụ đề gộp chung một yêu cầu. Nhà cung cấp không dùng AI bỏ qua cả hai"
+          title: "Số dòng tối đa"
+          description: "bao nhiêu dòng phụ đề gộp chung một yêu cầu. Nhà cung cấp không dùng AI bỏ qua cả hai"
     cache:
       title: Bộ nhớ đệm
       clearCache:

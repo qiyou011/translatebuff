@@ -14,10 +14,13 @@ type KeyOfRequestQueueConfig = keyof RequestQueueConfig
 /** How fast requests leave: a burst allowance, then the steady pace it refills at. */
 export function RequestRateItems() {
   return (
-    <>
+    <section className="options-detail-setting-group">
+      <h3 className="options-detail-group-title">
+        {i18n.t("options.translation.translationQueue.requestQueueConfig.title")}
+      </h3>
       <ConfigItem
         id="request-rate"
-        title={i18n.t("options.translation.translationQueue.requestQueueConfig.title")}
+        title={i18n.t("options.translation.translationQueue.requestQueueConfig.capacity.title")}
         description={i18n.t(
           "options.translation.translationQueue.requestQueueConfig.capacity.description",
         )}
@@ -25,13 +28,14 @@ export function RequestRateItems() {
         <TranslateNumberInput property="capacity" />
       </ConfigItem>
       <ConfigItem
+        title={i18n.t("options.translation.translationQueue.requestQueueConfig.rate.title")}
         description={i18n.t(
           "options.translation.translationQueue.requestQueueConfig.rate.description",
         )}
       >
         <TranslateNumberInput property="rate" />
       </ConfigItem>
-    </>
+    </section>
   )
 }
 

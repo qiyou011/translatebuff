@@ -12,7 +12,7 @@ export function TranslationQueueSection() {
     <ConfigSection title={i18n.t("options.translation.translationQueue.title")}>
       <ConfigNavItem
         to="/page-translation/translation-queue"
-        title={i18n.t("options.translation.translationQueue.manageQueue")}
+        title={i18n.t("options.translation.translationQueue.title")}
         description={i18n.t("options.translation.translationQueue.description")}
       />
     </ConfigSection>

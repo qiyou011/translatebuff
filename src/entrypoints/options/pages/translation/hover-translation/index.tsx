@@ -19,7 +19,7 @@ export function HoverTranslationSection() {
       title={i18n.t("options.translation.hoverTranslation.title")}
     >
       <ConfigItem
-        title={i18n.t("options.translation.hoverTranslation.enable.title")}
+        title={i18n.t("options.translation.hoverTranslation.title")}
         description={
           <>
             {i18n.t("options.translation.hoverTranslation.enable.description")}

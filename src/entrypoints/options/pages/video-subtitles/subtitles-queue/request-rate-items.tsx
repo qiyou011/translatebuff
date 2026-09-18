@@ -14,10 +14,13 @@ type KeyOfRequestQueueConfig = keyof RequestQueueConfig
 /** How fast subtitle requests leave: a burst allowance, then the steady pace it refills at. */
 export function RequestRateItems() {
   return (
-    <>
+    <section className="options-detail-setting-group">
+      <h3 className="options-detail-group-title">
+        {i18n.t("options.videoSubtitles.subtitlesQueue.requestQueueConfig.title")}
+      </h3>
       <ConfigItem
         id="subtitles-request-rate"
-        title={i18n.t("options.videoSubtitles.subtitlesQueue.requestQueueConfig.title")}
+        title={i18n.t("options.videoSubtitles.subtitlesQueue.requestQueueConfig.capacity.title")}
         description={i18n.t(
           "options.videoSubtitles.subtitlesQueue.requestQueueConfig.capacity.description",
         )}
@@ -25,13 +28,14 @@ export function RequestRateItems() {
         <SubtitlesRateInput property="capacity" />
       </ConfigItem>
       <ConfigItem
+        title={i18n.t("options.videoSubtitles.subtitlesQueue.requestQueueConfig.rate.title")}
         description={i18n.t(
           "options.videoSubtitles.subtitlesQueue.requestQueueConfig.rate.description",
         )}
       >
         <SubtitlesRateInput property="rate" />
       </ConfigItem>
-    </>
+    </section>
   )
 }
 

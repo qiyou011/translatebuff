@@ -1,0 +1,143 @@
+/* Figma 309:159. Scope these presentation rules to the webpage translation overview. */
+html[data-translatebuff-options-theme]
+  .translation-page
+  > section:not(:first-child, #translation-style)
+  > h2 {
+  display: none;
+}
+
+html[data-translatebuff-options-theme] .translation-page > .translation-controls-heading {
+  margin: 0 0 4px;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+}
+
+html[data-translatebuff-options-theme]
+  [data-slot="sidebar-inset"]
+  .translation-page
+  div.relative.flex.w-full:has(> div.flex.flex-col.justify-start) {
+  min-height: 106px;
+}
+
+html[data-translatebuff-options-theme] .translation-page h3 + div {
+  text-wrap: wrap;
+}
+
+/* Keep the existing shortcut navigation available without adding a second row. */
+html[data-translatebuff-options-theme]
+  .translation-page
+  h3
+  + div
+  > span:has(> a[href^="#/shortcuts"]) {
+  display: inline-flex;
+  margin: 0 0 0 8px;
+  vertical-align: bottom;
+}
+
+html[data-translatebuff-options-theme] .translation-page h3 + div a[data-slot="button"] {
+  width: auto;
+  min-width: 0;
+  height: 24px;
+  min-height: 24px;
+  margin: 0;
+  padding: 0 2px;
+  font-size: 12px;
+  line-height: 24px;
+}
+
+html[data-translatebuff-options-theme] .translation-page section > div > a {
+  margin: 0;
+  padding: 0;
+  border-radius: 14px;
+}
+
+html[data-translatebuff-options-theme]
+  [data-slot="sidebar-inset"]
+  .translation-page
+  section
+  > div
+  > a:hover
+  > div {
+  background: var(--rf-muted);
+}
+
+html[data-translatebuff-options-theme] .translation-page section > div > a > div > div:last-child {
+  padding-top: 12px !important;
+  padding-right: 8px;
+}
+
+html[data-translatebuff-options-theme]
+  .translation-page
+  #translation-style
+  > div
+  > div:has(> #style-preview) {
+  min-height: 136px;
+  gap: 0;
+  padding: 14px 24px;
+}
+
+html[data-translatebuff-options-theme]
+  .translation-page
+  #translation-style
+  > div
+  > div:has(> #style-preview)
+  > span {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 28px;
+}
+
+/* The iframe retains its isolation and live configured translation styles. Its own body
+   supplies 16px padding, compensated here to align the sample with the preview heading. */
+html[data-translatebuff-options-theme] .translation-page #style-preview {
+  width: calc(100% + 32px);
+  margin-inline: -16px;
+}
+
+html[data-translatebuff-options-theme] .translation-page #style-preview > div {
+  border: 0;
+  border-radius: 0;
+}
+
+html[data-translatebuff-options-theme] .translation-page #clear-cache > div:last-child {
+  align-items: center;
+  width: 100%;
+}
+
+html[data-translatebuff-options-theme]
+  .translation-page
+  #clear-cache
+  [data-slot="alert-dialog-trigger"] {
+  width: 132px;
+  border: 1px solid var(--rf-border);
+  background: var(--rf-background);
+  color: var(--rf-foreground);
+  box-shadow: none;
+}
+
+html[data-translatebuff-options-theme]
+  .translation-page
+  #clear-cache
+  [data-slot="alert-dialog-trigger"]:hover {
+  background: var(--rf-muted);
+}
+
+html[data-translatebuff-options-theme]
+  .translation-page
+  #clear-cache
+  [data-slot="alert-dialog-trigger"]
+  > svg {
+  display: none;
+}
+
+@media (min-width: 48rem) {
+  html[data-translatebuff-options-theme]
+    [data-slot="sidebar-inset"]
+    > div
+    > div:has(> .translation-page)
+    > header
+    > p {
+    margin-top: 24px !important;
+  }
+}

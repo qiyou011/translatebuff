@@ -1,0 +1,184 @@
+/* Figma 448:3832. Shared side sheets stay over the current page. */
+[data-slot="sheet-overlay"] {
+  background: rgb(9 9 11 / 10%);
+  backdrop-filter: none;
+}
+
+[data-slot="sheet-content"]:not([data-mobile="true"]) {
+  width: min(500px, 100vw);
+  max-width: 500px;
+  gap: 0;
+  border: 0;
+  border-radius: 0;
+  background: var(--rf-background);
+  color: var(--rf-foreground);
+  font-family: var(--rf-font-sans);
+  box-shadow: none;
+}
+
+[data-slot="sheet-content"]:not([data-mobile="true"]):is([data-side="left"], [data-side="right"]) {
+  top: 0;
+  bottom: 0;
+  height: 100dvh;
+  animation: none;
+  transform: translateX(0);
+  transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+[data-slot="sheet-content"][data-side="right"]:not([data-mobile="true"]):is(
+    [data-starting-style],
+    [data-ending-style]
+  ) {
+  transform: translateX(100%);
+}
+
+[data-slot="sheet-content"][data-side="left"]:not([data-mobile="true"]):is(
+    [data-starting-style],
+    [data-ending-style]
+  ) {
+  transform: translateX(-100%);
+}
+
+[data-slot="sheet-content"]:not([data-mobile="true"]) > [data-slot="sheet-close"] {
+  top: 24px;
+  right: 24px;
+  width: 24px;
+  min-width: 24px;
+  height: 24px;
+  min-height: 24px;
+  padding: 0;
+  border-radius: 4px;
+}
+
+[data-slot="sheet-content"]:not([data-mobile="true"]) [data-slot="sheet-header"] {
+  min-height: 72px;
+  flex-shrink: 0;
+  padding: 24px;
+  gap: 0;
+}
+
+[data-slot="sheet-content"]:not([data-mobile="true"]) [data-slot="sheet-title"] {
+  padding-right: 42px;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 24px;
+}
+
+[data-slot="sheet-content"]:not([data-mobile="true"]) [data-slot="field-group"] {
+  min-height: 0;
+  gap: 22px;
+  padding: 16px 24px 24px;
+  overscroll-behavior: contain;
+}
+
+[data-slot="sheet-content"]:not([data-mobile="true"]) [data-slot="field"] {
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+[data-slot="sheet-content"]:not([data-mobile="true"]) [data-slot="field"]:first-child {
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+[data-slot="sheet-content"]:not([data-mobile="true"]) [data-slot="field-label"] {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 24px;
+}
+
+[data-slot="sheet-content"]:not([data-mobile="true"])
+  :is([data-slot="input"], [data-slot="textarea"]) {
+  width: 100%;
+  max-width: none;
+  border: 1px solid var(--rf-input);
+  border-radius: 10px;
+}
+
+[data-slot="sheet-content"]:not([data-mobile="true"]) [data-slot="input"] {
+  height: 40px;
+  padding: 8px 14px;
+  background: var(--rf-background);
+  font-size: 15px;
+  line-height: 22px;
+  box-shadow: 0 1px 1px rgb(0 0 0 / 4%);
+}
+
+[data-slot="sheet-content"]:not([data-mobile="true"]) [data-slot="textarea"] {
+  height: 224px;
+  min-height: 224px;
+  max-height: 224px;
+  padding: 11px 15px 11px 55px;
+  background: linear-gradient(to right, #f0f5fa 0 42px, transparent 42px), #f8fafc;
+  color: var(--rf-foreground);
+  font-size: 13px;
+  line-height: 20px;
+  box-shadow: none;
+}
+
+.dark [data-slot="sheet-content"]:not([data-mobile="true"]) [data-slot="textarea"] {
+  background: linear-gradient(to right, #20262e 0 42px, transparent 42px), var(--rf-card);
+}
+
+[data-slot="sheet-content"]:not([data-mobile="true"]) [data-slot="textarea"] + div {
+  max-width: min(300px, 100%);
+  margin-top: 14px;
+  gap: 0 8px;
+}
+
+[data-slot="sheet-content"]:not([data-mobile="true"])
+  [data-slot="textarea"]
+  + div
+  [data-slot="button"] {
+  width: auto;
+  min-width: 0;
+  height: 24px;
+  min-height: 24px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--rf-muted-foreground);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 24px;
+  box-shadow: none;
+}
+
+[data-slot="sheet-content"]:not([data-mobile="true"]) [data-slot="sheet-footer"] {
+  min-height: 70px;
+  flex-shrink: 0;
+  margin-top: auto;
+  padding: 0 24px 30px;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: flex-end;
+  gap: 14px;
+}
+
+[data-slot="sheet-content"]:not([data-mobile="true"]) [data-slot="sheet-footer"] > * {
+  min-width: 126px;
+  height: 40px;
+  min-height: 40px;
+  padding-inline: 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+[data-slot="sheet-content"]:not([data-mobile="true"]) [data-slot="sheet-footer"] > :first-child {
+  min-width: 132px;
+}
+
+[data-slot="sheet-content"]:not([data-mobile="true"]) [data-slot="sheet-footer"] > :last-child {
+  min-width: 126px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-slot="sheet-content"]:not([data-mobile="true"]):is(
+      [data-side="left"],
+      [data-side="right"]
+    ) {
+    transition-duration: 0ms;
+  }
+}

@@ -1081,7 +1081,7 @@ interface ColorInputProps {
 }
 
 const INPUT_SHELL_CLASS =
-  "flex items-center bg-transparent transition-colors duration-75 hover:bg-accent active:bg-accent focus-within:ring-1 focus-within:ring-ring select-none h-9"
+  "flex items-center bg-transparent transition-colors duration-75 select-none h-9"
 
 function boundValue(n: number, min?: number, max?: number, wrap = false): number {
   if (wrap && min !== undefined && max !== undefined) {

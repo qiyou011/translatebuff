@@ -11,7 +11,7 @@ export function PersonalizedPromptsSection() {
     <ConfigSection title={i18n.t("options.translation.personalizedPrompts.title")}>
       <ConfigNavItem
         to="/page-translation/prompts"
-        title={i18n.t("options.translation.personalizedPrompts.managePrompts")}
+        title={i18n.t("options.translation.personalizedPrompts.title")}
         description={i18n.t("options.translation.personalizedPrompts.description")}
       />
     </ConfigSection>

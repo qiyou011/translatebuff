@@ -18,10 +18,13 @@ type KeyOfPreloadConfig = keyof PreloadConfig
 /** How far ahead of the reader translation runs — the distance, and how much of a paragraph counts as reached. */
 export function PreloadItems() {
   return (
-    <>
+    <section className="options-detail-setting-group">
+      <h3 className="options-detail-group-title">
+        {i18n.t("options.translation.translationQueue.preloadConfig.title")}
+      </h3>
       <ConfigItem
         id="preload-config"
-        title={i18n.t("options.translation.translationQueue.preloadConfig.title")}
+        title={i18n.t("options.translation.translationQueue.preloadConfig.margin.title")}
         description={i18n.t(
           "options.translation.translationQueue.preloadConfig.margin.description",
         )}
@@ -29,13 +32,14 @@ export function PreloadItems() {
         <PreloadNumberInput property="margin" />
       </ConfigItem>
       <ConfigItem
+        title={i18n.t("options.translation.translationQueue.preloadConfig.threshold.title")}
         description={i18n.t(
           "options.translation.translationQueue.preloadConfig.threshold.description",
         )}
       >
         <PreloadNumberInput property="threshold" />
       </ConfigItem>
-    </>
+    </section>
   )
 }
 

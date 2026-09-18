@@ -21,10 +21,15 @@ export function SmallParagraphFilterItem() {
   const { minCharactersPerNode, minWordsPerNode } = translateConfig.page
 
   return (
-    <>
+    <section className="options-detail-setting-group">
+      <h3 className="options-detail-group-title">
+        {i18n.t("options.translation.translationControl.smallParagraphFilter.title")}
+      </h3>
       <ConfigItem
         id="small-paragraph-filter"
-        title={i18n.t("options.translation.translationControl.smallParagraphFilter.title")}
+        title={i18n.t(
+          "options.translation.translationControl.smallParagraphFilter.minCharacters.title",
+        )}
         description={i18n.t(
           "options.translation.translationControl.smallParagraphFilter.minCharacters.description",
         )}
@@ -41,6 +46,7 @@ export function SmallParagraphFilterItem() {
         />
       </ConfigItem>
       <ConfigItem
+        title={i18n.t("options.translation.translationControl.smallParagraphFilter.minWords.title")}
         description={i18n.t(
           "options.translation.translationControl.smallParagraphFilter.minWords.description",
         )}
@@ -56,7 +62,7 @@ export function SmallParagraphFilterItem() {
           }}
         />
       </ConfigItem>
-    </>
+    </section>
   )
 }
 

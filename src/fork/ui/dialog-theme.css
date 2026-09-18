@@ -1,0 +1,161 @@
+/* Figma 446:3747. Shared by extension documents and content-script shadow roots.
+ * Match existing component slots without changing portals, focus or handlers. */
+:is([data-slot="dialog-overlay"], [data-slot="alert-dialog-overlay"]) {
+  background: var(--rf-muted);
+  backdrop-filter: none;
+}
+
+:is([data-slot="dialog-content"], [data-slot="alert-dialog-content"]) {
+  top: min(30dvh, max(16px, calc((100dvh - 292px) / 2)));
+  display: flex;
+  flex-direction: column;
+  width: min(640px, calc(100vw - 32px));
+  max-width: min(640px, calc(100vw - 32px));
+  min-height: min(292px, calc(100dvh - 32px));
+  max-height: calc(100dvh - min(30dvh, max(16px, (100dvh - 292px) / 2)) - 16px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  gap: 24px;
+  padding: 23px;
+  translate: -50% 0;
+  border: 1px solid var(--rf-border);
+  border-radius: 8px;
+  background: var(--rf-background);
+  color: var(--rf-foreground);
+  font-family: var(--rf-font-sans);
+  font-size: 15px;
+  line-height: 24px;
+  box-shadow: none;
+}
+
+:is([data-slot="dialog-content"], [data-slot="alert-dialog-content"]) > * {
+  min-width: 0;
+  flex-shrink: 0;
+}
+
+:is([data-slot="dialog-header"], [data-slot="alert-dialog-header"]):not(.sr-only) {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+  gap: 22px;
+  text-align: start;
+}
+
+[data-slot="dialog-content"]:has(> [data-slot="dialog-close"]) [data-slot="dialog-title"] {
+  padding-right: 32px;
+}
+
+:is([data-slot="dialog-title"], [data-slot="alert-dialog-title"]) {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 24px;
+  overflow-wrap: anywhere;
+}
+
+:is([data-slot="dialog-description"], [data-slot="alert-dialog-description"]) {
+  margin: 0;
+  color: var(--rf-muted-foreground);
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 24px;
+  text-wrap: pretty;
+  overflow-wrap: anywhere;
+}
+
+:is([data-slot="dialog-footer"], [data-slot="alert-dialog-footer"]) {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-end !important;
+  gap: 14px;
+  margin: auto 0 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+/* Flatten only the existing export-action group so all three buttons can wrap. */
+[data-slot="alert-dialog-footer"] > div:has(> [data-slot="alert-dialog-action"]) {
+  display: contents;
+}
+
+[data-slot="alert-dialog-footer"]:has(> div > [data-slot="alert-dialog-action"]) {
+  padding-right: 18px;
+}
+
+:is([data-slot="dialog-footer"], [data-slot="alert-dialog-footer"]) :is(button, [role="button"]) {
+  width: 132px;
+  min-width: 132px;
+  min-height: 40px;
+  height: auto;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+/* Confirmation actions use the neutral primary palette, including destructive
+   confirmations. The existing action handlers and disabled states are retained. */
+[data-slot="alert-dialog-action"]:not([class~="bg-secondary"]) {
+  background: var(--rf-primary);
+  color: var(--rf-primary-foreground);
+  border-color: transparent;
+  --tw-ring-color: color-mix(in srgb, var(--rf-primary) 30%, transparent);
+}
+
+[data-slot="alert-dialog-action"]:not([class~="bg-secondary"]):hover {
+  background: color-mix(in srgb, var(--rf-primary) 90%, var(--rf-background));
+}
+
+[data-slot="alert-dialog-action"]:not([class~="bg-secondary"]):focus-visible {
+  border-color: var(--rf-primary);
+}
+
+[data-slot="alert-dialog-cancel"],
+[data-slot="alert-dialog-action"][class~="bg-secondary"] {
+  border-color: var(--rf-border);
+  background: var(--rf-background);
+  color: var(--rf-foreground);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 5%);
+}
+
+[data-slot="alert-dialog-cancel"]:hover,
+[data-slot="alert-dialog-action"][class~="bg-secondary"]:hover {
+  background: var(--rf-muted);
+}
+
+[data-slot="dialog-content"] > [data-slot="dialog-close"] {
+  top: 24px;
+  right: 24px;
+  width: 24px;
+  min-width: 24px;
+  height: 24px;
+  min-height: 24px;
+  padding: 0;
+  border-radius: 4px;
+}
+
+/* The command palette is a search list, with an intentionally hidden header. */
+[data-slot="dialog-content"] .grid[class~="xl:grid-cols-11"] {
+  grid-template-columns: repeat(auto-fit, minmax(72px, 1fr));
+}
+
+[data-slot="dialog-content"]:has(> [data-slot="command"]) {
+  min-height: 0;
+  gap: 0;
+  overflow: hidden;
+  padding: 4px;
+}
+
+@media (max-width: 39.999rem) {
+  [data-slot="alert-dialog-footer"]:has(> div > [data-slot="alert-dialog-action"]) {
+    padding-right: 0;
+  }
+}

@@ -8,16 +8,9 @@ import translateIcon from "@/fork/ui/side-content/floating-button/images/transla
 import unlockedIcon from "@/fork/ui/side-content/floating-button/images/unlocked-icon.svg?url&no-inline"
 import { i18n } from "@/utils/i18n"
 import { cn } from "@/utils/styles/utils"
+import previewBackground from "./assets/feature-preview-background.svg?url"
 
 type OverlayFeature = "floating-button" | "selection-toolbar" | "context-menu"
-
-const previewGradient = [
-  "radial-gradient(ellipse 42% 120% at 4% 44%, rgb(255 91 91 / 34%), transparent 72%)",
-  "radial-gradient(ellipse 48% 130% at 26% 100%, rgb(84 230 143 / 28%), transparent 72%)",
-  "radial-gradient(ellipse 45% 130% at 52% 0%, rgb(27 199 255 / 26%), transparent 70%)",
-  "radial-gradient(ellipse 44% 125% at 78% 100%, rgb(141 92 255 / 28%), transparent 72%)",
-  "radial-gradient(ellipse 36% 110% at 100% 40%, rgb(255 91 218 / 30%), transparent 72%)",
-].join(", ")
 
 export function OverlayFeaturePreview({
   feature,
@@ -34,12 +27,14 @@ export function OverlayFeaturePreview({
       role="img"
       aria-label={`${title}: ${description}`}
       className="relative -my-8 h-[248px] w-full max-w-none overflow-hidden rounded-xl bg-background"
-      style={{ backgroundImage: previewGradient }}
+      style={{ backgroundImage: `url("${previewBackground}")` }}
     >
-      <BrowserArticle selected={feature === "selection-toolbar"} />
-      {feature === "floating-button" && <FloatingButtonScene />}
-      {feature === "selection-toolbar" && <SelectionToolbarScene />}
-      {feature === "context-menu" && <ContextMenuScene />}
+      <div data-slot="overlay-preview-scene" className="relative h-[248px] w-[944px]">
+        <BrowserArticle selected={feature === "selection-toolbar"} />
+        {feature === "floating-button" && <FloatingButtonScene />}
+        {feature === "selection-toolbar" && <SelectionToolbarScene />}
+        {feature === "context-menu" && <ContextMenuScene />}
+      </div>
     </div>
   )
 }

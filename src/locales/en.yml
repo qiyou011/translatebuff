@@ -847,6 +847,7 @@ options:
   translation:
     title: Page Translation
     pageDescription: Control how pages get translated — mode, range, prompts, and request limits.
+    controlsAndRequests: Controls and requests
     preference:
       title: Basics
       translationMode:
@@ -981,9 +982,11 @@ options:
         title: Small paragraph filter
         description: These global defaults skip translating text nodes with fewer characters or words than the thresholds. Matching site rules can override them (0 = disabled)
         minCharacters:
-          description: "Minimum characters: shorter text stays untranslated. Use 0 to translate everything"
+          title: "Minimum characters"
+          description: "shorter text stays untranslated. Use 0 to translate everything"
         minWords:
-          description: "Minimum words: text with fewer words stays untranslated"
+          title: "Minimum words"
+          description: "text with fewer words stays untranslated"
         error: Value must be between $1 and $2
     translationQueue:
       title: Translation queue
@@ -992,23 +995,29 @@ options:
       requestQueueConfig:
         title: Translation rate
         capacity:
-          description: "Maximum burst requests: how many can go out at once"
+          title: "Maximum burst requests"
+          description: "how many can go out at once"
         rate:
-          description: "Requests per second: the steady pace after a burst. Decimals work, so 0.25 sends one request every 4 seconds"
+          title: "Requests per second"
+          description: "the steady pace after a burst. Decimals work, so 0.25 sends one request every 4 seconds"
       batchQueueConfig:
         title: Batch translation
         description: Configure character limits and maximum paragraph count for batch translation (only effective for LLM translation)
         maxCharactersPerBatch:
-          description: "Maximum characters: how much text one AI request carries"
+          title: "Maximum characters"
+          description: "how much text one AI request carries"
         maxItemsPerBatch:
-          description: "Maximum paragraphs: how many paragraphs share one request. Providers that are not AI ignore both"
+          title: "Maximum paragraphs"
+          description: "how many paragraphs share one request. Providers that are not AI ignore both"
       preloadConfig:
         title: Pre-translate range
         description: Control how much content below the viewport gets pre-translated to save API costs
         margin:
-          description: "Preload distance: how far below the screen to translate ahead, in pixels. Less saves API cost"
+          title: "Preload distance"
+          description: "how far below the screen to translate ahead, in pixels. Less saves API cost"
         threshold:
-          description: "Visibility threshold: how much of a paragraph must be on screen before it is translated, from 0 to 1"
+          title: "Visibility threshold"
+          description: "how much of a paragraph must be on screen before it is translated, from 0 to 1"
     cache:
       title: Cache
       clearCache:
@@ -1122,6 +1131,15 @@ options:
       color: Color
       fontWeight: Font weight
       backgroundOpacity: Background opacity
+      fieldDescriptions:
+        displayMode: "Choose how subtitles are displayed."
+        translationPosition: "Position of the translation relative to the main subtitle."
+        backgroundOpacity: "Opacity of the subtitle background."
+        mainFont: "Font for the main subtitle."
+        translationFont: "Font for the translated subtitle."
+        fontScale: "Relative to the default size."
+        fontWeight: "CSS font-weight."
+        color: "Hexadecimal color."
       reset: Reset to default
       customCSS:
         title: Custom CSS
@@ -1172,16 +1190,20 @@ options:
       requestQueueConfig:
         title: Translation rate
         capacity:
-          description: "Maximum burst requests: how many can go out at once"
+          title: "Maximum burst requests"
+          description: "how many can go out at once"
         rate:
-          description: "Requests per second: the steady pace after a burst. Decimals work, so 0.25 sends one request every 4 seconds"
+          title: "Requests per second"
+          description: "the steady pace after a burst. Decimals work, so 0.25 sends one request every 4 seconds"
       batchQueueConfig:
         title: Batch translation
         description: Configure character limits and maximum subtitle line count for batch translation (only effective for LLM translation)
         maxCharactersPerBatch:
-          description: "Maximum characters: how much text one AI request carries"
+          title: "Maximum characters"
+          description: "how much text one AI request carries"
         maxItemsPerBatch:
-          description: "Maximum subtitle lines: how many lines share one request. Providers that are not AI ignore both"
+          title: "Maximum subtitle lines"
+          description: "how many lines share one request. Providers that are not AI ignore both"
     cache:
       title: Cache
       clearCache:

@@ -3,7 +3,14 @@ import { deepmerge } from "deepmerge-ts"
 import { useAtom } from "jotai"
 import { useEffect, useState } from "react"
 import { DebouncedColorPicker } from "@/components/debounced-color-picker"
-import { Field, FieldGroup, FieldLabel, FieldTitle } from "@/components/ui/base-ui/field"
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+  FieldTitle,
+} from "@/components/ui/base-ui/field"
 import {
   Select,
   SelectContent,
@@ -62,9 +69,18 @@ export function SubtitlesTextStyleForm({ type }: SubtitlesTextStyleFormProps) {
   return (
     <FieldGroup>
       <Field orientation="responsive">
-        <FieldLabel htmlFor={fontFamilyId}>
-          {i18n.t("options.videoSubtitles.style.fontFamily")}
-        </FieldLabel>
+        <FieldContent>
+          <FieldLabel htmlFor={fontFamilyId}>
+            {i18n.t("options.videoSubtitles.style.fontFamily")}
+          </FieldLabel>
+          <FieldDescription>
+            {i18n.t(
+              type === "main"
+                ? "options.videoSubtitles.style.fieldDescriptions.mainFont"
+                : "options.videoSubtitles.style.fieldDescriptions.translationFont",
+            )}
+          </FieldDescription>
+        </FieldContent>
         <Select
           value={textStyle.fontFamily}
           onValueChange={(value) => {
@@ -89,7 +105,12 @@ export function SubtitlesTextStyleForm({ type }: SubtitlesTextStyleFormProps) {
       </Field>
 
       <Field orientation="responsive">
-        <FieldTitle>{i18n.t("options.videoSubtitles.style.fontScale")}</FieldTitle>
+        <FieldContent>
+          <FieldTitle>{i18n.t("options.videoSubtitles.style.fontScale")}</FieldTitle>
+          <FieldDescription>
+            {i18n.t("options.videoSubtitles.style.fieldDescriptions.fontScale")}
+          </FieldDescription>
+        </FieldContent>
         <SliderComfortable
           variant="scrubber"
           aria-label={i18n.t("options.videoSubtitles.style.fontScale")}
@@ -104,7 +125,12 @@ export function SubtitlesTextStyleForm({ type }: SubtitlesTextStyleFormProps) {
       </Field>
 
       <Field orientation="responsive">
-        <FieldTitle>{i18n.t("options.videoSubtitles.style.fontWeight")}</FieldTitle>
+        <FieldContent>
+          <FieldTitle>{i18n.t("options.videoSubtitles.style.fontWeight")}</FieldTitle>
+          <FieldDescription>
+            {i18n.t("options.videoSubtitles.style.fieldDescriptions.fontWeight")}
+          </FieldDescription>
+        </FieldContent>
         <SliderComfortable
           variant="scrubber"
           aria-label={i18n.t("options.videoSubtitles.style.fontWeight")}
@@ -118,7 +144,12 @@ export function SubtitlesTextStyleForm({ type }: SubtitlesTextStyleFormProps) {
       </Field>
 
       <Field orientation="responsive">
-        <FieldTitle>{i18n.t("options.videoSubtitles.style.color")}</FieldTitle>
+        <FieldContent>
+          <FieldTitle>{i18n.t("options.videoSubtitles.style.color")}</FieldTitle>
+          <FieldDescription>
+            {i18n.t("options.videoSubtitles.style.fieldDescriptions.color")}
+          </FieldDescription>
+        </FieldContent>
         <DebouncedColorPicker
           value={textStyle.color}
           onCommit={(color) => handleChange({ color })}

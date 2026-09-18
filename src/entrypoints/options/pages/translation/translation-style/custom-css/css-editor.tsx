@@ -61,7 +61,6 @@ export function CSSEditor() {
 
   return (
     <Field>
-      {/* The section heading already names this editor, so the row carries only the docs link. */}
       <div className="flex items-start justify-end">
         <a
           href={`${env.WXT_WEBSITE_URL}/docs/custom-css`}
@@ -72,13 +71,19 @@ export function CSSEditor() {
           {i18n.t("options.translation.translationStyle.customCSS.editor.docsLink")}
         </a>
       </div>
-      <CSSCodeEditor
-        value={cssInput}
-        onChange={setCssInput}
-        hasError={hasSyntaxError || hasLengthError}
-        placeholder={i18n.t("options.translation.translationStyle.customCSS.editor.placeholder")}
-        className="max-h-[400px] min-h-[200px] overflow-y-auto"
-      />
+      <div className="options-css-editor-row">
+        <div className="options-css-editor-description">
+          <h3>{i18n.t("options.translation.translationStyle.cssEditor")}</h3>
+          <p>{i18n.t("options.translation.translationStyle.cssEditorDescription")}</p>
+        </div>
+        <CSSCodeEditor
+          value={cssInput}
+          onChange={setCssInput}
+          hasError={hasSyntaxError || hasLengthError}
+          placeholder={i18n.t("options.translation.translationStyle.customCSS.editor.placeholder")}
+          className="max-h-[400px] min-h-[200px] overflow-y-auto"
+        />
+      </div>
       <div className="flex items-center justify-between gap-2">
         <div
           className={cn(

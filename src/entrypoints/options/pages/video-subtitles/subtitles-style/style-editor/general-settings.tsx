@@ -5,7 +5,14 @@ import { useAtom } from "jotai"
 import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/base-ui/button"
 import { Card } from "@/components/ui/base-ui/card"
-import { Field, FieldGroup, FieldLabel, FieldTitle } from "@/components/ui/base-ui/field"
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+  FieldTitle,
+} from "@/components/ui/base-ui/field"
 import { Label } from "@/components/ui/base-ui/label"
 import {
   Select,
@@ -94,9 +101,14 @@ export function GeneralSettings() {
 
       <FieldGroup>
         <Field orientation="responsive">
-          <FieldLabel htmlFor={displayModeId}>
-            {i18n.t("options.videoSubtitles.style.displayMode.title")}
-          </FieldLabel>
+          <FieldContent>
+            <FieldLabel htmlFor={displayModeId}>
+              {i18n.t("options.videoSubtitles.style.displayMode.title")}
+            </FieldLabel>
+            <FieldDescription>
+              {i18n.t("options.videoSubtitles.style.fieldDescriptions.displayMode")}
+            </FieldDescription>
+          </FieldContent>
           <Select value={displayMode} onValueChange={handleDisplayModeChange}>
             <SelectTrigger id={displayModeId}>
               <SelectValue>
@@ -121,9 +133,14 @@ export function GeneralSettings() {
 
         {displayMode === "bilingual" && (
           <Field orientation="responsive">
-            <FieldLabel htmlFor={translationPositionId}>
-              {i18n.t("options.videoSubtitles.style.translationPosition.title")}
-            </FieldLabel>
+            <FieldContent>
+              <FieldLabel htmlFor={translationPositionId}>
+                {i18n.t("options.videoSubtitles.style.translationPosition.title")}
+              </FieldLabel>
+              <FieldDescription>
+                {i18n.t("options.videoSubtitles.style.fieldDescriptions.translationPosition")}
+              </FieldDescription>
+            </FieldContent>
             <Select value={translationPosition} onValueChange={handleTranslationPositionChange}>
               <SelectTrigger id={translationPositionId}>
                 <SelectValue>
@@ -147,7 +164,12 @@ export function GeneralSettings() {
         )}
 
         <Field orientation="responsive">
-          <FieldTitle>{i18n.t("options.videoSubtitles.style.backgroundOpacity")}</FieldTitle>
+          <FieldContent>
+            <FieldTitle>{i18n.t("options.videoSubtitles.style.backgroundOpacity")}</FieldTitle>
+            <FieldDescription>
+              {i18n.t("options.videoSubtitles.style.fieldDescriptions.backgroundOpacity")}
+            </FieldDescription>
+          </FieldContent>
           <SliderComfortable
             variant="scrubber"
             aria-label={i18n.t("options.videoSubtitles.style.backgroundOpacity")}

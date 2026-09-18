@@ -1,6 +1,6 @@
 "use client"
 
-import type { AnimationPlaybackControls, Transition } from "motion/react"
+import type { AnimationPlaybackControls, MotionStyle, Transition } from "motion/react"
 import { Switch as SwitchPrimitive } from "@base-ui/react/switch"
 import { animate, motion, useMotionValue } from "motion/react"
 import * as React from "react"
@@ -251,8 +251,15 @@ function Switch({
               {...rest}
               className="pointer-events-none absolute top-0 left-0 block rounded-full bg-white"
               initial={false}
-              style={{ ...baseStyle, x }}
-              animate={{ y: thumbY, width: thumbWidth, height: thumbHeight }}
+              style={{ ...baseStyle, x, "--rf-switch-thumb-x": x } as MotionStyle}
+              animate={{
+                y: thumbY,
+                width: thumbWidth,
+                height: thumbHeight,
+                "--rf-switch-thumb-width": thumbWidth,
+                "--rf-switch-thumb-height": thumbHeight,
+                "--rf-switch-thumb-y": thumbY,
+              }}
               transition={hasMounted.current ? transition : { duration: 0 }}
             />
           )
