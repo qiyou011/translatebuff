@@ -1,7 +1,7 @@
 /* Figma 446:3747. Shared by extension documents and content-script shadow roots.
  * Match existing component slots without changing portals, focus or handlers. */
 :is([data-slot="dialog-overlay"], [data-slot="alert-dialog-overlay"]) {
-  background: var(--rf-muted);
+  background: rgb(9 9 11 / 15%);
   backdrop-filter: none;
 }
 

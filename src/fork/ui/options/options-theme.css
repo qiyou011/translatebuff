@@ -464,9 +464,25 @@ html[data-translatebuff-options-theme]
 }
 
 html[data-translatebuff-options-theme] [data-slot="select-content"] {
-  width: var(--anchor-width);
-  min-width: var(--anchor-width);
+  width: max-content;
+  min-width: min(var(--anchor-width), var(--available-width));
   max-width: var(--available-width);
+}
+
+/* Compact triggers must not clip longer option names. Wrap only when the
+ * viewport prevents the popup from growing to the content's natural width. */
+html[data-translatebuff-options-theme] [data-slot="select-item"] > :first-child {
+  min-width: 0;
+  flex-shrink: 1;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+html[data-translatebuff-options-theme] [data-slot="select-item"] .truncate {
+  white-space: normal;
+  overflow-wrap: anywhere;
+  overflow: visible;
+  text-overflow: clip;
 }
 
 html[data-translatebuff-options-theme] [data-slot="combobox-content"] {
