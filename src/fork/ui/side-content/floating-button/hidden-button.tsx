@@ -28,7 +28,7 @@ export default function HiddenButton({
           type="button"
           aria-label={label}
           className={cn(
-            "relative flex size-7 cursor-pointer items-center justify-center rounded-[17px] bg-[#171717] text-[#a3a3a3] shadow-[inset_0_0_0_0.5px_#404040,0_10px_15px_-3px_rgba(0,0,0,0.1),0_4px_6px_-4px_rgba(0,0,0,0.1)] transition-[transform,background-color] duration-300 hover:bg-neutral-800 active:bg-neutral-700",
+            "relative flex size-7 cursor-pointer items-center justify-center rounded-[17px] bg-white text-[#525252] shadow-[inset_0_0_0_0.5px_#d4d4d4,0_4px_3px_rgba(0,0,0,0.1),0_10px_7.5px_rgba(0,0,0,0.1)] transition-[transform,background-color] duration-300 hover:bg-white active:bg-white dark:bg-[#171717] dark:text-[#a3a3a3] dark:shadow-[inset_0_0_0_0.5px_#404040,0_4px_3px_rgba(0,0,0,0.1),0_10px_7.5px_rgba(0,0,0,0.1)] dark:hover:bg-[#171717] dark:active:bg-[#171717]",
             side === "right" ? "mr-[9px]" : "ml-[9px]",
             expanded ? "translate-x-0" : side === "right" ? "translate-x-12" : "-translate-x-12",
             className,

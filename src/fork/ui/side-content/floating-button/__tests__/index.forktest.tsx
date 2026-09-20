@@ -204,12 +204,21 @@ describe("fork floatingButton controls", () => {
   it("renders the Figma brand asset and keeps action tooltips", () => {
     renderFloatingButton()
     const mainButton = getMainButton()
+    const themeLogos = mainButton.querySelectorAll("img")
     expect(mainButton.tagName).toBe("BUTTON")
     expect(mainButton).toHaveClass("size-10", "rounded-full")
-    expect(mainButton.querySelector("img")).not.toHaveClass("invert")
-    expect(mainButton.querySelector("img")?.src).toContain("floating-logo.svg")
+    expect(themeLogos).toHaveLength(2)
+    expect(themeLogos[0]?.src).toContain("floating-logo-light.svg")
+    expect(themeLogos[0]).toHaveClass("dark:hidden")
+    expect(themeLogos[1]?.src).toContain("floating-logo-dark.svg")
+    expect(themeLogos[1]).toHaveClass("hidden", "dark:block")
     for (const label of TOOLTIP_CONTROL_LABELS) {
-      expect(screen.getByRole("button", { name: label })).toBeInTheDocument()
+      const toolButton = screen.getByRole("button", { name: label })
+      expect(toolButton).toHaveClass("bg-white", "dark:bg-[#171717]")
+      expect(toolButton).toHaveClass(
+        "shadow-[inset_0_0_0_0.5px_#d4d4d4,0_4px_3px_rgba(0,0,0,0.1),0_10px_7.5px_rgba(0,0,0,0.1)]",
+        "dark:shadow-[inset_0_0_0_0.5px_#404040,0_4px_3px_rgba(0,0,0,0.1),0_10px_7.5px_rgba(0,0,0,0.1)]",
+      )
     }
   })
 
@@ -264,7 +273,8 @@ describe("fork floatingButton controls", () => {
     expect(lockTrigger).toHaveClass("active:scale-90")
     expect(lockTrigger).toHaveClass("hover:text-neutral-500")
     expect(lockTrigger).toHaveClass("active:text-neutral-500")
-    expect(mainButton).toHaveClass("translate-x-0")
+    expect(mainButton).toHaveClass("translate-x-[23px]")
+    expect(mainButton).toHaveClass("opacity-40")
 
     fireEvent.mouseEnter(mainButton)
 
@@ -283,7 +293,7 @@ describe("fork floatingButton controls", () => {
     expect(unlockTrigger).toHaveClass("-left-[37px]")
     expect(mainButton).toHaveClass("translate-x-0")
     expect(mainButton).toHaveClass("opacity-100")
-    expect(mainButton).not.toHaveClass("translate-x-6")
+    expect(mainButton).not.toHaveClass("translate-x-[23px]")
 
     fireEvent.mouseLeave(floatingButtonContainer)
 
@@ -312,6 +322,48 @@ describe("fork floatingButton controls", () => {
     expect(closeTrigger).toHaveClass("pointer-events-auto")
     expect(document.querySelector('[data-slot="tooltip-content"][data-open]')).toBeNull()
     expect(screen.getByText("options.floatingButton.closeMenu.disableForSite")).toBeInTheDocument()
+  })
+
+  it("matches the Figma close-menu surface and option hover states", () => {
+    renderFloatingButton()
+
+    fireEvent.mouseEnter(getMainButton())
+    fireEvent.click(
+      screen.getByRole("button", {
+        name: "options.floatingButton.tooltips.floatingButtonOptions",
+      }),
+    )
+
+    const menu = document.querySelector<HTMLElement>('[data-slot="dropdown-menu-content"]')
+    const siteOption = screen.getByText("options.floatingButton.closeMenu.disableForSite")
+    const globalOption = screen.getByText("options.floatingButton.closeMenu.disableGlobally")
+
+    expect(menu).toHaveClass(
+      "w-32!",
+      "rounded-[14px]",
+      "bg-white",
+      "p-1.5",
+      "ring-black/10",
+      "dark:bg-[#18181b]",
+      "dark:ring-white/10",
+    )
+    expect(menu).toHaveClass(
+      "shadow-[0_2px_3.5px_rgba(39,39,42,0.04),0_12px_15px_rgba(39,39,42,0.08)]",
+    )
+    for (const option of [siteOption, globalOption]) {
+      expect(option).toHaveClass(
+        "w-[116px]",
+        "rounded-[8px]",
+        "px-2",
+        "py-1.5",
+        "text-[12px]",
+        "leading-[22px]",
+        "hover:bg-[#e6e6e9]",
+        "focus:bg-[#e6e6e9]",
+        "dark:hover:bg-[#27272a]",
+        "dark:focus:bg-[#27272a]",
+      )
+    }
   })
 
   it("does not show a tooltip for the lock control", () => {
@@ -663,7 +715,8 @@ describe("fork floatingButton controls", () => {
       )
 
     expect(mainButton).toHaveClass("rounded-full")
-    expect(mainButton).toHaveClass("translate-x-0")
+    expect(mainButton).toHaveClass("-translate-x-[23px]")
+    expect(mainButton).toHaveClass("opacity-40")
     expect(closeTrigger).toHaveClass("right-0")
     expect(lockTrigger).toHaveClass("right-0")
     for (const hiddenButton of hiddenButtons) {

@@ -22,19 +22,31 @@ import { sendMessage } from "@/utils/message"
 import { cn } from "@/utils/styles/utils"
 import { matchDomainPattern } from "@/utils/url"
 import HiddenButton from "./hidden-button"
+import closeIconLight from "./images/close-icon-light.svg?url&no-inline"
 import closeIcon from "./images/close-icon.svg?url&no-inline"
-import floatingLogo from "./images/floating-logo.svg?url&no-inline"
+import floatingLogoDark from "./images/floating-logo-dark.svg?url&no-inline"
+import floatingLogoLight from "./images/floating-logo-light.svg?url&no-inline"
+import lockedIconDark from "./images/locked-icon-dark.svg?url&no-inline"
 import lockedIcon from "./images/locked-icon.svg?url&no-inline"
+import settingsIconLight from "./images/settings-icon-light.svg?url&no-inline"
 import settingsIcon from "./images/settings-icon.svg?url&no-inline"
+import translateIconLight from "./images/translate-icon-light.svg?url&no-inline"
 import translateIcon from "./images/translate-icon.svg?url&no-inline"
+import unlockedIconLight from "./images/unlocked-icon-light.svg?url&no-inline"
 import unlockedIcon from "./images/unlocked-icon.svg?url&no-inline"
 
-const floatingLogoUrl = new URL(floatingLogo, browser.runtime.getURL("/")).href
+const floatingLogoLightUrl = new URL(floatingLogoLight, browser.runtime.getURL("/")).href
+const floatingLogoDarkUrl = new URL(floatingLogoDark, browser.runtime.getURL("/")).href
 const closeIconUrl = new URL(closeIcon, browser.runtime.getURL("/")).href
+const closeIconLightUrl = new URL(closeIconLight, browser.runtime.getURL("/")).href
 const lockedIconUrl = new URL(lockedIcon, browser.runtime.getURL("/")).href
+const lockedIconDarkUrl = new URL(lockedIconDark, browser.runtime.getURL("/")).href
 const unlockedIconUrl = new URL(unlockedIcon, browser.runtime.getURL("/")).href
+const unlockedIconLightUrl = new URL(unlockedIconLight, browser.runtime.getURL("/")).href
 const settingsIconUrl = new URL(settingsIcon, browser.runtime.getURL("/")).href
+const settingsIconLightUrl = new URL(settingsIconLight, browser.runtime.getURL("/")).href
 const translateIconUrl = new URL(translateIcon, browser.runtime.getURL("/")).href
+const translateIconLightUrl = new URL(translateIconLight, browser.runtime.getURL("/")).href
 const LONG_PRESS_DELAY_MS = 350
 const DRAG_START_DISTANCE_PX = 6
 const MIN_FLOATING_CONTAINER_TOP_PX = 30
@@ -59,6 +71,39 @@ interface PendingDragState {
   buttonHeight: number
   hasActiveDrag: boolean
   longPressTimerId: number
+}
+
+function ThemedIcon({
+  lightSrc,
+  darkSrc,
+  size,
+  className,
+}: {
+  lightSrc: string
+  darkSrc: string
+  size: number
+  className: string
+}) {
+  return (
+    <>
+      <img
+        src={lightSrc}
+        alt=""
+        aria-hidden="true"
+        width={size}
+        height={size}
+        className={cn(className, "dark:hidden")}
+      />
+      <img
+        src={darkSrc}
+        alt=""
+        aria-hidden="true"
+        width={size}
+        height={size}
+        className={cn(className, "hidden dark:block")}
+      />
+    </>
+  )
 }
 
 const floatingButtonControlClassName = cn(
@@ -142,8 +187,10 @@ export default function FloatingButton() {
   const mainButtonRef = useRef<HTMLButtonElement | null>(null)
   const pendingDragRef = useRef<PendingDragState | null>(null)
   const lastDragPreviewRef = useRef<DragPoint | null>(null)
+  const isFloatingButtonLocked = floatingButton.locked
   const floatingButtonSide = getFloatingButtonSide(floatingButton.side)
   const isFloatingButtonExpanded = isHitAreaExpanded || isDropdownOpen
+  const isMainButtonAttached = isFloatingButtonLocked || isFloatingButtonExpanded
 
   useEffect(() => {
     if (!isDraggingButton) return undefined
@@ -394,12 +441,10 @@ export default function FloatingButton() {
           side={floatingButtonSide}
           expanded={isFloatingButtonExpanded}
           icon={
-            <img
-              src={translateIconUrl}
-              alt=""
-              aria-hidden="true"
-              width={14}
-              height={14}
+            <ThemedIcon
+              lightSrc={translateIconLightUrl}
+              darkSrc={translateIconUrl}
+              size={14}
               className="size-3.5"
             />
           }
@@ -419,7 +464,12 @@ export default function FloatingButton() {
           className={cn(
             "pointer-events-auto relative flex size-10 items-center justify-center rounded-full transition-[transform,opacity,box-shadow] duration-300 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
             isDraggingButton ? "cursor-grabbing touch-none opacity-100" : "cursor-pointer",
-            !isDraggingButton && "translate-x-0 opacity-100",
+            !isDraggingButton &&
+              (isMainButtonAttached
+                ? "translate-x-0 opacity-100"
+                : floatingButtonSide === "right"
+                  ? "translate-x-[23px] opacity-40"
+                  : "-translate-x-[23px] opacity-40"),
           )}
           onPointerDown={handlePointerDown}
           onPointerMove={handlePointerMove}
@@ -433,12 +483,20 @@ export default function FloatingButton() {
           }}
         >
           <img
-            src={floatingLogoUrl}
+            src={floatingLogoLightUrl}
             alt=""
             aria-hidden="true"
-            width={55}
-            height={64}
-            className="pointer-events-none absolute -top-[2px] -left-[12px] h-16 w-[55px] max-w-none"
+            width={64}
+            height={63}
+            className="pointer-events-none absolute -top-[2px] -left-[12px] h-[63px] w-16 max-w-none dark:hidden"
+          />
+          <img
+            src={floatingLogoDarkUrl}
+            alt=""
+            aria-hidden="true"
+            width={64}
+            height={63}
+            className="pointer-events-none absolute -top-[2px] -left-[12px] hidden h-[63px] w-16 max-w-none dark:block"
           />
         </button>
 
@@ -461,12 +519,10 @@ export default function FloatingButton() {
           side={floatingButtonSide}
           expanded={isFloatingButtonExpanded}
           icon={
-            <img
-              src={settingsIconUrl}
-              alt=""
-              aria-hidden="true"
-              width={14}
-              height={14}
+            <ThemedIcon
+              lightSrc={settingsIconLightUrl}
+              darkSrc={settingsIconUrl}
+              size={14}
               className="size-3.5"
             />
           }
@@ -534,12 +590,10 @@ function FloatingButtonCloseMenu({
           />
         }
       >
-        <img
-          src={closeIconUrl}
-          alt=""
-          aria-hidden="true"
-          width={16}
-          height={16}
+        <ThemedIcon
+          lightSrc={closeIconLightUrl}
+          darkSrc={closeIconUrl}
+          size={16}
           className="size-4"
         />
       </DropdownMenuTrigger>
@@ -547,12 +601,20 @@ function FloatingButtonCloseMenu({
         container={shadowWrapper}
         align="start"
         side={side === "right" ? "left" : "right"}
-        className="z-2147483647 w-fit! whitespace-nowrap"
+        className="z-2147483647 w-32! min-w-0 rounded-[14px] bg-white p-1.5 whitespace-nowrap text-[#171719] shadow-[0_2px_3.5px_rgba(39,39,42,0.04),0_12px_15px_rgba(39,39,42,0.08)] ring-1 ring-black/10 dark:bg-[#18181b] dark:text-white dark:ring-white/10"
       >
-        <DropdownMenuItem onMouseDown={(e) => e.stopPropagation()} onClick={handleDisableForSite}>
+        <DropdownMenuItem
+          className="h-[34px] w-[116px] rounded-[8px] px-2 py-1.5 text-[12px] leading-[22px] font-normal hover:bg-[#e6e6e9] focus:bg-[#e6e6e9] dark:hover:bg-[#27272a] dark:focus:bg-[#27272a]"
+          onMouseDown={(e) => e.stopPropagation()}
+          onClick={handleDisableForSite}
+        >
           {i18n.t("options.floatingButton.closeMenu.disableForSite")}
         </DropdownMenuItem>
-        <DropdownMenuItem onMouseDown={(e) => e.stopPropagation()} onClick={handleDisableGlobally}>
+        <DropdownMenuItem
+          className="h-[34px] w-[116px] rounded-[8px] px-2 py-1.5 text-[12px] leading-[22px] font-normal hover:bg-[#e6e6e9] focus:bg-[#e6e6e9] dark:hover:bg-[#27272a] dark:focus:bg-[#27272a]"
+          onMouseDown={(e) => e.stopPropagation()}
+          onClick={handleDisableGlobally}
+        >
           {i18n.t("options.floatingButton.closeMenu.disableGlobally")}
         </DropdownMenuItem>
       </DropdownMenuContent>
@@ -592,12 +654,10 @@ function FloatingButtonLockControl({ expanded, side }: FloatingButtonLockControl
       )}
       onClick={handleToggleLocked}
     >
-      <img
-        src={locked ? lockedIconUrl : unlockedIconUrl}
-        alt=""
-        aria-hidden="true"
-        width={16}
-        height={16}
+      <ThemedIcon
+        lightSrc={locked ? lockedIconUrl : unlockedIconLightUrl}
+        darkSrc={locked ? lockedIconDarkUrl : unlockedIconUrl}
+        size={16}
         className="size-4"
       />
     </button>
