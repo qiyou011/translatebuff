@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, expect, it, vi } from "vitest"
 import { browser } from "#imports"
+import { readForkVersion } from "@/fork/identity/version"
 import { clearForkSession, loadForkSession, saveForkSession } from "@/fork/membership/session"
 import { clearLastReportedDate } from "../active-dedup"
 
@@ -75,7 +76,7 @@ it.each(["install", "update", "startup"])(
       event_type: "lifecycle",
       client_type: 10,
       product_line: "AITRANS",
-      client_version: "1.4.0",
+      client_version: readForkVersion(),
       device_info: { sn: SN },
       action_extra_info: { launch_type: reason, launch_channel_id: 7101 },
     })
