@@ -28,7 +28,7 @@ export function FloatingButtonTooltip({
         container={shadowWrapper ?? document.body}
         side={side === "right" ? "left" : "right"}
         sideOffset={8}
-        className="notranslate pointer-events-none whitespace-nowrap"
+        className="notranslate pointer-events-none rounded-[14px] bg-white whitespace-nowrap text-[#171719] shadow-[0_2px_3.5px_rgba(39,39,42,0.04),0_12px_15px_rgba(39,39,42,0.08)] ring-1 ring-black/10 dark:bg-[#18181b] dark:text-white dark:ring-white/10"
         positionerClassName="pointer-events-none"
       >
         {content}

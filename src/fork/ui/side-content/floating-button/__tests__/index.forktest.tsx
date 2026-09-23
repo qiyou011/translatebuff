@@ -162,6 +162,20 @@ async function expectTooltipSide(label: string, side: "left" | "right") {
     expect(popup).toHaveTextContent(label)
     expect(popup).toHaveAttribute("data-side", side)
     expect(popup).toHaveClass("pointer-events-none")
+    expect(popup).toHaveClass(
+      "rounded-[14px]",
+      "bg-white",
+      "text-[#171719]",
+      "ring-1",
+      "ring-black/10",
+      "dark:bg-[#18181b]",
+      "dark:text-white",
+      "dark:ring-white/10",
+    )
+    expect(popup).toHaveClass(
+      "shadow-[0_2px_3.5px_rgba(39,39,42,0.04),0_12px_15px_rgba(39,39,42,0.08)]",
+    )
+    expect(popup).not.toHaveClass("bg-foreground", "text-background")
     expect(popup?.parentElement).toHaveClass("pointer-events-none")
   })
 
