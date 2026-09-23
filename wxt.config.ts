@@ -9,7 +9,7 @@ import {
   isLocalPackagesEnabled,
   resolveExtensionEnv,
 } from "./src/env/shared"
-import { FORK_BRANDING, getForkDisplayName } from "./src/fork/branding"
+import { FORK_BRANDING, getForkDisplayName, getForkStoreTitle } from "./src/fork/branding"
 import { brandChromeMessages } from "./src/fork/i18n/chrome-messages"
 import { resolveChannelNumber } from "./src/fork/identity/channel"
 import { resolveEdition } from "./src/fork/identity/edition"
@@ -346,7 +346,7 @@ export default defineConfig({
     : {},
   manifest: ({ mode, browser }) => ({
     // 商店条目名按线取：国内中文名，海外英文名。技术标识 APP_NAME 不受影响（见 src/utils/constants/app.ts）。
-    name: getForkDisplayName(forkEdition),
+    name: getForkStoreTitle(forkEdition),
     version: forkVersion,
     version_name: forkVersionName,
     description: "__MSG_extDescription__",
@@ -417,11 +417,9 @@ export default defineConfig({
     "build:publicAssets": (_, assets) => {
       // 配置钩子在 i18n 模块生成 messages.json 后运行，保留各语种描述及占位符。
       for (const asset of assets) {
-        if (
-          /^_locales[\\/][^\\/]+[\\/]messages\.json$/.test(asset.relativeDest) &&
-          "contents" in asset
-        ) {
-          asset.contents = brandChromeMessages(asset.contents, forkEdition)
+        const locale = asset.relativeDest.match(/^_locales[\\/]([^\\/]+)[\\/]messages\.json$/)?.[1]
+        if (locale && "contents" in asset) {
+          asset.contents = brandChromeMessages(asset.contents, forkEdition, locale)
         }
       }
     },

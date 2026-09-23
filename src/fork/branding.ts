@@ -19,3 +19,10 @@ export const FORK_BRANDING = {
 export function getForkDisplayName(edition: ForkEdition = currentEdition()): string {
   return edition === "global" ? FORK_BRANDING.name : FORK_BRANDING.displayName
 }
+
+// 商店及安装后的名称独立于运行时短品牌；技术标识不随宣传标题改变。
+export function getForkStoreTitle(edition: ForkEdition): string {
+  return edition === "global"
+    ? "TranslateBuff – AI Translator & Reader"
+    : "任译喵 - AI 翻译与双语阅读"
+}
