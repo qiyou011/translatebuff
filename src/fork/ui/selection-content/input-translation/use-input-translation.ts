@@ -20,7 +20,13 @@ import {
 } from "@/utils/providers/provider-registry"
 import { getChatContextSelector } from "./chat-context-sites"
 import { classifyInputTranslationError } from "./input-translation-error"
+import { replaceTelegramDraft } from "./replace-telegram-draft"
 import { resolveInputTranslationLang } from "./resolve-lang"
+import {
+  getTelegramSessionKey,
+  isTelegramUrl,
+  TELEGRAM_DRAFT_VERSION_ATTR,
+} from "./telegram-context"
 
 const SPACE_KEY = " "
 const TRIGGER_COUNT = 3
@@ -142,7 +148,9 @@ function getEditableText(element: HTMLInputElement | HTMLTextAreaElement | HTMLE
   if (element instanceof HTMLInputElement || element instanceof HTMLTextAreaElement) {
     return element.value
   }
-  return element.textContent ?? ""
+  return isTelegramUrl(window.location.href)
+    ? (element.innerText ?? element.textContent ?? "")
+    : (element.textContent ?? "")
 }
 
 function eventComesFrom(event: Event, element: HTMLElement | null): boolean {
@@ -187,6 +195,8 @@ export type InputTranslationBar =
   | {
       kind: "translated"
       element: HTMLInputElement | HTMLTextAreaElement | HTMLElement
+      sessionKey?: string
+      translatedText?: string
       originalText: string
       /** 翻译方向的来源端，改语言重译时照旧用它。 */
       fromCode: LangCodeISO6393
@@ -198,12 +208,14 @@ export type InputTranslationBar =
   | {
       kind: "initial"
       element: HTMLElement
+      sessionKey?: string
       originalText: string
       direction: TranslationDirection
       feedback: InputTranslationFeedback
     }
   /** 两端同语言、什么都没换。同一位置、同款外观，但没有可撤销的对象。 */
-  | { kind: "sameLanguage"; element: HTMLElement; lang: LangCodeISO6393 }
+  | { kind: "sameLanguage"; element: HTMLElement; lang: LangCodeISO6393; sessionKey?: string }
+  | { kind: "hint"; element: HTMLElement; sessionKey: string }
 
 type InputTranslationBarState = {
   bar: InputTranslationBar
@@ -231,15 +243,19 @@ function toBarSource(source: InputTranslationLangSource): InputTranslationBarSou
  * 把两端的语言选项解析成具体语言码。配置走 `getLocalConfig()` 而不是 atom 切片拼装——
  * `getEffectiveSiteRule` 按 Config 对象身份做记忆，每次现拼会让那份记忆永不命中。
  */
-async function resolveLangPair(fromLang: InputTranslationLang, toLang: InputTranslationLang) {
+async function resolveLangPair(
+  fromLang: InputTranslationLang,
+  toLang: InputTranslationLang,
+  element: HTMLElement,
+) {
   const config = await getLocalConfig()
   if (!config) {
     return null
   }
   const url = window.location.href
   const [from, to] = await Promise.all([
-    resolveInputTranslationLang(fromLang, config, url, document),
-    resolveInputTranslationLang(toLang, config, url, document),
+    resolveInputTranslationLang(fromLang, config, url, document, element),
+    resolveInputTranslationLang(toLang, config, url, document, element),
   ])
   return { from, to }
 }
@@ -249,6 +265,8 @@ export function useInputTranslation() {
   const providersConfig = useAtomValue(configFieldsAtomMap.providersConfig)
   const spaceTimestampsRef = useRef<number[]>([])
   const requestRef = useRef<PendingInputRequest | null>(null)
+  const writeIdRef = useRef(0)
+  const writingElementRef = useRef<HTMLElement | null>(null)
   const triggerSnapshotRef = useRef<{ element: HTMLElement; text: string } | null>(null)
   const interactionElementRef = useRef<HTMLElement | null>(null)
   const languageMenuOpenRef = useRef(false)
@@ -281,6 +299,7 @@ export function useInputTranslation() {
     (element: HTMLElement, onCancel: () => void) => {
       const draft = getEditableText(element)
       const url = window.location.href
+      const telegramKey = isTelegramUrl(url) ? getTelegramSessionKey(url, element) : undefined
       const hideSpinner = showSpinner(element)
       const cleanup: Array<() => void> = [hideSpinner]
       const request: PendingInputRequest = {
@@ -290,6 +309,7 @@ export function useInputTranslation() {
           requestRef.current === request &&
           element.isConnected &&
           window.location.href === url &&
+          (telegramKey === undefined || getTelegramSessionKey(url, element) === telegramKey) &&
           getEditableText(element) === draft,
         finish: () => {
           request.deferred = null
@@ -368,6 +388,8 @@ export function useInputTranslation() {
   useEffect(
     () => () => {
       requestRef.current?.finish()
+      writeIdRef.current++
+      writingElementRef.current = null
     },
     [],
   )
@@ -378,6 +400,9 @@ export function useInputTranslation() {
       retryBar?: Extract<InputTranslationBar, { kind: "initial" }>,
     ) => {
       if (requestRef.current?.element === element) return
+      if (writingElementRef.current === element) return
+      writeIdRef.current++
+      writingElementRef.current = null
       requestRef.current?.cancel()
 
       // Security: skip password fields to prevent exposing sensitive data
@@ -387,12 +412,16 @@ export function useInputTranslation() {
 
       const text = getEditableText(element).trim()
       if (!text || !element.isConnected) return
+      const url = window.location.href
+      const telegram = isTelegramUrl(url)
+      const sessionKey = telegram ? (getTelegramSessionKey(url, element) ?? undefined) : undefined
+      if (telegram && !sessionKey) return
       const originalText =
         retryBar?.originalText ??
         (triggerSnapshotRef.current?.element === element
           ? triggerSnapshotRef.current.text
           : getEditableText(element))
-      const discord = getChatContextSelector(window.location.href) !== null
+      const chatSite = telegram || getChatContextSelector(url) !== null
 
       // Determine fromLang and toLang, possibly swapped if cycle is enabled
       let fromLang = retryBar?.direction.fromLang ?? inputTranslationConfig.fromLang
@@ -421,11 +450,11 @@ export function useInputTranslation() {
         )
         if (!provider && isBuiltInAiProviderId(inputTranslationConfig.providerId))
           throw new UpstreamCloudDisabledError()
-        const langs = await resolveLangPair(fromLang, toLang)
+        const langs = await resolveLangPair(fromLang, toLang, element)
         if (!request.valid()) return
         if (!langs) throw new Error("Input translation configuration is unavailable")
         if (langs.from.code === langs.to.code) {
-          if (discord) publish({ kind: "sameLanguage", element, lang: langs.to.code })
+          if (chatSite) publish({ kind: "sameLanguage", element, lang: langs.to.code, sessionKey })
           return
         }
         const translatedText = await trackFeatureAttempt(
@@ -446,12 +475,60 @@ export function useInputTranslation() {
           return
         }
         request.settle(() => {
+          if (sessionKey) {
+            const draft = getEditableText(element)
+            const writeId = ++writeIdRef.current
+            writingElementRef.current = element
+            void replaceTelegramDraft(element, translatedText, sessionKey).then((success) => {
+              if (writeId !== writeIdRef.current) return
+              writingElementRef.current = null
+              if (getTelegramSessionKey(window.location.href, element) !== sessionKey) {
+                publish(null)
+                return
+              }
+              if (!success) {
+                publish(
+                  getEditableText(element) === draft
+                    ? {
+                        kind: "initial",
+                        element,
+                        sessionKey,
+                        originalText,
+                        direction,
+                        feedback: {
+                          kind: "error",
+                          ...classifyInputTranslationError(new Error("Draft replacement failed")),
+                        },
+                      }
+                    : getEditableText(element).trim()
+                      ? { kind: "hint", element, sessionKey }
+                      : null,
+                )
+                return
+              }
+              const barSource = toBarSource(langs.to.source)
+              if (barSource)
+                publish({
+                  kind: "translated",
+                  element,
+                  sessionKey,
+                  translatedText,
+                  originalText,
+                  fromCode: langs.from.code,
+                  lang: langs.to.code,
+                  langSource: barSource,
+                })
+              else publish(null)
+            })
+            return
+          }
           setTextWithUndo(element, translatedText)
           const barSource = toBarSource(langs.to.source)
-          if (discord && barSource) {
+          if (chatSite && barSource) {
             publish({
               kind: "translated",
               element,
+              sessionKey,
               originalText,
               fromCode: langs.from.code,
               lang: langs.to.code,
@@ -461,10 +538,11 @@ export function useInputTranslation() {
         })
       } catch (error) {
         if (!request.valid()) return
-        if (discord) {
+        if (chatSite) {
           publish({
             kind: "initial",
             element,
+            sessionKey,
             originalText,
             direction,
             feedback: { kind: "error", ...classifyInputTranslationError(error) },
@@ -498,6 +576,8 @@ export function useInputTranslation() {
   const dismiss = useCallback(() => {
     languageMenuOpenRef.current = false
     requestRef.current?.finish()
+    writeIdRef.current++
+    writingElementRef.current = null
     publish(null)
   }, [publish])
 
@@ -512,6 +592,11 @@ export function useInputTranslation() {
       expectedBar.element !== element ||
       requestRef.current ||
       !element.isConnected
+    )
+      return false
+    if (
+      expectedBar.sessionKey &&
+      getTelegramSessionKey(window.location.href, element) !== expectedBar.sessionKey
     )
       return false
     if (!hasFocusWithin(element, interactionElementRef.current)) return false
@@ -555,17 +640,38 @@ export function useInputTranslation() {
 
   const undo = useCallback(() => {
     const current = stateRef.current?.bar
+    const wasWriting = writingElementRef.current === current?.element
     dismiss()
     // 元素可能已经被 SPA 卸载；此时什么都不写，别去动一个不存在的目标。
-    if (current?.kind === "translated" && document.contains(current.element)) {
-      setTextWithUndo(current.element, current.originalText)
+    if (
+      current?.kind === "translated" &&
+      document.contains(current.element) &&
+      (!current.sessionKey ||
+        (getTelegramSessionKey(window.location.href, current.element) === current.sessionKey &&
+          (getEditableText(current.element) === current.translatedText || wasWriting)))
+    ) {
+      if (current.sessionKey) {
+        current.element.setAttribute(TELEGRAM_DRAFT_VERSION_ATTR, `${Date.now()}-${Math.random()}`)
+        const writeId = ++writeIdRef.current
+        writingElementRef.current = current.element
+        void replaceTelegramDraft(current.element, current.originalText, current.sessionKey).then(
+          () => {
+            if (writeId === writeIdRef.current) writingElementRef.current = null
+          },
+        )
+      } else setTextWithUndo(current.element, current.originalText)
     }
   }, [dismiss])
 
   const retranslate = useCallback(
     async (code: LangCodeISO6393) => {
       const current = stateRef.current?.bar
-      if (requestRef.current || current?.kind !== "translated" || !current.element.isConnected)
+      if (
+        requestRef.current ||
+        current?.kind !== "translated" ||
+        !current.element.isConnected ||
+        writingElementRef.current === current.element
+      )
         return
       if (!focusEditorForInlineAction(current.element)) return
       const previous = { ...current, feedback: undefined, pendingLang: undefined }
@@ -589,6 +695,43 @@ export function useInputTranslation() {
           return
         }
         request.settle(() => {
+          if (current.sessionKey) {
+            const writeId = ++writeIdRef.current
+            writingElementRef.current = current.element
+            void replaceTelegramDraft(current.element, translated, current.sessionKey).then(
+              (success) => {
+                if (writeId !== writeIdRef.current) return
+                writingElementRef.current = null
+                if (
+                  getTelegramSessionKey(window.location.href, current.element) !==
+                  current.sessionKey
+                ) {
+                  publish(null)
+                } else if (success)
+                  publish({
+                    ...previous,
+                    translatedText: translated,
+                    lang: code,
+                    langSource: "manual",
+                  })
+                else if (getEditableText(current.element) === current.translatedText)
+                  publish({
+                    ...previous,
+                    feedback: {
+                      kind: "error",
+                      ...classifyInputTranslationError(new Error("Draft replacement failed")),
+                    },
+                  })
+                else
+                  publish(
+                    getEditableText(current.element).trim()
+                      ? { kind: "hint", element: current.element, sessionKey: current.sessionKey }
+                      : null,
+                  )
+              },
+            )
+            return
+          }
           setTextWithUndo(current.element, translated)
           publish({ ...previous, lang: code, langSource: "manual" })
         })
@@ -618,6 +761,7 @@ export function useInputTranslation() {
       requestRef.current ||
       !current ||
       current.kind === "sameLanguage" ||
+      current.kind === "hint" ||
       current.feedback?.kind !== "error" ||
       !current.feedback.retryable
     )
@@ -685,6 +829,14 @@ export function useInputTranslation() {
     const handleFocusIn = (event: FocusEvent) => {
       if (bar.kind === "sameLanguage" || !eventComesFrom(event, bar.element)) return
 
+      if (
+        bar.sessionKey &&
+        getTelegramSessionKey(window.location.href, bar.element) !== bar.sessionKey
+      ) {
+        dismissCurrentBar()
+        return
+      }
+
       // 输入框已被宿主清空时通常表示发送完成；即使漏掉了发送事件，也不能恢复旧会话。
       if (!document.contains(bar.element) || getEditableText(bar.element).trim() === "") {
         dismissCurrentBar()
@@ -731,12 +883,21 @@ export function useInputTranslation() {
 
     const handleInput = (event: Event) => {
       if (!eventComesFrom(event, bar.element)) return
+      if (writingElementRef.current === bar.element) return
+      if (bar.kind === "hint") return
+      if (bar.sessionKey && getEditableText(bar.element).trim() && !pendingSendText) {
+        publish({ kind: "hint", element: bar.element, sessionKey: bar.sessionKey })
+        return
+      }
       // 同语言提示没有可撤销对象，只是本次三空格操作的一次性反馈；用户继续输入即收起。
       if (bar.kind !== "translated") {
         dismissCurrentBar()
         return
       }
-      if (!pendingSendText) return
+      if (!pendingSendText) {
+        if (bar.sessionKey) dismissCurrentBar()
+        return
+      }
       if (getEditableText(bar.element).trim() === "") {
         pendingSendText = null
         dismissCurrentBar()
@@ -761,6 +922,20 @@ export function useInputTranslation() {
     const contentObserver = new MutationObserver(confirmPendingSend)
     contentObserver.observe(bar.element, { childList: true, characterData: true, subtree: true })
 
+    const sessionRoot = bar.sessionKey ? bar.element.closest(".MiddleColumn, .chat") : null
+    const sessionObserver = sessionRoot
+      ? new MutationObserver(() => {
+          if (getTelegramSessionKey(window.location.href, bar.element) !== bar.sessionKey)
+            dismissCurrentBar()
+        })
+      : null
+    sessionObserver?.observe(sessionRoot!, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ["class", "data-list-key", "data-peer-id"],
+    })
+
     return () => {
       window.clearTimeout(sendConfirmationTimer)
       window.clearTimeout(focusCheckTimer)
@@ -770,11 +945,31 @@ export function useInputTranslation() {
       document.removeEventListener("submit", handleSubmit, true)
       bar.element.removeEventListener("input", handleInput)
       contentObserver.disconnect()
+      sessionObserver?.disconnect()
     }
-  }, [bar, dismiss, updateState])
+  }, [bar, dismiss, publish, updateState])
 
   useEffect(() => {
     if (!inputTranslationConfig.enabled) return undefined
+
+    const showTelegramHint = (event: Event) => {
+      const element = event.target
+      if (!(element instanceof HTMLElement) || !isTelegramUrl(window.location.href)) return
+      const sessionKey = getTelegramSessionKey(window.location.href, element)
+      if (!sessionKey) return
+      if (event.type === "input") {
+        element.setAttribute(TELEGRAM_DRAFT_VERSION_ATTR, `${Date.now()}-${Math.random()}`)
+      }
+      if (writingElementRef.current === element) return
+      if (!getEditableText(element).trim()) {
+        if (stateRef.current?.bar.element === element) publish(null)
+        return
+      }
+      const current = stateRef.current?.bar
+      if (!current || current.element !== element) {
+        if (!requestRef.current) publish({ kind: "hint", element, sessionKey })
+      }
+    }
 
     const handleKeyDown = (event: KeyboardEvent) => {
       // Only process space key
@@ -797,6 +992,11 @@ export function useInputTranslation() {
         triggerSnapshotRef.current = null
         return
       }
+      if (
+        isTelegramUrl(window.location.href) &&
+        !getTelegramSessionKey(window.location.href, activeElement)
+      )
+        return
 
       const now = Date.now()
       const timestamps = spaceTimestampsRef.current
@@ -852,12 +1052,21 @@ export function useInputTranslation() {
       triggerSnapshotRef.current = null
     }
     document.addEventListener("input", handleDraftEdit, true)
+    document.addEventListener("input", showTelegramHint, true)
+    document.addEventListener("focusin", showTelegramHint, true)
     document.addEventListener("keydown", handleKeyDown, true)
     return () => {
       document.removeEventListener("input", handleDraftEdit, true)
+      document.removeEventListener("input", showTelegramHint, true)
+      document.removeEventListener("focusin", showTelegramHint, true)
       document.removeEventListener("keydown", handleKeyDown, true)
     }
-  }, [inputTranslationConfig.enabled, inputTranslationConfig.timeThreshold, handleTranslation])
+  }, [
+    inputTranslationConfig.enabled,
+    inputTranslationConfig.timeThreshold,
+    handleTranslation,
+    publish,
+  ])
 
   return {
     bar: barState?.isVisible ? bar : null,

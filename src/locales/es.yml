@@ -1595,6 +1595,7 @@ languages:
   rar: Rarotongano
   hif: Hindi de Fiyi
 inputTranslationBar:
+  triggerHint: Pulsa espacio tres veces para traducir
   translating: Traduciendo…
   failed: Error de traducción
   retry: Reintentar

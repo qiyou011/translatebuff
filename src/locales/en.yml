@@ -1595,6 +1595,7 @@ languages:
   rar: Rarotongan
   hif: Fiji Hindi
 inputTranslationBar:
+  triggerHint: Press Space three times to translate
   translating: Translating…
   failed: Translation failed
   retry: Retry

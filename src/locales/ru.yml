@@ -1479,6 +1479,7 @@ languages:
   rar: Раротонганский
   hif: Фиджийский хинди
 inputTranslationBar:
+  triggerHint: Нажмите пробел три раза для перевода
   translating: Перевод…
   failed: Не удалось перевести
   retry: Повторить

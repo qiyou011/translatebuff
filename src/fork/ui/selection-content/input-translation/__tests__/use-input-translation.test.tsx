@@ -986,8 +986,161 @@ describe("useInputTranslation 的语言解析", () => {
 
   afterEach(() => {
     cleanup()
+    vi.restoreAllMocks()
     vi.unstubAllGlobals()
     document.body.innerHTML = ""
+  })
+
+  it("Telegram shows a trigger hint without a request and resolves the current chat on triple space", async () => {
+    vi.stubGlobal("location", new URL("https://web.telegram.org/a/#123"))
+    const config = configWith({ sourceCode: "auto", targetCode: "cmn" })
+    getLocalConfigMock.mockResolvedValue(config)
+    document.body.innerHTML = `<div class="MiddleColumn"><div class="MessageList" data-list-key="chat-123"><div class="Message" data-message-id="1"><div class="text-content">こんばんは</div></div><div class="list-bottom-marker"></div></div><div id="editable-message-text" contenteditable="true">你好</div></div>`
+    const editor = document.querySelector<HTMLElement>("#editable-message-text")!
+    Object.defineProperty(editor, "isContentEditable", { value: true })
+    editor.focus()
+    const rendered = renderWithConfig(config)
+    act(() => {
+      editor.dispatchEvent(new Event("input", { bubbles: true }))
+    })
+    expect(rendered.result.current.bar).toMatchObject({ kind: "hint", element: editor })
+    expect(translateTextForInputMock).not.toHaveBeenCalled()
+    act(pressSpaceThrice)
+    await waitFor(() =>
+      expect(translateTextForInputMock).toHaveBeenCalledWith("你好", "cmn", "jpn"),
+    )
+  })
+
+  it("Telegram does not show undo when the host rejects the draft replacement", async () => {
+    vi.stubGlobal("location", new URL("https://web.telegram.org/a/#123"))
+    const config = configWith({ sourceCode: "auto", targetCode: "cmn" })
+    getLocalConfigMock.mockResolvedValue(config)
+    document.body.innerHTML = `<div class="MiddleColumn"><div class="MessageList" data-list-key="chat-123"><div class="Message" data-message-id="1"><div class="text-content">こんばんは</div></div><div class="list-bottom-marker"></div></div><div id="editable-message-text" contenteditable="true">你好</div></div>`
+    const editor = document.querySelector<HTMLElement>("#editable-message-text")!
+    Object.defineProperty(editor, "isContentEditable", { value: true })
+    editor.focus()
+    const rendered = renderWithConfig(config)
+    const post = vi.spyOn(window, "postMessage").mockImplementation((data: any) => {
+      if (data.type === "READ_FROG_INPUT_REPLACE") {
+        window.dispatchEvent(
+          new MessageEvent("message", {
+            source: window,
+            origin: window.location.origin,
+            data: { type: "READ_FROG_INPUT_REPLACE_RESULT", id: data.id, success: false },
+          }),
+        )
+      }
+    })
+    act(pressSpaceThrice)
+    await waitFor(() =>
+      expect(post).toHaveBeenCalledWith(
+        expect.objectContaining({ type: "READ_FROG_INPUT_REPLACE" }),
+        window.location.origin,
+      ),
+    )
+    await waitFor(() => expect(rendered.result.current.bar?.kind).not.toBe("translated"))
+    await waitFor(() =>
+      expect(rendered.result.current.bar).toMatchObject({
+        kind: "initial",
+        feedback: { kind: "error" },
+      }),
+    )
+    expect(editor.textContent).toBe("你好")
+  })
+
+  it("Telegram replaces the draft only after host acknowledgement and undo restores it", async () => {
+    vi.stubGlobal("location", new URL("https://web.telegram.org/a/#123"))
+    const config = configWith({ sourceCode: "auto", targetCode: "cmn" })
+    getLocalConfigMock.mockResolvedValue(config)
+    document.body.innerHTML = `<div class="MiddleColumn"><div class="MessageList" data-list-key="chat-123"><div class="Message" data-message-id="1"><div class="text-content">こんばんは</div></div><div class="list-bottom-marker"></div></div><div id="editable-message-text" contenteditable="true">你好</div></div>`
+    const editor = document.querySelector<HTMLElement>("#editable-message-text")!
+    Object.defineProperty(editor, "isContentEditable", { value: true })
+    editor.focus()
+    const rendered = renderWithConfig(config)
+    vi.spyOn(window, "postMessage").mockImplementation((data: any) => {
+      if (data.type !== "READ_FROG_INPUT_REPLACE") return
+      editor.textContent = data.text
+      window.dispatchEvent(
+        new MessageEvent("message", {
+          source: window,
+          origin: window.location.origin,
+          data: { type: "READ_FROG_INPUT_REPLACE_RESULT", id: data.id, success: true },
+        }),
+      )
+    })
+    act(pressSpaceThrice)
+    await waitFor(() =>
+      expect(rendered.result.current.bar).toMatchObject({
+        kind: "translated",
+        translatedText: "Привет",
+      }),
+    )
+    expect(editor.textContent).toBe("Привет")
+    act(() => rendered.result.current.undo())
+    await waitFor(() => expect(editor.textContent).toBe("你好"))
+    expect(rendered.result.current.bar).toBeNull()
+  })
+
+  it("Telegram ignores a late result after switching chats with the same editor and URL", async () => {
+    vi.stubGlobal("location", new URL("https://web.telegram.org/a/#123"))
+    const config = configWith({ sourceCode: "auto", targetCode: "cmn" })
+    getLocalConfigMock.mockResolvedValue(config)
+    document.body.innerHTML = `<div class="MiddleColumn"><div class="MessageList" data-list-key="chat-123"><div class="Message" data-message-id="1"><div class="text-content">こんばんは</div></div><div class="list-bottom-marker"></div></div><div id="editable-message-text" contenteditable="true">你好</div></div>`
+    const editor = document.querySelector<HTMLElement>("#editable-message-text")!
+    Object.defineProperty(editor, "isContentEditable", { value: true })
+    editor.focus()
+    const pending = deferredTranslation()
+    translateTextForInputMock.mockReturnValue(pending.promise)
+    const rendered = renderWithConfig(config)
+    const post = vi.spyOn(window, "postMessage")
+    post.mockClear()
+    act(pressSpaceThrice)
+    await waitFor(() => expect(translateTextForInputMock).toHaveBeenCalled())
+    act(() => {
+      document.querySelector(".MessageList")!.setAttribute("data-list-key", "chat-456")
+    })
+    await act(async () => pending.resolve("must not replace"))
+    expect(post).not.toHaveBeenCalled()
+    expect(editor.textContent).toBe("你好")
+    expect(rendered.result.current.bar).toBeNull()
+  })
+
+  it("Telegram undo wins over a queued retranslation write", async () => {
+    vi.stubGlobal("location", new URL("https://web.telegram.org/a/#123"))
+    const config = configWith({ sourceCode: "auto", targetCode: "cmn" })
+    getLocalConfigMock.mockResolvedValue(config)
+    document.body.innerHTML = `<div class="MiddleColumn"><div class="MessageList" data-list-key="chat-123"><div class="Message" data-message-id="1"><div class="text-content">こんばんは</div></div><div class="list-bottom-marker"></div></div><div id="editable-message-text" contenteditable="true">你好</div></div>`
+    const editor = document.querySelector<HTMLElement>("#editable-message-text")!
+    Object.defineProperty(editor, "isContentEditable", { value: true })
+    editor.focus()
+    const rendered = renderWithConfig(config)
+    let queued: any
+    const acknowledge = (data: any) =>
+      window.dispatchEvent(
+        new MessageEvent("message", {
+          source: window,
+          origin: window.location.origin,
+          data: { type: "READ_FROG_INPUT_REPLACE_RESULT", id: data.id, success: true },
+        }),
+      )
+    vi.spyOn(window, "postMessage").mockImplementation((data: any) => {
+      if (data.type !== "READ_FROG_INPUT_REPLACE") return
+      if (data.text === "Hello") {
+        queued = data
+        return
+      }
+      editor.textContent = data.text
+      acknowledge(data)
+    })
+    act(pressSpaceThrice)
+    await waitFor(() => expect(rendered.result.current.bar?.kind).toBe("translated"))
+    translateTextForInputMock.mockResolvedValueOnce("Hello")
+    await act(async () => rendered.result.current.retranslate("eng"))
+    await waitFor(() => expect(queued?.text).toBe("Hello"))
+    act(() => rendered.result.current.undo())
+    acknowledge(queued)
+    await waitFor(() => expect(editor.textContent).toBe("你好"))
+    expect(rendered.result.current.bar).toBeNull()
   })
 
   it("把解析出的具体语言码交给引擎，而不是 sourceCode 这种选项字面量", async () => {

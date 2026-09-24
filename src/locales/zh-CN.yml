@@ -1595,6 +1595,7 @@ languages:
   rar: 拉罗汤加语
   hif: 斐济印地语
 inputTranslationBar:
+  triggerHint: 三连空格触发自动翻译
   translating: 翻译中…
   failed: 翻译失败
   retry: 重试

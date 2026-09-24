@@ -1595,6 +1595,7 @@ languages:
   rar: 庫克群島毛利語
   hif: 斐濟印地語
 inputTranslationBar:
+  triggerHint: 連按三次空白鍵觸發自動翻譯
   translating: 翻譯中…
   failed: 翻譯失敗
   retry: 重試

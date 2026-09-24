@@ -145,7 +145,7 @@ export function InputTranslationBar({
     return null
   }
 
-  const feedback = bar.kind === "sameLanguage" ? undefined : bar.feedback
+  const feedback = bar.kind === "sameLanguage" || bar.kind === "hint" ? undefined : bar.feedback
   const feedbackSlot = feedback && (
     <span role="status" aria-live="polite" className="flex min-w-0 items-center gap-1.5">
       {feedback.kind === "pending" ? (
@@ -195,7 +195,9 @@ export function InputTranslationBar({
         }}
         className={SHELL_CLASS}
       >
-        {bar.kind === "sameLanguage" ? (
+        {bar.kind === "hint" ? (
+          <span className="text-muted-foreground">{i18n.t("inputTranslationBar.triggerHint")}</span>
+        ) : bar.kind === "sameLanguage" ? (
           <span className="flex items-center gap-1.5 text-foreground">
             <Info className="size-3.5 shrink-0" />
             {i18n.t("inputTranslationBar.sameLanguage")}

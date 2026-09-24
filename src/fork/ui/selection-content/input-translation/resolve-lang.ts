@@ -4,6 +4,7 @@ import { getDetectedCodeFromStorage, getFinalSourceCode } from "@/utils/config/l
 import { getEffectiveSiteRule } from "@/utils/site-rules/effective"
 import { detectChatContextLanguage } from "./chat-context-language"
 import { getChatContextSelector } from "./chat-context-sites"
+import { getTelegramContext } from "./telegram-context"
 
 /**
  * 这个语言码是怎么定下来的。界面据此区分「自动检测」与「按网页源语言」——用户看得见
@@ -31,6 +32,7 @@ export async function resolveInputTranslationLang(
   config: Config,
   url: string,
   doc: Document,
+  editor?: HTMLElement,
 ): Promise<ResolvedInputTranslationLang> {
   if (lang === "targetCode") {
     return { code: config.language.targetCode, source: "explicit" }
@@ -45,10 +47,12 @@ export async function resolveInputTranslationLang(
     return { code: config.language.sourceCode, source: "explicit" }
   }
 
+  const telegram = editor ? getTelegramContext(url, editor) : null
   const chatSelector = getChatContextSelector(url)
-  if (chatSelector) {
+  if (chatSelector || telegram) {
     const chatCode = await detectChatContextLanguage(doc, {
       chatSelector,
+      messages: telegram?.messages,
       // 噪音排除项复用站点规则已经维护好的那份，不另立一套。
       excludeSelector: getEffectiveSiteRule(config, url).excludeSelector,
     })

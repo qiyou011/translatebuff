@@ -1479,6 +1479,7 @@ languages:
   rar: 라로통가어
   hif: 피지 힌디어
 inputTranslationBar:
+  triggerHint: 스페이스를 세 번 눌러 번역
   translating: 번역 중…
   failed: 번역 실패
   retry: 다시 시도

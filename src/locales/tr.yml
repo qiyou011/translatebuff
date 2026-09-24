@@ -1479,6 +1479,7 @@ languages:
   rar: Rarotongan
   hif: Fiji Hintçesi
 inputTranslationBar:
+  triggerHint: Çevirmek için üç kez boşluk tuşuna basın
   translating: Çevriliyor…
   failed: Çeviri başarısız
   retry: Yeniden dene

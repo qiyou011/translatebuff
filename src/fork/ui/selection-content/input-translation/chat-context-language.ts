@@ -12,6 +12,8 @@ export interface ChatContextSelectors {
   chatSelector: string | null
   /** 消息正文内部要剔除的噪音节点（时间戳、用户名、回复预览）。 */
   excludeSelector: string | null
+  /** A site adapter may provide messages already scoped to the active conversation. */
+  messages?: Element[]
 }
 
 /** 取最近多少条消息参与判定。5 条足以跨过 franc 的最短长度，又不至于把话题切换前的语种算进来。 */
@@ -30,12 +32,12 @@ export async function detectChatContextLanguage(
   selectors: ChatContextSelectors,
   limit: number = DEFAULT_MESSAGE_LIMIT,
 ): Promise<LangCodeISO6393 | null> {
-  const { chatSelector, excludeSelector } = selectors
-  if (!chatSelector) {
+  const { chatSelector, excludeSelector, messages: scopedMessages } = selectors
+  if (!chatSelector && !scopedMessages) {
     return null
   }
 
-  const messages = Array.from(doc.querySelectorAll(chatSelector))
+  const messages = scopedMessages ?? Array.from(doc.querySelectorAll(chatSelector!))
   if (messages.length === 0) {
     return null
   }

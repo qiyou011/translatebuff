@@ -1479,6 +1479,7 @@ languages:
   rar: ラロトンガ語
   hif: フィジー・ヒンディー語
 inputTranslationBar:
+  triggerHint: スペースを3回押して翻訳
   translating: 翻訳中…
   failed: 翻訳に失敗しました
   retry: 再試行

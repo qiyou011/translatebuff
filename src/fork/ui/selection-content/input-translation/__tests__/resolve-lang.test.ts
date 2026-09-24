@@ -16,6 +16,7 @@ vi.mock("@/utils/config/languages", async (importOriginal) => ({
 
 const DISCORD_URL = "https://discord.com/channels/1/2"
 const PLAIN_URL = "https://example.com/article"
+const TELEGRAM_URL = "https://web.telegram.org/a/#123"
 
 const RUSSIAN_CHAT = [
   "Элис, еще раз добрый день! У меня появились срочные обстоятельства.",
@@ -95,5 +96,34 @@ describe("resolveInputTranslationLang", () => {
     await expect(
       resolveInputTranslationLang("sourceCode", config, DISCORD_URL, document),
     ).resolves.toEqual({ code: "deu", source: "pageSource" })
+  })
+
+  it("Telegram follows the current editor's chat instead of another mounted chat", async () => {
+    document.body.innerHTML = `<div class="MiddleColumn"><div class="MessageList" data-list-key="old"><div class="Message" data-message-id="1"><div class="text-content">안녕하세요</div></div><div class="list-bottom-marker"></div></div></div>
+      <div class="MiddleColumn"><div class="MessageList" data-list-key="current"><div class="Message" data-message-id="2"><div class="text-content">こんばんは<span class="MessageMeta">12:00</span></div></div><div class="list-bottom-marker"></div></div><div id="editable-message-text" contenteditable="true">你好</div></div>`
+    const editor = document.querySelector<HTMLElement>("#editable-message-text")!
+    await expect(
+      resolveInputTranslationLang(
+        "sourceCode",
+        configWith({ sourceCode: "auto" }),
+        TELEGRAM_URL,
+        document,
+        editor,
+      ),
+    ).resolves.toEqual({ code: "jpn", source: "chatContext" })
+  })
+
+  it("Telegram Web K reads the active peer's original bubble text", async () => {
+    document.body.innerHTML = `<div class="chat active"><div class="bubbles scrolled-down"><div class="bubbles-scrollable"><div class="bubbles-inner"><div class="bubble" data-mid="1" data-peer-id="42"><div class="message spoilers-container">안녕하세요<span class="time">11:30</span><span class="read-frog-translated-content-wrapper">English translation</span></div></div></div></div></div><div class="chat-input"><div class="input-message-input" contenteditable="true">draft</div></div></div>`
+    const editor = document.querySelector<HTMLElement>(".input-message-input")!
+    await expect(
+      resolveInputTranslationLang(
+        "sourceCode",
+        configWith({ sourceCode: "auto" }),
+        "https://web.telegram.org/k/#42",
+        document,
+        editor,
+      ),
+    ).resolves.toEqual({ code: "kor", source: "chatContext" })
   })
 })
