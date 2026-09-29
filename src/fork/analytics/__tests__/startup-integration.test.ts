@@ -5,7 +5,10 @@ import { clearForkSession, loadForkSession, saveForkSession } from "@/fork/membe
 import { clearLastReportedDate } from "../active-dedup"
 
 vi.mock("@/env", () => ({
-  env: { WXT_OFFICIAL_SITE_ORIGINS: ["https://translatebuff.cn", "https://www.translatebuff.cn"] },
+  env: {
+    WXT_OFFICIAL_SITE_ORIGINS: ["https://translatebuff.cn", "https://www.translatebuff.cn"],
+    WXT_WEBSITE_URL: "https://www.translatebuff.com",
+  },
 }))
 vi.mock("@/utils/i18n/locale-map", () => ({ resolveUiLocale: () => "en" }))
 vi.mock("@/fork/background/membership", () => ({ setupMembership: vi.fn<() => void>() }))
@@ -156,6 +159,28 @@ it("海外渠道仍为 AITRANS，数值渠道进入 extra", async () => {
   const [event] = await events()
   expect(event.product_line).toBe("AITRANS")
   expect(event.action_extra_info.launch_channel_id).toBe(7153)
+  expect(event.action_extra_info.origin_cid).toBe(7153)
+})
+
+it("海外安装前推广固定为 7154，启动报文保留包内 7151", async () => {
+  vi.stubEnv("WXT_FORK_EDITION", "global")
+  vi.stubEnv("WXT_FORK_CHANNEL", "global-chrome-store")
+  vi.mocked(browser.cookies.get).mockImplementation(async (details) =>
+    details.name === "aitrans_install_promo"
+      ? ({ value: JSON.stringify({ cid: "7154", recordedAt: NOW - 1 }) } as never)
+      : (cookie as never),
+  )
+  const { setupInstallChannel } = await import("@/fork/identity/install-channel-runtime")
+  const { reportAppStartUp } = await import("../track-startup")
+  setupInstallChannel()
+  installed({ reason: "install" })
+  await reportAppStartUp("install", NOW)
+  const [event] = await events()
+  expect(event.action_extra_info).toMatchObject({
+    launch_channel_id: 7154,
+    origin_cid: 7151,
+  })
+  expect(fetchMock.mock.calls[0]![1].headers.Useragent.split("/")[3]).toBe("7154")
 })
 
 it.each([401, 500, "network"])("登录用户上报失败 %s 不重试、不登出", async (status) => {

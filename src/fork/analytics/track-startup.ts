@@ -1,4 +1,6 @@
 import { resolveChannelNumber } from "@/fork/identity/channel"
+import { currentEdition } from "@/fork/identity/edition"
+import { getSelectedChannelNumber } from "@/fork/identity/install-channel-runtime"
 import { readForkVersion } from "@/fork/identity/version"
 import { SAAS_PRODUCT_LINE } from "@/fork/membership/api"
 import { toClientLanguage } from "@/fork/membership/client-language"
@@ -19,6 +21,8 @@ export async function reportAppStartUp(launchType: LaunchType, now = Date.now())
       storageAdapter.get(CONFIG_STORAGE_KEY, DEFAULT_CONFIG, configSchema),
       getReportDeviceInfo(),
     ])
+    const selectedCid = await getSelectedChannelNumber()
+    const originCid = Number(resolveChannelNumber())
     await postClickEvent(
       [
         {
@@ -32,7 +36,8 @@ export async function reportAppStartUp(launchType: LaunchType, now = Date.now())
           device_info: deviceInfo,
           action_extra_info: {
             launch_type: launchType,
-            launch_channel_id: Number(resolveChannelNumber()),
+            launch_channel_id: Number(selectedCid),
+            ...(currentEdition() === "global" ? { origin_cid: originCid } : {}),
           },
         },
       ],

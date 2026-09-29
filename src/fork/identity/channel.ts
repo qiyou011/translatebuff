@@ -61,8 +61,8 @@ export function resolveChannelNumber(
 
 // 给官网链接盖渠道戳：追加 ?cid=<渠道号>，供官网归因。用 URL API 稳健合并既有 query（以 &），
 // 且 cid 落在 fragment 之前（官网 location.search 才读得到）。
-export function appendChannelId(url: string): string {
+export function appendChannelId(url: string, channelId: string = resolveChannelNumber()): string {
   const parsed = new URL(url)
-  parsed.searchParams.set("cid", resolveChannelNumber())
+  parsed.searchParams.set("cid", channelId)
   return parsed.toString()
 }

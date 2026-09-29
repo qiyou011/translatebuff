@@ -1,5 +1,7 @@
 import type { ForkSession } from "@/fork/membership/session"
 import type { Config } from "@/types/config/config"
+import { resolveChannelNumber } from "@/fork/identity/channel"
+import { currentEdition } from "@/fork/identity/edition"
 import { toClientLanguage } from "@/fork/membership/client-language"
 import { loadForkSession } from "@/fork/membership/session"
 import { configSchema } from "@/types/config/config"
@@ -53,11 +55,20 @@ export async function reportTranslateActive(now: number = Date.now()): Promise<v
     }
     await writeLastReportedDate(identity, todayKey)
 
-    await postClickEvent([buildTranslateActiveEvent(now, await getReportDeviceInfo())], {
-      // 未登录也报：活跃口径含未登录用户，服务端按 UA / 设备归因。
-      loginCredential: session?.loginCredential ?? null,
-      clientLanguage: clientLanguageOf(config),
-    })
+    await postClickEvent(
+      [
+        buildTranslateActiveEvent(
+          now,
+          await getReportDeviceInfo(),
+          currentEdition() === "global" ? Number(resolveChannelNumber()) : undefined,
+        ),
+      ],
+      {
+        // 未登录也报：活跃口径含未登录用户，服务端按 UA / 设备归因。
+        loginCredential: session?.loginCredential ?? null,
+        clientLanguage: clientLanguageOf(config),
+      },
+    )
   } catch {
     // 埋点绝不冒泡业务流。
   }

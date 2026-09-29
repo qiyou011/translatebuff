@@ -1,6 +1,7 @@
 import { browser } from "#imports"
 import { appendChannelId } from "@/fork/identity/channel"
 import { currentEdition } from "@/fork/identity/edition"
+import { getBackgroundInstallChannel } from "@/fork/identity/install-channel-runtime"
 import { websiteRouteBasePath } from "@/fork/website-routes"
 import { getWebsiteUrl } from "@/fork/website-url"
 
@@ -20,6 +21,9 @@ export async function setupUninstallSurvey() {
   }
   // 追加 ?cid=<渠道号> 供官网按渠道归因（与 UA 段4 / 登录跳转同源）。
   await browser.runtime.setUninstallURL(
-    appendChannelId(getWebsiteUrl(websiteRouteBasePath("uninstallSurvey"))),
+    appendChannelId(
+      getWebsiteUrl(websiteRouteBasePath("uninstallSurvey")),
+      await getBackgroundInstallChannel(),
+    ),
   )
 }

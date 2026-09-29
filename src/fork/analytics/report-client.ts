@@ -1,3 +1,4 @@
+import { getSelectedChannelNumber } from "@/fork/identity/install-channel-runtime"
 import { buildAuthHeaders } from "@/fork/membership/api"
 
 // 中台埋点上报底座。两处与会员请求刻意不同：
@@ -16,8 +17,9 @@ export interface ReportAuth {
 export function buildReportHeaders(
   loginCredential: string | null,
   clientLanguage: string,
+  channelId?: string,
 ): Record<string, string> {
-  const headers = buildAuthHeaders(loginCredential ?? "", clientLanguage)
+  const headers = buildAuthHeaders(loginCredential ?? "", clientLanguage, channelId)
   if (!loginCredential) {
     delete headers["Login-Credential"]
   }
@@ -30,12 +32,13 @@ export async function postClickEvent(events: unknown[], auth: ReportAuth): Promi
     return
   }
   try {
+    const channelId = await getSelectedChannelNumber()
     await fetch(`${base}${CLICK_EVENT_PATH}`, {
       method: "POST",
       // keepalive：用户点完翻译立刻关标签页时，请求仍要发得出去。
       keepalive: true,
       headers: {
-        ...buildReportHeaders(auth.loginCredential, auth.clientLanguage),
+        ...buildReportHeaders(auth.loginCredential, auth.clientLanguage, channelId),
         "Content-Type": "application/json",
       },
       body: JSON.stringify(events),

@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef } from "react"
 import { browser, storage } from "#imports"
 import { env } from "@/env"
 import { appendChannelId } from "@/fork/identity/channel"
+import { getSelectedChannelNumber } from "@/fork/identity/install-channel-runtime"
 import { sendForkMessage } from "@/fork/message"
 import { renyimiaoApiKey } from "@/fork/providers/renyimiao"
 import { websiteRouteBasePath } from "@/fork/website-routes"
@@ -86,12 +87,15 @@ export function useOpenForkLogin(): () => void {
   const uiLanguage = useAtomValue(configFieldsAtomMap.uiLanguage)
   return useCallback(() => {
     const locale = resolveUiLocale(uiLanguage)
-    void browser.tabs.create({
-      // 追加 ?cid=<渠道号> 供官网按渠道归因（与 UA 段4 同源）。
-      url: appendChannelId(
-        `${env.WXT_WEBSITE_URL}${websiteLocalePath(locale, websiteRouteBasePath("login"))}`,
-      ),
-    })
+    void getSelectedChannelNumber().then((channelId) =>
+      browser.tabs.create({
+        // 追加 ?cid=<渠道号> 供官网按渠道归因（与 UA 段4 同源）。
+        url: appendChannelId(
+          `${env.WXT_WEBSITE_URL}${websiteLocalePath(locale, websiteRouteBasePath("login"))}`,
+          channelId,
+        ),
+      }),
+    )
   }, [uiLanguage])
 }
 
@@ -100,11 +104,14 @@ export function useOpenForkOrders(): () => void {
   const uiLanguage = useAtomValue(configFieldsAtomMap.uiLanguage)
   return useCallback(() => {
     const locale = resolveUiLocale(uiLanguage)
-    void browser.tabs.create({
-      // 追加 ?cid=<渠道号> 供官网按渠道归因转化/支付（与登录/卸载同源）。
-      url: appendChannelId(
-        `${env.WXT_WEBSITE_URL}${websiteLocalePath(locale, websiteRouteBasePath("orders"))}`,
-      ),
-    })
+    void getSelectedChannelNumber().then((channelId) =>
+      browser.tabs.create({
+        // 追加 ?cid=<渠道号> 供官网按渠道归因转化/支付（与登录/卸载同源）。
+        url: appendChannelId(
+          `${env.WXT_WEBSITE_URL}${websiteLocalePath(locale, websiteRouteBasePath("orders"))}`,
+          channelId,
+        ),
+      }),
+    )
   }, [uiLanguage])
 }

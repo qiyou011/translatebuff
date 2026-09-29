@@ -8,6 +8,7 @@
 import type { RawToken } from "./tier"
 import { resolveChannelNumber } from "@/fork/identity/channel"
 import { currentEdition } from "@/fork/identity/edition"
+import { getSelectedChannelNumber } from "@/fork/identity/install-channel-runtime"
 import { extractErrorMessage } from "@/utils/error/extract-message"
 import { DEFAULT_CLIENT_LANGUAGE } from "./client-language"
 
@@ -30,8 +31,8 @@ const UA_APP_VERSION = "1.0.1" // 段6：appVersion —— 跟随 fork 发版号
 const UA_SN = "000000000000" // 段7：sn 设备唯一标识 —— 扩展无硬件 ID，回落官网占位值
 
 // 组装 7 段 UA。各段均不含 `/`，保证后端按 `/` split 恒得 7 段。段4 渠道号函数内解析（非模块顶层快照）。
-function buildUserAgent(): string {
-  return `${UA_DEVICE_NAME}/${UA_OS}/${UA_OS_VERSION}/${resolveChannelNumber()}/${SAAS_APP_ID}/${UA_APP_VERSION}/${UA_SN}`
+function buildUserAgent(channelId: string): string {
+  return `${UA_DEVICE_NAME}/${UA_OS}/${UA_OS_VERSION}/${channelId}/${SAAS_APP_ID}/${UA_APP_VERSION}/${UA_SN}`
 }
 
 // 显式请求头装配（纯函数）：凭据 + 平台标识 + 7 段 UA + 语言。绝不含 credentials（由调用方保证不 include）。
@@ -40,12 +41,13 @@ function buildUserAgent(): string {
 export function buildAuthHeaders(
   loginCredential: string,
   clientLanguage: string = DEFAULT_CLIENT_LANGUAGE,
+  channelId: string = resolveChannelNumber(),
 ): Record<string, string> {
   return {
     "Login-Credential": loginCredential,
     "Saas-Product-Line": SAAS_PRODUCT_LINE,
     "Saas-App-Id": SAAS_APP_ID,
-    Useragent: buildUserAgent(),
+    Useragent: buildUserAgent(channelId),
     "Client-Language": clientLanguage,
   }
 }
@@ -134,9 +136,10 @@ async function authedGet(
   clientLanguage?: string,
   base: string = apiBase(),
 ): Promise<Record<string, unknown>> {
+  const channelId = await getSelectedChannelNumber()
   const res = await fetch(`${base}${pathname}`, {
     method: "GET",
-    headers: buildAuthHeaders(loginCredential, clientLanguage),
+    headers: buildAuthHeaders(loginCredential, clientLanguage, channelId),
   })
   if (res.status === 401) {
     throw new MembershipUnauthorizedError()

@@ -2,9 +2,15 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 import { browser } from "#imports"
 import { setupUninstallSurvey } from "../uninstall-survey"
 
+const selectedChannel = vi.hoisted(() => ({ cid: "7150" }))
+vi.mock("@/fork/identity/install-channel-runtime", () => ({
+  getBackgroundInstallChannel: async () => selectedChannel.cid,
+}))
+
 // fork：卸载跳任译喵官网问卷（陪读蛙原问卷是上游品牌，已换成 fork 官网 /uninstall-survey）。
 describe("setupUninstallSurvey", () => {
   beforeEach(() => {
+    selectedChannel.cid = "7150"
     vi.stubEnv("WXT_FORK_EDITION", "global")
     vi.stubEnv("WXT_FORK_CHANNEL", "global-zip")
     browser.runtime.setUninstallURL = vi.fn<(...args: any[]) => any>().mockResolvedValue(undefined)
@@ -33,5 +39,11 @@ describe("setupUninstallSurvey", () => {
     await setupUninstallSurvey()
     const url = (browser.runtime.setUninstallURL as any).mock.calls[0][0]
     expect(url).toContain("cid=7150")
+  })
+
+  it("已固定 7154 时卸载回跳使用同一 cid", async () => {
+    selectedChannel.cid = "7154"
+    await setupUninstallSurvey()
+    expect((browser.runtime.setUninstallURL as any).mock.calls[0][0]).toContain("cid=7154")
   })
 })

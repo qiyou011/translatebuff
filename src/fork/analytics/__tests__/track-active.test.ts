@@ -54,6 +54,15 @@ describe("活跃事件按自然日去重", () => {
     expect(events[0].action_extra_info).toEqual({ is_active: true })
   })
 
+  it("海外活跃事件保留包内原生号", async () => {
+    vi.stubEnv("WXT_FORK_EDITION", "global")
+    vi.stubEnv("WXT_FORK_CHANNEL", "global-edge")
+    await reportTranslateActive(TODAY)
+    const [events] = postClickEvent.mock.calls[0]!
+    expect(events[0].action_extra_info).toEqual({ is_active: true, origin_cid: 7152 })
+    vi.unstubAllEnvs()
+  })
+
   it("同日再次翻译不上报，也不发请求", async () => {
     await reportTranslateActive(TODAY)
     await reportTranslateActive(LATER_TODAY)

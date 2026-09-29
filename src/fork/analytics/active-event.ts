@@ -19,7 +19,7 @@ export interface TranslateActiveEvent {
   event_type: "custom"
   /** 自生成 Cookie 标识；Cookie 不可用时为空，不采集浏览器指纹。 */
   device_info: ReportDeviceInfo
-  action_extra_info: { is_active: true }
+  action_extra_info: { is_active: true; origin_cid?: number }
 }
 
 /** 事件唯一 id。http 的测试环境没有 crypto.randomUUID，降级后仍要发得出事件而不是整条丢弃。 */
@@ -34,6 +34,7 @@ function newTraceId(): string {
 export function buildTranslateActiveEvent(
   now: number,
   deviceInfo: ReportDeviceInfo = {},
+  originCid?: number,
 ): TranslateActiveEvent {
   return {
     trace_id: newTraceId(),
@@ -43,6 +44,9 @@ export function buildTranslateActiveEvent(
     product_line: SAAS_PRODUCT_LINE,
     event_type: "custom",
     device_info: deviceInfo,
-    action_extra_info: { is_active: true },
+    action_extra_info: {
+      is_active: true,
+      ...(originCid === undefined ? {} : { origin_cid: originCid }),
+    },
   }
 }
