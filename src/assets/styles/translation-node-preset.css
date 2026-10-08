@@ -17,6 +17,8 @@
 
 .read-frog-translated-block-content {
   display: inline-block;
+  max-width: 100%;
+  white-space: pre-wrap;
   margin: 8px 0 !important;
   color: inherit;
   font-family: inherit;

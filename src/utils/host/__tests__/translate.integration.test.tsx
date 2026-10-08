@@ -3442,7 +3442,8 @@ describe("translate", () => {
 
         // Should have translation wrapper since it contains text
         const wrapper = expectTranslationWrapper(node, "bilingual")
-        expectTranslatedContent(wrapper, INLINE_CONTENT_CLASS)
+        expectTranslatedContent(wrapper, BLOCK_CONTENT_CLASS)
+        expect(wrapper?.firstElementChild?.tagName).toBe("BR")
       })
     })
 
@@ -3538,12 +3539,117 @@ describe("translate", () => {
     })
   })
   describe("short single-line block content", () => {
+    it("puts block spans used for card headings and descriptions on separate lines", async () => {
+      render(
+        <div data-testid="test-node" style={{ display: "flex", flexDirection: "column" }}>
+          <span style={{ display: "block" }}>Technical Account Manager</span>
+          <span style={{ display: "block" }}>
+            A dedicated TAM manages escalations, understands your stack, and helps keep your team
+            and roadmap on track.
+          </span>
+        </div>,
+      )
+      const node = screen.getByTestId("test-node")
+      const sources = [...node.children]
+      await removeOrShowPageTranslation("bilingual", true)
+      for (const source of sources) {
+        const wrapper = expectTranslationWrapper(source, "bilingual")!
+        expect(wrapper.firstElementChild?.tagName).toBe("BR")
+        expectTranslatedContent(wrapper, BLOCK_CONTENT_CLASS)
+      }
+      await removeOrShowPageTranslation("bilingual", false)
+      expect(node.querySelectorAll(`.${CONTENT_WRAPPER_CLASS}`)).toHaveLength(2)
+    })
+
+    it("keeps block spans inside navigation and action links inline", async () => {
+      render(
+        <div data-testid="test-node">
+          <nav>
+            <span style={{ display: "block" }}>Products</span>
+          </nav>
+          <a href="#demo" style={{ display: "inline-flex" }}>
+            <span style={{ display: "block" }}>Get a Demo</span>
+          </a>
+          <button type="button">
+            <span style={{ display: "block" }}>Sign Up</span>
+          </button>
+        </div>,
+      )
+      const node = screen.getByTestId("test-node")
+      await removeOrShowPageTranslation("bilingual", true)
+      const wrappers = node.querySelectorAll(`.${CONTENT_WRAPPER_CLASS}`)
+      expect(wrappers).toHaveLength(3)
+      wrappers.forEach((wrapper) => {
+        expect(wrapper.querySelector("br")).toBeFalsy()
+        expectTranslatedContent(wrapper, INLINE_CONTENT_CLASS)
+      })
+    })
+
+    it("puts short prose and nested heading translations on separate lines", async () => {
+      render(
+        <section data-testid="test-node">
+          <h1>
+            <span>Enterprise</span>
+          </h1>
+          <h2>
+            <a href="#react">React</a>
+          </h2>
+          <p>Move as fast.</p>
+          <div role="heading">
+            <span>Support</span>
+          </div>
+        </section>,
+      )
+      const node = screen.getByTestId("test-node")
+      const sources = [...node.querySelectorAll("h1 span, h2 a, p, [role='heading'] span")]
+      const originals = sources.map((source) => [...source.childNodes])
+      await removeOrShowPageTranslation("bilingual", true)
+      for (const source of sources) {
+        const wrapper = expectTranslationWrapper(source, "bilingual")!
+        expect(wrapper.firstElementChild?.tagName).toBe("BR")
+        expectTranslatedContent(wrapper, BLOCK_CONTENT_CLASS)
+      }
+      await removeOrShowPageTranslation("bilingual", false)
+      expect(node.querySelectorAll(`.${CONTENT_WRAPPER_CLASS}`)).toHaveLength(4)
+      await removeOrShowPageTranslation("bilingual", true)
+      sources.forEach((source, index) => expect([...source.childNodes]).toEqual(originals[index]))
+    })
+
+    it("keeps navigation and button labels inline, including nested heading labels", async () => {
+      render(
+        <div data-testid="test-node">
+          <nav>
+            <a href="#products">
+              <span>Products</span>
+            </a>
+          </nav>
+          <button type="button">
+            <div role="heading">Get a Demo</div>
+          </button>
+          <a href="#signup" role="button">
+            <span>Sign Up</span>
+          </a>
+          <div role="button">
+            <p>A longer label inside an interactive control</p>
+          </div>
+        </div>,
+      )
+      const node = screen.getByTestId("test-node")
+      await removeOrShowPageTranslation("bilingual", true)
+      const wrappers = node.querySelectorAll(`.${CONTENT_WRAPPER_CLASS}`)
+      expect(wrappers).toHaveLength(4)
+      wrappers.forEach((wrapper) => {
+        expect(wrapper.querySelector("br")).toBeFalsy()
+        expectTranslatedContent(wrapper, INLINE_CONTENT_CLASS)
+      })
+    })
+
     it.each([
       { flexDirection: "row", label: "Introduction" },
       { flexDirection: "row", label: "Solution" },
       { flexDirection: "column", label: "Output" },
     ] as const)(
-      "keeps $label inline inside a flex-$flexDirection container",
+      "puts the $label prose translation on a new line inside a flex-$flexDirection container",
       async ({ flexDirection, label }) => {
         render(
           <div style={{ display: "flex", flexDirection }}>
@@ -3557,9 +3663,8 @@ describe("translate", () => {
         expectNodeLabels(node, [BLOCK_ATTRIBUTE, PARAGRAPH_ATTRIBUTE])
         const wrapper = expectTranslationWrapper(node, "bilingual")!
         expect(wrapper).toBe(node.lastChild)
-        expect(wrapper.querySelector("br")).toBeFalsy()
-        expect(wrapper.firstChild?.textContent).toBe("\u00A0\u00A0")
-        expectTranslatedContent(wrapper, INLINE_CONTENT_CLASS)
+        expect(wrapper.firstElementChild?.tagName).toBe("BR")
+        expectTranslatedContent(wrapper, BLOCK_CONTENT_CLASS)
 
         await removeOrShowPageTranslation("bilingual", true)
         expect(node.querySelector(`.${CONTENT_WRAPPER_CLASS}`)).toBeFalsy()

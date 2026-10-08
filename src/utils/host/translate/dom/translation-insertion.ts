@@ -46,6 +46,29 @@ function sourceRunMatchesSelector(sources: readonly TransNode[], selector: strin
   })
 }
 
+function isControlTranslationSource(source: TransNode): boolean {
+  const element = isHTMLElement(source) ? source : source.parentElement
+  return Boolean(
+    element?.closest(
+      "button, select, option, [role='button'], [role='tab'], [role='menuitem'], nav, [role='navigation']",
+    ),
+  )
+}
+
+function isProseTranslationSource(source: TransNode, display?: string): boolean {
+  const element = isHTMLElement(source) ? source : source.parentElement
+  if (!element) return false
+  if (element.closest("h1, h2, h3, h4, h5, h6, p, blockquote, figcaption, [role='heading']")) {
+    return true
+  }
+  // Sites also render independent headings/descriptions as block spans
+  // (including spans blockified as flex/grid items). Preserve inline layout
+  // for action links; their label spans can be blockified too.
+  if (element.closest("a")) return false
+  const sourceDisplay = display ?? window.getComputedStyle(element).display
+  return sourceDisplay === "block" || sourceDisplay === "flow-root" || sourceDisplay === "list-item"
+}
+
 function resolveLineHeight(style: CSSStyleDeclaration): number | null {
   const lineHeight = Number.parseFloat(style.lineHeight)
   if (Number.isFinite(lineHeight) && lineHeight > 0) return lineHeight
@@ -178,6 +201,10 @@ export async function insertTranslatedNodeIntoWrapper(
     addBlockTranslation(ownerDoc, translatedWrapperNode, translatedNode)
   } else if (siteRuleForceInlineStyle) {
     addInlineTranslation(ownerDoc, translatedWrapperNode, translatedNode)
+  } else if (isControlTranslationSource(layoutSource)) {
+    addInlineTranslation(ownerDoc, translatedWrapperNode, translatedNode)
+  } else if (isProseTranslationSource(layoutSource, layoutSourceDisplay)) {
+    addBlockTranslation(ownerDoc, translatedWrapperNode, translatedNode)
   } else if (forceInlineTranslation) {
     addInlineTranslation(ownerDoc, translatedWrapperNode, translatedNode)
   } else if (forceBlockTranslation) {
