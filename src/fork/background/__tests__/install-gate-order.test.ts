@@ -16,7 +16,7 @@ vi.mock("@/fork/background/repair-custom-actions", () => ({
 }))
 vi.mock("@/fork/message", () => ({ onForkMessage: vi.fn<() => void>() }))
 
-it("后台先建立安装渠道决策，再接会员同步和启动上报", async () => {
+it("后台先注册渠道读取消息，再接会员同步和启动上报", async () => {
   const { setupFork } = await import("../index")
   setupFork()
   expect(calls).toEqual(["channel", "membership", "report"])

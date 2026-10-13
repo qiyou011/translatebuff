@@ -21,6 +21,7 @@ const { setupFork } = await import("@/fork/background")
 const { reportTranslateActive } = await import("../track-active")
 const fetchMock = vi.fn<(...args: any[]) => Promise<any>>()
 let cookie: { value: string } | null
+let channelCookie: { value: string } | null
 let installed: (details: { reason: string }) => void
 let startup: () => void
 const NOW = 1789473600000
@@ -30,6 +31,7 @@ beforeEach(async () => {
   await clearForkSession()
   await clearLastReportedDate()
   cookie = { value: SN }
+  channelCookie = null
   installed = () => {}
   startup = () => {}
   vi.spyOn(Date, "now").mockReturnValue(NOW)
@@ -39,7 +41,9 @@ beforeEach(async () => {
   vi.spyOn(browser.runtime.onStartup, "addListener").mockImplementation((fn) => {
     startup = fn
   })
-  vi.spyOn(browser.cookies, "get").mockImplementation(async () => cookie as never)
+  vi.spyOn(browser.cookies, "get").mockImplementation(
+    async ({ name }) => (name === "aitrans_cid" ? channelCookie : cookie) as never,
+  )
   vi.spyOn(browser.cookies, "set").mockImplementation(async (details) => {
     cookie = { value: details.value! }
     return cookie as never
@@ -162,25 +166,49 @@ it("海外渠道仍为 AITRANS，数值渠道进入 extra", async () => {
   expect(event.action_extra_info.origin_cid).toBe(7153)
 })
 
-it("海外安装前推广固定为 7154，启动报文保留包内 7151", async () => {
+it("海外启动跟随当前 Cookie 变化，报文保留包内 7151", async () => {
   vi.stubEnv("WXT_FORK_EDITION", "global")
   vi.stubEnv("WXT_FORK_CHANNEL", "global-chrome-store")
-  vi.mocked(browser.cookies.get).mockImplementation(async (details) =>
-    details.name === "aitrans_install_promo"
-      ? ({ value: JSON.stringify({ cid: "7154", recordedAt: NOW - 1 }) } as never)
-      : (cookie as never),
-  )
-  const { setupInstallChannel } = await import("@/fork/identity/install-channel-runtime")
+  channelCookie = { value: "9899" }
   const { reportAppStartUp } = await import("../track-startup")
-  setupInstallChannel()
-  installed({ reason: "install" })
   await reportAppStartUp("install", NOW)
   const [event] = await events()
   expect(event.action_extra_info).toMatchObject({
-    launch_channel_id: 7154,
+    launch_channel_id: 9899,
     origin_cid: 7151,
   })
-  expect(fetchMock.mock.calls[0]![1].headers.Useragent.split("/")[3]).toBe("7154")
+  expect(fetchMock.mock.calls[0]![1].headers.Useragent.split("/")[3]).toBe("9899")
+  channelCookie = { value: "66666" }
+  await reportAppStartUp("update", NOW + 1)
+  const result = await events(2)
+  expect(result[1].action_extra_info).toMatchObject({ launch_channel_id: 66666, origin_cid: 7151 })
+  expect(fetchMock.mock.calls[1]![1].headers.Useragent.split("/")[3]).toBe("66666")
+  channelCookie = null
+  await reportAppStartUp("startup", NOW + 2)
+  expect((await events(3))[2].action_extra_info).toMatchObject({
+    launch_channel_id: 7151,
+    origin_cid: 7151,
+  })
+  expect(fetchMock.mock.calls[2]![1].headers.Useragent.split("/")[3]).toBe("7151")
+})
+
+it("国内启动事件和 UA 都使用当前 Cookie 渠道", async () => {
+  channelCookie = { value: "9899" }
+  startup()
+  expect((await events())[0].action_extra_info.launch_channel_id).toBe(9899)
+  expect(fetchMock.mock.calls[0]![1].headers.Useragent.split("/")[3]).toBe("9899")
+})
+
+it("单个启动请求只取一次渠道，Cookie 变化不导致请求体与 UA 不一致", async () => {
+  let reads = 0
+  vi.mocked(browser.cookies.get).mockImplementation(async ({ name }) => {
+    if (name === "aitrans_cid") return { value: ++reads === 1 ? "9899" : "66666" } as never
+    return cookie as never
+  })
+  startup()
+  expect((await events())[0].action_extra_info.launch_channel_id).toBe(9899)
+  expect(fetchMock.mock.calls[0]![1].headers.Useragent.split("/")[3]).toBe("9899")
+  expect(reads).toBe(1)
 })
 
 it.each([401, 500, "network"])("登录用户上报失败 %s 不重试、不登出", async (status) => {

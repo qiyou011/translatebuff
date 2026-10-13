@@ -3,6 +3,7 @@ import { renderHook } from "@testing-library/react"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 import { browser } from "#imports"
 import { env } from "@/env"
+import { resolveChannelNumber } from "@/fork/identity/channel"
 import { useOpenForkLogin, useOpenForkOrders } from "../atoms"
 
 // 只挡 i18n 门面：它顶层 import src/locales/*.yml，而根 vitest 配置不带 ViteYaml 插件（全仓无先例）。
@@ -20,10 +21,12 @@ vi.mock("@/utils/i18n/locale-map", () => ({
 describe("useOpenForkOrders（订单页跳转 URL）", () => {
   beforeEach(() => {
     browser.tabs.create = vi.fn<(...args: any[]) => any>().mockResolvedValue(undefined)
-    sendForkMessage.mockReset().mockResolvedValue("7150")
+    sendForkMessage.mockReset().mockImplementation(async () => resolveChannelNumber())
+    vi.spyOn(browser.cookies, "get").mockResolvedValue(undefined)
   })
 
   afterEach(() => {
+    vi.restoreAllMocks()
     vi.unstubAllEnvs()
     locale.current = "en"
   })
@@ -75,19 +78,20 @@ describe("useOpenForkOrders（订单页跳转 URL）", () => {
     expect(url).not.toContain("/vi/")
   })
 
-  it("已固定 7154 时登录与订单回跳均使用 7154", async () => {
-    stubGlobalEdition()
-    sendForkMessage.mockResolvedValue("7154")
+  it.each(["cn", "global"])("%s 登录与订单每次读取当前 Cookie 渠道", async (edition) => {
+    if (edition === "global") stubGlobalEdition()
+    sendForkMessage.mockResolvedValue("9899")
     const login = renderHook(() => useOpenForkLogin())
     login.result.current()
     await vi.waitFor(() => expect(browser.tabs.create).toHaveBeenCalledTimes(1))
-    expect((browser.tabs.create as any).mock.calls[0][0].url).toContain("cid=7154")
+    expect((browser.tabs.create as any).mock.calls[0][0].url).toContain("cid=9899")
     vi.mocked(browser.tabs.create).mockClear()
+    sendForkMessage.mockResolvedValue("66666")
     const orders = await openedUrl()
-    expect(orders).toContain("cid=7154")
+    expect(orders).toContain("cid=66666")
   })
 
-  it("后台消息暂不可用时仍从已保存选择恢复回跳 cid", async () => {
+  it("后台消息不可用时直接读取当前 Cookie，清除后回包内号而不是旧快照", async () => {
     stubGlobalEdition()
     sendForkMessage.mockRejectedValue(new Error("worker unavailable"))
     vi.spyOn(browser.storage.local, "get").mockResolvedValue({
@@ -98,7 +102,10 @@ describe("useOpenForkOrders（订单页跳转 URL）", () => {
         websiteOrigin: new URL(env.WXT_WEBSITE_URL).origin,
       },
     } as never)
-    expect(await openedUrl()).toContain("cid=7154")
-    vi.restoreAllMocks()
+    vi.mocked(browser.cookies.get).mockResolvedValue({ value: "9899" } as never)
+    expect(await openedUrl()).toContain("cid=9899")
+    vi.mocked(browser.tabs.create).mockClear()
+    vi.mocked(browser.cookies.get).mockResolvedValue(undefined)
+    expect(await openedUrl()).toContain("cid=7150")
   })
 })

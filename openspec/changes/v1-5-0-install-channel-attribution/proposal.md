@@ -1,30 +1,33 @@
 ## Why
 
-海外插件目前所有渠道请求与官网回跳均取包内号码，无法把用户安装前在官网留下的有效推广来源固定为安装渠道。需要在新安装时一次性选择渠道，同时保留包内原生号，避免后续推广或更新改写历史安装结果。
+接口请求渠道应优先使用浏览器中当前官网的 `aitrans_cid`，没有可用值时使用渠道包内号码。原方案读取安装推广记录并固定结果，导致官网 Cookie 已为 `9899` 时插件仍发送包内 `7152` 或旧固定号。
 
-本地构建包联测发现，自定义 `Useragent` 第 6 段仍硬编码为 `1.0.1`，与插件发布版本不一致；`feat/1.5.0` 分支的发布配置也仍为 `1.4.1`。本次发布版本已确认应为 `1.5.0`，需要统一 manifest、请求头和启动上报的版本来源。
+2026-10-13 用户明确修订：取消“选定后固定，后续 Cookie 变化不改号”，国内与海外均按当前 Cookie 优先。本地工件以本次确认作为验收依据；原 Gitee 提案中的安装冻结规则已被该决定替代，远端需求仓尚未同步。
+
+本次发布版本为 `1.5.0`，manifest、UA 和启动事件共用发布配置。
 
 ## What Changes
 
-- 新安装时读取同一浏览器配置、同一环境官网的推广记录；仅严格早于安装且不足 30 天的有效记录覆盖包内渠道。无可用记录时取包内号。
-- 安装时的选择固定保存；存量升级不补归因，重启与后续广告不重新选择。读取、权限或存储失败按已确认的包内号兜底，并保持正常翻译可用。
-- 插件自定义 `Useragent` 第 4 段、启动事件 `launch_channel_id`、登录／订单／卸载回跳 `cid` 使用同一固定号；`origin_cid` 始终保留包内原生号。
-- 国内及海外包的自定义 `Useragent` 第 6 段通过 `readForkVersion()` 读取 `src/fork/identity/fork-version.json`，与 manifest 版本及启动事件 `client_version` 同源；本次发布版本统一为 `1.5.0`。
-- 复用现有 `report` 的 `click_event` 通道，在启动与活跃事件扩展属性中增加 `origin_cid`；不新增事件，不改变触发、去重或账号注册归因。
-- 安装渠道选择仅覆盖海外包 `7150`—`7153`；普通 `aitrans_cid` 不参与该选择，只有认可的安装推广记录可覆盖包内号。官网推广记录及当次请求由 `D:\project\translatebuff-official-website-overseas` 中同名 OpenSpec 变更承接，国内线渠道逻辑不变。
+- 每次会员请求、report 请求及登录／订单官网跳转读取当前环境官网的 `aitrans_cid`，有可用值则使用，无值、空值、不可读或超时则使用包内渠道。
+- Cookie 更新影响后续请求；Cookie 清除后直接回到包内号。国内及海外、新装、冷启动、升级均遵循同一规则。
+- 取消 `aitrans_install_promo`、推广白名单、30 天安装判断和扩展安装渠道快照的消费；旧 `fork_install_channel_v1` 不再参与决策。
+- 自定义 `Useragent` 第 4 段与启动事件 `launch_channel_id` 使用当前渠道；同一次启动上报的请求体和请求头共用一次读取结果。
+- 海外启动及活跃事件 `origin_cid` 始终保留包内原生号；现有事件、去重及账号注册归因规则不变。
+- 国内及海外 UA 第 6 段、manifest 和启动事件 `client_version` 共用 `readForkVersion()`，本次为 `1.5.0`。
+- 海外卸载问卷在设置 URL 时读取当前渠道；国内指定表单链接沿用原规则。
 
 ## Capabilities
 
 ### New Capabilities
 
-- `fork-install-channel-selection`: 安装时读取、判断并固定推广或包内渠道，以及失效和失败时的兜底。
+- `fork-install-channel-selection`: 国内及海外每次读取当前官网 Cookie 并回落包内渠道；保留能力标识以延续本变更，但不再保存安装时选择。
 
 ### Modified Capabilities
 
-- `fork-channel-attribution`: 自定义请求头与官网回跳从包内号改为安装固定号，并保留包内原生号供上报；请求头版本与插件发布版本同源。
+- `fork-channel-attribution`: 请求 UA 和官网跳转使用当前渠道，保留包内原生号及发布版本来源。
 
 ## Impact
 
-- 预计涉及 `src/fork/identity/channel.ts`、`src/fork/identity/fork-version.json`、后台安装事件与消息、`src/fork/membership/api.ts`、`src/fork/analytics/`、官网登录／订单／卸载跳转及聚焦测试。
-- 复用现有 `cookies`、官网 host 权限、扩展本地存储和 `POST /api/data_report/v1/client/click_event`；不新增依赖或后端接口。本变更只保证 report 请求体携带 `origin_cid`，不涉及后端入库映射。
-- 后端注册归因仍按注册时实际使用的渠道判断；安装上报与 `origin_cid` 不覆盖账号注册渠道，历史数据不回填。
+- 涉及渠道运行时、后台消息、会员请求、report、启动上报及官网登录／订单／海外卸载链接。
+- 复用既有 Cookie 权限、官网 host 权限和 `POST /api/data_report/v1/client/click_event`，不新增依赖或后端 API。
+- 每次请求增加一次 Cookie 读取；读取超过 1500 毫秒按包内号放行。后续请求重新尝试读取。

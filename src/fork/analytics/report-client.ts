@@ -26,13 +26,17 @@ export function buildReportHeaders(
   return headers
 }
 
-export async function postClickEvent(events: unknown[], auth: ReportAuth): Promise<void> {
+export async function postClickEvent(
+  events: unknown[],
+  auth: ReportAuth,
+  selectedChannelId?: string,
+): Promise<void> {
   const base = import.meta.env.WXT_REPORT_API_URL as string | undefined
   if (!base) {
     return
   }
   try {
-    const channelId = await getSelectedChannelNumber()
+    const channelId = selectedChannelId ?? (await getSelectedChannelNumber())
     await fetch(`${base}${CLICK_EVENT_PATH}`, {
       method: "POST",
       // keepalive：用户点完翻译立刻关标签页时，请求仍要发得出去。

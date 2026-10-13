@@ -1,59 +1,57 @@
 ## Context
 
-海外插件当前从包配置解析 `7150`—`7153`，由 `src/fork/identity/channel.ts` 提供给自定义请求头和官网回跳。`src/fork/background/index.ts` 当前先启动会员同步，随后才设置安装启动上报，因此新安装时可能在读取推广证据前发出请求。官网同名变更把明确推广链接 `?promo_cid=7154` 写为独立的 30 天推广 cookie；普通回跳 `?cid=` 不写该记录。插件要在安装时读取同浏览器配置、同环境官网域的记录，固定一次选择。
+需求来源：[Gitee v1.5.0 变更](https://gitee.com/junyun-product/AI/tree/main/translatebuff/openspec/changes/v1-5-0-install-channel-attribution)。原提案要求只在安装时读取明确推广记录并固定渠道。2026-10-13 用户明确纠正为“Cookie 中有渠道号就优先使用，没有就用渠道包内的”。本设计按该新规则修订，本地文档不代表远端需求仓已经更新。
 
-需求来源：[Gitee v1.5.0 变更](https://gitee.com/junyun-product/AI/tree/main/translatebuff/openspec/changes/v1-5-0-install-channel-attribution)。本变更无 Figma 链接；不涉及视觉设计。
-
-2026-10-13 本地构建包排查补充：测试截图的自定义 `Useragent` 包含渠道 `7152`、版本 `1.0.1`，官网普通 Cookie 为 `aitrans_cid=66666`。版本来自请求头中的硬编码常量，发布配置当时仍为 `1.4.1`；用户确认本次应发布 `1.5.0`。渠道 `7152` 对应构建配置 `global-edge`，普通 `aitrans_cid` 不构成安装推广证据。
+现有 `resolveChannelNumber()` 提供包内渠道；会员、report 和官网跳转通过异步渠道入口取得请求渠道。旧实现国内直接取包内号，海外读取固定快照，因此普通 `aitrans_cid=9899` 不会生效。
 
 ## Goals / Non-Goals
 
-- Goals：新安装得到一个固定渠道；首批会员请求、report、官网回跳一致使用它；`origin_cid` 保留真实包内号；失败时翻译继续可用；国内及海外请求 UA、manifest 和启动事件共用发布版本，本次为 `1.5.0`。
-- Non-Goals：不修改国内渠道选择、账号注册归因、报告事件触发和去重、不新增上报 API，也不跨设备或浏览器配置同步推广记录。
+- Goals：国内、海外都读取当前环境官网 Cookie；改号影响后续请求；清除、空值、失败和超时回落包内号；单次启动上报渠道一致；保留海外 `origin_cid`；版本保持发布配置 `1.5.0`。
+- Non-Goals：不修改官网 Cookie 写入规则、账号注册归因或事件触发／去重，不回填历史数据，不跨浏览器配置、设备或环境同步。
 
 ## Decisions
 
-### D1. 后台统一持有异步渠道决策
+### D1. 每次读取当前官网渠道
 
-保留 `resolveChannelNumber()` 作为包内原生号来源。新增海外安装渠道决策模块，后台初始化时先建立并暴露单一决策 Promise，注册 `runtime.onInstalled` 处理和供 popup/options 读取的消息，再启动可能发请求的会员同步及启动上报。安装事件回调入口必须先同步捕获 `installAt=Date.now()`，再读取 cookie 或存储；不能在异步步骤后取时间。`src/fork/background/index.ts` 中现有 `setupMembership()` 先于 `setupStartUpTracking()` 的顺序需要调整。
+后台 `getBackgroundInstallChannel()` 每次调用 `browser.cookies.get({url: new URL(WXT_WEBSITE_URL).origin + '/', name: 'aitrans_cid'})`。官网域来自当前包环境配置，国内／海外、测试／生产各自隔离。
 
-安装事件和普通冷启动走同一状态入口。新安装只允许安装事件读取推广证据；普通冷启动从已保存结果或包内号完成，不得无限等待安装事件。会员、report 和跳转调用共享这个 Promise；不得各自临时解析或先用暂定包内号。实施时用集成测试覆盖安装事件与首发请求并发，验证背景初始化顺序在 Chrome、Edge、Firefox 目标构建中成立；若浏览器事件时序无法保证，则必须先调整启动握手，不能靠任意延时碰运气。
+非空渠道值优先于包内号，不限制为 `71xx` 或 `7154`；例如 `9899` 和 `66666` 均可使用。为保证 UA 恰为 7 段，含 `/`、空白或控制字符的值视为不可用。不存在或不可用时直接取 `resolveChannelNumber()`。
 
-### D2. 只读取同环境官网的明确推广记录
+### D2. 删除安装冻结状态
 
-用现有 `cookies` 和官网 host 权限读取 `browser.cookies.get({ url: WXT_WEBSITE_URL, name: 'aitrans_install_promo' })`。`WXT_WEBSITE_URL` 生产指向 `https://www.translatebuff.com`，测试指向 `https://test.translatebuff.com`；浏览器 cookie 容器和配置天然隔离。官网用 `js-cookie` 写入 JSON，浏览器 cookies API 返回 URL 编码的原始值，插件需先解码再解析约定的 `{cid, recordedAt}`；本期只有 `cid === '7154'` 可选。条件是 `recordedAt < installAt` 且 `installAt - recordedAt < 30 * 24 * 60 * 60 * 1000`。时间缺失、不为有限整数、等于安装时刻、恰满 30 天、未来时间或格式错误均无效。不要从 `aitrans_cid`、URL `cid` 或其他 `71xx` 推断安装推广。用户未提供适用的隐私同意或 cookie 不可读时选包内号。
+不缓存选定号，不读写 `fork_install_channel_v1`，不查询 `aitrans_install_promo`，不判断安装时间或 30 天期限。已安装用户升级后也使用当前 Cookie；旧快照可留在存储中，但不能作为缺失 Cookie 时的兜底。
 
-例如 `global-edge` 包新安装时只有 `aitrans_cid=66666`、没有有效 `aitrans_install_promo`，应保留 `7152`。包内号由构建渠道决定，不根据运行浏览器或普通 Cookie 自动改号。
+`9899 → 66666 → 删除` 对应后续请求 `9899 → 66666 → 包内号`。插件不另存一份 `9899`；持久值由浏览器官网 Cookie 保存。
 
-### D3. 固定选择并按状态处理存储失败
+### D3. 所有发行版注册后台消息
 
-扩展本地存储保存版本化记录，例如 `{ installAt, selectedCid, websiteOrigin }`。选定后同一次后台运行始终使用内存中的结果；写入失败时保留该结果并重试写入，不能在随后请求中改变号。进程重启后若确实没有固定记录，按包内号恢复，不再次读取后来写入的网站推广。`update` 事件且无固定记录的旧用户也固定为包内号，不补历史归因。读取本地存储失败或超时时，本次进程稳定使用包内号；不得覆盖可能存在但暂不可读的旧记录。卸载重装是新的 `install` 事件，可以重新选择；这只表示新安装事件，不代表新增真实用户。
+保留现有 `setupInstallChannel()` 与 `forkGetInstallChannel` 名称，避免改动全部接线。其语义改为读取当前渠道，国内和海外均在后台网络模块启动前注册消息入口，不再注册渠道安装事件。
 
-### D4. 所有渠道出口使用同一个结果
+popup/options 每次请求后台读取；消息失败或 1500 毫秒未返回时，在可访问 Cookie API 的扩展页面尝试直接读取。Cookie 读取失败或超过 1500 毫秒时使用包内号，下一次调用仍重新读取。
 
-将当前同步的 `buildAuthHeaders()` 改为在异步请求入口取得固定渠道后，以显式渠道参数组装 7 段 `Useragent`；其他调用方不能绕开此入口。复用 `src/fork/analytics/report-client.ts` 中现有 `POST /api/data_report/v1/client/click_event`。启动事件 `action_extra_info.launch_channel_id` 使用固定号；启动和活跃事件都增加整数 `origin_cid`，始终取包内号，不额外上报时间戳。原事件名、触发、去重和注册归因不变。
+### D4. 同一次启动上报只读取一次
 
-登录、订单／支付及卸载问卷官网 URL 在构造前读取固定号，将它作为 `cid` 传入现有 URL 合并逻辑；不得写 `promo_cid`。URL 已有 query 或 fragment 时继续正确合并。插件固定为 `7154` 后，三处回跳和请求头均为 `7154`，官网仅按普通 `cid` 更新当前请求归因，不刷新安装推广记录。
+会员与普通 report 在请求入口异步读取渠道，再显式传给请求头构造函数。启动上报先读取一次，将结果同时用于 `launch_channel_id` 和 `postClickEvent()` 的可选渠道参数，避免 Cookie 在两次读取间变化造成请求体与 UA 不一致。
 
-### D5. 部署与联调顺序
+海外启动及活跃 `origin_cid` 继续使用包内号。事件名、触发、去重、接口路径和注册归因均沿用原规则。
 
-先实施并部署海外官网同名变更，使 `promo_cid` 能写独立 cookie，再实施插件读取；两边使用同一 cookie 名、JSON 形状、时钟单位和 30 天边界。联调须分别覆盖官网与插件生产域、测试域，四种海外包内号，以及安装前后和失效边界。`origin_cid` 作为 report 事件扩展属性发送；后端入库映射不属于本变更范围。
+### D5. 官网跳转的渠道读取时机
+
+登录和订单／支付每次触发时读取当前渠道，构造 URL 的 `cid`。海外卸载问卷在调用 `setUninstallURL()` 时读取当前渠道；已注册 URL 不会因为 Cookie 后续变化自动更新，重新设置时采用最新值。国内卸载仍使用指定表单链接。
+
+URL 用现有合并逻辑保留 query 和 fragment，只追加 `cid`，不写入 `promo_cid`。
 
 ### D6. 发布版本共用单一来源
 
-`src/fork/identity/fork-version.json` 是 fork 发布版本真源，本次 `version` 为 `1.5.0`。`wxt.config.ts` 用 `readForkVersion()` 构造 manifest；`src/fork/membership/api.ts` 的 UA 第 6 段和启动上报 `client_version` 也使用该读取函数。会员请求及登录、匿名 report 请求复用同一请求头版本，不再维护独立的 `1.0.1` 常量。
-
-分支名 `feat/1.5.0` 不会自动改变版本，发版需要更新上述 JSON 并重新构建。上游 `package.json` 的版本只保留作 `version_name` 溯源，不作为 fork 的 UA 版本。渠道第 4 段与版本第 6 段分别取自固定渠道及发布配置，版本升级不重新选择安装渠道。
-
-验证包括 UA 第 6 段与版本 JSON 一致、登录与匿名埋点版本一致，以及构建 manifest 为 `1.5.0`。现有测试包必须重新打包安装后验证实际会员与 report 请求；本地单测和构建不代替后端联调。
+`src/fork/identity/fork-version.json` 是发布版本真源，本次为 `1.5.0`。manifest `version`、自定义 `Useragent` 第 6 段及启动事件 `client_version` 都通过 `readForkVersion()` 取得版本。Cookie 仅影响渠道第 4 段。
 
 ## Risks / Trade-offs
 
-- 浏览器安装事件、后台启动与首发请求并发。统一决策门禁和安装事件测试承担这一风险；不能让会员同步先起。
-- 网站 cookie 的隐私同意、浏览器权限或容器隔离可能导致读取失败。按包内号兜底，仍保持请求与翻译功能。
-- 首次写扩展存储失败后，后台进程消失会丢失推广选择。重启后按包内号，不重新消费已变化的网站记录，避免错误追溯。
-- `origin_cid` 随 report 请求发送；联调核对实际请求体，不擅自改变现有事件协议。
+- Cookie 改号或清除后，后续请求归因随之改变，这是当前请求渠道规则；包内来源仍由 `origin_cid` 保留。
+- 每次读取 Cookie 有异步开销，1500 毫秒超时后用包内号放行；恢复后后续请求重新使用 Cookie。
+- 官网页面可能重写 `aitrans_cid`；插件读取浏览器当前值，不推断历史推广来源。
+- 官网链接接受的渠道格式由官网仓定义，插件本轮只修复当前 Cookie 优先级；实际跨仓效果需要联调。
 
 ## Open Questions
 
-- 当前网站隐私同意机制在生产与测试域分别如何限制推广 cookie？实施前核对，未获适用同意时不读取为有效推广。
+- 使用重新构建的国内及海外包，在实际测试／生产官网域验证 Cookie 读取权限与请求归因；本地测试不替代浏览器及后端联调。

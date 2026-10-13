@@ -2,16 +2,8 @@ import { browser } from "#imports"
 import { env } from "@/env"
 import { onForkMessage, sendForkMessage } from "@/fork/message"
 import { resolveChannelNumber } from "./channel"
-import { currentEdition } from "./edition"
-import {
-  createInstallChannelDecision,
-  INSTALL_PROMOTION_COOKIE_NAME,
-  readFixedChannel,
-  type SavedInstallChannel,
-} from "./install-channel"
 
-const STORAGE_KEY = "fork_install_channel_v1"
-let decision: ReturnType<typeof createInstallChannelDecision> | undefined
+const CHANNEL_COOKIE_NAME = "aitrans_cid"
 
 function timeout<T>(work: Promise<T>, fallback: T): Promise<T> {
   return new Promise((resolve) => {
@@ -29,74 +21,42 @@ function timeout<T>(work: Promise<T>, fallback: T): Promise<T> {
   })
 }
 
-function getDecision() {
-  if (!decision) {
-    const websiteUrl = new URL(env.WXT_WEBSITE_URL)
-    decision = createInstallChannelDecision({
-      packageCid: resolveChannelNumber(),
-      websiteOrigin: websiteUrl.origin,
-      readSaved: async () => {
-        const result = await timeout(browser.storage.local.get(STORAGE_KEY), {})
-        return result[STORAGE_KEY]
-      },
-      writeSaved: async (record: SavedInstallChannel) => {
-        const saved = await timeout(
-          browser.storage.local.set({ [STORAGE_KEY]: record }).then(() => true),
-          false,
-        )
-        if (!saved) throw new Error("Install channel storage write unavailable")
-      },
-      readCookie: async () => {
-        const cookie = await timeout(
-          browser.cookies.get({
-            url: `${websiteUrl.origin}/`,
-            name: INSTALL_PROMOTION_COOKIE_NAME,
-          }),
-          null,
-        )
-        return cookie?.value ?? null
-      },
-    })
-  }
-  return decision
-}
-
-/** 在后台其他网络模块启动前同步注册。 */
+/** 在后台其他网络模块启动前同步注册，国内和海外共用此入口。 */
 export function setupInstallChannel(): void {
-  if (currentEdition() !== "global") return
-  getDecision()
-  browser.runtime.onInstalled.addListener(({ reason }) => {
-    if (reason === "install") {
-      const installAt = Date.now()
-      void getDecision().install(installAt)
-    }
-  })
   onForkMessage("forkGetInstallChannel", () => getBackgroundInstallChannel())
 }
 
+/** 每次读取当前官网 Cookie；不消费旧版安装快照或推广记录。 */
 export async function getBackgroundInstallChannel(): Promise<string> {
-  return currentEdition() === "global" ? getDecision().get() : resolveChannelNumber()
+  const packageCid = resolveChannelNumber()
+  try {
+    const cookie = await timeout(
+      browser.cookies.get({
+        url: `${new URL(env.WXT_WEBSITE_URL).origin}/`,
+        name: CHANNEL_COOKIE_NAME,
+      }),
+      null,
+    )
+    const cid = cookie?.value
+    // eslint-disable-next-line no-control-regex -- UA 渠道段需排除控制字符。
+    if (cid && !/[/\s\x00-\x1F\x7F]/.test(cid)) return cid
+  } catch {
+    // Cookie API、权限或环境不可用时使用包内号；后续请求重新读取。
+  }
+  return packageCid
 }
 
-/** popup/options 向后台询问，后台自己的请求直接等待同一决策。 */
+/** popup/options 每次向后台询问，后台自己的请求直接读取 Cookie。 */
 export async function getSelectedChannelNumber(): Promise<string> {
-  if (currentEdition() !== "global") return resolveChannelNumber()
   if (typeof window === "undefined") return getBackgroundInstallChannel()
   try {
-    return await sendForkMessage("forkGetInstallChannel")
+    const cid = await timeout<string | undefined>(
+      sendForkMessage("forkGetInstallChannel").then((value) => value),
+      undefined,
+    )
+    if (cid) return cid
   } catch {
-    // 后台消息偶发不可用时先读已固定结果，避免回跳退回包内号。
-    try {
-      const saved = await timeout(browser.storage.local.get(STORAGE_KEY), {})
-      const fixed = readFixedChannel(
-        saved[STORAGE_KEY],
-        resolveChannelNumber(),
-        new URL(env.WXT_WEBSITE_URL).origin,
-      )
-      if (fixed) return fixed
-    } catch {
-      // 存储也不可用时才用包内号；不覆盖未知旧值。
-    }
-    return resolveChannelNumber()
+    // 后台消息不可用时，在有 Cookie API 的扩展页面尝试直接读取。
   }
+  return getBackgroundInstallChannel()
 }

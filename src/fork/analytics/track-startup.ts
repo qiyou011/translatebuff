@@ -45,6 +45,7 @@ export async function reportAppStartUp(launchType: LaunchType, now = Date.now())
         loginCredential: session?.loginCredential ?? null,
         clientLanguage: toClientLanguage(resolveUiLocale(config.uiLanguage)),
       },
+      selectedCid,
     )
   } catch {
     // 与活跃事件独立，不去重、不重试，也不触发会员接口的 401 清态。

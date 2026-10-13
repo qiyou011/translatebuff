@@ -41,9 +41,9 @@ describe("setupUninstallSurvey", () => {
     expect(url).toContain("cid=7150")
   })
 
-  it("已固定 7154 时卸载回跳使用同一 cid", async () => {
-    selectedChannel.cid = "7154"
+  it("设置卸载回跳时使用当前 Cookie 渠道", async () => {
+    selectedChannel.cid = "9899"
     await setupUninstallSurvey()
-    expect((browser.runtime.setUninstallURL as any).mock.calls[0][0]).toContain("cid=7154")
+    expect((browser.runtime.setUninstallURL as any).mock.calls[0][0]).toContain("cid=9899")
   })
 })
