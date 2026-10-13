@@ -26,6 +26,24 @@ beforeEach(() => {
 })
 
 describe("安装渠道后台门禁", () => {
+  it("海外 Edge 新装不从普通 aitrans_cid=66666 推断推广渠道", async () => {
+    vi.stubEnv("WXT_FORK_CHANNEL", "global-edge")
+    vi.mocked(browser.cookies.get).mockImplementation(async ({ name }) =>
+      name === "aitrans_cid" ? ({ value: "66666" } as never) : null,
+    )
+    const { setupInstallChannel, getBackgroundInstallChannel } =
+      await import("../install-channel-runtime")
+    setupInstallChannel()
+    listeners[0]!({ reason: "install" })
+
+    expect(await getBackgroundInstallChannel()).toBe("7152")
+    expect(browser.cookies.get).toHaveBeenCalledTimes(1)
+    expect(browser.cookies.get).toHaveBeenCalledWith({
+      url: "https://www.translatebuff.com/",
+      name: "aitrans_install_promo",
+    })
+  })
+
   it("安装事件先同步固定时间，首发读取等待推广决策", async () => {
     const { setupInstallChannel, getBackgroundInstallChannel } =
       await import("../install-channel-runtime")

@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
+import forkVersion from "@/fork/identity/fork-version.json"
 import { CLICK_EVENT_PATH, buildReportHeaders, postClickEvent } from "../report-client"
 
 const REPORT_BASE = "https://report.test.local"
@@ -20,6 +21,12 @@ afterEach(() => {
 })
 
 describe("上报请求装配", () => {
+  it.each([CRED, null])("登录与匿名埋点使用 fork 发布版本（credential=%s）", async (credential) => {
+    await postClickEvent(EVENTS, { loginCredential: credential, clientLanguage: "en-us" })
+    const [, init] = fetchMock.mock.calls[0]!
+    expect(init.headers.Useragent.split("/")[5]).toBe(forkVersion.version)
+  })
+
   it("打到中台不加密 click_event 接口，POST，body 恒为数组", async () => {
     await postClickEvent(EVENTS, { loginCredential: CRED, clientLanguage: "en-us" })
 

@@ -4,10 +4,12 @@
 
 需求来源：[Gitee v1.5.0 变更](https://gitee.com/junyun-product/AI/tree/main/translatebuff/openspec/changes/v1-5-0-install-channel-attribution)。本变更无 Figma 链接；不涉及视觉设计。
 
+2026-10-13 本地构建包排查补充：测试截图的自定义 `Useragent` 包含渠道 `7152`、版本 `1.0.1`，官网普通 Cookie 为 `aitrans_cid=66666`。版本来自请求头中的硬编码常量，发布配置当时仍为 `1.4.1`；用户确认本次应发布 `1.5.0`。渠道 `7152` 对应构建配置 `global-edge`，普通 `aitrans_cid` 不构成安装推广证据。
+
 ## Goals / Non-Goals
 
-- Goals：新安装得到一个固定渠道；首批会员请求、report、官网回跳一致使用它；`origin_cid` 保留真实包内号；失败时翻译继续可用。
-- Non-Goals：不修改国内包、账号注册归因、报告事件触发和去重、不新增上报 API，也不跨设备或浏览器配置同步推广记录。
+- Goals：新安装得到一个固定渠道；首批会员请求、report、官网回跳一致使用它；`origin_cid` 保留真实包内号；失败时翻译继续可用；国内及海外请求 UA、manifest 和启动事件共用发布版本，本次为 `1.5.0`。
+- Non-Goals：不修改国内渠道选择、账号注册归因、报告事件触发和去重、不新增上报 API，也不跨设备或浏览器配置同步推广记录。
 
 ## Decisions
 
@@ -20,6 +22,8 @@
 ### D2. 只读取同环境官网的明确推广记录
 
 用现有 `cookies` 和官网 host 权限读取 `browser.cookies.get({ url: WXT_WEBSITE_URL, name: 'aitrans_install_promo' })`。`WXT_WEBSITE_URL` 生产指向 `https://www.translatebuff.com`，测试指向 `https://test.translatebuff.com`；浏览器 cookie 容器和配置天然隔离。官网用 `js-cookie` 写入 JSON，浏览器 cookies API 返回 URL 编码的原始值，插件需先解码再解析约定的 `{cid, recordedAt}`；本期只有 `cid === '7154'` 可选。条件是 `recordedAt < installAt` 且 `installAt - recordedAt < 30 * 24 * 60 * 60 * 1000`。时间缺失、不为有限整数、等于安装时刻、恰满 30 天、未来时间或格式错误均无效。不要从 `aitrans_cid`、URL `cid` 或其他 `71xx` 推断安装推广。用户未提供适用的隐私同意或 cookie 不可读时选包内号。
+
+例如 `global-edge` 包新安装时只有 `aitrans_cid=66666`、没有有效 `aitrans_install_promo`，应保留 `7152`。包内号由构建渠道决定，不根据运行浏览器或普通 Cookie 自动改号。
 
 ### D3. 固定选择并按状态处理存储失败
 
@@ -34,6 +38,14 @@
 ### D5. 部署与联调顺序
 
 先实施并部署海外官网同名变更，使 `promo_cid` 能写独立 cookie，再实施插件读取；两边使用同一 cookie 名、JSON 形状、时钟单位和 30 天边界。联调须分别覆盖官网与插件生产域、测试域，四种海外包内号，以及安装前后和失效边界。`origin_cid` 作为 report 事件扩展属性发送；后端入库映射不属于本变更范围。
+
+### D6. 发布版本共用单一来源
+
+`src/fork/identity/fork-version.json` 是 fork 发布版本真源，本次 `version` 为 `1.5.0`。`wxt.config.ts` 用 `readForkVersion()` 构造 manifest；`src/fork/membership/api.ts` 的 UA 第 6 段和启动上报 `client_version` 也使用该读取函数。会员请求及登录、匿名 report 请求复用同一请求头版本，不再维护独立的 `1.0.1` 常量。
+
+分支名 `feat/1.5.0` 不会自动改变版本，发版需要更新上述 JSON 并重新构建。上游 `package.json` 的版本只保留作 `version_name` 溯源，不作为 fork 的 UA 版本。渠道第 4 段与版本第 6 段分别取自固定渠道及发布配置，版本升级不重新选择安装渠道。
+
+验证包括 UA 第 6 段与版本 JSON 一致、登录与匿名埋点版本一致，以及构建 manifest 为 `1.5.0`。现有测试包必须重新打包安装后验证实际会员与 report 请求；本地单测和构建不代替后端联调。
 
 ## Risks / Trade-offs
 

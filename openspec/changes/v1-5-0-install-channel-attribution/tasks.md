@@ -21,5 +21,17 @@
 
 ## 5. 联调与验证
 
-- [ ] 5.1 与已具备推广记录的海外官网联调安装前／安装后推广、30 天边界、拒绝权限或同意、cookie／存储失败、测试／正式域隔离和四种海外包；核对启动与活跃事件的 report 请求体均含整数 `origin_cid`。
+- [ ] 5.1 与已具备推广记录的海外官网联调安装前／安装后推广、30 天边界、拒绝权限或同意、cookie／存储失败、测试／正式域隔离和四种海外包；核对启动与活跃事件的 report 请求体均含整数 `origin_cid`。使用重新打包安装的 `1.5.0` 验证真实会员与 report 请求的 UA 第 6 段为 `1.5.0`，以及只有普通 `aitrans_cid=66666` 时海外 Edge 包仍使用 `7152`。
 - [x] 5.2 运行聚焦测试、类型检查及目标海外包构建；按本仓规则运行 GitNexus `detect_changes`，完成用户可见功能对应的 changeset，并执行 `jy-openspec validate v1-5-0-install-channel-attribution --strict`。
+
+## 6. 本地构建包 UA 版本修复（2026-10-13）
+
+- [x] 6.1 将 `src/fork/membership/api.ts` 中硬编码的 UA 版本 `1.0.1` 改为 `readForkVersion()`，补充会员请求及登录、匿名 report 请求的版本一致性回归测试；新增 `.changeset/fix-request-useragent-version.md`。
+- [x] 6.2 按用户确认将 `src/fork/identity/fork-version.json` 从 `1.4.1` 更新为 `1.5.0`；确认分支名不会自动改变发布版本，构建 manifest 使用 `1.5.0`。
+- [x] 6.3 补充海外 Edge 新装仅有普通 `aitrans_cid=66666` 时保留 `7152`、只查询 `aitrans_install_promo` 的回归测试；同步 proposal、design 和规格中的版本来源及渠道验收场景。
+
+### 本地验证记录
+
+- UA 修复及渠道回归：9 个测试文件、97 项测试通过，类型检查通过。
+- 发布配置更新为 `1.5.0` 后：版本、会员请求、report 请求三个测试文件共 47 项测试通过，`pnpm build` 通过；`.output/chrome-mv3/manifest.json` 的 `version` 为 `1.5.0`，`version_name` 为 `任译喵 1.5.0（rf 1.46.6）`。
+- 本轮构建验证为默认 Chrome 产物，海外测试包需重新打包；真实浏览器与后端联调尚未完成，保留任务 5.1 未勾选。

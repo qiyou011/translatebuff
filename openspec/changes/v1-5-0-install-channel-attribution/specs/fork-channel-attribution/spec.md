@@ -52,3 +52,24 @@
 
 - **当** 海外 Chrome 商店包内号为 `7151`，新安装已固定选择 `7154`，用户打开登录或订单页，或插件设置卸载问卷 URL
 - **则** 三处官网链接的 `cid` 必须为 `7154`，与扩展 UA 第 4 段一致；官网不得因此创建安装推广记录
+
+## ADDED Requirements
+
+### Requirement: UserAgent 携带插件发布版本
+
+国内及海外插件必须（MUST）令 7 段自定义 `Useragent` 的第 6 段取自 `src/fork/identity/fork-version.json`，并通过 `readForkVersion()` 与 manifest `version`、启动事件 `client_version` 共用发布版本来源。会员与登录、匿名 report 请求必须（MUST）使用同一版本，不得硬编码旧版本或使用上游 `package.json` 版本。本次发布配置必须（MUST）为 `1.5.0`；后续发版随该配置更新。
+
+#### Scenario: [构建层] 1.5.0 发布版本一致
+
+- **当** 发布配置的 `version` 为 `1.5.0`，重新构建插件并装配会员或 report 请求头
+- **则** manifest `version`、启动事件 `client_version` 和 `Useragent` 第 6 段必须均为 `1.5.0`，UA 仍恰为 7 段
+
+#### Scenario: [API层] 登录与匿名埋点版本一致
+
+- **当** 同一构建分别发送已登录和匿名 report 请求
+- **则** 两者的 `Useragent` 第 6 段必须等于发布配置版本，与会员请求一致
+
+#### Scenario: [构建层] 分支名不替代发布配置
+
+- **当** 分支名为 `feat/1.5.0`，但发布配置仍为其他版本
+- **则** manifest 和请求 UA 必须使用发布配置版本，发布前必须更新配置并重新构建，不能根据分支名推断版本

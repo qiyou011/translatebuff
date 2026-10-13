@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
+import forkVersion from "@/fork/identity/fork-version.json"
 import {
   buildAuthHeaders,
   fetchGatewayModels,
@@ -58,6 +59,10 @@ describe("buildAuthHeaders（显式请求头装配）", () => {
     expect(segments[0]).toBe("browser")
     expect(segments[3]).toBe("7100") // 渠道号
     expect(segments[4]).toBe("aitrans-pc")
+  })
+
+  it("Useragent 第 6 段跟随 manifest 使用的 fork 发布版本", () => {
+    expect(buildAuthHeaders(CRED).Useragent!.split("/")[5]).toBe(forkVersion.version)
   })
 
   it("只产出请求头、不含 credentials 字段（显式带头、不 include）", () => {

@@ -9,6 +9,7 @@ import type { RawToken } from "./tier"
 import { resolveChannelNumber } from "@/fork/identity/channel"
 import { currentEdition } from "@/fork/identity/edition"
 import { getSelectedChannelNumber } from "@/fork/identity/install-channel-runtime"
+import { readForkVersion } from "@/fork/identity/version"
 import { extractErrorMessage } from "@/utils/error/extract-message"
 import { DEFAULT_CLIENT_LANGUAGE } from "./client-language"
 
@@ -25,9 +26,8 @@ const SAAS_APP_ID = "aitrans-pc" // 亦即 7 段 UA 的 client_name 段（对齐
 const UA_DEVICE_NAME = "browser" // 段1：固定 browser（对齐官网 web 端 UA 首段）
 const UA_OS = "Windows" // 段2：os —— 镜像官网确认值
 const UA_OS_VERSION = "windows10.0.22621.2792x64" // 段3：osVersion —— 镜像官网确认值
-const UA_APP_VERSION = "1.0.1" // 段6：appVersion —— 跟随 fork 发版号手工同步
-// ⚠️ 发新版改 fork-version.json 时，这里要一起改；没做成读真源是因为后端若对 appVersion
-//    有校验/白名单，动态跟版会在发版当天静默挂掉登录——需要后端确认后才能改成自动。
+// 段6 与 manifest、启动事件的 client_version 共用 fork-version.json，避免发版漏同步。
+const UA_APP_VERSION = readForkVersion()
 const UA_SN = "000000000000" // 段7：sn 设备唯一标识 —— 扩展无硬件 ID，回落官网占位值
 
 // 组装 7 段 UA。各段均不含 `/`，保证后端按 `/` split 恒得 7 段。段4 渠道号函数内解析（非模块顶层快照）。
