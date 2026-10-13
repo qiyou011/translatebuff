@@ -215,7 +215,7 @@ export type InputTranslationBar =
     }
   /** 两端同语言、什么都没换。同一位置、同款外观，但没有可撤销的对象。 */
   | { kind: "sameLanguage"; element: HTMLElement; lang: LangCodeISO6393; sessionKey?: string }
-  | { kind: "hint"; element: HTMLElement; sessionKey: string }
+  | { kind: "hint"; element: HTMLElement; sessionKey?: string }
 
 type InputTranslationBarState = {
   bar: InputTranslationBar
@@ -953,11 +953,19 @@ export function useInputTranslation() {
     if (!inputTranslationConfig.enabled) return undefined
 
     const showTelegramHint = (event: Event) => {
-      const element = event.target
-      if (!(element instanceof HTMLElement) || !isTelegramUrl(window.location.href)) return
-      const sessionKey = getTelegramSessionKey(window.location.href, element)
-      if (!sessionKey) return
-      if (event.type === "input") {
+      const target = event.target
+      if (!(target instanceof HTMLElement)) return
+      const url = window.location.href
+      const telegram = isTelegramUrl(url)
+      const element = telegram
+        ? target
+        : getChatContextSelector(url)
+          ? target.closest<HTMLElement>('[contenteditable="true"][role="textbox"]')
+          : null
+      if (!element) return
+      const sessionKey = telegram ? (getTelegramSessionKey(url, element) ?? undefined) : undefined
+      if (telegram && !sessionKey) return
+      if (telegram && event.type === "input") {
         element.setAttribute(TELEGRAM_DRAFT_VERSION_ATTR, `${Date.now()}-${Math.random()}`)
       }
       if (writingElementRef.current === element) return

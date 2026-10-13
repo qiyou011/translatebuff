@@ -147,6 +147,52 @@ describe("Discord request feedback and stale-result protection", () => {
     return context
   }
 
+  it.each(["focusin", "input"])(
+    "shows the triple-space hint for a Discord composer on %s without requesting translation",
+    (eventType) => {
+      const config = configWith({ sourceCode: "auto", targetCode: "cmn" })
+      getLocalConfigMock.mockResolvedValue(config)
+      const editor = document.createElement("div")
+      editor.setAttribute("contenteditable", "true")
+      editor.setAttribute("role", "textbox")
+      editor.tabIndex = 0
+      editor.innerHTML = '<span data-slate-node="text">你好</span>'
+      document.body.append(editor)
+      editor.focus()
+      const rendered = renderWithConfig(config)
+      act(() => {
+        editor.firstElementChild!.dispatchEvent(new Event(eventType, { bubbles: true }))
+      })
+      expect(rendered.result.current.bar).toMatchObject({ kind: "hint", element: editor })
+      expect(translateTextForInputMock).not.toHaveBeenCalled()
+      act(() => {
+        editor.textContent = ""
+        fireEvent.input(editor)
+      })
+      expect(rendered.result.current.bar).toBeNull()
+    },
+  )
+
+  it("keeps the trigger hint away from Discord search fields and non-channel pages", () => {
+    const { input, rendered } = setup()
+    act(() => {
+      fireEvent.input(input)
+    })
+    expect(rendered.result.current.bar).toBeNull()
+    const editor = document.createElement("div")
+    editor.setAttribute("contenteditable", "true")
+    editor.setAttribute("role", "textbox")
+    editor.tabIndex = 0
+    editor.textContent = "search"
+    document.body.append(editor)
+    vi.stubGlobal("location", new URL("https://discord.com/discovery"))
+    act(() => {
+      editor.focus()
+      fireEvent.input(editor)
+    })
+    expect(rendered.result.current.bar).toBeNull()
+  })
+
   it("stops legacy cloud input before language or translation requests when no model is available", async () => {
     const config = configWith({ sourceCode: "auto", targetCode: "cmn" })
     config.inputTranslation = { ...config.inputTranslation, providerId: "read-frog-free-ai" }
