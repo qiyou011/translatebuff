@@ -132,6 +132,23 @@ export class PageTranslationManager implements IPageTranslationManager {
   private static readonly RETRANSLATE_WINDOW_MS = 10_000
   private static readonly MAX_PASSES_PER_WINDOW = 6
   private static readonly RETRANSLATE_RETRY_DEBOUNCE_MS = 1_000
+  private static readonly VISIBILITY_CHECK_EVENTS = [
+    "pointerover",
+    "pointerout",
+    "mouseover",
+    "mouseout",
+    "focusin",
+    "focusout",
+    "click",
+    "toggle",
+    "transitionrun",
+    "transitionstart",
+    "transitionend",
+    "transitioncancel",
+    "animationstart",
+    "animationend",
+    "animationcancel",
+  ] as const
   private static readonly DEFAULT_INTERSECTION_OPTIONS: SimpleIntersectionOptions = {
     root: null,
     rootMargin: "600px",
@@ -143,10 +160,13 @@ export class PageTranslationManager implements IPageTranslationManager {
   private pendingStart: symbol | null = null
   private intersectionObserver: IntersectionObserver | null = null
   private mutationObservers: MutationObserver[] = []
+  private visibilityCheckListeners = new Map<HTMLElement, (event: Event) => void>()
+  private pendingVisibilityChecks = new Set<HTMLElement>()
+  private visibilityCheckFrame: number | null = null
   private observedMutationRoots = new WeakSet<Node>()
   private walkId: string | null = null
   private intersectionOptions: IntersectionObserverInit
-  private walkBlockedElementsCache = new WeakSet<HTMLElement>()
+  private walkBlockedElementsCache = new Set<HTMLElement>()
   private refreshingTranslatedSources = new WeakSet<HTMLElement>()
   private translatedSourceMutationVersions = new WeakMap<HTMLElement, number>()
   private retranslationBudgets = new WeakMap<HTMLElement, RetranslationBudget>()
@@ -470,7 +490,7 @@ export class PageTranslationManager implements IPageTranslationManager {
     this.isPageTranslating = false
     this.translationSessionVersion += 1
     this.walkId = null
-    this.walkBlockedElementsCache = new WeakSet()
+    this.walkBlockedElementsCache.clear()
     this.refreshingTranslatedSources = new WeakSet()
     this.translatedSourceMutationVersions = new WeakMap()
     this.pendingRetranslateRetries.forEach((retry) => retry.clear())
@@ -485,6 +505,15 @@ export class PageTranslationManager implements IPageTranslationManager {
     }
     this.mutationObservers.forEach((observer) => observer.disconnect())
     this.mutationObservers = []
+    this.visibilityCheckListeners.forEach((listener, root) => {
+      for (const type of PageTranslationManager.VISIBILITY_CHECK_EVENTS) {
+        root.removeEventListener(type, listener, true)
+      }
+    })
+    this.visibilityCheckListeners.clear()
+    if (this.visibilityCheckFrame !== null) window.cancelAnimationFrame(this.visibilityCheckFrame)
+    this.visibilityCheckFrame = null
+    this.pendingVisibilityChecks.clear()
     this.observedMutationRoots = new WeakSet()
 
     removeSiteRuleCSS(document)
@@ -697,7 +726,7 @@ export class PageTranslationManager implements IPageTranslationManager {
     if (hasNoWalkAncestor(container, config)) return
 
     const onBlockedElement = (element: HTMLElement) => {
-      this.walkBlockedElementsCache.add(element)
+      if (!this.isExtensionUtilityNode(element)) this.walkBlockedElementsCache.add(element)
     }
     if (options.chunked) {
       const result = await walkAndLabelElementChunked(container, walkId, config, {
@@ -889,7 +918,9 @@ export class PageTranslationManager implements IPageTranslationManager {
     const walkBlockedElements = deepQueryTopLevelSelector(element, (el) =>
       this.isWalkBlockedElement(el, config),
     )
-    walkBlockedElements.forEach((el) => this.walkBlockedElementsCache.add(el))
+    walkBlockedElements.forEach((el) => {
+      if (!this.isExtensionUtilityNode(el)) this.walkBlockedElementsCache.add(el)
+    })
   }
 
   /**
@@ -913,8 +944,82 @@ export class PageTranslationManager implements IPageTranslationManager {
       })
 
       this.mutationObservers.push(mutationObserver)
+      // CSS pseudo-classes and native toggle states do not emit DOM mutations.
+      // Capture also sees non-bubbling toggle events and stopped propagation.
+      const onVisibilityCheck = (event: Event) => this.scheduleVisibilityCheck(event)
+      for (const type of PageTranslationManager.VISIBILITY_CHECK_EVENTS) {
+        container.addEventListener(type, onVisibilityCheck, true)
+      }
+      this.visibilityCheckListeners.set(container, onVisibilityCheck)
     }
     this.observeIsolatedDescendantsMutations(container)
+  }
+
+  private scheduleVisibilityCheck(event: Event): void {
+    if (!this.isPageTranslating || this.walkBlockedElementsCache.size === 0) return
+    const path = event.composedPath()
+    // Loading animations are ours, but pointer/focus events on a translation
+    // still belong to the host control containing it.
+    if (
+      (event.type.startsWith("transition") || event.type.startsWith("animation")) &&
+      path.some((target) => this.isExtensionUtilityNode(target as Node))
+    )
+      return
+    const scopes = path.filter((target): target is HTMLElement => {
+      if (!isHTMLElement(target as Node)) return false
+      const element = target as HTMLElement
+      return (
+        element !== element.ownerDocument.body && element !== element.ownerDocument.documentElement
+      )
+    })
+    if (scopes.length === 0) return
+
+    // Include hovered/focused ancestors for descendant and sibling selectors.
+    // Only cached blocked roots are inspected; no document-wide DOM query or
+    // continuous mousemove/polling loop is needed.
+    for (const element of this.walkBlockedElementsCache) {
+      if (!element.isConnected) {
+        this.walkBlockedElementsCache.delete(element)
+      } else if (
+        scopes.some(
+          (scope) =>
+            scope.contains(element) ||
+            (scope.parentElement !== null && scope.parentElement === element.parentElement),
+        )
+      ) {
+        this.pendingVisibilityChecks.add(element)
+      }
+    }
+    if (this.pendingVisibilityChecks.size === 0 || this.visibilityCheckFrame !== null) return
+    const sessionVersion = this.translationSessionVersion
+    this.visibilityCheckFrame = window.requestAnimationFrame(() => {
+      this.visibilityCheckFrame = null
+      const candidates = [...this.pendingVisibilityChecks]
+      this.pendingVisibilityChecks.clear()
+      void this.checkRevealedElements(candidates, sessionVersion)
+    })
+  }
+
+  private async checkRevealedElements(
+    candidates: HTMLElement[],
+    sessionVersion: number,
+  ): Promise<void> {
+    if (this.initialWalkDone) await this.initialWalkDone
+    if (!this.isPageTranslating || this.translationSessionVersion !== sessionVersion) return
+    const config = await getLocalConfig()
+    if (!config || !this.isPageTranslating || this.translationSessionVersion !== sessionVersion)
+      return
+    for (const element of candidates) {
+      if (!this.isPageTranslating || this.translationSessionVersion !== sessionVersion) return
+      if (!element.isConnected) {
+        this.walkBlockedElementsCache.delete(element)
+        continue
+      }
+      if (!this.walkBlockedElementsCache.has(element)) continue
+      if (this.isWalkBlockedElement(element, config) || hasNoWalkAncestor(element, config)) continue
+      this.walkBlockedElementsCache.delete(element)
+      await this.observeTopLevelParagraphs(element, config)
+    }
   }
 
   private static readonly SELF_NODE_CLASSES = [
@@ -1039,6 +1144,7 @@ export class PageTranslationManager implements IPageTranslationManager {
     }
     if (!this.isPageTranslating || this.translationSessionVersion !== sessionVersion) return
 
+    const changedElements = new Set<HTMLElement>()
     for (const rec of hostRecords) {
       if (rec.type === "childList") {
         rec.addedNodes.forEach((node) => {
@@ -1050,9 +1156,23 @@ export class PageTranslationManager implements IPageTranslationManager {
         })
       } else if (this.isWalkabilityAttributeMutation(rec)) {
         const el = rec.target
-        if (isHTMLElement(el) && this.didChangeToWalkable(el, config)) {
-          void this.observeTopLevelParagraphs(el, config)
-        }
+        if (isHTMLElement(el)) changedElements.add(el)
+      }
+    }
+
+    // A parent class can reveal a cached hidden descendant without changing
+    // the descendant's attributes. Check those roots, not every node below it.
+    const changedRoots = [...changedElements]
+    for (const element of new Set([...changedRoots, ...this.walkBlockedElementsCache])) {
+      if (!element.isConnected) {
+        this.walkBlockedElementsCache.delete(element)
+        continue
+      }
+      if (
+        changedRoots.some((root) => root.contains(element)) &&
+        this.didChangeToWalkable(element, config)
+      ) {
+        void this.observeTopLevelParagraphs(element, config)
       }
     }
 

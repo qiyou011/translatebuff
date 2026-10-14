@@ -11,6 +11,7 @@ import {
   getEffectiveTagSet,
   isDontWalkIntoAndDontTranslateAsChildElement,
   isHTMLElement,
+  isNaturalBlockTransNode,
   isShallowBlockHTMLElement,
   isShallowInlineHTMLElement,
   isSiteRuleForceBlockNodeElement,
@@ -94,6 +95,8 @@ export function extractTextContent(
 export interface WalkResult {
   forceBlock: boolean
   isInlineNode: boolean
+  /** Preserve multi-paragraph inline boxes through otherwise inline wrappers. */
+  isBlockContainer?: boolean
 }
 
 export interface WalkCallbacks {
@@ -144,6 +147,8 @@ function* walkNode(
   }
 
   let hasInlineNodeChild = false
+  let blockNodeChildCount = 0
+  let hasBlockContainerChild = false
   let forceBlock = false
 
   for (const child of [...element.childNodes]) {
@@ -168,6 +173,9 @@ function* walkNode(
 
       if (result.isInlineNode) {
         hasInlineNodeChild = true
+      } else {
+        if (isNaturalBlockTransNode(child)) blockNodeChildCount++
+        hasBlockContainerChild ||= result.isBlockContainer === true
       }
     }
   }
@@ -215,8 +223,18 @@ function* walkNode(
   const siteRuleForceBlockNode = isSiteRuleForceBlockNodeElement(element, config)
   const siteRuleForceInlineNode =
     !forceBlock && !siteRuleForceBlockNode && isSiteRuleForceInlineNodeElement(element, config)
+  // An inline-block box with multiple block paragraphs must not collapse into
+  // its parent's inline run. Carry that boundary through outer wrappers, while
+  // retaining single-child unwrapping and CSS-based translation layout.
+  // Node-only overrides remain self-only; explicit inline grouping still wins.
+  const isBlockContainer =
+    hasBlockContainerChild ||
+    (blockNodeChildCount > 1 &&
+      ["inline-block", "inline flow-root"].includes(computedStyle.display))
   const isBlockNode =
-    forceBlock || siteRuleForceBlockNode || (!siteRuleForceInlineNode && naturalBlockNode)
+    forceBlock ||
+    siteRuleForceBlockNode ||
+    (!siteRuleForceInlineNode && (naturalBlockNode || isBlockContainer))
   const isInlineNode = !isBlockNode && (siteRuleForceInlineNode || naturalInlineNode)
 
   if (isBlockNode) {
@@ -228,6 +246,7 @@ function* walkNode(
   return {
     forceBlock,
     isInlineNode,
+    ...(isBlockNode && isBlockContainer ? { isBlockContainer: true } : {}),
   }
 }
 
