@@ -20,6 +20,7 @@ forkProviders:
   updatedModels: "Modelos actualizados: $1"
   loginEnable: "Inicia sesión para activar la traducción de $1"
 forkMembership:
+  redeemCode: Canjear código
   loggedIn: Sesión iniciada
   keyPending: Obteniendo tu clave de traducción…
   tierFree: Gratis

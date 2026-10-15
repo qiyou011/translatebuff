@@ -6,7 +6,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/base-ui/dropdown-menu"
 import { accountLabel } from "@/fork/membership/account-label"
-import { useForkSession, useOpenForkLogin, useOpenForkOrders } from "@/fork/membership/atoms"
+import {
+  useForkSession,
+  useOpenForkLogin,
+  useOpenForkOrders,
+  useOpenForkRedeem,
+} from "@/fork/membership/atoms"
 import { useForkMembershipInfo } from "@/fork/membership/membership-info"
 import { ForkAccountMenuBody, TierBadge } from "@/fork/ui/account-menu-body"
 import { i18n } from "@/utils/i18n"
@@ -19,39 +24,49 @@ export function ForkAccountMenu() {
   const membershipInfo = useForkMembershipInfo()
   const openLogin = useOpenForkLogin()
   const openOrders = useOpenForkOrders()
-
-  if (!session) {
-    return (
-      <div className="flex items-center gap-2">
-        <IconUserCircle className="size-6 text-muted-foreground" aria-hidden />
-        <Button size="xs" variant="outline" onClick={openLogin}>
-          {i18n.t("account.login")}
-        </Button>
-      </div>
-    )
-  }
-
-  const label = accountLabel(session)
+  const openRedeem = useOpenForkRedeem()
+  const label = session ? accountLabel(session) : null
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger
-        render={
-          <button
-            type="button"
-            className="group/account flex cursor-pointer items-center gap-2 rounded-md px-1.5 py-1 transition-colors hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none active:bg-accent/70 data-[popup-open]:bg-accent"
-          />
-        }
+    <div className="flex min-w-0 items-center gap-1">
+      {label ? (
+        <DropdownMenu>
+          <DropdownMenuTrigger
+            render={
+              <button
+                type="button"
+                className="group/account flex min-w-0 cursor-pointer items-center gap-2 rounded-md px-1.5 py-1 transition-colors hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none active:bg-accent/70 data-[popup-open]:bg-accent"
+              />
+            }
+          >
+            <IconUserCircle className="size-6 shrink-0 text-foreground" aria-hidden />
+            <span
+              className={`truncate text-sm font-medium${label.tabularNums ? " tabular-nums" : ""}`}
+            >
+              {label.text}
+            </span>
+            <TierBadge tier={membershipInfo?.tier} />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="start" side="bottom" className="min-w-48">
+            <ForkAccountMenuBody membershipInfo={membershipInfo} onOpenOrders={openOrders} />
+          </DropdownMenuContent>
+        </DropdownMenu>
+      ) : (
+        <div className="flex items-center gap-2">
+          <IconUserCircle className="size-6 text-muted-foreground" aria-hidden />
+          <Button size="xs" variant="outline" onClick={openLogin}>
+            {i18n.t("account.login")}
+          </Button>
+        </div>
+      )}
+      <Button
+        size="xs"
+        variant="ghost"
+        className="text-sm text-muted-foreground"
+        onClick={openRedeem}
       >
-        <IconUserCircle className="size-6 text-foreground" aria-hidden />
-        <span className={`truncate text-sm font-medium${label.tabularNums ? " tabular-nums" : ""}`}>
-          {label.text}
-        </span>
-        <TierBadge tier={membershipInfo?.tier} />
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="start" side="bottom" className="min-w-48">
-        <ForkAccountMenuBody membershipInfo={membershipInfo} onOpenOrders={openOrders} />
-      </DropdownMenuContent>
-    </DropdownMenu>
+        {i18n.t("forkMembership.redeemCode")}
+      </Button>
+    </div>
   )
 }

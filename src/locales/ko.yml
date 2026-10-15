@@ -20,6 +20,7 @@ forkProviders:
   updatedModels: "업데이트된 모델: $1"
   loginEnable: "로그인하여 $1 번역 활성화"
 forkMembership:
+  redeemCode: 코드 사용
   loggedIn: 로그인됨
   keyPending: 번역 키를 가져오는 중…
   tierFree: 무료

@@ -115,3 +115,20 @@ export function useOpenForkOrders(): () => void {
     )
   }, [uiLanguage])
 }
+
+export function useOpenForkRedeem(): () => void {
+  const uiLanguage = useAtomValue(configFieldsAtomMap.uiLanguage)
+  const session = useAtomValue(forkSessionAtom)
+  return useCallback(() => {
+    const locale = resolveUiLocale(uiLanguage)
+    const redeemPath = `${websiteLocalePath(locale, "/")}?redeem=1`
+    const path = session
+      ? redeemPath
+      : `${websiteLocalePath(locale, websiteRouteBasePath("login"))}?redirect=${encodeURIComponent(redeemPath)}`
+    void getSelectedChannelNumber().then((channelId) =>
+      browser.tabs.create({
+        url: appendChannelId(`${env.WXT_WEBSITE_URL}${path}`, channelId),
+      }),
+    )
+  }, [uiLanguage, session])
+}

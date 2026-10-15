@@ -20,6 +20,7 @@ forkProviders:
   updatedModels: "更新したモデル数：$1"
   loginEnable: "ログインして $1 の翻訳を有効にする"
 forkMembership:
+  redeemCode: コードを引き換える
   loggedIn: ログイン済み
   keyPending: 翻訳キーを取得しています…
   tierFree: 無料

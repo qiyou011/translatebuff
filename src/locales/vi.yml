@@ -20,6 +20,7 @@ forkProviders:
   updatedModels: "Số mô hình đã cập nhật: $1"
   loginEnable: "Đăng nhập để bật tính năng dịch của $1"
 forkMembership:
+  redeemCode: Đổi mã
   loggedIn: Đã đăng nhập
   keyPending: Đang lấy khóa dịch của bạn…
   tierFree: Miễn phí

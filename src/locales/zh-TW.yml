@@ -20,6 +20,7 @@ forkProviders:
   updatedModels: "已更新 $1 個模型"
   loginEnable: "登入後啟用 $1 翻譯"
 forkMembership:
+  redeemCode: 兌換碼
   loggedIn: 已登入
   keyPending: 正在取得翻譯密鑰…
   tierFree: 免費

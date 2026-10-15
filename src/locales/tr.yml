@@ -20,6 +20,7 @@ forkProviders:
   updatedModels: "Güncellenen model sayısı: $1"
   loginEnable: "$1 çevirisini etkinleştirmek için giriş yapın"
 forkMembership:
+  redeemCode: Kod kullan
   loggedIn: Oturum açıldı
   keyPending: Çeviri anahtarınız alınıyor…
   tierFree: Ücretsiz

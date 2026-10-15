@@ -20,6 +20,7 @@ forkProviders:
   updatedModels: "Обновлено моделей: $1"
   loginEnable: "Войдите, чтобы включить перевод $1"
 forkMembership:
+  redeemCode: Активировать код
   loggedIn: Вы вошли
   keyPending: Получение ключа перевода…
   tierFree: Бесплатный

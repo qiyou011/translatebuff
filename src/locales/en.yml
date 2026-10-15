@@ -20,6 +20,7 @@ forkProviders:
   updatedModels: "Models updated: $1"
   loginEnable: "Log in to enable $1 translation"
 forkMembership:
+  redeemCode: Redeem code
   loggedIn: Logged in
   keyPending: Getting your translation key…
   tierFree: Free
