@@ -22,6 +22,8 @@ env:
 jobs:
   submit:
     name: Submit to Stores
+    # fork 同步与商店发布分离，手动 dispatch 也不能触发上传或提交。
+    if: ${{ false }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Release Tag

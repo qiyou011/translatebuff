@@ -1,0 +1,97 @@
+# v1.51.0 完整上游同步实施计划
+
+> **For agentic workers:** 使用 jyopsx-apply-change 按任务实施；独立模块由有界 worker 执行，root 负责合并、契约整合与最终审查。遵循 superpowers:test-driven-development 和 verification-before-completion。
+
+**Goal:** 完整同步固定 v1.51.0，保留自有 UI/业务，隔离上游商业能力并以真实扩展回归证明15项和本地术语。
+
+**Architecture:** 通用引擎、schema/迁移和消息复用上游；fork 保留品牌、业务接线与最小准入。现有批量策略保留，术语revision贯通队列/缓存/fallback；公开Provider/hook优先，必要副本逐项对账。
+
+**Tech Stack:** TypeScript、React、WXT、Vitest、Dexie、pnpm；真实浏览器使用构建后的扩展与独立测试profile。
+
+**Spec:** 本目录 design.md 与 specs/ 下三份规格。
+
+## Global Constraints
+
+- 业务起点4be99b341a7c940a48794232f066db43339cc2d2；官方目标55bcef1e684fb4e70f4dce3063e7bd3066f46891/v1.51.0；排除1308e8d1。
+- 保留完整merge历史；不push/publish/store提交/通知/自动归档；未完成G1—G7不推进已接纳基线。
+- 所有本地自动化SKIP_FREE_API=true；free-api是有意跳过的外部服务测试。
+- 准入不改用户配置；输入完整value仅显式动作读取text/search/textarea，排除敏感字段；术语Drive关闭。
+- 编辑前图impact，UNKNOWN源码补证、HIGH/CRITICAL先报告；提交前完整detect_changes，降级结果不算通过。
+
+## Review Focus
+
+- 只选择文本/显示工具栏/取消动作时不得提前读取完整输入值；Task 4以getter计数和敏感字段回归证明。
+- 术语修改删除/跨revision合批/单条fallback不得使用旧缓存或混合词条；Task 5的队列和prompt行为测试覆盖。
+- 新默认enabled、旧system引用或直接消息不得绕过未批准功能；Task 6验证请求次数为零且正常provider仍可用。
+- body替换、迟响应、frame重载和丢失pointer capture不得重挂根或写回旧编辑器；Task 3/4覆盖生命周期。
+- 升级失败不能用新装成功代替，旧包回退前必须恢复旧配置；Task 9的升级/恢复证据单列。
+
+## 1. 立项、基线与影响证据
+
+- [x] 1.1 完成立项proposal/design/三份specs/tasks，落实已通过架构审查的value读取、术语revision及发布隔离要求；运行 `jy-openspec validate upstream-sync-v1-51-0 --strict`，预期通过。
+- [x] 1.2 隔离分支和依赖就绪；运行根及fork基线测试，记录3781+795等实际结果和外部skip；更新图并记录影响与未知项源码补证。
+- [x] 1.3 创建upstream-review.md、adaptation.md和validation.md，绑定起点/固定目标/15项来源、12补丁和46重定向，分开候选与已接纳基线。
+
+## 2. 发布隔离与完整合并
+
+- [x] 2.1 先隔离 `.github/workflows/release.yml`、`submit.yml` 的上游发版/Discord/商店副作用；读取最终workflow验证没有可执行的上游发布路径。
+- [x] 2.2 `.github/workflows/fork-guard.yml` 显式固定FORK_SYNC_BASE、SKIP_FREE_API，执行根和fork测试并覆盖类型/格式；工具链与目标声明一致。运行已有脚本测试核验。
+- [ ] 2.3 图变化核对后保存立项与发布隔离的本地提交；从该提交完整merge固定目标，保留合并关系、列出冲突并再次审查发布隔离。
+- [ ] 2.4 根维护 `package.json`、`wxt.config.ts`、locale、共享UI及文档冲突；保留自有脚本/品牌资源/环境配置、引擎版本与manifest版本分离，使用目标pnpm重新生成锁文件。
+
+## 3. 页面引擎、后台队列与15项共享修复
+
+**Files:** `src/entrypoints/background/{index,translation-queues}.ts`；`src/entrypoints/host.content/translation-control/**`；`src/utils/host/**`；`src/utils/site-rules/**`；相关原有测试。**Interfaces:** 继续由后台向页面handler注入 `createPageTranslationQueues`，接纳目标routing/取消/缓存/术语参数；不复制第二套执行器。
+
+- [ ] 3.1 先运行P01/P02/P03/P04/P06/P07/P08/P10/P12/P15相关测试与现有菜单/显隐回归，记录基线缺口；新增fork特有回归先RED后适配。
+- [ ] 3.2 合并页面引擎、行内原子、缓存carry和站点规则冲突，保留4be菜单展开修复、c75段落结构和公式/DeepLX兼容，运行相关host/site-rules测试GREEN。
+- [ ] 3.3 适配目标后台模块拆分与routing/配置/取消接口，同时保留fork页面队列注入和输入/页面请求隔离，运行后台/页面队列集成测试。
+- [ ] 3.4 核验标题开关复用上游schema及迁移，body替换后同一shadow host/React状态恢复；针对连接状态及清理运行测试。
+- [ ] 3.5 YouTube字幕时长、pointer capture、菜单事件等目标修复在实际共享路径接入，原有分段/字幕服务fork包装契约保持，运行字幕和相关UI测试。
+
+## 4. 划词、输入与品牌界面
+
+**Files:** `src/fork/ui/selection-content/**`；`src/entrypoints/selection.content/**`；`src/entrypoints/input-injector.content/**`；`src/fork/ui/translation-hub/**`；`src/fork/ui/options/**`。**Interfaces:** 复用目标SelectionSpeechProvider/公共action状态与schema；仅动作消费边界可读取控件上下文，显示快照不持完整value。
+
+- [ ] 4.1 为普通/敏感控件、仅mouseup/显示/取消不读完整value编写可观察getter行为测试，运行RED；实现动作时捕获/类型敏感属性连接重查，运行GREEN。
+- [ ] 4.2 合并选择工具栏/动作schema与目标模块搬迁，App接上语音Provider；保留词典/已有自定义动作和品牌工具栏，新内置动作以Task6准入控制。
+- [ ] 4.3 fork Toolbar接入同源iframe延迟选区、ready重放及清理；验证可信手势、顶层/frame双开关和跨域/不透明sandbox拒绝，不扩大既有权限。
+- [ ] 4.4 为Reddit Lexical三空格、深焦点、编辑后旧响应、撤销与TG/Discord保护运行/补齐RED测试；复用目标adapter并最小适配实际fork hook到GREEN。
+- [ ] 4.5 翻译中心共享独立持久选择/公共状态及现有设置包装，保留自有卡片与服务；运行fork UI与品牌用例证明语音/状态新依赖无context缺失。
+
+## 5. 本地术语库与现有批量策略
+
+**Files:** `src/fork/page-translation/{types,queues,llm,index}.ts`及测试、`src/fork/ui/options`必要包装；上游`src/utils/glossary/**`直接复用。**Interfaces:** 页面任务传递目标MatchedTerm与revision；batch key/cache/prompt/fallback必须表示同一有效快照。
+
+- [ ] 5.1 对术语注入、不同revision不合批、修改删除不命中旧缓存、单条降级保词条编写行为测试，运行RED。
+- [ ] 5.2 保留当前LLM/MT批量参数与请求隔离，贯通匹配词条和revision至最终prompt、缓存和降级；运行fork page-translation套件GREEN。
+- [ ] 5.3 本地编辑/范围/CSV入口接入自有设置外壳，Drive初始化与授权保持关闭；运行上游glossary与fork准入测试。
+
+## 6. 四层准入与商业服务隔离
+
+**Files:** `src/fork/upstream-admission.ts`、`src/fork/upstream-services/**`及必要重定向；目标字幕平台初始化、动作入口及后台执行边界。**Interfaces:** 明确常量、批准内置ID和既有不可重试禁用语义；不得将禁用功能自动转自有付费请求。
+
+- [ ] 6.1 为默认enabled/迁移配置、直接route/消息、未批准内置动作和新平台编写RED测试；添加最小准入与调用边界控制，运行GREEN。
+- [ ] 6.2 复核空auth、RPC本地拒绝、后台/初始化停用及新目标直接网络出口，保持normal provider与自有服务兼容；运行已有cloud-isolation/legacy-provider测试。
+- [ ] 6.3 完整merge后再次核对release/submit/通知和相关依赖初始化；静态检查不代替Task9实际网络记录。
+
+## 7. 来源、指纹、手册与版本记录
+
+- [ ] 7.1 对12条补丁来源逐贡献核对目标吸收和后续业务修改，形成adaptation记录后清理已吸收来源；对13漂移逐项说明，不盲刷指纹。
+- [ ] 7.2 逐项核对46重定向/账外App副本并更新已审查指纹，运行FORK_SYNC_MODE=1及固定FORK_SYNC_BASE边界守卫、品牌守卫及相关脚本测试。
+- [ ] 7.3 更新FORK.md/FORK_GUIDE.md为固定正式版、双周检查、正确同步分支、CI/发布隔离及G1—G7流程；加入conventional changeset，保留上游changesets来源且不执行上游发版。
+
+## 8. 工程验证与独立代码审查
+
+- [ ] 8.1 运行 `SKIP_FREE_API=true pnpm run test` 和fork配置全套，记录通过/失败/外部skip；新失败按根因修复并补相关回归，不隐藏既存问题。
+- [ ] 8.2 运行type-check、fmt:check、固定目标fork边界/品牌检查，完成相关cn Chrome/Edge/Firefox及global代表渠道构建并逐包断言。
+- [ ] 8.3 检查所有冲突已清理，执行完整GitNexus detect_changes记录partial/truncated/UNKNOWN；必要时修正查询范围并重新分析，取得可复核影响记录。
+- [ ] 8.4 独立reviewer审查自有适配、隐私、术语链路和隔离；必要问题经回归修复，确认无未解决重要项，保存本地完整merge候选提交。
+
+## 9. 真实浏览器回归与候选状态
+
+- [ ] 9.1 构建实际测试包、记录manifest/浏览器版本/代码SHA与产物hash，独立profile加载并确认真实SW/扩展页面/内容脚本启动；测试基线截图保留自有UI。
+- [ ] 9.2 真实扩展执行15项可复现浏览器用例及术语编辑/CSV/自有LLM链路；控制页面与受控provider证据和需要登录的实站证据分开标注。
+- [ ] 9.3 真实SW、扩展页及content script触发入口/直接调用/旧配置与后台重启，记录零上游商业请求，并对照正常自有/自配翻译及UI；条件不足明确待验收。
+- [ ] 9.4 验证schema100→111、备份导入与旧配置恢复；确认未批准功能在升级配置下仍禁用、用户provider/动作和品牌状态保留。
+- [ ] 9.5 汇总G1—G7、最终候选SHA/产物hash/覆盖与缺项；只有全部通过并获接纳才推进lastSynced元数据，否则保留旧基线并交付可审查候选和剩余验收清单；清理本轮浏览器profile/本地服务。

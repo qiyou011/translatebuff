@@ -22,6 +22,8 @@ concurrency: ${{ github.workflow }}-${{ github.ref }}
 jobs:
   release:
     name: Release Extension
+    # fork 仅通过受控 pack.mjs 出包，不运行上游发版、通知或 release 上传。
+    if: ${{ false }}
     runs-on: ubuntu-latest
     env:
       SKIP_ENV_VALIDATION: true

@@ -3,6 +3,11 @@ on: pull_request
 jobs:
   boundary:
     runs-on: ubuntu-latest
+    env:
+      SKIP_FREE_API: "true"
+      FORK_SYNC_BASE: 55bcef1e684fb4e70f4dce3063e7bd3066f46891
+      FORK_HEAD_REF: ${{ github.head_ref }}
+      FORK_BASE_REF: ${{ github.base_ref }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -13,30 +18,38 @@ jobs:
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 26.11.1
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - name: Fetch official upstream sources
         run: |
           git remote add upstream https://github.com/mengxi-ream/read-frog.git
-          git fetch --no-tags upstream +refs/heads/main:refs/remotes/upstream/main
+          if [[ "$FORK_HEAD_REF" == feat/upstream-sync-* ]]; then
+            # 来源预检沿用 upstream/main 本地引用，但同步时只获取固定正式目标。
+            git fetch --no-tags upstream "$FORK_SYNC_BASE:refs/remotes/upstream/main"
+          else
+            git fetch --no-tags upstream +refs/heads/main:refs/remotes/upstream/main
+          fi
       # 同步分支合完上游后三点差集等于全量上游改动，用增量模式会把同步 PR 自己判红；
-      # 故按分支名分流。推导失败硬失败退出，不回落增量模式（静默降级 = 不做检查）。
+      # 故按分支名分流并显式冻结 FORK_SYNC_BASE。校验失败硬失败，不回落增量模式。
       - name: Fork boundary check
         run: |
-          if [[ "${{ github.head_ref }}" == feat/upstream-sync-* ]]; then
-            FORK_SYNC_MODE=1 FORK_BASE_REF=${{ github.base_ref }} node scripts/check-fork-boundary.mjs
+          if [[ "$FORK_HEAD_REF" == feat/upstream-sync-* ]]; then
+            FORK_SYNC_MODE=1 node scripts/check-fork-boundary.mjs
           else
-            FORK_DIFF_BASE=origin/${{ github.base_ref }} node scripts/check-fork-boundary.mjs
+            FORK_DIFF_BASE="origin/$FORK_BASE_REF" node scripts/check-fork-boundary.mjs
           fi
       - name: Fork brand check
         run: node scripts/check-fork-brand.mjs
       # free-api.test.ts 打真实外部翻译服务，端点抖动或限流会让构建门红在与本仓改动
-      # 无关的地方。与 release.yml 同样用 SKIP_FREE_API 跳过——而不是 --exclude glob：
+      # 无关的地方。根和 fork 套件统一使用 job 的 SKIP_FREE_API，而不是 --exclude glob：
       # glob 只挡住这一个文件名，日后新增的实机冒烟测试仍会真打网络。
-      - run: pnpm run test
-        env:
-          SKIP_FREE_API: "true"
+      - name: Run upstream tests
+        run: pnpm run test
+      - name: Run fork tests
+        run: pnpm run test --config vitest.fork.config.ts
+      - run: pnpm run type-check
+      - run: pnpm run fmt:check
       # 国内线：三个浏览器目标各构建一次，顺带验证三端都还能编译——这是单渠道打包给不了的覆盖面。
       - run: pnpm run build
       - run: pnpm run build:edge
