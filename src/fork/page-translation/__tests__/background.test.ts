@@ -1,6 +1,6 @@
 import { beforeEach, afterEach, expect, it, vi } from "vitest"
 import { storage } from "#imports"
-import { setUpWebPageTranslationQueue } from "@/entrypoints/background/translation-queues"
+import { setupPageTranslationHandlers } from "@/entrypoints/background/page-translation"
 import { CONFIG_STORAGE_KEY, DEFAULT_CONFIG } from "@/utils/constants/config"
 import { createPageTranslationQueues } from "../queues"
 
@@ -75,7 +75,7 @@ it("routes input immediately even while the page lane is occupied", async () => 
       }),
   )
   mocks.execute.mockResolvedValue("input translated")
-  setUpWebPageTranslationQueue(createPageTranslationQueues)
+  setupPageTranslationHandlers(createPageTranslationQueues)
   const translate = mocks.handlers.get("enqueueTranslateRequest")!
   const page = translate(message("page"))
   await vi.advanceTimersByTimeAsync(100)
@@ -92,7 +92,7 @@ it.each(["formula lost", "{{0}} {{0}}", "{{0}} {{9}}"])(
   "does not persist damaged formula tokens through the injected fork queue: %s",
   async (result) => {
     mocks.generate.mockResolvedValue({ text: JSON.stringify({ t0: result }) })
-    setUpWebPageTranslationQueue(createPageTranslationQueues)
+    setupPageTranslationHandlers(createPageTranslationQueues)
     const request = mocks.handlers.get("enqueueTranslateRequest")!(message("Formula {{0}}"))
     await vi.advanceTimersByTimeAsync(100)
     expect(await request).toBe(result)
@@ -102,7 +102,7 @@ it.each(["formula lost", "{{0}} {{0}}", "{{0}} {{9}}"])(
 
 it("persists the formula sentinel through the injected fork queue", async () => {
   mocks.generate.mockResolvedValue({ text: '{"t0":"{{NO_TRANSLATION_NEEDED}}"}' })
-  setUpWebPageTranslationQueue(createPageTranslationQueues)
+  setupPageTranslationHandlers(createPageTranslationQueues)
   const request = mocks.handlers.get("enqueueTranslateRequest")!(message("Formula {{0}}"))
   await vi.advanceTimersByTimeAsync(100)
   expect(await request).toBe("{{NO_TRANSLATION_NEEDED}}")
@@ -118,7 +118,7 @@ it("does not cache a late response for a cancelled page", async () => {
         finish = resolve
       }),
   )
-  setUpWebPageTranslationQueue(createPageTranslationQueues)
+  setupPageTranslationHandlers(createPageTranslationQueues)
   const promise = mocks.handlers.get("enqueueTranslateRequest")!(message("page")).catch(
     () => "cancelled",
   )
@@ -136,7 +136,7 @@ it("does not cache a late response for a cancelled page", async () => {
 it("reuses a cached HTML sentinel instead of treating it as missing markers", async () => {
   mocks.get.mockResolvedValue({ translation: "{{NO_TRANSLATION_NEEDED}}" })
   mocks.generate.mockResolvedValue({ text: '{"t0":"{{NO_TRANSLATION_NEEDED}}"}' })
-  setUpWebPageTranslationQueue(createPageTranslationQueues)
+  setupPageTranslationHandlers(createPageTranslationQueues)
   const request = message('<a data-rf-attr="0">中文</a>')
   const pending = mocks.handlers.get("enqueueTranslateRequest")!({
     ...request,
@@ -156,7 +156,7 @@ it("routes an input preflight summary around a saturated page queue", async () =
       }),
   )
   mocks.summary.mockResolvedValue("input summary")
-  setUpWebPageTranslationQueue(createPageTranslationQueues)
+  setupPageTranslationHandlers(createPageTranslationQueues)
   const translate = mocks.handlers.get("enqueueTranslateRequest")!
   const pages = [0, 1, 2, 3].map((id) => translate(message(`page-${id}`)))
   await vi.advanceTimersByTimeAsync(100)
@@ -180,3 +180,130 @@ it("routes an input preflight summary around a saturated page queue", async () =
   expect(await summary).toBe("input summary")
   expect(completedWhileSaturated).toBe(true)
 })
+
+it("does not reuse a cached wording after editing or deleting matched terminology", async () => {
+  const cache = new Map<string, { translation: string }>()
+  mocks.get.mockImplementation((hash) => cache.get(hash))
+  mocks.put.mockImplementation(({ key, translation }) => {
+    cache.set(key, { translation })
+  })
+  mocks.generate.mockImplementation(({ instructions }: { instructions: string }) => ({
+    text: JSON.stringify({
+      t0: instructions.includes("Frog => 青蛙")
+        ? "青蛙"
+        : instructions.includes("Frog => 蛙")
+          ? "蛙"
+          : "Frog",
+    }),
+  }))
+  setupPageTranslationHandlers(createPageTranslationQueues)
+  const translate = mocks.handlers.get("enqueueTranslateRequest")!
+  const source = message("Frog")
+  const request = async (target: string | undefined, revision: number) => {
+    const pending = translate({
+      ...source,
+      data: {
+        ...source.data,
+        glossaryTerms:
+          target === undefined
+            ? []
+            : [
+                {
+                  matchKey: "frog",
+                  source: "Frog",
+                  target,
+                  keepOriginal: false,
+                },
+              ],
+        glossaryRevision: revision,
+      },
+    })
+    await vi.advanceTimersByTimeAsync(100)
+    return pending
+  }
+  expect(await request("青蛙", 1)).toBe("青蛙")
+  expect(await request("蛙", 2)).toBe("蛙")
+  expect(await request(undefined, 3)).toBe("Frog")
+  expect(await request(undefined, 3)).toBe("Frog")
+  expect(mocks.generate).toHaveBeenCalledTimes(3)
+})
+
+it("cancels interactive translation with its page session before accepting a late response", async () => {
+  let finish!: (value: string) => void
+  mocks.execute.mockImplementation(
+    () =>
+      new Promise((resolve) => {
+        finish = resolve
+      }),
+  )
+  setupPageTranslationHandlers(createPageTranslationQueues)
+  const pending = mocks.handlers.get("enqueueTranslateRequest")!(
+    message("input", "inputTranslation"),
+  ).catch(() => "cancelled")
+  await vi.advanceTimersByTimeAsync(0)
+  await mocks.handlers.get("cancelPageTranslationRequests")!({
+    sender: { tab: { id: 1 } },
+    data: { sessionId: "session" },
+  })
+  finish("late input")
+  await vi.advanceTimersByTimeAsync(0)
+  expect(await pending).toBe("cancelled")
+  expect(mocks.put).not.toHaveBeenCalled()
+})
+
+it.each([undefined, "乙"])(
+  "does not mix or poison cached terminology for same-revision scoped snapshots: %s",
+  async (target) => {
+    const config = structuredClone(DEFAULT_CONFIG)
+    config.pageTranslation.batchQueueConfig = { maxItemsPerBatch: 2, maxCharactersPerBatch: 4000 }
+    mocks.init.mockResolvedValue(config)
+    const cache = new Map<string, { translation: string }>()
+    mocks.get.mockImplementation((hash) => cache.get(hash))
+    mocks.put.mockImplementation(({ key, translation }) => {
+      cache.set(key, { translation })
+    })
+    mocks.generate.mockImplementation(
+      ({ instructions, prompt }: { instructions: string; prompt: string }) => {
+        const value = instructions.includes("Frog => 甲")
+          ? "甲"
+          : instructions.includes("Frog => 乙")
+            ? "乙"
+            : "Frog"
+        return {
+          text: prompt.includes('"t0"')
+            ? JSON.stringify({ t0: value, ...(prompt.includes('"t1"') ? { t1: value } : {}) })
+            : value,
+        }
+      },
+    )
+    setupPageTranslationHandlers(createPageTranslationQueues)
+    const translate = mocks.handlers.get("enqueueTranslateRequest")!
+    const scoped = (text: string, wording?: string) => {
+      const request = message(text)
+      return {
+        ...request,
+        data: {
+          ...request.data,
+          glossaryRevision: 7,
+          glossaryTerms:
+            wording === undefined
+              ? []
+              : [
+                  {
+                    matchKey: "i:frog",
+                    source: "Frog",
+                    target: wording,
+                    keepOriginal: false,
+                  },
+                ],
+        },
+      }
+    }
+    const current = scoped("Frog new", target)
+    const pending = Promise.all([translate(scoped("Frog old", "甲")), translate(current)])
+    await vi.advanceTimersByTimeAsync(100)
+    expect(await pending).toEqual(["甲", target ?? "Frog"])
+    expect(await translate(current)).toBe(target ?? "Frog")
+    expect(mocks.generate).toHaveBeenCalledTimes(2)
+  },
+)

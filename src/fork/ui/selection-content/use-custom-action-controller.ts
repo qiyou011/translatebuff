@@ -1,26 +1,33 @@
+import type { LayoutStatus } from "@read-frog/layout-engine/contract"
+import type { SelectionPopoverActions } from "@/components/ui/selection-popover"
 import type { SelectionSession } from "@/entrypoints/selection.content/selection-toolbar/atoms"
 import { useAtomValue, useSetAtom } from "jotai"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import {
+  buildCustomActionExecutionPlan,
+  useCustomActionExecution,
+  useCustomActionWebPageContext,
+} from "@/components/custom-action/use-custom-action-execution"
 import { toastManager } from "@/components/ui/base-ui/toast"
+import { createSelectionToolbarPrecheckError } from "@/components/ui/selection-popover/inline-error"
 import {
   contextAtom,
   isSelectionToolbarOpenAtom as isSelectionToolbarVisibleAtom,
   selectionAtom,
   selectionSessionAtom,
 } from "@/entrypoints/selection.content/selection-toolbar/atoms"
-import {
-  buildCustomActionExecutionPlan,
-  useCustomActionExecution,
-  useCustomActionWebPageContext,
-} from "@/entrypoints/selection.content/selection-toolbar/custom-action-button/use-custom-action-execution"
-import { createSelectionToolbarPrecheckError } from "@/entrypoints/selection.content/selection-toolbar/inline-error"
 import { useSelectionOpenRequestResolver } from "@/entrypoints/selection.content/selection-toolbar/use-selection-open-request"
-import { normalizeSelectedText } from "@/entrypoints/selection.content/utils"
+import { useSelectionShortcuts } from "@/entrypoints/selection.content/selection-toolbar/use-selection-shortcuts"
+import {
+  captureSelectionActionContext,
+  normalizeSelectedText,
+} from "@/entrypoints/selection.content/utils"
 import { withRenyimiaoJsonObjectFormat } from "@/fork/providers/custom-action-response-format"
 import { ANALYTICS_FEATURE, ANALYTICS_SURFACE } from "@/types/analytics"
 import { createFeatureUsageContext, trackFeatureUsed } from "@/utils/analytics"
 import { UNKNOWN_FEATURE_PROVIDER } from "@/utils/analytics-provider"
 import { configFieldsAtomMap, writeConfigAtom } from "@/utils/atoms/config"
+import { getSourceDocumentTitle } from "@/utils/content/document-title"
 import { getSelectionToolbarActions, patchSelectionToolbarAction } from "@/utils/custom-actions"
 import { onMessage } from "@/utils/message"
 import {
@@ -39,7 +46,10 @@ interface SelectionCustomActionPendingOpenRequest {
   actionId: string
   anchor?: { x: number; y: number }
   session: SelectionSession | null
-  surface: typeof ANALYTICS_SURFACE.SELECTION_TOOLBAR | typeof ANALYTICS_SURFACE.CONTEXT_MENU
+  surface:
+    | typeof ANALYTICS_SURFACE.SELECTION_TOOLBAR
+    | typeof ANALYTICS_SURFACE.CONTEXT_MENU
+    | typeof ANALYTICS_SURFACE.SHORTCUT
 }
 
 export function useSelectionCustomActionController() {
@@ -50,7 +60,9 @@ export function useSelectionCustomActionController() {
   const [activeSession, setActiveSession] = useState<SelectionSession | null>(null)
   const [activeActionId, setActiveActionId] = useState<string | null>(null)
   const [sourceSurface, setSourceSurface] = useState<
-    typeof ANALYTICS_SURFACE.SELECTION_TOOLBAR | typeof ANALYTICS_SURFACE.CONTEXT_MENU
+    | typeof ANALYTICS_SURFACE.SELECTION_TOOLBAR
+    | typeof ANALYTICS_SURFACE.CONTEXT_MENU
+    | typeof ANALYTICS_SURFACE.SHORTCUT
   >(ANALYTICS_SURFACE.SELECTION_TOOLBAR)
   const selectionSession = useAtomValue(selectionSessionAtom)
   const selection = useAtomValue(selectionAtom)
@@ -62,10 +74,11 @@ export function useSelectionCustomActionController() {
   const setConfig = useSetAtom(writeConfigAtom)
   const bodyRef = useRef<HTMLDivElement>(null)
   const pendingOpenRequestRef = useRef<SelectionCustomActionPendingOpenRequest | null>(null)
-  const reopenFrameRef = useRef<number | null>(null)
+  const popoverActionsRef = useRef<SelectionPopoverActions | null>(null)
   const nextEphemeralSessionIdRef = useRef(0)
   const trackedPrecheckErrorKeyRef = useRef<string | null>(null)
-  const { resolveContextMenuOpenRequest } = useSelectionOpenRequestResolver(selectionSession)
+  const { resolveContextMenuOpenRequest, resolveShortcutOpenRequest } =
+    useSelectionOpenRequestResolver(selectionSession)
   const selectionText = activeSession?.selectionSnapshot.text ?? null
   const cleanSelection = useMemo(() => normalizeSelectedText(selectionText), [selectionText])
   const paragraphsText = useMemo(() => {
@@ -76,7 +89,7 @@ export function useSelectionCustomActionController() {
     return activeSession?.contextSnapshot.text || cleanSelection
   }, [activeSession?.contextSnapshot.text, cleanSelection])
   const webPageContext = useCustomActionWebPageContext(isOpen, popoverSessionKey)
-  const titleText = (webPageContext?.webTitle ?? document.title) || null
+  const titleText = (webPageContext?.webTitle ?? getSourceDocumentTitle()) || null
   const activeAction = useMemo(
     () =>
       getSelectionToolbarActions(selectionToolbarConfig).find(
@@ -129,6 +142,13 @@ export function useSelectionCustomActionController() {
   const displayedIsRunning =
     (isOpen && webPageContext === undefined) || (executionPlan.executionContext ? isRunning : false)
   const displayedThinking = executionPlan.executionContext ? thinking : null
+  const layoutStatus: LayoutStatus = displayedIsRunning
+    ? "streaming"
+    : displayedError
+      ? "error"
+      : "done"
+  const layoutSelection = executionPlan.executionContext?.promptTokens.selection ?? cleanSelection
+  const layoutTargetCode = executionPlan.executionContext?.targetCode ?? language.targetCode
 
   const resetPopoverSession = useCallback((options?: { clearAnchor?: boolean }) => {
     setActiveSession(null)
@@ -140,65 +160,66 @@ export function useSelectionCustomActionController() {
 
   const commitOpenRequest = useCallback((request: SelectionCustomActionPendingOpenRequest) => {
     pendingOpenRequestRef.current = request
-    if (request.anchor) {
-      setAnchor(request.anchor)
-    }
   }, [])
+
+  const applyPendingSession = useCallback(() => {
+    const pendingRequest = pendingOpenRequestRef.current
+    const nextSession = pendingRequest?.session ?? selectionSession
+    const nextAction = getSelectionToolbarActions(selectionToolbarConfig).find(
+      (action) => action.id === pendingRequest?.actionId && action.enabled !== false,
+    )
+    setActiveSession(
+      nextSession && nextAction
+        ? {
+            ...nextSession,
+            contextSnapshot:
+              captureSelectionActionContext(nextSession.selectionSnapshot) ??
+              nextSession.contextSnapshot,
+          }
+        : nextSession,
+    )
+    setActiveActionId(nextAction?.id ?? null)
+    setSourceSurface(pendingRequest?.surface ?? ANALYTICS_SURFACE.SELECTION_TOOLBAR)
+    setIsSelectionToolbarVisible(false)
+    pendingOpenRequestRef.current = null
+  }, [selectionSession, selectionToolbarConfig, setIsSelectionToolbarVisible])
 
   const handleOpenChange = useCallback(
     (nextOpen: boolean) => {
       resetSessionState()
-
       if (nextOpen) {
-        const pendingRequest = pendingOpenRequestRef.current
-        const nextSession = pendingRequest?.session ?? selectionSession
-
-        setActiveSession(nextSession)
-        setActiveActionId(pendingRequest?.actionId ?? null)
-        setSourceSurface(pendingRequest?.surface ?? ANALYTICS_SURFACE.SELECTION_TOOLBAR)
-        setPopoverSessionKey((prev) => prev + 1)
-        if (pendingRequest?.anchor) {
-          setAnchor(pendingRequest.anchor)
-        }
-        setIsSelectionToolbarVisible(false)
-        pendingOpenRequestRef.current = null
+        setPopoverSessionKey((previous) => previous + 1)
+        applyPendingSession()
       } else {
-        resetPopoverSession({
-          clearAnchor: pendingOpenRequestRef.current === null,
-        })
+        resetPopoverSession({ clearAnchor: pendingOpenRequestRef.current === null })
       }
-
       setIsOpen(nextOpen)
     },
-    [resetPopoverSession, resetSessionState, selectionSession, setIsSelectionToolbarVisible],
+    [applyPendingSession, resetPopoverSession, resetSessionState],
   )
+
+  const handleReuseRequest = useCallback(() => {
+    resetSessionState()
+    applyPendingSession()
+    setRerunNonce((previous) => previous + 1)
+  }, [applyPendingSession, resetSessionState])
 
   const openActionRequest = useCallback(
     (request: SelectionCustomActionPendingOpenRequest) => {
-      if (isOpen) {
-        handleOpenChange(false)
-
-        if (reopenFrameRef.current !== null) {
-          cancelAnimationFrame(reopenFrameRef.current)
-        }
-
-        reopenFrameRef.current = requestAnimationFrame(() => {
-          reopenFrameRef.current = null
-          commitOpenRequest(request)
-          handleOpenChange(true)
-        })
-        return
-      }
-
       commitOpenRequest(request)
-      handleOpenChange(true)
+      popoverActionsRef.current?.requestOpen(request.anchor ?? null)
     },
-    [commitOpenRequest, handleOpenChange, isOpen],
+    [commitOpenRequest],
   )
 
   const openToolbarCustomAction = useCallback(
     (actionId: string, triggerElement: HTMLElement | null) => {
-      if (!triggerElement) {
+      if (
+        !triggerElement ||
+        !getSelectionToolbarActions(selectionToolbarConfig).some(
+          (action) => action.id === actionId && action.enabled !== false,
+        )
+      ) {
         return
       }
 
@@ -222,7 +243,7 @@ export function useSelectionCustomActionController() {
             : null),
       })
     },
-    [context, openActionRequest, selection, selectionSession],
+    [context, openActionRequest, selection, selectionSession, selectionToolbarConfig],
   )
 
   const openContextMenuCustomAction = useCallback(
@@ -236,11 +257,8 @@ export function useSelectionCustomActionController() {
           ...createFeatureUsageContext(
             ANALYTICS_FEATURE.CUSTOM_AI_ACTION,
             ANALYTICS_SURFACE.CONTEXT_MENU,
-            Date.now(),
-            {
-              action_id: actionId,
-            },
           ),
+          action_id: actionId,
           // 前置校验失败，provider 尚未解析，按上游约定回落 UNKNOWN
           ...UNKNOWN_FEATURE_PROVIDER,
           outcome: "failure",
@@ -256,12 +274,9 @@ export function useSelectionCustomActionController() {
           ...createFeatureUsageContext(
             ANALYTICS_FEATURE.CUSTOM_AI_ACTION,
             ANALYTICS_SURFACE.CONTEXT_MENU,
-            Date.now(),
-            {
-              action_id: action.id,
-              action_name: action.name,
-            },
           ),
+          action_id: action.id,
+          action_name: action.name,
           // 前置校验失败，provider 尚未解析，按上游约定回落 UNKNOWN
           ...UNKNOWN_FEATURE_PROVIDER,
           outcome: "failure",
@@ -279,6 +294,27 @@ export function useSelectionCustomActionController() {
     },
     [openActionRequest, resolveContextMenuOpenRequest, selectionToolbarConfig],
   )
+
+  const actionShortcuts = useMemo(
+    () =>
+      Object.fromEntries(
+        getSelectionToolbarActions(selectionToolbarConfig)
+          .filter((action) => action.enabled !== false)
+          .map((action) => [action.id, action.shortcut]),
+      ),
+    [selectionToolbarConfig],
+  )
+  useSelectionShortcuts(actionShortcuts, (actionId, session) => {
+    const request = resolveShortcutOpenRequest(session)
+    if (!request) return false
+    openActionRequest({
+      actionId,
+      anchor: request.anchor,
+      session: request.session,
+      surface: ANALYTICS_SURFACE.SHORTCUT,
+    })
+    return true
+  })
 
   const handleProviderChange = useCallback(
     (providerId: string) => {
@@ -308,14 +344,6 @@ export function useSelectionCustomActionController() {
   }, [openContextMenuCustomAction])
 
   useEffect(() => {
-    return () => {
-      if (reopenFrameRef.current !== null) {
-        cancelAnimationFrame(reopenFrameRef.current)
-      }
-    }
-  }, [])
-
-  useEffect(() => {
     if (!isOpen || !executionPlan.error || executionPlan.executionContext) {
       return
     }
@@ -323,14 +351,9 @@ export function useSelectionCustomActionController() {
     const analyticsContext = createFeatureUsageContext(
       ANALYTICS_FEATURE.CUSTOM_AI_ACTION,
       sourceSurface,
-      Date.now(),
-      {
-        action_id: activeActionId ?? undefined,
-        action_name: activeAction?.name,
-      },
     )
     const nextErrorKey = JSON.stringify({
-      actionId: analyticsContext.action_id ?? null,
+      actionId: activeActionId,
       description: executionPlan.error.description,
       popoverSessionKey,
       surface: sourceSurface,
@@ -343,12 +366,14 @@ export function useSelectionCustomActionController() {
 
     void trackFeatureUsed({
       ...analyticsContext,
+      action_id: activeActionId ?? "",
+      ...(activeAction ? { action_name: activeAction.name } : {}),
       // 前置校验失败，provider 尚未解析，按上游约定回落 UNKNOWN
       ...UNKNOWN_FEATURE_PROVIDER,
       outcome: "failure",
     })
   }, [
-    activeAction?.name,
+    activeAction,
     activeActionId,
     executionPlan.error,
     executionPlan.executionContext,
@@ -373,7 +398,12 @@ export function useSelectionCustomActionController() {
     displayedError,
     displayedIsRunning,
     displayedThinking,
+    layoutStatus,
+    layoutSelection,
+    layoutTargetCode,
+    popoverActionsRef,
     handleOpenChange,
+    handleReuseRequest,
     handleProviderChange,
     handleRegenerate,
     openToolbarCustomAction,

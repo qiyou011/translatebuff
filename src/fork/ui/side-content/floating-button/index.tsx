@@ -20,7 +20,7 @@ import { APP_NAME } from "@/utils/constants/app"
 import { i18n } from "@/utils/i18n"
 import { sendMessage } from "@/utils/message"
 import { cn } from "@/utils/styles/utils"
-import { matchDomainPattern } from "@/utils/url"
+import { urlMatchesPattern } from "@/utils/url-pattern"
 import HiddenButton from "./hidden-button"
 import closeIconLight from "./images/close-icon-light.svg?url&no-inline"
 import closeIcon from "./images/close-icon.svg?url&no-inline"
@@ -219,19 +219,22 @@ export default function FloatingButton() {
   // never receive its pointerup: cancel it here, or the body keeps the grabbing
   // cursor and the text-selection lock after fullscreen exits.
   useEffect(() => {
-    if (!isFullscreen) return
-
-    const pendingDrag = pendingDragRef.current
-    if (pendingDrag) {
-      window.clearTimeout(pendingDrag.longPressTimerId)
-      pendingDragRef.current = null
+    const cancelFullscreenDrag = () => {
+      if (!document.fullscreenElement) return
+      const pendingDrag = pendingDragRef.current
+      if (pendingDrag) {
+        window.clearTimeout(pendingDrag.longPressTimerId)
+        pendingDragRef.current = null
+      }
+      lastDragPreviewRef.current = null
+      setDragPreviewPosition(null)
+      setIsDraggingButton(false)
+      setIsHitAreaExpanded(false)
+      setIsDropdownOpen(false)
     }
-    lastDragPreviewRef.current = null
-    setDragPreviewPosition(null)
-    setIsDraggingButton(false)
-    setIsHitAreaExpanded(false)
-    setIsDropdownOpen(false)
-  }, [isFullscreen, setIsDraggingButton])
+    document.addEventListener("fullscreenchange", cancelFullscreenDrag)
+    return () => document.removeEventListener("fullscreenchange", cancelFullscreenDrag)
+  }, [setIsDraggingButton])
 
   const handleFloatingButtonClick = () => {
     if (floatingButton.clickAction === "translate") {
@@ -397,7 +400,7 @@ export default function FloatingButton() {
     isFullscreen ||
     !floatingButton.enabled ||
     floatingButton.disabledFloatingButtonPatterns.some((pattern) =>
-      matchDomainPattern(window.location.href, pattern),
+      urlMatchesPattern(window.location.href, pattern),
     )
   ) {
     return null

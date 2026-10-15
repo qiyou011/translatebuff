@@ -9,6 +9,7 @@ export function useInputTranslationTheme(element: HTMLElement | null, fallback: 
   }, [element, fallback])
 
   useLayoutEffect(() => {
+    // oxlint-disable-next-line react/set-state-in-effect -- the editor theme is measured from connected DOM before paint
     refresh()
     if (!element) return undefined
     let frame: number | undefined

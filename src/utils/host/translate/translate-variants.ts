@@ -1,15 +1,15 @@
 import type { LangCodeISO6393 } from "@read-frog/definitions"
 import type { HostedAiTextStreamRoute } from "@/types/background-stream"
 import type { Config, InputTranslationLang } from "@/types/config/config"
+import type { TranslateProviderConfig } from "@/types/config/provider"
 import type { TranslationTextFormat } from "@/types/config/translate"
-import { isLLMProviderConfig } from "@/types/config/provider"
+import type { ResolvedProviderRef } from "@/utils/providers/provider-registry"
 import { getDetectedCodeFromStorage, getFinalSourceCode } from "@/utils/config/languages"
 import { logger } from "@/utils/logger"
 import {
+  canResolvedProviderRefGenerateText,
   HostedAiProviderUnavailableError,
-  isSystemProviderRef,
   resolvePageTranslationProvider,
-  type UnwrappedProviderRef,
 } from "@/utils/providers/provider-ref"
 import { resolveProviderRefForCapability } from "@/utils/providers/provider-registry"
 import { getLocalConfig } from "../../config/storage"
@@ -34,7 +34,7 @@ async function getConfigOrThrow(): Promise<Config> {
 }
 
 async function getWebPagePromptContext(
-  providerConfig: UnwrappedProviderRef,
+  providerConfig: ResolvedProviderRef<TranslateProviderConfig>,
   enableAIContentAware: boolean,
   includeSummary: boolean,
   hostedFeature: HostedAiTextStreamRoute,
@@ -43,7 +43,7 @@ async function getWebPagePromptContext(
 > {
   // Pure translate providers (Google, Microsoft, DeepLX) take no prompt
   // context. Built-in AI does, and generates its summary hosted.
-  if (!isSystemProviderRef(providerConfig) && !isLLMProviderConfig(providerConfig)) {
+  if (!canResolvedProviderRefGenerateText(providerConfig)) {
     return undefined
   }
 
@@ -138,6 +138,7 @@ async function translateTextUsingPageConfig(
     providerConfig,
     hostedFeature: "pageTranslation",
     enableAIContentAware: config.pageTranslation.enableAIContentAware,
+    glossaryEnabled: config.glossary.enabled,
     extraHashTags: options.extraHashTags,
     webPageContext: options.webPageContext,
     textFormat: options.textFormat,
@@ -229,6 +230,7 @@ export async function translateTextForInput(
   text: string,
   fromLang: InputTranslationLang,
   toLang: InputTranslationLang,
+  onTargetLanguageResolved?: (targetLanguage: LangCodeISO6393) => void,
 ): Promise<string> {
   const config = await getConfigOrThrow()
   // Capability-based, not resolveProviderConfig: that helper looks the id up in
@@ -242,17 +244,17 @@ export async function translateTextForInput(
   if (!resolved) {
     throw new Error(`No input translation provider for id "${config.inputTranslation.providerId}"`)
   }
-  const providerConfig = resolved.kind === "local" ? resolved.config : resolved
 
   const resolvedFromLang = await resolveInputLang(fromLang, config.language)
   const resolvedToLang = await resolveInputLang(toLang, config.language)
+  onTargetLanguageResolved?.(resolvedToLang)
 
   if (resolvedFromLang === resolvedToLang) {
     return ""
   }
 
   const webPageContext = await getWebPagePromptContext(
-    providerConfig,
+    resolved,
     config.pageTranslation.enableAIContentAware,
     true,
     "inputTranslation",
@@ -266,9 +268,10 @@ export async function translateTextForInput(
       level: config.language.level,
     },
     extraHashTags: [`inputTranslation:${fromLang}->${toLang}`],
-    providerConfig,
+    providerConfig: resolved,
     hostedFeature: "inputTranslation",
     enableAIContentAware: config.pageTranslation.enableAIContentAware,
+    glossaryEnabled: config.glossary.enabled,
     webPageContext,
     // User-typed newlines are always meaningful.
     preserveLineBreaks: true,

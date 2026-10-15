@@ -1,7 +1,7 @@
 import type {
-  AnalyticsSurface,
   FeatureProviderAnalytics,
   FeatureUsageContext,
+  SurfaceByFeature,
 } from "@/types/analytics"
 import type { TTSConfig } from "@/types/config/tts"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
@@ -10,6 +10,7 @@ import { useRef, useState } from "react"
 import { toastManager } from "@/components/ui/base-ui/toast"
 import { ANALYTICS_FEATURE, ANALYTICS_SURFACE } from "@/types/analytics"
 import { createFeatureUsageContext, trackFeatureUsed } from "@/utils/analytics"
+import { classifyFailureReason } from "@/utils/analytics-failure-reason"
 import { EDGE_TTS_FEATURE_PROVIDER } from "@/utils/analytics-provider"
 import { configFieldsAtomMap } from "@/utils/atoms/config"
 import { detectLanguage } from "@/utils/content/language"
@@ -22,8 +23,11 @@ import { splitTextByUtf8Bytes } from "@/utils/server/edge-tts/chunk"
 interface PlayAudioParams {
   text: string
   ttsConfig: TTSConfig
-  analyticsContext: FeatureUsageContext & FeatureProviderAnalytics
+  analyticsContext: FeatureUsageContext<"text_to_speech"> & FeatureProviderAnalytics
   forcedVoice?: string
+  // A run nobody pressed for (a layout reading a field as the answer arrives)
+  // fails without a toast; pressing the trigger tries again and reports it.
+  quiet?: boolean
 }
 
 interface SynthesizedAudioChunk {
@@ -73,6 +77,9 @@ async function resolveVoiceForText(
   const detectedLanguage = await detectLanguage(text, {
     minLength: 0,
     enableLLM,
+    // Voice detection can fall back without blocking speech. Tell the user
+    // what happened and how to choose a working detection mode.
+    llmFallbackToastContext: "speak",
   })
   logger.info("[TextToSpeech] Resolving voice for text", {
     text,
@@ -130,7 +137,9 @@ async function synthesizeEdgeTTSAudioChunk(
   }
 }
 
-export function useTextToSpeech(surface: AnalyticsSurface = ANALYTICS_SURFACE.SELECTION_TOOLBAR) {
+export function useTextToSpeech(
+  surface: SurfaceByFeature["text_to_speech"] = ANALYTICS_SURFACE.SELECTION_TOOLBAR,
+) {
   const queryClient = useQueryClient()
   const languageDetection = useAtomValue(configFieldsAtomMap.languageDetection)
   const [isPlaying, setIsPlaying] = useState(false)
@@ -163,115 +172,37 @@ export function useTextToSpeech(surface: AnalyticsSurface = ANALYTICS_SURFACE.SE
 
       const requestId = getRandomUUID()
       activeRequestIdRef.current = requestId
-      let didStartPlayback = false
-
-      const selectedVoice = await resolveVoiceForText(
-        text,
-        ttsConfig,
-        languageDetection.mode === "llm",
-        forcedVoice,
-      )
-      if (shouldStopRef.current || activeRequestIdRef.current !== requestId) {
-        return
-      }
-      const chunks = splitTextByUtf8Bytes(text)
-      setTotalChunks(chunks.length)
-      await sendMessage("ttsPlaybackPrepare")
-
-      const fetchChunkAudio = async (chunk: string) => {
-        logger.info("[TextToSpeech] Fetching chunk audio", {
-          text: chunk,
-          voice: selectedVoice,
-          rate: ttsConfig.rate,
-          pitch: ttsConfig.pitch,
-          volume: ttsConfig.volume,
+      // A newer play() resets shouldStopRef, so a run still awaiting a fetch
+      // must also check that it is still the active request; otherwise it
+      // would resume, start its audio over the newer one and flip its state.
+      const isSuperseded = () => shouldStopRef.current || activeRequestIdRef.current !== requestId
+      try {
+        await runPlayback(requestId, isSuperseded, {
+          text,
+          ttsConfig,
+          analyticsContext,
+          forcedVoice,
         })
-        return queryClient.fetchQuery({
-          queryKey: [
-            "tts-audio",
-            {
-              text: chunk,
-              voice: selectedVoice,
-              rate: ttsConfig.rate,
-              pitch: ttsConfig.pitch,
-              volume: ttsConfig.volume,
-            },
-          ],
-          queryFn: () => synthesizeEdgeTTSAudioChunk(chunk, selectedVoice, ttsConfig),
-          staleTime: Number.POSITIVE_INFINITY,
-          gcTime: 1000 * 60 * 10,
-          meta: {
-            suppressToast: true,
-          },
-        })
-      }
-
-      const playChunk = async (audioChunk: SynthesizedAudioChunk): Promise<boolean> => {
-        setIsPlaying(true)
-        try {
-          const playbackResult = await sendMessage("ttsPlaybackStart", {
-            requestId,
-            audioBase64: audioChunk.audioBase64,
-            contentType: audioChunk.contentType,
-          })
-          if (playbackResult.ok) {
-            didStartPlayback = true
-          }
-          return playbackResult.ok
-        } finally {
-          setIsPlaying(false)
-        }
-      }
-
-      for (let index = 0; index < chunks.length; index++) {
-        if (shouldStopRef.current) {
-          break
-        }
-
-        setCurrentChunk(index + 1)
-        const currentAudioPromise = fetchChunkAudio(chunks[index]!)
-        const nextAudioPromise =
-          index + 1 < chunks.length ? fetchChunkAudio(chunks[index + 1]!) : null
-        const audioChunk = await currentAudioPromise
-
-        if (shouldStopRef.current) {
-          break
-        }
-
-        const didPlay = await playChunk(audioChunk)
-        if (!didPlay || shouldStopRef.current) {
-          break
-        }
-
-        if (nextAudioPromise) {
-          await nextAudioPromise
-        }
-      }
-
-      if (activeRequestIdRef.current === requestId) {
-        activeRequestIdRef.current = null
-      }
-      setCurrentChunk(0)
-      setTotalChunks(0)
-
-      if (didStartPlayback) {
-        void trackFeatureUsed({
-          ...analyticsContext,
-          outcome: "success",
-        })
+      } catch (error) {
+        // A run the user already stopped or replaced reports nothing.
+        if (isSuperseded()) return
+        throw error
       }
     },
     onError: (error, variables) => {
       void trackFeatureUsed({
         ...variables.analyticsContext,
         outcome: "failure",
+        failure_reason: classifyFailureReason(error),
       })
-      toastManager.add({
-        type: "error",
-        title: i18n.t("speak.failedToGenerateSpeech"),
-        id: TTS_ERROR_TOAST_ID,
-        description: getTTSFriendlyErrorDescription(error),
-      })
+      if (!variables.quiet) {
+        toastManager.add({
+          type: "error",
+          title: i18n.t("speak.failedToGenerateSpeech"),
+          id: TTS_ERROR_TOAST_ID,
+          description: getTTSFriendlyErrorDescription(error),
+        })
+      }
       activeRequestIdRef.current = null
       setIsPlaying(false)
       setCurrentChunk(0)
@@ -279,13 +210,132 @@ export function useTextToSpeech(surface: AnalyticsSurface = ANALYTICS_SURFACE.SE
     },
   })
 
-  const play = (text: string, ttsConfig: TTSConfig, options?: { forcedVoice?: string }) => {
+  async function runPlayback(
+    requestId: string,
+    isSuperseded: () => boolean,
+    { text, ttsConfig, analyticsContext, forcedVoice }: PlayAudioParams,
+  ) {
+    let didStartPlayback = false
+
+    const selectedVoice = await resolveVoiceForText(
+      text,
+      ttsConfig,
+      languageDetection.mode === "llm",
+      forcedVoice,
+    )
+    if (isSuperseded()) {
+      return
+    }
+    const chunks = splitTextByUtf8Bytes(text)
+    setTotalChunks(chunks.length)
+    await sendMessage("ttsPlaybackPrepare")
+    if (isSuperseded()) {
+      return
+    }
+
+    const fetchChunkAudio = async (chunk: string) => {
+      logger.info("[TextToSpeech] Fetching chunk audio", {
+        text: chunk,
+        voice: selectedVoice,
+        rate: ttsConfig.rate,
+        pitch: ttsConfig.pitch,
+        volume: ttsConfig.volume,
+      })
+      return queryClient.fetchQuery({
+        queryKey: [
+          "tts-audio",
+          {
+            text: chunk,
+            voice: selectedVoice,
+            rate: ttsConfig.rate,
+            pitch: ttsConfig.pitch,
+            volume: ttsConfig.volume,
+          },
+        ],
+        queryFn: () => synthesizeEdgeTTSAudioChunk(chunk, selectedVoice, ttsConfig),
+        staleTime: Number.POSITIVE_INFINITY,
+        gcTime: 1000 * 60 * 10,
+        meta: {
+          suppressToast: true,
+        },
+      })
+    }
+
+    const playChunk = async (audioChunk: SynthesizedAudioChunk): Promise<boolean> => {
+      // isPlaying belongs to the active run; a superseded one leaves it alone.
+      if (!isSuperseded()) setIsPlaying(true)
+      try {
+        const playbackResult = await sendMessage("ttsPlaybackStart", {
+          requestId,
+          audioBase64: audioChunk.audioBase64,
+          contentType: audioChunk.contentType,
+        })
+        if (playbackResult.ok) {
+          didStartPlayback = true
+        }
+        return playbackResult.ok
+      } finally {
+        if (activeRequestIdRef.current === requestId) setIsPlaying(false)
+      }
+    }
+
+    for (let index = 0; index < chunks.length; index++) {
+      if (isSuperseded()) {
+        break
+      }
+
+      setCurrentChunk(index + 1)
+      const currentAudioPromise = fetchChunkAudio(chunks[index]!)
+      const nextAudioPromise =
+        index + 1 < chunks.length ? fetchChunkAudio(chunks[index + 1]!) : null
+      const audioChunk = await currentAudioPromise
+
+      if (isSuperseded()) {
+        break
+      }
+
+      const didPlay = await playChunk(audioChunk)
+      if (!didPlay || isSuperseded()) {
+        break
+      }
+
+      if (nextAudioPromise) {
+        await nextAudioPromise
+      }
+    }
+
+    if (activeRequestIdRef.current === requestId) {
+      activeRequestIdRef.current = null
+      setCurrentChunk(0)
+      setTotalChunks(0)
+    }
+
+    if (didStartPlayback) {
+      void trackFeatureUsed({
+        ...analyticsContext,
+        outcome: "success",
+      })
+    }
+  }
+
+  // `options.surface` reports a play started from somewhere other than the
+  // hook's own surface (a keyboard shortcut for the toolbar's reader).
+  const play = (
+    text: string,
+    ttsConfig: TTSConfig,
+    options?: {
+      forcedVoice?: string
+      surface?: SurfaceByFeature["text_to_speech"]
+      quiet?: boolean
+    },
+  ) => {
     return playMutation.mutateAsync({
       text,
       ttsConfig,
       forcedVoice: options?.forcedVoice,
+      quiet: options?.quiet,
       analyticsContext: {
-        ...createFeatureUsageContext(ANALYTICS_FEATURE.TEXT_TO_SPEECH, surface),
+        ...createFeatureUsageContext(ANALYTICS_FEATURE.TEXT_TO_SPEECH, options?.surface ?? surface),
         ...EDGE_TTS_FEATURE_PROVIDER,
       },
     })

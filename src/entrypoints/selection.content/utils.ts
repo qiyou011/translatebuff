@@ -1,4 +1,5 @@
 import { READ_FROG_SUBTITLES_UI_HOST_ID } from "@/utils/constants/subtitles"
+import { getDeepActiveElement } from "@/utils/dom/active-element"
 
 export interface SelectionRangeSnapshot {
   startContainer: Node
@@ -7,9 +8,23 @@ export interface SelectionRangeSnapshot {
   endOffset: number
 }
 
+export interface TextControlSelectionSnapshot {
+  /** Display snapshots retain only the control identity and offsets, never its value. */
+  element: HTMLInputElement | HTMLTextAreaElement
+  /** Null for input types without a selection API (e.g. email). */
+  selectionStart: number | null
+  selectionEnd: number | null
+}
+
 export interface SelectionSnapshot {
   text: string
   ranges: SelectionRangeSnapshot[]
+  /**
+   * Set when the selection is inside an `<input>`/`<textarea>`. Their text lives
+   * in the control's value, which the DOM ranges can't reach (Chrome reports
+   * them around the control element), so context is built from this instead.
+   */
+  textControl?: TextControlSelectionSnapshot
 }
 
 export interface ContextSnapshot {
@@ -24,6 +39,22 @@ type ParagraphOwner = Element | ShadowRoot
 const ZERO_WIDTH_CHAR_REGEX = /\u200B/g
 const WHITESPACE_REGEX = /\s+/g
 const PARAGRAPH_SEPARATOR = "\n\n"
+const TEXT_CONTROL_PARAGRAPH_BREAK_REGEX = /(\n[^\S\n]*\n)/
+// Password fields are deliberately absent: their value must never reach a prompt.
+const TEXT_CONTROL_INPUT_TYPES = new Set(["search", "text"])
+const SENSITIVE_FIELD_PATTERN =
+  /(?:^|[\s_-])(?:password|passwd|secret|token|otp|pin|cvv|cvc|ssn|iban|email|phone|mobile|tel|telephone|captcha|verification[-_ ]?code|security[-_ ]?code|auth[-_ ]?code|one[-_ ]?time[-_ ]?code|credit[-_ ]?card|card[-_ ]?number|cc[-_ ]\w+|bank[-_ ]?card|account[-_ ]?number)(?:$|[\s_-])|密码|验证码|身份证|银行卡|手机号|电子邮箱/i
+// Text inside these is never rendered as page content (or, for textarea, is
+// only the default value), so it must not leak into paragraph context.
+const NON_CONTENT_ELEMENT_NAMES = new Set([
+  "head",
+  "noscript",
+  "script",
+  "style",
+  "template",
+  "textarea",
+  "title",
+])
 const PARAGRAPH_LIKE_TAGS = new Set([
   "P",
   "LI",
@@ -43,8 +74,6 @@ const PARAGRAPH_LIKE_TAGS = new Set([
 ])
 const SEMANTIC_CONTAINER_TAGS = new Set(["ARTICLE", "ASIDE", "BODY", "MAIN", "NAV", "SECTION"])
 const PARAGRAPH_DISPLAY_VALUES = new Set(["block", "list-item"])
-
-export const CUSTOM_ACTION_CONTEXT_CHAR_LIMIT = 2000
 
 export function normalizeSelectedText(value: string | null | undefined) {
   return value?.replace(ZERO_WIDTH_CHAR_REGEX, "").trim() ?? ""
@@ -208,6 +237,40 @@ function readSelectionRangeSnapshots(selection: Selection | null) {
   return snapshots
 }
 
+function isSafeTextControl(control: HTMLInputElement | HTMLTextAreaElement) {
+  if (!control.isConnected || control.ownerDocument !== document) return false
+  if (control instanceof HTMLInputElement && !TEXT_CONTROL_INPUT_TYPES.has(control.type))
+    return false
+  const controlRoot = control.getRootNode()
+  const labelRoot =
+    controlRoot instanceof Document || controlRoot instanceof ShadowRoot ? controlRoot : null
+  const semantics = ["name", "id", "autocomplete", "placeholder", "aria-label", "inputmode"]
+    .map((attribute) => control.getAttribute(attribute) ?? "")
+    .concat(Array.from(control.labels ?? [], (label) => label.textContent ?? ""))
+    .concat(
+      (control.getAttribute("aria-labelledby") ?? "")
+        .split(/\s+/)
+        .map((id) => labelRoot?.getElementById(id)?.textContent ?? ""),
+    )
+    .join(" ")
+    .replace(/([a-z])([A-Z])/g, "$1-$2")
+  return !SENSITIVE_FIELD_PATTERN.test(semantics)
+}
+
+function readTextControlSelection(): TextControlSelectionSnapshot | null {
+  const element = getDeepActiveElement()
+  if (!(element instanceof HTMLInputElement || element instanceof HTMLTextAreaElement)) return null
+  if (
+    element instanceof HTMLInputElement &&
+    !["text", "search", "email", "tel", "url", "password"].includes(element.type)
+  )
+    return null
+  const { selectionStart, selectionEnd } = element
+  if (selectionStart !== null && selectionStart === selectionEnd) return null
+  // Keep even excluded controls marked so context never falls back to the surrounding page.
+  return { element, selectionStart, selectionEnd }
+}
+
 export function readSelectionSnapshot(selection: Selection | null): SelectionSnapshot | null {
   const text = normalizeSelectedText(selection?.toString())
   if (text === "") {
@@ -219,10 +282,9 @@ export function readSelectionSnapshot(selection: Selection | null): SelectionSna
     return null
   }
 
-  return {
-    text,
-    ranges,
-  }
+  const textControl = readTextControlSelection()
+
+  return textControl ? { text, ranges, textControl } : { text, ranges }
 }
 
 function getCommonAncestorNode(startContainer: Node, endContainer: Node) {
@@ -289,7 +351,8 @@ function findParagraphOwner(node: Node | null): ParagraphOwner | null {
   let current = getNearestParentElement(node)
   let semanticFallback: ParagraphOwner | null = null
 
-  while (current) {
+  // <html> is display:block too, but owning it would pull in <head> text.
+  while (current && current !== current.ownerDocument.documentElement) {
     if (PARAGRAPH_LIKE_TAGS.has(current.tagName)) {
       return current
     }
@@ -314,15 +377,34 @@ function findParagraphOwner(node: Node | null): ParagraphOwner | null {
   return semanticFallback
 }
 
-function extractOwnerText(owner: ParagraphOwner) {
-  const textParts: string[] = []
-  const walker = document.createTreeWalker(owner, NodeFilter.SHOW_TEXT, {
+function isNonContentNode(node: Node) {
+  let current = node instanceof Element ? node : node.parentElement
+  while (current) {
+    if (NON_CONTENT_ELEMENT_NAMES.has(current.localName)) return true
+    current = getParentElementAcrossShadow(current)
+  }
+  return false
+}
+
+function createContentTextWalker(root: Node) {
+  return document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT, {
     acceptNode(node) {
+      if (node instanceof Element) {
+        return NON_CONTENT_ELEMENT_NAMES.has(node.localName)
+          ? NodeFilter.FILTER_REJECT
+          : NodeFilter.FILTER_SKIP
+      }
+
       return normalizeParagraphText(node.textContent ?? "") === ""
         ? NodeFilter.FILTER_REJECT
         : NodeFilter.FILTER_ACCEPT
     },
   })
+}
+
+function extractOwnerText(owner: ParagraphOwner) {
+  const textParts: string[] = []
+  const walker = createContentTextWalker(owner)
 
   let currentNode = walker.nextNode()
   while (currentNode) {
@@ -363,13 +445,8 @@ function collectParagraphOwners(rangeSnapshots: SelectionRangeSnapshot[]) {
     }
 
     const traversalRoot = getTraversalRoot(rangeSnapshot)
-    const walker = document.createTreeWalker(traversalRoot, NodeFilter.SHOW_TEXT, {
-      acceptNode(node) {
-        return normalizeParagraphText(node.textContent ?? "") === ""
-          ? NodeFilter.FILTER_REJECT
-          : NodeFilter.FILTER_ACCEPT
-      },
-    })
+    if (isNonContentNode(traversalRoot)) continue
+    const walker = createContentTextWalker(traversalRoot)
 
     let currentNode = walker.nextNode()
     while (currentNode) {
@@ -395,12 +472,49 @@ function collectParagraphOwners(rangeSnapshots: SelectionRangeSnapshot[]) {
   return [...paragraphOwners].sort(compareNodesInDocumentOrder)
 }
 
+// Blank-line separated blocks of the control's value that overlap the selection.
+function collectTextControlParagraphs({
+  value,
+  selectionStart,
+  selectionEnd,
+}: {
+  value: string
+  selectionStart: number | null
+  selectionEnd: number | null
+}) {
+  const start = selectionStart ?? 0
+  const end = selectionEnd ?? value.length
+  const paragraphs: string[] = []
+  let blockStart = 0
+
+  for (const block of value.split(TEXT_CONTROL_PARAGRAPH_BREAK_REGEX)) {
+    const blockEnd = blockStart + block.length
+    const paragraph = normalizeParagraphText(block)
+    if (paragraph !== "" && blockStart < end && blockEnd > start) {
+      paragraphs.push(paragraph)
+    }
+    blockStart = blockEnd
+  }
+
+  return paragraphs
+}
+
 export function buildContextSnapshot(selection: SelectionSnapshot | null): ContextSnapshot | null {
   if (!selection || selection.text === "") {
     return null
   }
 
-  const paragraphs = collectParagraphOwners(selection.ranges).map(extractOwnerText).filter(Boolean)
+  if (
+    selection.ranges.length > 0 &&
+    selection.ranges.every(
+      (range) => isNonContentNode(range.startContainer) && isNonContentNode(range.endContainer),
+    )
+  )
+    return null
+
+  const paragraphs = selection.textControl
+    ? []
+    : collectParagraphOwners(selection.ranges).map(extractOwnerText).filter(Boolean)
 
   if (paragraphs.length === 0) {
     return {
@@ -415,9 +529,24 @@ export function buildContextSnapshot(selection: SelectionSnapshot | null): Conte
   }
 }
 
-export function truncateContextTextForCustomAction(
-  contextText: string,
-  limit = CUSTOM_ACTION_CONTEXT_CHAR_LIMIT,
-) {
-  return contextText.slice(0, limit)
+/** Explicit translation/AI action boundary; display, cancel and suggestions never call this. */
+export function captureSelectionActionContext(
+  selection: SelectionSnapshot | null,
+): ContextSnapshot | null {
+  if (!selection?.textControl) return buildContextSnapshot(selection)
+  const { element } = selection.textControl
+  if (!isSafeTextControl(element)) return buildContextSnapshot(selection)
+  const selectionStart = element.selectionStart ?? selection.textControl.selectionStart
+  const selectionEnd = element.selectionEnd ?? selection.textControl.selectionEnd
+  if (selectionStart === null || selectionEnd === null || selectionStart === selectionEnd) {
+    return buildContextSnapshot(selection)
+  }
+  const value = element.value
+  if (normalizeSelectedText(value.slice(selectionStart, selectionEnd)) !== selection.text) {
+    return buildContextSnapshot(selection)
+  }
+  const paragraphs = collectTextControlParagraphs({ value, selectionStart, selectionEnd })
+  return paragraphs.length
+    ? { text: paragraphs.join(PARAGRAPH_SEPARATOR), paragraphs }
+    : buildContextSnapshot(selection)
 }

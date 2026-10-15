@@ -7,6 +7,7 @@ import { z } from "zod"
 import {
   createExtensionClientEnvSchema,
   isLocalPackagesEnabled,
+  LOCAL_PACKAGES_DEDUPE,
   resolveExtensionEnv,
 } from "./src/env/shared"
 import { FORK_BRANDING, getForkDisplayName, getForkStoreTitle } from "./src/fork/branding"
@@ -67,6 +68,67 @@ const forkChannelSuffix = forkChannelId ? `-${forkChannelId}` : "-{{browser}}"
 // fork「换皮」重定向：不编辑上游 composed UI 源文件，改由 resolve 插件按解析后的绝对路径
 // 把上游 provider 选择器 / 选项 provider 页重定向到 fork 版（相对/@ import 都拦得住）。
 export const FORK_UI_REDIRECTS = [
+  {
+    from: path.resolve(__dirname, "src/entrypoints/options/command-palette/search-items.ts"),
+    to: path.resolve(__dirname, "src/fork/ui/options/search-items.ts"),
+  },
+  {
+    from: path.resolve(
+      __dirname,
+      "src/entrypoints/options/pages/custom-actions/action-config-form/editor-tabs.tsx",
+    ),
+    to: path.resolve(__dirname, "src/fork/ui/options/custom-action-editor-tabs.tsx"),
+  },
+  {
+    from: path.resolve(__dirname, "src/entrypoints/subtitles.content/universal-adapter.ts"),
+    to: path.resolve(__dirname, "src/fork/upstream-services/video-adapter.ts"),
+  },
+  {
+    from: path.resolve(
+      __dirname,
+      "src/entrypoints/subtitles.content/renderer/mount-subtitles-sidebar.tsx",
+    ),
+    to: path.resolve(__dirname, "src/fork/upstream-services/subtitles-sidebar.ts"),
+  },
+  {
+    from: path.resolve(
+      __dirname,
+      "src/entrypoints/subtitles.content/ui/subtitles-settings-panel/components/subtitles-sidebar-item.tsx",
+    ),
+    to: path.resolve(__dirname, "src/fork/upstream-services/subtitles-sidebar.ts"),
+  },
+  {
+    from: path.resolve(
+      __dirname,
+      "src/entrypoints/subtitles.content/ui/subtitles-sidebar/index.tsx",
+    ),
+    to: path.resolve(__dirname, "src/fork/upstream-services/subtitles-sidebar.ts"),
+  },
+  {
+    from: path.resolve(__dirname, "src/utils/subtitles/fetchers/netflix/index.ts"),
+    to: path.resolve(__dirname, "src/fork/upstream-services/netflix-subtitles.ts"),
+  },
+  {
+    from: path.resolve(__dirname, "src/utils/subtitles/ai/request-ai-subtitles.ts"),
+    to: path.resolve(__dirname, "src/fork/upstream-services/ai-subtitles.ts"),
+  },
+  {
+    from: path.resolve(__dirname, "src/utils/subtitles/ai/access-guard.ts"),
+    to: path.resolve(__dirname, "src/fork/upstream-services/ai-subtitles-access.ts"),
+  },
+  {
+    from: path.resolve(__dirname, "src/utils/subtitles/video-summary.ts"),
+    to: path.resolve(__dirname, "src/fork/upstream-services/learning-sidebar.ts"),
+  },
+  {
+    from: path.resolve(__dirname, "src/entrypoints/background/video-summary.ts"),
+    to: path.resolve(__dirname, "src/fork/upstream-services/video-summary-background.ts"),
+  },
+  {
+    // 产品准入只影响运行时有效动作，不改持久化配置或上游 schema。
+    from: path.resolve(__dirname, "src/utils/custom-actions.ts"),
+    to: path.resolve(__dirname, "src/fork/upstream-services/custom-actions.ts"),
+  },
   {
     // options 文档主题作用域：包装上游 AppShell，不复制路由、导航或业务逻辑。
     from: path.resolve(__dirname, "src/entrypoints/options/app-shell.tsx"),
@@ -342,6 +404,7 @@ export default defineConfig({
     ? {
         "@read-frog/definitions": path.resolve(monorepoRoot, "packages/definitions/src"),
         "@read-frog/api-contract": path.resolve(monorepoRoot, "packages/api-contract/src"),
+        "@read-frog/layout-engine": path.resolve(monorepoRoot, "packages/layout-engine/src"),
       }
     : {},
   manifest: ({ mode, browser }) => ({
@@ -358,6 +421,12 @@ export default defineConfig({
       }),
     permissions: [
       "storage",
+      // The glossary is the only user-authored, non-regenerable data the
+      // extension stores locally. Without this, IndexedDB is "best-effort" and
+      // the browser may evict it under disk pressure — fine for the translation
+      // caches, data loss for a term list the user typed by hand. It also lifts
+      // the 10 MB quota the 20,000-term cap would otherwise sit close to.
+      "unlimitedStorage",
       "tabs",
       "alarms",
       "cookies",
@@ -392,7 +461,7 @@ export default defineConfig({
         gecko: {
           // fork 专属 Firefox 扩展 ID，区别于上游 read-frog 且两条 edition 各一个，避免 AMO 上架撞车
           id: forkGeckoId,
-          strict_min_version: "112.0",
+          strict_min_version: "140.0",
           data_collection_permissions: {
             required: ["none"],
             optional: ["technicalAndInteraction"],
@@ -422,6 +491,11 @@ export default defineConfig({
           asset.contents = brandChromeMessages(asset.contents, forkEdition, locale)
         }
       }
+    },
+    // With local packages the bundle holds @read-frog/layout-engine's readable
+    // source, which must never leave this machine.
+    "zip:start": () => {
+      if (useLocalPackages) throw new Error("Do not zip a build made with local packages")
     },
     "vite:build:extendConfig": (entrypoints, viteConfig) => {
       const entrypoint = entrypoints.length === 1 ? entrypoints[0] : undefined
@@ -464,6 +538,10 @@ export default defineConfig({
         "@codemirror/search",
         "@codemirror/commands",
         "@lezer/common",
+        // @codemirror/lang-liquid's parser and highlighting share these with the other languages.
+        "@lezer/highlight",
+        "@lezer/lr",
+        ...(useLocalPackages ? LOCAL_PACKAGES_DEDUPE : []),
       ],
     },
     plugins: [

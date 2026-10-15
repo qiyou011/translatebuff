@@ -31,6 +31,9 @@ export function canUseStructuredPage(data: PageTranslationData): boolean {
 
 export function buildPageLlmPrompt(items: PageTranslationData[], individual = false) {
   const first = items[0]!
+  // The batch key includes the full effective snapshot, so every member has
+  // these same terms. Never drop constraints and cache an unconstrained result.
+  const glossaryTerms = first.glossaryTerms
   const structured = !individual && items.every(canUseStructuredPage)
   const input = structured
     ? JSON.stringify(
@@ -50,6 +53,7 @@ export function buildPageLlmPrompt(items: PageTranslationData[], individual = fa
     {
       context: first.context,
       isBatch: !structured && !individual,
+      glossaryTerms,
     },
   )
   if (structured) {

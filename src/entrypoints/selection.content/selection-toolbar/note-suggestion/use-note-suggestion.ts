@@ -4,6 +4,7 @@ import type { SelectionToolbarCustomAction } from "@/types/config/selection-tool
 import type { ValidatedNoteSuggestion } from "@/utils/note-suggestion/types"
 import { useAtomValue } from "jotai"
 import { useCallback, useRef, useState } from "react"
+import { isAbortError } from "@/components/ui/selection-popover/inline-error"
 import { classifyResolvedProvider } from "@/utils/analytics-provider"
 import { configFieldsAtomMap } from "@/utils/atoms/config"
 import { streamBackgroundNoteSuggestion } from "@/utils/content-script/background-stream-client"
@@ -19,7 +20,6 @@ import { resolveModelId } from "@/utils/providers/model-id"
 import { getProviderOptionsWithOverride } from "@/utils/providers/options"
 import { fetchHostedAiStatus } from "@/utils/providers/provider-ref"
 import { getTopLevelReasoning } from "@/utils/providers/reasoning"
-import { isAbortError } from "../inline-error"
 import { buildNoteSuggestionPrompts } from "./prompt"
 
 export interface NoteSuggestionSessionResult {
@@ -37,6 +37,12 @@ export interface NoteSuggestionSessionResult {
 export interface NoteSuggestionFireInput {
   sessionKey: string
   selectionText: string
+  /**
+   * The selection as a custom action run saves it (normalizeSelectedText),
+   * which every note keeps in the action's selection fields. selectionText is
+   * prepared for translation and may have lost a few invisible characters.
+   */
+  savedSelectionText: string
   paragraphsText: string
   /** English name of the target language. */
   targetLangName: string
@@ -73,6 +79,7 @@ export function useNoteSuggestion() {
   const completedSessionKeysRef = useRef<Set<string>>(new Set())
   const shownSessionKeysRef = useRef<Set<string>>(new Set())
   const latestRef = useRef(selectionToolbar)
+  // oxlint-disable-next-line react/refs -- latest-value ref: writing it during render is what keeps callbacks in sync
   latestRef.current = selectionToolbar
 
   const cancel = useCallback(() => {
@@ -162,6 +169,7 @@ export function useNoteSuggestion() {
         paragraphs: input.paragraphsText,
         targetLanguage: input.targetLangName,
         webTitle: input.webTitle,
+        webUrl: webPageContext?.url ?? window.location.href,
         webContent: webPageContext?.webContent ?? "",
         action: actionSnapshot,
         envelopeContract: provider.kind === "system" ? "hosted" : "local",
@@ -209,6 +217,7 @@ export function useNoteSuggestion() {
         ? validateNoteSuggestion({
             envelope: envelope.data,
             action: actionSnapshot,
+            selection: input.savedSelectionText,
           })
         : null
 

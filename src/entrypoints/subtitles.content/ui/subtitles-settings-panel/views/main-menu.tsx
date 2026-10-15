@@ -4,16 +4,18 @@ import { DownloadSourceSubtitles } from "../components/download-source-subtitles
 import { DownloadTranslatedSubtitles } from "../components/download-translated-subtitles"
 import { RequestAiSubtitlesItem } from "../components/request-ai-subtitles-item"
 import { SubpageMenuEntry } from "../components/subpage-menu-entry"
+import { SubtitlesSidebarItem } from "../components/subtitles-sidebar-item"
 import { SubtitlesToggle } from "../components/subtitles-toggle"
 
 export function MainMenu({ onNavigate }: { onNavigate: (id: ViewId) => void }) {
   return (
-    <div className="px-2 py-2.5">
-      <div className="space-y-1.5">
+    <div className="p-1">
+      <div className="space-y-0.5">
         <RequestAiSubtitlesItem />
         <SubtitlesToggle />
         <DownloadTranslatedSubtitles />
         <DownloadSourceSubtitles />
+        <SubtitlesSidebarItem />
 
         {VISIBLE_SUBPAGES.map((page) => (
           <SubpageMenuEntry

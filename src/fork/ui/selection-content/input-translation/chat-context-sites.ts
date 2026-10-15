@@ -1,4 +1,4 @@
-import { urlMatchesPattern } from "@/utils/site-rules/match"
+import { urlMatchesPattern } from "@/utils/url-pattern"
 
 /**
  * 声明了「对话消息长什么样」的站点。

@@ -100,10 +100,7 @@ export function InputTranslationBar({
   }, [portalContainer])
 
   useEffect(() => {
-    if (!bar) {
-      setPosition(null)
-      return undefined
-    }
+    if (!bar) return undefined
 
     const element = bar.element
     const update = () => {

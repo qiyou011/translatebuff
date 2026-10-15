@@ -1,18 +1,48 @@
 // @vitest-environment jsdom
 
+import type { MatchedTerm } from "@/utils/glossary/types"
 import { beforeEach, describe, expect, it, vi } from "vitest"
+import { DEFAULT_CONFIG } from "@/utils/constants/config"
+import { NO_TRANSLATION_SENTINEL } from "@/utils/constants/prompt"
+import { resolveGlossaryTerms } from "@/utils/glossary/active-matcher"
+import { sendMessage } from "@/utils/message"
+import { TranslationCancelledError } from "@/utils/request/cancellation"
+import {
+  clearInMemoryTranslationCache,
+  getInMemoryTranslation,
+  IN_MEMORY_TRANSLATION_CACHE_MAX_ENTRIES,
+  storeInMemoryTranslation,
+} from "../in-memory-translation-cache"
+import { translateTextCore } from "../translate-text"
+import { beginPageTranslationSession, endPageTranslationSession } from "../translation-session"
 
 vi.mock("@/utils/message", () => ({
   sendMessage: vi.fn<(...args: any[]) => any>(),
 }))
 
+vi.mock("@/utils/config/storage", () => ({
+  getLocalConfig: vi.fn<() => Promise<typeof DEFAULT_CONFIG>>(async () => DEFAULT_CONFIG),
+}))
+vi.mock("@/utils/glossary/active-matcher", () => ({
+  resolveGlossaryTerms: vi.fn<typeof resolveGlossaryTerms>(async () => ({
+    terms: [],
+    revision: 0,
+  })),
+}))
+vi.mock("@/utils/glossary/analytics", () => ({ trackGlossaryUsed: vi.fn<() => void>() }))
+
 // Non-LLM provider so hash building stays prompt-free and the pipeline needs
 // no config storage; the memory tier itself is provider-agnostic.
 const googleProviderConfig = {
+  kind: "local" as const,
   id: "google-translate-default",
-  enabled: true,
   name: "Google Translate",
-  provider: "google-translate" as const,
+  config: {
+    id: "google-translate-default",
+    enabled: true,
+    name: "Google Translate",
+    provider: "google-translate" as const,
+  },
 } as never
 
 const langConfig = {
@@ -21,13 +51,9 @@ const langConfig = {
   level: "intermediate" as const,
 }
 
-async function setup() {
-  const { sendMessage } = await import("@/utils/message")
-  const { translateTextCore } = await import("../translate-text")
-  const { beginPageTranslationSession, endPageTranslationSession } =
-    await import("../translation-session")
-  const { clearInMemoryTranslationCache } = await import("../in-memory-translation-cache")
+const sendMessageMock = vi.mocked(sendMessage<"enqueueTranslateRequest">)
 
+function setup() {
   // Module-level state survives across tests in this file: drop any session
   // and cached entries a previous test left behind.
   endPageTranslationSession()
@@ -44,61 +70,104 @@ async function setup() {
       ...overrides,
     })
 
-  return { sendMessage: vi.mocked(sendMessage), translate, sessionId, endPageTranslationSession }
+  return { translate }
 }
 
 describe("in-memory translation tier in translateTextCore", () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    sendMessageMock.mockReset()
+    vi.mocked(resolveGlossaryTerms).mockResolvedValue({ terms: [], revision: 0 })
   })
 
   it.each(["missing formula", "{{0}} {{0}}", "{{0}} {{99}}"])(
     "retries instead of caching damaged formula response: %s",
     async (damaged) => {
-      const { sendMessage, translate } = await setup()
-      sendMessage.mockResolvedValueOnce(damaged).mockResolvedValueOnce("公式 {{0}}")
+      const { translate } = setup()
+      sendMessageMock.mockResolvedValueOnce(damaged).mockResolvedValueOnce("公式 {{0}}")
       await expect(translate("Formula {{0}}")).resolves.toBe(damaged)
       await expect(translate("Formula {{0}}")).resolves.toBe("公式 {{0}}")
+      await expect(translate("Formula {{0}}")).resolves.toBe("公式 {{0}}")
+      expect(sendMessageMock).toHaveBeenCalledTimes(2)
+    },
+  )
+
+  it.each(["revision", "edit", "delete"] as const)(
+    "invalidates LLM memory and request cache identity after a glossary %s",
+    async (change) => {
+      const { translate } = setup()
+      const terms: MatchedTerm[] = [
+        { matchKey: "frog", source: "Frog", target: "读蛙", keepOriginal: false },
+      ]
+      const nextTerms =
+        change === "delete" ? [] : change === "edit" ? [{ ...terms[0]!, target: "青蛙" }] : terms
+      const providerConfig = {
+        kind: "local",
+        id: "openai-glossary-test",
+        config: {
+          id: "openai-glossary-test",
+          name: "Glossary test",
+          enabled: true,
+          provider: "openai",
+          model: "gpt-4o-mini",
+          apiKey: "test-key",
+        },
+      }
+      const options = { providerConfig, glossaryEnabled: true }
+      vi.mocked(resolveGlossaryTerms)
+        .mockResolvedValueOnce({ terms, revision: 5 })
+        .mockResolvedValue({ terms: nextTerms, revision: 6 })
+      sendMessageMock.mockResolvedValueOnce("旧译文").mockResolvedValueOnce("新译文")
+
+      await expect(translate("Frog", options)).resolves.toBe("旧译文")
+      await expect(translate("Frog", options)).resolves.toBe("新译文")
+      await expect(translate("Frog", options)).resolves.toBe("新译文")
+
+      expect(sendMessageMock).toHaveBeenCalledTimes(2)
+      const firstRequest = sendMessageMock.mock.calls[0]![1]
+      const nextRequest = sendMessageMock.mock.calls[1]![1]
+      expect(nextRequest.hash).not.toBe(firstRequest.hash)
+      expect(nextRequest).toMatchObject({ glossaryTerms: nextTerms, glossaryRevision: 6 })
     },
   )
 
   it("serves a repeated page request from memory without a second background round trip", async () => {
-    const { sendMessage, translate } = await setup()
-    sendMessage.mockResolvedValue("你好")
+    const { translate } = setup()
+    sendMessageMock.mockResolvedValue("你好")
 
     await expect(translate("Hello")).resolves.toBe("你好")
     await expect(translate("Hello")).resolves.toBe("你好")
 
     // A virtualized page recreating its nodes re-runs this exact call; the
     // second run must not pay the message round trip again.
-    expect(sendMessage).toHaveBeenCalledTimes(1)
+    expect(sendMessageMock).toHaveBeenCalledTimes(1)
   })
 
   it("misses when the request identity differs", async () => {
-    const { sendMessage, translate } = await setup()
-    sendMessage.mockResolvedValueOnce("你好").mockResolvedValueOnce("こんにちは")
+    const { translate } = setup()
+    sendMessageMock.mockResolvedValueOnce("你好").mockResolvedValueOnce("こんにちは")
 
     await expect(translate("Hello")).resolves.toBe("你好")
     await expect(
       translate("Hello", { langConfig: { ...langConfig, targetCode: "jpn" as const } }),
     ).resolves.toBe("こんにちは")
 
-    expect(sendMessage).toHaveBeenCalledTimes(2)
+    expect(sendMessageMock).toHaveBeenCalledTimes(2)
   })
 
   it("does not cache outside a page-translation session", async () => {
-    const { sendMessage, translate } = await setup()
-    sendMessage.mockResolvedValue("你好")
+    const { translate } = setup()
+    sendMessageMock.mockResolvedValue("你好")
 
     await expect(translate("Hello", { sessionId: undefined })).resolves.toBe("你好")
     await expect(translate("Hello", { sessionId: undefined })).resolves.toBe("你好")
 
-    expect(sendMessage).toHaveBeenCalledTimes(2)
+    expect(sendMessageMock).toHaveBeenCalledTimes(2)
   })
 
   it("forceRetranslation bypasses the read but refreshes the stored entry", async () => {
-    const { sendMessage, translate } = await setup()
-    sendMessage.mockResolvedValueOnce("旧译文").mockResolvedValueOnce("新译文")
+    const { translate } = setup()
+    sendMessageMock.mockResolvedValueOnce("旧译文").mockResolvedValueOnce("新译文")
 
     await expect(translate("Hello")).resolves.toBe("旧译文")
     await expect(translate("Hello", { forceRetranslation: true })).resolves.toBe("新译文")
@@ -106,56 +175,48 @@ describe("in-memory translation tier in translateTextCore", () => {
     // would resurrect the translation the user explicitly replaced.
     await expect(translate("Hello")).resolves.toBe("新译文")
 
-    expect(sendMessage).toHaveBeenCalledTimes(2)
+    expect(sendMessageMock).toHaveBeenCalledTimes(2)
   })
 
   it("remembers the no-translation sentinel as an empty result", async () => {
-    const { sendMessage, translate } = await setup()
-    const { NO_TRANSLATION_SENTINEL } = await import("@/utils/constants/prompt")
-    sendMessage.mockResolvedValue(NO_TRANSLATION_SENTINEL)
+    const { translate } = setup()
+    sendMessageMock.mockResolvedValue(NO_TRANSLATION_SENTINEL)
 
     await expect(translate("Hello")).resolves.toBe("")
     await expect(translate("Hello")).resolves.toBe("")
 
-    expect(sendMessage).toHaveBeenCalledTimes(1)
+    expect(sendMessageMock).toHaveBeenCalledTimes(1)
   })
 
   it("does not memorize empty results", async () => {
-    const { sendMessage, translate } = await setup()
-    sendMessage.mockResolvedValue("")
+    const { translate } = setup()
+    sendMessageMock.mockResolvedValue("")
 
     await expect(translate("Hello")).resolves.toBe("")
     await expect(translate("Hello")).resolves.toBe("")
 
     // An empty result must stay retryable, mirroring the background's
     // truthy-only cache write.
-    expect(sendMessage).toHaveBeenCalledTimes(2)
+    expect(sendMessageMock).toHaveBeenCalledTimes(2)
   })
 
   it("throws for a cancelled session instead of serving from memory", async () => {
-    const { sendMessage, translate, endPageTranslationSession } = await setup()
-    const { TranslationCancelledError } = await import("@/utils/request/cancellation")
-    sendMessage.mockResolvedValue("你好")
+    const { translate } = setup()
+    sendMessageMock.mockResolvedValue("你好")
 
     await expect(translate("Hello")).resolves.toBe("你好")
     endPageTranslationSession()
 
     await expect(translate("Hello")).rejects.toBeInstanceOf(TranslationCancelledError)
-    expect(sendMessage).toHaveBeenCalledTimes(1)
+    expect(sendMessageMock).toHaveBeenCalledTimes(1)
   })
 })
 
 describe("in-memory translation cache store", () => {
-  it("evicts the least recently used entry past the cap", async () => {
-    const {
-      clearInMemoryTranslationCache,
-      getInMemoryTranslation,
-      storeInMemoryTranslation,
-      IN_MEMORY_TRANSLATION_CACHE_MAX_ENTRIES: cap,
-    } = await import("../in-memory-translation-cache")
+  it("evicts the least recently used entry past the cap", () => {
     clearInMemoryTranslationCache()
 
-    for (let i = 0; i < cap; i++) {
+    for (let i = 0; i < IN_MEMORY_TRANSLATION_CACHE_MAX_ENTRIES; i++) {
       storeInMemoryTranslation(`hash-${i}`, `t-${i}`)
     }
     // Touch the oldest entry so recency, not insertion order, decides.
@@ -168,9 +229,7 @@ describe("in-memory translation cache store", () => {
     expect(getInMemoryTranslation("hash-overflow")).toBe("t-overflow")
   })
 
-  it("ignores empty translations", async () => {
-    const { clearInMemoryTranslationCache, getInMemoryTranslation, storeInMemoryTranslation } =
-      await import("../in-memory-translation-cache")
+  it("ignores empty translations", () => {
     clearInMemoryTranslationCache()
 
     storeInMemoryTranslation("hash-empty", "")

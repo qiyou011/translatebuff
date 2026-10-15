@@ -2,7 +2,7 @@ import type { MouseEvent } from "react"
 import type { SelectionToolbarCustomAction } from "@/types/config/selection-toolbar"
 import { Icon } from "@iconify/react"
 import { useCallback } from "react"
-import { SelectionToolbarTooltip } from "@/entrypoints/selection.content/components/selection-tooltip"
+import { SelectionToolbarTooltip } from "@/components/ui/selection-popover/selection-tooltip"
 import { useSelectionCustomActionContext } from "./context"
 
 // fork 自定义动作触发按钮（镜像上游 custom-action-button/custom-action-trigger.tsx）。D4 三元组绑定：

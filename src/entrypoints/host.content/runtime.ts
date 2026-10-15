@@ -1,6 +1,9 @@
+import type { LangCodeISO6393 } from "@read-frog/definitions"
 import type { ContentScriptContext } from "#imports"
 import type { Config } from "@/types/config/config"
-import { DEFAULT_CONFIG } from "@/utils/constants/config"
+import { storage } from "#imports"
+import { configSchema } from "@/types/config/config"
+import { CONFIG_STORAGE_KEY, DEFAULT_CONFIG } from "@/utils/constants/config"
 import { detectPageLanguageLightweight } from "@/utils/content/page-language"
 import { ensurePresetStyles } from "@/utils/host/translate/ui/style-injector"
 import { logger } from "@/utils/logger"
@@ -29,13 +32,32 @@ export async function bootstrapHostContent(
 
   const preloadConfig =
     initialConfig?.pageTranslation.page.preload ?? DEFAULT_CONFIG.pageTranslation.page.preload
-  const manager = new PageTranslationManager({
-    root: null,
-    rootMargin: `${preloadConfig.margin}px`,
-    threshold: preloadConfig.threshold,
-  })
+  let detectedPageLanguage: { url: string; code: LangCodeISO6393 | "und" } | undefined
+  let detectionGeneration = 0
+  const manager = new PageTranslationManager(
+    {
+      root: null,
+      rootMargin: `${preloadConfig.margin}px`,
+      threshold: preloadConfig.threshold,
+    },
+    (url) => (detectedPageLanguage?.url === url ? detectedPageLanguage.code : undefined),
+  )
 
   const cleanupPageTranslationTriggers = manager.registerPageTranslationTriggers()
+
+  // The tab-title switch applies to an already-translated page at once. Only
+  // the top frame owns the title, so iframes skip parsing every config write.
+  const cleanupTitleTranslationWatch =
+    window === window.top
+      ? storage.watch<Config>(`local:${CONFIG_STORAGE_KEY}`, (config) => {
+          const parsedConfig = configSchema.safeParse(config)
+          if (parsedConfig.success) {
+            manager.setTitleTranslationEnabled(
+              parsedConfig.data.pageTranslation.page.translateTitle,
+            )
+          }
+        })
+      : () => {}
 
   const cleanupTranslationShortcut = await bindTranslationShortcutKey(manager)
 
@@ -44,7 +66,12 @@ export async function bootstrapHostContent(
   const cleanupTranslationHubShortcut = await bindTranslationHubShortcutKey()
 
   const detectAndReportPageLanguage = async (url: string) => {
+    const generation = ++detectionGeneration
+    detectedPageLanguage = undefined
     const { detectedCodeOrUnd } = await detectPageLanguageLightweight()
+    if (generation === detectionGeneration && url === window.location.href) {
+      detectedPageLanguage = { url, code: detectedCodeOrUnd }
+    }
     void sendMessage("reportDetectedPageLanguage", { url, detectedCodeOrUnd })
   }
 
@@ -62,6 +89,8 @@ export async function bootstrapHostContent(
 
   const handleUrlChange = async (from: string, to: string) => {
     if (from !== to) {
+      detectionGeneration += 1
+      detectedPageLanguage = undefined
       logger.info("URL changed from", from, "to", to)
       if (manager.isActive) {
         if (areSamePageTranslationOrigin(from, to)) {
@@ -128,6 +157,7 @@ export async function bootstrapHostContent(
     cleanupUrlListener()
     teardownNodeTranslation()
     cleanupPageTranslationTriggers()
+    cleanupTitleTranslationWatch()
     cleanupTranslationShortcut()
     cleanupTranslationModeShortcut()
     cleanupTranslationHubShortcut()

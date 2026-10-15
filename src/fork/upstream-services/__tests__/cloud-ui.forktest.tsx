@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { cleanup, render, renderHook } from "@testing-library/react"
 import { afterEach, expect, it, vi } from "vitest"
 import { useHostedAiStatus } from "@/components/llm-providers/use-hosted-ai-status"
+import { ActionEditorTabs } from "@/entrypoints/options/pages/custom-actions/action-config-form/editor-tabs"
 import { NotebaseConnectionField } from "@/entrypoints/options/pages/custom-actions/action-config-form/notebase-connection-field"
 import { AiQuotaSection } from "@/entrypoints/options/pages/video-subtitles/ai-quota"
 import { RequestAiSubtitlesItem } from "@/entrypoints/subtitles.content/ui/subtitles-settings-panel/components/request-ai-subtitles-item"
@@ -27,7 +28,7 @@ it("mounts no cloud transcription entry or hosted queries even when enabled", ()
     <QueryClientProvider client={client}>
       <AiQuotaSection />
       <RequestAiSubtitlesItem />
-      <NotebaseConnectionField form={form as never} />
+      <NotebaseConnectionField form={form as never} variant="card" />
     </QueryClientProvider>,
   )
   const { result } = renderHook(() => useHostedAiStatus({ enabled: true }))
@@ -36,4 +37,18 @@ it("mounts no cloud transcription entry or hosted queries even when enabled", ()
   expect(client.getQueryCache().getAll()).toHaveLength(0)
   expect(fetch).not.toHaveBeenCalled()
   client.clear()
+})
+
+it("keeps action configuration visible without mounting the new cloud notebook tab", () => {
+  function ForbiddenCloudTab(): null {
+    throw new Error("Closed notebook tab mounted")
+  }
+  const { container } = render(
+    <ActionEditorTabs
+      config={<input aria-label="Local action" />}
+      notebase={<ForbiddenCloudTab />}
+    />,
+  )
+  expect(container.querySelector('input[aria-label="Local action"]')).not.toBeNull()
+  expect(container.querySelector('[role="tab"]')).toBeNull()
 })

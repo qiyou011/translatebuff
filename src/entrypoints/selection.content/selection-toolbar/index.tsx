@@ -3,6 +3,7 @@ import type {
   EbookBridgeSelectionPayload,
 } from "@read-frog/definitions"
 import type { ModalDialogHostController } from "./modal-dialog-host"
+import type { DeferredSelectionOpenDetail } from "@/utils/constants/selection"
 import { useAtom, useAtomValue, useSetAtom } from "jotai"
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react"
 import {
@@ -12,18 +13,21 @@ import {
 import { configFieldsAtomMap } from "@/utils/atoms/config"
 import { NOTRANSLATE_CLASS } from "@/utils/constants/dom-labels"
 import {
+  DEFERRED_SELECTION_OPEN_EVENT,
   EXTERNAL_SELECTION_CLEAR_EVENT,
   EXTERNAL_SELECTION_OPEN_EVENT,
   MARGIN,
+  SELECTION_TOOLBAR_READY_EVENT,
 } from "@/utils/constants/selection"
-import { getSelectionToolbarActions } from "@/utils/custom-actions"
+import { getSelectionToolbarItems } from "@/utils/selection-toolbar-items"
 import { cn } from "@/utils/styles/utils"
-import { matchDomainPattern } from "@/utils/url"
+import { urlMatchesPattern } from "@/utils/url-pattern"
 import { buildContextSnapshot, readSelectionSnapshot } from "../utils"
 import { clearSelectionStateAtom, isSelectionToolbarOpenAtom, setSelectionStateAtom } from "./atoms"
 import { CloseButton, DropEvent } from "./close-button"
-import { SelectionToolbarCustomActionButtons } from "./custom-action-button"
 import { createModalDialogHostController } from "./modal-dialog-host"
+import { SelectionToolbarMoreMenu } from "./more-menu"
+import { SelectionToolbarPinnedItems } from "./pinned-items"
 import {
   collectSelectionScrollTargets,
   createSelectionAnchorTracker,
@@ -34,8 +38,6 @@ import {
   SelectionDirection,
   viewportPointToHostPoint,
 } from "./positioning"
-import { SpeakButton } from "./speak-button"
-import { TranslateButton } from "./translate-button"
 
 const EXTERNAL_SELECTION_DIRECTION_MAP: Record<EbookBridgeSelectionDirection, SelectionDirection> =
   {
@@ -107,15 +109,11 @@ function getNearestSelectionOverlayElement(node: Node | null) {
   return null
 }
 
-function isNodeInsideSelectionOverlay(
-  node: Node | null,
+function isNodeDirectlyInsideSelectionOverlay(
+  node: Node,
   overlayContainer: HTMLElement | null,
   overlayShadowRoot: ShadowRoot | null,
 ) {
-  if (!node) {
-    return false
-  }
-
   if (overlayContainer?.contains(node)) {
     return true
   }
@@ -130,6 +128,27 @@ function isNodeInsideSelectionOverlay(
   }
 
   return node === overlayShadowRoot || node.getRootNode() === overlayShadowRoot
+}
+
+function isNodeInsideSelectionOverlay(
+  node: Node | null,
+  overlayContainer: HTMLElement | null,
+  overlayShadowRoot: ShadowRoot | null,
+) {
+  // A shadow root nested inside the overlay (a custom action's layout renders
+  // in one) hides its nodes from `contains`, `closest` and the root check, so
+  // each enclosing shadow host is checked in turn.
+  let current = node
+  while (current) {
+    if (isNodeDirectlyInsideSelectionOverlay(current, overlayContainer, overlayShadowRoot)) {
+      return true
+    }
+
+    const root = current.getRootNode()
+    current = root instanceof ShadowRoot ? root.host : null
+  }
+
+  return false
 }
 
 function collectSelectionBoundaryNodes(selection: Selection) {
@@ -209,15 +228,15 @@ export function SelectionToolbar() {
   const clearSelectionState = useSetAtom(clearSelectionStateAtom)
   const selectionToolbar = useAtomValue(configFieldsAtomMap.selectionToolbar)
   const isSiteDisabled = selectionToolbar.disabledSelectionToolbarPatterns?.some((pattern) =>
-    matchDomainPattern(window.location.href, pattern),
+    urlMatchesPattern(window.location.href, pattern),
   )
-  const { features } = selectionToolbar
-  const hasAnyEnabledFeature =
-    features.translate.enabled ||
-    features.speak.enabled ||
-    getSelectionToolbarActions(selectionToolbar).some((action) => action.enabled !== false)
+  // With nothing pinned the toolbar still shows its "more" menu; with nothing
+  // enabled there is nothing to show.
+  const enabledItems = getSelectionToolbarItems(selectionToolbar).filter((item) => item.enabled)
+  const hasAnyEnabledItem = enabledItems.length > 0
+  const hasAnyPinnedItem = enabledItems.some((item) => item.pinned)
   const isSelectionToolbarVisible =
-    isSelectionToolbarOpen && selectionToolbar.enabled && !isSiteDisabled && hasAnyEnabledFeature
+    isSelectionToolbarOpen && selectionToolbar.enabled && !isSiteDisabled && hasAnyEnabledItem
   const dropdownOpenRef = useRef(false)
   // Bumped per external (ebook bridge) selection so the position is re-applied
   // even when the toolbar is already visible (visibility doesn't flip then).
@@ -299,6 +318,7 @@ export function SelectionToolbar() {
 
   useLayoutEffect(() => {
     updatePosition({ remeasureSelection: true })
+    // oxlint-disable-next-line react/exhaustive-effect-dependencies -- the dependencies are re-run triggers, not values the effect body reads
   }, [updatePosition, externalSelectionTick])
 
   useEffect(() => {
@@ -492,11 +512,29 @@ export function SelectionToolbar() {
       }
     }
 
+    const handleDeferredSelection = (event: Event) => {
+      const detail = (event as CustomEvent<DeferredSelectionOpenDetail>).detail
+      if (
+        !detail ||
+        typeof detail.text !== "string" ||
+        !Number.isFinite(detail.x) ||
+        !Number.isFinite(detail.y)
+      )
+        return
+      if (window.getSelection()?.toString() !== detail.text) return
+      handleMouseUp(new MouseEvent("mouseup", { clientX: detail.x, clientY: detail.y }))
+    }
+
     document.addEventListener("mouseup", handleMouseUp)
     document.addEventListener("mousedown", handleMouseDown)
     document.addEventListener("selectionchange", handleSelectionChange)
+    window.addEventListener(DEFERRED_SELECTION_OPEN_EVENT, handleDeferredSelection)
+    window.__READ_FROG_SELECTION_TOOLBAR_READY__ = true
+    window.dispatchEvent(new CustomEvent(SELECTION_TOOLBAR_READY_EVENT))
 
     return () => {
+      window.__READ_FROG_SELECTION_TOOLBAR_READY__ = false
+      window.removeEventListener(DEFERRED_SELECTION_OPEN_EVENT, handleDeferredSelection)
       document.removeEventListener("mouseup", handleMouseUp)
       document.removeEventListener("mousedown", handleMouseDown)
       document.removeEventListener("selectionchange", handleSelectionChange)
@@ -581,7 +619,7 @@ export function SelectionToolbar() {
       )}
       {...{ [SELECTION_CONTENT_OVERLAY_ROOT_ATTRIBUTE]: "" }}
     >
-      {selectionToolbar.enabled && !isSiteDisabled && hasAnyEnabledFeature && (
+      {selectionToolbar.enabled && !isSiteDisabled && hasAnyEnabledItem && (
         <div
           ref={tooltipRef}
           inert={!isSelectionToolbarVisible}
@@ -592,16 +630,18 @@ export function SelectionToolbar() {
               : "pointer-events-none opacity-0",
           )}
         >
+          {/* Clips the buttons' hover fills to its rounded corners. The close
+              button is positioned against the wrapper above, so it isn't clipped. */}
           <div
             data-slot="selection-toolbar-surface"
-            className="flex items-center rounded-sm border border-border/50 bg-popover shadow-floating"
+            className="flex items-center overflow-hidden rounded-lg border border-border/50 bg-popover shadow-md"
             style={{ opacity: "var(--rf-selection-opacity, 1)" }}
           >
-            <div className="no-scrollbar flex max-w-105 items-center overflow-x-auto overflow-y-hidden rounded-sm">
-              {features.translate.enabled && <TranslateButton />}
-              {features.speak.enabled && <SpeakButton />}
-              <SelectionToolbarCustomActionButtons />
+            <div className="no-scrollbar flex max-w-105 items-center overflow-x-auto overflow-y-hidden scroll-driven:scroll-fade-x">
+              <SelectionToolbarPinnedItems />
             </div>
+            {hasAnyPinnedItem && <div className="w-px shrink-0 self-stretch bg-border" />}
+            <SelectionToolbarMoreMenu />
             <CloseButton />
           </div>
         </div>

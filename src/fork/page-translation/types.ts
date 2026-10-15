@@ -2,6 +2,7 @@ import type { Config } from "@/types/config/config"
 import type { ProviderConfig } from "@/types/config/provider"
 import type { TranslationTextFormat } from "@/types/config/translate"
 import type { WebPagePromptContext } from "@/types/content"
+import type { MatchedTerm } from "@/utils/glossary/types"
 
 export interface PageTranslationData {
   text: string
@@ -11,6 +12,8 @@ export interface PageTranslationData {
   hash: string
   scheduleAt: number
   context?: WebPagePromptContext
+  glossaryTerms?: readonly MatchedTerm[]
+  glossaryRevision?: number
   textFormat?: TranslationTextFormat
   preserveLineBreaks?: boolean
   scope?: string

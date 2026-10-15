@@ -93,13 +93,13 @@ describe("静态预览随界面语言变化", () => {
     expect(container.querySelector("#preview-text")).toHaveValue("")
   })
 
-  it("九种语言均有非空静态示例，不使用中文兜底", () => {
+  it("全部受支持语言均有独立非空静态示例，不使用中文兜底", () => {
     const samples = SUPPORTED_UI_LOCALES.map((locale) => {
       const sample = (resources[locale]!.translation as Record<string, { sampleText?: string }>)
         .forkPreview?.sampleText
       expect(sample).toBeTruthy()
       return sample
     })
-    expect(new Set(samples).size).toBe(9)
+    expect(new Set(samples).size).toBe(SUPPORTED_UI_LOCALES.length)
   })
 })

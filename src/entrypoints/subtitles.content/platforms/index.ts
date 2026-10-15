@@ -10,12 +10,13 @@ export interface PlatformConfig {
   embedded?: boolean
   silentErrors?: boolean
   containerShrinkRatio?: (container: HTMLElement) => number | null
+  subtitlesZIndex?: number
 
   selectors: {
     video: string
     playerContainer: string
     controlsBar?: string
-    nativeSubtitles: string
+    nativeSubtitles?: string
   }
 
   events: {
@@ -25,9 +26,13 @@ export interface PlatformConfig {
 
   controls?: ControlsConfig
 
+  supportsSidebar?: boolean
+
   getVideoId?: () => string | null
 
   createAiSubtitlesContext?: () => AiSubtitlesContext | null
+
+  isLiveContent?: () => Promise<boolean>
 
   /**
    * When true, the host player is showing an ad. Overlay captions for the main

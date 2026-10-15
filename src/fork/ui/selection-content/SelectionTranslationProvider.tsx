@@ -1,10 +1,10 @@
 import type { ReactNode } from "react"
 import { useMemo } from "react"
 import { SelectionPopover } from "@/components/ui/selection-popover"
+import { SelectionToolbarErrorAlert } from "@/components/ui/selection-popover/selection-toolbar-error-alert"
+import { SelectionToolbarFooterContent } from "@/components/ui/selection-popover/selection-toolbar-footer-content"
+import { SelectionToolbarTitleContent } from "@/components/ui/selection-popover/selection-toolbar-title-content"
 import { shadowWrapper } from "@/entrypoints/selection.content"
-import { SelectionToolbarErrorAlert } from "@/entrypoints/selection.content/components/selection-toolbar-error-alert"
-import { SelectionToolbarFooterContent } from "@/entrypoints/selection.content/components/selection-toolbar-footer-content"
-import { SelectionToolbarTitleContent } from "@/entrypoints/selection.content/components/selection-toolbar-title-content"
 import { TargetLanguageSelector } from "@/entrypoints/selection.content/selection-toolbar/translate-button/target-language-selector"
 import { TranslationContent } from "@/entrypoints/selection.content/selection-toolbar/translate-button/translation-content"
 import { SelectionTranslationContext } from "./context"
@@ -28,7 +28,9 @@ export function SelectionTranslationProvider({ children }: { children: ReactNode
     titleText,
     translateProviders,
     translateRequest,
+    popoverActionsRef,
     handleOpenChange,
+    handleReuseRequest,
     handleProviderChange,
     handleRegenerate,
     prepareToolbarOpen,
@@ -43,6 +45,8 @@ export function SelectionTranslationProvider({ children }: { children: ReactNode
         onOpenChange={handleOpenChange}
         anchor={anchor}
         onAnchorChange={setAnchor}
+        actionsRef={popoverActionsRef}
+        onReuseRequest={handleReuseRequest}
       >
         {children}
         <SelectionPopover.Content

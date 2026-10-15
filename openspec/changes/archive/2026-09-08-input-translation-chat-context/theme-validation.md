@@ -48,7 +48,7 @@ HIGH 已在修改前告知用户。共享改动仅可选 `contentProps` / `colli
 | 真实 Onyx 主题      | 通过 Discord Appearance 切换；`html` 含 `theme-dark theme-midnight images-dark`，scope 为 `dark`                                   |
 | 浅色 computed style | 语言与撤销 `rgb(32,33,39)`；提示 `rgb(96,101,112)`；菜单背景 `rgb(247,247,248)`；选中行背景 `rgb(228,229,233)`，与已测配色契约一致 |
 | 菜单向上展开        | 深浅色页面截图均显示菜单位于条体上方；实际菜单宽 280 CSS px，高 356 CSS px（含搜索区），内部列表滚动，泰语有选中勾选               |
-| 三空格              | 测试原文 `Hello, how are you today?` 变为 `สวัสดี คุณเป็นอย่างไรบ้างวันนี้?`，出现泰语 / 自动检测 / 撤销                           |
+| 三空格              | 测试原文 `Hello, how are you today?` 变为 `สวัสดี คุณเป็นอย่างไรบ้างวันนี้?`，出现泰语 / 自动检测 / 撤销                                    |
 | 失焦恢复            | 点击 Discord 搜索框隐藏条体，重新点击原消息输入框后恢复                                                                            |
 | 分层 Esc            | 第一次 Esc 只关菜单并保留条体；第二次关闭条体，重新聚焦不恢复                                                                      |
 | 编辑后撤销          | 全选删除译文并改为 `edited translation draft 123`，条体仍保留；撤销恢复最初英文，不是编辑后的文本                                  |

@@ -20,7 +20,10 @@ export const MAX_LOOKAHEAD_RATE = 4
 // DOM IDs
 export const READ_FROG_SUBTITLES_UI_HOST_ID = "read-frog-subtitles-ui-host"
 export const TRANSLATE_BUTTON_CONTAINER_ID = "read-frog-subtitles-translate-button-container"
+export const SUBTITLES_SIDEBAR_HOST_ID = "read-frog-subtitles-sidebar-host"
 export const HIDE_NATIVE_CAPTIONS_STYLE_ID = "read-frog-hide-native-captions"
+
+export const DEFAULT_SUBTITLES_UI_Z_INDEX = 60
 
 // Class names
 export const SUBTITLES_VIEW_CLASS = "read-frog-subtitles-view"
@@ -47,6 +50,44 @@ export const ENSURE_SUBTITLES_REQUEST_TYPE = "READ_FROG_ENSURE_SUBTITLES"
 export const ENSURE_SUBTITLES_RESPONSE_TYPE = "READ_FROG_ENSURE_SUBTITLES_DONE"
 export const POST_MESSAGE_TIMEOUT_MS = 6000
 
+// TextTrack mechanism
+export const TEXT_TRACK_CUE_WAIT_TIMEOUT_MS = 8000
+export const TEXT_TRACK_CUE_POLL_INTERVAL_MS = 100
+export const TEXT_TRACK_NATIVE_REHIDE_DELAY_MS = 500
+
+// x.com specific
+export const XCOM_PLAYER_CONTAINER_ATTRIBUTE = "data-read-frog-xcom-player-container"
+export const XCOM_CONTROLS_CONTAINER_ATTRIBUTE = "data-read-frog-xcom-controls"
+export const XCOM_PLAYER_CONTAINER_SELECTOR = `[${XCOM_PLAYER_CONTAINER_ATTRIBUTE}="true"]`
+export const XCOM_CONTROLS_CONTAINER_SELECTOR = `[${XCOM_CONTROLS_CONTAINER_ATTRIBUTE}="true"]`
+export const XCOM_STATUS_POLL_INTERVAL_MS = 2000
+export const XCOM_PLAYER_MUTATION_DEBOUNCE_MS = 50
+// x.com renders captions from a partial duplicate track labelled like this.
+export const XCOM_RENDER_TRACK_LABEL = "clone"
+
+// Netflix specific
+export const NETFLIX_WATCH_PATH_PATTERN = /^\/watch\/(\d+)/
+export const NETFLIX_TTML_URL_PATTERN =
+  /^https:\/\/[^/]+\.oca\.nflxvideo\.net\/\?([ovet]=[^=&]+&?){4}$/
+export const NETFLIX_PLAYER_SELECTOR = "[data-uia='player']"
+export const NETFLIX_CONTROLS_SELECTOR = "[data-uia='controls-standard']"
+export const NETFLIX_CONTROLS_GROUP_SELECTOR =
+  "div:has(> div > [data-uia='control-audio-subtitle'])"
+export const NETFLIX_NATIVE_SUBTITLES_SELECTOR = ".player-timedtext"
+export const NETFLIX_SUBTITLES_REQUEST_TYPE = "READ_FROG_NETFLIX_SUBTITLES"
+export const NETFLIX_SUBTITLES_RESPONSE_TYPE = "READ_FROG_NETFLIX_SUBTITLES_DONE"
+// The page script answers "state" and "restore" within this, inside POST_MESSAGE_TIMEOUT_MS.
+export const NETFLIX_PAGE_WAIT_TIMEOUT_MS = 5000
+// The page script answers "load" within this one deadline, which covers waiting for the player
+// and then for its subtitle file.
+export const NETFLIX_LOAD_TIMEOUT_MS = 10_000
+// Outwaits the page's load deadline, with room for its last poll even in a throttled background
+// tab, so a slow load reports how it ended instead of timing out.
+export const NETFLIX_LOAD_POST_MESSAGE_TIMEOUT_MS = NETFLIX_LOAD_TIMEOUT_MS + 2000
+export const NETFLIX_PAGE_POLL_INTERVAL_MS = 100
+export const NETFLIX_WATCH_POLL_INTERVAL_MS = 1000
+export const NETFLIX_TRANSLATE_BUTTON_ZOOM = 1.4
+
 // YouTube player wait constants
 export const MAX_PLAYER_WAIT_ATTEMPTS = 50
 export const PLAYER_WAIT_INTERVAL_MS = 100
@@ -58,6 +99,9 @@ export const MAX_POT_WAIT_ATTEMPTS = 30
 export const POT_WAIT_INTERVAL_MS = 200
 export const MAX_SELECTED_TRACK_WAIT_ATTEMPTS = 8
 export const SELECTED_TRACK_WAIT_INTERVAL_MS = 100
+
+// Video summary constants
+export const VIDEO_SUMMARY_TRANSCRIPT_CHAR_BUDGET = 24_000
 
 // Subtitle style constants
 export const MIN_FONT_SCALE = 30
@@ -80,6 +124,10 @@ export const DEFAULT_SUBTITLE_POSITION = { percent: 10, anchor: "bottom" } as co
 export const DEFAULT_SUBTITLES_TOGGLE_SHORTCUT_KEY = "Alt+C"
 // Subtitle controls sit on top of arbitrary host pages, so keep their theme fixed for readability.
 export const SUBTITLES_THEME = "dark" as const
+
+// Sidebar layout constants
+export const SUBTITLES_SIDEBAR_VIEWPORT_MARGIN = 16
+export const SUBTITLES_SIDEBAR_WIDTH = 400
 
 // Font family mapping
 export const SUBTITLE_FONT_FAMILIES = {

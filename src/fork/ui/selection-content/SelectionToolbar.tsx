@@ -1,4 +1,5 @@
 import type { ModalDialogHostController } from "@/entrypoints/selection.content/selection-toolbar/modal-dialog-host"
+import type { DeferredSelectionOpenDetail } from "@/utils/constants/selection"
 import { useAtom, useAtomValue, useSetAtom } from "jotai"
 import { useCallback, useEffect, useLayoutEffect, useRef } from "react"
 import {
@@ -29,10 +30,14 @@ import { SpeakButton } from "@/entrypoints/selection.content/selection-toolbar/s
 import { buildContextSnapshot, readSelectionSnapshot } from "@/entrypoints/selection.content/utils"
 import { configFieldsAtomMap } from "@/utils/atoms/config"
 import { NOTRANSLATE_CLASS } from "@/utils/constants/dom-labels"
-import { MARGIN } from "@/utils/constants/selection"
+import {
+  DEFERRED_SELECTION_OPEN_EVENT,
+  MARGIN,
+  SELECTION_TOOLBAR_READY_EVENT,
+} from "@/utils/constants/selection"
 import { getSelectionToolbarActions } from "@/utils/custom-actions"
 import { cn } from "@/utils/styles/utils"
-import { matchDomainPattern } from "@/utils/url"
+import { urlMatchesPattern } from "@/utils/url-pattern"
 import { CustomActionTrigger } from "./CustomActionTrigger"
 import { TranslateButton } from "./TranslateButton"
 
@@ -55,6 +60,7 @@ const SELECTION_GUARD_INTERACTIVE_SELECTOR = [
   "textarea",
   "select",
   "summary",
+  "video",
 ].join(", ")
 
 const SELECTION_OVERLAY_ROOT_SELECTOR = `[${SELECTION_CONTENT_OVERLAY_ROOT_ATTRIBUTE}]`
@@ -482,11 +488,29 @@ export function SelectionToolbar() {
       }
     }
 
+    const handleDeferredSelection = (event: Event) => {
+      const detail = (event as CustomEvent<DeferredSelectionOpenDetail>).detail
+      if (
+        !detail ||
+        typeof detail.text !== "string" ||
+        !Number.isFinite(detail.x) ||
+        !Number.isFinite(detail.y)
+      )
+        return
+      if (window.getSelection()?.toString() !== detail.text) return
+      handleMouseUp(new MouseEvent("mouseup", { clientX: detail.x, clientY: detail.y }))
+    }
+
     document.addEventListener("mouseup", handleMouseUp)
     document.addEventListener("mousedown", handleMouseDown)
     document.addEventListener("selectionchange", handleSelectionChange)
+    window.addEventListener(DEFERRED_SELECTION_OPEN_EVENT, handleDeferredSelection)
+    window.__READ_FROG_SELECTION_TOOLBAR_READY__ = true
+    window.dispatchEvent(new CustomEvent(SELECTION_TOOLBAR_READY_EVENT))
 
     return () => {
+      window.__READ_FROG_SELECTION_TOOLBAR_READY__ = false
+      window.removeEventListener(DEFERRED_SELECTION_OPEN_EVENT, handleDeferredSelection)
       document.removeEventListener("mouseup", handleMouseUp)
       document.removeEventListener("mousedown", handleMouseDown)
       document.removeEventListener("selectionchange", handleSelectionChange)
@@ -503,7 +527,7 @@ export function SelectionToolbar() {
 
   // Check if current site is disabled
   const isSiteDisabled = selectionToolbar.disabledSelectionToolbarPatterns?.some((pattern) =>
-    matchDomainPattern(window.location.href, pattern),
+    urlMatchesPattern(window.location.href, pattern),
   )
 
   const { features } = selectionToolbar
@@ -542,7 +566,7 @@ export function SelectionToolbar() {
         >
           <div
             data-slot="selection-toolbar-surface"
-            className="flex items-center rounded-xl bg-popover p-1 shadow-floating"
+            className="shadow-floating flex items-center rounded-xl bg-popover p-1"
             style={{ opacity: "var(--rf-selection-opacity, 1)" }}
           >
             <div className="no-scrollbar flex max-w-105 items-center overflow-x-auto overflow-y-hidden rounded-xl">

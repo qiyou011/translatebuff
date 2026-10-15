@@ -1,11 +1,13 @@
 import type { TranslateRequest } from "@/entrypoints/translation-hub/atoms"
-import type { TranslateProviderConfig } from "@/types/config/provider"
 import { atom } from "jotai"
-import { translateRequestAtom as upstreamTranslateRequestAtom } from "@/entrypoints/translation-hub/atoms"
+import {
+  selectedProviderIdsAtom as upstreamSelectedProviderIdsAtom,
+  selectedProvidersAtom as upstreamSelectedProvidersAtom,
+  translateRequestAtom as upstreamTranslateRequestAtom,
+} from "@/entrypoints/translation-hub/atoms"
 import { sendForkMessage } from "@/fork/message"
 import { isForkVisibleProvider } from "@/fork/providers/renyimiao"
 import { configFieldsAtomMap } from "@/utils/atoms/config"
-import { filterEnabledProvidersConfig, getTranslateProvidersConfig } from "@/utils/config/helpers"
 
 // fork 换皮：translation-hub 的选择状态。wxt.config 把上游 atoms.ts 重定向到本模块，
 // `export *` 复用上游全部 atom（守卫放行本模块 import 上游原版，避免自环），只覆盖下面两个：
@@ -13,27 +15,23 @@ import { filterEnabledProvidersConfig, getTranslateProvidersConfig } from "@/uti
 // 这里默认只选 fork 可见 provider（任译喵 + 纯翻译）。仅换默认值，override 后行为与上游一致。
 export * from "@/entrypoints/translation-hub/atoms"
 
-const selectedProviderIdsOverrideAtom = atom<string[] | null>(null)
-
+// The public atom owns persistence, deduplication and availability. The fork only
+// filters product visibility; it must not keep a second, tab-local selection.
 export const selectedProviderIdsAtom = atom(
   (get) => {
-    const override = get(selectedProviderIdsOverrideAtom)
-    if (override !== null) return override
-    const providersConfig = get(configFieldsAtomMap.providersConfig)
-    const translateProviders = getTranslateProvidersConfig(providersConfig)
-    return filterEnabledProvidersConfig(translateProviders)
-      .filter(isForkVisibleProvider)
-      .map((provider) => provider.id)
+    const visibleIds = new Set(
+      get(configFieldsAtomMap.providersConfig)
+        .filter(isForkVisibleProvider)
+        .map((provider) => provider.id),
+    )
+    return get(upstreamSelectedProviderIdsAtom).filter((id) => visibleIds.has(id))
   },
-  (_get, set, ids: string[]) => set(selectedProviderIdsOverrideAtom, ids),
+  (_get, set, ids: string[]) => set(upstreamSelectedProviderIdsAtom, ids),
 )
 
 export const selectedProvidersAtom = atom((get) => {
-  const ids = get(selectedProviderIdsAtom)
-  const providersConfig = get(configFieldsAtomMap.providersConfig)
-  return ids
-    .map((id) => providersConfig.find((provider) => provider.id === id))
-    .filter((provider): provider is TranslateProviderConfig => provider !== undefined)
+  const ids = new Set(get(selectedProviderIdsAtom))
+  return get(upstreamSelectedProvidersAtom).filter((provider) => ids.has(provider.id))
 })
 
 // 翻译中心是三条翻译通路里唯一不发上游消息的一条（页面内直调 executeTranslate），

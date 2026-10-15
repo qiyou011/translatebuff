@@ -1,11 +1,14 @@
+import type { LangCodeISO6393 } from "@read-frog/definitions"
 import { useAtomValue } from "jotai"
 import { useCallback, useEffect, useRef } from "react"
 import { toastManager } from "@/components/ui/base-ui/toast"
 import { ANALYTICS_FEATURE, ANALYTICS_SURFACE } from "@/types/analytics"
-import { createFeatureUsageContext, trackFeatureAttempt } from "@/utils/analytics"
-import { classifyResolvedProvider } from "@/utils/analytics-provider"
+import { createFeatureUsageContext, trackFeatureUsed } from "@/utils/analytics"
+import { classifyFailureReason } from "@/utils/analytics-failure-reason"
+import { classifyResolvedProvider, UNKNOWN_FEATURE_PROVIDER } from "@/utils/analytics-provider"
 import { configFieldsAtomMap } from "@/utils/atoms/config"
 import { INPUT_REPLACE_REQUEST_TYPE } from "@/utils/constants/input-injector"
+import { getDeepActiveElement } from "@/utils/dom/active-element"
 import { translateTextForInput } from "@/utils/host/translate/translate-variants"
 import { HostedAiProviderUnavailableError } from "@/utils/providers/provider-ref"
 import { resolveProviderRefForCapability } from "@/utils/providers/provider-registry"
@@ -145,7 +148,8 @@ export function useInputTranslation() {
       if (element instanceof HTMLInputElement || element instanceof HTMLTextAreaElement) {
         text = element.value
       } else if (element.isContentEditable) {
-        text = element.textContent || ""
+        // textContent joins paragraphs and drops <br> line breaks in rich editors.
+        text = element.innerText || ""
       } else {
         return
       }
@@ -187,42 +191,60 @@ export function useInputTranslation() {
 
       // Store original text to detect if user edited during translation
       const originalText = text
+      const analyticsContext = createFeatureUsageContext(
+        ANALYTICS_FEATURE.INPUT_TRANSLATION,
+        ANALYTICS_SURFACE.INPUT_TRANSLATION,
+      )
+      let providerAnalytics = UNKNOWN_FEATURE_PROVIDER
+      let targetLanguage: LangCodeISO6393 | undefined
 
       try {
-        const translatedText = await trackFeatureAttempt(
-          {
-            ...createFeatureUsageContext(
-              ANALYTICS_FEATURE.INPUT_TRANSLATION,
-              ANALYTICS_SURFACE.INPUT_TRANSLATION,
-            ),
-            // Capability-resolved so Built-in AI is not reported as "unknown":
-            // it is synthesized by the registry and never a providersConfig row.
-            ...classifyResolvedProvider(
-              resolveProviderRefForCapability(
-                "inputTranslation",
-                providersConfig,
-                inputTranslationConfig.providerId,
-              ),
-            ),
-          },
-          () => translateTextForInput(text, fromLang, toLang),
+        // Capability-resolved so Built-in AI is not reported as unknown.
+        providerAnalytics = classifyResolvedProvider(
+          resolveProviderRefForCapability(
+            "inputTranslation",
+            providersConfig,
+            inputTranslationConfig.providerId,
+          ),
         )
+        const translatedText = await translateTextForInput(text, fromLang, toLang, (resolved) => {
+          targetLanguage = resolved
+        })
+        if (targetLanguage) {
+          void trackFeatureUsed({
+            ...analyticsContext,
+            ...providerAnalytics,
+            char_count: text.length,
+            target_language: targetLanguage,
+            outcome: "success",
+          })
+        }
 
         // Check if element content changed during translation (user input)
         let currentText: string
         if (element instanceof HTMLInputElement || element instanceof HTMLTextAreaElement) {
           currentText = element.value
         } else if (element.isContentEditable) {
-          currentText = element.textContent || ""
+          currentText = element.innerText || ""
         } else {
           currentText = originalText
         }
 
         // Only apply translation if content hasn't changed during async operation
-        if (currentText.trim() === originalText && translatedText) {
+        if (element.isConnected && currentText.trim() === originalText && translatedText) {
           setTextWithUndo(element, translatedText)
         }
       } catch (error) {
+        if (targetLanguage) {
+          void trackFeatureUsed({
+            ...analyticsContext,
+            ...providerAnalytics,
+            char_count: text.length,
+            target_language: targetLanguage,
+            outcome: "failure",
+            failure_reason: classifyFailureReason(error),
+          })
+        }
         // A hosted plan/quota denial is a state the user can act on, not a
         // defect: without this the spinner just appears and disappears and
         // the feature reads as broken.
@@ -260,7 +282,7 @@ export function useInputTranslation() {
       }
 
       // Check if the active element is an input field
-      const activeElement = document.activeElement
+      const activeElement = getDeepActiveElement()
       const isInputField =
         activeElement instanceof HTMLInputElement ||
         activeElement instanceof HTMLTextAreaElement ||

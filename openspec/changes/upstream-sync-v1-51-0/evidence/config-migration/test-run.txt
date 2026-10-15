@@ -1,0 +1,13 @@
+
+ RUN  v5.0.3 /Users/yisen/.codex/worktrees/upstream-sync-v1-51-0/translatebuff
+
+ ✓ src/fork/__tests__/upstream-v151-migration.test.ts (5 tests) 1194ms
+   ✓ pinned v100 to v111 config migration and storage-level restore (requires baseline Git object) (4)
+     ✓ restores the saved backup with actual old helpers and passes old schema validation before downgrade 1154ms
+
+ Test Files  1 passed (1)
+      Tests  5 passed (5)
+   Start at  12:29:24
+   Duration  2.31s (tests 53%, import 30%, transform 14%, setup 2%)
+
+JSON report written to /Users/yisen/.codex/worktrees/upstream-sync-v1-51-0/translatebuff/openspec/changes/upstream-sync-v1-51-0/evidence/config-migration/vitest-results.json

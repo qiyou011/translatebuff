@@ -5,6 +5,7 @@ import {
   SELECTION_CONTENT_OVERLAY_LAYERS,
   SELECTION_CONTENT_OVERLAY_ROOT_ATTRIBUTE,
 } from "@/entrypoints/selection.content/overlay-layers"
+import { SelectionSpeechProvider } from "@/entrypoints/selection.content/selection-toolbar/speak-button"
 import { useContextMenuReadAloud } from "@/entrypoints/selection.content/use-context-menu-read-aloud"
 import { configFieldsAtomMap } from "@/utils/atoms/config"
 import { InputTranslationBar, useInputTranslation } from "./input-translation"
@@ -62,7 +63,9 @@ export default function App({
       />
       <SelectionTranslationProvider>
         <SelectionCustomActionProvider>
-          <SelectionToolbar />
+          <SelectionSpeechProvider>
+            <SelectionToolbar />
+          </SelectionSpeechProvider>
         </SelectionCustomActionProvider>
       </SelectionTranslationProvider>
     </ToastProvider>

@@ -1,28 +1,33 @@
-import type { Hotkey } from "@tanstack/hotkeys"
+import type { SelectionPopoverActions } from "@/components/ui/selection-popover"
+import type { SelectionToolbarInlineError } from "@/components/ui/selection-popover/inline-error"
 import type {
   SelectionSession,
   SelectionToolbarTranslateRequestSlice,
 } from "@/entrypoints/selection.content/selection-toolbar/atoms"
-import type { SelectionToolbarInlineError } from "@/entrypoints/selection.content/selection-toolbar/inline-error"
 import type { FeatureProviderAnalytics } from "@/types/analytics"
 import type { BackgroundTextStreamSnapshot, ThinkingSnapshot } from "@/types/background-stream"
-import type { LLMProviderConfig, ProviderConfig } from "@/types/config/provider"
+import type {
+  LLMProviderConfig,
+  ProviderConfig,
+  TranslateProviderConfig,
+} from "@/types/config/provider"
 import { LANG_CODE_TO_EN_NAME } from "@read-frog/definitions"
-import { HotkeyManager } from "@tanstack/hotkeys"
 import { useAtomValue, useSetAtom } from "jotai"
 import { useCallback, useEffect, useEffectEvent, useMemo, useRef, useState } from "react"
 import { toastManager } from "@/components/ui/base-ui/toast"
+import {
+  createSelectionToolbarPrecheckError,
+  createSelectionToolbarRuntimeError,
+  isAbortError,
+} from "@/components/ui/selection-popover/inline-error"
 import {
   isSelectionToolbarOpenAtom as isSelectionToolbarVisibleAtom,
   selectionSessionAtom,
   selectionToolbarTranslateRequestAtom,
 } from "@/entrypoints/selection.content/selection-toolbar/atoms"
-import {
-  createSelectionToolbarPrecheckError,
-  createSelectionToolbarRuntimeError,
-  isAbortError,
-} from "@/entrypoints/selection.content/selection-toolbar/inline-error"
 import { useSelectionOpenRequestResolver } from "@/entrypoints/selection.content/selection-toolbar/use-selection-open-request"
+import { useSelectionShortcuts } from "@/entrypoints/selection.content/selection-toolbar/use-selection-shortcuts"
+import { captureSelectionActionContext } from "@/entrypoints/selection.content/utils"
 import { ANALYTICS_FEATURE, ANALYTICS_SURFACE } from "@/types/analytics"
 import { isLLMProviderConfig, isTranslateProviderConfig } from "@/types/config/provider"
 import { createFeatureUsageContext, trackFeatureUsed } from "@/utils/analytics"
@@ -30,15 +35,14 @@ import { classifyProviderConfig, UNKNOWN_FEATURE_PROVIDER } from "@/utils/analyt
 import { configFieldsAtomMap, writeConfigAtom } from "@/utils/atoms/config"
 import { buildFeatureProviderPatch } from "@/utils/constants/feature-providers"
 import { streamBackgroundText } from "@/utils/content-script/background-stream-client"
+import { getSourceDocumentTitle } from "@/utils/content/document-title"
+import { resolveGlossaryTermsFromCache } from "@/utils/glossary/active-matcher"
+import { trackGlossaryUsed } from "@/utils/glossary/analytics"
 import { prepareTranslationText } from "@/utils/host/translate/text-preparation"
-import { resolvePageProviderRef, translateTextCore } from "@/utils/host/translate/translate-text"
+import { translateTextCore } from "@/utils/host/translate/translate-text"
 import { getOrCreateWebPageContext } from "@/utils/host/translate/webpage-context"
 import { getOrGenerateWebPageSummary } from "@/utils/host/translate/webpage-summary"
 import { onMessage } from "@/utils/message"
-import {
-  isPageTranslationShortcutEmpty,
-  isValidConfiguredPageTranslationShortcut,
-} from "@/utils/page-translation-shortcut"
 import { getTranslatePromptFromConfig } from "@/utils/prompts/translate"
 import { resolveModelId } from "@/utils/providers/model-id"
 import { getProviderOptionsWithOverride } from "@/utils/providers/options"
@@ -71,15 +75,14 @@ async function getSelectionWebPagePromptContext(
     return undefined
   }
 
-  // 上游 v1.46.4 起该函数收 SerializableProviderRef（不再是 ProviderConfig），
-  // 并新增 hostedFeature 标明计入哪条 Built-in AI 配额路由。
-  // fork 走任译喵自建 provider，配额参数只对上游托管模型计费生效。
-  const webSummary = await getOrGenerateWebPageSummary(
-    webPageContext,
-    await resolvePageProviderRef(providerConfig, undefined, "selectionTranslation"),
-    enableAIContentAware,
-    "selectionTranslation",
-  )
+  const webSummary = isLLMProviderConfig(providerConfig)
+    ? await getOrGenerateWebPageSummary(
+        webPageContext,
+        { kind: "local", config: providerConfig },
+        enableAIContentAware,
+        "selectionTranslation",
+      )
+    : null
   return {
     webTitle: webPageContext.webTitle,
     webDescription: webPageContext.webDescription,
@@ -127,7 +130,18 @@ async function translateWithTextStream({
     translateRequest.enableAIContentAware,
   )
   throwIfAborted()
-  let { systemPrompt, prompt } = getTranslatePromptFromConfig(
+  const glossaryTerms = resolveGlossaryTermsFromCache(
+    preparedText,
+    translateRequest.glossaryEnabled,
+    translateRequest.language.targetCode,
+  )
+  trackGlossaryUsed(
+    "selectionTranslation",
+    glossaryTerms,
+    translateRequest.language.targetCode,
+    classifyProviderConfig(providerConfig),
+  )
+  const { systemPrompt, prompt } = getTranslatePromptFromConfig(
     { customPromptsConfig: translateRequest.customPromptsConfig },
     targetLangName,
     preparedText,
@@ -142,11 +156,13 @@ async function translateWithTextStream({
             },
           }
         : {}),
+      glossaryTerms,
     },
   )
 
   const translatedText = await streamBackgroundText(
     {
+      providerKind: "local",
       providerId,
       instructions: systemPrompt,
       prompt,
@@ -169,7 +185,7 @@ async function translateWithStandardProvider({
   translateRequest,
 }: {
   text: string
-  providerConfig: ProviderConfig
+  providerConfig: TranslateProviderConfig
   translateRequest: SelectionToolbarTranslateRequestSlice
 }) {
   const webPageContext = await getSelectionWebPagePromptContext(
@@ -180,7 +196,13 @@ async function translateWithStandardProvider({
     text,
     langConfig: translateRequest.language,
     hostedFeature: "selectionTranslation",
-    providerConfig,
+    providerConfig: {
+      kind: "local",
+      config: providerConfig,
+      id: providerConfig.id,
+      name: providerConfig.name,
+    },
+    glossaryEnabled: translateRequest.glossaryEnabled,
     enableAIContentAware: translateRequest.enableAIContentAware,
     extraHashTags: ["selectionTranslation"],
     webPageContext,
@@ -212,14 +234,14 @@ export function useSelectionTranslationController() {
   const setConfig = useSetAtom(writeConfigAtom)
   const abortControllerRef = useRef<AbortController | null>(null)
   const pendingOpenRequestRef = useRef<SelectionTranslatePendingOpenRequest | null>(null)
-  const reopenFrameRef = useRef<number | null>(null)
+  const popoverActionsRef = useRef<SelectionPopoverActions | null>(null)
   const lastTranslationRunKeyRef = useRef<string | null>(null)
   const runIdRef = useRef(0)
   const { resolveContextMenuOpenRequest, resolveShortcutOpenRequest } =
     useSelectionOpenRequestResolver(selectionSession)
   const selectionText = activeSession?.selectionSnapshot.text ?? null
   const paragraphsText = activeSession?.contextSnapshot.text ?? selectionText
-  const titleText = document.title || null
+  const titleText = getSourceDocumentTitle() || null
   const translateProviders = useMemo(
     () => getSelectableProvidersForCapability("selectionTranslation", providersConfig),
     [providersConfig],
@@ -252,9 +274,6 @@ export function useSelectionTranslationController() {
 
   const commitOpenRequest = useCallback((request: SelectionTranslatePendingOpenRequest) => {
     pendingOpenRequestRef.current = request
-    if (request.anchor) {
-      setAnchor(request.anchor)
-    }
   }, [])
 
   const handleProviderChange = useCallback(
@@ -280,10 +299,11 @@ export function useSelectionTranslationController() {
         return
       }
 
-      const analyticsContext = createFeatureUsageContext(
-        ANALYTICS_FEATURE.SELECTION_TRANSLATION,
-        sourceSurface,
-      )
+      const analyticsContext = {
+        ...createFeatureUsageContext(ANALYTICS_FEATURE.SELECTION_TRANSLATION, sourceSurface),
+        char_count: preparedText.length,
+        target_language: translateRequest.language.targetCode,
+      }
       // 上游 v1.43.6 给 feature_used 事件加了 provider / backend_kind 必填项。provider 要到
       // 下面解析出 providerConfig 才知道，而失败分支可能在那之前就上报，故先置未知、解析后再覆盖。
       let analyticsProvider: FeatureProviderAnalytics = UNKNOWN_FEATURE_PROVIDER
@@ -453,40 +473,46 @@ export function useSelectionTranslationController() {
     translateRequestKey,
   ])
 
+  const applyPendingSession = useCallback(() => {
+    const pendingRequest = pendingOpenRequestRef.current
+    const nextSession = pendingRequest?.session ?? selectionSession
+    setActiveSession(
+      nextSession
+        ? {
+            ...nextSession,
+            contextSnapshot:
+              captureSelectionActionContext(nextSession.selectionSnapshot) ??
+              nextSession.contextSnapshot,
+          }
+        : null,
+    )
+    setSourceSurface(pendingRequest?.surface ?? ANALYTICS_SURFACE.SELECTION_TOOLBAR)
+    setIsSelectionToolbarVisible(false)
+    pendingOpenRequestRef.current = null
+  }, [selectionSession, setIsSelectionToolbarVisible])
+
   const handleOpenChange = useCallback(
     (nextOpen: boolean) => {
       cancelCurrentTranslation()
       resetTranslationState()
-
       if (nextOpen) {
-        const pendingRequest = pendingOpenRequestRef.current
-        const nextSession = pendingRequest?.session ?? selectionSession
-
-        setActiveSession(nextSession)
-        setSourceSurface(pendingRequest?.surface ?? ANALYTICS_SURFACE.SELECTION_TOOLBAR)
-        setPopoverSessionKey((prev) => prev + 1)
-        if (pendingRequest?.anchor) {
-          setAnchor(pendingRequest.anchor)
-        }
-        setIsSelectionToolbarVisible(false)
-        pendingOpenRequestRef.current = null
+        setPopoverSessionKey((previous) => previous + 1)
+        applyPendingSession()
       } else {
-        resetPopoverSession({
-          clearAnchor: pendingOpenRequestRef.current === null,
-        })
+        resetPopoverSession({ clearAnchor: pendingOpenRequestRef.current === null })
         lastTranslationRunKeyRef.current = null
       }
-
       setIsOpen(nextOpen)
     },
-    [
-      cancelCurrentTranslation,
-      resetPopoverSession,
-      resetTranslationState,
-      selectionSession,
-      setIsSelectionToolbarVisible,
-    ],
+    [applyPendingSession, cancelCurrentTranslation, resetPopoverSession, resetTranslationState],
   )
+
+  const handleReuseRequest = useCallback(() => {
+    cancelCurrentTranslation()
+    resetTranslationState()
+    applyPendingSession()
+    setRerunNonce((previous) => previous + 1)
+  }, [applyPendingSession, cancelCurrentTranslation, resetTranslationState])
 
   const prepareToolbarOpen = useCallback(() => {
     if (!selectionSession) {
@@ -512,18 +538,21 @@ export function useSelectionTranslationController() {
     }
   }, [resolveContextMenuOpenRequest])
 
-  const resolveShortcutRequest = useCallback((): SelectionTranslatePendingOpenRequest | null => {
-    const request = resolveShortcutOpenRequest()
-    if (!request) {
-      return null
-    }
+  const resolveShortcutRequest = useCallback(
+    (session: SelectionSession | null): SelectionTranslatePendingOpenRequest | null => {
+      const request = resolveShortcutOpenRequest(session)
+      if (!request) {
+        return null
+      }
 
-    return {
-      anchor: request.anchor,
-      session: request.session,
-      surface: ANALYTICS_SURFACE.SHORTCUT,
-    }
-  }, [resolveShortcutOpenRequest])
+      return {
+        anchor: request.anchor,
+        session: request.session,
+        surface: ANALYTICS_SURFACE.SHORTCUT,
+      }
+    },
+    [resolveShortcutOpenRequest],
+  )
 
   const openSelectionTranslationRequest = useCallback(
     (
@@ -538,25 +567,10 @@ export function useSelectionTranslationController() {
         return
       }
 
-      if (reopenFrameRef.current !== null) {
-        cancelAnimationFrame(reopenFrameRef.current)
-        reopenFrameRef.current = null
-      }
-
-      if (isOpen) {
-        handleOpenChange(false)
-        reopenFrameRef.current = requestAnimationFrame(() => {
-          reopenFrameRef.current = null
-          commitOpenRequest(request)
-          handleOpenChange(true)
-        })
-        return
-      }
-
       commitOpenRequest(request)
-      handleOpenChange(true)
+      popoverActionsRef.current?.requestOpen(request.anchor ?? null)
     },
-    [commitOpenRequest, handleOpenChange, isOpen],
+    [commitOpenRequest],
   )
 
   const openFromContextMenu = useCallback(() => {
@@ -565,49 +579,25 @@ export function useSelectionTranslationController() {
     })
   }, [openSelectionTranslationRequest, resolveContextMenuRequest])
 
-  const openFromShortcut = useCallback(() => {
-    openSelectionTranslationRequest(resolveShortcutRequest())
-  }, [openSelectionTranslationRequest, resolveShortcutRequest])
-
-  useEffect(() => {
-    const shortcut = selectionToolbar.features.translate.shortcut
-    if (
-      isPageTranslationShortcutEmpty(shortcut) ||
-      !isValidConfiguredPageTranslationShortcut(shortcut)
-    ) {
-      return undefined
-    }
-
-    const registration = HotkeyManager.getInstance().register(
-      shortcut as Hotkey,
-      () => {
-        openFromShortcut()
-      },
-      {
-        ignoreInputs: true,
-        preventDefault: true,
-        stopPropagation: true,
-      },
-    )
-
-    return () => {
-      registration.unregister()
-    }
-  }, [openFromShortcut, selectionToolbar.features.translate.shortcut])
+  useSelectionShortcuts(
+    {
+      translate: selectionToolbar.features.translate.enabled
+        ? selectionToolbar.features.translate.shortcut
+        : undefined,
+    },
+    (_, session) => {
+      const request = resolveShortcutRequest(session)
+      if (!request) return false
+      openSelectionTranslationRequest(request)
+      return true
+    },
+  )
 
   useEffect(() => {
     return onMessage("openSelectionTranslationFromContextMenu", () => {
       openFromContextMenu()
     })
   }, [openFromContextMenu])
-
-  useEffect(() => {
-    return () => {
-      if (reopenFrameRef.current !== null) {
-        cancelAnimationFrame(reopenFrameRef.current)
-      }
-    }
-  }, [])
 
   return {
     isOpen,
@@ -623,7 +613,9 @@ export function useSelectionTranslationController() {
     titleText,
     translateProviders,
     translateRequest,
+    popoverActionsRef,
     handleOpenChange,
+    handleReuseRequest,
     handleProviderChange,
     handleRegenerate,
     prepareToolbarOpen,

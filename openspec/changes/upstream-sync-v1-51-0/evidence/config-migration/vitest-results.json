@@ -1,0 +1,103 @@
+{
+  "numTotalTestSuites": 2,
+  "numPassedTestSuites": 2,
+  "numFailedTestSuites": 0,
+  "numPendingTestSuites": 0,
+  "numTotalTests": 5,
+  "numPassedTests": 5,
+  "numFailedTests": 0,
+  "numPendingTests": 0,
+  "numTodoTests": 0,
+  "snapshot": {
+    "added": 0,
+    "failure": false,
+    "filesAdded": 0,
+    "filesRemoved": 0,
+    "filesRemovedList": [],
+    "filesUnmatched": 0,
+    "filesUpdated": 0,
+    "matched": 0,
+    "total": 0,
+    "unchecked": 0,
+    "uncheckedKeysByFile": [],
+    "unmatched": 0,
+    "updated": 0,
+    "didUpdate": false
+  },
+  "startTime": 1792038564229,
+  "success": true,
+  "testResults": [
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [],
+          "fullName": "migrates the frozen v100 fixture and user overrides to v111 without requiring Git history",
+          "status": "passed",
+          "title": "migrates the frozen v100 fixture and user overrides to v111 without requiring Git history",
+          "duration": 9.317082999999911,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "pinned v100 to v111 config migration and storage-level restore (requires baseline Git object)"
+          ],
+          "fullName": "pinned v100 to v111 config migration and storage-level restore (requires baseline Git object) uses the exact baseline frozen fixture and real baseline v100 validator",
+          "status": "passed",
+          "title": "uses the exact baseline frozen fixture and real baseline v100 validator",
+          "duration": 21.80058400000007,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "pinned v100 to v111 config migration and storage-level restore (requires baseline Git object)"
+          ],
+          "fullName": "pinned v100 to v111 config migration and storage-level restore (requires baseline Git object) backs up first, upgrades storage to v111, and preserves user and independent site/member state",
+          "status": "passed",
+          "title": "backs up first, upgrades storage to v111, and preserves user and independent site/member state",
+          "duration": 4.371417000000065,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "pinned v100 to v111 config migration and storage-level restore (requires baseline Git object)"
+          ],
+          "fullName": "pinned v100 to v111 config migration and storage-level restore (requires baseline Git object) imports the saved schema100 envelope through target migrateConfig and config storage helpers",
+          "status": "passed",
+          "title": "imports the saved schema100 envelope through target migrateConfig and config storage helpers",
+          "duration": 4.544875000000047,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        },
+        {
+          "ancestorTitles": [
+            "pinned v100 to v111 config migration and storage-level restore (requires baseline Git object)"
+          ],
+          "fullName": "pinned v100 to v111 config migration and storage-level restore (requires baseline Git object) restores the saved backup with actual old helpers and passes old schema validation before downgrade",
+          "status": "passed",
+          "title": "restores the saved backup with actual old helpers and passes old schema validation before downgrade",
+          "duration": 1153.7182090000001,
+          "failureMessages": [],
+          "meta": {},
+          "tags": [],
+          "benchmarks": []
+        }
+      ],
+      "startTime": 1792038565410,
+      "endTime": 1792038566604.7183,
+      "status": "passed",
+      "message": "",
+      "name": "/Users/yisen/.codex/worktrees/upstream-sync-v1-51-0/translatebuff/src/fork/__tests__/upstream-v151-migration.test.ts"
+    }
+  ]
+}

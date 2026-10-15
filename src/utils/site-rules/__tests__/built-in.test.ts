@@ -7,9 +7,9 @@ import {
   TRANSLATE_BUTTON_CLASS,
   YOUTUBE_NATIVE_SUBTITLES_CLASS,
 } from "@/utils/constants/subtitles"
+import { normalizeUrlPattern } from "@/utils/url-pattern"
 import { BUILT_IN_SITE_RULES } from "../built-in"
 import rawBuiltInRules from "../built-in/rules.json"
-import { normalizeUrlPattern } from "../match"
 import { resolveSiteRule } from "../resolve"
 
 const RAW_BUILT_IN_SITE_RULES = rawBuiltInRules as unknown as Array<Record<string, unknown>>
@@ -74,6 +74,18 @@ function allSelectors(rule: (typeof BUILT_IN_SITE_RULES)[number]): string[] {
 }
 
 describe("built-in site rules", () => {
+  it.each([
+    "https://browse.library.kiwix.org/viewer",
+    "https://en.browse.library.kiwix.org/content/article",
+    "https://latentk.com/insight/progressive-git/",
+    "https://www.w3schools.com/html/html_iframe.asp",
+    "https://example.com/article",
+    "https://latentk.com/insight/unrelated/",
+    "https://www.w3schools.com/html/html_intro.asp",
+  ])("keeps iframe runtime opt-in on %s", (url) => {
+    expect(resolveSiteRule(url, BUILT_IN_SITE_RULES, [], []).injectIntoIframes).toBeNull()
+  })
+
   it("resolves the inline atom defaults on any URL and folds them into preserve-text", () => {
     const resolved = resolveSiteRule("https://example.com/article", BUILT_IN_SITE_RULES, [], [])
     const atomSelectors = resolved.atomSelector?.split(",") ?? []
@@ -237,6 +249,68 @@ describe("built-in site rules", () => {
     expect(resolved.injectedCss).toContain("white-space: normal !important")
     expect(resolved.injectedCss).toContain("overflow: visible !important")
     expect(resolved.injectedCss).toContain("text-overflow: clip !important")
+  })
+
+  it("keeps Kaggle guide translations in flow while preserving card link overlays and inline atoms", () => {
+    const resolved = resolveSiteRule(
+      "https://www.kaggle.com/learn-guide/kaggle-competitions",
+      BUILT_IN_SITE_RULES,
+      [],
+      [],
+    )
+    const style = document.createElement("style")
+    // Kaggle uses empty spans to stretch a card's link over its whole surface.
+    // The same broad selector also catches our wrapper, content and spacer.
+    style.textContent = `
+      .learnGuide span {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 1;
+      }
+      ${resolved.injectedCss}
+    `
+    const fixture = document.createElement("div")
+    fixture.className = "learnGuide"
+    fixture.innerHTML = `
+      <a href="/competitions/titanic">Titanic<span data-overlay></span></a>
+      <p>Source text<span class="read-frog-translated-content-wrapper">
+        <span data-spacer>&nbsp;&nbsp;</span>
+        <span class="read-frog-translated-inline-content">译文</span>
+        <span class="read-frog-translated-block-content">段落译文</span>
+        <span class="read-frog-inline-atom"><span data-formula>x</span></span>
+      </span></p>
+    `
+    document.head.append(style)
+    document.body.append(fixture)
+
+    try {
+      for (const selector of [
+        ".read-frog-translated-content-wrapper",
+        "[data-spacer]",
+        ".read-frog-translated-inline-content",
+        ".read-frog-translated-block-content",
+      ]) {
+        const computed = window.getComputedStyle(fixture.querySelector(selector)!)
+        expect(computed.position).toBe("static")
+        expect(computed.width).toBe("auto")
+        expect(computed.height).toBe("auto")
+        expect(computed.zIndex).toBe("auto")
+      }
+
+      for (const selector of ["[data-overlay]", ".read-frog-inline-atom", "[data-formula]"]) {
+        const computed = window.getComputedStyle(fixture.querySelector(selector)!)
+        expect(computed.position).toBe("absolute")
+        expect(computed.width).toBe("100%")
+        expect(computed.height).toBe("100%")
+        expect(computed.zIndex).toBe("1")
+      }
+    } finally {
+      fixture.remove()
+      style.remove()
+    }
   })
 
   // `linkedinFeed` shipped as `https://linkedin.com/feed/*`, but LinkedIn 301s the

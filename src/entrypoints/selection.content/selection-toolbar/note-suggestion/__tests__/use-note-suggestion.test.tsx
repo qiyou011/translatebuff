@@ -97,6 +97,7 @@ const fireInput = (
 ): NoteSuggestionFireInput => ({
   sessionKey,
   selectionText: "ephemeral",
+  savedSelectionText: "ephemeral",
   paragraphsText: "The ephemeral beauty of cherry blossoms.",
   targetLangName: "Simplified Chinese",
   webTitle: "Sakura",
@@ -284,7 +285,6 @@ describe("useNoteSuggestion", () => {
           name: "Word",
           type: "string",
           description: "The vocabulary term",
-          speaking: true,
         },
       ],
     }
@@ -294,7 +294,13 @@ describe("useNoteSuggestion", () => {
     store.set(configAtom, config)
     const { result } = renderHook(() => useNoteSuggestion(), { wrapper: wrapper(store) })
 
-    act(() => result.current.maybeFire(fireInput("disabled-built-in:lang:0")))
+    // The note keeps the selection as saved, not as the prompt quotes it.
+    act(() =>
+      result.current.maybeFire({
+        ...fireInput("disabled-built-in:lang:0"),
+        savedSelectionText: "ephemeral, as saved",
+      }),
+    )
     await waitFor(() => expect(result.current.suggestion).not.toBeNull())
 
     const request = streamBackgroundNoteSuggestionMock.mock.calls[0]![0]
@@ -307,6 +313,7 @@ describe("useNoteSuggestion", () => {
     expect(validateNoteSuggestionMock).toHaveBeenCalledWith({
       envelope: expect.any(Object),
       action: customAction,
+      selection: "ephemeral, as saved",
     })
     expect(result.current.suggestion?.actionSnapshot.id).toBe(customAction.id)
   })

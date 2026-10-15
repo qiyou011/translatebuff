@@ -18,7 +18,13 @@ import { fetchSubtitlesSummary, translateSubtitles } from "@/utils/subtitles/pro
 
 vi.mock("@/utils/config/storage", () => ({ getLocalConfig: vi.fn<() => Promise<Config>>() }))
 vi.mock("@/utils/message", () => ({
-  sendMessage: vi.fn<(...args: unknown[]) => Promise<string>>().mockResolvedValue("translated"),
+  sendMessage: vi
+    .fn<(...args: unknown[]) => Promise<unknown>>()
+    .mockImplementation(async (type) =>
+      type === "getGlossarySnapshot"
+        ? { revision: 0, scopeKey: "empty-local-glossary", entries: [] }
+        : "translated",
+    ),
 }))
 vi.mock("@/components/ui/base-ui/toast", () => ({
   toastManager: { add: vi.fn<(options: unknown) => void>() },
@@ -96,8 +102,11 @@ describe("real translation pipelines with redirected registry", () => {
     await expect(translateTextForInput("Input pipeline unique text", "eng", "cmn")).resolves.toBe(
       "translated",
     )
-    expect(sendMessage).toHaveBeenCalledTimes(2)
-    for (const call of vi.mocked(sendMessage).mock.calls) {
+    const translations = vi
+      .mocked(sendMessage)
+      .mock.calls.filter(([name]) => name === "enqueueTranslateRequest")
+    expect(translations).toHaveLength(2)
+    for (const call of translations) {
       expect(call).toEqual([
         "enqueueTranslateRequest",
         expect.objectContaining({
@@ -106,6 +115,13 @@ describe("real translation pipelines with redirected registry", () => {
         }),
       ])
     }
+    expect(
+      vi
+        .mocked(sendMessage)
+        .mock.calls.every(
+          ([name]) => name === "getGlossarySnapshot" || name === "enqueueTranslateRequest",
+        ),
+    ).toBe(true)
   })
 
   it("subtitle translation and summary use the local model and model-specific cache identity", async () => {
@@ -115,14 +131,20 @@ describe("real translation pipelines with redirected registry", () => {
     expect(await translateSubtitles(fragments, context, config)).toEqual([
       { ...fragments[0], translation: "translated" },
     ])
-    const first = vi.mocked(sendMessage).mock.calls[0]
+    const first = vi
+      .mocked(sendMessage)
+      .mock.calls.find(([name]) => name === "enqueueSubtitlesTranslateRequest")
     expect(first).toEqual([
       "enqueueSubtitlesTranslateRequest",
       expect.objectContaining({ providerRef: { kind: "local", config: candidate } }),
     ])
     const changed = { ...candidate, model: { ...candidate.model, customModel: "different-model" } }
     await translateSubtitles(fragments, context, { ...config, providersConfig: [changed] })
-    expect(vi.mocked(sendMessage).mock.calls[1]?.[1]).not.toEqual(first?.[1])
+    const translations = vi
+      .mocked(sendMessage)
+      .mock.calls.filter(([name]) => name === "enqueueSubtitlesTranslateRequest")
+    expect(translations).toHaveLength(2)
+    expect(translations[1]?.[1]).not.toEqual(first?.[1])
     await fetchSubtitlesSummary(context, {
       ...config,
       pageTranslation: { ...config.pageTranslation, enableAIContentAware: true },
@@ -131,7 +153,9 @@ describe("real translation pipelines with redirected registry", () => {
       "getSubtitlesSummary",
       expect.objectContaining({ providerRef: { kind: "local", config: candidate } }),
     )
-    expect(sendMessage).toHaveBeenCalledTimes(3)
+    expect(
+      vi.mocked(sendMessage).mock.calls.filter(([name]) => name !== "getGlossarySnapshot"),
+    ).toHaveLength(3)
   })
 
   it("selection request and analytics agree with the effective provider without rewriting storage", () => {

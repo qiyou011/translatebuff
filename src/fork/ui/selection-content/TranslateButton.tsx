@@ -2,11 +2,11 @@ import { RiTranslate } from "@remixicon/react"
 import { useAtomValue } from "jotai"
 import { Kbd, KbdGroup } from "@/components/ui/base-ui/kbd"
 import { SelectionPopover } from "@/components/ui/selection-popover"
-import { SelectionToolbarTooltip } from "@/entrypoints/selection.content/components/selection-tooltip"
+import { SelectionToolbarTooltip } from "@/components/ui/selection-popover/selection-tooltip"
 import { configFieldsAtomMap } from "@/utils/atoms/config"
 import { i18n } from "@/utils/i18n"
 import { formatHotkeyParts } from "@/utils/os"
-import { isPageTranslationShortcutEmpty } from "@/utils/page-translation-shortcut"
+import { isShortcutEmpty } from "@/utils/shortcut"
 import { useSelectionTranslationContext } from "./context"
 
 // fork 翻译触发按钮（镜像上游 translate-button/index.tsx）。D4 三元组绑定：
@@ -17,7 +17,7 @@ export function TranslateButton() {
   const selectionToolbar = useAtomValue(configFieldsAtomMap.selectionToolbar)
   const triggerLabel = i18n.t("action.translation")
   const shortcut = selectionToolbar.features.translate.shortcut
-  const shortcutParts = isPageTranslationShortcutEmpty(shortcut) ? [] : formatHotkeyParts(shortcut)
+  const shortcutParts = isShortcutEmpty(shortcut) ? [] : formatHotkeyParts(shortcut)
   const tooltipContent =
     shortcutParts.length > 0 ? (
       <span className="inline-flex items-center gap-2">

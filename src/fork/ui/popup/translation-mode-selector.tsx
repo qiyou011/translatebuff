@@ -7,8 +7,8 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/base-ui
 import { configAtom, configFieldsAtomMap } from "@/utils/atoms/config"
 import { i18n } from "@/utils/i18n"
 import { formatHotkeyParts } from "@/utils/os"
-import { isPageTranslationShortcutEmpty } from "@/utils/page-translation-shortcut"
 import { getTranslationOnlyBlockedReason } from "@/utils/providers/translation-only-gate"
+import { isShortcutEmpty } from "@/utils/shortcut"
 import { cn } from "@/utils/styles/utils"
 
 // fork 版 popup 模式切换按钮（换皮上游 entrypoints/popup/components/translation-mode-selector）：
@@ -50,7 +50,7 @@ export default function TranslationModeSelector() {
   const blockedReason = getTranslationOnlyBlockedReason(config)
   const nextModeBlocked = nextMode === "translationOnly" && blockedReason !== null
   const actionLabel = i18n.t(tooltipKey.action)
-  const shortcutParts = isPageTranslationShortcutEmpty(translateConfig.modeShortcut)
+  const shortcutParts = isShortcutEmpty(translateConfig.modeShortcut)
     ? []
     : formatHotkeyParts(translateConfig.modeShortcut)
 

@@ -52,6 +52,7 @@ export function UserRulesEditor() {
   })
   useEffect(() => {
     syncFromExternal()
+    // oxlint-disable-next-line react/exhaustive-effect-dependencies -- the dependencies are re-run triggers, not values the effect body reads
   }, [externalJson])
 
   const debouncedJsonInput = useDebouncedValue(jsonInput, 500)
@@ -116,7 +117,7 @@ export function UserRulesEditor() {
         <div className="flex items-center justify-between gap-2">
           <div
             className={cn(
-              "text-sm text-green-500",
+              "text-sm text-success",
               isValidating && "text-muted-foreground",
               !validation.ok && "text-destructive",
             )}

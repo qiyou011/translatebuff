@@ -1,12 +1,12 @@
 import type { ReactNode } from "react"
 import { useMemo } from "react"
+import { CustomActionContent } from "@/components/custom-action/custom-action-content"
+import { CustomActionToolButton } from "@/components/custom-action/custom-action-tool-button"
 import { SelectionPopover } from "@/components/ui/selection-popover"
+import { SelectionToolbarErrorAlert } from "@/components/ui/selection-popover/selection-toolbar-error-alert"
+import { SelectionToolbarFooterContent } from "@/components/ui/selection-popover/selection-toolbar-footer-content"
+import { SelectionToolbarTitleContent } from "@/components/ui/selection-popover/selection-toolbar-title-content"
 import { shadowWrapper } from "@/entrypoints/selection.content"
-import { SelectionToolbarErrorAlert } from "@/entrypoints/selection.content/components/selection-toolbar-error-alert"
-import { SelectionToolbarFooterContent } from "@/entrypoints/selection.content/components/selection-toolbar-footer-content"
-import { SelectionToolbarTitleContent } from "@/entrypoints/selection.content/components/selection-toolbar-title-content"
-import { CustomActionContent } from "@/entrypoints/selection.content/selection-toolbar/custom-action-button/custom-action-content"
-import { CustomActionToolButton } from "@/entrypoints/selection.content/selection-toolbar/custom-action-button/custom-action-tool-button"
 import { SelectionCustomActionContext } from "./context"
 import { useSelectionCustomActionController } from "./use-custom-action-controller"
 
@@ -29,9 +29,13 @@ export function SelectionCustomActionProvider({ children }: { children: ReactNod
     customActionRequest,
     displayedResult,
     displayedError,
-    displayedIsRunning,
     displayedThinking,
+    layoutStatus,
+    layoutSelection,
+    layoutTargetCode,
+    popoverActionsRef,
     handleOpenChange,
+    handleReuseRequest,
     handleProviderChange,
     handleRegenerate,
     openToolbarCustomAction,
@@ -47,6 +51,8 @@ export function SelectionCustomActionProvider({ children }: { children: ReactNod
         onOpenChange={handleOpenChange}
         anchor={anchor}
         onAnchorChange={setAnchor}
+        actionsRef={popoverActionsRef}
+        onReuseRequest={handleReuseRequest}
       >
         <SelectionPopover.Content
           key={popoverSessionKey}
@@ -65,8 +71,10 @@ export function SelectionCustomActionProvider({ children }: { children: ReactNod
 
           <SelectionPopover.Body ref={bodyRef}>
             <CustomActionContent
-              isRunning={displayedIsRunning}
-              outputSchema={activeAction?.outputSchema ?? []}
+              action={activeAction}
+              status={layoutStatus}
+              selection={layoutSelection}
+              targetCode={layoutTargetCode}
               selectionContent={selectionText}
               value={displayedResult}
               thinking={displayedThinking}

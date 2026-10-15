@@ -12,13 +12,15 @@ import {
   translationCardExpandedStateAtom,
 } from "@/entrypoints/translation-hub/atoms"
 import { ANALYTICS_FEATURE, ANALYTICS_SURFACE } from "@/types/analytics"
+import { isLLMProviderConfig } from "@/types/config/provider"
 import { createFeatureUsageContext, trackFeatureAttempt } from "@/utils/analytics"
 import { classifyProviderConfig } from "@/utils/analytics-provider"
 import { configFieldsAtomMap } from "@/utils/atoms/config"
 import { getProviderConfigById } from "@/utils/config/helpers"
+import { resolveGlossaryTerms } from "@/utils/glossary/active-matcher"
 import { executeTranslate } from "@/utils/host/translate/execute-translate"
 import { i18n } from "@/utils/i18n"
-import { getTranslatePrompt } from "@/utils/prompts/translate"
+import { getTranslatePromptFromConfig } from "@/utils/prompts/translate"
 import { getProviderLogo, getProviderName } from "@/utils/providers/provider-display"
 import { cn } from "@/utils/styles/utils"
 
@@ -36,6 +38,7 @@ export function TranslationCard({
   const { theme } = useTheme()
   const request = useAtomValue(translateRequestAtom)
   const language = useAtomValue(configFieldsAtomMap.language)
+  const glossary = useAtomValue(configFieldsAtomMap.glossary)
   const providersConfig = useAtomValue(configFieldsAtomMap.providersConfig)
   const [selectedProviderIds, setSelectedProviderIds] = useAtom(selectedProviderIdsAtom)
   const setExpandedById = useSetAtom(translationCardExpandedStateAtom)
@@ -44,12 +47,18 @@ export function TranslationCard({
 
   // Track request IDs to ignore stale responses from slow providers
   const requestIdRef = useRef(0)
+  const abortControllerRef = useRef<AbortController | null>(null)
+  useEffect(() => () => abortControllerRef.current?.abort(), [])
   const copyButtonRef = useRef<HTMLButtonElement>(null)
 
   const mutation = useMutation({
     mutationKey: ["translate", providerId],
     meta: { suppressToast: true },
     mutationFn: async (req: NonNullable<typeof request>) => {
+      const myRequestId = ++requestIdRef.current
+      abortControllerRef.current?.abort()
+      const abortController = new AbortController()
+      abortControllerRef.current = abortController
       return await trackFeatureAttempt(
         {
           ...createFeatureUsageContext(
@@ -57,11 +66,24 @@ export function TranslationCard({
             ANALYTICS_SURFACE.TRANSLATION_HUB,
           ),
           ...classifyProviderConfig(provider),
+          char_count: req.inputText.length,
+          target_language: req.targetLanguage,
         },
         async () => {
           if (!provider) throw new Error("Provider not found")
 
-          const myRequestId = ++requestIdRef.current
+          const glossaryTerms = isLLMProviderConfig(provider)
+            ? (await resolveGlossaryTerms(req.inputText, glossary.enabled, req.targetLanguage))
+                .terms
+            : []
+          if (abortController.signal.aborted) return undefined
+          const promptResolver = async (targetLang: string, text: string) =>
+            getTranslatePromptFromConfig(
+              { customPromptsConfig: req.promptConfig },
+              targetLang,
+              text,
+              { glossaryTerms },
+            )
           const result = await executeTranslate(
             req.inputText,
             {
@@ -70,7 +92,8 @@ export function TranslationCard({
               level: language.level,
             },
             provider,
-            getTranslatePrompt,
+            promptResolver,
+            { signal: abortController.signal, glossaryTerms },
           )
 
           // Ignore stale responses - return undefined to silently discard
@@ -95,6 +118,7 @@ export function TranslationCard({
 
   useEffect(() => {
     triggerTranslation()
+    // oxlint-disable-next-line react/exhaustive-effect-dependencies -- timestamp is the command trigger; the effect event reads the latest request
   }, [request?.timestamp])
 
   const handleCopy = () => {
@@ -115,7 +139,7 @@ export function TranslationCard({
   }
 
   const handleRemove = () => {
-    setSelectedProviderIds(selectedProviderIds.filter((id) => id !== providerId))
+    void setSelectedProviderIds(selectedProviderIds.filter((id) => id !== providerId))
     setExpandedById((prev) => {
       if (!(providerId in prev)) return prev
 

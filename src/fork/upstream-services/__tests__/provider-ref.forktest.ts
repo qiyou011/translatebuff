@@ -23,6 +23,7 @@ const system = {
   modelTier: "normal" as const,
 }
 const local = buildRenyimiaoProvider("test-model", "test-key", "https://gateway.example/v1")
+const localRef = { kind: "local" as const, config: local, id: local.id, name: local.name }
 
 beforeEach(() => {
   fakeBrowser.reset()
@@ -54,7 +55,7 @@ describe("fork provider refs", () => {
     expect(availability).toMatchObject({ available: false })
     const results = await Promise.allSettled([
       serializeProviderRef(system, "pageTranslation"),
-      serializeProviderRef(local, "pageTranslation"),
+      serializeProviderRef(localRef, "pageTranslation"),
     ])
     expect(results[1]).toEqual({ status: "fulfilled", value: { kind: "local", config: local } })
     if (results[0].status !== "rejected") throw new Error("Legacy request unexpectedly succeeded")
@@ -72,7 +73,7 @@ describe("fork provider refs", () => {
         providersConfig: [local],
         pageTranslation: { ...DEFAULT_CONFIG.pageTranslation, providerId: system.id },
       }),
-    ).toEqual(local)
+    ).toEqual(localRef)
   })
 
   it("does not serialize a paid language fallback", async () => {

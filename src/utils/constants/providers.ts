@@ -36,7 +36,7 @@ import { getLobeIconsCDNUrlFn } from "../logo"
 
 export const DEFAULT_LLM_PROVIDER_MODELS: LLMProviderModels = {
   openrouter: {
-    model: "x-ai/grok-4-fast:free",
+    model: "google/gemma-4-31b-it:free",
     isCustomModel: false,
     customModel: null,
   },
@@ -61,12 +61,12 @@ export const DEFAULT_LLM_PROVIDER_MODELS: LLMProviderModels = {
     customModel: null,
   },
   openai: {
-    model: "gpt-5.4-mini",
+    model: "gpt-6-luna",
     isCustomModel: false,
     customModel: null,
   },
   azure: {
-    model: "gpt-5.4-mini",
+    model: "gpt-5.6-luna",
     isCustomModel: false,
     customModel: null,
   },
@@ -76,17 +76,17 @@ export const DEFAULT_LLM_PROVIDER_MODELS: LLMProviderModels = {
     customModel: null,
   },
   google: {
-    model: "gemini-2.5-flash-lite",
+    model: "gemini-3.5-flash-lite",
     isCustomModel: false,
     customModel: null,
   },
   anthropic: {
-    model: "claude-haiku-4-5",
+    model: "claude-haiku-5-5",
     isCustomModel: false,
     customModel: null,
   },
   xai: {
-    model: "grok-4.20-0309-non-reasoning",
+    model: "grok-4.3",
     isCustomModel: false,
     customModel: null,
   },
@@ -96,22 +96,22 @@ export const DEFAULT_LLM_PROVIDER_MODELS: LLMProviderModels = {
     customModel: null,
   },
   groq: {
-    model: "llama-3.1-8b-instant",
+    model: "openai/gpt-oss-20b",
     isCustomModel: false,
     customModel: null,
   },
   deepinfra: {
-    model: "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
+    model: "Qwen/Qwen3.5-9B",
     isCustomModel: false,
     customModel: null,
   },
   mistral: {
-    model: "magistral-small-2507",
+    model: "mistral-small-latest",
     isCustomModel: false,
     customModel: null,
   },
   togetherai: {
-    model: "deepseek-ai/DeepSeek-V3",
+    model: "Qwen/Qwen3.5-9B",
     isCustomModel: false,
     customModel: null,
   },
@@ -121,12 +121,12 @@ export const DEFAULT_LLM_PROVIDER_MODELS: LLMProviderModels = {
     customModel: null,
   },
   fireworks: {
-    model: "accounts/fireworks/models/llama-v3p2-3b-instruct",
+    model: "accounts/fireworks/models/gpt-oss-120b",
     isCustomModel: false,
     customModel: null,
   },
   cerebras: {
-    model: "llama3.1-8b",
+    model: "gpt-oss-120b",
     isCustomModel: false,
     customModel: null,
   },
@@ -136,12 +136,7 @@ export const DEFAULT_LLM_PROVIDER_MODELS: LLMProviderModels = {
     customModel: null,
   },
   perplexity: {
-    model: "sonar",
-    isCustomModel: false,
-    customModel: null,
-  },
-  vercel: {
-    model: "v0-1.5-md",
+    model: "perplexity/sonar",
     isCustomModel: false,
     customModel: null,
   },
@@ -171,17 +166,17 @@ export const DEFAULT_LLM_PROVIDER_MODELS: LLMProviderModels = {
     customModel: null,
   },
   alibaba: {
-    model: "qwen3.5-flash",
+    model: "qwen3.8-flash",
     isCustomModel: false,
     customModel: null,
   },
   moonshotai: {
-    model: "kimi-k2-turbo",
+    model: "kimi-k2.6",
     isCustomModel: false,
     customModel: null,
   },
   huggingface: {
-    model: "meta-llama/Llama-3.1-8B-Instruct",
+    model: "Qwen/Qwen3.5-9B",
     isCustomModel: false,
     customModel: null,
   },
@@ -240,10 +235,6 @@ export const PROVIDER_ITEMS: Record<
     name: "Atlas Cloud",
     website: "https://readfrog.s.gy/altas",
     apiKeyUrl: "https://readfrog.s.gy/altas",
-    sponsor: {
-      sponsoring: true,
-      referUrl: "https://readfrog.s.gy/altas",
-    },
   },
   "openai-compatible": {
     logo: () => customProviderLogo,
@@ -349,11 +340,6 @@ export const PROVIDER_ITEMS: Record<
     logo: getLobeIconsCDNUrlFn("perplexity-color"),
     name: "Perplexity",
     website: "https://perplexity.ai",
-  },
-  vercel: {
-    logo: getLobeIconsCDNUrlFn("vercel"),
-    name: "Vercel",
-    website: "https://vercel.com",
   },
   tensdaq: {
     logo: () => tensdaqLogoColor,
@@ -596,13 +582,6 @@ export const DEFAULT_PROVIDER_CONFIG = {
     provider: "perplexity",
     model: DEFAULT_LLM_PROVIDER_MODELS.perplexity,
   },
-  vercel: {
-    id: "vercel-default",
-    name: PROVIDER_ITEMS.vercel.name,
-    enabled: true,
-    provider: "vercel",
-    model: DEFAULT_LLM_PROVIDER_MODELS.vercel,
-  },
   openrouter: {
     id: "openrouter-default",
     name: PROVIDER_ITEMS.openrouter.name,
@@ -709,7 +688,6 @@ export const PROVIDER_URL_PLACEHOLDERS: Partial<Record<APIProviderTypes, string>
   cerebras: "https://api.cerebras.ai/v1",
   replicate: "https://api.replicate.com/v1",
   perplexity: "https://api.perplexity.ai",
-  vercel: "https://api.v0.dev/v1",
   openrouter: "https://openrouter.ai/api/v1",
   ollama: "http://127.0.0.1:11434/",
   volcengine: DEFAULT_PROVIDER_CONFIG.volcengine.baseURL,
@@ -724,7 +702,7 @@ export const DEFAULT_PROVIDER_CONFIG_LIST: ProvidersConfig = [
   DEFAULT_PROVIDER_CONFIG["microsoft-translate"],
   DEFAULT_PROVIDER_CONFIG.openai,
   DEFAULT_PROVIDER_CONFIG.jalapenocloud,
-  DEFAULT_PROVIDER_CONFIG.atlascloud,
+  DEFAULT_PROVIDER_CONFIG.deepseek,
 ]
 
 /** Resolve a provider's default description in the active interface language. */

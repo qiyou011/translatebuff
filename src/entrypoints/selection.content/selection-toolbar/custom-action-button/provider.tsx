@@ -3,48 +3,60 @@ import type { SelectionSession } from "../atoms"
 import type { SelectionPopoverActions } from "@/components/ui/selection-popover"
 import { useAtomValue, useSetAtom } from "jotai"
 import { createContext, use, useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { CustomActionContent } from "@/components/custom-action/custom-action-content"
+import { CustomActionToolButton } from "@/components/custom-action/custom-action-tool-button"
+import { SaveToNotebaseButton } from "@/components/custom-action/save-to-notebase-button"
+import { isSaveToNotebaseDialogOpenAtom } from "@/components/custom-action/save-to-notebase-dialog-atom"
+import { SaveToNotebaseDialogHost } from "@/components/custom-action/save-to-notebase-dialog-host"
+import {
+  buildCustomActionExecutionPlan,
+  useCustomActionExecution,
+  useCustomActionWebPageContext,
+} from "@/components/custom-action/use-custom-action-execution"
 import { useHostedAiProviderOptions } from "@/components/llm-providers/use-hosted-ai-provider-options"
 import { toastManager } from "@/components/ui/base-ui/toast"
 import { SelectionPopover } from "@/components/ui/selection-popover"
+import { createSelectionToolbarPrecheckError } from "@/components/ui/selection-popover/inline-error"
+import { SelectionToolbarErrorAlert } from "@/components/ui/selection-popover/selection-toolbar-error-alert"
+import { SelectionToolbarFooterContent } from "@/components/ui/selection-popover/selection-toolbar-footer-content"
+import { SelectionToolbarTitleContent } from "@/components/ui/selection-popover/selection-toolbar-title-content"
 import { ANALYTICS_FEATURE, ANALYTICS_SURFACE } from "@/types/analytics"
 import { createFeatureUsageContext, trackFeatureUsed } from "@/utils/analytics"
 import { classifyResolvedProvider, UNKNOWN_FEATURE_PROVIDER } from "@/utils/analytics-provider"
 import { configFieldsAtomMap, writeConfigAtom } from "@/utils/atoms/config"
-import { findSelectionToolbarAction, patchSelectionToolbarAction } from "@/utils/custom-actions"
+import { getSourceDocumentTitle } from "@/utils/content/document-title"
+import {
+  findSelectionToolbarAction,
+  getSelectionToolbarActions,
+  patchSelectionToolbarAction,
+} from "@/utils/custom-actions"
 import { onMessage } from "@/utils/message"
 import {
   getSelectableProvidersForCapability,
   resolveProviderRefForCapability,
 } from "@/utils/providers/provider-registry"
 import { shadowWrapper } from "../.."
-import { SelectionToolbarErrorAlert } from "../../components/selection-toolbar-error-alert"
-import { SelectionToolbarFooterContent } from "../../components/selection-toolbar-footer-content"
-import { SelectionToolbarTitleContent } from "../../components/selection-toolbar-title-content"
-import { normalizeSelectedText } from "../../utils"
+import { captureSelectionActionContext, normalizeSelectedText } from "../../utils"
 import {
   contextAtom,
   isSelectionToolbarOpenAtom,
   selectionAtom,
   selectionSessionAtom,
 } from "../atoms"
-import { createSelectionToolbarPrecheckError } from "../inline-error"
+import { ReviewDueTab } from "../review-due-tab"
 import { useSelectionOpenRequestResolver } from "../use-selection-open-request"
-import { CustomActionContent } from "./custom-action-content"
-import { CustomActionToolButton } from "./custom-action-tool-button"
-import { SaveToNotebaseButton } from "./save-to-notebase-button"
-import { isSaveToNotebaseDialogOpenAtom } from "./save-to-notebase-dialog-atom"
-import { SaveToNotebaseDialogHost } from "./save-to-notebase-dialog-host"
-import {
-  buildCustomActionExecutionPlan,
-  useCustomActionExecution,
-  useCustomActionWebPageContext,
-} from "./use-custom-action-execution"
+import { useSelectionShortcuts } from "../use-selection-shortcuts"
+
+type SelectionCustomActionSurface =
+  | typeof ANALYTICS_SURFACE.SELECTION_TOOLBAR
+  | typeof ANALYTICS_SURFACE.CONTEXT_MENU
+  | typeof ANALYTICS_SURFACE.SHORTCUT
 
 interface SelectionCustomActionPendingOpenRequest {
   actionId: string
   anchor?: { x: number; y: number }
   session: SelectionSession | null
-  surface: typeof ANALYTICS_SURFACE.SELECTION_TOOLBAR | typeof ANALYTICS_SURFACE.CONTEXT_MENU
+  surface: SelectionCustomActionSurface
 }
 
 interface SelectionCustomActionContextValue {
@@ -89,9 +101,9 @@ export function SelectionCustomActionProvider({ children }: { children: ReactNod
   const [rerunNonce, setRerunNonce] = useState(0)
   const [activeSession, setActiveSession] = useState<SelectionSession | null>(null)
   const [activeActionId, setActiveActionId] = useState<string | null>(null)
-  const [sourceSurface, setSourceSurface] = useState<
-    typeof ANALYTICS_SURFACE.SELECTION_TOOLBAR | typeof ANALYTICS_SURFACE.CONTEXT_MENU
-  >(ANALYTICS_SURFACE.SELECTION_TOOLBAR)
+  const [sourceSurface, setSourceSurface] = useState<SelectionCustomActionSurface>(
+    ANALYTICS_SURFACE.SELECTION_TOOLBAR,
+  )
   const selectionSession = useAtomValue(selectionSessionAtom)
   const selection = useAtomValue(selectionAtom)
   const context = useAtomValue(contextAtom)
@@ -106,7 +118,8 @@ export function SelectionCustomActionProvider({ children }: { children: ReactNod
   const popoverActionsRef = useRef<SelectionPopoverActions | null>(null)
   const nextEphemeralSessionIdRef = useRef(0)
   const trackedPrecheckErrorKeyRef = useRef<string | null>(null)
-  const { resolveContextMenuOpenRequest } = useSelectionOpenRequestResolver(selectionSession)
+  const { resolveContextMenuOpenRequest, resolveShortcutOpenRequest } =
+    useSelectionOpenRequestResolver(selectionSession)
   const selectionText = activeSession?.selectionSnapshot.text ?? null
   const cleanSelection = useMemo(() => normalizeSelectedText(selectionText), [selectionText])
   const paragraphsText = useMemo(() => {
@@ -117,7 +130,7 @@ export function SelectionCustomActionProvider({ children }: { children: ReactNod
     return activeSession?.contextSnapshot.text || cleanSelection
   }, [activeSession?.contextSnapshot.text, cleanSelection])
   const webPageContext = useCustomActionWebPageContext(isOpen, popoverSessionKey)
-  const titleText = (webPageContext?.webTitle ?? document.title) || null
+  const titleText = (webPageContext?.webTitle ?? getSourceDocumentTitle()) || null
   const activeAction = useMemo(() => {
     if (!activeActionId) {
       return null
@@ -162,6 +175,12 @@ export function SelectionCustomActionProvider({ children }: { children: ReactNod
   const displayedIsRunning =
     (isOpen && webPageContext === undefined) || (executionPlan.executionContext ? isRunning : false)
   const displayedThinking = executionPlan.executionContext ? thinking : null
+  const layoutStatus = displayedIsRunning ? "streaming" : displayedError ? "error" : "done"
+  // The layout's ctx mirrors the prompt tokens of the run on screen; before
+  // there is one (precheck, page context still loading) it falls back to the
+  // same sources those tokens are built from.
+  const layoutSelection = executionPlan.executionContext?.promptTokens.selection ?? cleanSelection
+  const layoutTargetCode = executionPlan.executionContext?.targetCode ?? language.targetCode
 
   const resetPopoverSession = useCallback((options?: { clearAnchor?: boolean }) => {
     setActiveSession(null)
@@ -180,7 +199,17 @@ export function SelectionCustomActionProvider({ children }: { children: ReactNod
   const applyPendingSession = useCallback(() => {
     const pendingRequest = pendingOpenRequestRef.current
 
-    setActiveSession(pendingRequest?.session ?? selectionSession)
+    const nextSession = pendingRequest?.session ?? selectionSession
+    setActiveSession(
+      nextSession
+        ? {
+            ...nextSession,
+            contextSnapshot:
+              captureSelectionActionContext(nextSession.selectionSnapshot) ??
+              nextSession.contextSnapshot,
+          }
+        : null,
+    )
     setActiveActionId(pendingRequest?.actionId ?? null)
     setSourceSurface(pendingRequest?.surface ?? ANALYTICS_SURFACE.SELECTION_TOOLBAR)
     setIsSelectionToolbarOpen(false)
@@ -261,13 +290,11 @@ export function SelectionCustomActionProvider({ children }: { children: ReactNod
           ...createFeatureUsageContext(
             ANALYTICS_FEATURE.CUSTOM_AI_ACTION,
             ANALYTICS_SURFACE.CONTEXT_MENU,
-            Date.now(),
-            {
-              action_id: actionId,
-            },
           ),
+          action_id: actionId,
           ...UNKNOWN_FEATURE_PROVIDER,
           outcome: "failure",
+          failure_reason: "precheck",
         })
         toastManager.add({ type: "error", title: nextError.description })
         return
@@ -280,16 +307,14 @@ export function SelectionCustomActionProvider({ children }: { children: ReactNod
           ...createFeatureUsageContext(
             ANALYTICS_FEATURE.CUSTOM_AI_ACTION,
             ANALYTICS_SURFACE.CONTEXT_MENU,
-            Date.now(),
-            {
-              action_id: action.id,
-              action_name: action.name,
-            },
           ),
+          action_id: action.id,
+          action_name: action.name,
           ...classifyResolvedProvider(
             resolveProviderRefForCapability("customAction", providersConfig, action.providerId),
           ),
           outcome: "failure",
+          failure_reason: "precheck",
         })
         toastManager.add({ type: "error", title: nextError.description })
         return
@@ -304,6 +329,31 @@ export function SelectionCustomActionProvider({ children }: { children: ReactNod
     },
     [openActionRequest, providersConfig, resolveContextMenuOpenRequest, selectionToolbarConfig],
   )
+
+  // An action switched off has no key, whatever it was given.
+  const actionShortcuts = useMemo(
+    () =>
+      Object.fromEntries(
+        getSelectionToolbarActions(selectionToolbarConfig)
+          .filter((action) => action.enabled !== false)
+          .map((action) => [action.id, action.shortcut]),
+      ),
+    [selectionToolbarConfig],
+  )
+
+  useSelectionShortcuts(actionShortcuts, (actionId, session) => {
+    const request = resolveShortcutOpenRequest(session)
+    if (!request) {
+      return false
+    }
+    openActionRequest({
+      actionId,
+      anchor: request.anchor,
+      session: request.session,
+      surface: ANALYTICS_SURFACE.SHORTCUT,
+    })
+    return true
+  })
 
   const handleProviderChange = useCallback(
     (providerId: string) => {
@@ -335,17 +385,13 @@ export function SelectionCustomActionProvider({ children }: { children: ReactNod
       return
     }
 
+    if (!activeActionId) return
     const analyticsContext = createFeatureUsageContext(
       ANALYTICS_FEATURE.CUSTOM_AI_ACTION,
       sourceSurface,
-      Date.now(),
-      {
-        action_id: activeActionId ?? undefined,
-        action_name: activeAction?.name,
-      },
     )
     const nextErrorKey = JSON.stringify({
-      actionId: analyticsContext.action_id ?? null,
+      actionId: activeActionId,
       description: executionPlan.error.description,
       popoverSessionKey,
       surface: sourceSurface,
@@ -358,11 +404,14 @@ export function SelectionCustomActionProvider({ children }: { children: ReactNod
 
     void trackFeatureUsed({
       ...analyticsContext,
+      action_id: activeActionId,
+      ...(activeAction ? { action_name: activeAction.name } : {}),
       ...classifyResolvedProvider(customActionRequest.provider),
       outcome: "failure",
+      failure_reason: "precheck",
     })
   }, [
-    activeAction?.name,
+    activeAction,
     activeActionId,
     executionPlan.error,
     executionPlan.executionContext,
@@ -411,14 +460,17 @@ export function SelectionCustomActionProvider({ children }: { children: ReactNod
             ref={bodyRef}
           >
             <CustomActionContent
-              isRunning={displayedIsRunning}
-              outputSchema={activeAction?.outputSchema ?? []}
+              action={activeAction}
+              status={layoutStatus}
+              selection={layoutSelection}
+              targetCode={layoutTargetCode}
               selectionContent={selectionText}
               value={displayedResult}
               thinking={displayedThinking}
             />
             <SelectionToolbarErrorAlert error={displayedError} />
           </SelectionPopover.Body>
+          <ReviewDueTab source="extension_custom_ai_action" />
           <CustomActionFooterContent
             paragraphsText={paragraphsText}
             providers={baseCustomActionProviders}

@@ -2,7 +2,8 @@ import type { MouseEvent } from "react"
 import type { SelectionToolbarCustomAction } from "@/types/config/selection-toolbar"
 import { Icon } from "@iconify/react"
 import { useCallback } from "react"
-import { SelectionToolbarTooltip } from "../../components/selection-tooltip"
+import { SelectionToolbarTooltip } from "@/components/ui/selection-popover/selection-tooltip"
+import { ShortcutTooltipLabel } from "../shortcut-hint"
 import { useSelectionCustomActionPopover } from "./provider"
 
 export function SelectionToolbarCustomActionTrigger({
@@ -22,12 +23,12 @@ export function SelectionToolbarCustomActionTrigger({
 
   return (
     <SelectionToolbarTooltip
-      content={action.name}
+      content={<ShortcutTooltipLabel label={action.name} shortcut={action.shortcut} />}
       render={
         <button
           type="button"
           aria-label={action.name}
-          className="flex h-7 shrink-0 cursor-pointer items-center justify-center px-2 hover:bg-accent"
+          className="flex h-7 shrink-0 cursor-pointer items-center justify-center px-2 hover:bg-muted"
           onClick={handleClick}
         />
       }

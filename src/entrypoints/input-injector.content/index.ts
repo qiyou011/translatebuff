@@ -3,6 +3,7 @@ import {
   INPUT_REPLACE_REQUEST_TYPE,
   INPUT_REPLACE_RESULT_TYPE,
 } from "@/utils/constants/input-injector"
+import { getDeepActiveElement } from "@/utils/dom/active-element"
 import { canReplaceTelegramDraft, replaceText } from "./replace-text"
 
 export default defineContentScript({
@@ -19,7 +20,7 @@ export default defineContentScript({
       if (event.data?.type !== INPUT_REPLACE_REQUEST_TYPE) return
 
       const success =
-        canReplaceTelegramDraft(event.data, document.activeElement) &&
+        canReplaceTelegramDraft(event.data, getDeepActiveElement()) &&
         replaceText(event.data.text, Boolean(event.data.sessionKey))
       if (typeof event.data.id === "string") {
         window.postMessage(

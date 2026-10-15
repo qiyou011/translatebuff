@@ -1,5 +1,5 @@
 import type { DetectLanguageOptions, DetectLanguageResult } from "@/utils/content/language"
-import type { SerializableProviderRef } from "@/utils/providers/provider-ref"
+import type { PromptableProviderRef } from "@/utils/providers/provider-ref"
 import { getLocalConfig } from "@/utils/config/storage"
 import {
   detectLanguageWithSource as detectUpstreamWithSource,
@@ -9,7 +9,7 @@ import { isBuiltInAiProviderId } from "./provider-registry"
 
 export * from "@/utils/content/language"
 
-async function usesUpstreamCloud(providerRef?: SerializableProviderRef): Promise<boolean> {
+async function usesUpstreamCloud(providerRef?: PromptableProviderRef): Promise<boolean> {
   if (providerRef) return providerRef.kind === "system"
   try {
     const config = await getLocalConfig()
@@ -33,7 +33,7 @@ export async function detectLanguage(text: string, options?: DetectLanguageOptio
   return result.code === "und" ? null : result.code
 }
 
-export async function detectLanguageWithLLM(text: string, providerRef?: SerializableProviderRef) {
+export async function detectLanguageWithLLM(text: string, providerRef?: PromptableProviderRef) {
   if (await usesUpstreamCloud(providerRef)) return null
   return detectUpstreamWithLLM(text, providerRef)
 }

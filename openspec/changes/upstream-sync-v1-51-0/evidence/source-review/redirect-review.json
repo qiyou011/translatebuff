@@ -1,0 +1,471 @@
+{
+  "target": "55bcef1e684fb4e70f4dce3063e7bd3066f46891",
+  "candidateOnly": true,
+  "acceptedBaselineAdvanced": false,
+  "records": [
+    {
+      "from": "src/entrypoints/options/pages/custom-actions/action-config-form/editor-tabs.tsx",
+      "to": "src/fork/ui/options/custom-action-editor-tabs.tsx",
+      "previousFingerprint": null,
+      "candidateFingerprint": "19013f46ccf4149c",
+      "disposition": "新增准入薄包装",
+      "validation": "候选源审查完成；双套测试/构建/浏览器仍独立记录"
+    },
+    {
+      "from": "src/entrypoints/subtitles.content/universal-adapter.ts",
+      "to": "src/fork/upstream-services/video-adapter.ts",
+      "previousFingerprint": null,
+      "candidateFingerprint": "4a445e4a3aa2ced6",
+      "disposition": "新增准入薄包装",
+      "validation": "候选源审查完成；双套测试/构建/浏览器仍独立记录"
+    },
+    {
+      "from": "src/entrypoints/subtitles.content/renderer/mount-subtitles-sidebar.tsx",
+      "to": "src/fork/upstream-services/subtitles-sidebar.ts",
+      "previousFingerprint": null,
+      "candidateFingerprint": "bd7f1d6c7dacdb8a",
+      "disposition": "新增准入薄包装",
+      "validation": "候选源审查完成；双套测试/构建/浏览器仍独立记录"
+    },
+    {
+      "from": "src/entrypoints/subtitles.content/ui/subtitles-settings-panel/components/subtitles-sidebar-item.tsx",
+      "to": "src/fork/upstream-services/subtitles-sidebar.ts",
+      "previousFingerprint": null,
+      "candidateFingerprint": "ce53ef3931c9bc20",
+      "disposition": "新增准入薄包装",
+      "validation": "候选源审查完成；双套测试/构建/浏览器仍独立记录"
+    },
+    {
+      "from": "src/entrypoints/subtitles.content/ui/subtitles-sidebar/index.tsx",
+      "to": "src/fork/upstream-services/subtitles-sidebar.ts",
+      "previousFingerprint": null,
+      "candidateFingerprint": "abc10ec4edac5634",
+      "disposition": "新增准入薄包装",
+      "validation": "候选源审查完成；双套测试/构建/浏览器仍独立记录"
+    },
+    {
+      "from": "src/utils/subtitles/fetchers/netflix/index.ts",
+      "to": "src/fork/upstream-services/netflix-subtitles.ts",
+      "previousFingerprint": null,
+      "candidateFingerprint": "1332b83da2347183",
+      "disposition": "新增准入薄包装",
+      "validation": "候选源审查完成；双套测试/构建/浏览器仍独立记录"
+    },
+    {
+      "from": "src/utils/subtitles/ai/request-ai-subtitles.ts",
+      "to": "src/fork/upstream-services/ai-subtitles.ts",
+      "previousFingerprint": null,
+      "candidateFingerprint": "de326f1bb8b58cf9",
+      "disposition": "新增准入薄包装",
+      "validation": "候选源审查完成；双套测试/构建/浏览器仍独立记录"
+    },
+    {
+      "from": "src/utils/subtitles/ai/access-guard.ts",
+      "to": "src/fork/upstream-services/ai-subtitles-access.ts",
+      "previousFingerprint": null,
+      "candidateFingerprint": "46e5dd0c495060cf",
+      "disposition": "新增准入薄包装",
+      "validation": "候选源审查完成；双套测试/构建/浏览器仍独立记录"
+    },
+    {
+      "from": "src/utils/subtitles/video-summary.ts",
+      "to": "src/fork/upstream-services/learning-sidebar.ts",
+      "previousFingerprint": null,
+      "candidateFingerprint": "544a11598012d6c0",
+      "disposition": "新增准入薄包装",
+      "validation": "候选源审查完成；双套测试/构建/浏览器仍独立记录"
+    },
+    {
+      "from": "src/entrypoints/background/video-summary.ts",
+      "to": "src/fork/upstream-services/video-summary-background.ts",
+      "previousFingerprint": null,
+      "candidateFingerprint": "3db010b8580f93db",
+      "disposition": "新增准入薄包装",
+      "validation": "候选源审查完成；双套测试/构建/浏览器仍独立记录"
+    },
+    {
+      "from": "src/utils/custom-actions.ts",
+      "to": "src/fork/upstream-services/custom-actions.ts",
+      "previousFingerprint": null,
+      "candidateFingerprint": "c89ac7fda53a83bd",
+      "disposition": "新增准入薄包装",
+      "validation": "候选源审查完成；双套测试/构建/浏览器仍独立记录"
+    },
+    {
+      "from": "src/entrypoints/options/app-shell.tsx",
+      "to": "src/fork/ui/options/app-shell.tsx",
+      "previousFingerprint": "057cbd516d47291c",
+      "candidateFingerprint": "057cbd516d47291c",
+      "disposition": "沿用：源未变化",
+      "validation": "候选源审查完成；双套测试/构建/浏览器仍独立记录"
+    },
+    {
+      "from": "src/entrypoints/options/pages/translation/translation-style/style-preview.tsx",
+      "to": "src/fork/ui/options/preview/style-preview.tsx",
+      "previousFingerprint": "688f98ec6bb5a3cf",
+      "candidateFingerprint": "688f98ec6bb5a3cf",
+      "disposition": "沿用：源未变化",
+      "validation": "候选源审查完成；双套测试/构建/浏览器仍独立记录"
+    },
+    {
+      "from": "src/entrypoints/options/pages/translation/translation-style/custom-css/index.tsx",
+      "to": "src/fork/ui/options/preview/custom-css-page.tsx",
+      "previousFingerprint": "f437005824a14f71",
+      "candidateFingerprint": "f437005824a14f71",
+      "disposition": "沿用：源未变化",
+      "validation": "候选源审查完成；双套测试/构建/浏览器仍独立记录"
+    },
+    {
+      "from": "src/entrypoints/options/pages/video-subtitles/subtitles-style/style-editor/subtitles-preview.tsx",
+      "to": "src/fork/ui/options/preview/subtitles-preview.tsx",
+      "previousFingerprint": "51f6d97bf5e4fad5",
+      "candidateFingerprint": "51f6d97bf5e4fad5",
+      "disposition": "沿用：源未变化",
+      "validation": "候选源审查完成；双套测试/构建/浏览器仍独立记录"
+    },
+    {
+      "from": "src/utils/i18n/resources.ts",
+      "to": "src/fork/i18n/resources.ts",
+      "previousFingerprint": "2cf21fcb02d0deb0",
+      "candidateFingerprint": "7a447ee19d097f6a",
+      "disposition": "复用目标公共状态/Provider，保留fork UI及业务",
+      "validation": "候选源审查完成；双套测试/构建/浏览器仍独立记录"
+    },
+    {
+      "from": "src/entrypoints/translation-hub/components/translation-card.tsx",
+      "to": "src/fork/ui/translation-hub/translation-card.tsx",
+      "previousFingerprint": "34e291f2314069de",
+      "candidateFingerprint": "765f84a08e1fe621",
+      "disposition": "复用目标公共状态/Provider，保留fork UI及业务",
+      "validation": "候选源审查完成；双套测试/构建/浏览器仍独立记录"
+    },
+    {
+      "from": "src/entrypoints/options/pages/api-providers/feature-providers/index.tsx",
+      "to": "src/fork/ui/options/feature-providers-config.tsx",
+      "previousFingerprint": "182a7c4e3e4decbb",
+      "candidateFingerprint": "182a7c4e3e4decbb",
+      "disposition": "沿用：源未变化",
+      "validation": "候选源审查完成；双套测试/构建/浏览器仍独立记录"
+    },
+    {
+      "from": "src/utils/host/translate/translate-text.ts",
+      "to": "src/fork/upstream-services/page-translation.ts",
+      "previousFingerprint": "9242c8d49752d87c",
+      "candidateFingerprint": "0922c52288897f74",
+      "disposition": "对齐新公开类型及终止语义，继续隔离商业出口",
+      "validation": "候选源审查完成；双套测试/构建/浏览器仍独立记录"
+    },
+    {
+      "from": "src/utils/subtitles/processor/translator.ts",
+      "to": "src/fork/upstream-services/subtitles.ts",
+      "previousFingerprint": "a7ee17317057efac",
+      "candidateFingerprint": "a415ea3ddcae11ef",
+      "disposition": "对齐新公开类型及终止语义，继续隔离商业出口",
+      "validation": "候选源审查完成；双套测试/构建/浏览器仍独立记录"
+    },
+    {
+      "from": "src/entrypoints/background/hosted-ai-status.ts",
+      "to": "src/fork/upstream-services/hosted-ai-status.ts",
+      "previousFingerprint": "89d6e4a2cadc126c",
+      "candidateFingerprint": "89d6e4a2cadc126c",
+      "disposition": "沿用：源未变化",
+      "validation": "候选源审查完成；双套测试/构建/浏览器仍独立记录"
+    },
+    {
+      "from": "src/entrypoints/background/notebase-pending-save.ts",
+      "to": "src/fork/upstream-services/notebase-pending-save.ts",
+      "previousFingerprint": "8d3f753ef0fcec8e",
+      "candidateFingerprint": "bd0e6fc3e335717c",
+      "disposition": "对齐新公开类型及终止语义，继续隔离商业出口",
+      "validation": "候选源审查完成；双套测试/构建/浏览器仍独立记录"
+    },
+    {
+      "from": "src/utils/blog.ts",
+      "to": "src/fork/upstream-services/blog.ts",
+      "previousFingerprint": "f1013d3199fb2c7b",
+      "candidateFingerprint": "f1013d3199fb2c7b",
+      "disposition": "沿用：源未变化",
+      "validation": "候选源审查完成；双套测试/构建/浏览器仍独立记录"
+    },
+    {
+      "from": "src/entrypoints/options/app-sidebar/whats-new-footer.tsx",
+      "to": "src/fork/ui/options/whats-new-footer.tsx",
+      "previousFingerprint": "55d34daa583a9ed2",
+      "candidateFingerprint": "05b5a0c553e44758",
+      "disposition": "复用目标公共状态/Provider，保留fork UI及业务",
+      "validation": "候选源审查完成；双套测试/构建/浏览器仍独立记录"
+    },
+    {
+      "from": "src/utils/auth/auth-client.ts",
+      "to": "src/fork/upstream-services/auth-client.ts",
+      "previousFingerprint": "18b0c02d2e1ec4d9",
+      "candidateFingerprint": "18b0c02d2e1ec4d9",
+      "disposition": "沿用：源未变化",
+      "validation": "候选源审查完成；双套测试/构建/浏览器仍独立记录"
+    },
+    {
+      "from": "src/utils/auth/background-auth-client.ts",
+      "to": "src/fork/upstream-services/background-auth-client.ts",
+      "previousFingerprint": "422c5bc1e3d72767",
+      "candidateFingerprint": "422c5bc1e3d72767",
+      "disposition": "沿用：源未变化",
+      "validation": "候选源审查完成；双套测试/构建/浏览器仍独立记录"
+    },
+    {
+      "from": "src/utils/orpc/client.ts",
+      "to": "src/fork/upstream-services/orpc-client.ts",
+      "previousFingerprint": "bb78cd784d3474e5",
+      "candidateFingerprint": "0c1b0804da10ff66",
+      "disposition": "对齐新公开类型及终止语义，继续隔离商业出口",
+      "validation": "候选源审查完成；双套测试/构建/浏览器仍独立记录"
+    },
+    {
+      "from": "src/utils/orpc/background-client.ts",
+      "to": "src/fork/upstream-services/background-orpc-client.ts",
+      "previousFingerprint": "b4a089fd78334696",
+      "candidateFingerprint": "39c1af8f999ca6d9",
+      "disposition": "对齐新公开类型及终止语义，继续隔离商业出口",
+      "validation": "候选源审查完成；双套测试/构建/浏览器仍独立记录"
+    },
+    {
+      "from": "src/utils/providers/provider-ref.ts",
+      "to": "src/fork/upstream-services/provider-ref.ts",
+      "previousFingerprint": "e711981793934554",
+      "candidateFingerprint": "e24716a7910c481d",
+      "disposition": "对齐新公开类型及终止语义，继续隔离商业出口",
+      "validation": "候选源审查完成；双套测试/构建/浏览器仍独立记录"
+    },
+    {
+      "from": "src/utils/content/language.ts",
+      "to": "src/fork/upstream-services/language.ts",
+      "previousFingerprint": "ffa9a1358ab4640e",
+      "candidateFingerprint": "a54687eb6a0be806",
+      "disposition": "对齐新公开类型及终止语义，继续隔离商业出口",
+      "validation": "候选源审查完成；双套测试/构建/浏览器仍独立记录"
+    },
+    {
+      "from": "src/utils/providers/provider-registry.ts",
+      "to": "src/fork/upstream-services/provider-registry.ts",
+      "previousFingerprint": "e37447c2c762f4a6",
+      "candidateFingerprint": "e37447c2c762f4a6",
+      "disposition": "沿用：源未变化",
+      "validation": "候选源审查完成；双套测试/构建/浏览器仍独立记录"
+    },
+    {
+      "from": "src/entrypoints/side.content/components/floating-button/index.tsx",
+      "to": "src/fork/ui/side-content/floating-button/index.tsx",
+      "previousFingerprint": "7c44dbdb29870008",
+      "candidateFingerprint": "81d3a8b7ffa02c87",
+      "disposition": "复用目标公共状态/Provider，保留fork UI及业务",
+      "validation": "候选源审查完成；双套测试/构建/浏览器仍独立记录"
+    },
+    {
+      "from": "src/entrypoints/side.content/components/floating-button/components/hidden-button.tsx",
+      "to": "src/fork/ui/side-content/floating-button/hidden-button.tsx",
+      "previousFingerprint": "9c4f1579495887ff",
+      "candidateFingerprint": "9c4f1579495887ff",
+      "disposition": "沿用：源未变化",
+      "validation": "候选源审查完成；双套测试/构建/浏览器仍独立记录"
+    },
+    {
+      "from": "src/entrypoints/options/pages/help-and-community/index.tsx",
+      "to": "src/fork/ui/options/help-and-community.tsx",
+      "previousFingerprint": "1ca30ed362816dc3",
+      "candidateFingerprint": "1ca30ed362816dc3",
+      "disposition": "沿用：源未变化",
+      "validation": "候选源审查完成；双套测试/构建/浏览器仍独立记录"
+    },
+    {
+      "from": "src/entrypoints/options/pages/video-subtitles/ai-quota/index.tsx",
+      "to": "src/fork/ui/subtitles/ai-quota.tsx",
+      "previousFingerprint": "0ac2828abac64eb8",
+      "candidateFingerprint": "51a118b94ec464fa",
+      "disposition": "复用目标公共状态/Provider，保留fork UI及业务",
+      "validation": "候选源审查完成；双套测试/构建/浏览器仍独立记录"
+    },
+    {
+      "from": "src/entrypoints/subtitles.content/ui/subtitles-settings-panel/components/request-ai-subtitles-item.tsx",
+      "to": "src/fork/ui/subtitles/request-ai-subtitles-item.tsx",
+      "previousFingerprint": "b62a29a8835abb30",
+      "candidateFingerprint": "4bff3e6e282e2981",
+      "disposition": "复用目标公共状态/Provider，保留fork UI及业务",
+      "validation": "候选源审查完成；双套测试/构建/浏览器仍独立记录"
+    },
+    {
+      "from": "src/components/badges/plan-badge.tsx",
+      "to": "src/fork/components/plan-badge.tsx",
+      "previousFingerprint": "5beb5738cf65cbb1",
+      "candidateFingerprint": "5beb5738cf65cbb1",
+      "disposition": "沿用：源未变化",
+      "validation": "候选源审查完成；双套测试/构建/浏览器仍独立记录"
+    },
+    {
+      "from": "src/components/llm-providers/use-hosted-ai-status.ts",
+      "to": "src/fork/ui/hosted-ai/use-hosted-ai-status.ts",
+      "previousFingerprint": "3892138c7824e669",
+      "candidateFingerprint": "3892138c7824e669",
+      "disposition": "沿用：源未变化",
+      "validation": "候选源审查完成；双套测试/构建/浏览器仍独立记录"
+    },
+    {
+      "from": "src/utils/featurebase.ts",
+      "to": "src/fork/ui/options/featurebase.ts",
+      "previousFingerprint": "b7ee0983b989785f",
+      "candidateFingerprint": "b7ee0983b989785f",
+      "disposition": "沿用：源未变化",
+      "validation": "候选源审查完成；双套测试/构建/浏览器仍独立记录"
+    },
+    {
+      "from": "src/entrypoints/options/app-sidebar/product-nav.tsx",
+      "to": "src/fork/ui/options/product-nav.tsx",
+      "previousFingerprint": "d17c2b904fe6bed8",
+      "candidateFingerprint": "d17c2b904fe6bed8",
+      "disposition": "沿用：源未变化",
+      "validation": "候选源审查完成；双套测试/构建/浏览器仍独立记录"
+    },
+    {
+      "from": "src/entrypoints/popup/components/language-options-selector.tsx",
+      "to": "src/fork/ui/popup/language-options-selector.tsx",
+      "previousFingerprint": "e0a99b444b42de92",
+      "candidateFingerprint": "76a9fc03a315f48a",
+      "disposition": "复用目标公共状态/Provider，保留fork UI及业务",
+      "validation": "候选源审查完成；双套测试/构建/浏览器仍独立记录"
+    },
+    {
+      "from": "src/entrypoints/popup/components/blog-notification.tsx",
+      "to": "src/fork/ui/popup/blog-notification.tsx",
+      "previousFingerprint": "72d5fde5b582c722",
+      "candidateFingerprint": "974cabfc03f29247",
+      "disposition": "复用目标公共状态/Provider，保留fork UI及业务",
+      "validation": "候选源审查完成；双套测试/构建/浏览器仍独立记录"
+    },
+    {
+      "from": "src/assets/icons/read-frog.png",
+      "to": "src/fork/assets/renyimiao.svg",
+      "previousFingerprint": "cae393aac6c39f01",
+      "candidateFingerprint": "cae393aac6c39f01",
+      "disposition": "沿用：源未变化",
+      "validation": "候选源审查完成；双套测试/构建/浏览器仍独立记录"
+    },
+    {
+      "from": "src/entrypoints/options/pages/context-menu/index.tsx",
+      "to": "src/fork/ui/options/context-menu-page.tsx",
+      "previousFingerprint": "05c2a2335bbd8c06",
+      "candidateFingerprint": "05c2a2335bbd8c06",
+      "disposition": "沿用：源未变化",
+      "validation": "候选源审查完成；双套测试/构建/浏览器仍独立记录"
+    },
+    {
+      "from": "src/entrypoints/options/pages/floating-button/index.tsx",
+      "to": "src/fork/ui/options/floating-button-page.tsx",
+      "previousFingerprint": "2e4a66b5364e119e",
+      "candidateFingerprint": "2e4a66b5364e119e",
+      "disposition": "沿用：源未变化",
+      "validation": "候选源审查完成；双套测试/构建/浏览器仍独立记录"
+    },
+    {
+      "from": "src/entrypoints/options/pages/selection-toolbar/index.tsx",
+      "to": "src/fork/ui/options/selection-toolbar-page.tsx",
+      "previousFingerprint": "7db026fb8eaea2e8",
+      "candidateFingerprint": "7db026fb8eaea2e8",
+      "disposition": "沿用：源未变化",
+      "validation": "候选源审查完成；双套测试/构建/浏览器仍独立记录"
+    },
+    {
+      "from": "src/utils/notebase/pending-save.ts",
+      "to": "src/fork/utils/notebase-pending-save.ts",
+      "previousFingerprint": "4220c7eacc9cd8ea",
+      "candidateFingerprint": "5a6466961b3dc09f",
+      "disposition": "复用目标公共状态/Provider，保留fork UI及业务",
+      "validation": "候选源审查完成；双套测试/构建/浏览器仍独立记录"
+    },
+    {
+      "from": "src/utils/providers/provider-display.ts",
+      "to": "src/fork/providers/provider-display.ts",
+      "previousFingerprint": "9cbaf863200e11bd",
+      "candidateFingerprint": "9cbaf863200e11bd",
+      "disposition": "沿用：源未变化",
+      "validation": "候选源审查完成；双套测试/构建/浏览器仍独立记录"
+    },
+    {
+      "from": "src/components/help-button.tsx",
+      "to": "src/fork/components/help-button.tsx",
+      "previousFingerprint": "f89a26447c2ea824",
+      "candidateFingerprint": "f89a26447c2ea824",
+      "disposition": "沿用：源未变化",
+      "validation": "候选源审查完成；双套测试/构建/浏览器仍独立记录"
+    },
+    {
+      "from": "src/components/user-account-menu/shared.tsx",
+      "to": "src/fork/components/user-account-menu-shared.ts",
+      "previousFingerprint": "8ef7c68f6061c204",
+      "candidateFingerprint": "1d748ad8595d4a45",
+      "disposition": "复用目标公共状态/Provider，保留fork UI及业务",
+      "validation": "候选源审查完成；双套测试/构建/浏览器仍独立记录"
+    },
+    {
+      "from": "src/components/llm-providers/provider-selector.tsx",
+      "to": "src/fork/components/provider-selector.tsx",
+      "previousFingerprint": "c68ec422ea3799be",
+      "candidateFingerprint": "b068c438136a4021",
+      "disposition": "复用目标公共状态/Provider，保留fork UI及业务",
+      "validation": "候选源审查完成；双套测试/构建/浏览器仍独立记录"
+    },
+    {
+      "from": "src/entrypoints/options/pages/api-providers/providers-config/index.tsx",
+      "to": "src/fork/ui/options/providers-config.tsx",
+      "previousFingerprint": "2d64e7ab2fad6a04",
+      "candidateFingerprint": "2ee0c8fa6f942b74",
+      "disposition": "复用目标公共状态/Provider，保留fork UI及业务",
+      "validation": "候选源审查完成；双套测试/构建/浏览器仍独立记录"
+    },
+    {
+      "from": "src/entrypoints/translation-hub/components/translation-service-dropdown.tsx",
+      "to": "src/fork/ui/translation-hub/translation-service-dropdown.tsx",
+      "previousFingerprint": "28556b6b27abcc50",
+      "candidateFingerprint": "978d6a813566d894",
+      "disposition": "复用目标公共状态/Provider，保留fork UI及业务",
+      "validation": "候选源审查完成；双套测试/构建/浏览器仍独立记录"
+    },
+    {
+      "from": "src/entrypoints/translation-hub/atoms.ts",
+      "to": "src/fork/ui/translation-hub/atoms.ts",
+      "previousFingerprint": "ec9388ac42803202",
+      "candidateFingerprint": "c1c914c33e145f0f",
+      "disposition": "复用目标公共状态/Provider，保留fork UI及业务",
+      "validation": "候选源审查完成；双套测试/构建/浏览器仍独立记录"
+    },
+    {
+      "from": "src/entrypoints/options/pages/custom-actions/action-config-form/notebase-connection-field.tsx",
+      "to": "src/fork/ui/options/notebase-connection-field.tsx",
+      "previousFingerprint": "ec7ab0fb870eeaa4",
+      "candidateFingerprint": "14182e0f4503df1f",
+      "disposition": "复用目标公共状态/Provider，保留fork UI及业务",
+      "validation": "候选源审查完成；双套测试/构建/浏览器仍独立记录"
+    },
+    {
+      "from": "src/components/llm-providers/feature-provider-selector-list.tsx",
+      "to": "src/fork/ui/options/feature-provider-selector-list.tsx",
+      "previousFingerprint": "8579d649e5910e2a",
+      "candidateFingerprint": "8579d649e5910e2a",
+      "disposition": "沿用：源未变化",
+      "validation": "候选源审查完成；双套测试/构建/浏览器仍独立记录"
+    },
+    {
+      "from": "src/entrypoints/options/pages/preference/config/google-drive-sync/index.tsx",
+      "to": "src/fork/ui/options/google-drive-sync-card.tsx",
+      "previousFingerprint": "ff2f5a801e8f270f",
+      "candidateFingerprint": "938953b1aca59f79",
+      "disposition": "复用目标公共状态/Provider，保留fork UI及业务",
+      "validation": "候选源审查完成；双套测试/构建/浏览器仍独立记录"
+    },
+    {
+      "from": "src/entrypoints/options/command-palette/search-items.ts",
+      "to": "src/fork/ui/options/search-items.ts",
+      "previousFingerprint": null,
+      "candidateFingerprint": "e1355d3001063b73",
+      "disposition": "新增准入薄包装：设置搜索移除4关闭入口，保留本地术语",
+      "validation": "RED→GREEN1；待整合真实fork配置"
+    }
+  ]
+}

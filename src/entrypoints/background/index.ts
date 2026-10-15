@@ -8,12 +8,12 @@ import { storageAdapter } from "@/utils/atoms/storage-adapter"
 import { selectFreshTranslateProviders } from "@/utils/config/default-translate-provider"
 import { CONFIG_STORAGE_KEY } from "@/utils/constants/config"
 import { initI18n, setUiLanguage } from "@/utils/i18n"
+import { ensureInstalledAtRecorded } from "@/utils/install-time"
 import { logger } from "@/utils/logger"
 import { onMessage } from "@/utils/message"
 import { openOptionsPage } from "@/utils/navigation"
 import { SessionCacheGroupRegistry } from "@/utils/session-cache/session-cache-group-registry"
 import { runAiSegmentSubtitles } from "./ai-segmentation"
-import { setupAnalyticsMessageHandlers } from "./analytics"
 import { dispatchBackgroundStreamPort } from "./background-stream"
 import { initializeActionIcons, registerActionIconListeners } from "./browser-action-icon"
 import { ensureInitializedConfig, isFreshInstalledConfig } from "./config"
@@ -26,18 +26,22 @@ import {
   setUpDatabaseCleanup,
 } from "./db-cleanup"
 import { setupEdgeTTSMessageHandlers } from "./edge-tts"
+import { setupFeatureUsedEventHandlers } from "./feature-used-event"
+import { setupGlossaryMessageHandlers } from "./glossary"
 import { setupHostedAiStatusHandler } from "./hosted-ai-status"
 import { setupIframeInjection } from "./iframe-injection"
 import { setupLLMGenerateTextMessageHandlers } from "./llm-generate-text"
 import { initMockData } from "./mock-data"
 import { newUserGuide } from "./new-user-guide"
 import { setupNotebasePendingSaveProcessor } from "./notebase-pending-save"
+import { setupPageTranslationHandlers } from "./page-translation"
 import { proxyFetch } from "./proxy-fetch"
 import { setupSidePanelMessageHandler } from "./side-panel"
-import { setUpSubtitlesTranslationQueue, setUpWebPageTranslationQueue } from "./translation-queues"
+import { setupSubtitlesTranslationHandlers } from "./subtitles-translation"
 import { translationMessage } from "./translation-signal"
 import { setupTTSPlaybackMessageHandlers } from "./tts-playback"
 import { setupUninstallSurvey } from "./uninstall-survey"
+import { setupVideoSummaryHandlers } from "./video-summary"
 
 export default defineBackground({
   type: "module",
@@ -46,12 +50,18 @@ export default defineBackground({
     logger.info("Hello background!", { id: browser.runtime.id })
 
     browser.runtime.onInstalled.addListener(async (details) => {
+      // First, and for every reason rather than just "install": this is the only place the
+      // install time is ever recorded, and it must not be lost to a service worker dying
+      // during the slower work below.
+      await ensureInstalledAtRecorded()
+
       await ensureInitializedConfig()
 
-      // Open tutorial page when extension is installed
+      // Open tutorial page when extension is installed. `from=install` tells
+      // fresh installs apart from other visits in the website's guide analytics.
       if (details.reason === "install") {
         await browser.tabs.create({
-          url: getWebsiteUrl("/guide/step-1"),
+          url: getWebsiteUrl("/guide/step-1?from=install"),
         })
       }
 
@@ -113,7 +123,7 @@ export default defineBackground({
     })
 
     newUserGuide()
-    setupAnalyticsMessageHandlers()
+    setupFeatureUsedEventHandlers()
     translationMessage()
     registerActionIconListeners()
 
@@ -124,10 +134,11 @@ export default defineBackground({
     // Initialize action icons asynchronously
     void initializeActionIcons()
 
-    // Synchronous: all queue message handlers register in the first turn of
+    // Synchronous: all translation and summary handlers register in the first turn of
     // the SW so wake-triggering messages are never dropped during init.
-    setUpWebPageTranslationQueue(createPageTranslationQueues)
-    setUpSubtitlesTranslationQueue()
+    setupPageTranslationHandlers(createPageTranslationQueues)
+    setupSubtitlesTranslationHandlers()
+    setupVideoSummaryHandlers()
     void setUpDatabaseCleanup()
     setUpConfigBackup()
 
@@ -143,6 +154,7 @@ export default defineBackground({
 
     proxyFetch()
     setupHostedAiStatusHandler()
+    setupGlossaryMessageHandlers()
     setupNotebasePendingSaveProcessor(() => backgroundReady)
     setupEdgeTTSMessageHandlers()
     setupLLMGenerateTextMessageHandlers()

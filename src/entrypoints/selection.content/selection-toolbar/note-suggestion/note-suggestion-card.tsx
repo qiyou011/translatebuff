@@ -2,7 +2,8 @@ import type { NoteSuggestionSessionResult } from "./use-note-suggestion"
 import type { NoteSuggestionNoteRecord } from "@/utils/note-suggestion/types"
 import { IconBookmarkPlus } from "@tabler/icons-react"
 import { useAtom } from "jotai"
-import { useEffect, useId, useState } from "react"
+import { useEffect, useId, useRef, useState } from "react"
+import { useSaveToNotebase } from "@/components/custom-action/use-save-to-notebase"
 import { Button } from "@/components/ui/base-ui/button"
 import { Checkbox } from "@/components/ui/base-ui/checkbox"
 import {
@@ -20,7 +21,6 @@ import { findSelectionToolbarAction } from "@/utils/custom-actions"
 import { i18n } from "@/utils/i18n"
 import { trackNoteSuggestionEvent } from "@/utils/note-suggestion/analytics"
 import { getOutputSchemaFingerprint } from "@/utils/notebase/pending-save"
-import { useSaveToNotebase } from "../custom-action-button/use-save-to-notebase"
 
 function formatNoteValue(value: string | number | null): string | null {
   if (value === null) {
@@ -84,6 +84,9 @@ export function NoteSuggestionCard({
   const [selectionToolbar, setSelectionToolbar] = useAtom(configFieldsAtomMap.selectionToolbar)
   const { save, isSaving } = useSaveToNotebase()
   const [saveState, setSaveState] = useState<"idle" | "saved" | "stale">("idle")
+  // Save re-enables after a failed save or a dismissed dialog; a retry is not
+  // another acceptance.
+  const acceptanceTrackedRef = useRef(false)
   const checkboxBaseId = useId()
   const [selectedNoteIndexes, setSelectedNoteIndexes] = useState(
     () => new Set(validated.notes.map((_note, index) => index)),
@@ -94,7 +97,8 @@ export function NoteSuggestionCard({
       return
     }
 
-    trackNoteSuggestionEvent("suggestion_shown", {
+    trackNoteSuggestionEvent({
+      action_id: "suggestion_shown",
       startedAt: firedAt,
       provider: analyticsProvider,
     })
@@ -133,19 +137,24 @@ export function NoteSuggestionCard({
       return
     }
 
+    // Accepting is the click. Whether the notes reached the Notebase, possibly
+    // after a login round trip, is reported by note_save.
+    if (!acceptanceTrackedRef.current) {
+      acceptanceTrackedRef.current = true
+      trackNoteSuggestionEvent({
+        action_id: "suggestion_accepted",
+        startedAt: firedAt,
+        action_name: liveAction.name,
+        provider: analyticsProvider,
+      })
+    }
     const outcome = await save({
       action: liveAction,
       results: selectedNotes,
       analyticsSource: "note_suggestion",
-      analyticsProvider,
     })
     if (outcome === "saved") {
       setSaveState("saved")
-      trackNoteSuggestionEvent("suggestion_accepted", {
-        startedAt: firedAt,
-        actionName: liveAction.name,
-        provider: analyticsProvider,
-      })
     }
   }
 

@@ -7,6 +7,7 @@ on:
 
 env:
   WXT_SKIP_ENV_VALIDATION: true
+  SKIP_FREE_API: "true"
 
 jobs:
   test-and-build:
@@ -19,9 +20,11 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
 
       - name: Setup pnpm and Node.js
-        uses: pnpm/setup@v2
+        uses: pnpm/setup@v3
         with:
           cache: true
           install: false
@@ -51,4 +54,4 @@ jobs:
         run: pnpm build
 
       - name: Run tests
-        run: pnpm test --exclude="**/free-api.test.ts"
+        run: pnpm test

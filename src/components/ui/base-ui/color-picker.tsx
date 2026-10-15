@@ -839,15 +839,8 @@ function FormatDropdown({
   const portalContainer = use(ColorPickerPortalContainerContext)
   const containerRef = useRef<HTMLDivElement>(null)
 
-  const {
-    activeIndex,
-    setActiveIndex,
-    itemRects,
-    sessionRef,
-    handlers,
-    registerItem,
-    measureItems,
-  } = useProximityHover(containerRef)
+  const { activeIndex, setActiveIndex, itemRects, session, handlers, registerItem, measureItems } =
+    useProximityHover(containerRef)
 
   const [focusedIndex, setFocusedIndex] = useState<number | null>(null)
 
@@ -895,10 +888,10 @@ function FormatDropdown({
     >
       <Menu.Trigger
         className={cn(
-          "flex cursor-pointer items-center justify-between gap-2 px-3 text-[13px] font-medium hover:bg-accent hover:text-foreground",
+          "flex cursor-pointer items-center justify-between gap-2 px-3 text-[13px] font-medium hover:bg-muted hover:text-foreground",
           CONTROL_CLASS,
           SHAPE.input,
-          open ? "bg-accent text-foreground" : "text-muted-foreground active:bg-accent",
+          open ? "bg-muted text-foreground" : "text-muted-foreground active:bg-muted",
         )}
       >
         <span>{FORMAT_LABELS[value]}</span>
@@ -981,7 +974,7 @@ function FormatDropdown({
                 <AnimatePresence>
                   {activeRect && (
                     <motion.div
-                      key={sessionRef.current}
+                      key={session}
                       className={cn("pointer-events-none absolute", SHAPE.bg, HOVER_TINT)}
                       initial={{
                         opacity: 0,
@@ -1372,6 +1365,7 @@ function EyeDropperButton({ onPick }: { onPick: (hex: string) => void }) {
   const [supported, setSupported] = useState(false)
 
   useEffect(() => {
+    // oxlint-disable-next-line react/set-state-in-effect -- one-shot capability probe; window is only readable after mount
     setSupported(typeof window !== "undefined" && "EyeDropper" in window)
   }, [])
 
@@ -1393,7 +1387,7 @@ function EyeDropperButton({ onPick }: { onPick: (hex: string) => void }) {
       onClick={handleClick}
       aria-label="Pick color from screen"
       className={cn(
-        "flex cursor-pointer items-center justify-center px-3 text-muted-foreground hover:bg-accent hover:text-foreground active:bg-accent",
+        "flex cursor-pointer items-center justify-center px-3 text-muted-foreground hover:bg-muted hover:text-foreground active:bg-muted",
         CONTROL_CLASS,
         SHAPE.input,
       )}
@@ -1497,6 +1491,7 @@ function SwatchStrip({
       const p = resolveCssColor(sw)
       if (p) next[sw] = rgbToHexStr(p.r, p.g, p.b, p.a).toLowerCase()
     }
+    // oxlint-disable-next-line react/set-state-in-effect -- swatches resolve against the DOM, so they can only be computed after paint
     setResolvedSwatches(next)
   }, [swatches])
 
@@ -1573,6 +1568,7 @@ function ColorPicker({
     if (!p) return
     oklchHueRef.current = null
     const next = rgbToHsv(p.r, p.g, p.b)
+    // oxlint-disable-next-line react/set-state-in-effect -- syncs the internal hsv draft with the controlled value prop
     setHsv((prev) => ({
       h: next.s === 0 ? prev.h : next.h,
       s: next.s,
@@ -1681,6 +1677,7 @@ function ColorPicker({
       <ColorInputsRow
         parsed={parsed}
         format={currentFormat}
+        // oxlint-disable-next-line react/refs -- the hue ref carries the last non-achromatic hue so the wheel does not jump on greys
         oklchHue={oklchHueRef.current}
         onChannelChange={(channel, channelValue) => {
           const p = parsed
@@ -2011,7 +2008,7 @@ function ColorPickerPopover({
       <div ref={ref} className="inline-flex">
         <Popover.Trigger
           className={cn(
-            "flex cursor-pointer items-center gap-2 border border-border px-2 text-[13px] font-medium hover:bg-accent",
+            "flex cursor-pointer items-center gap-2 border border-border px-2 text-[13px] font-medium hover:bg-muted",
             CONTROL_CLASS,
             SHAPE.input,
             triggerClassName,

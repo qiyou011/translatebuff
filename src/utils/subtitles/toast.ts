@@ -1,4 +1,4 @@
-import type { SubtitlesErrorAction } from "./errors"
+import type { ErrorAction } from "@/utils/error-action"
 import { anchoredToastManager, toastManager } from "@/components/ui/base-ui/toast"
 import { sendMessage } from "@/utils/message"
 
@@ -23,18 +23,19 @@ export function setAiSubtitlesToastAnchor(element: HTMLElement | null): void {
   aiRequestAnchor = element
 }
 
-function usableAnchor(): HTMLElement | null {
-  if (!aiRequestAnchor?.isConnected) {
-    return null
+function isAnchorVisible(element: HTMLElement | null): boolean {
+  if (!element?.isConnected) {
+    return false
   }
-  // The panel keeps its DOM mounted while closed (React `Activity` only hides
-  // it), so being connected is not enough — a display:none anchor measures 0×0
-  // and base-ui would mark the toast anchor-hidden, silently showing nothing.
-  const { width, height } = aiRequestAnchor.getBoundingClientRect()
-  return width > 0 && height > 0 ? aiRequestAnchor : null
+  const { width, height } = element.getBoundingClientRect()
+  return width > 0 && height > 0
 }
 
-function show(title: string, action: SubtitlesErrorAction | undefined, anchor: HTMLElement | null) {
+function usableAnchor(): HTMLElement | null {
+  return isAnchorVisible(aiRequestAnchor) ? aiRequestAnchor : null
+}
+
+function show(title: string, action: ErrorAction | undefined, anchor: HTMLElement | null) {
   const manager = anchor ? anchoredToastManager : toastManager
   const toastId = manager.add({
     id: WALL_TOAST_ID,
@@ -63,7 +64,7 @@ function show(title: string, action: SubtitlesErrorAction | undefined, anchor: H
  * navigates on its own — stealing focus with a new tab in the middle of a
  * video is what this replaces.
  */
-export function showSubtitlesErrorToast(title: string, action?: SubtitlesErrorAction): void {
+export function showSubtitlesErrorToast(title: string, action?: ErrorAction): void {
   show(title, action, null)
 }
 
@@ -75,6 +76,19 @@ export function showSubtitlesErrorToast(title: string, action?: SubtitlesErrorAc
  * Falls back to the docked corner when that control is off screen — a refusal
  * arriving after the panel closed still has to be seen.
  */
-export function showAiSubtitlesWallToast(title: string, action?: SubtitlesErrorAction): void {
+export function showAiSubtitlesWallToast(title: string, action?: ErrorAction): void {
   show(title, action, usableAnchor())
+}
+
+/**
+ * Same again for callers that own their anchor rather than registering it. The
+ * registered anchor is a single slot owned by the AI subtitles button, so a
+ * second control sharing it would just overwrite the first.
+ */
+export function showAnchoredSubtitlesToast(
+  title: string,
+  anchor: HTMLElement | null,
+  action?: ErrorAction,
+): void {
+  show(title, action, isAnchorVisible(anchor) ? anchor : null)
 }

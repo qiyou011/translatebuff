@@ -18,6 +18,12 @@ const SLOW_THRESHOLD_MS = 3_000
 const FEEDBACK_DURATION_MS = 5_000
 
 type Feedback = "success" | "slow" | "failed"
+type FeedbackSnapshot = {
+  value: Feedback
+  apiKey: RenyimiaoProviderConfig["apiKey"]
+  baseURL: RenyimiaoProviderConfig["baseURL"]
+  customModel: RenyimiaoProviderConfig["model"]["customModel"]
+}
 
 const FEEDBACK_ICON = {
   success: {
@@ -61,8 +67,16 @@ export function ConnectionTestButton({
 }) {
   const { apiKey, baseURL } = providerConfig
   const customModel = providerConfig.model.customModel
-  const [feedback, setFeedback] = useState<Feedback | null>(null)
+  const [feedbackSnapshot, setFeedback] = useState<FeedbackSnapshot | null>(null)
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  // 反馈只属于探测时的配置；编辑配置或旧请求迟返回都不能显示旧成功状态。
+  const feedback =
+    feedbackSnapshot !== null &&
+    feedbackSnapshot.apiKey === apiKey &&
+    feedbackSnapshot.baseURL === baseURL &&
+    feedbackSnapshot.customModel === customModel
+      ? feedbackSnapshot.value
+      : null
 
   const mutation = useMutation({
     // 不把 apiKey 放进 mutationKey（脱敏）
@@ -73,15 +87,9 @@ export function ConnectionTestButton({
 
   const showFeedback = (next: Feedback) => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current)
-    setFeedback(next)
+    setFeedback({ value: next, apiKey, baseURL, customModel })
     timeoutRef.current = setTimeout(() => setFeedback(null), FEEDBACK_DURATION_MS)
   }
-
-  // 编辑 apiKey/baseURL/模型后清掉旧反馈，避免陈旧回显。
-  useEffect(() => {
-    setFeedback(null)
-    if (timeoutRef.current) clearTimeout(timeoutRef.current)
-  }, [apiKey, baseURL, customModel])
 
   useEffect(
     () => () => {

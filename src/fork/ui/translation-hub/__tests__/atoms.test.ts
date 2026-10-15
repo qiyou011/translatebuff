@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest"
 import { buildRenyimiaoProvider } from "@/fork/providers/renyimiao"
 import { configAtom } from "@/utils/atoms/config"
 import { DEFAULT_CONFIG } from "@/utils/constants/config"
-import { selectedProviderIdsAtom } from "../atoms"
+import { selectedProviderIdsAtom, selectedProvidersAtom } from "../atoms"
 
 // fork 覆盖的选择状态：默认全选须剔除被隐藏的默认 LLM（截图右侧多接口卡片的泄漏源）。
 describe("fork atoms · selectedProviderIdsAtom 默认值", () => {
@@ -26,9 +26,42 @@ describe("fork atoms · selectedProviderIdsAtom 默认值", () => {
     expect(store.get(selectedProviderIdsAtom)).toContain(renyimiao.id)
   })
 
-  it("override（用户手选）后原样返回，不再过滤", () => {
+  it("用户手选不会使隐藏的上游默认 provider 在界面出现", async () => {
     const store = createStore()
-    store.set(selectedProviderIdsAtom, ["openai-default"])
-    expect(store.get(selectedProviderIdsAtom)).toEqual(["openai-default"])
+    await store.set(selectedProviderIdsAtom, ["openai-default"])
+    expect(store.get(selectedProviderIdsAtom)).toEqual([])
+  })
+})
+
+describe("fork hub persisted public selection", () => {
+  it("writes provider selection to the shared config and restores it in another store", async () => {
+    const store = createStore()
+    await store.set(selectedProviderIdsAtom, ["google-translate-default"])
+    expect(store.get(configAtom).translationHub.selectedProviderIds).toEqual([
+      "google-translate-default",
+    ])
+    const reopened = createStore()
+    reopened.set(configAtom, store.get(configAtom))
+    expect(reopened.get(selectedProviderIdsAtom)).toEqual(["google-translate-default"])
+  })
+
+  it("uses the public provider ref shape while filtering removed, disabled and hidden providers", () => {
+    const store = createStore()
+    store.set(configAtom, {
+      ...DEFAULT_CONFIG,
+      translationHub: {
+        ...DEFAULT_CONFIG.translationHub,
+        selectedProviderIds: [
+          "google-translate-default",
+          "missing",
+          "openai-default",
+          "google-translate-default",
+        ],
+      },
+    })
+    expect(store.get(selectedProviderIdsAtom)).toEqual(["google-translate-default"])
+    expect(store.get(selectedProvidersAtom)).toMatchObject([
+      { id: "google-translate-default", kind: "local", config: { provider: "google-translate" } },
+    ])
   })
 })

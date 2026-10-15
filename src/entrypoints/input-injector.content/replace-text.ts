@@ -2,7 +2,9 @@ import {
   getTelegramSessionKey,
   TELEGRAM_DRAFT_VERSION_ATTR,
 } from "@/fork/ui/selection-content/input-translation/telegram-context"
+import { getDeepActiveElement } from "@/utils/dom/active-element"
 import { isDraftElement, replaceDraft } from "./editors/draft-js"
+import { isLexicalElement, replaceLexical } from "./editors/lexical"
 import { isSlateElement, replaceSlate } from "./editors/slate"
 
 export function canReplaceTelegramDraft(
@@ -25,8 +27,10 @@ export function canReplaceTelegramDraft(
 }
 
 export function replaceText(text: string, notifyHost = false): boolean {
-  const element = document.activeElement
+  const element = getDeepActiveElement()
   if (!element || !(element as HTMLElement).isContentEditable) return false
+
+  if (isLexicalElement(element)) return replaceLexical(element, text)
 
   if (isSlateElement(element)) return replaceSlate(element, text)
 

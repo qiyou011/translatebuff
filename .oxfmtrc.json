@@ -25,6 +25,7 @@
     "openspec/changes/v1-4-0-page-translation-cost-reduction/calibration/used-server.mjs",
     "openspec/changes/v1-4-0-page-translation-cost-reduction/calibration/used-token-analysis.mjs",
     "pnpm-lock.yaml",
+    "CHANGELOG.md",
     "**/*.svg"
   ],
   "sortTailwindcss": {

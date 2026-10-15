@@ -43,6 +43,12 @@ export function getPageBatchKey(data: PageTranslationData): string {
       scope: data.scope ?? null,
       feature: data.hostedFeature ?? "pageTranslation",
       structured: isLLMProviderConfig(data.provider) && canUseStructuredPage(data),
+      glossaryRevision: data.glossaryRevision ?? 0,
+      // A revision can resolve to different terms after a scoped SPA route
+      // change. Only identical effective snapshots may share a prompt/cache.
+      glossaryTerms: (data.glossaryTerms ?? [])
+        .map((term) => JSON.stringify([term.matchKey, term.source, term.target, term.keepOriginal]))
+        .sort(),
     }),
   )
 }
@@ -108,6 +114,7 @@ export function createPageTranslationQueues(config: PageQueueConfig) {
             preserveLineBreaks: first.preserveLineBreaks,
             signal,
             context: first.context,
+            glossaryTerms: first.glossaryTerms,
           },
         )
       },

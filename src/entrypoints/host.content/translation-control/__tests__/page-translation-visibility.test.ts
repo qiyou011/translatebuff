@@ -58,7 +58,7 @@ function fixture() {
     walkBlockedElementsCache: Set<HTMLElement>
     observeTopLevelParagraphs: (root: HTMLElement, config: typeof DEFAULT_CONFIG) => Promise<void>
     observeMutations: (root: HTMLElement) => void
-    handleMutationRecords: (records: MutationRecord[]) => Promise<void>
+    handleMutationRecords: (records: MutationRecord[], root: HTMLElement) => Promise<void>
   }
   internal.isPageTranslating = true
   internal.walkId = "dropdown-menu"
@@ -320,7 +320,7 @@ it("observes hidden menu links when a visible ancestor gains its open class", as
   internal.intersectionObserver.observe.mockClear()
 
   box.classList.add("show-dropdown")
-  await internal.handleMutationRecords([attributeChange(box)])
+  await internal.handleMutationRecords([attributeChange(box)], document.body)
   await flush()
 
   const links = [...menu.querySelectorAll("a")]
@@ -339,7 +339,7 @@ it("observes a hidden descendant when an ancestor changes its inline style", asy
   internal.intersectionObserver.observe.mockClear()
 
   box.style.visibility = "visible"
-  await internal.handleMutationRecords([attributeChange(box, "style")])
+  await internal.handleMutationRecords([attributeChange(box, "style")], document.body)
   await flush()
 
   expect(menu).toHaveAttribute("data-read-frog-walked", "dropdown-menu")
@@ -353,7 +353,10 @@ it("does not rescan menus for unrelated ancestor changes or menus that remain hi
   unrelated.classList.add("active")
   box.classList.add("active")
 
-  await internal.handleMutationRecords([attributeChange(unrelated), attributeChange(box)])
+  await internal.handleMutationRecords(
+    [attributeChange(unrelated), attributeChange(box)],
+    document.body,
+  )
   await flush()
 
   expect(menu).not.toHaveAttribute("data-read-frog-walked")
@@ -366,7 +369,7 @@ it("observes a revealed menu only once for repeated records in one batch", async
   internal.intersectionObserver.observe.mockClear()
   box.classList.add("show-dropdown")
 
-  await internal.handleMutationRecords([attributeChange(box), attributeChange(box)])
+  await internal.handleMutationRecords([attributeChange(box), attributeChange(box)], document.body)
   await flush()
 
   expect(internal.intersectionObserver.observe.mock.calls.map(([element]) => element)).toEqual([
@@ -380,14 +383,17 @@ it("releases removed hidden menus from the walkability cache", async () => {
   expect(internal.walkBlockedElementsCache.has(menu)).toBe(true)
   box.remove()
 
-  await internal.handleMutationRecords([
-    {
-      type: "childList",
-      target: document.body,
-      addedNodes: [],
-      removedNodes: [box],
-    } as unknown as MutationRecord,
-  ])
+  await internal.handleMutationRecords(
+    [
+      {
+        type: "childList",
+        target: document.body,
+        addedNodes: [],
+        removedNodes: [box],
+      } as unknown as MutationRecord,
+    ],
+    document.body,
+  )
 
   expect(internal.walkBlockedElementsCache.has(menu)).toBe(false)
 })
@@ -424,7 +430,7 @@ it("scans a menu when its visibility transition finishes after the ancestor muta
 
   try {
     box.classList.add("show-dropdown")
-    await internal.handleMutationRecords([attributeChange(box)])
+    await internal.handleMutationRecords([attributeChange(box)], document.body)
     await flush()
     expect(menu).not.toHaveAttribute("data-read-frog-walked")
 

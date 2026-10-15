@@ -1,19 +1,25 @@
 import type { LangCodeISO6393, LangLevel } from "@read-frog/definitions"
 import type { HostedAiTextStreamRoute } from "@/types/background-stream"
 import type { Config } from "@/types/config/config"
+import type { LLMProviderConfig, TranslateProviderConfig } from "@/types/config/provider"
 import type { TranslationTextFormat } from "@/types/config/translate"
 import type { WebPagePromptContext } from "@/types/content"
-import type { SerializableProviderRef, UnwrappedProviderRef } from "@/utils/providers/provider-ref"
+import type { MatchedTerm } from "@/utils/glossary/types"
+import type { PromptableProviderRef, SerializableProviderRef } from "@/utils/providers/provider-ref"
+import type { ResolvedProviderRef } from "@/utils/providers/provider-registry"
 import { LANG_CODE_TO_EN_NAME } from "@read-frog/definitions"
 import { toastManager } from "@/components/ui/base-ui/toast"
 import { isAPIProviderConfig, isLLMProviderConfig } from "@/types/config/provider"
+import { classifyResolvedProvider } from "@/utils/analytics-provider"
 import { isNoTranslationSentinel } from "@/utils/constants/prompt"
 import { detectLanguage } from "@/utils/content/language"
+import { resolveGlossaryTerms } from "@/utils/glossary/active-matcher"
+import { trackGlossaryUsed } from "@/utils/glossary/analytics"
 import { canCacheInlineAtomTranslation } from "@/utils/host/translate/inline-atom-tokens"
 import { i18n } from "@/utils/i18n"
 import { logger } from "@/utils/logger"
 import { getTranslatePrompt } from "@/utils/prompts/translate"
-import { isSystemProviderRef, serializeProviderRef } from "@/utils/providers/provider-ref"
+import { serializeProviderRef } from "@/utils/providers/provider-ref"
 import { resolveProviderRefForCapability } from "@/utils/providers/provider-registry"
 import { TranslationCancelledError } from "@/utils/request/cancellation"
 import { Sha256Hex } from "../../hash"
@@ -101,6 +107,7 @@ async function buildWebPageHashComponents(
   enableAIContentAware: boolean,
   textFormat: TranslationTextFormat,
   preserveLineBreaks: boolean,
+  glossaryTerms: readonly MatchedTerm[],
   webPageContext?: WebPagePromptContext,
 ): Promise<string[]> {
   const preparedText = prepareTranslationText(text)
@@ -138,9 +145,12 @@ async function buildWebPageHashComponents(
   }
 
   const targetLangName = LANG_CODE_TO_EN_NAME[partialLangConfig.targetCode]
+  // The terms are passed in rather than resolved here, so the prompt this hash
+  // is taken over is built from exactly the terms the request will carry.
   const { systemPrompt, prompt } = await getTranslatePrompt(targetLangName, preparedText, {
     isBatch: true,
     context: normalizedWebPageContext,
+    glossaryTerms,
   })
   hashComponents.push(systemPrompt, prompt)
   hashComponents.push(
@@ -172,8 +182,10 @@ async function buildWebPageHashComponents(
  * on one status snapshot: no per-paragraph status fetches, and a mid-session
  * status blip cannot fail in-flight paragraphs.
  */
-function getSessionProviderRefFor(provider: UnwrappedProviderRef): SerializableProviderRef | null {
-  if (!isSystemProviderRef(provider)) {
+function getSessionProviderRefFor(
+  provider: ResolvedProviderRef<TranslateProviderConfig>,
+): SerializableProviderRef | null {
+  if (provider.kind !== "system") {
     return null
   }
   const sessionRef = getPageTranslationSessionProviderRef()
@@ -208,11 +220,21 @@ let lastRequestedSystemKey: string | null = null
  * later paragraphs skip the network entirely.
  */
 export async function resolvePageProviderRef(
-  provider: UnwrappedProviderRef,
+  provider: ResolvedProviderRef<LLMProviderConfig>,
+  sessionId: string | undefined,
+  feature: HostedAiTextStreamRoute,
+): Promise<PromptableProviderRef>
+export async function resolvePageProviderRef(
+  provider: ResolvedProviderRef<TranslateProviderConfig>,
+  sessionId: string | undefined,
+  feature: HostedAiTextStreamRoute,
+): Promise<SerializableProviderRef>
+export async function resolvePageProviderRef(
+  provider: ResolvedProviderRef<TranslateProviderConfig>,
   sessionId: string | undefined,
   feature: HostedAiTextStreamRoute,
 ): Promise<SerializableProviderRef> {
-  if (!isSystemProviderRef(provider)) {
+  if (provider.kind === "local") {
     return serializeProviderRef(provider, feature)
   }
 
@@ -261,7 +283,7 @@ export interface TranslateTextOptions {
     targetCode: LangCodeISO6393
     level: LangLevel
   }
-  providerConfig: UnwrappedProviderRef
+  providerConfig: ResolvedProviderRef<TranslateProviderConfig>
   enableAIContentAware?: boolean
   extraHashTags?: string[]
   webPageContext?: WebPagePromptContext
@@ -272,6 +294,12 @@ export interface TranslateTextOptions {
   // NOT part of the cache hash — cache identity must not vary per session.
   sessionId?: string
   forceRetranslation?: boolean
+  /**
+   * Whether the user's glossary is switched on. Supplied by the caller, which
+   * already holds the config, rather than re-read here per paragraph — the same
+   * arrangement as `enableAIContentAware`.
+   */
+  glossaryEnabled?: boolean
   /**
    * Which hosted route a system provider bills against; local providers
    * ignore it. Required so every entry point states its route where the
@@ -297,6 +325,7 @@ export async function translateTextCore(options: TranslateTextOptions): Promise<
     preserveLineBreaks = false,
     sessionId,
     forceRetranslation = false,
+    glossaryEnabled = false,
     hostedFeature,
   } = options
 
@@ -315,6 +344,30 @@ export async function translateTextCore(options: TranslateTextOptions): Promise<
   const normalizedWebPageContext = normalizeWebPagePromptContext(webPageContext)
   const providerRef = await resolvePageProviderRef(providerConfig, sessionId, hostedFeature)
 
+  // Resolved ONCE, here, where `location.href` says which glossaries apply.
+  // The same list feeds the cache hash and travels with the request, so the
+  // prompt the hash describes is the prompt the background builds — it serves
+  // every tab at once and could not scope this by itself.
+  //
+  // The revision travels with it because a batch can hold paragraphs resolved
+  // either side of an edit made while this page was still translating, and it
+  // is the only thing that tells the background which wording is the newer one
+  // (see `mergeBatchGlossaryTerms`).
+  const { terms: glossaryTerms, revision: glossaryRevision } = await resolveGlossaryTerms(
+    preparedText,
+    glossaryEnabled,
+    langConfig.targetCode,
+  )
+  // Covers page, input and pure-translate-provider selection runs, which all
+  // enter here; the two prompt-building selection paths and subtitles resolve
+  // their own terms and report at their own resolve sites.
+  trackGlossaryUsed(
+    hostedFeature,
+    glossaryTerms,
+    langConfig.targetCode,
+    classifyResolvedProvider(providerConfig),
+  )
+
   const hashComponents = await buildWebPageHashComponents(
     preparedText,
     providerRef,
@@ -322,8 +375,19 @@ export async function translateTextCore(options: TranslateTextOptions): Promise<
     enableAIContentAware,
     textFormat,
     preserveLineBreaks,
+    glossaryTerms,
     normalizedWebPageContext,
   )
+
+  // A revision identifies the exact glossary snapshot carried by the request.
+  // Even unchanged matches must not reuse an earlier snapshot's result; MT
+  // providers do not consume glossary prompts and keep their original identity.
+  if (
+    glossaryEnabled &&
+    (providerRef.kind === "system" || isLLMProviderConfig(providerRef.config))
+  ) {
+    hashComponents.push(`glossaryRevision:${glossaryRevision}`)
+  }
 
   // Add extra hash tags for cache differentiation
   hashComponents.push(...extraHashTags)
@@ -372,6 +436,8 @@ export async function translateTextCore(options: TranslateTextOptions): Promise<
     webSummary: normalizedWebPageContext?.webSummary,
     sessionId,
     forceRetranslation,
+    glossaryTerms,
+    glossaryRevision,
     hostedFeature,
   })
   if (sessionId !== undefined) {

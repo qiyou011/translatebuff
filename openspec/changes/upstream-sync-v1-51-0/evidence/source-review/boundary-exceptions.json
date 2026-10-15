@@ -1,0 +1,237 @@
+{
+  "target": "55bcef1e684fb4e70f4dce3063e7bd3066f46891",
+  "reviewed": [
+    {
+      "path": ".changeset/calm-keys-search.md",
+      "reason": "按AGENTS保留本仓用户可见变更历史/本轮记录"
+    },
+    {
+      "path": ".changeset/cn-uninstall-survey.md",
+      "reason": "按AGENTS保留本仓用户可见变更历史/本轮记录"
+    },
+    {
+      "path": ".changeset/disable-upstream-cloud-services.md",
+      "reason": "按AGENTS保留本仓用户可见变更历史/本轮记录"
+    },
+    {
+      "path": ".changeset/fix-current-cookie-channel.md",
+      "reason": "按AGENTS保留本仓用户可见变更历史/本轮记录"
+    },
+    {
+      "path": ".changeset/fix-discord-input-translation-hint.md",
+      "reason": "按AGENTS保留本仓用户可见变更历史/本轮记录"
+    },
+    {
+      "path": ".changeset/fix-membership-cookie-host.md",
+      "reason": "按AGENTS保留本仓用户可见变更历史/本轮记录"
+    },
+    {
+      "path": ".changeset/fix-request-useragent-version.md",
+      "reason": "按AGENTS保留本仓用户可见变更历史/本轮记录"
+    },
+    {
+      "path": ".changeset/floating-button-edge-theme-menu.md",
+      "reason": "按AGENTS保留本仓用户可见变更历史/本轮记录"
+    },
+    {
+      "path": ".changeset/floating-button-theme-tooltip.md",
+      "reason": "按AGENTS保留本仓用户可见变更历史/本轮记录"
+    },
+    {
+      "path": ".changeset/fork-brand-localization.md",
+      "reason": "按AGENTS保留本仓用户可见变更历史/本轮记录"
+    },
+    {
+      "path": ".changeset/fork-upstream-translation-adaptations.md",
+      "reason": "按AGENTS保留本仓用户可见变更历史/本轮记录"
+    },
+    {
+      "path": ".changeset/global-install-channel-attribution.md",
+      "reason": "按AGENTS保留本仓用户可见变更历史/本轮记录"
+    },
+    {
+      "path": ".changeset/prose-translation-new-lines.md",
+      "reason": "按AGENTS保留本仓用户可见变更历史/本轮记录"
+    },
+    {
+      "path": ".changeset/quiet-otters-undo.md",
+      "reason": "按AGENTS保留本仓用户可见变更历史/本轮记录"
+    },
+    {
+      "path": ".changeset/remove-model-display-prefix.md",
+      "reason": "按AGENTS保留本仓用户可见变更历史/本轮记录"
+    },
+    {
+      "path": ".changeset/telegram-input-translation.md",
+      "reason": "按AGENTS保留本仓用户可见变更历史/本轮记录"
+    },
+    {
+      "path": ".changeset/thaiticketmajor-account-menus.md",
+      "reason": "按AGENTS保留本仓用户可见变更历史/本轮记录"
+    },
+    {
+      "path": ".changeset/tidy-geese-theme.md",
+      "reason": "按AGENTS保留本仓用户可见变更历史/本轮记录"
+    },
+    {
+      "path": ".changeset/update-extension-icons.md",
+      "reason": "按AGENTS保留本仓用户可见变更历史/本轮记录"
+    },
+    {
+      "path": ".worktreeinclude",
+      "reason": "既有fork仓库元信息/开发约定"
+    },
+    {
+      "path": "AGENTS.md",
+      "reason": "既有fork仓库元信息/开发约定"
+    },
+    {
+      "path": "UPSTREAM_FOLLOW_UPS.md",
+      "reason": "既有fork仓库元信息/开发约定"
+    },
+    {
+      "path": "src/assets/styles/translation-node-preset.css",
+      "reason": "保留c75/4be段落、菜单显隐、公式缓存及术语身份"
+    },
+    {
+      "path": "src/components/custom-action/__tests__/use-custom-action-execution.test.ts",
+      "reason": "已保留业务回归或本轮安全边界用例"
+    },
+    {
+      "path": "src/components/custom-action/use-custom-action-execution.ts",
+      "reason": "新能力准入接缝：在真实执行前终止未批准功能"
+    },
+    {
+      "path": "src/entrypoints/background/__tests__/background-stream.test.ts",
+      "reason": "已保留业务回归或本轮安全边界用例"
+    },
+    {
+      "path": "src/entrypoints/background/background-stream.ts",
+      "reason": "新能力准入接缝：在真实执行前终止未批准功能"
+    },
+    {
+      "path": "src/entrypoints/background/page-translation.ts",
+      "reason": "唯一后台handler增加可选fork队列注入"
+    },
+    {
+      "path": "src/entrypoints/host.content/translation-control/__tests__/page-translation-visibility.test.ts",
+      "reason": "已保留业务回归或本轮安全边界用例"
+    },
+    {
+      "path": "src/entrypoints/host.content/translation-control/page-translation.ts",
+      "reason": "保留c75/4be段落、菜单显隐、公式缓存及术语身份"
+    },
+    {
+      "path": "src/entrypoints/input-injector.content/__tests__/replace-text.test.ts",
+      "reason": "已保留业务回归或本轮安全边界用例"
+    },
+    {
+      "path": "src/entrypoints/input-injector.content/index.ts",
+      "reason": "保留TG/Discord并适配Reddit深焦点及迟响应"
+    },
+    {
+      "path": "src/entrypoints/input-injector.content/replace-text.ts",
+      "reason": "保留TG/Discord并适配Reddit深焦点及迟响应"
+    },
+    {
+      "path": "src/entrypoints/netflix-interceptor.content/index.ts",
+      "reason": "新能力准入接缝：在真实执行前终止未批准功能"
+    },
+    {
+      "path": "src/entrypoints/selection.content/__tests__/utils.test.ts",
+      "reason": "已保留业务回归或本轮安全边界用例"
+    },
+    {
+      "path": "src/entrypoints/selection.content/selection-toolbar/custom-action-button/provider.tsx",
+      "reason": "新能力准入接缝：在真实执行前终止未批准功能"
+    },
+    {
+      "path": "src/entrypoints/selection.content/selection-toolbar/translate-button/provider.tsx",
+      "reason": "输入显示快照与显式动作采集边界/已保留controller shim"
+    },
+    {
+      "path": "src/entrypoints/selection.content/utils.ts",
+      "reason": "输入显示快照与显式动作采集边界/已保留controller shim"
+    },
+    {
+      "path": "src/entrypoints/side.content/components/floating-button/components/floating-button-tooltip.tsx",
+      "reason": "既有fork品牌悬浮球主题tooltip"
+    },
+    {
+      "path": "src/entrypoints/subtitles.content/content-script-matches.ts",
+      "reason": "新能力准入接缝：在真实执行前终止未批准功能"
+    },
+    {
+      "path": "src/entrypoints/subtitles.content/index.tsx",
+      "reason": "新能力准入接缝：在真实执行前终止未批准功能"
+    },
+    {
+      "path": "src/entrypoints/subtitles.content/init-netflix-subtitles.ts",
+      "reason": "新能力准入接缝：在真实执行前终止未批准功能"
+    },
+    {
+      "path": "src/entrypoints/subtitles.content/init-xcom-subtitles.ts",
+      "reason": "新能力准入接缝：在真实执行前终止未批准功能"
+    },
+    {
+      "path": "src/entrypoints/subtitles.content/runtime.ts",
+      "reason": "新能力准入接缝：在真实执行前终止未批准功能"
+    },
+    {
+      "path": "src/locales/az.yml",
+      "reason": "新增上游语言品牌替换"
+    },
+    {
+      "path": "src/utils/constants/input-injector.ts",
+      "reason": "保留TG/Discord并适配Reddit深焦点及迟响应"
+    },
+    {
+      "path": "src/utils/host/__tests__/translate.integration.test.tsx",
+      "reason": "已保留业务回归或本轮安全边界用例"
+    },
+    {
+      "path": "src/utils/host/dom/__tests__/inline-block-structure.test.ts",
+      "reason": "已保留业务回归或本轮安全边界用例"
+    },
+    {
+      "path": "src/utils/host/dom/traversal.ts",
+      "reason": "保留c75/4be段落、菜单显隐、公式缓存及术语身份"
+    },
+    {
+      "path": "src/utils/host/translate/__tests__/in-memory-translation-cache.test.ts",
+      "reason": "已保留业务回归或本轮安全边界用例"
+    },
+    {
+      "path": "src/utils/host/translate/core/__tests__/thaiticketmajor-menu.test.ts",
+      "reason": "已保留业务回归或本轮安全边界用例"
+    },
+    {
+      "path": "src/utils/host/translate/dom/translation-insertion.ts",
+      "reason": "保留c75/4be段落、菜单显隐、公式缓存及术语身份"
+    },
+    {
+      "path": "src/utils/host/translate/inline-atom-tokens.ts",
+      "reason": "保留c75/4be段落、菜单显隐、公式缓存及术语身份"
+    },
+    {
+      "path": "src/utils/host/translate/translate-text.ts",
+      "reason": "保留c75/4be段落、菜单显隐、公式缓存及术语身份"
+    },
+    {
+      "path": ".changeset/upstream-v151-fork-sync.md",
+      "reason": "按AGENTS保留本仓用户可见变更历史/本轮记录"
+    },
+    {
+      "path": "src/utils/host/translate/dom/__tests__/translation-insertion.test.ts",
+      "reason": "已保留业务回归或本轮安全边界用例"
+    },
+    {
+      "path": "src/entrypoints/background/iframe-injection.ts",
+      "reason": "独立审查P2：顶层与子frame URL共同遵守划词禁用规则；RED→GREEN89/真实fork33"
+    },
+    {
+      "path": "src/entrypoints/background/__tests__/iframe-injection.test.ts",
+      "reason": "父/private禁用、子/editor未命中时拒绝注入的回归"
+    }
+  ]
+}

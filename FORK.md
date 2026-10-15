@@ -1,177 +1,90 @@
-# Translatebuff Fork Playbook
+# TranslateBuff Fork Playbook
 
-Translatebuff 是 read-frog 的软 fork（上游：mengxi-ream/read-frog）。
-我们重做 UI、自建会员，但持续复用并同步上游引擎。
+TranslateBuff（任译喵）是 [read-frog](https://github.com/mengxi-ream/read-frog) 的软 fork。上游负责通用翻译引擎、配置 schema、迁移和消息协议；本仓负责品牌 UI、会员/配额、自有网关、渠道归因及产品准入。
 
-## 同步仪式（按上游 changeset release，或每周一次）
+## 同步基线与范围
 
-### 1.4.1 选择性修复例外
+每两周检查一次上游正式 release；紧急修复单独评估。先冻结正式 tag 和完整 SHA，再比较本仓最新业务代码。不要跟随移动的 main 自动升级。
 
-`v1-4-1-upstream-translation-improvements` 批准的 12 条修复使用逐条补丁移植；3 条延期仍不引入。完整上游同步继续使用 merge，选择性移植不推进 `upstream-baseline.json`。
+本轮固定 `v1.51.0` / `55bcef1e684fb4e70f4dce3063e7bd3066f46891`，业务起点 `4be99b341a7c940a48794232f066db43339cc2d2`。后续 `1308e8d1` 不在本轮范围。立项、架构审查、实施和验收记录见 [本轮变更](openspec/changes/upstream-sync-v1-51-0/)。
 
-`selective-upstream-patches.json` 使用唯一来源 SHA 和唯一文件路径；同一文件列出全部贡献来源，SHA256 对最终累计内容做 LF 归一化。删除文件用 `deleted: true` 且不含 sha256。门禁先预检整个账本，再分类修改文件，不能通过刷新指纹接受未审查漂移。
+`src/fork/identity/upstream-baseline.json` 只记录**已接纳的完整同步**。候选目标单独写入变更记录；merge、类型检查或构建通过都不能提前推进 `lastSyncedSha`。已接纳基线以该 JSON 为准。
 
-运行门禁前必须从固定官方仓库准备来源：
+完整源码同步不代表全部产品能力开放。保留本仓自定义功能、UI、会员和批量策略；新增平台、动作、云能力须逐项准入。当前批准本地术语库；上游商业账号、购买、订阅、计费、专属云服务、Drive同步、新平台字幕、学习侧栏和未批准内置动作保持关闭。用户自配 provider 不受商业隔离误伤。
+
+## 工作步骤
+
+1. 读取产品范围和来源，运行 jyopsx 立项/架构审查，生成 proposal、design、specs、tasks。
+2. 保存业务起点，使用隔离工作树和 `feat/upstream-sync-YYYY-MM-DD` 分支。先禁用上游 release、submit 和通知副作用。
+3. 从固定官方仓库取得已冻结 SHA，并核对 release；只做完整 `git merge --no-ff <固定SHA>`，不 rebase/squash 上游历史。
+4. 按贡献解决冲突：A 来源审查、B fork 适配对账、C 验证记录。热点优先复用上游，但不得丢弃已有 fork 修复。
+5. 采用目标 packageManager/runtime 安装，使用包管理器生成 lockfile，不手工拼接。package 的引擎版本与 fork manifest 发版号分开。
+6. 逐一审查全部 `FORK_UI_REDIRECTS` 和账外 App/controller/hook 副本。上游原件更新不会自动更新实际 fork 路径。审查适配后登记候选源指纹，再用真实 fork 配置验证；指纹只证明源内容已对账，不证明功能正确。
+7. 对选择性补丁逐来源确认已吸收效果、保留后续业务贡献，再清除已吸收来源及无剩余贡献的文件记录。不得盲刷113文件指纹或转为永久白名单。
+8. 运行主/fork测试、类型格式、固定目标边界、品牌和渠道产物断言；完成构建后用真实扩展包做浏览器与升级恢复回归。
+9. 完成 G1—G7、独立审查并记录候选SHA、产物hash、覆盖与缺项。全部通过并接纳后才推进完整同步基线。发布、商店提交、推送及归档单独授权。
 
 ```sh
+# 已存在 upstream 时先确认 URL，不重复添加。
 git remote add upstream https://github.com/mengxi-ream/read-frog.git
-git fetch --no-tags upstream +refs/heads/main:refs/remotes/upstream/main
+git fetch --no-tags upstream 55bcef1e684fb4e70f4dce3063e7bd3066f46891:refs/remotes/upstream/main
+# 此处 upstream/main 是本轮来源检查使用的本地引用，固定为正式目标。
+git merge --no-ff --no-commit 55bcef1e684fb4e70f4dce3063e7bd3066f46891
+pnpm install --no-frozen-lockfile
+SKIP_FREE_API=true pnpm run test
+SKIP_FREE_API=true pnpm run test --config vitest.fork.config.ts src/fork
+pnpm run type-check
+pnpm run fmt:check
+FORK_SYNC_MODE=1 FORK_SYNC_BASE=55bcef1e684fb4e70f4dce3063e7bd3066f46891 node scripts/check-fork-boundary.mjs
+node scripts/check-fork-brand.mjs
 ```
 
-已有 upstream 时先确认 URL 相同，不重复添加。官方最新 main 用于证明来源；完整同步基线用于判断来源是否已经被完整吸收。Git 查询错误必须失败，不能按普通非祖先处理。
+日常 PR 使用 `FORK_DIFF_BASE=origin/<业务基分支>` 的增量边界检查。同步 PR 必须显式使用冻结的 `FORK_SYNC_BASE`，不能因三点差集已包含上游变化而误用普通模式。边界检查的提交范围与未提交 diff 应分别记录。
 
-完整 merge 后，先重建最终累计内容，清除已吸收来源及无剩余贡献的文件例外，再验证账本。撤销单条来源也须重建共享文件的剩余补丁结果、重新审查指纹与贡献关系，不能只删来源行。
+## 代码归属和冲突原则
 
-默认边界差集为提交范围 `base...HEAD`；未提交修改不能仅凭该检查宣称通过。检查记录必须说明实际范围，提交前另行核对工作区 diff 与全账本内容，提交后再检查真实提交范围。
+- 上游 schema、DEFAULT_CONFIG、迁移、ProtocolMap、模型/供应商常量归上游；新增 fork 专有配置使用独立存储键。复用上游已有字段，避免第二 schema。
+- 净新增 fork 能力放 `src/fork/**`。公开 Provider、hook 和共享状态优先；无公开接缝时保留必要最小副本，不为减少副本重写引擎。
+- 原地接缝由 `scripts/fork-allowlist.json` 管理。每项新增差异须有当前需求、影响分析及回归依据，不能全盘 take-theirs 丢失业务贡献。
+- 保留页面队列工厂注入、交互/页面隔离、当前合批策略、取消与在途计数。术语 terms/revision 必须贯通 batch key、cache、prompt 和单条降级。
+- 上游 `.changeset` 按来源保留；本仓用户可见改动按 AGENTS.md 写 conventional changeset。fork 不运行 `changeset version/release`。
+- 每次同步同时复查 [上游问题跟进记录](UPSTREAM_FOLLOW_UPS.md)。
 
-同步时同时复查 [上游问题跟进记录](UPSTREAM_FOLLOW_UPS.md)，其中包含暂缓本地修复的已知事项及 fork 副本对账要求。
+## 重定向与真实测试
 
-1. `git fetch upstream`
-2. `git switch -c sync/$(date +%Y-%m-%d) main`
-3. `git merge upstream/main` # 只 MERGE —— 绝不 rebase/squash main
-4. 解冲突。热点一律 take-theirs（见下）。
-5. `pnpm install` # 重新生成 pnpm-lock.yaml；绝不手工合并
-6. `pnpm run test` 与 `wxt build` + `build:edge` + `build:firefox` 必须全绿
-7. `node scripts/assert-fork-build.mjs` 必须通过（fork 域名已进产物 = env 覆盖生效；残留上游域名仅告警）
-8. 边界检查必须通过。**同步分支走同步模式**：`FORK_SYNC_MODE=1 node scripts/check-fork-boundary.mjs`
-   （基准取本次合并进来的上游提交；HEAD 已不是合并提交时补 `FORK_SYNC_BASE=<上游落脚点>`）。
-   日常 PR 走增量模式 `FORK_DIFF_BASE=origin/<base> …`。用错模式会全判红或空转恒绿，两者都危险。
-   判定看的是「与上游是否**仍有分歧**」，把 fork 改动退回上游不算越界。
-9. `node scripts/check-fork-brand.mjs` 必须通过（locale/入口标题无上游品牌残留、无小写 Translatebuff 漂移）。上游新增带 "Read Frog" 的串会在此被揪出——重刷成 fork 品牌（拉丁 TranslateBuff / 中文 任译喵·任譯喵）
-10. 开 PR：sync/* -> main（CI `fork-guard.yml` 复跑 4/5/7/8/9）
+`wxt.config.ts` 是重定向清单真源，`src/fork/identity/redirect-baseline.json` 记录 LF 归一化源指纹。路径缺失、指纹缺失和漂移均硬失败。先 diff 并说明“复用/适配/继续禁用”，再更新指纹；不得用刷新指纹替代审查。
 
-## 绝不编辑（每次同步 take-theirs）
+主 `vitest.config.ts` 不加载 fork 重定向。主套件通过不能证明 fork 路径已生效；必须另跑 `vitest.fork.config.ts`，并用构建后的真实扩展回归。微软解码漂移哨兵、防重复解码、公开导出契约和 Provider context 均需保留。
 
-- src/utils/message.ts（ProtocolMap）
-- src/types/config/* schema、src/utils/constants/config.ts DEFAULT_CONFIG
-- src/utils/config/migration-scripts/*
-- src/utils/constants/models.ts、src/utils/constants/providers.ts
-- package.json `version`、CHANGELOG.md、pnpm-lock.yaml
-- .changeset/（保留 take-theirs、休眠；**fork 永不运行 `changeset version`/`release`**，避免删除目录导致每次同步 modify/delete 冲突）
+## 商业能力四层隔离
 
-## 被 fork 影子接管的上游文件（每次同步必须手工对账）
+1. UI/直接路由：禁用入口及深链可到达内容。
+2. 挂载/初始化：不启动未批准的 query、SDK 或侧栏副作用。
+3. 后台/消息：直接调用和旧配置不能绕过准入；任务明确结束。
+4. 请求前：显式禁用错误/空状态，不伪造成功，不重试或轮询，不自动映射未批准能力到自有收费模型。
 
-这些上游文件**仍在仓库里、仍会被 merge 更新，但运行时不再执行**——`wxt.config.ts` 的
-`FORK_UI_REDIRECTS` 把模块解析重定向到了 `src/fork/` 副本。它们不会产生 merge 冲突
-（fork 没改过原文件），代价是**上游对它们的后续修复不会自动生效**，而
-`forkUiRedirectPlugin` 的 buildStart **只断言路径存在、不比对内容**——上游改了内容，
-构建照样绿，没人会知道。
+前后台 auth 保持空会话，ORPC使用本地拒绝 transport，博客返回空，笔记/Drive后台停用。新增直接 fetch、SDK、API前缀和后台模块必须重新核对。包装原件时，原模块内部调用不会自动指向包装导出，应检查实际调用链。
 
-| 上游文件                                                                           | fork 副本                                                  | 同步时要留意什么                                                                                               |
-| ---------------------------------------------------------------------------------- | ---------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| src/utils/host/translate/api/microsoft.ts                                          | src/fork/providers/microsoft-translate.ts                  | 端点/请求形状变更；上游改动频率最高                                                                            |
-| src/entrypoints/host.content/translation-control/bind-translation-mode-shortcut.ts | src/fork/ui/host-content/bind-translation-mode-shortcut.ts | 上游已把 `config.translate` 改名为 `config.pageTranslation`、i18n key 也重组                                   |
-| src/entrypoints/options/pages/translation/translation-mode.tsx                     | src/fork/ui/options/translation-mode.tsx                   | 必须保留具名导出 `TranslationMode` 与 `ConfigCard id="translation-mode"`（命令面板靠该 id 跳转，改了静默断链） |
+源码静态检查和产物上游域名字面量告警不能替代网络验收。新包需分别捕获 SW、扩展页、content script 请求，触发默认/旧配置、直接调用及后台重启，并对照正常自有/自配翻译。不得统一拦截请求来制造零请求。
 
-（其余 8 条重定向是纯换皮 UI，本表只列「上游会继续演进、漏看会出功能问题」的三个。）
+## 版本、渠道与回退
 
-> **2026-08-25 更新**：`buildStart` 现在**同时断言内容指纹**（`src/fork/identity/redirect-baseline.json`，
-> LF 归一化后 sha256）。上游改了被换皮文件的内容会直接构建失败，不再是「构建绿但皮悄悄掉」。
-> 失配后必须**先 diff 上游改动、判断要不要搬进 fork 副本，再更新指纹**——直接刷新指纹等于把这层护栏关掉。
-> 重定向未登记指纹同样硬失败，避免新增换皮漏进护栏之外。
->
-> 重定向已从 11 条增至 20 条（阶段 0 还债后）。品牌图标改走**资源级重定向**
-> （`src/assets/icons/read-frog.png` → `src/fork/assets/renyimiao.svg`），一条覆盖悬浮球与字幕条两处，
-> 省掉两份要逐次对账的组件副本。
+manifest `version` 来源 `src/fork/identity/fork-version.json`，`version_name` 保留上游引擎溯源；`package.json.version` 接纳上游引擎版本。国内/海外 Firefox ID保持本仓身份，最低版本接纳目标140。
 
-**每次 merge 完上游，除常规门禁另加三步：**
+- `node scripts/pack.mjs test [--edition cn|global]`：内部测试配置。
+- `node scripts/pack.mjs store [--edition cn|global] (--channel <id> | --all)`：生成商店配置产物；出包不等于发布。
+- 国内目录 `.output/<browser>-mv3`，海外加 `-global`；运行对应 `assert-fork-build.mjs`，核对跨线域名与渠道。
 
-1. `git diff <上次同步的上游 commit>..upstream/main -- <上表三个路径>`，逐条判断上游改动要不要手工搬进 fork 副本。
-2. 看漂移哨兵 `src/fork/providers/__tests__/upstream-decode-drift.test.ts` 是否变红。红了 =
-   上游把 `microsoft-translate` 加进了 `normalizeTranslationOutput` 的解码集合，**此时必须删掉
-   fork 适配器里的 `decodeHTMLStrict`**，否则双重解码会把 `&amp;` 静默塌成 `&`——不冲突、不报错、极难查。
-3. 若同步到了上游 `config.translate` → `config.pageTranslation` 改名的那一版，
-   `src/fork/providers/translation-only-gate.ts` 的 featureKey 与三个 fork 副本读的字段要一起改。
+schema100→111需要旧配置、provider/动作、备份导入与恢复验证。新版写入后旧包不能直接读取时，必须先恢复旧配置/备份再回退。历史归档或新装成功不能替代本轮升级与回退证据。
 
-**注意**：重定向在 vitest 下**不生效**（`vitest.config.ts` 只注册 `WxtVitest()`，它不转发
-`wxt.config.ts` 的 `vite()` 钩子）。所以上游原版测试会继续绿但测的是休眠代码；fork 副本的逻辑
-必须在 `src/fork/**/__tests__/` 里直接 import fork 模块补测，别指望继承上游测试。
+## G1—G7接纳门禁
 
-## 发版号与打包（B1）
-
-- manifest `version` 走 fork 自主 semver，存 `src/fork/identity/fork-version.json` 的 `version`（当前 `1.0.1`），
-  与上游 `package.json` 版本解耦；version_name 保留上游溯源，如「任译喵 1.0.0（rf 1.42.2）」。
-- 发新版：直接改 `fork-version.json` 的 `version`（1.0.0 → 1.0.1 → 1.1.0 → 2.0.0 全自由）。Chrome 要求
-  manifest version 为纯数字段，故测试包与正式包**同版本号**，靠后端 + 文件名区分。
-- `package.json version` 与 `CHANGELOG.md` 仍一律 take-theirs（version 字段绝不 fork 改），绝不在 fork 上跑 changesets。
-- 打包两条轨（`scripts/pack.mjs`，产物落 `.output/`）：
-  - `node scripts/pack.mjs test [--edition cn|global]` —— 测试后端（`cn` 读本地 `.env`，`global` 读 `.env.global`）
-    → `translatebuff-<版本>-test[-global]-<浏览器>.zip`，内部试用（load unpacked，目录在 `.output/<浏览器>-mv3[-global]`）。
-  - `node scripts/pack.mjs store [--edition cn|global] (--channel <id> | --all)` —— 正式后端
-    （`cn` 读 `.env.production`，`global` 读 `.env.global.production`）→ `translatebuff-<版本>-<渠道id>.zip`，上传对应商店。
-  - 两条 edition 的产物目录与文件名都分开，互不覆盖；跨线域名混入由 `assert-fork-build.mjs` 双向断言 fail-fast。
-
-## 文件四分类与冲突解法
-
-同步时每个文件落入以下四类之一：
-
-### A 类 · 绝不改（take-theirs，改了必冲突）
-
-- src/utils/message.ts（ProtocolMap）
-- src/types/config/**、src/utils/constants/config.ts（DEFAULT_CONFIG）
-- src/utils/config/migration-scripts/**
-- src/utils/constants/models.ts、src/utils/constants/providers.ts
-- package.json `version`、CHANGELOG.md、pnpm-lock.yaml、.changeset/**
-- **冲突解法**：`git checkout --theirs <file>` 全盘接受上游；fork 要扩能力只进 src/fork/。
-
-### B 类 · 允许原地改（allowlist，每次同步可能手工解冲突）
-
-真源清单见 `scripts/fork-allowlist.json`；向其增项需评审。当前实际改动的 5 个：
-
-- wxt.config.ts（name / version / gecko.id）
-- src/entrypoints/background/index.ts（一行 setupFork()）
-- src/utils/constants/app.ts（APP_NAME）
-- src/entrypoints/popup/app.tsx（壳层 re-export）
-- src/entrypoints/background/uninstall-survey.ts（survey URL）
-- （allowlist 另预列 options/sidepanel/translation-hub/side/selection 的 app.tsx、selection/index.tsx、auth/orpc client、9 个 locale，留给后续 UI 重建 / 会员替换）
-- **冲突解法**：手工合并——保留 fork 那几行，其余接受上游。rerere 已开，会记住重复解法。
-
-### C 类 · fork 净新增（零冲突，上游永不碰）
-
-- src/fork/**、scripts/{check-fork-boundary,assert-fork-build,check-fork-brand}.mjs、scripts/fork-allowlist.json、FORK.md、.env.production、.github/workflows/fork-guard.yml、openspec/**
-- **冲突解法**：不会有。
-
-### D 类 · 直接从上游同步（其余全部 = 引擎，take upstream）
-
-- `src/utils/host/translate/**`（翻译引擎）、`src/entrypoints/background/`（除 index.ts）、content-scripts 注入逻辑、`src/utils/`、`src/hooks/`、未 fork 的 `src/components/` 等
-- **操作**：merge 自动合入，无需干预。
-- `@read-frog/definitions` / `@read-frog/api-contract`：**升版本号即同步**（take 上游 package.json + `pnpm install`）；升前 diff 其常量（AUTH_BASE_PATH / ORPC_PREFIX / AUTH_COOKIE_PATTERNS / orpc 形状）防契约漂移。
-
-## 不变量
-
-### v1.4.0 页面批量接入（2026-09-12 架构复审通过）
-
-`background/index.ts` 显式传入 fork 页面队列工厂；未传工厂仍是上游行为，字幕不变。
-净新增实现/测试在 `src/fork/page-translation/`。白名单新增 `background/translation-queues.ts`、
-`background/config.ts`、`utils/request/request-queue.ts`、Google/Microsoft adapter；同步时检查
-注入点、scope取消、共享初始化Promise、真实在途计数，以及MT单条编解码和错误元数据。
-Google/MS原导出仍保留；不新增影子队列。`page-translation-cost-reduction.md` 是仅记录的
-changeset例外，不运行release/version。最终默认值与fork发版号仍受本变更实测发布门控制。
-
-- 只 merge，绝不 rebase/squash main 上的上游提交（否则毁掉便宜三方合并的共享祖先）。
-- 所有净新增代码进 src/fork/**。
-- fork 配置使用独立 storage key + schema + 迁移链；绝不触碰上游 configSchema。
-
-## 上游云服务隔离（disable-upstream-cloud-services）
-
-本次实施基线为 `cc6a65974dbec43c9643f246d26ccff65701d2bf`；实际已同步上游为 `02ad422c1e1260960e141e4012a20d93e85082aa`（1.46.6）。以后应读取 `src/fork/identity/upstream-baseline.json`，不要把本文 SHA 当作永远不变的最新版本。
-
-新增 14 条精确重定向，服务适配代码位于 `src/fork/upstream-services/`，UI 叶子位于 `src/fork/ui/`，上游原件保留。额外的 `feature-providers-config` 覆盖 API 提供商页独立设置区，保留原布局/说明/写入 hook，仅隐藏笔记建议行、显示实际模型；不可只检查 popup 的 selector list。
-
-| 适配点                                   | 行为与同步关注点                                                                                                                        |
-| ---------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-| provider-registry / provider-ref         | 旧 system 引用在请求前解析为首个启用、非空 key、能力匹配的任译喵实例；有效 local 不变；显式快照同样受控。不能改模型分类或配置同步算法。 |
-| language                                 | 三个导出都提前隔离旧 system；本地检测和显式有效 local LLM 保留。不得重新引入三次云请求尝试。                                            |
-| page-translation / subtitles             | 只补无候选时的前置反馈：页面退出；字幕抛局部禁用错误，让原协调器记录失败、结束 loading。其余引擎导出和正常流程复用上游。                |
-| auth-client / background-auth-client     | 上游会话空且立即结束；仅保留当前使用的方法契约，不初始化 SDK；自有会员模块不变。                                                        |
-| orpc-client / background-orpc-client     | 真实 router 类型及 query helper，最小禁用 transport 本地拒绝；普通/流式都不联网。                                                       |
-| hosted-ai-status / notebase-pending-save | 状态消息为 null；笔记处理器不启动、不监听 Cookie、不删除历史数据。                                                                      |
-| blog / WhatsNewFooter                    | 博客直接请求返回 null；popup 和设置通知叶子不挂查询，旧缓存不再显示。                                                                   |
-
-包装复用原模块时，**原模块内部调用不会自动指向包装导出**；协作函数必须显式调用 fork 版本。registry 只能依赖纯身份叶子 `renyimiao-identity.ts`，不能反向引入带配置依赖的 `renyimiao.ts`。
-
-同步时检查上述原件的 diff 与 `redirect-baseline.json` 内容指纹，以及 `@read-frog/definitions`、`@read-frog/api-contract` 的类型/常量变动。新增客户端、直接 fetch 或 API 前缀必须重新核对；新 RPC 方法若共用既有 transport 会被拒绝，但新出口不能靠旧守卫自动兜住。
-
-验收必须两套测试都跑：`SKIP_FREE_API=true pnpm run test` 保留上游测试，`SKIP_FREE_API=true pnpm run test --config vitest.fork.config.ts src/fork` 验证实际重定向。再跑类型/格式、双发行版 Chrome 测试和正式配置构建、Edge/Firefox 构建；最后在新包中检查 SW、扩展页、content script 的三类 API 零请求及正常翻译/登录生命周期。构建仍含上游域名字面量不等于发起了请求，不能替代网络实证。
-
-无迁移、无新增兼容配置写入。回滚只撤销本次适配器、注册/指纹和 fork UI 增量并重新构建，不重置整条分支；回滚会恢复上游请求风险。本次 changeset 仅记录用户可见变化，不运行 `changeset version/release`，不更改 fork 发版号。
+| 门禁 | 要求                                               |
+| ---- | -------------------------------------------------- |
+| G1   | 正式来源固定，完整merge关系与排除范围可核验        |
+| G2   | 冲突、选择性贡献、重定向及账外副本逐项对账         |
+| G3   | 商业四层隔离，三上下文实际网络证据                 |
+| G4   | 本仓功能/UI、15项及术语实际回归                    |
+| G5   | 双套测试、类型格式、边界品牌、各目标构建及产物断言 |
+| G6   | 真实扩展、旧配置升级、备份恢复与回退证据           |
+| G7   | 发布、通知、商店副作用隔离                         |

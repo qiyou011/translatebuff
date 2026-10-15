@@ -5,6 +5,7 @@ import type { InputTranslationLang } from "@/types/config/config"
 import { useAtomValue } from "jotai"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { toastManager } from "@/components/ui/base-ui/toast"
+import { isLexicalElement } from "@/entrypoints/input-injector.content/editors/lexical"
 import { UpstreamCloudDisabledError } from "@/fork/upstream-services/disabled-error"
 import { ANALYTICS_FEATURE, ANALYTICS_SURFACE } from "@/types/analytics"
 import { createFeatureUsageContext, trackFeatureAttempt } from "@/utils/analytics"
@@ -12,6 +13,7 @@ import { classifyResolvedProvider } from "@/utils/analytics-provider"
 import { configFieldsAtomMap } from "@/utils/atoms/config"
 import { getLocalConfig } from "@/utils/config/storage"
 import { INPUT_REPLACE_REQUEST_TYPE } from "@/utils/constants/input-injector"
+import { getDeepActiveElement } from "@/utils/dom/active-element"
 import { translateTextForInput } from "@/utils/host/translate/translate-variants"
 import { HostedAiProviderUnavailableError } from "@/utils/providers/provider-ref"
 import {
@@ -148,9 +150,8 @@ function getEditableText(element: HTMLInputElement | HTMLTextAreaElement | HTMLE
   if (element instanceof HTMLInputElement || element instanceof HTMLTextAreaElement) {
     return element.value
   }
-  return isTelegramUrl(window.location.href)
-    ? (element.innerText ?? element.textContent ?? "")
-    : (element.textContent ?? "")
+  // innerText preserves rich-editor paragraph and <br> boundaries (including Reddit).
+  return element.innerText ?? element.textContent ?? ""
 }
 
 function eventComesFrom(event: Event, element: HTMLElement | null): boolean {
@@ -161,7 +162,7 @@ function eventComesFrom(event: Event, element: HTMLElement | null): boolean {
 }
 
 function hasFocusWithin(element: HTMLElement, interactionElement: HTMLElement | null): boolean {
-  const activeElement = element.ownerDocument.activeElement
+  const activeElement = getDeepActiveElement()
   if (
     activeElement &&
     (activeElement === element ||
@@ -421,7 +422,8 @@ export function useInputTranslation() {
         (triggerSnapshotRef.current?.element === element
           ? triggerSnapshotRef.current.text
           : getEditableText(element))
-      const chatSite = telegram || getChatContextSelector(url) !== null
+      const reddit = /(^|\.)reddit\.com$/.test(new URL(url).hostname) && isLexicalElement(element)
+      const chatSite = telegram || reddit || getChatContextSelector(url) !== null
 
       // Determine fromLang and toLang, possibly swapped if cycle is enabled
       let fromLang = retryBar?.direction.fromLang ?? inputTranslationConfig.fromLang
@@ -466,6 +468,8 @@ export function useInputTranslation() {
             // Capability-resolved so Built-in AI is not reported as "unknown":
             // it is synthesized by the registry and never a providersConfig row.
             ...classifyResolvedProvider(provider),
+            char_count: text.length,
+            target_language: langs.to.code,
           },
           () => translateTextForInput(text, langs.from.code, langs.to.code),
         )
@@ -506,7 +510,7 @@ export function useInputTranslation() {
                 )
                 return
               }
-              const barSource = toBarSource(langs.to.source)
+              const barSource = toBarSource(langs.to.source) ?? (reddit ? "manual" : null)
               if (barSource)
                 publish({
                   kind: "translated",
@@ -523,7 +527,7 @@ export function useInputTranslation() {
             return
           }
           setTextWithUndo(element, translatedText)
-          const barSource = toBarSource(langs.to.source)
+          const barSource = toBarSource(langs.to.source) ?? (reddit ? "manual" : null)
           if (chatSite && barSource) {
             publish({
               kind: "translated",
@@ -611,7 +615,7 @@ export function useInputTranslation() {
       getEditableText(element) !== expectedDraft
     )
       return false
-    const activeElement = element.ownerDocument.activeElement
+    const activeElement = getDeepActiveElement()
     return activeElement === element || (activeElement !== null && element.contains(activeElement))
   }, [])
 
@@ -645,7 +649,7 @@ export function useInputTranslation() {
     // 元素可能已经被 SPA 卸载；此时什么都不写，别去动一个不存在的目标。
     if (
       current?.kind === "translated" &&
-      document.contains(current.element) &&
+      current.element.isConnected &&
       (!current.sessionKey ||
         (getTelegramSessionKey(window.location.href, current.element) === current.sessionKey &&
           (getEditableText(current.element) === current.translatedText || wasWriting)))
@@ -989,7 +993,7 @@ export function useInputTranslation() {
       }
 
       // Check if the active element is an input field
-      const activeElement = document.activeElement
+      const activeElement = getDeepActiveElement()
       const isInputField =
         activeElement instanceof HTMLInputElement ||
         activeElement instanceof HTMLTextAreaElement ||

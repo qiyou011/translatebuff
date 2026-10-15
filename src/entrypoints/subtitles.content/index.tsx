@@ -1,7 +1,9 @@
 import "@/utils/zod-config"
 import { defineContentScript } from "#imports"
+import { isApprovedSubtitlesUrl } from "@/fork/upstream-admission"
 import { getLocalConfig } from "@/utils/config/storage"
 import { initI18n } from "@/utils/i18n"
+import { subtitlesContentScriptMatches } from "./content-script-matches"
 
 declare global {
   interface Window {
@@ -10,10 +12,11 @@ declare global {
 }
 
 export default defineContentScript({
-  matches: ["*://*.youtube.com/*", "*://*.youtube-nocookie.com/*"],
+  matches: subtitlesContentScriptMatches,
   allFrames: true,
   cssInjectionMode: "manifest",
   async main(ctx) {
+    if (!isApprovedSubtitlesUrl(window.location.href)) return
     if (window.__READ_FROG_SUBTITLES_INJECTED__) return
     window.__READ_FROG_SUBTITLES_INJECTED__ = true
 

@@ -36,6 +36,8 @@
 
 复用上游 IndexedDB repository、CSV、matcher、快照和 prompt builder。`src/fork/page-translation/types.ts` 的页面请求、`queues.ts` 合批 key、`llm.ts` prompt、MT/LLM分流和 `index.ts` 单条降级均传递匹配 terms 与 revision；缓存身份包含实际生效的术语状态，revision 不同不得合批，同批 terms 按已匹配项目去重并处理不一致快照。修改/删除后不得命中旧措辞；重试和单条降级使用同一有效术语身份。Google/Microsoft 纯 MT 保持正常路径，不宣称强制术语。当前 JSON/MT 批处理及交互队列隔离先保留。
 
+实施审查补充：全局 revision 不能独自代表有效术语状态，同源 SPA 不同路径可在同一 revision 匹配不同词条。合批 key 同时包含稳定排序的实际匹配 terms；相同集合可继续合批，空词条保持原策略。不同匹配集合分别请求，避免把合并后失去约束的结果写入各自缓存；这可能增加启用术语时的请求批次。该取舍只收紧正确性分组，不调整批量大小、并发或超时，不新增另一份 scope/schema/消息模型。
+
 ### D6：15项重点逐条绑定真实路径
 
 | 编号 | 来源     | 用户效果和验收边界                                               |

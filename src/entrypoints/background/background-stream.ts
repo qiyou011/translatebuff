@@ -16,24 +16,33 @@ import type {
   StreamPortHandler,
   StreamPortRequestMessage,
   StreamPortResponse,
-  StreamPortResponseWithoutRequestId,
+  StreamPortResponseWithoutStreamRequestId,
   StreamRuntimeOptions,
   ThinkingSnapshot,
 } from "@/types/background-stream"
+import type { TranslateProviderConfig } from "@/types/config/provider"
+import type { ErrorAction } from "@/utils/error-action"
 import {
   HostedAiNoteSuggestionObjectSchema,
   HostedAiNoteSuggestionStreamInputSchema,
   HostedAiOutputFieldTypeSchema,
+  HostedAiQuotaExhaustedDataSchema,
   HostedAiRateLimitErrorDataSchema,
   HostedAiStreamStructuredObjectInputSchema,
   HostedAiStreamTextInputSchema,
 } from "@read-frog/api-contract"
 import { generateText, Output, parsePartialJson, streamText } from "ai"
 import { z } from "zod"
+import { FORK_UPSTREAM_ADMISSION, isApprovedCustomAction } from "@/fork/upstream-admission"
+import { UpstreamCloudDisabledError } from "@/fork/upstream-services/disabled-error"
 import { BACKGROUND_STREAM_PORTS } from "@/types/background-stream"
-import { isLLMProviderConfig } from "@/types/config/provider"
+import { isLLMProviderConfig, llmProviderConfigItemSchema } from "@/types/config/provider"
 import { createStructuredObjectSchema } from "@/utils/ai/structured-object-schema"
+import { classifyFailureReason } from "@/utils/analytics-failure-reason"
+import { BUILT_IN_AI_PROVIDER_IDS } from "@/utils/constants/provider-ids"
+import { upgradeAction } from "@/utils/error-action"
 import { extractAISDKErrorMessage } from "@/utils/error/extract-message"
+import { hostedTextStreamRouteSchema, requireHostedFeature } from "@/utils/hosted-ai/routing"
 import { i18n } from "@/utils/i18n"
 import { logger } from "@/utils/logger"
 import { noteSuggestionEnvelopeSchema } from "@/utils/note-suggestion/types"
@@ -69,15 +78,34 @@ function isAbortLikeError(error: unknown) {
 
 const streamPortStartEnvelopeSchema = z.object({
   type: z.literal("start"),
-  requestId: z.string().trim().min(1),
+  streamRequestId: z.string().trim().min(1),
   payload: z.unknown(),
 })
 
-const streamTextPayloadSchema = z
-  .object({
-    providerId: z.string().trim().min(1),
-  })
-  .loose()
+const baseStreamPayloadSchema = z.object({ providerId: z.string().trim().min(1) }).loose()
+
+const streamTextPayloadSchema = z.discriminatedUnion("providerKind", [
+  baseStreamPayloadSchema
+    .extend({
+      providerKind: z.literal("local"),
+      providerId: z
+        .string()
+        .trim()
+        .min(1)
+        .refine((id) => !isBuiltInAiProviderId(id)),
+      providerConfig: llmProviderConfigItemSchema.optional(),
+      hostedFeature: z.never().optional(),
+    })
+    .refine(
+      ({ providerId, providerConfig }) => !providerConfig || providerConfig.id === providerId,
+    ),
+  baseStreamPayloadSchema.extend({
+    providerKind: z.literal("system"),
+    providerId: z.enum(BUILT_IN_AI_PROVIDER_IDS),
+    providerConfig: z.never().optional(),
+    hostedFeature: hostedTextStreamRouteSchema,
+  }),
+])
 
 // Transport-level check for BOTH provider kinds, so only the enum comes from
 // the contract; hosted-only constraints (name length, field count) are applied
@@ -90,6 +118,7 @@ const structuredObjectFieldSchema = z.object({
 const structuredObjectPayloadSchema = z
   .object({
     providerId: z.string().trim().min(1),
+    actionId: z.string().trim().min(1).optional(),
     outputSchema: z.array(structuredObjectFieldSchema).min(1),
   })
   .loose()
@@ -120,7 +149,7 @@ function createStartMessageParser<TSerializablePayload>(payloadSchema: z.ZodType
     if (!payloadResult.success) {
       return {
         success: false,
-        requestId: envelopeResult.data.requestId,
+        streamRequestId: envelopeResult.data.streamRequestId,
       }
     }
 
@@ -128,7 +157,7 @@ function createStartMessageParser<TSerializablePayload>(payloadSchema: z.ZodType
       success: true,
       message: {
         type: "start",
-        requestId: envelopeResult.data.requestId,
+        streamRequestId: envelopeResult.data.streamRequestId,
         payload: payloadResult.data as TSerializablePayload,
       },
     }
@@ -146,18 +175,18 @@ function createStreamPortHandler<TSerializablePayload, TResponse>(
     const abortController = new AbortController()
     let isActive = true
     let hasStarted = false
-    let requestId: string | undefined
+    let streamRequestId: string | undefined
     let messageListener: ((rawMessage: unknown) => void) | undefined
     let disconnectListener: (() => void) | undefined
 
-    const safePost = (response: StreamPortResponseWithoutRequestId<TResponse>) => {
-      if (!isActive || abortController.signal.aborted || !requestId) {
+    const safePost = (response: StreamPortResponseWithoutStreamRequestId<TResponse>) => {
+      if (!isActive || abortController.signal.aborted || !streamRequestId) {
         return
       }
       try {
         const message: StreamPortResponse<TResponse> = {
           ...response,
-          requestId,
+          streamRequestId,
         }
         port.postMessage(message)
       } catch (error) {
@@ -197,8 +226,8 @@ function createStreamPortHandler<TSerializablePayload, TResponse>(
 
       const parseResult = startMessageParser(rawMessage)
       if (!parseResult.success) {
-        if (parseResult.requestId) {
-          requestId = parseResult.requestId
+        if (parseResult.streamRequestId) {
+          streamRequestId = parseResult.streamRequestId
           safePost({
             type: "error",
             error: { message: invalidStreamStartPayloadMessage },
@@ -216,7 +245,7 @@ function createStreamPortHandler<TSerializablePayload, TResponse>(
       }
 
       const startMessage = parseResult.message
-      requestId = startMessage.requestId
+      streamRequestId = startMessage.streamRequestId
       hasStarted = true
       let streamError: unknown
 
@@ -249,7 +278,14 @@ function createStreamPortHandler<TSerializablePayload, TResponse>(
         }
 
         logger.error("[Background] Stream Function failed", finalError)
-        safePost({ type: "error", error: { message: extractAISDKErrorMessage(finalError) } })
+        safePost({
+          type: "error",
+          error: {
+            message: extractAISDKErrorMessage(finalError),
+            action: finalError instanceof BackgroundStreamError ? finalError.action : undefined,
+            reason: classifyFailureReason(finalError),
+          },
+        })
       } finally {
         cleanup()
         try {
@@ -284,13 +320,15 @@ class BackgroundStreamError extends Error {
   constructor(
     readonly code: string,
     message: string,
-    options?: { cause?: unknown; retryAfterMs?: number },
+    options?: { cause?: unknown; retryAfterMs?: number; action?: ErrorAction },
   ) {
     super(message, { cause: options?.cause })
     this.retryAfterMs = options?.retryAfterMs
+    this.action = options?.action
   }
 
   readonly retryAfterMs?: number
+  readonly action?: ErrorAction
 }
 
 function withRequestErrorMeta<T extends Error>(
@@ -373,6 +411,19 @@ function getHostedAiRateLimitMessage(error: unknown): string {
 const HOSTED_AI_TIER_RESTRICTED = "HOSTED_AI_TIER_RESTRICTED" satisfies PublicAppErrorCode
 const HOSTED_AI_QUOTA_EXHAUSTED = "HOSTED_AI_QUOTA_EXHAUSTED" satisfies PublicAppErrorCode
 
+/**
+ * Every pool but Ultra's has a bigger plan above it, so running one dry offers
+ * the upgrade. Ultra is the top of the ladder: pricing has nothing to sell a
+ * subscriber there, so the message stands alone. A payload that fails to parse
+ * still offers it — nearly everyone who hits a wall is below Ultra.
+ */
+function getHostedAiQuotaExhaustedAction(error: unknown): ErrorAction | undefined {
+  const parsed = HostedAiQuotaExhaustedDataSchema.safeParse(
+    isRecord(error) ? error.data : undefined,
+  )
+  return parsed.success && parsed.data.policyId === "ultra-weekly-v1" ? undefined : upgradeAction()
+}
+
 function normalizeHostedAiError(error: unknown): unknown {
   switch (getOrpcErrorCode(error)) {
     case HOSTED_AI_TIER_RESTRICTED:
@@ -393,7 +444,7 @@ function normalizeHostedAiError(error: unknown): unknown {
         new BackgroundStreamError(
           "HOSTED_AI_QUOTA_EXHAUSTED",
           i18n.t("hostedAi.availability.quotaExhausted"),
-          { cause: error },
+          { cause: error, action: getHostedAiQuotaExhaustedAction(error) },
         ),
         { isRetryable: false, kind: "access-denied" },
       )
@@ -631,15 +682,23 @@ async function consumeStructuredObjectPartStream<TOutput extends Record<string, 
 }
 
 async function createLocalTextPartStream(
-  serializablePayload: BackgroundStreamTextSerializablePayload,
+  serializablePayload: Extract<BackgroundStreamTextSerializablePayload, { providerKind: "local" }>,
   options: StreamRuntimeOptions<BackgroundTextStreamSnapshot> = {},
 ): Promise<AsyncIterable<unknown>> {
-  const { providerId, ...streamTextParams } = serializablePayload
+  const {
+    providerKind: _providerKind,
+    providerId,
+    providerConfig,
+    ...streamTextParams
+  } = serializablePayload
   const { signal, onError } = options
 
-  const model = await getModelById(providerId)
+  const model = providerConfig
+    ? getLanguageModelForConfig(providerConfig)
+    : await getModelById(providerId)
   const result = streamText({
     ...(streamTextParams as Parameters<typeof streamText>[0]),
+    ...(providerConfig ? buildLocalGenerateTextParams(providerConfig) : {}),
     model,
     abortSignal: signal,
     onError: ({ error }) => {
@@ -653,9 +712,8 @@ async function createLocalTextPartStream(
 /**
  * One oRPC procedure per hosted text feature: the server derives the billing
  * feature from the route path, so the payload's `hostedFeature` never rides
- * the wire — it only selects which procedure to call. Absent means page
- * translation, the sole caller before the field existed. Resolved lazily so
- * importing this module never touches the client proxy.
+ * the wire — it explicitly selects which procedure to call. Resolved lazily
+ * so importing this module never touches the client proxy.
  */
 const HOSTED_TEXT_STREAM_PROCEDURES: Record<HostedAiTextStreamRoute, () => HostedStreamFn> = {
   pageTranslation: () =>
@@ -675,7 +733,7 @@ const HOSTED_TEXT_STREAM_PROCEDURES: Record<HostedAiTextStreamRoute, () => Hoste
 }
 
 async function createHostedTextPartStream(
-  serializablePayload: BackgroundStreamTextSerializablePayload,
+  serializablePayload: Extract<BackgroundStreamTextSerializablePayload, { providerKind: "system" }>,
   signal?: AbortSignal,
 ): Promise<AsyncIterable<unknown>> {
   const { prompt, instructions, temperature, modelTier, requestId, hostedFeature } =
@@ -694,7 +752,7 @@ async function createHostedTextPartStream(
     throw new BackgroundStreamError("invalid_request", "Invalid hosted AI request")
   }
 
-  const procedure = HOSTED_TEXT_STREAM_PROCEDURES[hostedFeature ?? "pageTranslation"]()
+  const procedure = HOSTED_TEXT_STREAM_PROCEDURES[requireHostedFeature(hostedFeature)]()
   try {
     const stream = await procedure(input.data, { signal })
     return normalizeHostedPartStreamErrors(stream)
@@ -732,10 +790,11 @@ export async function generateTextForProviderRef(
   if (providerRef.kind === "system") {
     const partStream = await createHostedTextPartStream(
       {
+        providerKind: "system",
         providerId: providerRef.providerId,
         modelTier: providerRef.modelTier,
         requestId,
-        hostedFeature,
+        hostedFeature: requireHostedFeature(hostedFeature),
         instructions,
         prompt,
       },
@@ -746,12 +805,14 @@ export async function generateTextForProviderRef(
   }
 
   // Local text generation needs a real LLM: pure translate providers (DeepLX,
-  // Google, Microsoft) have no model to prompt. Callers already pick an
-  // LLM-capable provider, so this is a guard, not a branch.
-  if (!isLLMProviderConfig(providerRef.config)) {
+  // Google, Microsoft) have no model to prompt. The payload type already says
+  // LLM, but the wire is a trust boundary — a pre-update content script can
+  // still send a translate-only ref — so re-widen and check for real.
+  const localConfig = providerRef.config as TranslateProviderConfig
+  if (!isLLMProviderConfig(localConfig)) {
     throw new BackgroundStreamError(
       "invalid_request",
-      `Provider "${providerRef.config.id}" cannot generate text`,
+      `Provider "${localConfig.id}" cannot generate text`,
     )
   }
 
@@ -785,9 +846,10 @@ export async function runStreamTextInBackground(
     throw new DOMException("stream aborted", "AbortError")
   }
 
-  const partStream = isBuiltInAiProviderId(serializablePayload.providerId)
-    ? await createHostedTextPartStream(serializablePayload, signal)
-    : await createLocalTextPartStream(serializablePayload, options)
+  const partStream =
+    serializablePayload.providerKind === "system"
+      ? await createHostedTextPartStream(serializablePayload, signal)
+      : await createLocalTextPartStream(serializablePayload, options)
 
   return consumeTextPartStream(partStream, {
     onChunk,
@@ -796,13 +858,18 @@ export async function runStreamTextInBackground(
 }
 
 async function createLocalStructuredObjectPartStream<TOutput extends Record<string, unknown>>(
-  serializablePayload: BackgroundStreamTextSerializablePayload & {
+  serializablePayload: BackgroundStreamNoteSuggestionSerializablePayload & {
     outputSchema?: BackgroundStructuredObjectOutputField[]
   },
   objectSchema: z.ZodType<TOutput>,
   options: StreamRuntimeOptions<BackgroundStructuredObjectStreamSnapshot> = {},
 ): Promise<AsyncIterable<unknown>> {
-  const { providerId, outputSchema: _outputSchema, ...streamParams } = serializablePayload
+  const {
+    providerId,
+    outputSchema: _outputSchema,
+    actionId: _actionId,
+    ...streamParams
+  } = serializablePayload as typeof serializablePayload & { actionId?: string }
   const { signal, onError } = options
 
   const model = await getModelById(providerId)
@@ -857,6 +924,13 @@ export async function runStructuredObjectStreamInBackground(
   serializablePayload: BackgroundStreamStructuredObjectSerializablePayload,
   options: StreamRuntimeOptions<BackgroundStructuredObjectStreamSnapshot> = {},
 ): Promise<BackgroundStructuredObjectStreamSnapshot> {
+  const actionId = (serializablePayload as { actionId?: unknown }).actionId
+  if (
+    actionId !== undefined &&
+    (typeof actionId !== "string" || !isApprovedCustomAction(actionId))
+  ) {
+    throw new UpstreamCloudDisabledError()
+  }
   const { signal, onChunk } = options
 
   if (signal?.aborted) {
@@ -907,6 +981,7 @@ export async function runNoteSuggestionStreamInBackground(
   serializablePayload: BackgroundStreamNoteSuggestionSerializablePayload,
   options: StreamRuntimeOptions<BackgroundNoteSuggestionStreamSnapshot> = {},
 ): Promise<BackgroundNoteSuggestionStreamSnapshot> {
+  if (!FORK_UPSTREAM_ADMISSION.noteSuggestion) throw new UpstreamCloudDisabledError()
   const { signal, onError } = options
   const { providerId, prompt, instructions } = serializablePayload
 
@@ -965,7 +1040,7 @@ const parseStructuredObjectStartMessage =
   )
 const parseNoteSuggestionStartMessage =
   createStartMessageParser<BackgroundStreamNoteSuggestionSerializablePayload>(
-    streamTextPayloadSchema,
+    baseStreamPayloadSchema,
   )
 
 export const handleStreamTextPort = createStreamPortHandler<

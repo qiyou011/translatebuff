@@ -1,0 +1,172 @@
+{
+  "evidence_type": "source-level integration test with WXT test storage; NOT browser upgrade or old-bundle rollback",
+  "recorded_at_utc": "2026-10-15T04:31:08.399816+00:00",
+  "baseline": {
+    "sha": "4be99b341a7c940a48794232f066db43339cc2d2",
+    "schema_version": 100,
+    "package_json_version": "1.46.6",
+    "version_label_scope": "package.json in baseline source only; no old browser manifest/bundle was executed",
+    "declared_external_dependencies": {
+      "@read-frog/api-contract": "0.14.0",
+      "@read-frog/definitions": "0.4.4",
+      "zod": "^4.4.3"
+    }
+  },
+  "candidate": {
+    "upstream_target_sha": "55bcef1e684fb4e70f4dce3063e7bd3066f46891",
+    "schema_version": 111,
+    "head_at_recording": "6a6f007660905972861000b7cf1352c3b2fa01ab",
+    "merge_head_at_recording": "55bcef1e684fb4e70f4dce3063e7bd3066f46891",
+    "dirty_merge_worktree": true
+  },
+  "fixture": {
+    "path": "src/fork/__tests__/fixtures/upstream-v146-config.json",
+    "sha256": "6068b4d28921927413f28951aa7a508d9ca2522e4cdfc38c7bdf16cc4d1f2602",
+    "origin_file": "src/utils/config/__tests__/example/v100.ts",
+    "origin_profile": "prompt-token-migration-coverage",
+    "exact_fixture_source_equality_tested": true,
+    "overrides_are_synthetic": true
+  },
+  "legacy_source_hashes": [
+    {
+      "path": "src/utils/config/__tests__/example/v100.ts",
+      "git_blob": "974c8524c567b095b56da0dad86ef6996203049a",
+      "sha256": "3d664f01d7b7e817f113cffe40d3793e6465917bd55bd014709c4f413fca8988"
+    },
+    {
+      "path": "src/types/config/config.ts",
+      "git_blob": "e6d73322928539ca9f157adbef1ba7d74ac1f349",
+      "sha256": "0ea909fe8a44ae05bb398cf23de5e885925d8729605bc0a3459ece165a32e932"
+    },
+    {
+      "path": "src/types/config/provider/index.ts",
+      "git_blob": "6591935828db4ee963034c64b2e48d4b959d910d",
+      "sha256": "6bc53ae1ee0aabe94de61fbb60fccc5324979c5c32847c19ceeae9b0e306a18b"
+    },
+    {
+      "path": "src/types/config/provider/schemas.ts",
+      "git_blob": "3c218f9bf6bcb5dc79158a33f06eddd6459e31eb",
+      "sha256": "6258b0f0122bd45cce1789f1c7b619b90c01066ae6851a5c30df04f8be87635e"
+    },
+    {
+      "path": "src/types/config/translate.ts",
+      "git_blob": "c3a86aa0b7b07085c797ad0644507843fb88fb16",
+      "sha256": "c705b3e45e354214d8a4e685aadee917c5dcf8d1ca294345f53a218d7e9c5c11"
+    },
+    {
+      "path": "src/types/config/selection-toolbar.ts",
+      "git_blob": "66a081a56432fe1ad2a00bc55beac395e3a8d4c5",
+      "sha256": "9317cd47ac1064d63de3989931466595cd0f8490a543d43e8a437f4884bdf8a9"
+    },
+    {
+      "path": "src/utils/constants/config.ts",
+      "git_blob": "db31dbece398a8e336451a46d18bc82de07b3243",
+      "sha256": "b2aae779d4e84d4f0bbd4727b5eb21c7351f2dd1e5d1cf5b38f1f8fb76a18d9e"
+    },
+    {
+      "path": "src/utils/backup/storage.ts",
+      "git_blob": "d81e23aa6a4230d65de469b3a2fe9140618b7d17",
+      "sha256": "fc374f31403ff4f63f9e2c7fb887668e20209815db013b2ef23a8b39257f2574"
+    },
+    {
+      "path": "src/utils/config/migration.ts",
+      "git_blob": "23d99204e148708f20112b41846df0b9d95dc0a6",
+      "sha256": "7da69a6a4a207d65d128a98ebe037ee564713ec4796af5edf2a26698b32d090b"
+    },
+    {
+      "path": "src/utils/config/storage.ts",
+      "git_blob": "d362d524e12c488d976f5e78e683afadd7ccdf47",
+      "sha256": "71aacea51ecb58a3f0ec1bbebf58dbb7496e7a67a361e3665cbfe70b5a988693"
+    },
+    {
+      "path": "package.json",
+      "git_blob": "e37b9ff51b786b4c6be2defbbe726d5f07030e69",
+      "sha256": "6454cd4e4087c1d80fdc55bbfd8d8ea24f49c1bc4c8322090865f14b9afc4886"
+    }
+  ],
+  "test_runtime": {
+    "external_packages": {
+      "@read-frog/api-contract": "0.21.1",
+      "@read-frog/definitions": "0.10.1",
+      "zod": "4.6.5",
+      "wxt": "0.21.4",
+      "vitest": "5.0.3"
+    },
+    "legacy_loading": "pinned source transpiled with WXT esbuild; assets/i18n/logging/browser-storage use test adapters; import.meta.glob expands pinned migration tree; test env validation bypassed",
+    "compatibility_limit": "baseline source uses CURRENT external validator packages, not the old packaged dependency environment",
+    "shallow_clone_policy": "fixture-only target test always runs; four legacy checks explicitly skip with stderr reason when baseline object missing; full-history CI runs all five"
+  },
+  "command": "SKIP_FREE_API=true node --import ./scripts/test-env.mjs ./node_modules/vitest/vitest.mjs run --config vitest.config.ts src/fork/__tests__/upstream-v151-migration.test.ts --reporter=default --reporter=json --outputFile=openspec/changes/upstream-sync-v1-51-0/evidence/config-migration/vitest-results.json",
+  "result": {
+    "success": true,
+    "numTotalTests": 5,
+    "numPassedTests": 5,
+    "numFailedTests": 0,
+    "numPendingTests": 0
+  },
+  "assertions": [
+    "migrates the frozen v100 fixture and user overrides to v111 without requiring Git history",
+    "pinned v100 to v111 config migration and storage-level restore (requires baseline Git object) uses the exact baseline frozen fixture and real baseline v100 validator",
+    "pinned v100 to v111 config migration and storage-level restore (requires baseline Git object) backs up first, upgrades storage to v111, and preserves user and independent site/member state",
+    "pinned v100 to v111 config migration and storage-level restore (requires baseline Git object) imports the saved schema100 envelope through target migrateConfig and config storage helpers",
+    "pinned v100 to v111 config migration and storage-level restore (requires baseline Git object) restores the saved backup with actual old helpers and passes old schema validation before downgrade"
+  ],
+  "state_assertions": [
+    "Actual baseline addBackup saves schema100 envelope before target initializeConfig; active config metadata still100 when backup asserted.",
+    "initializeConfig returns isFreshInstall=false, writes schema111 and keeps lastModifiedAt=1000.",
+    "Synthetic user openai-compatible provider row/apiKey/model/baseURL and all preexisting provider ids survive.",
+    "Custom action id/name/provider/systemPrompt/prompt/output field ids survive allowed additive layout/sample migrations.",
+    "translationOnly mode, 16/4000 batch parameters, forward-written translateTitle=false and input language/cycle/450ms survive.",
+    "Telegram/Discord bare-host rules normalize to *.host at v101, preserving intended site semantics.",
+    "JSON schema100 backup envelope imports through target migrateConfig plus setLocalConfigAndMeta and stays schema111.",
+    "Old source migrateConfig rejects schema111 with ConfigVersionTooNewError.",
+    "Restoring saved backup through actual old migrateConfig and old setLocalConfigAndMeta yields schema100 metadata and old-schema accepted config.",
+    "Old v100 did not define translateTitle; its validator strips this unknown key during old-source restore. false preservation is proved for target upgrade only.",
+    "local:forkConfig,local:forkSession,local:forkMembershipInfo and session detectedCode/translationState for Telegram tab901 and Discord tab902 remain unchanged."
+  ],
+  "checks": [
+    {
+      "name": "type-check",
+      "command": [
+        "./node_modules/.bin/oxlint",
+        "--type-aware",
+        "--type-check",
+        "src/fork/__tests__/upstream-v151-migration.test.ts"
+      ],
+      "exit_code": 0,
+      "log": "type-check.txt"
+    },
+    {
+      "name": "format-check",
+      "command": [
+        "./node_modules/.bin/oxfmt",
+        "--check",
+        "src/fork/__tests__/upstream-v151-migration.test.ts",
+        "src/fork/__tests__/fixtures/upstream-v146-config.json"
+      ],
+      "exit_code": 0,
+      "log": "format-check.txt"
+    },
+    {
+      "name": "diff-check",
+      "command": [
+        "git",
+        "diff",
+        "--check",
+        "--",
+        "src/fork/__tests__/upstream-v151-migration.test.ts",
+        "src/fork/__tests__/fixtures/upstream-v146-config.json"
+      ],
+      "exit_code": 0,
+      "log": "diff-check.txt"
+    }
+  ],
+  "not_proven": [
+    "actual installed extension/profile update from old bundle to candidate",
+    "browser import UI plus reload",
+    "real provider/account/membership network behavior after upgrade",
+    "actual old bundle startup after restoring backup",
+    "IndexedDB version/data and extension identity compatibility in real rollback",
+    "Telegram/Discord real editor/draft/undo/late-response behavior"
+  ]
+}

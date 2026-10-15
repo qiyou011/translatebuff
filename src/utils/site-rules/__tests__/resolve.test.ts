@@ -2,7 +2,7 @@
 import type { SiteRule } from "@/types/config/site-rules"
 import { describe, expect, it } from "vitest"
 import { siteRuleSchema } from "@/types/config/site-rules"
-import { EMPTY_RESOLVED_SITE_RULE, resolveSiteRule } from "../resolve"
+import { EMPTY_RESOLVED_SITE_RULE, resolveSiteRule, urlMatchesRule } from "../resolve"
 
 const URL_ON_SITE = "https://example.com/article"
 
@@ -41,6 +41,20 @@ describe("resolveSiteRule", () => {
     )
     expect(resolved.minCharacters).toBe(2)
     expect(resolved.minWords).toBe(3)
+  })
+
+  it("lets user rules explicitly disable built-in iframe injection", () => {
+    const builtIn = rule({ id: "built-in", injectIntoIframes: true })
+    expect(resolveSiteRule(URL_ON_SITE, [builtIn], [], []).injectIntoIframes).toBe(true)
+    expect(
+      resolveSiteRule(URL_ON_SITE, [builtIn], [rule({ id: "user", injectIntoIframes: false })], [])
+        .injectIntoIframes,
+    ).toBe(false)
+    expect(resolveSiteRule(URL_ON_SITE, [builtIn], [], [builtIn.id]).injectIntoIframes).toBeNull()
+    expect(
+      resolveSiteRule(URL_ON_SITE, [], [rule({ id: "unrelated", minWords: 1 })], [])
+        .injectIntoIframes,
+    ).toBeNull()
   })
 
   it("concatenates injectedCss instead of replacing it", () => {
@@ -463,5 +477,23 @@ describe("resolveSiteRule", () => {
     expect(resolved.forceInlineStyleSelector).toBe(".tag")
     expect(resolved.forceBlockStyleSelector).toBeNull()
     expect(resolved.forceInlineNodeSelector).toBeNull()
+  })
+})
+
+describe("urlMatchesRule", () => {
+  it("accepts a single pattern or an array of patterns", () => {
+    expect(urlMatchesRule("https://x.com/home", { matches: "x.com" })).toBe(true)
+    expect(urlMatchesRule("https://x.com/home", { matches: ["twitter.com", "x.com"] })).toBe(true)
+    expect(urlMatchesRule("https://x.com/home", { matches: ["twitter.com"] })).toBe(false)
+  })
+
+  it("carves out excludeMatches", () => {
+    const githubRule = {
+      matches: "github.com",
+      excludeMatches: ["github.com/settings/*", "github.com/*/*/settings"],
+    }
+    expect(urlMatchesRule("https://github.com/foo/bar", githubRule)).toBe(true)
+    expect(urlMatchesRule("https://github.com/settings/profile", githubRule)).toBe(false)
+    expect(urlMatchesRule("https://github.com/foo/bar/settings", githubRule)).toBe(false)
   })
 })
