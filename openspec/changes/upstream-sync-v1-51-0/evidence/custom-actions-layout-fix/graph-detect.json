@@ -1,0 +1,10 @@
+{
+  "source": "graph-detect.txt",
+  "scope": "all",
+  "cliOutputFormat": "human-readable summary",
+  "changedTrackedFiles": 4,
+  "symbols": 8,
+  "affectedProcesses": 0,
+  "risk": "low",
+  "limitation": "CSS selector behavior and untracked new tests are not represented by this function-symbol summary; not a substitute for complete staged analysis before any future commit."
+}

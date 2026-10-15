@@ -1,0 +1,28 @@
+{
+  "command": [
+    "pnpm",
+    "run",
+    "test",
+    "--config",
+    "vitest.fork.config.ts",
+    "src/fork/page-translation/__tests__/mt.test.ts",
+    "src/fork/page-translation/__tests__/request-concurrency.test.ts",
+    "src/fork/page-translation/__tests__/migration.test.ts",
+    "src/fork/page-translation/__tests__/config-init.test.ts",
+    "--reporter=default",
+    "--reporter=json",
+    "--outputFile=/Users/yisen/.codex/worktrees/upstream-sync-v1-51-0/translatebuff/openspec/changes/upstream-sync-v1-51-0/evidence/cost-reduction-preservation/mt-existing-fork.json"
+  ],
+  "env": {
+    "SKIP_FREE_API": "true"
+  },
+  "exitCode": 0,
+  "elapsedSeconds": 1.505,
+  "numTotalTestSuites": 6,
+  "numPassedTestSuites": 6,
+  "numTotalTests": 18,
+  "numPassedTests": 18,
+  "numPendingTests": 0,
+  "numFailedTests": 0,
+  "success": true
+}

@@ -1,0 +1,45 @@
+{
+  "target": {
+    "id": "Function:src/entrypoints/background/page-translation.ts:setupPageTranslationHandlers",
+    "name": "setupPageTranslationHandlers",
+    "type": "Function",
+    "filePath": "src/entrypoints/background/page-translation.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 1,
+  "risk": "LOW",
+  "summary": {
+    "direct": 1,
+    "processes_affected": 1,
+    "modules_affected": 1
+  },
+  "affected_processes": [
+    {
+      "name": "main",
+      "type": "Function",
+      "filePath": "src/entrypoints/background/index.ts",
+      "affected_process_count": 10,
+      "total_hits": 10,
+      "earliest_broken_step": 1
+    }
+  ],
+  "affected_modules": [
+    {
+      "name": "Background",
+      "hits": 1,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/background/index.ts:main",
+        "name": "main",
+        "filePath": "src/entrypoints/background/index.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      }
+    ]
+  }
+}

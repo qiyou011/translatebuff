@@ -1,0 +1,101 @@
+{
+  "status": "CORE_PRESERVED_AND_EMPTY_EFFECTIVE_TERMS_CACHE_REGRESSION_FIXED",
+  "date": "2026-10-15",
+  "sourceHead": "e1d90dc928ca5fbbbba112e480131e1c909c93ce",
+  "workingTreeDirty": true,
+  "businessBaseline": "4be99b341a7c940a48794232f066db43339cc2d2",
+  "originalImplementation": "0906e79135a91da534dcc6ae504f72342d510128",
+  "fixedUpstreamTarget": "55bcef1e684fb4e70f4dce3063e7bd3066f46891",
+  "corePreservation": {
+    "keyFilesByteIdentical": 9,
+    "sourceFactoryInjected": true,
+    "compiledAstVerified": true,
+    "backgroundBundleBeforeAndAfterSha256": "0ea1e86b3258d2bf10f7459bde506b4b0b50d2114522d26b46fb741581c57d6e",
+    "llmCandidate": [16, 4000],
+    "mtItems": 100,
+    "mtBatchBudgetBytes": 32768,
+    "pageMaxInFlight": 4,
+    "interactionIsolated": true
+  },
+  "controlledMeasurements": {
+    "llmDefault16ItemsHttpCalls": 1,
+    "llmRepeatBackgroundCacheAdditionalHttpCalls": 0,
+    "effectiveTermsGroupsToHttpCalls": {
+      "1": 1,
+      "2": 2,
+      "16": 16
+    },
+    "custom16ItemsHttpCalls": 1,
+    "customSeparatorCount": 15,
+    "singleInvalidFieldHttpCalls": 2,
+    "corruptTwoItemEnvelopeHttpCalls": 3,
+    "invalidMarkerAfterFallbackHttpCalls": 2,
+    "invalidMarkerBadCacheWrites": 0,
+    "google101BatchSizes": [100, 1],
+    "microsoft101BatchSizes": [100, 1],
+    "mtSimulatedLatencyMs": 5,
+    "mtMaxObservedInFlight": 4,
+    "actualModelTokens": null,
+    "actualBilledCost": null
+  },
+  "cacheFix": {
+    "rootCause": "extra global revision tag even for empty effective terms",
+    "productionPath": "src/utils/host/translate/translate-text.ts",
+    "minimalChange": "require nonempty effective terms before content revision salt",
+    "red": {
+      "failed": 3,
+      "passed": 2
+    },
+    "greenPassed": 5,
+    "independentReverseProof": true,
+    "nonemptyRevisionSaltRetained": true,
+    "backgroundSaltRetained": true,
+    "strictBatchSnapshotKeyRetained": true,
+    "schemaOrMigrationAdded": false,
+    "redirectSourceFingerprint": "7127f4edfbd63b03",
+    "sourceFingerprintOnlyOneExistingEntryUpdated": true
+  },
+  "validation": {
+    "mainPassed": 4998,
+    "mainExternalSkipped": 4,
+    "forkPassed": 997,
+    "newTestCount": 28,
+    "independentFocusedPassed": 44,
+    "wholeTypeCheck": "8 pre-existing script diagnostics",
+    "scopedTypeAwareLint": "PASS",
+    "scopedFormat": "PASS",
+    "fixedShaBoundary": "PASS; HEAD-only plus dirty/untracked supplement",
+    "brand": "PASS",
+    "strictSpec": "PASS",
+    "build": "PASS",
+    "architectureReview": "PASS",
+    "codeReview": "PASS",
+    "logs": {
+      "main": "main-tests-final.log",
+      "fork": "fork-tests-verified-final.log",
+      "review": "review-tests.log",
+      "workingTreeBoundary": "working-tree-boundary.json"
+    }
+  },
+  "artifact": {
+    "treeSha256": "ea64d7beb343a260ac468f4c13ab2f6f8b08c8f697b3e30afd981ce4055a7e02",
+    "files": 208,
+    "manifestAnd14EmbeddedConfigHashesUnchanged": true,
+    "previousFiveBuildsRetained": true,
+    "sameDownloadDirectoryUpdated": true,
+    "browserReloadRequiredForNewCode": true,
+    "actualNewBrowserRuntimeVerified": false
+  },
+  "notVerified": [
+    "real gateway token/fee savings",
+    "browser request attribution or IndexedDB persistence",
+    "whole real-page performance versus old release",
+    "original cost release gates5.1-5.4",
+    "known glossary deletion lifecycleF02",
+    "summary cancellation scope guarantees"
+  ],
+  "deferredByUser": ["H01", "H02", "Reddit", "Telegram"],
+  "completeAcceptance": false,
+  "upstreamMetadataAdvanced": false,
+  "publishedOrCommitted": false
+}

@@ -144,9 +144,9 @@
   "limitations": [
     "Controlled site fixtures and localhost model transport are explicitly distinguished from live third-party sites and real own-account gateway.",
     "Historical FAIL reports remain FAIL. A PASS case may belong to an older mixed-result run, explicitly marked wholeRunAllPass=false.",
-    "Real own-account permissions/quota/gateway/channel and Telegram/Discord live-site acceptance remain outstanding.",
+    "CN-test real-account core quota/gateway and global-production YouTube/Discord core UI have follow-up evidence; full permission/channel coverage, Telegram/Reddit and commercial-network attribution remain outstanding.",
     "GitNexus full detect_changes is complete, historical impact depth3 has tool guard limitations documented under source-review/impact-followup.md.",
-    "Edge and Firefox builds passed; browser runtime coverage is Chrome for Testing.",
+    "Edge and Firefox builds passed; runtime coverage includes Chrome for Testing controlled rounds and user-selected Chrome for global-production follow-up.",
     "No push, release, store upload, outbound message or archive occurred."
   ],
   "migration": {
@@ -160,5 +160,181 @@
     "stagesPassed": 7,
     "configurationOnlyDowngrade": "Old binary translates and reads cache without deleting upgraded DB60 or entries",
     "completeProfileRestore": "Returns to pre-upgrade DB40 and snapshot data; post-snapshot new data is not retained"
+  },
+  "realAccountFollowup": {
+    "date": "2026-10-15",
+    "environment": "cn-test",
+    "status": "completed-with-findings-and-coverage-gaps",
+    "report": "real-account-browser/README.md",
+    "observations": "real-account-browser/2026-10-15T07:19:01.909Z/observations.json",
+    "coreAccountAndGateway": "pass",
+    "liveWikipediaAndArxivTranslationRestore": "pass",
+    "findings": [
+      "H01: first Control after mode shortcut suppressed; related logic pre-existing",
+      "H02: unexpected broad hover translation and HTTP429; cause unresolved"
+    ],
+    "commercialNetworkConclusion": "insufficient-journal-and-attribution-no-zero-request-claim",
+    "completeAcceptance": false,
+    "upstreamMetadataAdvanced": false
+  },
+  "globalProductionFollowup": {
+    "date": "2026-10-15",
+    "environment": "global-production",
+    "browser": "user-designated existing Chrome profile",
+    "status": "COMPLETED_TARGETED_BROWSER_ROUND_WITH_NETWORK_LIMITATIONS",
+    "report": "global-production-live/user-profile-2026-10-15/README.md",
+    "observations": "global-production-live/user-profile-2026-10-15/result.json",
+    "youtubeCoreUI": "pass",
+    "discordRealSlateCoreUI": "pass",
+    "providerBinding": "manually selected and confirmed by user; actual translated output observed",
+    "serviceWorkerNetworkAttribution": "unavailable; no zero-commercial-request claim",
+    "previousH01H02": "not retested or closed",
+    "completeAcceptance": false,
+    "upstreamMetadataAdvanced": false
+  },
+  "globalProductionAdditionalFollowup": {
+    "date": "2026-10-15",
+    "environment": "global-production",
+    "sourceHead": "e1d90dc928ca5fbbbba112e480131e1c909c93ce",
+    "report": "global-production-followup/2026-10-15-extra-sites/README.md",
+    "observations": "global-production-followup/2026-10-15-extra-sites/result.json",
+    "status": "COMPLETED_WITH_FINDINGS_COVERAGE_GAPS_AND_MANUAL_CLEANUP_PENDING",
+    "provider": "Kimi-K3 selected by user; visible real results; backend request attribution unavailable",
+    "livePass": [
+      "P06 real Google AI Overview source-card unclamp and inner scroll",
+      "P07 Wikipedia same short-text high/low threshold"
+    ],
+    "realAccountControlledFixturePass": [
+      "P05 text/search/textarea translation and dictionary, six cases",
+      "P12 title switch on/off",
+      "glossary add and A-to-B edit"
+    ],
+    "partial": [
+      "P08 real Kaggle paragraph translation and restore passed, no formula nodes observed"
+    ],
+    "userReportedOnly": [
+      "custom action editor checklist",
+      "Translation Hub one-model/two-model text comparison"
+    ],
+    "findings": [
+      "F01 custom A/B absent from ordinary-body and input selection toolbar after manual setup confirmation; execution unverified",
+      "F02 old glossary B remains after reported entry deletion and normal reload/retranslation; cause unconfirmed"
+    ],
+    "excludedByUser": ["H01", "H02", "Reddit live", "Telegram live"],
+    "notCovered": [
+      "P02 live final prompt clipping/flattening",
+      "complete P05 sensitive-value read/payload and custom-action matrix",
+      "P08 live formula preservation",
+      "full G5 commercial-network attribution"
+    ],
+    "cleanup": "Own five test tabs closed, own localhost server stopped. Extension temporary library/actions/settings left unchanged and not confirmed restored because internal URL access is prohibited; user concerned about manual errors.",
+    "artifactRecheck": "global-production-followup/2026-10-15-extra-sites/artifact-recheck.json",
+    "completeAcceptance": false,
+    "upstreamMetadataAdvanced": false,
+    "postWholeLibraryRemovalRetest": "not run; removal unconfirmed"
+  },
+  "customActionsLayoutFollowup": {
+    "status": "USER_CONFIRMED_ACTUAL_LAYOUT_PASS; ACTION_RUNTIME_PENDING",
+    "report": "custom-actions-layout-fix/README.md",
+    "observations": "custom-actions-layout-fix/result.json",
+    "sourceHead": "e1d90dc928ca5fbbbba112e480131e1c909c93ce",
+    "workingTreeDirty": true,
+    "productionSourceChanges": ["src/fork/ui/options/custom-actions-theme.css"],
+    "mainTestsPassed": 4996,
+    "forkTestsPassed": 897,
+    "fullTypeCheck": "8 existing unmodified script diagnostics; scoped new-file check passed",
+    "isolatedBrowserLayout": "PASS; user separately confirmed actual extension settings layout restored",
+    "artifactTreeSha256": "6fb916949bfa25b7cc379096acb36cfd227d455e2d0cd5184b7699ab86eeb6fd",
+    "loadedDownloadDirectoryUpdated": true,
+    "oldPackageBackedUp": true,
+    "completeAcceptance": false,
+    "upstreamMetadataAdvanced": false
+  },
+  "switchThemeFollowup": {
+    "status": "USER_CONFIRMED_ACTUAL_SWITCH_UI_PASS",
+    "report": "switch-theme-fix/README.md",
+    "observations": "switch-theme-fix/result.json",
+    "artifact": "switch-theme-fix/artifact.json",
+    "sourceHead": "e1d90dc928ca5fbbbba112e480131e1c909c93ce",
+    "workingTreeDirty": true,
+    "mainTestsPassed": 4996,
+    "mainExternalIntentionallySkipped": 4,
+    "forkTestsPassed": 897,
+    "actualExtensionVisualConfirmation": "USER_CONFIRMED: 已重载，开关显示正常",
+    "currentDownloadTreeSha256": "407fbe95a5c805ffaa72758ea904c6e489e74164d1f94fabc01fba2f7140fb3f",
+    "completeAcceptance": false,
+    "upstreamMetadataAdvanced": false
+  },
+  "selectionToolbarSettingsFollowup": {
+    "status": "USER_CONFIRMED_ACTUAL_SETTINGS_PAGE_PASS",
+    "report": "selection-toolbar-settings-fix/README.md",
+    "sourceHead": "e1d90dc928ca5fbbbba112e480131e1c909c93ce",
+    "workingTreeDirty": true,
+    "reproduction": "Real fork page render throws cloud-disabled error for saved noteSuggestion enabled true and false",
+    "minimalFix": "Redirect unadmitted cloud suggestion settings leaf to null; retain resolver and transport rejection",
+    "completeAcceptance": false,
+    "upstreamMetadataAdvanced": false,
+    "observations": "selection-toolbar-settings-fix/result.json",
+    "artifact": "selection-toolbar-settings-fix/artifact.json",
+    "mainTestsPassed": 4998,
+    "forkTestsPassed": 901,
+    "currentDownloadTreeSha256": "105f3874cdca052d34eb5eed1576a201112f36e7e772aaabb67999f20683b9ac",
+    "actualExtensionVisualConfirmation": "USER_CONFIRMED: 已重载，设置页恢复正常"
+  },
+  "mergeRegressionSweep": {
+    "date": "2026-10-15",
+    "sourceHead": "e1d90dc928ca5fbbbba112e480131e1c909c93ce",
+    "workingTreeDirty": true,
+    "report": "merge-regression-sweep/README.md",
+    "observations": "merge-regression-sweep/result.json",
+    "newConfirmedIssuesFixed": 6,
+    "routeDefinitions": 29,
+    "routeIntegrationPassed": 62,
+    "mainTestsPassed": 4998,
+    "mainExternalIntentionallySkipped": 4,
+    "forkTestsPassed": 969,
+    "fullTypeCheck": "8 existing script diagnostics; scoped current files pass",
+    "independentReview": "PASS, including composed-button selector and popup increment",
+    "isolatedComponentBrowser": "PASS; not actual settings entire-page acceptance",
+    "userReloadConfirmed": true,
+    "artifact": "merge-regression-sweep/artifact.json",
+    "currentDownloadTreeSha256": "98d6044a6791952fea27f8875d0efe17c051c47453b52cf6436a392dfa29cca8",
+    "remainingDifferences": ["fork toolbar MoreMenu/pin semantics", "Hub result TTS entry"],
+    "deferredByUser": ["H01", "H02", "Reddit", "Telegram"],
+    "completeAcceptance": false,
+    "upstreamMetadataAdvanced": false,
+    "status": "SCOPED_SWEEP_COMPLETE_WITH_REMAINING_ACCEPTANCE_GAPS",
+    "actualContentSmoke": "Microsoft and Kimi-K3 visible translation passed after user-confirmed reload; original provider choice restored",
+    "actualInternalSettingsAllPagesBrowserAcceptance": false
+  },
+  "costReductionPreservation": {
+    "date": "2026-10-15",
+    "report": "cost-reduction-preservation/README.md",
+    "observations": "cost-reduction-preservation/result.json",
+    "artifact": "cost-reduction-preservation/artifact.json",
+    "keyFilesByteIdentical": 9,
+    "compiledForkInjectionConfirmed": true,
+    "default16ItemsHttpCalls": 1,
+    "mt101BatchSizes": [100, 1],
+    "pageMaxInFlight": 4,
+    "effectiveTermsGroupsToHttpCalls": {
+      "1": 1,
+      "2": 2,
+      "16": 16
+    },
+    "emptyEffectiveTermsExtraCacheMiss": "fixed: 3RED/2PASS then5PASS, independent reverse proof",
+    "architectureReview": "PASS",
+    "codeReview": "PASS,44/44",
+    "mainTestsPassed": 4998,
+    "mainExternalIntentionallySkipped": 4,
+    "forkTestsPassed": 997,
+    "newRuntimeTests": 28,
+    "wholeTypeCheck": "8 existing script diagnostics",
+    "currentDownloadTreeSha256": "ea64d7beb343a260ac468f4c13ab2f6f8b08c8f697b3e30afd981ce4055a7e02",
+    "newBrowserRuntimeVerified": false,
+    "actualPaidUsageAndCostValidated": false,
+    "originalCostReleaseGatesCompleted": false,
+    "completeAcceptance": false,
+    "upstreamMetadataAdvanced": false
   }
 }

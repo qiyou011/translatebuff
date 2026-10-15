@@ -19,6 +19,7 @@ import { FeatureProviderSelectorList } from "@/fork/ui/options/feature-provider-
 import { resolveProviderRefForCapability } from "@/fork/upstream-services/provider-registry"
 import { configAtom, configFieldsAtomMap } from "@/utils/atoms/config"
 import { FEATURE_KEYS, FEATURE_PROVIDER_DEFS } from "@/utils/constants/feature-providers"
+import { getSelectionToolbarActions } from "@/utils/custom-actions"
 import { i18n } from "@/utils/i18n"
 import { getProviderLogo, getProviderName } from "@/utils/providers/provider-display"
 
@@ -46,7 +47,7 @@ function getSelectedProviderOptions(
     if (featureKey === "noteSuggestion") continue
     addProvider(featureKey, FEATURE_PROVIDER_DEFS[featureKey].getProviderId(config))
   }
-  for (const action of config.selectionToolbar.customActions) {
+  for (const action of getSelectionToolbarActions(config.selectionToolbar)) {
     if (action.enabled === false) {
       continue
     }

@@ -1,0 +1,169 @@
+{
+  "task": "DOM/CSS/theme contract source audit",
+  "head": "e1d90dc9",
+  "businessBase": "4be99b34",
+  "upstreamTarget": "55bcef1e",
+  "productionReadOnly": true,
+  "browserRunByThisAgent": false,
+  "buildOrTestsRun": false,
+  "excludedAlreadyFixed": [
+    "custom-actions deep selector row sizing",
+    "Switch accent-blue and Motion CSS variables",
+    "NoteSuggestion admission"
+  ],
+  "findings": [
+    {
+      "id": "THEME-01",
+      "priority": "P2",
+      "status": "source-confirmed; browser fixture pending",
+      "title": "浅色outline-accent文字沿用旧accent浅灰底板token",
+      "sources": [
+        "src/fork/ui/options/options-theme.css:31",
+        "src/components/ui/base-ui/button.tsx:27",
+        "src/entrypoints/options/pages/custom-actions/action-config-form/action-editor.tsx:331",
+        "src/entrypoints/options/pages/custom-actions/action-config-form/ai-config-helper-button.tsx:64"
+      ],
+      "effect": "text-accent #e6e6e9 on bg-background #ffffff; sRGB contrast1.246:1. Actual CustomizeButton changed outline(4be) to outline-accent(current).",
+      "fixture": "Real Button/Tooltip/Popover only, theme.css+options-theme.css, html options attribute, light white card; compare outline-accent and outline.",
+      "localFixBoundary": "Options-only action foreground adaptation; avoid changing global Button or every neutral accent background."
+    },
+    {
+      "id": "THEME-02",
+      "priority": "P2",
+      "status": "source-confirmed; browser fixture pending",
+      "title": "新增布局fallback文字使用旧warning背景色值",
+      "sources": [
+        "src/fork/ui/options/options-theme.css:48",
+        "src/fork/ui/options/options-theme.css:90",
+        "src/entrypoints/options/pages/custom-actions/action-config-form/layout-preview.tsx:247",
+        "src/assets/styles/theme.css:316"
+      ],
+      "effect": "New RenderNotices text-warning resolves #fde68a light/#713f12 dark, contrast1.245:1 on white/1.961:1 on #1c1c1f. Old tokens predate merge; new layout fallback consumer is the audited new mismatch.",
+      "fixture": "Static role=status p with text-xs text-warning and icon, light and dark normal options cards. No layout engine/data needed.",
+      "localFixBoundary": "Separate readable warning foreground from legacy background/tint semantics."
+    },
+    {
+      "id": "THEME-03",
+      "priority": "P2",
+      "status": "source-confirmed; browser fixture pending",
+      "title": "新增宽屏双栏布局编辑器被普通dialog640px上限压缩",
+      "sources": [
+        "src/fork/ui/dialog-theme.css:8",
+        "src/entrypoints/options/pages/custom-actions/action-config-form/layout-field.tsx:573",
+        "src/entrypoints/options/pages/custom-actions/action-config-form/layout-field.tsx:578",
+        "src/entrypoints/options/pages/custom-actions/action-config-form/layout-preview.tsx:295",
+        "src/entrypoints/options/pages/custom-actions/action-config-form/layout-preview.tsx:368",
+        "src/entrypoints/options/pages/custom-actions/action-config-form/layout-preview-frame.tsx:59"
+      ],
+      "effect": "Unlayered width/max-width640px override requested max-width1280px; lg two columns each288px after padding/border/gap, default preview500px plus padding. Frame overflow-auto means forced horizontal scrolling, not proven content loss. Theme top/max-height also override90vh.",
+      "fixture": "Real shared DialogContent, exact upstream wide classes and grid, harmless static editor left and overflow-auto fixed500px card right,1440x1000; compare ordinary confirmation dialog640.",
+      "localFixBoundary": "Explicit wide-editor instance marker with scoped width AND max-width exception; review its top/max-height. Keep ordinary dialog640."
+    }
+  ],
+  "pendingRisks": [
+    {
+      "id": "THEME-R1",
+      "priority": "待证风险",
+      "title": "新增size=xs预览分段按钮被132x40普通文本按钮规范放大",
+      "sources": [
+        "src/fork/ui/options/options-theme.css:354",
+        "src/entrypoints/options/pages/custom-actions/action-config-form/layout-preview.tsx:110",
+        "src/entrypoints/options/pages/custom-actions/action-config-form/layout-preview.tsx:333",
+        "src/components/ui/base-ui/button.tsx:47"
+      ],
+      "confirmed": "Actual ButtonGroup two Button size=xs for320/500 and sun/moon; Replay xs also matched. icon-xs/icon-sm have size-6/7 exclusions and must not be lumped in.",
+      "pending": "flex-wrap preserves reachability; browser must decide clipping/height/usability severity.",
+      "fixture": "Real ButtonGroup/Button in288px and600px containers, real themes, inspect layout/computed widths."
+    }
+  ],
+  "compatibleChecks": [
+    "Six scoped themes have no additional stale checked data-state selectors; real Base UI presence data-checked contract is matched.",
+    "38 custom property references: app-owned names all have producers; --anchor-width/--available-width are Base UI Positioner runtime vars inherited by Popup.",
+    "Current ConfigItem root selector still matches control child despite label wrapper; no failure asserted merely from deep DOM text changes.",
+    "Current SheetContent data-side/start/end attributes match rules. Mobile Sidebar overrides data-slot=sidebar and data-mobile=true, excluding normal sheet sizing.",
+    "Popup and Hub load shared theme.css but do not mount options AppShell attribute. Options-only findings must not be claimed as popup/Hub regression."
+  ],
+  "graph": {
+    "freshAtInspection": true,
+    "indexedCommit": "e1d90dc",
+    "contextSymbols": [
+      "SheetContent",
+      "ConfigItem",
+      "CustomizeButton",
+      "LayoutPreview"
+    ],
+    "maxDepth": 1,
+    "walk": "bounded",
+    "limitations": "No partial/truncated fields reported for these bounded results. Not a full transitive walk. CSS selectors/portal inheritance not represented.",
+    "impacts": [
+      {
+        "symbol": "DialogContent",
+        "risk": "MEDIUM",
+        "direct": 8,
+        "processes": 2,
+        "modules": 2,
+        "raw": "/tmp/translatebuff-theme-dialog-impact.json"
+      },
+      {
+        "symbol": "Button",
+        "risk": "CRITICAL",
+        "direct": 129,
+        "processes": 30,
+        "modules": 16,
+        "raw": "/tmp/translatebuff-theme-button-impact.json",
+        "warnedParent": true
+      },
+      {
+        "symbol": "LayoutPreview",
+        "risk": "LOW",
+        "direct": 2,
+        "processes": 2,
+        "modules": 1,
+        "raw": "/tmp/translatebuff-theme-layout-impact.json"
+      },
+      {
+        "symbol": "EditableLayoutField",
+        "risk": "LOW",
+        "direct": 1,
+        "processes": 0,
+        "modules": 1,
+        "raw": "/tmp/translatebuff-theme-editable-layout-impact.json",
+        "note": "zero process does not mean unused"
+      }
+    ]
+  },
+  "checkboxFollowup": {
+    "classification": "historical source limitation; not a new merge regression",
+    "evidence": "4be and55b Checkbox root both use disabled:opacity-50 and group-has-disabled/field:opacity-50. Current Base UI CheckboxRoot.js:242 defaults span with data-disabled; hidden input gets native disabled. Standalone root :disabled does not match. Old dependency^1.7.0 vs current^1.9.0 runtime not compared.",
+    "browser": "Parent reported enabled and disabled root opacity1; this agent did not operate browser."
+  },
+  "scope": [
+    {
+      "path": "src/fork/ui/options/options-theme.css",
+      "sha256": "eeff67c23cd1e536393378a022343c93508d87b15dc78b745e79c11eb11acfce"
+    },
+    {
+      "path": "src/fork/ui/options/custom-actions-theme.css",
+      "sha256": "526fd6745ca184ef8ebf18f2f07a42e4e1fa27c69b89f024bcece423b093882f"
+    },
+    {
+      "path": "src/fork/ui/options/detail-pages-theme.css",
+      "sha256": "8de2965529aea8fd8a5ce8f48895d29cea22ea5a35e03d7aa972b670424eb0c0"
+    },
+    {
+      "path": "src/fork/ui/options/translation-page-theme.css",
+      "sha256": "d5eb0df11f9cd62c815c6aa69999736b9c5a1d70b10aa9eb5e37fb25c28c7e70"
+    },
+    {
+      "path": "src/fork/ui/dialog-theme.css",
+      "sha256": "9c1ed9901908a85e7e4b051cb8586e4e77d5a3368cbac3265797236d7042438f"
+    },
+    {
+      "path": "src/fork/ui/sheet-theme.css",
+      "sha256": "15072edcf2c7209ae98e587e5a67f8c0fa720254783a5c27435df32a8e42ba14"
+    }
+  ],
+  "boundary": "No P1 established. Source/cascade/color math is not real browser acceptance. Only approved theme-audit.md/json and parent-requested /tmp impact raw written.",
+  "generatedAt": "2026-10-15T11:30:51.281006+00:00",
+  "fullHead": "e1d90dc928ca5fbbbba112e480131e1c909c93ce"
+}

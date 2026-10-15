@@ -1,0 +1,48 @@
+{
+  "processes": [],
+  "process_symbols": [],
+  "definitions": [
+    {
+      "id": "Function:src/utils/host/translate/core/translation-request.ts:finishDeepLXHtmlAttributeProbe",
+      "name": "finishDeepLXHtmlAttributeProbe",
+      "filePath": "src/utils/host/translate/core/translation-request.ts",
+      "startLine": 82,
+      "endLine": 90
+    },
+    {
+      "id": "Function:src/utils/host/translate/core/translation-request.ts:acquireDeepLXHtmlAttributeProbe",
+      "name": "acquireDeepLXHtmlAttributeProbe",
+      "filePath": "src/utils/host/translate/core/translation-request.ts",
+      "startLine": 92,
+      "endLine": 115,
+      "module": "Cluster_3392"
+    },
+    {
+      "id": "Function:src/utils/host/translate/core/translation-request.ts:translateRequest",
+      "name": "translateRequest",
+      "filePath": "src/utils/host/translate/core/translation-request.ts",
+      "startLine": 180,
+      "endLine": 225,
+      "module": "Cluster_3392"
+    },
+    {
+      "id": "File:openspec/changes/archive/2026-09-18-v1-4-1-upstream-translation-improvements/evidence/impact/242.json",
+      "name": "242.json",
+      "filePath": "openspec/changes/archive/2026-09-18-v1-4-1-upstream-translation-improvements/evidence/impact/242.json"
+    },
+    {
+      "id": "File:openspec/changes/archive/2026-09-18-v1-4-1-upstream-translation-improvements/evidence/impact/244.json",
+      "name": "244.json",
+      "filePath": "openspec/changes/archive/2026-09-18-v1-4-1-upstream-translation-improvements/evidence/impact/244.json"
+    }
+  ],
+  "timing": {
+    "vector": 8.5,
+    "bm25": 45.8,
+    "merge": 0,
+    "symbol_lookup": 20.7,
+    "ranking": 0,
+    "formatting": 0,
+    "wall": 66.7
+  }
+}

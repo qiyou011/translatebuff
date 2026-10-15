@@ -1,0 +1,73 @@
+{
+  "date": "2026-10-15",
+  "environment": "global-production",
+  "sourceHead": "e1d90dc928ca5fbbbba112e480131e1c909c93ce",
+  "status": "CONTINUING_REMAINING_TESTS_AFTER_THREE_UI_FIXES_CONFIRMED",
+  "extensionReloadReportedByUser": true,
+  "configurationRestoreState": {
+    "temporaryGlossary": "USER_CONFIRMED_ABSENT_AFTER_REINSTALL",
+    "customActions": "USER_CONFIRMED_LAYOUT_RESTORED; A/B persistence/runtime still unconfirmed"
+  },
+  "excludedByUser": [
+    "H01",
+    "H02",
+    "Reddit",
+    "Telegram"
+  ],
+  "cases": [
+    {
+      "id": "own-model-after-reinstall",
+      "status": "VISIBLE_REAL_RESULT_OBSERVED",
+      "provider": "Kimi-K3 (8.00x)",
+      "selected": "bank",
+      "scope": "synthetic ordinary text field",
+      "backendRequestAttribution": "not observed"
+    },
+    {
+      "id": "youtube-preconditions-after-ad-and-reload",
+      "status": "BLOCKED_EXTENSION_SUBTITLE_CONTROL_NOT_PRESENT",
+      "nativeCaptionMenu": "English (auto-generated) available",
+      "subtitleButtonCount": 0,
+      "videoPaused": true,
+      "comment": "Extension subtitle control initially appeared during ad but absent after content transition and one ordinary reload; current setting state unknown. Not diagnosed as a product defect."
+    },
+    {
+      "id": "kaggle-formula-target-followup",
+      "status": "NOT_COVERED_CURRENT_TARGET_LACKS_REQUIRED_DOM",
+      "navigation": "Existing 5-day guide -> visible Kaggle Learn navigation -> visible Model Evaluation guide link",
+      "url": "https://www.kaggle.com/learn-guide/model-evaluation",
+      "guideNodes": 0,
+      "formulaNodesInGuide": 0,
+      "comment": "Does not satisfy P08 .learnGuide plus real formula precondition; no translation request sent for this candidate."
+    },
+    {
+      "id": "custom-actions-editor-user-screenshot",
+      "status": "LAYOUT_REGRESSION_CONFIRMED_SOURCE_FIX_PREPARED",
+      "sourceFixReport": "../../custom-actions-layout-fix/README.md",
+      "actualExtensionPage": "awaiting reload and user visual confirmation"
+    }
+  ],
+  "limitations": [
+    "No extension internal pages, storage, RPC or service-worker access; browser URL policy remains in force.",
+    "Uninstall/reinstall can reset configuration/data/cache; cannot treat reset as proof a previous stateful bug was fixed."
+  ],
+  "ownedResources": {
+    "inputTab": "HANDOFF_FOR_RELOADED_EXTENSION_RETEST",
+    "youtubeTab": "HANDOFF_FOR_REMAINING_SUBTITLE_UI_CASES",
+    "kaggleTab": "CLOSED",
+    "layoutFixtureTab": "CLOSED",
+    "httpServer": "127.0.0.1:18765 active for unfinished regression; owned exec session 63131"
+  },
+  "userLayoutVisualConfirmation": "布局已恢复正常",
+  "switchThemeFix": {
+    "report": "../../switch-theme-fix/README.md",
+    "actualExtensionUi": "USER_CONFIRMED_VISUAL_PASS: 已重载，开关显示正常",
+    "downloadPackageTreeSha256": "407fbe95a5c805ffaa72758ea904c6e489e74164d1f94fabc01fba2f7140fb3f"
+  },
+  "selectionToolbarSettingsError": {
+    "userScreenshot": "Application ErrorBoundary with UPSTREAM_CLOUD_DISABLED on /selection-toolbar",
+    "fixReport": "../../selection-toolbar-settings-fix/README.md",
+    "actualExtensionUi": "USER_CONFIRMED_VISUAL_PASS: 已重载，设置页恢复正常",
+    "downloadPackageTreeSha256": "105f3874cdca052d34eb5eed1576a201112f36e7e772aaabb67999f20683b9ac"
+  }
+}

@@ -1,0 +1,112 @@
+{
+  "wide": {
+    "container": {
+      "bottom": 902,
+      "height": 780,
+      "left": 24,
+      "right": 968,
+      "top": 122,
+      "width": 944,
+      "x": 24,
+      "y": 122
+    },
+    "direction": "row",
+    "editor": {
+      "bottom": 902,
+      "height": 780,
+      "left": 256,
+      "right": 968,
+      "top": 122,
+      "width": 712,
+      "x": 256,
+      "y": 122
+    },
+    "gap": "24px",
+    "list": {
+      "bottom": 902,
+      "height": 780,
+      "left": 24,
+      "right": 232,
+      "top": 122,
+      "width": 208,
+      "x": 24,
+      "y": 122
+    },
+    "name": {
+      "bottom": 196,
+      "height": 40,
+      "left": 256,
+      "right": 944,
+      "top": 156,
+      "width": 688,
+      "x": 256,
+      "y": 156
+    },
+    "row": {
+      "bottom": 902,
+      "height": 780,
+      "left": 24,
+      "right": 968,
+      "top": 122,
+      "width": 944,
+      "x": 24,
+      "y": 122
+    }
+  },
+  "narrowContainer": {
+    "container": {
+      "bottom": 950,
+      "height": 828,
+      "left": 24,
+      "right": 644,
+      "top": 122,
+      "width": 620,
+      "x": 24,
+      "y": 122
+    },
+    "contentClientWidth": 620,
+    "contentScrollWidth": 620,
+    "direction": "column",
+    "editor": {
+      "bottom": 950,
+      "height": 780,
+      "left": 24,
+      "right": 644,
+      "top": 170,
+      "width": 620,
+      "x": 24,
+      "y": 170
+    },
+    "list": {
+      "bottom": 146,
+      "height": 24,
+      "left": 24,
+      "right": 644,
+      "top": 122,
+      "width": 620,
+      "x": 24,
+      "y": 122
+    },
+    "name": {
+      "bottom": 244,
+      "height": 40,
+      "left": 24,
+      "right": 644,
+      "top": 204,
+      "width": 620,
+      "x": 24,
+      "y": 204
+    },
+    "row": {
+      "bottom": 950,
+      "height": 828,
+      "left": 24,
+      "right": 644,
+      "top": 122,
+      "width": 620,
+      "x": 24,
+      "y": 122
+    }
+  },
+  "scope": "isolated real layout primitives + built CSS; not user extension internal page"
+}

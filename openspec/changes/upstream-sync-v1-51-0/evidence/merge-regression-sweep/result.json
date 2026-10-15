@@ -1,0 +1,140 @@
+{
+  "status": "SCOPED_SWEEP_COMPLETE_WITH_REMAINING_ACCEPTANCE_GAPS",
+  "date": "2026-10-15",
+  "repository": "/Users/yisen/.codex/worktrees/upstream-sync-v1-51-0/translatebuff",
+  "sourceHead": "e1d90dc928ca5fbbbba112e480131e1c909c93ce",
+  "workingTreeDirty": true,
+  "upstreamTarget": "55bcef1e684fb4e70f4dce3063e7bd3066f46891",
+  "acceptedUpstreamBaselineUnchanged": "1.46.6 / 02ad422c1e1260960e141e4012a20d93e85082aa",
+  "findingsFixed": [
+    {
+      "id": "S01",
+      "summary": "outline-accent real composed button contrast",
+      "evidence": ["ui-composed-buttons-after.json", "review.md"]
+    },
+    {
+      "id": "S02",
+      "summary": "warning foreground contrast",
+      "evidence": ["theme-red.log", "theme-green.log"]
+    },
+    {
+      "id": "S03",
+      "summary": "wide layout editor constrained to 640px",
+      "evidence": ["ui-theme-before.json", "ui-theme-after.json", "routes-smoke/coverage.json"]
+    },
+    {
+      "id": "S04",
+      "summary": "xs segmented controls enlarged by theme",
+      "evidence": ["ui-theme-before.json", "ui-theme-after.json"]
+    },
+    {
+      "id": "S05/W01",
+      "summary": "nested result shadow selection treated as page selection",
+      "evidence": ["wiring-shadow-red.log", "wiring-shadow-green.log", "review.md"]
+    },
+    {
+      "id": "S06/W04",
+      "summary": "dictionary-only provider missing from actual popup summary",
+      "evidence": ["popup-summary-red-dom.json", "popup-summary-green-dom.json", "review.md"]
+    }
+  ],
+  "routeIntegration": {
+    "routes": 29,
+    "defaultAndLegacyConfigCases": 58,
+    "additionalRealCombinationCases": 4,
+    "passed": 62,
+    "skipped": 0,
+    "level": "actual fork App jsdom integration, not real settings browser full acceptance"
+  },
+  "isolatedComponentBrowser": {
+    "status": "PASS",
+    "browser": "User-selected Google Chrome profile juntao/yijuntao101",
+    "themes": ["light", "dark"],
+    "viewportWidths": [620, 1100, 1710],
+    "includes": [
+      "actual Tooltip/Popover composed buttons",
+      "Switch/Checkbox/Radio states",
+      "disabled controls",
+      "focus-visible/invalid input",
+      "Select choose and disabled option",
+      "Tabs",
+      "Dialog/Popover open and close",
+      "wide and regular Dialog",
+      "EntityEditorLayout responsive geometry"
+    ],
+    "limits": [
+      "HTTP independent components only, not internal settings app",
+      "500px preview retains intentional horizontal scroll in narrow two-column layout",
+      "no private storage/SW/internal URL access"
+    ]
+  },
+  "actualContentBrowser": {
+    "userReloadConfirmed": true,
+    "canary": "We rested on the bank near marker TBCTX_TEXT_19.",
+    "modelsWithVisibleResult": ["Microsoft Translator", "Kimi-K3 (8.00x)"],
+    "originalProviderRestored": "Microsoft Translator",
+    "overlayClosed": true,
+    "sensitiveFieldActionsRun": false,
+    "requestNetworkAttribution": false,
+    "runtimeBundleHashIndependentProof": false,
+    "screenshot": "live-kimi-result.png"
+  },
+  "engineering": {
+    "mainFilesPassed": 478,
+    "mainTestsPassed": 4998,
+    "mainExternalTestsIntentionallySkipped": 4,
+    "forkFilesPassed": 116,
+    "forkTestsPassed": 969,
+    "scopedTypeAwareLint": "PASS",
+    "scopedFormat": "PASS",
+    "wholeRepositoryTypeCheck": "FAIL: 8 pre-existing script diagnostics, no new current-file diagnostics",
+    "fixedShaBoundary": "PASS, HEAD-only guard plus dirty/untracked supplement",
+    "brand": "PASS",
+    "openSpecStrict": "PASS",
+    "graphDetect": {
+      "trackedFiles": 13,
+      "symbols": 18,
+      "processes": 2,
+      "risk": "MEDIUM",
+      "partialOrTruncatedReported": false,
+      "limitations": [
+        "CSS and untracked files",
+        "build-time redirects",
+        "existing shared Button CRITICAL direct impact is not replaced by this summary"
+      ]
+    }
+  },
+  "independentReview": "PASS including reverse tests and popup increment",
+  "artifact": {
+    "files": 208,
+    "treeSha256": "98d6044a6791952fea27f8875d0efe17c051c47453b52cf6436a392dfa29cca8",
+    "report": "artifact.json",
+    "manifestAnd14EmbeddedConfigurationHashesUnchanged": true,
+    "previousFourArtifactsUnchanged": true
+  },
+  "remainingDifferences": [
+    "W02 upstream MoreMenu/pin semantics absent from retained fork branded pills",
+    "W03 new Hub result TTS entry absent; feature difference recorded"
+  ],
+  "remainingAcceptance": [
+    "Actual internal settings full visuals and per-control operation",
+    "Custom action actual live editing and execution after reinstall",
+    "Glossary deletion/cache live followup after reinstall",
+    "Live P02 exact final request clipping/flattening",
+    "Live Kaggle formula",
+    "YouTube two-menu/SRT narrow evidence",
+    "Discord same-request late completion correlation",
+    "Full G5 SW/extension/content network attribution"
+  ],
+  "deferredByUser": ["H01", "H02", "Reddit", "Telegram"],
+  "completeAcceptance": false,
+  "upstreamMetadataAdvanced": false,
+  "publishedOrCommitted": false,
+  "cleanup": {
+    "isolatedUiTabClosed": true,
+    "isolatedUiServer18767Stopped": true,
+    "viewportOverrideReset": true,
+    "testInputAndYouTubeHandoffRetained": true,
+    "testServer18765RetainedForUnfinishedWorkflow": true
+  }
+}

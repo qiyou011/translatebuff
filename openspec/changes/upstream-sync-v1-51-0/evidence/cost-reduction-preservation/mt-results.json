@@ -1,0 +1,249 @@
+{
+  "status": "PASS",
+  "checkedAt": "2026-10-15T12:11:56.855949+00:00",
+  "head": "e1d90dc928ca5fbbbba112e480131e1c909c93ce",
+  "upstreamTarget": "55bcef1e684fb4e70f4dce3063e7bd3066f46891",
+  "baseline": "4be99b341a7c940a48794232f066db43339cc2d2",
+  "runtime": {
+    "node": "v22.15.0",
+    "pnpm": "12.10.1"
+  },
+  "sourceBoundaries": {
+    "productionEdited": false,
+    "oldTestsEdited": false,
+    "newTest": "src/fork/page-translation/__tests__/cost-preservation-mt.forktest.ts",
+    "newTestSha256": "b6ad64f4c143df3a2d68c4611f2aa61f27517ec21b0f6b0ca540da7b9b40c847",
+    "unrelatedDirtyPreserved": true,
+    "browserOrRealFreeProviderServiceRun": false
+  },
+  "graph": {
+    "status": "up-to-date",
+    "indexedCommit": "e1d90dc",
+    "indexedAt": "2026-10-15T17:56:24+08:00",
+    "queries": [
+      "mt-graph-query.json",
+      "mt-graph-query-precise.json",
+      "mt-graph-query-deeplx.json"
+    ],
+    "context": [
+      "mt-graph-context-mt.json",
+      "mt-graph-context-queues.json",
+      "mt-graph-context-request.json",
+      "mt-graph-context-deeplx.json"
+    ],
+    "preEditImpact": [
+      {
+        "file": "mt-impact-queues.json",
+        "risk": "LOW"
+      },
+      {
+        "file": "mt-impact-mt.json",
+        "risk": "LOW"
+      },
+      {
+        "file": "mt-impact-handlers.json",
+        "risk": "LOW"
+      }
+    ],
+    "injectionSourceSupplement": [
+      "src/entrypoints/background/index.ts:5",
+      "src/entrypoints/background/index.ts:139",
+      "src/entrypoints/background/page-translation.ts:64",
+      "src/fork/page-translation/queues.ts:56"
+    ],
+    "note": "Generic concept query was polluted by indexed built evidence and returned no flows. Precise contexts identify MT invocation/transports; injected factory callers were supplemented from current source rather than treating empty graph incoming calls as unused."
+  },
+  "runs": [
+    {
+      "id": "mt-existing-fork",
+      "command": [
+        "pnpm",
+        "run",
+        "test",
+        "--config",
+        "vitest.fork.config.ts",
+        "src/fork/page-translation/__tests__/mt.test.ts",
+        "src/fork/page-translation/__tests__/request-concurrency.test.ts",
+        "src/fork/page-translation/__tests__/migration.test.ts",
+        "src/fork/page-translation/__tests__/config-init.test.ts",
+        "--reporter=default",
+        "--reporter=json",
+        "--outputFile=/Users/yisen/.codex/worktrees/upstream-sync-v1-51-0/translatebuff/openspec/changes/upstream-sync-v1-51-0/evidence/cost-reduction-preservation/mt-existing-fork.json"
+      ],
+      "env": {
+        "SKIP_FREE_API": "true"
+      },
+      "exitCode": 0,
+      "elapsedSeconds": 1.505,
+      "numTotalTestSuites": 6,
+      "numPassedTestSuites": 6,
+      "numTotalTests": 18,
+      "numPassedTests": 18,
+      "numPendingTests": 0,
+      "numFailedTests": 0,
+      "success": true,
+      "testFiles": 4,
+      "report": "mt-existing-fork.json",
+      "log": "mt-existing-fork.log"
+    },
+    {
+      "id": "mt-existing-api-request",
+      "command": [
+        "pnpm",
+        "run",
+        "test",
+        "src/utils/request/__tests__/request-queue.test.ts",
+        "src/utils/request/__tests__/batch-queue.test.ts",
+        "src/utils/host/translate/api/__tests__/google.test.ts",
+        "src/utils/host/translate/api/__tests__/microsoft.test.ts",
+        "src/utils/host/translate/__tests__/google-roundtrip.test.ts",
+        "src/utils/host/translate/api/__tests__/deeplx-url-builder.test.ts",
+        "--reporter=default",
+        "--reporter=json",
+        "--outputFile=/Users/yisen/.codex/worktrees/upstream-sync-v1-51-0/translatebuff/openspec/changes/upstream-sync-v1-51-0/evidence/cost-reduction-preservation/mt-existing-api-request.json"
+      ],
+      "env": {
+        "SKIP_FREE_API": "true"
+      },
+      "exitCode": 0,
+      "elapsedSeconds": 2.213,
+      "numTotalTestSuites": 34,
+      "numPassedTestSuites": 34,
+      "numTotalTests": 117,
+      "numPassedTests": 117,
+      "numPendingTests": 0,
+      "numFailedTests": 0,
+      "success": true,
+      "testFiles": 6,
+      "report": "mt-existing-api-request.json",
+      "log": "mt-existing-api-request.log"
+    },
+    {
+      "id": "mt-existing-mt-queue",
+      "command": [
+        "pnpm",
+        "run",
+        "test",
+        "--config",
+        "vitest.fork.config.ts",
+        "src/fork/page-translation/__tests__/queues.test.ts",
+        "-t",
+        "MT",
+        "--reporter=default",
+        "--reporter=json",
+        "--outputFile=/Users/yisen/.codex/worktrees/upstream-sync-v1-51-0/translatebuff/openspec/changes/upstream-sync-v1-51-0/evidence/cost-reduction-preservation/mt-existing-mt-queue.json"
+      ],
+      "env": {
+        "SKIP_FREE_API": "true"
+      },
+      "exitCode": 0,
+      "elapsedSeconds": 1.771,
+      "numTotalTestSuites": 2,
+      "numPassedTestSuites": 2,
+      "numTotalTests": 7,
+      "numPassedTests": 2,
+      "numPendingTests": 5,
+      "numFailedTests": 0,
+      "success": true,
+      "testFiles": 1,
+      "report": "mt-existing-mt-queue.json",
+      "log": "mt-existing-mt-queue.log"
+    },
+    {
+      "id": "mt-existing-deeplx-probe",
+      "command": [
+        "pnpm",
+        "run",
+        "test",
+        "src/utils/host/__tests__/translate.integration.test.tsx",
+        "-t",
+        "DeepLX",
+        "--reporter=default",
+        "--reporter=json",
+        "--outputFile=/Users/yisen/.codex/worktrees/upstream-sync-v1-51-0/translatebuff/openspec/changes/upstream-sync-v1-51-0/evidence/cost-reduction-preservation/mt-existing-deeplx-probe.json"
+      ],
+      "env": {
+        "SKIP_FREE_API": "true"
+      },
+      "exitCode": 0,
+      "elapsedSeconds": 2.733,
+      "numTotalTestSuites": 59,
+      "numPassedTestSuites": 59,
+      "numTotalTests": 171,
+      "numPassedTests": 3,
+      "numPendingTests": 168,
+      "numFailedTests": 0,
+      "success": true,
+      "testFiles": 1,
+      "report": "mt-existing-deeplx-probe.json",
+      "log": "mt-existing-deeplx-probe.log"
+    },
+    {
+      "id": "mt-new-final",
+      "command": [
+        "pnpm",
+        "run",
+        "test",
+        "--config",
+        "vitest.fork.config.ts",
+        "src/fork/page-translation/__tests__/cost-preservation-mt.forktest.ts",
+        "--reporter=default",
+        "--reporter=json",
+        "--outputFile=/Users/yisen/.codex/worktrees/upstream-sync-v1-51-0/translatebuff/openspec/changes/upstream-sync-v1-51-0/evidence/cost-reduction-preservation/mt-new-final.json"
+      ],
+      "env": {
+        "SKIP_FREE_API": "true"
+      },
+      "exitCode": 0,
+      "elapsedSeconds": 2.021,
+      "numTotalTests": 14,
+      "numPassedTests": 14,
+      "numPendingTests": 0,
+      "numFailedTests": 0,
+      "success": true,
+      "testFiles": 1,
+      "report": "mt-new-final.json",
+      "log": "mt-new-final.log"
+    }
+  ],
+  "checks": [
+    {
+      "name": "type-aware-and-type-check",
+      "command": [
+        "pnpm",
+        "run",
+        "type-check",
+        "src/fork/page-translation/__tests__/cost-preservation-mt.forktest.ts"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": "$ oxlint --type-aware --type-check src/fork/page-translation/__tests__/cost-preservation-mt.forktest.ts\n"
+    },
+    {
+      "name": "format",
+      "command": [
+        "node",
+        "node_modules/oxfmt/bin/oxfmt",
+        "--check",
+        "src/fork/page-translation/__tests__/cost-preservation-mt.forktest.ts"
+      ],
+      "exitCode": 0,
+      "stdout": "Checking formatting...\n\nAll matched files use the correct format.\nFinished in 1ms on 1 files using 15 threads.\n",
+      "stderr": ""
+    }
+  ],
+  "distinctPassedTests": 154,
+  "intentionallyDeselectedByNameFilter": 173,
+  "measurements": "mt-measurements.json",
+  "baselineComparison": "mt-baseline-comparison.json",
+  "limitations": [
+    "Controlled fetch and fake time prove scheduling/protocol, not real-provider acceptance, latency or monetary savings.",
+    "5ms is the injected transport duration, not shipped pacing; the concurrency scenario uses rate100000/capacity100 to isolate PAGE_MAX_CONCURRENT4.",
+    "Input transport is an executeTranslate mock; real background routing and the separate interaction RequestQueue execute, but actual input-provider network latency is unmeasured.",
+    "Cache scenarios execute the actual background/queue cache read/write contract with a Map replacing Dexie. No real IndexedDB, restart persistence, or browser content painting is claimed.",
+    "Cancellation coverage proves queued/in-flight late success/malformed result/network failure are rejected and not retried or cached; an already-present cache hit racing cancellation is not tested.",
+    "Payload cases prove two individually fitting escaped items split before combined32KiB; a single item exceeding32KiB is not tested.",
+    "No LLM/glossary test suite, mixed LLM+MT saturation, real paid/free endpoint, authenticated membership, browser performance or full suite was run.",
+    "DeepLX tests cover first failure learning, concurrent single probe and empty-result handoff; successful-support memoization and transient-error handoff are source-reviewed but not independently executed in this run."
+  ]
+}

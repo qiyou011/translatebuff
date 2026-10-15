@@ -1,0 +1,19 @@
+{
+  "target": {
+    "id": "Const:wxt.config.ts:FORK_UI_REDIRECTS",
+    "name": "FORK_UI_REDIRECTS",
+    "type": "",
+    "filePath": "wxt.config.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 0,
+  "risk": "LOW",
+  "summary": {
+    "direct": 0,
+    "processes_affected": 0,
+    "modules_affected": 0
+  },
+  "affected_processes": [],
+  "affected_modules": [],
+  "byDepth": {}
+}

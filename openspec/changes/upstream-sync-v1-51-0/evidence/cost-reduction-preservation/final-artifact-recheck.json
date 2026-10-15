@@ -1,0 +1,10 @@
+{
+  "status": "PASS",
+  "files": 208,
+  "treeSha256": "ea64d7beb343a260ac468f4c13ab2f6f8b08c8f697b3e30afd981ce4055a7e02",
+  "sourceHashesMatch": true,
+  "previousFiveArtifactsRetained": true,
+  "embeddedConfigCount": 14,
+  "existingTypeErrors": 8,
+  "actualNewBrowserRuntimeVerified": false
+}

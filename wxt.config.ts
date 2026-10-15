@@ -374,6 +374,14 @@ export const FORK_UI_REDIRECTS = [
     to: path.resolve(__dirname, "src/fork/ui/options/notebase-connection-field.tsx"),
   },
   {
+    // 笔记建议未准入；在渲染期调用禁用 resolver 前关闭此设置叶子，保留本地工具栏设置。
+    from: path.resolve(
+      __dirname,
+      "src/entrypoints/options/pages/selection-toolbar/actions/note-suggestion-items.tsx",
+    ),
+    to: path.resolve(__dirname, "src/fork/ui/options/note-suggestion-items.tsx"),
+  },
+  {
     // 选项页「通用」页功能提供商宿主：未登录/无 key 时对任译喵门禁（隐藏 + 登录引导），换皮到 fork 版。
     from: path.resolve(
       __dirname,

@@ -1,0 +1,40 @@
+{
+  "status": "found",
+  "symbol": {
+    "uid": "Function:src/fork/page-translation/mt.ts:requestPageMt",
+    "name": "requestPageMt",
+    "kind": "Function",
+    "filePath": "src/fork/page-translation/mt.ts",
+    "startLine": 28,
+    "endLine": 53
+  },
+  "incoming": {
+    "calls": [
+      {
+        "uid": "Function:src/fork/page-translation/queues.ts:invoke",
+        "name": "invoke",
+        "filePath": "src/fork/page-translation/queues.ts"
+      }
+    ]
+  },
+  "outgoing": {
+    "calls": [
+      {
+        "uid": "Function:src/utils/host/translate/api/google.ts:prepareGoogleTranslation",
+        "name": "prepareGoogleTranslation",
+        "filePath": "src/utils/host/translate/api/google.ts"
+      },
+      {
+        "uid": "Function:src/utils/host/translate/api/google.ts:requestGoogleTranslationBatch",
+        "name": "requestGoogleTranslationBatch",
+        "filePath": "src/utils/host/translate/api/google.ts"
+      },
+      {
+        "uid": "Function:src/utils/host/translate/api/microsoft.ts:requestMicrosoftTranslationBatch",
+        "name": "requestMicrosoftTranslationBatch",
+        "filePath": "src/utils/host/translate/api/microsoft.ts"
+      }
+    ]
+  },
+  "processes": []
+}

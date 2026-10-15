@@ -1,0 +1,21 @@
+{
+  "status": "PASS",
+  "kind": "Compiled AST static wiring, not live service-worker execution",
+  "bundle": ".output/merge-regression-fix/chrome-mv3-global/background.js",
+  "sha256": "0ea1e86b3258d2bf10f7459bde506b4b0b50d2114522d26b46fb741581c57d6e",
+  "compiledNames": {
+    "setup": "nC",
+    "loader": "QS",
+    "factory": "Ci"
+  },
+  "mainPassesForkFactory": true,
+  "setupForwardsFactoryToLoader": true,
+  "loaderUsesFactoryInForkBranch": true,
+  "pageAndInteractionQueuesSeparate": true,
+  "pageMaxConcurrent": 4,
+  "interactionUsesPageConcurrencyLimit": false,
+  "defaultLlmBatchPair": [
+    16,
+    4000
+  ]
+}

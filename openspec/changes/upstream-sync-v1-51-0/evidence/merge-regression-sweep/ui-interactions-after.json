@@ -1,0 +1,66 @@
+{
+  "disabledModelEnabled": false,
+  "regularDialog": {
+    "result": {
+      "type": "object",
+      "value": {
+        "height": 292,
+        "wideMarker": false,
+        "width": 640
+      }
+    }
+  },
+  "light": {
+    "result": {
+      "type": "object",
+      "value": {
+        "checkboxChecked": "true",
+        "disabledCheckbox": false,
+        "disabledSwitch": false,
+        "focusedLabel": "Invalid input",
+        "focusedShadow": "rgba(231, 0, 11, 0.2) 0px 0px 0px 3px",
+        "focusedVisible": true,
+        "invalidInputShadow": "rgba(231, 0, 11, 0.2) 0px 0px 0px 3px",
+        "model": "Beta model▼",
+        "ordinaryButton": {
+          "height": 40,
+          "width": 132
+        },
+        "popoverClosed": false,
+        "radioBetaChecked": "true",
+        "switchChecked": "true",
+        "tabSecondSelected": "true"
+      }
+    }
+  },
+  "dark": {
+    "result": {
+      "type": "object",
+      "value": {
+        "checkboxChecked": "true",
+        "disabledCheckbox": false,
+        "disabledSwitch": false,
+        "focusedLabel": "Invalid input",
+        "focusedShadow": "rgba(255, 100, 103, 0.2) 0px 0px 0px 3px",
+        "focusedVisible": true,
+        "invalidInputShadow": "rgba(255, 100, 103, 0.2) 0px 0px 0px 3px",
+        "model": "Beta model▼",
+        "ordinaryButton": {
+          "height": 40,
+          "width": 132
+        },
+        "popoverClosed": true,
+        "radioBetaChecked": "true",
+        "switchChecked": "true",
+        "tabSecondSelected": "true"
+      }
+    }
+  },
+  "disabledEnabledChecks": {
+    "switch": false,
+    "checkbox": false,
+    "button": false,
+    "input": false
+  },
+  "lightPopoverDismissAfterSettled": "false"
+}

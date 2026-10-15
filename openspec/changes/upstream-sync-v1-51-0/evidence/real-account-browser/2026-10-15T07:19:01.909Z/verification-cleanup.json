@@ -1,0 +1,25 @@
+{
+  "cn-production": {
+    "files": 207,
+    "treeSha256": "2440c52300adfeed0fa087659a2a3dedbda2c614d0c2b7ba12f17654c1253906",
+    "unchanged": true
+  },
+  "global-production": {
+    "files": 207,
+    "treeSha256": "ea567267f98550bfee72788d6e1e9e2e13e612ee2db28f5e4adc0d07f54f48d6",
+    "unchanged": true
+  },
+  "cn-test": {
+    "files": 207,
+    "treeSha256": "841c7a8c620366d2724b2e290096f69cbae4fa0d6722e48c41af5c977d563e57",
+    "unchanged": true
+  },
+  "cleanup": {
+    "ownBrowserRunning": false,
+    "ownProfileRemoved": true,
+    "closedForGatewayQueueTermination": true
+  },
+  "sourceHead": "e1d90dc928ca5fbbbba112e480131e1c909c93ce",
+  "productionSourceDiff": [],
+  "recordedAt": "2026-10-15T07:35:53.667254+00:00"
+}

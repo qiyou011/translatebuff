@@ -1,0 +1,23 @@
+{
+  "status": "PASS",
+  "scope": "Hash comparison of all WXT string-literal environment values present in JavaScript; values are not logged",
+  "keyCount": 14,
+  "keys": [
+    "WXT_API_URL",
+    "WXT_AUTH_COOKIE_DOMAINS",
+    "WXT_FORK_CHANNEL",
+    "WXT_FORK_EDITION",
+    "WXT_GOOGLE_CLIENT_ID",
+    "WXT_OFFICIAL_SITE_ORIGINS",
+    "WXT_POSTHOG_API_KEY",
+    "WXT_POSTHOG_HOST",
+    "WXT_RENYIMIAO_API_URL",
+    "WXT_RENYIMIAO_AUTH_BFF_URL",
+    "WXT_RENYIMIAO_CLAW_API_URL",
+    "WXT_RENYIMIAO_GATEWAY_URL",
+    "WXT_REPORT_API_URL",
+    "WXT_WEBSITE_URL"
+  ],
+  "digestsIdentical": true,
+  "javaScriptEquivalenceClaim": false
+}

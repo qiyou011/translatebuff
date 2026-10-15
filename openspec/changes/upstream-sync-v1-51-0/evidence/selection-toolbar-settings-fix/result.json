@@ -1,0 +1,52 @@
+{
+  "status": "SOURCE_FIXED_INTEGRATION_PASS_USER_CONFIRMED_ACTUAL_SETTINGS_PAGE",
+  "sourceHead": "e1d90dc928ca5fbbbba112e480131e1c909c93ce",
+  "workingTreeDirty": true,
+  "rootCause": "Unadmitted NoteSuggestionItems mounts and synchronously calls disabled resolver during selection toolbar settings render",
+  "productionChanges": [
+    "wxt.config.ts",
+    "src/fork/identity/redirect-baseline.json",
+    "src/fork/ui/options/note-suggestion-items.tsx"
+  ],
+  "redirects": {
+    "previous": 58,
+    "current": 59,
+    "newReviewedSourceFingerprint": "8d2e9b2e21b01185",
+    "oldFingerprintsChanged": false
+  },
+  "red": {
+    "cases": 2,
+    "savedNoteSuggestionEnabled": [false, true],
+    "error": "UpstreamCloudDisabledError"
+  },
+  "green": {
+    "targeted": 10,
+    "mainPassed": 4998,
+    "mainExternalIntentionallySkipped": 4,
+    "forkPassed": 901,
+    "independentSmallSuite": 12,
+    "independentMutationCheck": "Both original leaf cases RED; current page and resolver checks 4 PASS"
+  },
+  "checks": {
+    "scopedTypeLint": "PASS",
+    "fullTypeLint": "FAIL_8_EXISTING_SCRIPT_DIAGNOSTICS",
+    "boundary": "PASS",
+    "brand": "PASS",
+    "openspecStrict": "PASS",
+    "format": "PASS",
+    "review": "PASS"
+  },
+  "actualExtensionPage": "USER_CONFIRMED_VISUAL_PASS: 已重载，设置页恢复正常",
+  "artifact": {
+    "treeSha256": "105f3874cdca052d34eb5eed1576a201112f36e7e772aaabb67999f20683b9ac",
+    "files": 208,
+    "directory": "/Users/yisen/Downloads/TranslateBuff-Global-1.5.0-rf1.51.0-20261015",
+    "backup": "/Users/yisen/Downloads/TranslateBuff-Global-1.5.0-rf1.51.0-20261015-switch-fix-407fbe95-4026516f",
+    "manifestUnchanged": true,
+    "environmentLiteralHashesUnchanged": 14,
+    "jsByteEquivalence": false
+  },
+  "configurationOrProfileModified": false,
+  "completeAcceptance": false,
+  "upstreamMetadataAdvanced": false
+}

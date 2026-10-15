@@ -46,6 +46,7 @@ html[data-translatebuff-options-theme] {
   --rf-sidebar-border: #dadadd;
   --rf-sidebar-ring: #9f9fa9;
   --rf-warning: #fde68a;
+  --rf-warning-text: #854d0e;
   --rf-toast-success: #16a34a;
   --rf-link: #155dfc;
   --rf-accent-blue: #2b2b2e;
@@ -88,6 +89,7 @@ html.dark[data-translatebuff-options-theme] {
   --rf-sidebar-border: rgb(255 255 255 / 10%);
   --rf-sidebar-ring: #7a7a86;
   --rf-warning: #713f12;
+  --rf-warning-text: #fbbf24;
   --rf-toast-success: #4ade80;
   --rf-link: #51a2ff;
   --rf-accent-blue: #ebebeb;
@@ -373,6 +375,42 @@ html[data-translatebuff-options-theme]
   [class~="@container"]
   .flex.items-center.gap-2:has(> [data-slot="input"] + [data-slot="button"]) {
   width: 100%;
+}
+
+/* New upstream variants use accent/warning as text, while this theme also uses
+ * those tokens for subtle fills. Keep foreground contrast local to options. */
+html[data-translatebuff-options-theme]
+  :is(
+    [data-slot="button"],
+    [data-slot="tooltip-trigger"],
+    [data-slot="popover-trigger"]
+  )[class~="text-accent"] {
+  color: var(--rf-primary);
+}
+
+html[data-translatebuff-options-theme] .text-warning {
+  color: var(--rf-warning-text);
+}
+
+html[data-translatebuff-options-theme]
+  [data-slot="button-group"]
+  [data-slot="button"][class~="h-6"] {
+  min-width: 0;
+  height: 24px;
+  min-height: 24px;
+  padding-inline: 8px;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+/* The layout editor needs two desktop panes; ordinary dialogs retain 640px. */
+html[data-translatebuff-options-theme]
+  [data-slot="dialog-content"][data-custom-action-layout-editor] {
+  top: 5dvh;
+  width: min(1280px, calc(100vw - 32px));
+  max-width: min(1280px, calc(100vw - 32px));
+  height: 90dvh;
+  max-height: 90dvh;
 }
 
 html[data-translatebuff-options-theme]
@@ -851,7 +889,11 @@ html[data-translatebuff-options-theme]
   background-color: var(--rf-accent);
 }
 
-html.dark[data-translatebuff-options-theme]
+html[data-translatebuff-options-theme] [data-slot="switch"][data-checked] {
+  background-color: var(--rf-primary);
+}
+
+html[data-translatebuff-options-theme]
   [data-slot="switch"][data-checked]
   [data-slot="switch-thumb"] {
   background-color: var(--rf-primary-foreground);

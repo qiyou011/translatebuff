@@ -1,0 +1,56 @@
+{
+  "processes": [],
+  "process_symbols": [],
+  "definitions": [
+    {
+      "id": "Function:src/fork/page-translation/mt.ts:getMtItemBytes",
+      "name": "getMtItemBytes",
+      "filePath": "src/fork/page-translation/mt.ts",
+      "startLine": 20,
+      "endLine": 26
+    },
+    {
+      "id": "Function:src/fork/page-translation/mt.ts:requestPageMt",
+      "name": "requestPageMt",
+      "filePath": "src/fork/page-translation/mt.ts",
+      "startLine": 28,
+      "endLine": 53,
+      "module": "Api"
+    },
+    {
+      "id": "File:src/fork/page-translation/mt.ts",
+      "name": "mt.ts",
+      "filePath": "src/fork/page-translation/mt.ts"
+    },
+    {
+      "id": "Function:src/fork/page-translation/queues.ts:createPageTranslationQueues",
+      "name": "createPageTranslationQueues",
+      "filePath": "src/fork/page-translation/queues.ts",
+      "startLine": 55,
+      "endLine": 235,
+      "module": "Request"
+    },
+    {
+      "id": "Function:src/fork/page-translation/queues.ts:invoke",
+      "name": "invoke",
+      "filePath": "src/fork/page-translation/queues.ts",
+      "startLine": 78,
+      "endLine": 130,
+      "module": "Background"
+    },
+    {
+      "id": "File:src/fork/page-translation/queues.ts",
+      "name": "queues.ts",
+      "filePath": "src/fork/page-translation/queues.ts"
+    }
+  ],
+  "timing": {
+    "vector": 8.4,
+    "bm25": 40.7,
+    "merge": 0,
+    "symbol_lookup": 21.5,
+    "ranking": 0,
+    "formatting": 0,
+    "wall": 62.5
+  }
+}

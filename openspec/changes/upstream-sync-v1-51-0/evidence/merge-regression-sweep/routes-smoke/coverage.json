@@ -1,0 +1,646 @@
+{
+  "head": "e1d90dc928ca5fbbbba112e480131e1c909c93ce",
+  "kind": "actual-options-jsdom-route-integration-not-browser",
+  "totals": {
+    "numTotalTests": 62,
+    "numPassedTests": 62,
+    "numFailedTests": 0,
+    "numPendingTests": 0,
+    "success": true
+  },
+  "routeDefinitionCount": 29,
+  "routeConfigCases": [
+    {
+      "routeDefinition": "/",
+      "location": "/",
+      "profile": "untouched-default",
+      "heading": "options.apiProviders.title",
+      "pageOwnedSelector": "#provider-config",
+      "status": "passed",
+      "durationMs": 451.025666,
+      "failureMessages": []
+    },
+    {
+      "routeDefinition": "/",
+      "location": "/",
+      "profile": "legacy-cloud-enabled",
+      "heading": "options.apiProviders.title",
+      "pageOwnedSelector": "#provider-config",
+      "status": "passed",
+      "durationMs": 33.94049999999879,
+      "failureMessages": []
+    },
+    {
+      "routeDefinition": "/preference",
+      "location": "/preference",
+      "profile": "untouched-default",
+      "heading": "options.preference.title",
+      "pageOwnedSelector": "#translation-source-language",
+      "status": "passed",
+      "durationMs": 380.89195799999993,
+      "failureMessages": []
+    },
+    {
+      "routeDefinition": "/preference",
+      "location": "/preference",
+      "profile": "legacy-cloud-enabled",
+      "heading": "options.preference.title",
+      "pageOwnedSelector": "#translation-source-language",
+      "status": "passed",
+      "durationMs": 25.32983400000012,
+      "failureMessages": []
+    },
+    {
+      "routeDefinition": "/shortcuts",
+      "location": "/shortcuts",
+      "profile": "untouched-default",
+      "heading": "options.shortcuts.title",
+      "pageOwnedSelector": "#page-translation-shortcut",
+      "status": "passed",
+      "durationMs": 318.0595840000001,
+      "failureMessages": []
+    },
+    {
+      "routeDefinition": "/shortcuts",
+      "location": "/shortcuts",
+      "profile": "legacy-cloud-enabled",
+      "heading": "options.shortcuts.title",
+      "pageOwnedSelector": "#page-translation-shortcut",
+      "status": "passed",
+      "durationMs": 16.40191700000105,
+      "failureMessages": []
+    },
+    {
+      "routeDefinition": "/api-providers",
+      "location": "/api-providers",
+      "profile": "untouched-default",
+      "heading": "options.apiProviders.title",
+      "pageOwnedSelector": "#provider-config",
+      "status": "passed",
+      "durationMs": 37.4878749999998,
+      "failureMessages": []
+    },
+    {
+      "routeDefinition": "/api-providers",
+      "location": "/api-providers",
+      "profile": "legacy-cloud-enabled",
+      "heading": "options.apiProviders.title",
+      "pageOwnedSelector": "#provider-config",
+      "status": "passed",
+      "durationMs": 25.41020800000115,
+      "failureMessages": []
+    },
+    {
+      "routeDefinition": "/custom-actions",
+      "location": "/custom-actions",
+      "profile": "untouched-default",
+      "heading": "options.selectionToolbar.customActions.title",
+      "pageOwnedSelector": "input",
+      "status": "passed",
+      "durationMs": 368.638375,
+      "failureMessages": []
+    },
+    {
+      "routeDefinition": "/custom-actions",
+      "location": "/custom-actions",
+      "profile": "legacy-cloud-enabled",
+      "heading": "options.selectionToolbar.customActions.title",
+      "pageOwnedSelector": "input",
+      "status": "passed",
+      "durationMs": 33.58308299999953,
+      "failureMessages": []
+    },
+    {
+      "routeDefinition": "/page-translation",
+      "location": "/page-translation",
+      "profile": "untouched-default",
+      "heading": "options.translation.title",
+      "pageOwnedSelector": "#hover-translation",
+      "status": "passed",
+      "durationMs": 336.6751250000002,
+      "failureMessages": []
+    },
+    {
+      "routeDefinition": "/page-translation",
+      "location": "/page-translation",
+      "profile": "legacy-cloud-enabled",
+      "heading": "options.translation.title",
+      "pageOwnedSelector": "#hover-translation",
+      "status": "passed",
+      "durationMs": 24.217208000000028,
+      "failureMessages": []
+    },
+    {
+      "routeDefinition": "/video-subtitles",
+      "location": "/video-subtitles",
+      "profile": "untouched-default",
+      "heading": "options.videoSubtitles.title",
+      "pageOwnedSelector": "[role=switch]",
+      "status": "passed",
+      "durationMs": 327.6688329999997,
+      "failureMessages": []
+    },
+    {
+      "routeDefinition": "/video-subtitles",
+      "location": "/video-subtitles",
+      "profile": "legacy-cloud-enabled",
+      "heading": "options.videoSubtitles.title",
+      "pageOwnedSelector": "[role=switch]",
+      "status": "passed",
+      "durationMs": 16.571750000000975,
+      "failureMessages": []
+    },
+    {
+      "routeDefinition": "/floating-button",
+      "location": "/floating-button",
+      "profile": "untouched-default",
+      "heading": "options.floatingButton.title",
+      "pageOwnedSelector": "#floating-button-display",
+      "status": "passed",
+      "durationMs": 321.32116700000006,
+      "failureMessages": []
+    },
+    {
+      "routeDefinition": "/floating-button",
+      "location": "/floating-button",
+      "profile": "legacy-cloud-enabled",
+      "heading": "options.floatingButton.title",
+      "pageOwnedSelector": "#floating-button-display",
+      "status": "passed",
+      "durationMs": 16.75579099999959,
+      "failureMessages": []
+    },
+    {
+      "routeDefinition": "/selection-toolbar",
+      "location": "/selection-toolbar",
+      "profile": "untouched-default",
+      "heading": "options.selectionToolbar.title",
+      "pageOwnedSelector": "#selection-toolbar-translate",
+      "status": "passed",
+      "durationMs": 318.6675419999997,
+      "failureMessages": []
+    },
+    {
+      "routeDefinition": "/selection-toolbar",
+      "location": "/selection-toolbar",
+      "profile": "legacy-cloud-enabled",
+      "heading": "options.selectionToolbar.title",
+      "pageOwnedSelector": "#selection-toolbar-translate",
+      "status": "passed",
+      "durationMs": 19.775792000000365,
+      "failureMessages": []
+    },
+    {
+      "routeDefinition": "/context-menu",
+      "location": "/context-menu",
+      "profile": "untouched-default",
+      "heading": "options.contextMenu.title",
+      "pageOwnedSelector": "[role=switch]",
+      "status": "passed",
+      "durationMs": 318.8697919999995,
+      "failureMessages": []
+    },
+    {
+      "routeDefinition": "/context-menu",
+      "location": "/context-menu",
+      "profile": "legacy-cloud-enabled",
+      "heading": "options.contextMenu.title",
+      "pageOwnedSelector": "[role=switch]",
+      "status": "passed",
+      "durationMs": 13.033374999999069,
+      "failureMessages": []
+    },
+    {
+      "routeDefinition": "/input-translation",
+      "location": "/input-translation",
+      "profile": "untouched-default",
+      "heading": "options.inputTranslation.title",
+      "pageOwnedSelector": "#input-translation-languages",
+      "status": "passed",
+      "durationMs": 321.9672499999997,
+      "failureMessages": []
+    },
+    {
+      "routeDefinition": "/input-translation",
+      "location": "/input-translation",
+      "profile": "legacy-cloud-enabled",
+      "heading": "options.inputTranslation.title",
+      "pageOwnedSelector": "#input-translation-languages",
+      "status": "passed",
+      "durationMs": 13.725749999999607,
+      "failureMessages": []
+    },
+    {
+      "routeDefinition": "/tts",
+      "location": "/tts",
+      "profile": "untouched-default",
+      "heading": "options.tts.title",
+      "pageOwnedSelector": "#tts-voice",
+      "status": "passed",
+      "durationMs": 324.5872079999999,
+      "failureMessages": []
+    },
+    {
+      "routeDefinition": "/tts",
+      "location": "/tts",
+      "profile": "legacy-cloud-enabled",
+      "heading": "options.tts.title",
+      "pageOwnedSelector": "#tts-voice",
+      "status": "passed",
+      "durationMs": 14.739874999999302,
+      "failureMessages": []
+    },
+    {
+      "routeDefinition": "/advanced",
+      "location": "/advanced",
+      "profile": "untouched-default",
+      "heading": "options.advanced.glossary.title",
+      "pageOwnedSelector": "#glossary-library",
+      "status": "passed",
+      "durationMs": 57.5835419999994,
+      "failureMessages": []
+    },
+    {
+      "routeDefinition": "/advanced",
+      "location": "/advanced",
+      "profile": "legacy-cloud-enabled",
+      "heading": "options.advanced.glossary.title",
+      "pageOwnedSelector": "#glossary-library",
+      "status": "passed",
+      "durationMs": 18.748583999999028,
+      "failureMessages": []
+    },
+    {
+      "routeDefinition": "/help-and-community",
+      "location": "/help-and-community",
+      "profile": "untouched-default",
+      "heading": "options.helpAndCommunity.title",
+      "pageOwnedSelector": "a[href]",
+      "status": "passed",
+      "durationMs": 320.5869589999993,
+      "failureMessages": []
+    },
+    {
+      "routeDefinition": "/help-and-community",
+      "location": "/help-and-community",
+      "profile": "legacy-cloud-enabled",
+      "heading": "options.helpAndCommunity.title",
+      "pageOwnedSelector": "a[href]",
+      "status": "passed",
+      "durationMs": 10.780249999999796,
+      "failureMessages": []
+    },
+    {
+      "routeDefinition": "/advanced/glossary",
+      "location": "/advanced/glossary",
+      "profile": "untouched-default",
+      "heading": "options.advanced.glossary.title",
+      "pageOwnedSelector": "#glossary-library",
+      "status": "passed",
+      "durationMs": 31.3189169999996,
+      "failureMessages": []
+    },
+    {
+      "routeDefinition": "/advanced/glossary",
+      "location": "/advanced/glossary",
+      "profile": "legacy-cloud-enabled",
+      "heading": "options.advanced.glossary.title",
+      "pageOwnedSelector": "#glossary-library",
+      "status": "passed",
+      "durationMs": 18.303416000000652,
+      "failureMessages": []
+    },
+    {
+      "routeDefinition": "/advanced/glossary/:glossaryId",
+      "location": "/advanced/glossary/route-smoke-glossary",
+      "profile": "untouched-default",
+      "heading": "options.advanced.glossary.title",
+      "pageOwnedSelector": "#glossary-terms",
+      "status": "passed",
+      "durationMs": 358.262291,
+      "failureMessages": []
+    },
+    {
+      "routeDefinition": "/advanced/glossary/:glossaryId",
+      "location": "/advanced/glossary/route-smoke-glossary",
+      "profile": "legacy-cloud-enabled",
+      "heading": "options.advanced.glossary.title",
+      "pageOwnedSelector": "#glossary-terms",
+      "status": "passed",
+      "durationMs": 30.682083000001512,
+      "failureMessages": []
+    },
+    {
+      "routeDefinition": "/preference/config-backup",
+      "location": "/preference/config-backup",
+      "profile": "untouched-default",
+      "heading": "options.preference.title",
+      "pageOwnedSelector": "#config-backup",
+      "status": "passed",
+      "durationMs": 339.23662500000046,
+      "failureMessages": []
+    },
+    {
+      "routeDefinition": "/preference/config-backup",
+      "location": "/preference/config-backup",
+      "profile": "legacy-cloud-enabled",
+      "heading": "options.preference.title",
+      "pageOwnedSelector": "#config-backup",
+      "status": "passed",
+      "durationMs": 15.431040999999823,
+      "failureMessages": []
+    },
+    {
+      "routeDefinition": "/preference/extension-activation",
+      "location": "/preference/extension-activation",
+      "profile": "untouched-default",
+      "heading": "options.preference.title",
+      "pageOwnedSelector": "#site-control-mode",
+      "status": "passed",
+      "durationMs": 325.0944580000005,
+      "failureMessages": []
+    },
+    {
+      "routeDefinition": "/preference/extension-activation",
+      "location": "/preference/extension-activation",
+      "profile": "legacy-cloud-enabled",
+      "heading": "options.preference.title",
+      "pageOwnedSelector": "#site-control-mode",
+      "status": "passed",
+      "durationMs": 12.058208000000377,
+      "failureMessages": []
+    },
+    {
+      "routeDefinition": "/page-translation/custom-css",
+      "location": "/page-translation/custom-css",
+      "profile": "untouched-default",
+      "heading": "options.translation.title",
+      "pageOwnedSelector": ".cm-editor .cm-content",
+      "status": "passed",
+      "durationMs": 367.7757499999998,
+      "failureMessages": []
+    },
+    {
+      "routeDefinition": "/page-translation/custom-css",
+      "location": "/page-translation/custom-css",
+      "profile": "legacy-cloud-enabled",
+      "heading": "options.translation.title",
+      "pageOwnedSelector": ".cm-editor .cm-content",
+      "status": "passed",
+      "durationMs": 19.649999999999636,
+      "failureMessages": []
+    },
+    {
+      "routeDefinition": "/page-translation/prompts",
+      "location": "/page-translation/prompts",
+      "profile": "untouched-default",
+      "heading": "options.translation.title",
+      "pageOwnedSelector": "#personalized-prompts",
+      "status": "passed",
+      "durationMs": 321.1096670000006,
+      "failureMessages": []
+    },
+    {
+      "routeDefinition": "/page-translation/prompts",
+      "location": "/page-translation/prompts",
+      "profile": "legacy-cloud-enabled",
+      "heading": "options.translation.title",
+      "pageOwnedSelector": "#personalized-prompts",
+      "status": "passed",
+      "durationMs": 13.490874999999505,
+      "failureMessages": []
+    },
+    {
+      "routeDefinition": "/page-translation/translation-control",
+      "location": "/page-translation/translation-control",
+      "profile": "untouched-default",
+      "heading": "options.translation.title",
+      "pageOwnedSelector": "#translation-control",
+      "status": "passed",
+      "durationMs": 327.95516599999974,
+      "failureMessages": []
+    },
+    {
+      "routeDefinition": "/page-translation/translation-control",
+      "location": "/page-translation/translation-control",
+      "profile": "legacy-cloud-enabled",
+      "heading": "options.translation.title",
+      "pageOwnedSelector": "#translation-control",
+      "status": "passed",
+      "durationMs": 15.01195799999914,
+      "failureMessages": []
+    },
+    {
+      "routeDefinition": "/page-translation/translation-control/auto-translate-websites",
+      "location": "/page-translation/translation-control/auto-translate-websites",
+      "profile": "untouched-default",
+      "heading": "options.translation.title",
+      "pageOwnedSelector": "#auto-translate-website",
+      "status": "passed",
+      "durationMs": 315.63395800000035,
+      "failureMessages": []
+    },
+    {
+      "routeDefinition": "/page-translation/translation-control/auto-translate-websites",
+      "location": "/page-translation/translation-control/auto-translate-websites",
+      "profile": "legacy-cloud-enabled",
+      "heading": "options.translation.title",
+      "pageOwnedSelector": "#auto-translate-website",
+      "status": "passed",
+      "durationMs": 12.244290999999066,
+      "failureMessages": []
+    },
+    {
+      "routeDefinition": "/page-translation/translation-control/never-auto-translate-websites",
+      "location": "/page-translation/translation-control/never-auto-translate-websites",
+      "profile": "untouched-default",
+      "heading": "options.translation.title",
+      "pageOwnedSelector": "#never-auto-translate-website",
+      "status": "passed",
+      "durationMs": 313.99225000000024,
+      "failureMessages": []
+    },
+    {
+      "routeDefinition": "/page-translation/translation-control/never-auto-translate-websites",
+      "location": "/page-translation/translation-control/never-auto-translate-websites",
+      "profile": "legacy-cloud-enabled",
+      "heading": "options.translation.title",
+      "pageOwnedSelector": "#never-auto-translate-website",
+      "status": "passed",
+      "durationMs": 10.285208000001148,
+      "failureMessages": []
+    },
+    {
+      "routeDefinition": "/page-translation/translation-control/site-rules",
+      "location": "/page-translation/translation-control/site-rules",
+      "profile": "untouched-default",
+      "heading": "options.translation.title",
+      "pageOwnedSelector": "#site-rules-user-rules",
+      "status": "passed",
+      "durationMs": 350.2681250000005,
+      "failureMessages": []
+    },
+    {
+      "routeDefinition": "/page-translation/translation-control/site-rules",
+      "location": "/page-translation/translation-control/site-rules",
+      "profile": "legacy-cloud-enabled",
+      "heading": "options.translation.title",
+      "pageOwnedSelector": "#site-rules-user-rules",
+      "status": "passed",
+      "durationMs": 51.04454200000146,
+      "failureMessages": []
+    },
+    {
+      "routeDefinition": "/page-translation/translation-queue",
+      "location": "/page-translation/translation-queue",
+      "profile": "untouched-default",
+      "heading": "options.translation.title",
+      "pageOwnedSelector": "#request-rate",
+      "status": "passed",
+      "durationMs": 315.8617090000007,
+      "failureMessages": []
+    },
+    {
+      "routeDefinition": "/page-translation/translation-queue",
+      "location": "/page-translation/translation-queue",
+      "profile": "legacy-cloud-enabled",
+      "heading": "options.translation.title",
+      "pageOwnedSelector": "#request-rate",
+      "status": "passed",
+      "durationMs": 62.72187500000109,
+      "failureMessages": []
+    },
+    {
+      "routeDefinition": "/video-subtitles/style",
+      "location": "/video-subtitles/style",
+      "profile": "untouched-default",
+      "heading": "options.videoSubtitles.title",
+      "pageOwnedSelector": "#subtitles-style",
+      "status": "passed",
+      "durationMs": 334.43987500000003,
+      "failureMessages": []
+    },
+    {
+      "routeDefinition": "/video-subtitles/style",
+      "location": "/video-subtitles/style",
+      "profile": "legacy-cloud-enabled",
+      "heading": "options.videoSubtitles.title",
+      "pageOwnedSelector": "#subtitles-style",
+      "status": "passed",
+      "durationMs": 26.175874999998996,
+      "failureMessages": []
+    },
+    {
+      "routeDefinition": "/video-subtitles/style/custom-css",
+      "location": "/video-subtitles/style/custom-css",
+      "profile": "untouched-default",
+      "heading": "options.videoSubtitles.title",
+      "pageOwnedSelector": ".cm-editor .cm-content",
+      "status": "passed",
+      "durationMs": 328.46000000000095,
+      "failureMessages": []
+    },
+    {
+      "routeDefinition": "/video-subtitles/style/custom-css",
+      "location": "/video-subtitles/style/custom-css",
+      "profile": "legacy-cloud-enabled",
+      "heading": "options.videoSubtitles.title",
+      "pageOwnedSelector": ".cm-editor .cm-content",
+      "status": "passed",
+      "durationMs": 20.044583000000785,
+      "failureMessages": []
+    },
+    {
+      "routeDefinition": "/video-subtitles/prompts",
+      "location": "/video-subtitles/prompts",
+      "profile": "untouched-default",
+      "heading": "options.videoSubtitles.title",
+      "pageOwnedSelector": "#subtitles-custom-prompts",
+      "status": "passed",
+      "durationMs": 324.5345839999991,
+      "failureMessages": []
+    },
+    {
+      "routeDefinition": "/video-subtitles/prompts",
+      "location": "/video-subtitles/prompts",
+      "profile": "legacy-cloud-enabled",
+      "heading": "options.videoSubtitles.title",
+      "pageOwnedSelector": "#subtitles-custom-prompts",
+      "status": "passed",
+      "durationMs": 12.817208000000392,
+      "failureMessages": []
+    },
+    {
+      "routeDefinition": "/video-subtitles/subtitles-queue",
+      "location": "/video-subtitles/subtitles-queue",
+      "profile": "untouched-default",
+      "heading": "options.videoSubtitles.title",
+      "pageOwnedSelector": "#subtitles-queue",
+      "status": "passed",
+      "durationMs": 326.5657919999994,
+      "failureMessages": []
+    },
+    {
+      "routeDefinition": "/video-subtitles/subtitles-queue",
+      "location": "/video-subtitles/subtitles-queue",
+      "profile": "legacy-cloud-enabled",
+      "heading": "options.videoSubtitles.title",
+      "pageOwnedSelector": "#subtitles-queue",
+      "status": "passed",
+      "durationMs": 61.93091699999968,
+      "failureMessages": []
+    }
+  ],
+  "additionalCases": [
+    {
+      "title": "keeps the smoke matrix in step with every production route definition",
+      "status": "passed",
+      "failureMessages": []
+    },
+    {
+      "title": "completes API providers with a synthetic own-provider session and a saved custom action",
+      "status": "passed",
+      "failureMessages": []
+    },
+    {
+      "title": "completes a saved custom action's forbidden notebase deep link with its real editable local config",
+      "status": "passed",
+      "failureMessages": []
+    },
+    {
+      "title": "opens and closes the real custom layout editor and preview without changing the saved action",
+      "status": "passed",
+      "failureMessages": []
+    }
+  ],
+  "sourceSha256": {
+    "src/fork/ui/options/__tests__/options-routes-smoke.forktest.tsx": "285dee22a9aeea91fc5e6234e5423cd7e4a3da3f4c414ddd1ec80d194a19935c",
+    "src/fork/ui/options/__tests__/options-routes-smoke.fixture.ts": "96cbef22582a2fd4967e32e278eca29385913142394065c6f528b576c8118f8c",
+    "src/entrypoints/options/app.tsx": "dc14583eb257fec9ec0fe55af4dcba4e6e4de6b96d6d0ba54e9d9a1ed57356fa",
+    "src/entrypoints/options/pages/custom-actions/action-config-form/layout-field.tsx": "d32d674aee8f1f0fbaa7d89955d68d89fcde5d30d257ab27b003cc8698f188b7",
+    "src/fork/ui/options/options-theme.css": "27bcef62a90f40f04fc320e4541f3b3f4b937037e07e6437ad3c634abe0f94c1",
+    "wxt.config.ts": "79c39ef33e144f93e6346a13750ca659992b902519b25e3b94ee66f49394f3ef"
+  },
+  "quality": {
+    "oxlintTypeAwareTypeCheckExitCode": 0,
+    "oxfmtCheckExitCode": 0
+  },
+  "limitations": [
+    "jsdom has no real layout or browser extension execution",
+    "global i18n/Iconify/LocaleBoundary mocks remain from existing setup",
+    "no user account, live backend, generation or cloud operation was exercised",
+    "synthetic legacy cloud enabled values use the current schema; migration was not exercised"
+  ],
+  "runStartedAtUnixMs": 1792064109356,
+  "layoutEditorMarker": {
+    "attribute": "data-custom-action-layout-editor",
+    "expectedValue": "",
+    "actualDialogMountTestTitle": "opens and closes the real custom layout editor and preview without changing the saved action",
+    "status": "passed",
+    "assertionScope": "actual DialogContent DOM marker only; not real browser width"
+  },
+  "artifactSha256": {
+    "complete-run.log": "969a884edab12c0e2751e218d2423315475ef60b87cb0c578b262e06c05df560",
+    "complete-run.json": "7913fc54ed1b0ed8dbf788462e7c750e8feeca95a5530748c72ad2d026b0b8ea"
+  }
+}

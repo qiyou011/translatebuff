@@ -1,0 +1,1146 @@
+{
+  "summary": {
+    "changed_count": 185,
+    "affected_count": 2,
+    "changed_files": 212,
+    "risk_level": "medium"
+  },
+  "changed_symbols": [
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/adaptation.md:L1:B：fork适配与贡献对账",
+      "name": "B：fork适配与贡献对账",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/adaptation.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/adaptation.md:L22:对账结果和独立复审",
+      "name": "对账结果和独立复审",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/adaptation.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/design.md:L13:Decisions",
+      "name": "Decisions",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/design.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/design.md:L41:D6：15项重点逐条绑定真实路径",
+      "name": "D6：15项重点逐条绑定真实路径",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/design.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/evidence/global-production-followup/2026-10-15-extra-sites/README.md:L1:海外正式环境追加浏览器回归",
+      "name": "海外正式环境追加浏览器回归",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/global-production-followup/2026-10-15-extra-sites/README.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/evidence/global-production-followup/2026-10-15-extra-sites/README.md:L10:实际观察",
+      "name": "实际观察",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/global-production-followup/2026-10-15-extra-sites/README.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/evidence/global-production-followup/2026-10-15-extra-sites/README.md:L22:未解决现象",
+      "name": "未解决现象",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/global-production-followup/2026-10-15-extra-sites/README.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/evidence/global-production-followup/2026-10-15-extra-sites/README.md:L27:证据边界",
+      "name": "证据边界",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/global-production-followup/2026-10-15-extra-sites/README.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/evidence/global-production-followup/2026-10-15-extra-sites/README.md:L37:截图",
+      "name": "截图",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/global-production-followup/2026-10-15-extra-sites/README.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/evidence/global-production-followup/2026-10-15-extra-sites/README.md:L45:收尾",
+      "name": "收尾",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/global-production-followup/2026-10-15-extra-sites/README.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/evidence/global-production-followup/2026-10-15-extra-sites/manual-ui-checks.md:L1:扩展内部页面：本轮手工配合清单",
+      "name": "扩展内部页面：本轮手工配合清单",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/global-production-followup/2026-10-15-extra-sites/manual-ui-checks.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/evidence/global-production-followup/2026-10-15-extra-sites/manual-ui-checks.md:L5:自定义动作：只新增两份临时数据",
+      "name": "自定义动作：只新增两份临时数据",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/global-production-followup/2026-10-15-extra-sites/manual-ui-checks.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/evidence/global-production-followup/2026-10-15-extra-sites/manual-ui-checks.md:L50:翻译中心：小文本、多模型对照",
+      "name": "翻译中心：小文本、多模型对照",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/global-production-followup/2026-10-15-extra-sites/manual-ui-checks.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Class:openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-client-01a13d86.py:UnixConnection",
+      "name": "UnixConnection",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-client-01a13d86.py",
+      "change_type": "touched"
+    },
+    {
+      "id": "Method:openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-client-01a13d86.py:UnixConnection.connect#0",
+      "name": "connect",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-client-01a13d86.py",
+      "change_type": "touched"
+    },
+    {
+      "id": "Variable:openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-client-01a13d86.py:connection",
+      "name": "connection",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-client-01a13d86.py",
+      "change_type": "touched"
+    },
+    {
+      "id": "Variable:openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-client-01a13d86.py:code",
+      "name": "code",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-client-01a13d86.py",
+      "change_type": "touched"
+    },
+    {
+      "id": "Variable:openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-client-01a13d86.py:payload",
+      "name": "payload",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-client-01a13d86.py",
+      "change_type": "touched"
+    },
+    {
+      "id": "Variable:openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-client-01a13d86.py:response",
+      "name": "response",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-client-01a13d86.py",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs:scan",
+      "name": "scan",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs:status",
+      "name": "status",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs:server",
+      "name": "server",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs:path",
+      "name": "path",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs:os",
+      "name": "os",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs:http",
+      "name": "http",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs:crypto",
+      "name": "crypto",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs:root",
+      "name": "root",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs:artifact",
+      "name": "artifact",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs:stamp",
+      "name": "stamp",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs:out",
+      "name": "out",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs:controlDir",
+      "name": "controlDir",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs:profile",
+      "name": "profile",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs:socket",
+      "name": "socket",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs:files",
+      "name": "files",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs:p",
+      "name": "p",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs:b",
+      "name": "b",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs:tree",
+      "name": "tree",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs:S",
+      "name": "S",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs:u",
+      "name": "u",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs:origin",
+      "name": "origin",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs:key",
+      "name": "key",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs:c",
+      "name": "c",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs:marker",
+      "name": "marker",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs:n",
+      "name": "n",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs:response",
+      "name": "response",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs:context",
+      "name": "context",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs:w",
+      "name": "w",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs:worker",
+      "name": "worker",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs:server",
+      "name": "server",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs:body",
+      "name": "body",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs:input",
+      "name": "input",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs:fn",
+      "name": "fn",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs:result",
+      "name": "result",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/user-profile-2026-10-15/README.md:L1:海外正式环境：YouTube / Discord 真实浏览器复测",
+      "name": "海外正式环境：YouTube / Discord 真实浏览器复测",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/user-profile-2026-10-15/README.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/user-profile-2026-10-15/README.md:L9:YouTube",
+      "name": "YouTube",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/user-profile-2026-10-15/README.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/user-profile-2026-10-15/README.md:L28:Discord",
+      "name": "Discord",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/user-profile-2026-10-15/README.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/user-profile-2026-10-15/README.md:L44:收尾和证据边界",
+      "name": "收尾和证据边界",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/user-profile-2026-10-15/README.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/README.md:L1:国内测试环境：真实账号与实站复测",
+      "name": "国内测试环境：真实账号与实站复测",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/README.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/README.md:L5:环境与身份",
+      "name": "环境与身份",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/README.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/README.md:L16:实际结果",
+      "name": "实际结果",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/README.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/README.md:L34:H01：切换模式后第一次悬浮按键不触发",
+      "name": "H01：切换模式后第一次悬浮按键不触发",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/README.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/README.md:L44:H02：GitHub 场景非预期大范围翻译与 429",
+      "name": "H02：GitHub 场景非预期大范围翻译与 429",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/README.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/README.md:L52:仍未覆盖的实站边界",
+      "name": "仍未覆盖的实站边界",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/README.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/README.md:L61:证据限制与清理",
+      "name": "证据限制与清理",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/README.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs:sha",
+      "name": "sha",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs:git",
+      "name": "git",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs:digestTree",
+      "name": "digestTree",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs:walk",
+      "name": "walk",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs:values",
+      "name": "values",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs:save",
+      "name": "save",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs:secretValues",
+      "name": "secretValues",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs:scrub",
+      "name": "scrub",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs:source",
+      "name": "source",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs:evidence",
+      "name": "evidence",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs:run",
+      "name": "run",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs:temporary",
+      "name": "temporary",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs:temporarySource",
+      "name": "temporarySource",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs:sha",
+      "name": "sha",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs:git",
+      "name": "git",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs:result",
+      "name": "result",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs:files",
+      "name": "files",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs:walk",
+      "name": "walk",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs:path",
+      "name": "path",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs:relative",
+      "name": "relative",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs:productionRoots",
+      "name": "productionRoots",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs:productionBefore",
+      "name": "productionBefore",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs:envFiles",
+      "name": "envFiles",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs:envBefore",
+      "name": "envBefore",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs:envText",
+      "name": "envText",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs:parsedEnv",
+      "name": "parsedEnv",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs:publicKeys",
+      "name": "publicKeys",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs:publicUrls",
+      "name": "publicUrls",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs:values",
+      "name": "values",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs:url",
+      "name": "url",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs:productionEnvText",
+      "name": "productionEnvText",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs:productionApiUrl",
+      "name": "productionApiUrl",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs:effectiveApiUrl",
+      "name": "effectiveApiUrl",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs:candidateSha",
+      "name": "candidateSha",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs:record",
+      "name": "record",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs:save",
+      "name": "save",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs:archive",
+      "name": "archive",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs:buildEnv",
+      "name": "buildEnv",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs:secretValues",
+      "name": "secretValues",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs:scrub",
+      "name": "scrub",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs:guard",
+      "name": "guard",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs:unpacked",
+      "name": "unpacked",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs:artifact",
+      "name": "artifact",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs:manifest",
+      "name": "manifest",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs:cnProductionManifest",
+      "name": "cnProductionManifest",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs:bundleText",
+      "name": "bundleText",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs:requiredHosts",
+      "name": "requiredHosts",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs:presentHosts",
+      "name": "presentHosts",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs:localeText",
+      "name": "localeText",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs:editionCheck",
+      "name": "editionCheck",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs:brand",
+      "name": "brand",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs:sha",
+      "name": "sha",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs:git",
+      "name": "git",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs:digestTree",
+      "name": "digestTree",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs:walk",
+      "name": "walk",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs:values",
+      "name": "values",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs:save",
+      "name": "save",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs:secretValues",
+      "name": "secretValues",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs:scrub",
+      "name": "scrub",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs:source",
+      "name": "source",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs:evidence",
+      "name": "evidence",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs:run",
+      "name": "run",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs:temporary",
+      "name": "temporary",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs:temporarySource",
+      "name": "temporarySource",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs:sha",
+      "name": "sha",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs:git",
+      "name": "git",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs:result",
+      "name": "result",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs:files",
+      "name": "files",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs:walk",
+      "name": "walk",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs:path",
+      "name": "path",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs:relative",
+      "name": "relative",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs:productionRoots",
+      "name": "productionRoots",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs:productionBefore",
+      "name": "productionBefore",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs:envFiles",
+      "name": "envFiles",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs:envBefore",
+      "name": "envBefore",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs:envText",
+      "name": "envText",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs:parsedEnv",
+      "name": "parsedEnv",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs:publicKeys",
+      "name": "publicKeys",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs:publicUrls",
+      "name": "publicUrls",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs:values",
+      "name": "values",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs:url",
+      "name": "url",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs:candidateSha",
+      "name": "candidateSha",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs:record",
+      "name": "record",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs:save",
+      "name": "save",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs:archive",
+      "name": "archive",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs:buildEnv",
+      "name": "buildEnv",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs:secretValues",
+      "name": "secretValues",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs:scrub",
+      "name": "scrub",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs:guard",
+      "name": "guard",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs:unpacked",
+      "name": "unpacked",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs:artifact",
+      "name": "artifact",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs:manifest",
+      "name": "manifest",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs:bundleText",
+      "name": "bundleText",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs:requiredHosts",
+      "name": "requiredHosts",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs:presentHosts",
+      "name": "presentHosts",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs:localeText",
+      "name": "localeText",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs:editionCheck",
+      "name": "editionCheck",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs:brand",
+      "name": "brand",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/build.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/specs/fork-upstream-v151-admission/spec.md:L1:ADDED Requirements",
+      "name": "ADDED Requirements",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/specs/fork-upstream-v151-admission/spec.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/specs/fork-upstream-v151-admission/spec.md:L201:Requirement: 术语注入贯通自有 LLM 合批与缓存",
+      "name": "Requirement: 术语注入贯通自有 LLM 合批与缓存",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/specs/fork-upstream-v151-admission/spec.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/specs/fork-upstream-v151-admission/spec.md:L210:Scenario: 修改或删除术语后再次翻译",
+      "name": "Scenario: 修改或删除术语后再次翻译",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/specs/fork-upstream-v151-admission/spec.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/specs/fork-upstream-v151-admission/spec.md:L215:Scenario: 运行时 provider 兼容与术语并存",
+      "name": "Scenario: 运行时 provider 兼容与术语并存",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/specs/fork-upstream-v151-admission/spec.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/tasks.md:L1:v1.51.0 完整上游同步实施计划",
+      "name": "v1.51.0 完整上游同步实施计划",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/tasks.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/tasks.md:L91:9. 真实浏览器回归与候选状态",
+      "name": "9. 真实浏览器回归与候选状态",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/tasks.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/validation.md:L1:C：验证与接纳状态",
+      "name": "C：验证与接纳状态",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/validation.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/validation.md:L11:候选与产物",
+      "name": "候选与产物",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/validation.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/validation.md:L24:G1—G7：沿用附件的正式编号",
+      "name": "G1—G7：沿用附件的正式编号",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/validation.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/validation.md:L38:工程与独立审查",
+      "name": "工程与独立审查",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/validation.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/validation.md:L52:前期真实构建包受控浏览器回归",
+      "name": "前期真实构建包受控浏览器回归",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/validation.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/validation.md:L88:前期受控轮网络证据边界",
+      "name": "前期受控轮网络证据边界",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/validation.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/validation.md:L113:接纳前剩余责任",
+      "name": "接纳前剩余责任",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/validation.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:scripts/dev-local.node-test.mjs:identity",
+      "name": "identity",
+      "filePath": "scripts/dev-local.node-test.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:scripts/dev-local.node-test.mjs:topology",
+      "name": "topology",
+      "filePath": "scripts/dev-local.node-test.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/components/ui/base-ui/switch.tsx:Switch",
+      "name": "Switch",
+      "filePath": "src/components/ui/base-ui/switch.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/custom-actions/action-config-form/layout-field.tsx:EditableLayoutField",
+      "name": "EditableLayoutField",
+      "filePath": "src/entrypoints/options/pages/custom-actions/action-config-form/layout-field.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/fork/ui/popup/providers-field.tsx:getSelectedProviderOptions",
+      "name": "getSelectedProviderOptions",
+      "filePath": "src/fork/ui/popup/providers-field.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/fork/ui/selection-content/SelectionToolbar.tsx:isNodeInsideSelectionOverlay",
+      "name": "isNodeInsideSelectionOverlay",
+      "filePath": "src/fork/ui/selection-content/SelectionToolbar.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/fork/ui/selection-content/SelectionToolbar.tsx:collectSelectionBoundaryNodes",
+      "name": "collectSelectionBoundaryNodes",
+      "filePath": "src/fork/ui/selection-content/SelectionToolbar.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:src/fork/ui/selection-content/SelectionToolbar.tsx:overlayElement",
+      "name": "overlayElement",
+      "filePath": "src/fork/ui/selection-content/SelectionToolbar.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/utils/host/translate/translate-text.ts:translateTextCore",
+      "name": "translateTextCore",
+      "filePath": "src/utils/host/translate/translate-text.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:wxt.config.ts:FORK_UI_REDIRECTS",
+      "name": "FORK_UI_REDIRECTS",
+      "filePath": "wxt.config.ts",
+      "change_type": "touched"
+    }
+  ],
+  "affected_processes": [
+    {
+      "id": "proc_206_editablelayoutfield",
+      "name": "EditableLayoutField → Label",
+      "process_type": "cross_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "EditableLayoutField",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_279_glossaryeditorpage",
+      "name": "GlossaryEditorPage → Switch",
+      "process_type": "intra_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "Switch",
+          "step": 3
+        }
+      ]
+    }
+  ]
+}

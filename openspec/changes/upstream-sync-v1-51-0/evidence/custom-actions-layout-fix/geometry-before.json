@@ -1,0 +1,115 @@
+{
+  "discardedMissingSharedStylesheet": {
+    "bodyWidth": 1662,
+    "container": {
+      "bottom": 869.546875,
+      "height": 756,
+      "left": 24,
+      "right": 968,
+      "top": 113.546875,
+      "width": 944,
+      "x": 24,
+      "y": 113.546875
+    },
+    "editor": {
+      "bottom": 869.546875,
+      "height": 732,
+      "left": 24,
+      "right": 232,
+      "top": 137.546875,
+      "width": 208,
+      "x": 24,
+      "y": 137.546875
+    },
+    "list": {
+      "bottom": 137.546875,
+      "height": 24,
+      "left": 24,
+      "right": 232,
+      "top": 113.546875,
+      "width": 208,
+      "x": 24,
+      "y": 113.546875
+    },
+    "name": {
+      "bottom": 211.546875,
+      "height": 40,
+      "left": 24,
+      "right": 232,
+      "top": 171.546875,
+      "width": 208,
+      "x": 24,
+      "y": 171.546875
+    },
+    "row": {
+      "bottom": 869.546875,
+      "height": 756,
+      "left": 24,
+      "right": 256,
+      "top": 113.546875,
+      "width": 232,
+      "x": 24,
+      "y": 113.546875
+    },
+    "viewport": {
+      "h": 826,
+      "w": 1710
+    }
+  },
+  "completeBuiltCss": {
+    "container": {
+      "bottom": 1310,
+      "height": 1188,
+      "left": 24,
+      "right": 968,
+      "top": 122,
+      "width": 944,
+      "x": 24,
+      "y": 122
+    },
+    "editor": {
+      "bottom": 1310,
+      "height": 1188,
+      "left": 208,
+      "right": 208,
+      "top": 122,
+      "width": 0,
+      "x": 208,
+      "y": 122
+    },
+    "list": {
+      "bottom": 1310,
+      "height": 1188,
+      "left": 24,
+      "right": 192,
+      "top": 122,
+      "width": 168,
+      "x": 24,
+      "y": 122
+    },
+    "name": {
+      "bottom": 220,
+      "height": 40,
+      "left": 208,
+      "right": 238,
+      "top": 180,
+      "width": 30,
+      "x": 208,
+      "y": 180
+    },
+    "row": {
+      "bottom": 1310,
+      "height": 1188,
+      "left": 24,
+      "right": 232,
+      "top": 122,
+      "width": 208,
+      "x": 24,
+      "y": 122
+    },
+    "viewport": {
+      "h": 826,
+      "w": 1710
+    }
+  }
+}

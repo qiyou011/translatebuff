@@ -1,0 +1,286 @@
+{
+  "task": "LLM page translation cost-preservation mechanism verification",
+  "createdAt": "2026-10-15T12:13:59.745595+00:00",
+  "repository": "/Users/yisen/.codex/worktrees/upstream-sync-v1-51-0/translatebuff",
+  "head": "e1d90dc928ca5fbbbba112e480131e1c909c93ce",
+  "businessBaseline": "4be99b34",
+  "fixedUpstreamTarget": "55bcef1e",
+  "productionChanges": [],
+  "newTest": "src/fork/page-translation/__tests__/cost-preservation-llm.forktest.ts",
+  "realChain": [
+    "setupPageTranslationHandlers",
+    "createWebPageTranslationQueues(factory)",
+    "createPageTranslationQueues",
+    "BatchQueue/RequestQueue",
+    "requestPageLlm",
+    "getLanguageModelForConfig",
+    "AI SDK generateText",
+    "OpenAI-compatible HTTP serialization"
+  ],
+  "mockBoundaries": [
+    "browser messaging",
+    "initialized config and in-memory DB",
+    "HTTP gateway fetch (.invalid fixture URL only)"
+  ],
+  "notMocked": [
+    "batching",
+    "queue dispatch",
+    "prompt/wire helpers",
+    "provider factory",
+    "AI SDK",
+    "cache key and validation logic"
+  ],
+  "existingRuns": [
+    {
+      "log": "llm-existing-core.log",
+      "files": 3,
+      "passed": 28,
+      "filteredSkip": 0,
+      "exitCode": 0,
+      "scope": ["llm.test.ts", "wire.test.ts", "glossary.test.ts"]
+    },
+    {
+      "log": "llm-existing-queues.log",
+      "files": 1,
+      "passed": 3,
+      "filteredSkip": 4,
+      "exitCode": 0,
+      "filter": "retries only the invalid item|does not convert auth errors|separates same text with different format"
+    },
+    {
+      "log": "llm-existing-background.log",
+      "files": 1,
+      "passed": 8,
+      "filteredSkip": 4,
+      "exitCode": 0,
+      "filter": "damaged formula|formula sentinel|cached HTML sentinel|cached wording|cached terminology"
+    }
+  ],
+  "newRun": {
+    "log": "llm-sdk-http.log",
+    "rawEvidence": "llm-sdk-http-evidence.json",
+    "files": 1,
+    "passed": 9,
+    "failed": 0,
+    "exitCode": 0,
+    "command": "SKIP_FREE_API=true LLM_COST_EVIDENCE=<artifact-path> pnpm vitest run --config vitest.fork.config.ts src/fork/page-translation/__tests__/cost-preservation-llm.forktest.ts"
+  },
+  "totalDirectedPasses": 48,
+  "measurements": [
+    {
+      "scenario": "sends sixteen compatible default HTML paragraphs in one compact call and reuses accepted cache",
+      "httpCalls": 1,
+      "itemsPerCall": [16],
+      "cacheBoundaryWrites": 16,
+      "promptCharacters": 1660,
+      "promptUtf8Bytes": 1660,
+      "actualModelTokens": null
+    },
+    {
+      "scenario": "isolates sixteen same-revision paragraphs into 1 effective terminology groups",
+      "httpCalls": 1,
+      "itemsPerCall": [16],
+      "cacheBoundaryWrites": 16,
+      "promptCharacters": 2436,
+      "promptUtf8Bytes": 2444,
+      "actualModelTokens": null
+    },
+    {
+      "scenario": "isolates sixteen same-revision paragraphs into 2 effective terminology groups",
+      "httpCalls": 2,
+      "itemsPerCall": [8, 8],
+      "cacheBoundaryWrites": 16,
+      "promptCharacters": 4406,
+      "promptUtf8Bytes": 4422,
+      "actualModelTokens": null
+    },
+    {
+      "scenario": "isolates sixteen same-revision paragraphs into 16 effective terminology groups",
+      "httpCalls": 16,
+      "itemsPerCall": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+      "cacheBoundaryWrites": 16,
+      "promptCharacters": 32076,
+      "promptUtf8Bytes": 32204,
+      "actualModelTokens": null
+    },
+    {
+      "scenario": "keeps a custom template batched with canonical markers and the legacy separator",
+      "httpCalls": 1,
+      "itemsPerCall": [16],
+      "cacheBoundaryWrites": 16,
+      "promptCharacters": 2325,
+      "promptUtf8Bytes": 2329,
+      "actualModelTokens": null
+    },
+    {
+      "scenario": "falls back only a non-string JSON field once and never caches its corrupt value",
+      "httpCalls": 2,
+      "itemsPerCall": [16, 1],
+      "cacheBoundaryWrites": 16,
+      "promptCharacters": 3049,
+      "promptUtf8Bytes": 3049,
+      "actualModelTokens": null
+    },
+    {
+      "scenario": "rejects a damaged marker after one individual fallback without caching it or resending good items",
+      "httpCalls": 2,
+      "itemsPerCall": [2, 1],
+      "cacheBoundaryWrites": 1,
+      "promptCharacters": 2645,
+      "promptUtf8Bytes": 2645,
+      "actualModelTokens": null
+    },
+    {
+      "scenario": "does not retry a corrupt JSON batch and falls back each affected item once",
+      "httpCalls": 3,
+      "itemsPerCall": [2, 1, 1],
+      "cacheBoundaryWrites": 2,
+      "promptCharacters": 4034,
+      "promptUtf8Bytes": 4034,
+      "actualModelTokens": null
+    },
+    {
+      "scenario": "retains the custom template and canonical input in individual marker fallback",
+      "httpCalls": 2,
+      "itemsPerCall": [2, 1],
+      "cacheBoundaryWrites": 2,
+      "promptCharacters": 2397,
+      "promptUtf8Bytes": 2401,
+      "actualModelTokens": null
+    }
+  ],
+  "compactProtocol": {
+    "responseFormat": {
+      "type": "json_object"
+    },
+    "keys": [
+      "t0",
+      "t1",
+      "t2",
+      "t3",
+      "t4",
+      "t5",
+      "t6",
+      "t7",
+      "t8",
+      "t9",
+      "t10",
+      "t11",
+      "t12",
+      "t13",
+      "t14",
+      "t15"
+    ],
+    "firstWireValue": "<a id=0>Source 0</a>",
+    "firstRestoredValue": "<a data-rf-attr=\"0\">译文 0</a>",
+    "userPromptExcerpt": "Translate to Simplified Mandarin Chinese:\n\n\n{\"t0\":\"<a id=0>Source 0</a>\",\"t1\":\"<a id=0>Source 1</a>\",\"t2\":\"<a id=0>Source 2</a>\",\"t3\":\"<a id=0>Source 3</a>\",\"t4\":\"<a id=0>Source 4<",
+    "compactFlatJsonCharacters": 461,
+    "sameJsonCanonicalAttributesCharacters": 685,
+    "attributeOnlyDifference": 224,
+    "comparisonLimit": "Same JSON attribute-only difference; not historical total-prompt delta or model tokens."
+  },
+  "coverageMatrix": [
+    {
+      "dimension": "N16 batching and compact protocol",
+      "status": "PASS",
+      "evidence": [
+        "llm.test.ts",
+        "new HTTP test: default N16 = 1 HTTP / 16 valid writes / cache hit adds zero HTTP"
+      ]
+    },
+    {
+      "dimension": "Custom prompt and individual fallback compatibility",
+      "status": "PASS",
+      "evidence": [
+        "new custom N16 = 1 HTTP, 15 legacy %% separators, canonical markers, no JSON mode",
+        "new custom invalid marker = 1 batch + 1 individual; original custom template retained"
+      ]
+    },
+    {
+      "dimension": "Glossary revision and effective-term grouping",
+      "status": "PASS_WITH_TRADEOFF",
+      "evidence": [
+        "glossary.test.ts: 4 passes",
+        "same revision 1/2/16 effective-term groups = 1/2/16 HTTP"
+      ]
+    },
+    {
+      "dimension": "Glossary cache keys and invalid-output admission",
+      "status": "PASS_AT_DB_BOUNDARY",
+      "evidence": [
+        "background.test.ts: edited/deleted revision and same-revision effective term differences",
+        "new bad marker + bad individual fallback: bad item rejected, only good item writes once"
+      ]
+    },
+    {
+      "dimension": "JSON and marker protocol failures",
+      "status": "PASS",
+      "evidence": [
+        "wire.test.ts: 17 passes incl missing/duplicate/unknown/wrong-tag and sentinel",
+        "new t7 non-string: 16+1 = 2 HTTP",
+        "new corrupt JSON for 2 items: 2+1+1 = 3 HTTP",
+        "queues.test.ts: 401 does not trigger individual fallback"
+      ]
+    },
+    {
+      "dimension": "Formula preservation and sentinel cache",
+      "status": "PASS_MECHANISM",
+      "evidence": [
+        "llm.test.ts: protected placeholder instructions",
+        "background.test.ts: damaged formula not cached, formula/HTML sentinels accepted"
+      ]
+    }
+  ],
+  "tradeoff": "Same revision is not enough to batch: getPageBatchKey also hashes the complete sorted effective terminology snapshot. Correct constraints/cache isolation can reduce batching from 1 call to 2 or 16 calls for the same 16 paragraphs.",
+  "customPromptClarification": "Non-default templates do not force one network request per paragraph: compatible legacy %% batching remains; individual fallback retains the original template.",
+  "sourceBaselineComparison": {
+    "policy.ts": "identical to 4be99b34",
+    "wire.ts": "identical to 4be99b34",
+    "llm.ts": "only glossaryTerms propagation added",
+    "queues.ts": "glossaryRevision/effective glossaryTerms key and glossary propagation added"
+  },
+  "impact": [
+    {
+      "symbol": "requestPageLlm",
+      "risk": "LOW",
+      "count": 4,
+      "file": "llm-impact-llm.json"
+    },
+    {
+      "symbol": "setupPageTranslationHandlers",
+      "risk": "LOW",
+      "count": 1,
+      "file": "llm-impact-handler.json"
+    },
+    {
+      "symbol": "createPageTranslationQueues",
+      "rawRisk": "LOW",
+      "count": 0,
+      "file": "llm-impact-queues.json",
+      "zeroCallerResolution": "Factory call graph blind spot. Verified background/index.ts:5/139 and translation-queues.ts:494; actual injected factory exercised. Zero not treated as safety."
+    }
+  ],
+  "verification": {
+    "oxfmt": "PASS",
+    "oxlintTypeAwareTypeCheck": "PASS",
+    "diffCheck": "PASS"
+  },
+  "limits": [
+    "No real model tokens, tokenizer or billing usage measured; actualModelTokens=null.",
+    "Character and UTF8-byte counts cover actual SDK messages content, excluding framing and HTTP JSON escaping. They are not paid token estimates.",
+    "HTTP responses are fixtures: no real translation quality or gateway cost acceptance.",
+    "DB is an in-memory boundary: root owns actual Dexie persistence and production-bundle wiring verification.",
+    "MT/concurrency/full-suite/browser/build/commit/private-config/root-doc writes not performed.",
+    "AI SDK accepted deprecated providerOptions openai-compatible key; actual json_object body asserted. No production edit.",
+    "Initial Response(string) was corrupted by shared Vitest TextEncoder shim; fixture now supplies UTF8 bytes. llm-sdk-http-fixture-encoder.* are superseded fixture-diagnostic records, not product RED or quantitative evidence.",
+    "Initial graph output pipe truncated JSON to 512 bytes; rerun with direct file redirection produced complete parsed JSON."
+  ],
+  "sourceSha256": {
+    "src/fork/page-translation/policy.ts": "d2c37c8a75e5a30662292a34ba829b3d201958a9ad43aff61f73a7a41f833596",
+    "src/fork/page-translation/llm.ts": "163068acd1896554816d2750ce4f9786cacf1f3b99ab781dbf62b56797c5394e",
+    "src/fork/page-translation/queues.ts": "ef0ef39c75d66c1338df44dbbee3563e67cb1691753d5a93f4434fcb9df03d20",
+    "src/fork/page-translation/wire.ts": "6a7bbed47d71287d5e55fa29a1a92bd99b7ec1494488dffbd74a1a9dfb5ff1b1",
+    "src/entrypoints/background/page-translation.ts": "98adfa96ec5bb5784c53a6c3c6677de83026b24853ac6420757223245d06faf4",
+    "src/fork/page-translation/__tests__/cost-preservation-llm.forktest.ts": "d1002ec69a17e16bf8e30bb7fcd89061d8ac6a4ffc3920416f64d03520d16177"
+  }
+}

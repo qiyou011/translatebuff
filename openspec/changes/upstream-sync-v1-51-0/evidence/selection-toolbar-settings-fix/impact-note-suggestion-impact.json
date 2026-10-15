@@ -1,0 +1,63 @@
+{
+  "target": {
+    "id": "Function:src/entrypoints/options/pages/selection-toolbar/actions/note-suggestion-items.tsx:NoteSuggestionItems",
+    "name": "NoteSuggestionItems",
+    "type": "Function",
+    "filePath": "src/entrypoints/options/pages/selection-toolbar/actions/note-suggestion-items.tsx"
+  },
+  "direction": "upstream",
+  "impactedCount": 3,
+  "risk": "LOW",
+  "summary": {
+    "direct": 1,
+    "processes_affected": 1,
+    "modules_affected": 1
+  },
+  "affected_processes": [
+    {
+      "name": "SelectionToolbarPage",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/selection-toolbar/index.tsx",
+      "affected_process_count": 2,
+      "total_hits": 4,
+      "earliest_broken_step": 1
+    }
+  ],
+  "affected_modules": [
+    {
+      "name": "Components",
+      "hits": 3,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/options/pages/selection-toolbar/actions/index.tsx:ActionsSection",
+        "name": "ActionsSection",
+        "filePath": "src/entrypoints/options/pages/selection-toolbar/actions/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "Function:src/fork/ui/options/selection-toolbar-page.tsx:SelectionToolbarPage",
+        "name": "SelectionToolbarPage",
+        "filePath": "src/fork/ui/options/selection-toolbar-page.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/entrypoints/options/pages/selection-toolbar/index.tsx:SelectionToolbarPage",
+        "name": "SelectionToolbarPage",
+        "filePath": "src/entrypoints/options/pages/selection-toolbar/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      }
+    ]
+  }
+}

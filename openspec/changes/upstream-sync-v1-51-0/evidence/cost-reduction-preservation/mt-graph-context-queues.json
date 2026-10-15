@@ -1,0 +1,27 @@
+{
+  "status": "found",
+  "symbol": {
+    "uid": "Function:src/fork/page-translation/queues.ts:createPageTranslationQueues",
+    "name": "createPageTranslationQueues",
+    "kind": "Function",
+    "filePath": "src/fork/page-translation/queues.ts",
+    "startLine": 55,
+    "endLine": 235
+  },
+  "incoming": {},
+  "outgoing": {
+    "calls": [
+      {
+        "uid": "Class:src/utils/request/batch-queue.ts:BatchQueue",
+        "name": "BatchQueue",
+        "filePath": "src/utils/request/batch-queue.ts"
+      },
+      {
+        "uid": "Class:src/utils/request/request-queue.ts:RequestQueue",
+        "name": "RequestQueue",
+        "filePath": "src/utils/request/request-queue.ts"
+      }
+    ]
+  },
+  "processes": []
+}

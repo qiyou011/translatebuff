@@ -1,0 +1,8 @@
+{
+  "status": "PASS",
+  "buildAndDownloadFiles": 208,
+  "treeSha256": "98d6044a6791952fea27f8875d0efe17c051c47453b52cf6436a392dfa29cca8",
+  "sourceHashesStillMatch": true,
+  "fullTypeDiagnosticCount": 8,
+  "completeAcceptance": false
+}

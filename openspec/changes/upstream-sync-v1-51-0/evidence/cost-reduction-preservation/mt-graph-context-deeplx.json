@@ -1,0 +1,50 @@
+{
+  "status": "found",
+  "symbol": {
+    "uid": "Function:src/utils/host/translate/core/translation-request.ts:createPageTranslationRequest",
+    "name": "createPageTranslationRequest",
+    "kind": "Function",
+    "filePath": "src/utils/host/translate/core/translation-request.ts",
+    "startLine": 148,
+    "endLine": 240
+  },
+  "incoming": {
+    "calls": [
+      {
+        "uid": "Function:src/utils/host/translate/core/translation-modes.ts:translateNodesBilingualMode",
+        "name": "translateNodesBilingualMode",
+        "filePath": "src/utils/host/translate/core/translation-modes.ts"
+      },
+      {
+        "uid": "Function:src/utils/host/translate/core/translation-modes.ts:translateTranslationOnlyRun",
+        "name": "translateTranslationOnlyRun",
+        "filePath": "src/utils/host/translate/core/translation-modes.ts"
+      }
+    ]
+  },
+  "outgoing": {
+    "calls": [
+      {
+        "uid": "Function:src/utils/host/dom/node.ts:getOwnerDocument",
+        "name": "getOwnerDocument",
+        "filePath": "src/utils/host/dom/node.ts"
+      },
+      {
+        "uid": "Function:src/utils/host/translate/core/translation-request.ts:getDeepLXHtmlAttributeProviderKey",
+        "name": "getDeepLXHtmlAttributeProviderKey",
+        "filePath": "src/utils/host/translate/core/translation-request.ts"
+      },
+      {
+        "uid": "Function:src/utils/host/translate/dom/inline-atoms.ts:getInlineAtomSelector",
+        "name": "getInlineAtomSelector",
+        "filePath": "src/utils/host/translate/dom/inline-atoms.ts"
+      },
+      {
+        "uid": "Function:src/utils/host/translate/dom/translation-html-attributes.ts:protectTranslationHtmlAttributes",
+        "name": "protectTranslationHtmlAttributes",
+        "filePath": "src/utils/host/translate/dom/translation-html-attributes.ts"
+      }
+    ]
+  },
+  "processes": []
+}

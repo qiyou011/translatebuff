@@ -1,0 +1,116 @@
+{
+  "baseline": "4be99b341a7c940a48794232f066db43339cc2d2",
+  "currentHeadExpected": "e1d90dc9",
+  "target": "55bcef1e684fb4e70f4dce3063e7bd3066f46891",
+  "comparison": "Read-only git show baseline versus current working-tree bytes; current UI dirty preserved",
+  "files": [
+    {
+      "path": "src/fork/page-translation/mt.ts",
+      "baselineReadExit": 0,
+      "baselineSha256": "04e65f1cfa2291044dc17fed718330c2c48c968faca7e91ac5c1862b9a0ee629",
+      "currentSha256": "04e65f1cfa2291044dc17fed718330c2c48c968faca7e91ac5c1862b9a0ee629",
+      "identical": true,
+      "baselineLines": 81,
+      "currentLines": 81
+    },
+    {
+      "path": "src/fork/page-translation/policy.ts",
+      "baselineReadExit": 0,
+      "baselineSha256": "d2c37c8a75e5a30662292a34ba829b3d201958a9ad43aff61f73a7a41f833596",
+      "currentSha256": "d2c37c8a75e5a30662292a34ba829b3d201958a9ad43aff61f73a7a41f833596",
+      "identical": true,
+      "baselineLines": 16,
+      "currentLines": 16
+    },
+    {
+      "path": "src/fork/page-translation/migration.ts",
+      "baselineReadExit": 0,
+      "baselineSha256": "e0236681b0a2eab2c65034432369def8d5e10f5f19e555eb93847ceffdeb6296",
+      "currentSha256": "e0236681b0a2eab2c65034432369def8d5e10f5f19e555eb93847ceffdeb6296",
+      "identical": true,
+      "baselineLines": 21,
+      "currentLines": 21
+    },
+    {
+      "path": "src/fork/page-translation/queues.ts",
+      "baselineReadExit": 0,
+      "baselineSha256": "796d250f619ac61c1377ba85fa3f06fc795a054a89963235cd8525f1226b7c54",
+      "currentSha256": "ef0ef39c75d66c1338df44dbbee3563e67cb1691753d5a93f4434fcb9df03d20",
+      "identical": false,
+      "baselineLines": 229,
+      "currentLines": 236
+    },
+    {
+      "path": "src/utils/request/request-queue.ts",
+      "baselineReadExit": 0,
+      "baselineSha256": "8438a8d0924565eece14488a7b268ef6bbb8a2d7eb9c65ffe3e1b0daf3563ff6",
+      "currentSha256": "8438a8d0924565eece14488a7b268ef6bbb8a2d7eb9c65ffe3e1b0daf3563ff6",
+      "identical": true,
+      "baselineLines": 482,
+      "currentLines": 482
+    },
+    {
+      "path": "src/utils/request/batch-queue.ts",
+      "baselineReadExit": 0,
+      "baselineSha256": "c5895d1e1bfcb4cce9aebff33806ff93915c94ef1f758b9cb9935562482f71b9",
+      "currentSha256": "c5895d1e1bfcb4cce9aebff33806ff93915c94ef1f758b9cb9935562482f71b9",
+      "identical": true,
+      "baselineLines": 456,
+      "currentLines": 456
+    },
+    {
+      "path": "src/utils/host/translate/api/google.ts",
+      "baselineReadExit": 0,
+      "baselineSha256": "d762bcf9826ab995bdfa8e4887206cdacc0e13854d4a78ca5b213ab6f8442266",
+      "currentSha256": "d762bcf9826ab995bdfa8e4887206cdacc0e13854d4a78ca5b213ab6f8442266",
+      "identical": true,
+      "baselineLines": 250,
+      "currentLines": 250
+    },
+    {
+      "path": "src/utils/host/translate/api/microsoft.ts",
+      "baselineReadExit": 0,
+      "baselineSha256": "ba91ebeac737e6452b7fdc6f5c7e3023d8f9aa8c7d23817db595882381874851",
+      "currentSha256": "ba91ebeac737e6452b7fdc6f5c7e3023d8f9aa8c7d23817db595882381874851",
+      "identical": true,
+      "baselineLines": 127,
+      "currentLines": 127
+    }
+  ],
+  "deepLxMovedFrom": "src/utils/host/translate/core/translation-modes.ts",
+  "deepLxMovedTo": "src/utils/host/translate/core/translation-request.ts",
+  "deepLxHelperComparisons": [
+    {
+      "name": "createDeepLXHtmlAttributeProbe",
+      "oldFound": true,
+      "currentFound": true,
+      "exactTextEqual": true,
+      "oldSha256": "39872c31a38428d31b685cb1f272a960a019866e5a12c79be67e12ed9a518753",
+      "currentSha256": "39872c31a38428d31b685cb1f272a960a019866e5a12c79be67e12ed9a518753"
+    },
+    {
+      "name": "finishDeepLXHtmlAttributeProbe",
+      "oldFound": true,
+      "currentFound": true,
+      "exactTextEqual": true,
+      "oldSha256": "cbcc6af7a77ecf87cfb17742c7fe4691ed4ae93c65fd4aa6669f8d3899c0c919",
+      "currentSha256": "cbcc6af7a77ecf87cfb17742c7fe4691ed4ae93c65fd4aa6669f8d3899c0c919"
+    },
+    {
+      "name": "acquireDeepLXHtmlAttributeProbe",
+      "oldFound": true,
+      "currentFound": true,
+      "exactTextEqual": true,
+      "oldSha256": "ca4e3f768d617382b1ab52b0d3170ed0ff47c4bcc1a7290dfd15750bf8a16bc6",
+      "currentSha256": "ca4e3f768d617382b1ab52b0d3170ed0ff47c4bcc1a7290dfd15750bf8a16bc6"
+    },
+    {
+      "name": "getDeepLXHtmlAttributeProviderKey",
+      "oldFound": true,
+      "currentFound": true,
+      "exactTextEqual": false,
+      "oldSha256": "636897096e81f19ee20d23ea435cbeff83590259f55937d05707217aa9e3320b",
+      "currentSha256": "8558dbf3ca2874b8a152a40e7dd037b1035e35fd9abbe2cae7a5dbfbc137ef57"
+    }
+  ]
+}

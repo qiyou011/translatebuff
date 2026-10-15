@@ -1,0 +1,341 @@
+{
+  "environment": "global-production",
+  "browserProfileConfirmedByUser": true,
+  "artifactTreeSha256": "ea567267f98550bfee72788d6e1e9e2e13e612ee2db28f5e4adc0d07f54f48d6",
+  "candidateLoadedManuallyByUser": true,
+  "cases": [
+    {
+      "id": "production-google-login-initial",
+      "status": "INITIAL_NETWORK_FAILURE_LATER_USER_LOGIN_SUCCESS",
+      "endpoint": "https://lrbff-us.htjsq.com/api/login_registration_bff/v1/oauth/authorizations",
+      "networkError": "net::ERR_CONNECTION_CLOSED",
+      "loginConfigHttpStatus": 200
+    },
+    {
+      "id": "production-account-ui",
+      "status": "PASS",
+      "proVisible": true,
+      "loginLinkAbsent": true,
+      "loginErrorAbsent": true,
+      "evidence": "User completed Google login; actual website DOM inspection."
+    },
+    {
+      "id": "youtube-player-precheck",
+      "status": "PLAYBACK_READY_EXTENSION_UI_MISSING",
+      "videoId": "kCc8FmEb1nY",
+      "readyState": 4,
+      "adEnded": true,
+      "nativeEnglishCaptionsVisible": true,
+      "subtitleHostPresent": false,
+      "subtitleButtonContainerPresent": false,
+      "normalRefreshAlreadyAttempted": true
+    },
+    {
+      "id": "discord-composer-precheck",
+      "status": "READY_HISTORY_USE_AUTHORIZED",
+      "slateComposerCount": 1,
+      "contentEditable": true,
+      "slate": true,
+      "composerEmpty": true,
+      "historyContentNodes": 17,
+      "nonemptyHistoryListItems": 10,
+      "extensionHostIdsPresent": false,
+      "noTestDraftTyped": true
+    },
+    {
+      "id": "youtube-native-selected-track",
+      "status": "ASR_SOURCE_CONFIRMED_ONLY",
+      "videoId": "kCc8FmEb1nY",
+      "playability": "OK",
+      "selected": {
+        "kind": "asr",
+        "language": "en",
+        "vssId": "a.en"
+      },
+      "trackCount": 12,
+      "extensionOverlayNotYetVerified": true,
+      "screenshot": "youtube-native-asr-precheck.png"
+    },
+    {
+      "id": "user-extension-installation-clarification",
+      "status": "CANDIDATE_NOT_LOADED_IN_USER_BROWSER",
+      "evidence": "User inspected extension list and reported our extension absent; no Chrome load error was supplied.",
+      "visibleDownloadCopy": "/Users/yisen/Downloads/TranslateBuff-Global-1.5.0-rf1.51.0-20261015",
+      "artifactTreeSha256": "ea567267f98550bfee72788d6e1e9e2e13e612ee2db28f5e4adc0d07f54f48d6",
+      "files": 207
+    },
+    {
+      "id": "user-manual-installed-candidate",
+      "status": "PASS_PAGE_INJECTION_CONFIRMED",
+      "youtubeHosts": [
+        "read-frog-subtitles-ui-host",
+        "translate-buff",
+        "translate-buff-selection"
+      ],
+      "discordHosts": [
+        "translate-buff",
+        "translate-buff-selection"
+      ],
+      "normalRefreshPerformedByAgent": true
+    },
+    {
+      "id": "youtube-microsoft-subtitles",
+      "status": "PASS_SOURCE_AND_TRANSLATED_CUE_VISIBLE",
+      "selectedNativeTrack": {
+        "kind": "asr",
+        "language": "en",
+        "vssId": "a.en"
+      },
+      "timedtext": {
+        "status": 200,
+        "format": "json3",
+        "kind": "asr",
+        "language": "en",
+        "events": 5910,
+        "scrollAppendEvents": 2954
+      },
+      "networkEvents": [
+        {
+          "sequence": 4931,
+          "method": "Network.requestWillBeSent",
+          "origin": "https://www.youtube.com",
+          "path": "/api/timedtext",
+          "requestId": "83633.1721",
+          "format": "json3",
+          "kind": "asr",
+          "language": "en"
+        },
+        {
+          "sequence": 4934,
+          "method": "Network.responseReceived",
+          "origin": "https://www.youtube.com",
+          "path": "/api/timedtext",
+          "status": 200,
+          "requestId": "83633.1721",
+          "format": "json3",
+          "kind": "asr",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "id": "youtube-subtitle-pointer",
+      "status": "PASS",
+      "captureDuring": true,
+      "captureAfterRelease": false,
+      "releaseOutsidePlayer": true,
+      "positionStableOnUnpressedHover": true,
+      "secondDragWorked": true,
+      "videoRemainedPaused": true
+    },
+    {
+      "id": "youtube-style-menu",
+      "status": "PASS_SCROLL_AND_EVENT_ISOLATION",
+      "menuScrollTop": 69.5,
+      "videoRemainedPaused": true,
+      "panelWithinPlayer": true,
+      "modeSelectionSwitchedAndRestored": true,
+      "renderedModeVisibilityNotYetChecked": false,
+      "modeVisibility": {
+        "original": {
+          "sourceVisible": true,
+          "translationVisible": false
+        },
+        "bilingual": {
+          "sourceVisible": true,
+          "translationVisible": true
+        }
+      }
+    },
+    {
+      "id": "real-provider-binding",
+      "status": "USER_CONFIRMED_BOTH_FEATURES_BOUND_TO_DEFAULT_OWN_MODEL"
+    },
+    {
+      "id": "discord-real-slate-translate-undo",
+      "status": "PASS",
+      "trigger": "three trusted Space presses",
+      "translated": "This is the translation acceptance draft, please keep the number TB-DISCORD-A.",
+      "editedTranslation": "This is the translation acceptance draft, please keep the number TB-DISCORD-A. [EDITED-A]",
+      "restoredExactOriginal": true,
+      "leadingSpaces": 2,
+      "trailingSpaces": 2,
+      "screenshot": "discord-real-slate-translated-draft.png",
+      "noMessageSent": true
+    },
+    {
+      "id": "discord-stale-user-edit",
+      "status": "PASS_OBSERVED_DRAFT_PROTECTED",
+      "pendingObserved": true,
+      "beforeEdit": "这是迟响应保护验收草稿，编号 TB-DISCORD-B。  ",
+      "afterEdit": "这是迟响应保护验收草稿，编号 TB-DISCORD-B。   STALE-GUARD",
+      "unchangedAtLaterCheck": true,
+      "backgroundResponseCompletionNotDirectlyObservable": true
+    },
+    {
+      "id": "discord-escape-cancel",
+      "status": "PASS_OBSERVED_DRAFT_PROTECTED",
+      "pendingObserved": true,
+      "afterEscape": "这是取消翻译验收草稿，编号 TB-DISCORD-C。  ",
+      "unchangedAfterSeconds": 108,
+      "unchanged": true,
+      "backgroundResponseCompletionNotDirectlyObservable": true
+    },
+    {
+      "id": "youtube-real-playback-transitions",
+      "status": "PASS_OBSERVED_BILINGUAL_CUE_TRANSITIONS",
+      "end": 525.012179,
+      "sampleCount": 500,
+      "start": 485.117774,
+      "timeupdates": 151,
+      "transitions": [
+        {
+          "mainHash": "60d8768e",
+          "mainLength": 73,
+          "paused": false,
+          "t": 485.135517,
+          "translationHash": "f1b787ad",
+          "translationLength": 24
+        },
+        {
+          "mainHash": "b812790c",
+          "mainLength": 89,
+          "paused": false,
+          "t": 486.937532,
+          "translationHash": "5b3a11b7",
+          "translationLength": 30
+        },
+        {
+          "mainHash": "4db558d0",
+          "mainLength": 66,
+          "paused": false,
+          "t": 490.937474,
+          "translationHash": "58264971",
+          "translationLength": 24
+        },
+        {
+          "mainHash": "18a7fd82",
+          "mainLength": 67,
+          "paused": false,
+          "t": 495.171943,
+          "translationHash": "e3e8d6a3",
+          "translationLength": 25
+        },
+        {
+          "mainHash": "e525d327",
+          "mainLength": 79,
+          "paused": false,
+          "t": 498.693891,
+          "translationHash": "22aa347b",
+          "translationLength": 15
+        },
+        {
+          "mainHash": "71db8999",
+          "mainLength": 84,
+          "paused": false,
+          "t": 503.972063,
+          "translationHash": "8d63ea41",
+          "translationLength": 30
+        },
+        {
+          "mainHash": "d39f9427",
+          "mainLength": 81,
+          "paused": false,
+          "t": 507.659906,
+          "translationHash": "ed7b1358",
+          "translationLength": 24
+        },
+        {
+          "mainHash": "6b719119",
+          "mainLength": 65,
+          "paused": false,
+          "t": 513.0121,
+          "translationHash": "6c4c7b62",
+          "translationLength": 21
+        },
+        {
+          "mainHash": "1031de82",
+          "mainLength": 77,
+          "paused": false,
+          "t": 518.059631,
+          "translationHash": "b90a5766",
+          "translationLength": 39
+        },
+        {
+          "mainHash": "d4b582a0",
+          "mainLength": 68,
+          "paused": false,
+          "t": 522.059905,
+          "translationHash": "6cfc3cec",
+          "translationLength": 24
+        }
+      ],
+      "instrumentationRemoved": true,
+      "timingFixSpecificEndBoundaryNotYetCompared": true
+    },
+    {
+      "id": "youtube-after-own-provider-binding",
+      "status": "TRANSLATED_NEW_CUE_VISIBLE_AFTER_PENDING",
+      "bindingEvidence": "User confirmed both feature bindings in native popup",
+      "t": 549.224572,
+      "sourceHash": "621d0def",
+      "translation": "可以看到，当我打印这些字符时，总共有65个",
+      "screenshot": "youtube-real-bilingual-subtitles.png",
+      "serviceWorkerNetworkAttributionUnavailable": true
+    },
+    {
+      "id": "youtube-asr-duration-specific-boundary",
+      "status": "PASS_OBSERVED_EXTENDED_SOURCE_VISIBILITY",
+      "comparisonMethod": "Source-equivalent pure parsing of actual JSON3, matching observed source hash and length; actual 80ms DOM sampling compressed to transitions",
+      "candidate": {
+        "start": 507479,
+        "end": 512800,
+        "oldEnd": 512280,
+        "extraMs": 520,
+        "sourceHash": "d39f9427",
+        "chars": 81
+      },
+      "visibleFrom": 507.659906,
+      "visibleUntilNextObservedTransition": 513.0121,
+      "nativeTimeupdateEvents": 151,
+      "sampleIntervalMs": 80,
+      "sourceSrtDownloadEventNotCaptured": true
+    },
+    {
+      "id": "youtube-native-settings-overlap",
+      "status": "NOT_COVERED_NO_SIMULTANEOUS_OVERLAP",
+      "nativeMenuOpened": true,
+      "extensionMenuClosed": true,
+      "pausedUnchanged": true
+    },
+    {
+      "id": "cleanup",
+      "status": "PASS",
+      "discordComposerEmpty": true,
+      "discordNoMessageSent": true,
+      "youtubePaused": true,
+      "subtitleTranslationStopped": true,
+      "noUserBrowserOrProfileClosed": true,
+      "providerSettingsLeftAsUserSelected": true
+    }
+  ],
+  "limitations": [
+    "Chrome internal extension-management URLs are blocked by browser automation security policy. No workaround through another browser surface was attempted.",
+    "Only current HTTP(S) page UI and origin-scoped CDP are available; this does not provide complete extension service-worker network attribution.",
+    "No credentials, private chat text, account identifiers, signed URL queries or request headers are recorded.",
+    "The real-provider bindings were manually selected and confirmed by the user. Own provider model ID/base URL and service-worker HTTP statuses were not independently observable through current origin-scoped tooling.",
+    "The source subtitle download was attempted via real UI, but the tab-scoped download event timed out; no SRT file was retrieved or used. Timing comparison uses the source-equivalent parser of actual JSON3 and real DOM samples.",
+    "Pending-race tests observed UI pending, user editing or Escape, and protected drafts afterward; underlying background response completion was not directly observable."
+  ],
+  "status": "COMPLETED_TARGETED_BROWSER_ROUND_WITH_NETWORK_LIMITATIONS",
+  "updatedAt": "2026-10-15T08:33:36.398Z",
+  "discordHistoryUseAuthorizedByUser": true,
+  "browserProfile": "user-designated existing Chrome profile",
+  "finalArtifactVerification": {
+    "files": 207,
+    "treeSha256": "ea567267f98550bfee72788d6e1e9e2e13e612ee2db28f5e4adc0d07f54f48d6",
+    "unchanged": true,
+    "reportJsonParse": "PASS",
+    "gitDiffWhitespaceCheck": "PASS"
+  }
+}

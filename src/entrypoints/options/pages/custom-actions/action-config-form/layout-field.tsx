@@ -570,7 +570,10 @@ function EditableLayoutField({
       />
 
       <Dialog open={editing} onOpenChange={setEditing}>
-        <DialogContent className="flex h-[90vh] max-h-[90vh] flex-col overflow-y-auto sm:max-w-[min(1280px,calc(100%-2rem))] lg:overflow-hidden">
+        <DialogContent
+          data-custom-action-layout-editor=""
+          className="flex h-[90vh] max-h-[90vh] flex-col overflow-y-auto sm:max-w-[min(1280px,calc(100%-2rem))] lg:overflow-hidden"
+        >
           <DialogHeader>
             <DialogTitle>{t("title")}</DialogTitle>
             <DialogDescription>{t("description")}</DialogDescription>

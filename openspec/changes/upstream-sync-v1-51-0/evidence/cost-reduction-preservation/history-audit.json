@@ -1,0 +1,369 @@
+{
+  "task": "page translation cost reduction preservation",
+  "base": "4be99b341a7c940a48794232f066db43339cc2d2",
+  "head": "e1d90dc928ca5fbbbba112e480131e1c909c93ce",
+  "upstream": "55bcef1e684fb4e70f4dce3063e7bd3066f46891",
+  "assessment": "降本核心源码与实际fork工厂接线保留；术语适配引入拆批和缓存identity成本，不能推定原收益不变。",
+  "productionReadOnly": true,
+  "testsRun": false,
+  "buildRun": false,
+  "browserRun": false,
+  "privateConfigRead": false,
+  "historicalSources": [
+    {
+      "sha": "3590d73e",
+      "role": "原方案与历史验收记录"
+    },
+    {
+      "sha": "0906e79135a91da534dcc6ae504f72342d510128",
+      "role": "原降本实施"
+    },
+    {
+      "sha": "433b148dbd73ed7e8fbfcf20c88035089364200e",
+      "role": "后续翻译与公式保护贡献，已进入业务4be"
+    },
+    {
+      "sha": "06e3c7432699dc184a80c46f28ce5f6c87d83a6b",
+      "role": "上游后台拆分来源"
+    },
+    {
+      "sha": "0f537ad0",
+      "role": "上游术语功能来源；不包含本轮额外revision缓存标签"
+    },
+    {
+      "sha": "5ac5122a6a4d390b3131f917dd09aa2caf5f5342",
+      "role": "合并55b，保留fork工厂并增加术语快照适配"
+    }
+  ],
+  "parameters": {
+    "llmCandidate": {
+      "items": 16,
+      "characters": 4000,
+      "migratesOnly": {
+        "items": 4,
+        "characters": 1000
+      },
+      "status": "development candidates; original release gates5.1-5.4 remain open"
+    },
+    "pageMaxConcurrent": 4,
+    "mtItems": 100,
+    "mtPayloadBytes": 32768,
+    "mtEnvelopeReserveBytes": 512,
+    "batchDelayMs": 100,
+    "request": {
+      "maxRetries": 2,
+      "baseRetryDelayMs": 1000,
+      "timeoutMs": 20000,
+      "batchTimeoutBaseMs": 20000,
+      "batchTimeoutPerCharacterMs": 15,
+      "batchTimeoutMaxMs": 120000
+    },
+    "interaction": "Independent RequestQueue with own rate/capacity; no page maxConcurrent4",
+    "upstreamDefaults": {
+      "items": 4,
+      "characters": 1000,
+      "rate": 8,
+      "capacity": 20
+    },
+    "oversize": "Threshold for batching, not a hard rejection cap; a single oversized semantic item is not split."
+  },
+  "mapping": [
+    {
+      "id": "defaults",
+      "origin": "0906e791",
+      "result": "retained",
+      "refs": [
+        "src/fork/page-translation/policy.ts:4",
+        "src/fork/page-translation/migration.ts:6",
+        "src/entrypoints/background/config.ts:10"
+      ],
+      "note": "exact4/1000 only, config write before independent marker, shared init promise resets rejection; other settings/subtitles preserved"
+    },
+    {
+      "id": "real-concurrency",
+      "origin": "0906e791",
+      "result": "retained",
+      "refs": [
+        "src/fork/page-translation/queues.ts:56",
+        "src/utils/request/request-queue.ts:202",
+        "src/utils/request/request-queue.ts:315",
+        "src/utils/request/request-queue.ts:412"
+      ],
+      "note": "two page batches share bounded queue4; activeAttempts released after physical settlement and error classification"
+    },
+    {
+      "id": "mt",
+      "origin": "0906e791",
+      "result": "retained",
+      "refs": [
+        "src/fork/page-translation/queues.ts:200",
+        "src/fork/page-translation/mt.ts:21",
+        "src/fork/page-translation/mt.ts:56",
+        "src/utils/host/translate/api/google.ts:125",
+        "src/utils/host/translate/api/microsoft.ts:71"
+      ],
+      "note": "Google/MS100 with encoded size, line semantics, Microsoft HTML rejection, one output normalization; other providers retain single route"
+    },
+    {
+      "id": "llm-v1",
+      "origin": "0906e791",
+      "result": "retained with glossary propagation",
+      "refs": [
+        "src/fork/page-translation/llm.ts:25",
+        "src/fork/page-translation/llm.ts:32",
+        "src/fork/page-translation/llm.ts:124"
+      ],
+      "note": "default prompt flat tN JSON; custom/other built-in %% compatibility; no explicit new protocol version field"
+    },
+    {
+      "id": "snapshot-key",
+      "origin": "0906e791",
+      "result": "retained plus terminology key",
+      "refs": [
+        "src/fork/page-translation/queues.ts:34",
+        "src/fork/page-translation/queues.ts:209",
+        "src/fork/page-translation/llm.ts:71"
+      ],
+      "note": "provider/prompt/language/full context/format/lines/scope/feature/structured retained; cloned input; snapshot model and SDK options preserved"
+    },
+    {
+      "id": "failure-isolation",
+      "origin": "0906e791",
+      "result": "retained",
+      "refs": [
+        "src/fork/page-translation/queues.ts:141",
+        "src/fork/page-translation/queues.ts:155",
+        "src/fork/page-translation/queues.ts:183",
+        "src/fork/page-translation/llm.ts:102"
+      ],
+      "note": "parse after network task; per-item single fallback once; keep successes; network/auth/cancel not protocol fallback; SDK retries0, transport queue budget2"
+    },
+    {
+      "id": "markers",
+      "origin": "0906e791",
+      "result": "retained",
+      "refs": [
+        "src/fork/page-translation/wire.ts:30",
+        "src/fork/page-translation/wire.ts:105",
+        "src/fork/page-translation/wire.ts:119",
+        "src/utils/host/translate/html-attribute-markers.ts:276"
+      ],
+      "note": "ASCII-safe lexical scan, raw-text/comments, selfclosing separator, native-id collision compatible route, strict key/marker integrity, canonical restore and sentinel"
+    },
+    {
+      "id": "factory-integration",
+      "origin": "0906e791; upstream split06e3c743; merge5ac5122a",
+      "result": "rewired and retained",
+      "refs": [
+        "src/entrypoints/background/index.ts:139",
+        "src/entrypoints/background/page-translation.ts:63",
+        "src/entrypoints/background/translation-queues.ts:489"
+      ],
+      "note": "actual main passes createPageTranslationQueues into setupPageTranslationHandlers; factory builds kind=fork"
+    },
+    {
+      "id": "input-isolation",
+      "origin": "0906e791",
+      "result": "retained",
+      "refs": [
+        "src/entrypoints/background/page-translation.ts:144",
+        "src/entrypoints/background/page-translation.ts:248",
+        "src/entrypoints/background/translation-queues.ts:440",
+        "src/utils/host/translate/translate-variants.ts:256",
+        "src/fork/ui/selection-content/input-translation/use-input-translation.ts:474"
+      ],
+      "note": "input translation and preflight summary use interaction queue; page saturation does not impose cap4 on interaction; subtitle factory separate"
+    },
+    {
+      "id": "cancel-cache",
+      "origin": "0906e791; formula followup433b148d",
+      "result": "retained plus interaction cancel/tab removal",
+      "refs": [
+        "src/entrypoints/background/page-translation.ts:128",
+        "src/entrypoints/background/page-translation.ts:213",
+        "src/entrypoints/background/page-translation.ts:279",
+        "src/fork/page-translation/queues.ts:70",
+        "src/utils/host/translate/translate-text.ts:443"
+      ],
+      "note": "scope in batch/dedup/downstream hashes, live checks before fallback and cache, pending batches drained first, canonical cache and sentinel, inline atom audit prevents DB/memory poisoning"
+    }
+  ],
+  "costChanges": [
+    {
+      "id": "COST-R1",
+      "introducedBy": "5ac5122a",
+      "classification": "correctness adaptation with batching cost",
+      "refs": [
+        "src/fork/page-translation/queues.ts:46",
+        "src/entrypoints/background/translation-queues.ts:130"
+      ],
+      "effect": "Different effective term sets no longer batch even at same revision/session; upstream generic queue unions terms but live fork key contains sorted terms.",
+      "verification": "Source confirmed; request count and realized token effect not measured. Same snapshot batching tests exist but were not run."
+    },
+    {
+      "id": "COST-R2",
+      "introducedBy": "5ac5122a; absent from target55b and business4be",
+      "classification": "conservative cache isolation with cold-cache cost; necessity needs separate review",
+      "refs": [
+        "src/utils/host/translate/translate-text.ts:382",
+        "src/utils/constants/glossary.ts:13",
+        "src/utils/config/migration-scripts/v100-to-v101.ts:73",
+        "src/utils/host/translate/translate-variants.ts:141"
+      ],
+      "effect": "Enabled glossary appends revision hash even with empty terms/revision0. Enabled defaults true on new install and missing-field upgrade, so old LLM cache identities change and unrelated revisions can invalidate no-match paragraphs. MT identity unchanged.",
+      "verification": "Source confirmed by target/base git show diff; no private config/database inspected, no runtime hit-rate measured."
+    }
+  ],
+  "limits": [
+    {
+      "item": "summary cancellation",
+      "refs": [
+        "src/entrypoints/background/translation-context-summary.ts:65",
+        "src/entrypoints/background/translation-context-summary.ts:76"
+      ],
+      "note": "Summary helper enqueues without scope and caches directly, same historical shape in4be getOrGenerateSummary. Cannot extend paragraph cancellation guarantee to every preflight summary or call this a newly proven merge regression."
+    },
+    {
+      "item": "normal input cancellation",
+      "refs": [
+        "src/utils/host/translate/translate-variants.ts:263",
+        "src/entrypoints/background/translation-queues.ts:267"
+      ],
+      "note": "Normal input call carries no sessionId, so no tab:session scope; cannot claim all input requests cancel through page-session drain."
+    },
+    {
+      "item": "release claims",
+      "refs": [
+        "openspec/changes/v1-4-0-page-translation-cost-reduction/tasks.md:25",
+        "openspec/changes/v1-4-0-page-translation-cost-reduction/validation.md:55"
+      ],
+      "note": "Original5.1-5.4 open. Historical Google three-page51 calls did not meet≤30; no current≥50% token/≥90%MT/latency benefit asserted."
+    },
+    {
+      "item": "storage failure",
+      "refs": ["src/entrypoints/background/translation-queues.ts:411"],
+      "note": "Failed init can degrade to upstream DEFAULT_CONFIG4/1000, as before.16/4000 describes successful fork migration, not every failure state."
+    }
+  ],
+  "graph": {
+    "status": "up-to-date",
+    "indexedCommit": "e1d90dc",
+    "currentCommit": "e1d90dc",
+    "query": "page translation cost reduction batch queue LLM MT cancellation cache",
+    "contexts": ["createPageTranslationQueues", "setupPageTranslationHandlers"],
+    "factoryIncoming": 0,
+    "factoryInterpretation": "Unresolved higher-order factory edge, not unused. Actual index.ts139 and translation-queues.ts491-498 source prove invocation.",
+    "handlerCaller": "main src/entrypoints/background/index.ts",
+    "noIndexRebuild": true
+  },
+  "testDefinitionsReadNotExecuted": [
+    "src/fork/page-translation/__tests__/queues.test.ts",
+    "src/fork/page-translation/__tests__/llm.test.ts",
+    "src/fork/page-translation/__tests__/wire.test.ts",
+    "src/fork/page-translation/__tests__/mt.test.ts",
+    "src/fork/page-translation/__tests__/migration.test.ts",
+    "src/fork/page-translation/__tests__/request-concurrency.test.ts",
+    "src/fork/page-translation/__tests__/background.test.ts",
+    "src/fork/page-translation/__tests__/glossary.test.ts",
+    "src/fork/page-translation/__tests__/config-init.test.ts"
+  ],
+  "nextEvidence": "Parent/test agent integrates fresh directed results; measure glossary same/different matched sets, empty-glossary upgrade cache identity and unrelated revision cost. Real service usage/browser performance remain separate.",
+  "fileComparison": [
+    {
+      "path": "src/fork/page-translation/policy.ts",
+      "sha256": "d2c37c8a75e5a30662292a34ba829b3d201958a9ad43aff61f73a7a41f833596",
+      "equalsBusinessBase": true,
+      "equalsOriginal0906": true
+    },
+    {
+      "path": "src/fork/page-translation/queues.ts",
+      "sha256": "ef0ef39c75d66c1338df44dbbee3563e67cb1691753d5a93f4434fcb9df03d20",
+      "equalsBusinessBase": false,
+      "equalsOriginal0906": false
+    },
+    {
+      "path": "src/fork/page-translation/llm.ts",
+      "sha256": "163068acd1896554816d2750ce4f9786cacf1f3b99ab781dbf62b56797c5394e",
+      "equalsBusinessBase": false,
+      "equalsOriginal0906": false
+    },
+    {
+      "path": "src/fork/page-translation/mt.ts",
+      "sha256": "04e65f1cfa2291044dc17fed718330c2c48c968faca7e91ac5c1862b9a0ee629",
+      "equalsBusinessBase": true,
+      "equalsOriginal0906": true
+    },
+    {
+      "path": "src/fork/page-translation/wire.ts",
+      "sha256": "6a7bbed47d71287d5e55fa29a1a92bd99b7ec1494488dffbd74a1a9dfb5ff1b1",
+      "equalsBusinessBase": true,
+      "equalsOriginal0906": true
+    },
+    {
+      "path": "src/fork/page-translation/migration.ts",
+      "sha256": "e0236681b0a2eab2c65034432369def8d5e10f5f19e555eb93847ceffdeb6296",
+      "equalsBusinessBase": true,
+      "equalsOriginal0906": true
+    },
+    {
+      "path": "src/fork/page-translation/types.ts",
+      "sha256": "baa125318e9ca7f9cfd8e9feca1cb41e7f8507dca49b6393161fbf92f20ba8c2",
+      "equalsBusinessBase": false,
+      "equalsOriginal0906": false
+    },
+    {
+      "path": "src/utils/request/request-queue.ts",
+      "sha256": "8438a8d0924565eece14488a7b268ef6bbb8a2d7eb9c65ffe3e1b0daf3563ff6",
+      "equalsBusinessBase": true,
+      "equalsOriginal0906": true
+    },
+    {
+      "path": "src/utils/request/batch-queue.ts",
+      "sha256": "c5895d1e1bfcb4cce9aebff33806ff93915c94ef1f758b9cb9935562482f71b9",
+      "equalsBusinessBase": true,
+      "equalsOriginal0906": true
+    },
+    {
+      "path": "src/utils/host/translate/api/google.ts",
+      "sha256": "d762bcf9826ab995bdfa8e4887206cdacc0e13854d4a78ca5b213ab6f8442266",
+      "equalsBusinessBase": true,
+      "equalsOriginal0906": true
+    },
+    {
+      "path": "src/utils/host/translate/api/microsoft.ts",
+      "sha256": "ba91ebeac737e6452b7fdc6f5c7e3023d8f9aa8c7d23817db595882381874851",
+      "equalsBusinessBase": true,
+      "equalsOriginal0906": true
+    },
+    {
+      "path": "src/entrypoints/background/config.ts",
+      "sha256": "7a37fdab817bbe2fbd507a240e47b18145de73cc6016a90c13c3e9d67ade258f",
+      "equalsBusinessBase": true,
+      "equalsOriginal0906": true
+    }
+  ],
+  "ancestry": {
+    "0906e791": true,
+    "433b148d": true,
+    "4be99b341a7c940a48794232f066db43339cc2d2": true,
+    "55bcef1e684fb4e70f4dce3063e7bd3066f46891": true,
+    "5ac5122a": true
+  },
+  "generatedAt": "2026-10-15T12:09:47.084981+00:00",
+  "rootFinalDisposition": {
+    "originalSnapshotPreserved": true,
+    "emptyEffectiveTermsRevisionRegression": "FIXED after this initial audit",
+    "nonemptyRevisionAndStrictGroupingRetained": true,
+    "controlledHttpGroupsToCalls": {
+      "1": 1,
+      "2": 2,
+      "16": 16
+    },
+    "mainPassed": 4998,
+    "forkPassed": 997,
+    "browserReloadPending": true,
+    "actualTokenOrFeeAcceptance": false,
+    "finalReport": "README.md",
+    "finalResult": "result.json"
+  }
+}

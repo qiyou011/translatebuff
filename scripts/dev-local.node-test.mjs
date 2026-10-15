@@ -1,8 +1,12 @@
 import assert from "node:assert/strict"
+import { execFileSync } from "node:child_process"
+import { mkdirSync, mkdtempSync, rmSync } from "node:fs"
+import { tmpdir } from "node:os"
+import { join } from "node:path"
 import { describe, it } from "node:test"
 import { assertApiIdentity, createWxtEnvironment, resolveMonorepoRoot } from "./dev-local.mjs"
 
-describe("local extension worktree connection", () => {
+void describe("local extension worktree connection", () => {
   const identity = { instance: "wt-abc", fingerprint: "checkout-abc" }
   const topology = {
     api: "https://api.wt-abc.readfrog.localhost:1355",
@@ -10,8 +14,12 @@ describe("local extension worktree connection", () => {
     cookieDomain: "wt-abc.readfrog.localhost",
   }
 
-  it("uses the selected monorepo for both source aliases and runtime URLs", () => {
-    const root = resolveMonorepoRoot()
+  void it("uses the selected monorepo for both source aliases and runtime URLs", (context) => {
+    const fixture = mkdtempSync(join(tmpdir(), "translatebuff-monorepo-test-"))
+    context.after(() => rmSync(fixture, { recursive: true, force: true }))
+    execFileSync("git", ["init", "--quiet", fixture])
+    mkdirSync(join(fixture, "apps/server"), { recursive: true })
+    const root = resolveMonorepoRoot(fixture)
     assert.equal(resolveMonorepoRoot(root), root)
     assert.throws(() => resolveMonorepoRoot(`${root}/apps/server`), /monorepo root/)
     assert.deepEqual(
@@ -32,7 +40,7 @@ describe("local extension worktree connection", () => {
     )
   })
 
-  it("refuses an API route belonging to another checkout or a failed API", () => {
+  void it("refuses an API route belonging to another checkout or a failed API", () => {
     const ready = {
       status: 200,
       headers: {

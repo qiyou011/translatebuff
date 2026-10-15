@@ -1,0 +1,85 @@
+{
+  "target": {
+    "id": "Function:src/fork/ui/selection-content/SelectionToolbar.tsx:isNodeInsideSelectionOverlay",
+    "name": "isNodeInsideSelectionOverlay",
+    "type": "Function",
+    "filePath": "src/fork/ui/selection-content/SelectionToolbar.tsx"
+  },
+  "direction": "upstream",
+  "impactedCount": 6,
+  "risk": "LOW",
+  "summary": {
+    "direct": 2,
+    "processes_affected": 0,
+    "modules_affected": 2
+  },
+  "affected_processes": [],
+  "affected_modules": [
+    {
+      "name": "Selection-content",
+      "hits": 4,
+      "impact": "direct"
+    },
+    {
+      "name": "Selection-toolbar",
+      "hits": 1,
+      "impact": "indirect"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/fork/ui/selection-content/SelectionToolbar.tsx:isSelectionInsideSelectionOverlay",
+        "name": "isSelectionInsideSelectionOverlay",
+        "filePath": "src/fork/ui/selection-content/SelectionToolbar.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/fork/ui/selection-content/SelectionToolbar.tsx:isMouseEventInsideSelectionOverlay",
+        "name": "isMouseEventInsideSelectionOverlay",
+        "filePath": "src/fork/ui/selection-content/SelectionToolbar.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "Function:src/fork/ui/selection-content/SelectionToolbar.tsx:handleMouseUp",
+        "name": "handleMouseUp",
+        "filePath": "src/fork/ui/selection-content/SelectionToolbar.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/fork/ui/selection-content/SelectionToolbar.tsx:handleMouseDown",
+        "name": "handleMouseDown",
+        "filePath": "src/fork/ui/selection-content/SelectionToolbar.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/fork/ui/selection-content/SelectionToolbar.tsx:handleSelectionChange",
+        "name": "handleSelectionChange",
+        "filePath": "src/fork/ui/selection-content/SelectionToolbar.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      }
+    ],
+    "3": [
+      {
+        "depth": 3,
+        "id": "Function:src/fork/ui/selection-content/SelectionToolbar.tsx:handleDeferredSelection",
+        "name": "handleDeferredSelection",
+        "filePath": "src/fork/ui/selection-content/SelectionToolbar.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      }
+    ]
+  }
+}

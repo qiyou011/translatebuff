@@ -1,0 +1,15 @@
+{
+  "old": {
+    "files": 207,
+    "treeSha256": "ea567267f98550bfee72788d6e1e9e2e13e612ee2db28f5e4adc0d07f54f48d6"
+  },
+  "new": {
+    "files": 207,
+    "treeSha256": "6fb916949bfa25b7cc379096acb36cfd227d455e2d0cd5184b7699ab86eeb6fd"
+  },
+  "manifestUnchanged": true,
+  "sourceChanges": "Only src/fork/ui/options/custom-actions-theme.css in production source; tests/changeset/evidence separately recorded",
+  "normalizedJavaScriptEqual": true,
+  "buildPublicEnvironment": "Matched frozen public edition/channel/Google client identity; private credentials not read from browser",
+  "buildDirectory": ".output/layout-fix/chrome-mv3-global"
+}

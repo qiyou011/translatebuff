@@ -1,0 +1,30 @@
+{
+  "target": {
+    "id": "Function:src/fork/ui/popup/providers-field.tsx:getSelectedProviderOptions",
+    "name": "getSelectedProviderOptions",
+    "type": "Function",
+    "filePath": "src/fork/ui/popup/providers-field.tsx"
+  },
+  "direction": "upstream",
+  "impactedCount": 1,
+  "risk": "LOW",
+  "summary": {
+    "direct": 1,
+    "processes_affected": 0,
+    "modules_affected": 0
+  },
+  "affected_processes": [],
+  "affected_modules": [],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/fork/ui/popup/providers-field.tsx:selectedProviders",
+        "name": "selectedProviders",
+        "filePath": "src/fork/ui/popup/providers-field.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      }
+    ]
+  }
+}

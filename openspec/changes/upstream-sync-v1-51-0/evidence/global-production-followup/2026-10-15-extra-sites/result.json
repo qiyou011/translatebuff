@@ -1,0 +1,454 @@
+{
+  "environment": "global-production",
+  "date": "2026-10-15",
+  "sourceHead": "e1d90dc928ca5fbbbba112e480131e1c909c93ce",
+  "providerSelectedByUser": "Kimi-K3",
+  "status": "COMPLETED_WITH_FINDINGS_COVERAGE_GAPS_AND_MANUAL_CLEANUP_PENDING",
+  "excludedByUser": [
+    "H01",
+    "H02",
+    "Reddit live editor",
+    "Telegram live editor"
+  ],
+  "cases": [
+    {
+      "id": "official-site-session",
+      "status": "PASS_WEBSITE_UI",
+      "proVisible": true,
+      "loginLinkAbsent": true
+    },
+    {
+      "id": "settings-page-access",
+      "status": "BLOCKED_BY_BROWSER_URL_POLICY",
+      "schemesAllowed": [
+        "http",
+        "https"
+      ],
+      "manualUserHelpRequiredForSettingsFlows": true
+    },
+    {
+      "id": "wikipedia-precheck",
+      "status": "READY",
+      "nestedTables": 79,
+      "shortTextNodesPresent": true
+    },
+    {
+      "id": "kaggle-precheck",
+      "status": "PARTIAL_PRECONDITION",
+      "learnGuides": 8,
+      "formulaNodes": 0
+    },
+    {
+      "id": "google-overview-precheck",
+      "status": "OVERVIEW_TEXT_PRESENT_CARD_NOT_YET_VERIFIED",
+      "followedBy": "google-ai-overview-source-card-live"
+    },
+    {
+      "id": "input-text-translation-context",
+      "status": "PASS_CONTEXT_AND_VISIBLE_REAL_RESULT",
+      "selected": "bank",
+      "context": "We rested on the bank near marker TBCTX_TEXT_19.",
+      "contextExact": true,
+      "modelVisible": "Kimi-K3 (8.00x)",
+      "result": "银行",
+      "scope": "controlled input fixture with real account provider",
+      "screenshot": "input-text-context-real-provider.png"
+    },
+    {
+      "id": "glossary-A-real-provider",
+      "status": "PASS",
+      "source": "RenyimiaoCanaryE1D90DC9",
+      "expected": "术语验收甲E1D90DC9",
+      "visibleTranslation": "RenyimiaoCanaryE1D90DC9 is the name of a research project. The green notebook is on the desk.术语验收甲E1D90DC9是一个研究项目的名称。绿色的笔记本在书桌上。",
+      "titleTranslated": true,
+      "screenshot": "glossary-A-real-provider.png",
+      "cacheCleared": false
+    },
+    {
+      "id": "input-text-dictionary-context",
+      "status": "PASS",
+      "selected": "bank",
+      "context": "We rested on the bank near marker TBCTX_TEXT_19.",
+      "resultSense": "河岸",
+      "resultSentence": "We rested on the bank near marker TBCTX_TEXT_19.",
+      "modelVisible": "Kimi-K3 (8.00x)",
+      "scope": "controlled input fixture with real account provider"
+    },
+    {
+      "id": "manual-custom-action-editor-and-hub",
+      "status": "USER_REPORTED_COMPLETED",
+      "userReply": "清单已完成，A 动作已启用",
+      "checklist": "manual-ui-checks.md",
+      "automatedExecutionStillPending": true,
+      "internalPagesNotAccessed": true,
+      "executionOutcome": "A/B absent at runtime; not passed"
+    },
+    {
+      "id": "input-search-translation-context",
+      "status": "PASS_CONTEXT_AND_VISIBLE_RESULT",
+      "selected": "bank",
+      "context": "The bank approved the loan near marker TBCTX_SEARCH_27.",
+      "contextExact": true,
+      "modelVisible": "Kimi-K3 (8.00x)",
+      "scope": "controlled input fixture with real account provider"
+    },
+    {
+      "id": "glossary-B-real-provider",
+      "status": "PASS",
+      "expected": "术语验收乙E1D90DC9",
+      "oldAbsent": true,
+      "visibleTranslation": "RenyimiaoCanaryE1D90DC9 is the name of a research project. The green notebook is on the desk.术语验收乙E1D90DC9是一个研究项目的名称。绿色的笔记本在书桌上。",
+      "cacheCleared": false,
+      "sameSource": true,
+      "originalRestoredBetweenRuns": true,
+      "screenshot": "glossary-B-real-provider.png"
+    },
+    {
+      "id": "input-search-dictionary-context",
+      "status": "PASS",
+      "selected": "bank",
+      "context": "The bank approved the loan near marker TBCTX_SEARCH_27.",
+      "resultSense": "银行",
+      "resultSentenceVisible": true,
+      "modelVisible": "Kimi-K3 (8.00x)"
+    },
+    {
+      "id": "input-search-invalid-pointer-attempt",
+      "status": "DISCARDED_HARNESS_SELECTION_ERROR",
+      "selectedLabelInsteadOfInputWord": true,
+      "correctedWithVerifiedHitAndSelection": true
+    },
+    {
+      "id": "custom-action-runtime-presence",
+      "status": "PENDING_USER_CONFIRMATION_ACTION_BUTTONS_ABSENT",
+      "normalActionsVisible": [
+        "翻译",
+        "朗读",
+        "词典"
+      ],
+      "candidateActionNamesAbsent": [
+        "TB-ACCEPT-E1D90DC9-A",
+        "TB-ACCEPT-E1D90DC9-B"
+      ],
+      "normalHttpReloadPerformed": true,
+      "followedBy": "custom-action-runtime-recheck-after-user-confirmation"
+    },
+    {
+      "id": "input-textarea-translation-context",
+      "status": "PASS_CONTEXT_AND_VISIBLE_RESULT",
+      "selected": "bank",
+      "context": "We rested on the bank near marker TBCTX_AREA_38.",
+      "middleParagraphExact": true,
+      "outsideMarkersAbsent": true,
+      "modelVisible": "Kimi-K3 (8.00x)"
+    },
+    {
+      "id": "input-textarea-dictionary-context",
+      "status": "PASS",
+      "selected": "bank",
+      "context": "We rested on the bank near marker TBCTX_AREA_38.",
+      "middleParagraphOnly": true,
+      "resultSentenceVisible": true,
+      "resultSense": "河岸",
+      "outsideMarkersAbsentFromContext": true,
+      "modelVisible": "Kimi-K3 (8.00x)"
+    },
+    {
+      "id": "input-otp-sensitive-ui-path",
+      "status": "NOT_ENTERED_NO_ACTION_POPOVER",
+      "selectedOffsets": {
+        "start": 0,
+        "end": 4
+      },
+      "contextControlAbsent": true,
+      "noPrivacyReadOrPayloadClaim": true
+    },
+    {
+      "id": "google-ai-overview-source-card-live",
+      "status": "PASS",
+      "source": "real Google AI Overview citation card",
+      "before": {
+        "clamp": "2",
+        "summaryHeight": 32
+      },
+      "after": {
+        "clamp": "none",
+        "maxHeight": "none",
+        "summaryHeight": 96,
+        "wrapperCount": 2,
+        "selectorMatches": 14
+      },
+      "scroll": {
+        "windowScrollY": 0,
+        "innerScrollTop": 194.5,
+        "innerHeight": 290,
+        "innerScrollHeight": 485,
+        "scroller": {
+          "x": 351.515625,
+          "y": 320,
+          "width": 360,
+          "height": 290,
+          "top": 320,
+          "right": 711.515625,
+          "bottom": 610,
+          "left": 351.515625
+        },
+        "tailRect": {
+          "x": 496.609375,
+          "y": 335.5,
+          "width": 12.109375,
+          "height": 16.5,
+          "top": 335.5,
+          "right": 508.71875,
+          "bottom": 352,
+          "left": 496.609375
+        },
+        "tailWithinScroller": true,
+        "wrapperCount": 2
+      },
+      "allPageWrappers": 2,
+      "trigger": "trusted pointer at edge of one 219-character citation card, native Control",
+      "invalidHitAttemptsDidNotTriggerTranslation": true,
+      "screenshots": [
+        "google-source-card-before.png",
+        "google-source-card-after.png",
+        "google-source-card-scrolled.png"
+      ]
+    },
+    {
+      "id": "glossary-deleted-real-provider",
+      "status": "MISMATCH_OLD_B_STILL_VISIBLE_AFTER_RETRANSLATE",
+      "sameSource": true,
+      "cacheCleared": false,
+      "visibleTranslation": "RenyimiaoCanaryE1D90DC9 is the name of a research project. The green notebook is on the desk.术语验收乙E1D90DC9是一个研究项目的名称。绿色的笔记本在书桌上。",
+      "oldAAndBAbsent": false,
+      "screenshot": "glossary-delete-observed-old-B.png"
+    },
+    {
+      "id": "custom-action-runtime-recheck-after-user-confirmation",
+      "status": "ACTION_BUTTON_ABSENT",
+      "buttons": [
+        {
+          "label": "翻译",
+          "text": ""
+        },
+        {
+          "label": "朗读",
+          "text": ""
+        },
+        {
+          "label": "词典",
+          "text": ""
+        }
+      ],
+      "userReportsConfigured": true,
+      "settingsAndRuntimeDiscrepancyCauseUnconfirmed": true
+    },
+    {
+      "id": "wikipedia-short-high-threshold",
+      "status": "PASS_HIGH_SIDE_PENDING_LOW_CONTROL",
+      "minCharactersReportedByUser": 30,
+      "minWordsReportedByUser": 0,
+      "pointer": {
+        "display": "block",
+        "hitTag": "P",
+        "hitTextLength": 8,
+        "inside": true,
+        "rect": {
+          "bottom": 282.5859375,
+          "height": 24,
+          "left": 1070.8046875,
+          "right": 1320.8046875,
+          "top": 258.5859375,
+          "width": 250,
+          "x": 1070.8046875,
+          "y": 258.5859375
+        },
+        "x": 1077,
+        "y": 271
+      },
+      "observed": {
+        "shortText": "See text",
+        "spinners": 0,
+        "wrappers": 0
+      },
+      "followedBy": "wikipedia-short-text-threshold-control"
+    },
+    {
+      "id": "custom-action-normal-body-recheck",
+      "status": "ACTION_BUTTON_ABSENT",
+      "normalBodySelection": true,
+      "buttons": [
+        "翻译",
+        "朗读",
+        "词典"
+      ],
+      "screenshot": "custom-action-missing-toolbar.png"
+    },
+    {
+      "id": "glossary-delete-after-normal-reload",
+      "status": "MISMATCH_REQUIRES_DELETION_STATE_OR_CACHE_DIAGNOSIS",
+      "observed": {
+        "paragraph": "RenyimiaoCanaryE1D90DC9 is the name of a research project. The green notebook is on the desk.术语验收乙E1D90DC9是一个研究项目的名称。绿色的笔记本在书桌上。",
+        "spinners": 0,
+        "title": "金丝雀项目 — TranslateBuff 验收",
+        "wrappers": 3
+      },
+      "persistentCacheCleared": false,
+      "normalReloadOnly": true,
+      "userReportedEntryDeleted": true
+    },
+    {
+      "id": "wikipedia-short-text-threshold-control",
+      "status": "PASS",
+      "url": "https://en.wikipedia.org/wiki/Frog",
+      "high": {
+        "minCharacters": 30,
+        "minWords": 0,
+        "shortText": "See text",
+        "spinners": 0,
+        "wrappers": 0
+      },
+      "low": {
+        "minCharacters": 0,
+        "minWords": 0,
+        "paragraph": "See text见正文",
+        "spinners": 0,
+        "title": "Frog - Wikipedia",
+        "wrappers": 1
+      },
+      "method": "Same visible 8-character paragraph, verified pointer target and native Control hover, real Kimi-K3; no whole-page translation.",
+      "screenshot": "wikipedia-short-low-threshold.png"
+    },
+    {
+      "id": "tab-title-translation-switch-off",
+      "status": "PASS",
+      "bodyTranslated": true,
+      "spinners": 0,
+      "title": "Canary Project — TranslateBuff Acceptance",
+      "wrappers": 4,
+      "method": "User disabled title translation. Existing title immediately restored; page translation off then on retained original title while body translated. Prior on-state translated title recorded in glossary cases."
+    },
+    {
+      "id": "kaggle-live-learn-guide-paragraph",
+      "status": "PARTIAL",
+      "pageTranslationAndRestore": "PASS",
+      "translated": {
+        "rect": {
+          "bottom": 470.8828125,
+          "height": 60.796875,
+          "left": 427,
+          "right": 1311,
+          "top": 410.0859375,
+          "width": 884,
+          "x": 427,
+          "y": 410.0859375
+        },
+        "text": "To ensure you are ready for the course, please complete these essential setup steps: 为确保您已为课程做好准备，请完成以下必要的设置步骤：",
+        "wrappers": 1
+      },
+      "restored": {
+        "text": "To ensure you are ready for the course, please complete these essential setup steps: ",
+        "wrappers": 0
+      },
+      "limitation": "Actual current learn-guide has no formula nodes; formula preservation P08 remains unverified on live target.",
+      "url": "https://www.kaggle.com/learn-guide/5-day-genai"
+    },
+    {
+      "id": "input-password-sensitive-precheck",
+      "status": "UI_OBSERVATION_ONLY_NOT_PRIVACY_PASS",
+      "selectedOffsets": {
+        "start": 0,
+        "end": 28
+      },
+      "toolbarVisible": true,
+      "actionExecuted": false,
+      "fullControlValueReadByAgent": false,
+      "comment": "Toolbar presence is allowed by current snapshot implementation; complete-value read and final payload behavior were not observed. No sensitive action used to bypass tool redaction."
+    },
+    {
+      "id": "wikipedia-screenshot-clip-attempt",
+      "status": "DISCARDED_SCREENSHOT_CLIP",
+      "screenshot": "wikipedia-short-low-threshold-wrong-clip.png",
+      "comment": "Clipped screenshot omitted target; replaced evidence with full viewport screenshot, DOM result unchanged."
+    }
+  ],
+  "limitations": [
+    "Only page DOM/UI and current-origin CDP; no extension settings or service-worker access. No security-policy workaround attempted.",
+    "No H01/H02 or Reddit/Telegram testing will be performed in this round."
+  ],
+  "createdAt": "2026-10-15T08:59:52.077516+00:00",
+  "completeAcceptance": false,
+  "upstreamMetadataAdvanced": false,
+  "serviceWorkerNetworkAttribution": "unavailable; no zero-commercial-request conclusion",
+  "cleanup": {
+    "status": "PARTIAL_OWNED_BROWSER_RESOURCES_CLEANED_EXTENSION_SETTINGS_LEFT_UNCHANGED",
+    "userReply": "这些动作你能完成吗，太多了，我操作会出问题",
+    "extensionCleanupPerformed": false,
+    "reason": "Extension internal URLs are blocked by browser tool policy. User did not confirm manual cleanup; do not bypass policy or guess original settings.",
+    "temporaryItemsMayRemain": [
+      "验收临时-e1d90dc9",
+      "TB-ACCEPT-E1D90DC9-A",
+      "TB-ACCEPT-E1D90DC9-B"
+    ],
+    "settingsNotConfirmedRestored": [
+      "hover translation enabled",
+      "minimum characters 0 / words 0",
+      "tab title translation off",
+      "Translation Hub preferences and test input"
+    ],
+    "postCleanupGlossaryRetest": "NOT_RUN_NO_LIBRARY_REMOVAL_CONFIRMATION",
+    "ownedTabs": [
+      {
+        "name": "input-fixture",
+        "status": "CLOSED"
+      },
+      {
+        "name": "glossary-fixture",
+        "status": "CLOSED"
+      },
+      {
+        "name": "wikipedia",
+        "status": "CLOSED"
+      },
+      {
+        "name": "kaggle",
+        "status": "CLOSED"
+      },
+      {
+        "name": "google-search",
+        "status": "CLOSED"
+      }
+    ],
+    "ownedHttpServer": "STOPPED_PROCESS_EXIT_0_AND_PORT_NO_LONGER_LISTENING"
+  },
+  "summary": {
+    "livePass": [
+      "Google AI Overview citation-card unclamp and inner scroll",
+      "Wikipedia same-text high/low threshold"
+    ],
+    "realAccountControlledFixturePass": [
+      "text/search/textarea translate and dictionary (6 cases)",
+      "title translation on/off",
+      "glossary add and A-to-B edit"
+    ],
+    "livePartial": [
+      "Kaggle paragraph translation/restore passed; no formula present"
+    ],
+    "manualUserReported": [
+      "custom action editor checklist",
+      "Translation Hub one/two model text comparison"
+    ],
+    "unresolved": [
+      "F01 custom A/B buttons absent at runtime",
+      "F02 old glossary B remains after reported deletion and normal reload"
+    ],
+    "notCovered": [
+      "P02 live final prompt clipping/flattening",
+      "complete P05 sensitive-field payload/getter matrix and custom-action combinations",
+      "Kaggle live formula preservation",
+      "complete G5 network attribution"
+    ]
+  },
+  "completedAt": "2026-10-15T09:38:37.250Z"
+}

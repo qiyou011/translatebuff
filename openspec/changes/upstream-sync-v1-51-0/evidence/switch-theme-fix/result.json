@@ -1,0 +1,54 @@
+{
+  "status": "SOURCE_FIXED_ISOLATED_BROWSER_PASS_USER_CONFIRMED_ACTUAL_SWITCH_UI",
+  "sourceHead": "e1d90dc928ca5fbbbba112e480131e1c909c93ce",
+  "workingTreeDirty": true,
+  "productionChanges": [
+    "src/components/ui/base-ui/switch.tsx",
+    "src/fork/ui/options/options-theme.css"
+  ],
+  "relatedPriorLayoutFixRetained": true,
+  "userConfirmedPriorActualLayoutRestored": true,
+  "impact": {
+    "risk": "CRITICAL",
+    "direct": 28,
+    "total": 54,
+    "flows": 10,
+    "reportedBeforeEdit": true,
+    "report": "impact-switch.json"
+  },
+  "browser": {
+    "scope": "Real isolated React Switch + compiled real CSS in same user Chrome; no extension internal pages/config",
+    "red": "before checked track transparent and on/off both thumbX=2; verifier fails",
+    "greenStatePairs": 16,
+    "onThumbX": 22,
+    "offThumbX": 2,
+    "click": "PASS",
+    "space": "PASS",
+    "disabled": "PASS",
+    "instrumentedDrag": "Before and after one true change, final on",
+    "initialUninstrumentedDrag": "Two off-after-release observations retained, exact cause unconfirmed",
+    "actualExtensionSettings": "USER_CONFIRMED_VISUAL_PASS: 已重载，开关显示正常"
+  },
+  "engineering": {
+    "mainPassed": 4996,
+    "mainExternalIntentionallySkipped": 4,
+    "forkPassed": 897,
+    "finalTargetedPassed": 7,
+    "switchScopedTypeLint": "PASS",
+    "fullTypeLint": "8 existing script diagnostics; see type-full.log",
+    "independentReview": "PASS",
+    "forkBoundary": "PASS",
+    "brand": "PASS",
+    "openspecStrict": "PASS",
+    "generatedFixtureBundles": "Moved to ignored .output/switch-fixtures; no production lint exclusions added"
+  },
+  "artifact": "artifact.json",
+  "completeAcceptance": false,
+  "upstreamMetadataAdvanced": false,
+  "userDeferred": [
+    "H01",
+    "H02",
+    "Reddit",
+    "Telegram"
+  ]
+}

@@ -1,0 +1,179 @@
+{
+  "status": "found",
+  "symbol": {
+    "uid": "Function:src/entrypoints/background/page-translation.ts:setupPageTranslationHandlers",
+    "name": "setupPageTranslationHandlers",
+    "kind": "Function",
+    "filePath": "src/entrypoints/background/page-translation.ts",
+    "startLine": 62,
+    "endLine": 313
+  },
+  "incoming": {
+    "calls": [
+      {
+        "uid": "Function:src/entrypoints/background/index.ts:main",
+        "name": "main",
+        "filePath": "src/entrypoints/background/index.ts"
+      }
+    ]
+  },
+  "outgoing": {
+    "calls": [
+      {
+        "uid": "Function:src/entrypoints/background/page-translation.ts:getValidatedCachedTranslation",
+        "name": "getValidatedCachedTranslation",
+        "filePath": "src/entrypoints/background/page-translation.ts"
+      },
+      {
+        "uid": "Function:src/entrypoints/background/translation-context-summary.ts:getOrGenerateTranslationContextSummary",
+        "name": "getOrGenerateTranslationContextSummary",
+        "filePath": "src/entrypoints/background/translation-context-summary.ts"
+      },
+      {
+        "uid": "Function:src/entrypoints/background/translation-queues.ts:getQueuedTranslationRouting",
+        "name": "getQueuedTranslationRouting",
+        "filePath": "src/entrypoints/background/translation-queues.ts"
+      },
+      {
+        "uid": "Function:src/entrypoints/background/translation-queues.ts:getLocalProviderConfig",
+        "name": "getLocalProviderConfig",
+        "filePath": "src/entrypoints/background/translation-queues.ts"
+      },
+      {
+        "uid": "Function:src/entrypoints/background/translation-queues.ts:executeQueuedTranslation",
+        "name": "executeQueuedTranslation",
+        "filePath": "src/entrypoints/background/translation-queues.ts"
+      },
+      {
+        "uid": "Function:src/entrypoints/background/translation-queues.ts:shouldUseBatchQueue",
+        "name": "shouldUseBatchQueue",
+        "filePath": "src/entrypoints/background/translation-queues.ts"
+      },
+      {
+        "uid": "Function:src/entrypoints/background/translation-queues.ts:buildTranslationScopeKey",
+        "name": "buildTranslationScopeKey",
+        "filePath": "src/entrypoints/background/translation-queues.ts"
+      },
+      {
+        "uid": "Function:src/entrypoints/background/translation-queues.ts:createWebPageTranslationQueues",
+        "name": "createWebPageTranslationQueues",
+        "filePath": "src/entrypoints/background/translation-queues.ts"
+      },
+      {
+        "uid": "Function:src/types/config/provider/index.ts:isLLMProviderConfig",
+        "name": "isLLMProviderConfig",
+        "filePath": "src/types/config/provider/index.ts"
+      },
+      {
+        "uid": "Function:src/utils/config/storage.ts:getLocalConfig",
+        "name": "getLocalConfig",
+        "filePath": "src/utils/config/storage.ts"
+      },
+      {
+        "uid": "Function:src/utils/constants/prompt.ts:isNoTranslationSentinel",
+        "name": "isNoTranslationSentinel",
+        "filePath": "src/utils/constants/prompt.ts"
+      },
+      {
+        "uid": "Function:src/utils/content/utils.ts:cleanText",
+        "name": "cleanText",
+        "filePath": "src/utils/content/utils.ts"
+      },
+      {
+        "uid": "Function:src/utils/crypto-polyfill.ts:getRandomUUID",
+        "name": "getRandomUUID",
+        "filePath": "src/utils/crypto-polyfill.ts"
+      },
+      {
+        "uid": "Function:src/utils/hash.ts:Sha256Hex",
+        "name": "Sha256Hex",
+        "filePath": "src/utils/hash.ts"
+      },
+      {
+        "uid": "Function:src/utils/host/translate/html-attribute-markers.ts:hasHtmlAttributeMarkerProtocol",
+        "name": "hasHtmlAttributeMarkerProtocol",
+        "filePath": "src/utils/host/translate/html-attribute-markers.ts"
+      },
+      {
+        "uid": "Function:src/utils/host/translate/html-attribute-markers.ts:assertHtmlAttributeMarkerIntegrity",
+        "name": "assertHtmlAttributeMarkerIntegrity",
+        "filePath": "src/utils/host/translate/html-attribute-markers.ts"
+      },
+      {
+        "uid": "Function:src/utils/host/translate/inline-atom-tokens.ts:hasInlineAtomTokens",
+        "name": "hasInlineAtomTokens",
+        "filePath": "src/utils/host/translate/inline-atom-tokens.ts"
+      },
+      {
+        "uid": "Function:src/utils/host/translate/inline-atom-tokens.ts:auditInlineAtomTokens",
+        "name": "auditInlineAtomTokens",
+        "filePath": "src/utils/host/translate/inline-atom-tokens.ts"
+      },
+      {
+        "uid": "Function:src/utils/host/translate/translate-text.ts:normalizePromptContextValue",
+        "name": "normalizePromptContextValue",
+        "filePath": "src/utils/host/translate/translate-text.ts"
+      },
+      {
+        "uid": "Function:src/utils/hosted-ai/routing.ts:validateProviderHostedFeature",
+        "name": "validateProviderHostedFeature",
+        "filePath": "src/utils/hosted-ai/routing.ts"
+      },
+      {
+        "uid": "Function:src/utils/providers/provider-ref.ts:canProviderRefGenerateText",
+        "name": "canProviderRefGenerateText",
+        "filePath": "src/utils/providers/provider-ref.ts"
+      },
+      {
+        "uid": "Class:src/utils/request/cancellation.ts:TranslationCancelledError",
+        "name": "TranslationCancelledError",
+        "filePath": "src/utils/request/cancellation.ts"
+      }
+    ],
+    "accesses": [
+      {
+        "uid": "Property:src/utils/db/dexie/app-db.ts:AppDB.translationCache",
+        "name": "translationCache",
+        "filePath": "src/utils/db/dexie/app-db.ts"
+      }
+    ]
+  },
+  "processes": [
+    {
+      "id": "proc_0_setuppagetranslation",
+      "name": "SetupPageTranslationHandlers → IsAPIProvider",
+      "step_index": 1,
+      "step_count": 10
+    },
+    {
+      "id": "proc_2_setuppagetranslation",
+      "name": "SetupPageTranslationHandlers → ResolveBrowserLocale",
+      "step_index": 1,
+      "step_count": 9
+    },
+    {
+      "id": "proc_3_setuppagetranslation",
+      "name": "SetupPageTranslationHandlers → GetDefaultProviderDescription",
+      "step_index": 1,
+      "step_count": 9
+    },
+    {
+      "id": "proc_10_setuppagetranslation",
+      "name": "SetupPageTranslationHandlers → RunMigration",
+      "step_index": 1,
+      "step_count": 7
+    },
+    {
+      "id": "proc_11_setuppagetranslation",
+      "name": "SetupPageTranslationHandlers → ApplyAPIKeysFromEnv",
+      "step_index": 1,
+      "step_count": 7
+    },
+    {
+      "id": "proc_12_setuppagetranslation",
+      "name": "SetupPageTranslationHandlers → MigratePair",
+      "step_index": 1,
+      "step_count": 7
+    }
+  ]
+}

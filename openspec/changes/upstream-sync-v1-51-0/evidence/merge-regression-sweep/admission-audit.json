@@ -1,0 +1,995 @@
+{
+  "scope": "云准入与渲染依赖只读审计；生产/测试不改，不重审已修Note空叶子；仅写本报告",
+  "createdAt": "2026-10-15T11:26:17.026142+00:00",
+  "repository": "/Users/yisen/.codex/worktrees/upstream-sync-v1-51-0/translatebuff",
+  "sourceHead": "e1d90dc928ca5fbbbba112e480131e1c909c93ce",
+  "graphStatus": "Repository: /Users/yisen/.codex/worktrees/upstream-sync-v1-51-0/translatebuff\nIndexed: 10/15/2026, 5:56:24 PM\nIndexed commit: e1d90dc\nCurrent commit: e1d90dc\nStatus: ✅ up-to-date\n",
+  "graphLimitations": [
+    "索引commit=e1d90dc；未提交新空叶子/redirect为盲点，已逐项看当前源码。",
+    "fork-ui-redirect是构建解析行为，图里fork导出的0 caller不能用作安全结论；同时跟踪上游同名符号消费者与当前重定向。",
+    "宽query会混入已生成evidence/unpacked符号，未将这些结果当成当前生产消费者。"
+  ],
+  "uncommittedSnapshot": [
+    " M src/fork/ui/options/custom-actions-theme.css",
+    " M src/fork/ui/options/options-theme.css",
+    " M wxt.config.ts",
+    "?? src/fork/ui/options/__tests__/custom-actions-layout.test.tsx",
+    "?? src/fork/ui/options/__tests__/options-routes-smoke.fixture.ts",
+    "?? src/fork/ui/options/__tests__/options-routes-smoke.forktest.tsx",
+    "?? src/fork/ui/options/__tests__/selection-toolbar-page.forktest.tsx",
+    "?? src/fork/ui/options/note-suggestion-items.tsx"
+  ],
+  "classificationDefinitions": {
+    "已覆盖": "已有定向测试源及当前边界源码；本轮仅读测试，没有重跑，不等于新包整页回归通过。",
+    "可信源码无当前可见调用": "图+全文搜索+实际fork挂载/redirect接线补证；不是仅依据0 caller。",
+    "需集成回归": "组合级覆盖缺口，不推断为产品错误。",
+    "实际可证产品问题": "本轮新增为0；既知3项修复由主代理独立验收，不重复计数。"
+  },
+  "newProvenProductIssues": [],
+  "consumerMatrix": [
+    {
+      "id": "A01",
+      "feature": "同步拒绝出口与笔记建议遗留hook",
+      "classification": "可信源码无当前可见调用",
+      "api": "resolveNoteSuggestionAction 同步抛 UpstreamCloudDisabledError；拒绝出口保持不变",
+      "evidence": [
+        {
+          "file": "src/fork/upstream-services/custom-actions.ts",
+          "line": 46,
+          "match": "throw new UpstreamCloudDisabledError()"
+        },
+        {
+          "file": "src/entrypoints/selection.content/selection-toolbar/note-suggestion/use-note-suggestion.ts",
+          "line": 121,
+          "match": "structuredClone(resolveNoteSuggestionAction(config))"
+        },
+        {
+          "file": "src/entrypoints/selection.content/app.tsx",
+          "line": 2,
+          "match": "export { default }"
+        },
+        {
+          "file": "src/fork/ui/selection-content/App.tsx",
+          "line": 14,
+          "match": "import { SelectionTranslationProvider }"
+        }
+      ],
+      "reason": "图中剩余 maybeFire 只由上游 SelectionTranslationProvider 使用；实际 app shim 挂 fork Provider/controller，fork 目录无 useNoteSuggestion 导入。旧 noteSuggestion.enabled=true 和 local provider 不会重新挂载该上游 hook。已修 NoteSuggestionItems 空叶子仅记索引盲点，不重复审查它。",
+      "coverage": [],
+      "residual": "新增页面不得重新 import 上游完整 SelectionTranslationProvider；仍需整页路由回归。"
+    },
+    {
+      "id": "A02",
+      "feature": "options/popup provider渲染",
+      "classification": "已覆盖",
+      "api": "resolveProviderRefForCapability 同步返回 local/null，不在渲染期抛禁用错误",
+      "evidence": [
+        {
+          "file": "src/fork/upstream-services/provider-registry.ts",
+          "line": 20,
+          "match": "if (!resolved || resolved.kind === \"local\")"
+        },
+        {
+          "file": "src/fork/ui/options/feature-providers-config.tsx",
+          "line": 49,
+          "match": "const resolved = resolveProviderRefForCapability"
+        },
+        {
+          "file": "src/fork/ui/options/feature-provider-selector-list.tsx",
+          "line": 56,
+          "match": "const resolved = resolveProviderRefForCapability"
+        },
+        {
+          "file": "src/fork/ui/popup/providers-field.tsx",
+          "line": 39,
+          "match": "if (resolved?.kind !== \"local\")"
+        },
+        {
+          "file": "src/fork/components/provider-selector.tsx",
+          "line": 77,
+          "match": "(provider: ProviderSelectorOption | null)"
+        },
+        {
+          "file": "src/fork/components/provider-selector-groups.ts",
+          "line": 28,
+          "match": "!isSystemProviderSelectorItem(provider)"
+        }
+      ],
+      "reason": "默认/旧 system 无候选为 null；有合格自有候选为 local；显式有效 local 保持。消费者 optional-chain/null 分支，provider picker 过滤 system。noteSuggestion 从功能清单排除。",
+      "coverage": [
+        "src/fork/upstream-services/__tests__/provider-registry.forktest.ts",
+        "src/fork/upstream-services/__tests__/provider-ref-contract.test.ts",
+        "src/fork/upstream-services/__tests__/provider-display.forktest.tsx"
+      ],
+      "residual": "现有测试证明解析/选择器叶子契约，不代替所有 options 路由在三类配置下实际挂载。"
+    },
+    {
+      "id": "A03",
+      "feature": "页面provider同步throw及serialize异步拒绝",
+      "classification": "可信源码无options/popup/Hub渲染期调用",
+      "api": "resolvePageTranslationProvider 可同步抛；serializeProviderRef 可异步拒绝；OrNull/checkProviderAvailability 转 null/available:false",
+      "evidence": [
+        {
+          "file": "src/fork/upstream-services/provider-ref.ts",
+          "line": 25,
+          "match": "if (ref?.kind !== \"local\") throw"
+        },
+        {
+          "file": "src/fork/upstream-services/provider-ref.ts",
+          "line": 33,
+          "match": "return resolvePageTranslationProvider(config)"
+        },
+        {
+          "file": "src/fork/upstream-services/provider-ref.ts",
+          "line": 82,
+          "match": "return { available: false, message: error.message }"
+        },
+        {
+          "file": "src/entrypoints/host.content/translation-control/page-translation.ts",
+          "line": 268,
+          "match": "const requestedProviderConfig = resolvePageTranslationProviderOrNull"
+        },
+        {
+          "file": "src/entrypoints/host.content/translation-control/page-translation.ts",
+          "line": 307,
+          "match": "const availability = await checkProviderAvailability"
+        },
+        {
+          "file": "src/entrypoints/host.content/translation-control/page-translation.ts",
+          "line": 326,
+          "match": "const providerConfig = resolvePageTranslationProvider(config)"
+        }
+      ],
+      "reason": "图+全文搜索定位调用在翻译任务/页面启动路径，非 options/popup/Hub 渲染。PageTranslationManager 先 validator/OrNull/availability，再在 try 内用抛异常版。",
+      "coverage": [
+        "src/fork/upstream-services/__tests__/provider-ref.forktest.ts",
+        "src/fork/upstream-services/__tests__/translation-pipelines.forktest.ts"
+      ],
+      "residual": "用户触发任务时的错误UI仍应做集成回归；不将任务内明确拒绝视作整页渲染故障。"
+    },
+    {
+      "id": "A04",
+      "feature": "上游auth与billing/RPC",
+      "classification": "已覆盖",
+      "api": "getSession/useSession 立即空且pending=false；signOut/transport call异步拒绝",
+      "evidence": [
+        {
+          "file": "src/fork/upstream-services/auth-client.ts",
+          "line": 7,
+          "match": "return { data: null, error: null }"
+        },
+        {
+          "file": "src/fork/upstream-services/auth-client.ts",
+          "line": 13,
+          "match": "isPending: false"
+        },
+        {
+          "file": "src/fork/upstream-services/disabled-rpc-link.ts",
+          "line": 8,
+          "match": "throw new UpstreamCloudDisabledError()"
+        },
+        {
+          "file": "src/components/user-account-menu/shared.tsx",
+          "line": 183,
+          "match": "enabled: userId !== undefined"
+        },
+        {
+          "file": "src/fork/ui/popup/App.tsx",
+          "line": 27,
+          "match": "<ForkAccountMenu />"
+        },
+        {
+          "file": "src/entrypoints/options/app-sidebar/index.tsx",
+          "line": 12,
+          "match": "@/fork/ui/options/account-menu-sidebar"
+        },
+        {
+          "file": "src/fork/ui/options/account-menu-sidebar.tsx",
+          "line": 9,
+          "match": "useForkSession"
+        }
+      ],
+      "reason": "可见账号菜单直接使用自有forkSession，独立于空上游session。上游useUserAccountMenu只在未采用的上游菜单；即被复用，billing query以上游userId门控为空。SDK不会由type-only auth导入初始化。",
+      "coverage": [
+        "src/fork/upstream-services/__tests__/auth-disabled.forktest.ts",
+        "src/fork/upstream-services/__tests__/orpc-disabled.forktest.ts"
+      ],
+      "residual": "orpc拒绝测试主动关闭Query重试，不能据此称所有未来query消费者自动尊重isRetryable；当前可见云query由入口/空session关闭。"
+    },
+    {
+      "id": "A05",
+      "feature": "托管AI配额/可选provider状态",
+      "classification": "已覆盖",
+      "api": "useHostedAiStatus 同步返回undefined状态、signedIn=false、pending=false",
+      "evidence": [
+        {
+          "file": "src/fork/ui/hosted-ai/use-hosted-ai-status.ts",
+          "line": 15,
+          "match": "export function useHostedAiStatus"
+        },
+        {
+          "file": "src/entrypoints/options/pages/api-providers/built-in-ai-usage/index.tsx",
+          "line": 88,
+          "match": "if (!isSignedIn)"
+        },
+        {
+          "file": "src/components/llm-providers/use-hosted-ai-provider-options.ts",
+          "line": 17,
+          "match": "const { status } = useHostedAiStatus"
+        },
+        {
+          "file": "src/utils/hosted-ai/status.ts",
+          "line": 81,
+          "match": "export function getHostedAiTierStatus"
+        }
+      ],
+      "reason": "上游API Providers页仍挂usage组件，但实际hook为无query空状态，组件立即null；provider options/status helpers容忍undefined；fork picker不显示system。",
+      "coverage": [
+        "src/fork/upstream-services/__tests__/cloud-ui.forktest.tsx"
+      ],
+      "residual": "需要旧hosted缓存+自有已登录配置的页面组合验证，不把自有账号登录当成上游会话。"
+    },
+    {
+      "id": "A06",
+      "feature": "Notebase云连接/保存/自动建议",
+      "classification": "可信源码无当前可见调用",
+      "api": "RPC拒绝；resolveNoteSuggestionAction同步throw保持",
+      "evidence": [
+        {
+          "file": "src/fork/ui/options/custom-action-editor-tabs.tsx",
+          "line": 5,
+          "match": "return config"
+        },
+        {
+          "file": "src/fork/ui/options/notebase-connection-field.tsx",
+          "line": 5,
+          "match": "return null"
+        },
+        {
+          "file": "src/fork/ui/selection-content/SelectionCustomActionProvider.tsx",
+          "line": 17,
+          "match": "export function SelectionCustomActionProvider"
+        },
+        {
+          "file": "src/fork/ui/selection-content/use-custom-action-controller.ts",
+          "line": 8,
+          "match": "useCustomActionExecution"
+        },
+        {
+          "file": "src/components/custom-action/use-save-to-notebase.ts",
+          "line": 81,
+          "match": "export function useSaveToNotebase"
+        }
+      ],
+      "reason": "云tab React元素被传为prop不等于挂载；fork tabs仅返回config、连接字段本身为空。保存按钮/对话框/hook仅在上游selection providers或NoteSuggestionCard引用；当前forkselection未挂载它们。旧连接enabled或自有key不改变这些静态入口。",
+      "coverage": [
+        "src/fork/upstream-services/__tests__/cloud-ui.forktest.tsx",
+        "src/fork/upstream-services/__tests__/execution-admission.test.ts"
+      ],
+      "residual": "UI编辑器布局/自动保存为其他审计范围；本审计不把云tab关闭等同于自定义动作完整交付。"
+    },
+    {
+      "id": "A07",
+      "feature": "Google Drive授权/同步",
+      "classification": "可信源码无当前可见调用",
+      "api": "Drive原件保留OAuth/fetch；产品入口为空，非通用domain封禁",
+      "evidence": [
+        {
+          "file": "src/fork/ui/options/google-drive-sync-card.tsx",
+          "line": 6,
+          "match": "export function GoogleDriveSyncConfigItem"
+        },
+        {
+          "file": "src/entrypoints/options/pages/preference/config/index.tsx",
+          "line": 5,
+          "match": "import { GoogleDriveSyncConfigItem }"
+        },
+        {
+          "file": "src/fork/ui/options/search-items.ts",
+          "line": 7,
+          "match": "\"google-drive-sync\""
+        },
+        {
+          "file": "src/hooks/use-google-drive-auth.ts",
+          "line": 19,
+          "match": "export function useGoogleDriveAuth"
+        }
+      ],
+      "reason": "全文搜索+图显示useGoogleDriveAuth只来自被替换Drive卡和该卡子dialog；当前没有其他可见导入。搜索入口过滤。未发现后台启动Drive。",
+      "coverage": [],
+      "residual": "未声称所有原始Drive导出请求均有本地拒绝；若将来新增直接服务消费者，需重新审查入口、初始化及请求边界。"
+    },
+    {
+      "id": "A08",
+      "feature": "博客通知",
+      "classification": "已覆盖",
+      "api": "getLatestBlogDate异步返回null，入口空叶子不query",
+      "evidence": [
+        {
+          "file": "src/fork/upstream-services/blog.ts",
+          "line": 9,
+          "match": "return null"
+        },
+        {
+          "file": "src/fork/ui/popup/blog-notification.tsx",
+          "line": 3,
+          "match": "return null"
+        },
+        {
+          "file": "src/fork/ui/options/whats-new-footer.tsx",
+          "line": 3,
+          "match": "return null"
+        }
+      ],
+      "reason": "图原queryFn消费者分别为popup通知和options footer，均被替换为空；旧query缓存也没有可见显示入口。",
+      "coverage": [
+        "src/fork/upstream-services/__tests__/blog-disabled.forktest.tsx"
+      ],
+      "residual": "无本轮新增已证问题。"
+    },
+    {
+      "id": "A09",
+      "feature": "AI转录/学习侧栏/Netflix/X",
+      "classification": "已覆盖",
+      "api": "requestAiSubtitles/requestVideoSummary/Netflix fetch/adapter执行异步拒绝，ability=false，mount nil",
+      "evidence": [
+        {
+          "file": "src/fork/upstream-services/video-adapter.ts",
+          "line": 7,
+          "match": "override get supportsSidebar"
+        },
+        {
+          "file": "src/fork/upstream-services/video-adapter.ts",
+          "line": 11,
+          "match": "override get supportsAiSubtitles"
+        },
+        {
+          "file": "src/fork/upstream-services/subtitles-sidebar.ts",
+          "line": 4,
+          "match": "export function mountSubtitlesSidebar"
+        },
+        {
+          "file": "src/fork/ui/subtitles/ai-quota.tsx",
+          "line": 7,
+          "match": "return null"
+        },
+        {
+          "file": "src/fork/ui/subtitles/request-ai-subtitles-item.tsx",
+          "line": 9,
+          "match": "return null"
+        },
+        {
+          "file": "src/fork/upstream-services/ai-subtitles-access.ts",
+          "line": 3,
+          "match": "return false"
+        },
+        {
+          "file": "src/entrypoints/subtitles.content/runtime.ts",
+          "line": 16,
+          "match": "if (FORK_UPSTREAM_ADMISSION.xSubtitles)"
+        },
+        {
+          "file": "src/entrypoints/subtitles.content/runtime.ts",
+          "line": 17,
+          "match": "if (FORK_UPSTREAM_ADMISSION.netflixSubtitles)"
+        }
+      ],
+      "reason": "options视频字幕配额卡为空；字幕设置中的转录和侧栏项为空、adapter能力false；sidebar host不创建；X/Netflix在实际初始化前准入阻断。原生字幕、既有AI分段属批准能力，未被整体关闭。",
+      "coverage": [
+        "src/fork/upstream-services/__tests__/subtitle-admission.forktest.ts",
+        "src/fork/upstream-services/__tests__/platform-admission.test.ts",
+        "src/fork/upstream-services/__tests__/new-cloud-boundaries.test.ts"
+      ],
+      "residual": "设置aiSegmentation=true的正常字幕LLM路径不应作为转录商业泄漏误报；未做本轮实包平台回归。"
+    },
+    {
+      "id": "A10",
+      "feature": "后台冷启动/pending/status/summary消息",
+      "classification": "已覆盖",
+      "api": "setup保持契约；状态null、pending处理器不启动；summary保存明确拒绝",
+      "evidence": [
+        {
+          "file": "src/entrypoints/background/index.ts",
+          "line": 141,
+          "match": "setupVideoSummaryHandlers()"
+        },
+        {
+          "file": "src/entrypoints/background/index.ts",
+          "line": 156,
+          "match": "setupHostedAiStatusHandler()"
+        },
+        {
+          "file": "src/entrypoints/background/index.ts",
+          "line": 36,
+          "match": "setupNotebasePendingSaveProcessor"
+        },
+        {
+          "file": "src/fork/upstream-services/notebase-pending-save.ts",
+          "line": 7,
+          "match": "export function setupNotebasePendingSaveProcessor"
+        },
+        {
+          "file": "src/fork/upstream-services/hosted-ai-status.ts",
+          "line": 10,
+          "match": "async () => null"
+        },
+        {
+          "file": "src/fork/upstream-services/video-summary-background.ts",
+          "line": 7,
+          "match": "throw new UpstreamCloudDisabledError()"
+        }
+      ],
+      "reason": "背景初始化通过重定向进入无业务副作用setup；旧pending数据不读取/删除；直接消息调用结束。",
+      "coverage": [
+        "src/fork/upstream-services/__tests__/background-disabled.forktest.ts",
+        "src/fork/upstream-services/__tests__/subtitle-admission.forktest.ts"
+      ],
+      "residual": "当前静态审计不能替代SW/扩展页/content三上下文G5网络归属验收。"
+    },
+    {
+      "id": "A11",
+      "feature": "options默认/旧配置/自有登录态路由组合",
+      "classification": "需集成回归",
+      "api": "覆盖页面级依赖组合，不改拒绝出口",
+      "evidence": [
+        {
+          "file": "src/entrypoints/options/app.tsx",
+          "line": 4,
+          "match": "ROUTE_DEFS"
+        },
+        {
+          "file": "src/fork/ui/popup/App.tsx",
+          "line": 22,
+          "match": "function App()"
+        },
+        {
+          "file": "src/fork/ui/translation-hub/translation-card.tsx",
+          "line": 54,
+          "match": "const mutation = useMutation"
+        }
+      ],
+      "reason": "现有定向测试多为叶子或resolver，不能证明所有路由渲染、初始化、切换/旧缓存组合都已经执行。当前未证实第二处云准入导致整页错误。",
+      "coverage": [],
+      "residual": "见integrationRegressionPlan；本轮禁止运行测试/浏览器，因此保持待验，不记失败。"
+    }
+  ],
+  "integrationRegressionPlan": [
+    {
+      "id": "I01",
+      "surface": "全部options路由、popup、Hub",
+      "configurations": [
+        "上游DEFAULT_CONFIG",
+        "schema迁移后的旧云设置true/system引用，含noteSuggestion/builtIn/cloud连接",
+        "自有已登录且有合格local模型",
+        "自有登录但无key/候选被禁用"
+      ],
+      "acceptance": "加载真实redirect，挂载/路由切换无未捕获render错误；禁用功能不可见且不调用同步throw/API；正常dictionary/custom actions可见且不被整体禁用。"
+    },
+    {
+      "id": "I02",
+      "surface": "custom action深链及持久化页面状态",
+      "configurations": [
+        "default-sentence-analysis/default-improve-writing深链",
+        "tab=notebase旧页面",
+        "dictionary及正常自定义动作"
+      ],
+      "acceptance": "未批准动作不挂载编辑器/不生成；notebase不挂query；批准动作保留编辑与正常provider选择。"
+    },
+    {
+      "id": "I03",
+      "surface": "API providers/一般设置/视频设置",
+      "configurations": [
+        "旧hosted状态缓存",
+        "自有已登录",
+        "普通MT和自配local provider"
+      ],
+      "acceptance": "无上游login/billing/quota/转录入口或初始化；自有模型、正常MT和已批准字幕AI分段仍可用；禁用错误不演变持续loading。"
+    },
+    {
+      "id": "I04",
+      "surface": "后台冷启、扩展页、content",
+      "configurations": [
+        "旧pending任务",
+        "旧cookies/hosted缓存",
+        "真实有效自有provider对照"
+      ],
+      "acceptance": "独立记录三执行上下文网络归属；本静态审计不出零商业请求结论。"
+    }
+  ],
+  "graphEvidence": [
+    {
+      "name": "query",
+      "command": [
+        "node",
+        ".gitnexus/run.cjs",
+        "query",
+        "NoteSuggestionItems resolveNoteSuggestionAction",
+        "--repo",
+        ".",
+        "--limit",
+        "2"
+      ],
+      "exitCode": 0,
+      "result": {
+        "processes": [
+          {
+            "id": "proc_179_notesuggestionitems",
+            "summary": "NoteSuggestionItems → IsBuiltInActionId",
+            "priority": 0.13,
+            "symbol_count": 3,
+            "process_type": "cross_community",
+            "step_count": 4
+          },
+          {
+            "id": "proc_178_notesuggestionitems",
+            "summary": "NoteSuggestionItems → GetBuiltInAction",
+            "priority": 0.1,
+            "symbol_count": 1,
+            "process_type": "cross_community",
+            "step_count": 4
+          }
+        ],
+        "process_symbols": [
+          {
+            "id": "Function:src/entrypoints/options/pages/selection-toolbar/actions/note-suggestion-items.tsx:NoteSuggestionItems",
+            "name": "NoteSuggestionItems",
+            "filePath": "src/entrypoints/options/pages/selection-toolbar/actions/note-suggestion-items.tsx",
+            "startLine": 33,
+            "endLine": 104,
+            "module": "Components",
+            "process_id": "proc_179_notesuggestionitems",
+            "step_index": 1
+          },
+          {
+            "id": "Function:src/utils/custom-actions.ts:findSelectionToolbarAction",
+            "name": "findSelectionToolbarAction",
+            "filePath": "src/utils/custom-actions.ts",
+            "startLine": 70,
+            "endLine": 78,
+            "module": "Selection-toolbar",
+            "process_id": "proc_179_notesuggestionitems",
+            "step_index": 3
+          },
+          {
+            "id": "Function:src/utils/custom-actions.ts:resolveNoteSuggestionAction",
+            "name": "resolveNoteSuggestionAction",
+            "filePath": "src/utils/custom-actions.ts",
+            "startLine": 80,
+            "endLine": 91,
+            "module": "Selection-toolbar",
+            "process_id": "proc_179_notesuggestionitems",
+            "step_index": 2
+          }
+        ],
+        "definitions": [
+          {
+            "id": "File:src/entrypoints/options/pages/selection-toolbar/actions/note-suggestion-items.tsx",
+            "name": "note-suggestion-items.tsx",
+            "filePath": "src/entrypoints/options/pages/selection-toolbar/actions/note-suggestion-items.tsx"
+          },
+          {
+            "id": "Function:src/fork/upstream-services/custom-actions.ts:findSelectionToolbarAction",
+            "name": "findSelectionToolbarAction",
+            "filePath": "src/fork/upstream-services/custom-actions.ts",
+            "startLine": 34,
+            "endLine": 40,
+            "module": "Selection-toolbar"
+          },
+          {
+            "id": "Function:src/fork/upstream-services/custom-actions.ts:resolveNoteSuggestionAction",
+            "name": "resolveNoteSuggestionAction",
+            "filePath": "src/fork/upstream-services/custom-actions.ts",
+            "startLine": 42,
+            "endLine": 46
+          },
+          {
+            "id": "File:src/fork/upstream-services/custom-actions.ts",
+            "name": "custom-actions.ts",
+            "filePath": "src/fork/upstream-services/custom-actions.ts"
+          },
+          {
+            "id": "File:src/utils/custom-actions.ts",
+            "name": "custom-actions.ts",
+            "filePath": "src/utils/custom-actions.ts"
+          },
+          {
+            "id": "File:src/entrypoints/options/pages/selection-toolbar/actions/index.tsx",
+            "name": "index.tsx",
+            "filePath": "src/entrypoints/options/pages/selection-toolbar/actions/index.tsx"
+          },
+          {
+            "id": "Function:src/entrypoints/selection.content/selection-toolbar/note-suggestion/use-note-suggestion.ts:useNoteSuggestion",
+            "name": "useNoteSuggestion",
+            "filePath": "src/entrypoints/selection.content/selection-toolbar/note-suggestion/use-note-suggestion.ts",
+            "startLine": 70,
+            "endLine": 269
+          },
+          {
+            "id": "Function:src/entrypoints/selection.content/selection-toolbar/note-suggestion/use-note-suggestion.ts:maybeFire",
+            "name": "maybeFire",
+            "filePath": "src/entrypoints/selection.content/selection-toolbar/note-suggestion/use-note-suggestion.ts",
+            "startLine": 105,
+            "endLine": 260,
+            "module": "Selection-toolbar"
+          },
+          {
+            "id": "File:src/entrypoints/selection.content/selection-toolbar/note-suggestion/use-note-suggestion.ts",
+            "name": "use-note-suggestion.ts",
+            "filePath": "src/entrypoints/selection.content/selection-toolbar/note-suggestion/use-note-suggestion.ts"
+          },
+          {
+            "id": "File:openspec/changes/archive/2026-09-18-v1-4-1-upstream-translation-improvements/evidence/impact/198.json",
+            "name": "198.json",
+            "filePath": "openspec/changes/archive/2026-09-18-v1-4-1-upstream-translation-improvements/evidence/impact/198.json"
+          },
+          {
+            "id": "File:openspec/changes/archive/2026-09-18-v1-4-1-upstream-translation-improvements/evidence/impact/197.json",
+            "name": "197.json",
+            "filePath": "openspec/changes/archive/2026-09-18-v1-4-1-upstream-translation-improvements/evidence/impact/197.json"
+          },
+          {
+            "id": "File:openspec/changes/archive/2026-09-18-v1-4-1-upstream-translation-improvements/evidence/impact/195.json",
+            "name": "195.json",
+            "filePath": "openspec/changes/archive/2026-09-18-v1-4-1-upstream-translation-improvements/evidence/impact/195.json"
+          }
+        ],
+        "timing": {
+          "vector": 7.7,
+          "bm25": 99.1,
+          "merge": 0,
+          "symbol_lookup": 60.3,
+          "ranking": 0.1,
+          "formatting": 0.1,
+          "wall": 159.9
+        }
+      }
+    },
+    {
+      "name": "context-note-original",
+      "command": [
+        "node",
+        ".gitnexus/run.cjs",
+        "context",
+        "resolveNoteSuggestionAction",
+        "--file",
+        "src/utils/custom-actions.ts",
+        "--repo",
+        "."
+      ],
+      "exitCode": 0,
+      "result": {
+        "status": "found",
+        "symbol": {
+          "uid": "Function:src/utils/custom-actions.ts:resolveNoteSuggestionAction",
+          "name": "resolveNoteSuggestionAction",
+          "kind": "Function",
+          "filePath": "src/utils/custom-actions.ts",
+          "startLine": 80,
+          "endLine": 91
+        },
+        "incoming": {
+          "calls": [
+            {
+              "uid": "Function:src/entrypoints/options/pages/selection-toolbar/actions/note-suggestion-items.tsx:NoteSuggestionItems",
+              "name": "NoteSuggestionItems",
+              "filePath": "src/entrypoints/options/pages/selection-toolbar/actions/note-suggestion-items.tsx"
+            },
+            {
+              "uid": "Function:src/entrypoints/selection.content/selection-toolbar/note-suggestion/use-note-suggestion.ts:maybeFire",
+              "name": "maybeFire",
+              "filePath": "src/entrypoints/selection.content/selection-toolbar/note-suggestion/use-note-suggestion.ts"
+            }
+          ]
+        },
+        "outgoing": {
+          "calls": [
+            {
+              "uid": "Function:src/utils/custom-actions.ts:findSelectionToolbarAction",
+              "name": "findSelectionToolbarAction",
+              "filePath": "src/utils/custom-actions.ts"
+            }
+          ]
+        },
+        "processes": [
+          {
+            "id": "proc_179_notesuggestionitems",
+            "name": "NoteSuggestionItems → IsBuiltInActionId",
+            "step_index": 2,
+            "step_count": 4
+          }
+        ]
+      }
+    },
+    {
+      "name": "context-note-fork",
+      "command": [
+        "node",
+        ".gitnexus/run.cjs",
+        "context",
+        "resolveNoteSuggestionAction",
+        "--file",
+        "src/fork/upstream-services/custom-actions.ts",
+        "--repo",
+        "."
+      ],
+      "exitCode": 0,
+      "result": {
+        "status": "found",
+        "symbol": {
+          "uid": "Function:src/fork/upstream-services/custom-actions.ts:resolveNoteSuggestionAction",
+          "name": "resolveNoteSuggestionAction",
+          "kind": "Function",
+          "filePath": "src/fork/upstream-services/custom-actions.ts",
+          "startLine": 42,
+          "endLine": 46
+        },
+        "incoming": {},
+        "outgoing": {
+          "calls": [
+            {
+              "uid": "Class:src/fork/upstream-services/disabled-error.ts:UpstreamCloudDisabledError",
+              "name": "UpstreamCloudDisabledError",
+              "filePath": "src/fork/upstream-services/disabled-error.ts"
+            }
+          ]
+        },
+        "processes": []
+      }
+    },
+    {
+      "name": "context-provider",
+      "command": [
+        "node",
+        ".gitnexus/run.cjs",
+        "context",
+        "resolveProviderRefForCapability",
+        "--file",
+        "src/fork/upstream-services/provider-registry.ts",
+        "--repo",
+        "."
+      ],
+      "exitCode": 0,
+      "result": {
+        "status": "found",
+        "symbol": {
+          "uid": "Function:src/fork/upstream-services/provider-registry.ts:resolveProviderRefForCapability",
+          "name": "resolveProviderRefForCapability",
+          "kind": "Function",
+          "filePath": "src/fork/upstream-services/provider-registry.ts",
+          "startLine": 13,
+          "endLine": 35
+        },
+        "incoming": {
+          "calls": [
+            {
+              "uid": "Function:src/fork/upstream-services/page-translation.ts:validateTranslationConfigAndToast",
+              "name": "validateTranslationConfigAndToast",
+              "filePath": "src/fork/upstream-services/page-translation.ts"
+            },
+            {
+              "uid": "Function:src/fork/upstream-services/provider-ref.ts:resolvePageTranslationProvider",
+              "name": "resolvePageTranslationProvider",
+              "filePath": "src/fork/upstream-services/provider-ref.ts"
+            },
+            {
+              "uid": "Function:src/fork/upstream-services/provider-ref.ts:serializeProviderRef",
+              "name": "serializeProviderRef",
+              "filePath": "src/fork/upstream-services/provider-ref.ts"
+            },
+            {
+              "uid": "Function:src/fork/upstream-services/subtitles.ts:translateSubtitles",
+              "name": "translateSubtitles",
+              "filePath": "src/fork/upstream-services/subtitles.ts"
+            },
+            {
+              "uid": "Function:src/fork/ui/options/feature-provider-selector-list.tsx:FeatureProviderField",
+              "name": "FeatureProviderField",
+              "filePath": "src/fork/ui/options/feature-provider-selector-list.tsx"
+            },
+            {
+              "uid": "Function:src/fork/ui/options/feature-provider-selector-list.tsx:CustomActionProviderField",
+              "name": "CustomActionProviderField",
+              "filePath": "src/fork/ui/options/feature-provider-selector-list.tsx"
+            },
+            {
+              "uid": "Function:src/fork/ui/options/feature-providers-config.tsx:FeatureItem",
+              "name": "FeatureItem",
+              "filePath": "src/fork/ui/options/feature-providers-config.tsx"
+            },
+            {
+              "uid": "Function:src/fork/ui/options/feature-providers-config.tsx:CustomActionItems",
+              "name": "CustomActionItems",
+              "filePath": "src/fork/ui/options/feature-providers-config.tsx"
+            },
+            {
+              "uid": "Function:src/fork/ui/popup/providers-field.tsx:addProvider",
+              "name": "addProvider",
+              "filePath": "src/fork/ui/popup/providers-field.tsx"
+            }
+          ]
+        },
+        "outgoing": {
+          "calls": [
+            {
+              "uid": "Function:src/fork/providers/renyimiao-identity.ts:isRenyimiaoInstance",
+              "name": "isRenyimiaoInstance",
+              "filePath": "src/fork/providers/renyimiao-identity.ts"
+            },
+            {
+              "uid": "Function:src/utils/providers/provider-registry.ts:isLocalProviderConfigCompatibleWithCapability",
+              "name": "isLocalProviderConfigCompatibleWithCapability",
+              "filePath": "src/utils/providers/provider-registry.ts"
+            },
+            {
+              "uid": "Function:src/utils/providers/provider-registry.ts:resolveProviderRefForCapability",
+              "name": "resolveProviderRefForCapability",
+              "filePath": "src/utils/providers/provider-registry.ts"
+            }
+          ]
+        },
+        "processes": []
+      }
+    },
+    {
+      "name": "context-notebase",
+      "command": [
+        "node",
+        ".gitnexus/run.cjs",
+        "context",
+        "useSaveToNotebase",
+        "--file",
+        "src/components/custom-action/use-save-to-notebase.ts",
+        "--repo",
+        "."
+      ],
+      "exitCode": 0,
+      "result": {
+        "status": "found",
+        "symbol": {
+          "uid": "Function:src/components/custom-action/use-save-to-notebase.ts:useSaveToNotebase",
+          "name": "useSaveToNotebase",
+          "kind": "Function",
+          "filePath": "src/components/custom-action/use-save-to-notebase.ts",
+          "startLine": 80,
+          "endLine": 453
+        },
+        "incoming": {
+          "calls": [
+            {
+              "uid": "Function:src/components/custom-action/save-to-notebase-button.tsx:SaveToNotebaseButton",
+              "name": "SaveToNotebaseButton",
+              "filePath": "src/components/custom-action/save-to-notebase-button.tsx"
+            },
+            {
+              "uid": "Function:src/entrypoints/selection.content/selection-toolbar/note-suggestion/note-suggestion-card.tsx:NoteSuggestionCard",
+              "name": "NoteSuggestionCard",
+              "filePath": "src/entrypoints/selection.content/selection-toolbar/note-suggestion/note-suggestion-card.tsx"
+            }
+          ]
+        },
+        "outgoing": {
+          "calls": [
+            {
+              "uid": "Function:src/utils/notebase/connection.ts:createNotebaseConnectedAccountSnapshot",
+              "name": "createNotebaseConnectedAccountSnapshot",
+              "filePath": "src/utils/notebase/connection.ts"
+            }
+          ]
+        },
+        "processes": []
+      }
+    },
+    {
+      "name": "context-drive",
+      "command": [
+        "node",
+        ".gitnexus/run.cjs",
+        "context",
+        "useGoogleDriveAuth",
+        "--file",
+        "src/hooks/use-google-drive-auth.ts",
+        "--repo",
+        "."
+      ],
+      "exitCode": 0,
+      "result": {
+        "status": "found",
+        "symbol": {
+          "uid": "Function:src/hooks/use-google-drive-auth.ts:useGoogleDriveAuth",
+          "name": "useGoogleDriveAuth",
+          "kind": "Function",
+          "filePath": "src/hooks/use-google-drive-auth.ts",
+          "startLine": 18,
+          "endLine": 47
+        },
+        "incoming": {
+          "calls": [
+            {
+              "uid": "Function:src/entrypoints/options/pages/preference/config/google-drive-sync/components/unresolved-dialog.tsx:DialogContent",
+              "name": "DialogContent",
+              "filePath": "src/entrypoints/options/pages/preference/config/google-drive-sync/components/unresolved-dialog.tsx"
+            },
+            {
+              "uid": "Function:src/entrypoints/options/pages/preference/config/google-drive-sync/index.tsx:GoogleDriveSyncConfigItem",
+              "name": "GoogleDriveSyncConfigItem",
+              "filePath": "src/entrypoints/options/pages/preference/config/google-drive-sync/index.tsx"
+            }
+          ]
+        },
+        "outgoing": {
+          "calls": [
+            {
+              "uid": "Function:src/hooks/use-google-drive-auth.ts:invalidate",
+              "name": "invalidate",
+              "filePath": "src/hooks/use-google-drive-auth.ts"
+            }
+          ]
+        },
+        "processes": []
+      }
+    }
+  ],
+  "sourceHashes": {
+    "src/components/custom-action/use-save-to-notebase.ts": "8da126d1033bdf83a5b956ca97e5a078bd4319d53276f008fe126f91c348bd32",
+    "src/components/llm-providers/use-hosted-ai-provider-options.ts": "d783e7f8056ee62baaa01ccaa287b7815d7c5753287aaeda6e85c36db7389438",
+    "src/components/user-account-menu/shared.tsx": "1d748ad8595d4a45f2e311f4a823a42ae79e71d2c6cbf432e0e596d9363c15eb",
+    "src/entrypoints/background/index.ts": "f935a2284c0fcea8471959cbc1c2262822e013dc662a27c751ad3d56b51fcb27",
+    "src/entrypoints/host.content/translation-control/page-translation.ts": "f351d32049d41fa6ba64aa443e46905dcae14b827e03c9ee726605f4ad1683b4",
+    "src/entrypoints/options/app-sidebar/index.tsx": "ac958508c46ed9174618962e59b20bb6d2f7293321d3b014ff568d3a8252a59e",
+    "src/entrypoints/options/app.tsx": "dc14583eb257fec9ec0fe55af4dcba4e6e4de6b96d6d0ba54e9d9a1ed57356fa",
+    "src/entrypoints/options/pages/api-providers/built-in-ai-usage/index.tsx": "e919053b7a834b0cda91d1f1817ba2193d77ea9badfa95330f556701304180a5",
+    "src/entrypoints/options/pages/preference/config/index.tsx": "44e52347e73c488b34f03292777678c7673ddf6331d502e638386b2f04239f8e",
+    "src/entrypoints/selection.content/app.tsx": "fcb9894386df3f6033c05a9a081ddc477e3574b54fcb25f0b66be8c710c1efa7",
+    "src/entrypoints/selection.content/selection-toolbar/note-suggestion/use-note-suggestion.ts": "c7e1dcb7f75f5e00cc8829c4257036dc782393c6cd81e6271c645099a9a63b3e",
+    "src/entrypoints/subtitles.content/runtime.ts": "c3149553fe446048b9a120da95583ec2a04c5f63c7d482d9eda4e20593801019",
+    "src/fork/components/provider-selector-groups.ts": "618e3f47c23d339a4ce0efcf46234ef47aa23a4a8c64f3d2da55264348527f80",
+    "src/fork/components/provider-selector.tsx": "1eab431929a074091feabe3458faf14940a97c2e9bcf1755f2ab9ad0e81bdd47",
+    "src/fork/ui-redirect-plugin.ts": "f56e1dcab677ad1b6e870d3adfecee385a5b9de4f7af8a004b64e522dad3e4c3",
+    "src/fork/ui/hosted-ai/use-hosted-ai-status.ts": "919edf9416cff98611e35a634f9bb4bab3c252383ff30bfd90cd1fdd50ffdb3f",
+    "src/fork/ui/options/account-menu-sidebar.tsx": "5e6da55481585061b7874c4424deb5401543db7af917201546275e221bb4f2e8",
+    "src/fork/ui/options/custom-action-editor-tabs.tsx": "a4b3619d461245e2adb44f2e52fb0bcf067ce34c264ffad6c2a15bc7f68ea1d6",
+    "src/fork/ui/options/feature-provider-selector-list.tsx": "28bc0652e67a7430420a8b490cf437f3dff9182abd96a9caf7a694a992b6c3fd",
+    "src/fork/ui/options/feature-providers-config.tsx": "998e6d68eb74dcb444be91c8385c840b504cd449b12d0c272c473f445d7946cc",
+    "src/fork/ui/options/google-drive-sync-card.tsx": "a0d9029e36235e34a10ff1a8ab8410d110da33fe81604fb5d5d8c8cbeca2dfcd",
+    "src/fork/ui/options/notebase-connection-field.tsx": "9b82ad3eafecf998634e722b3971a2ede4927edace8ca8cb5d265bd5660c1706",
+    "src/fork/ui/options/search-items.ts": "07ee264d30acf7c54163a187f50b028860e4624d1b5f9ccc3684a0854c142b5b",
+    "src/fork/ui/options/whats-new-footer.tsx": "b71179e18be31d05e0635d6679ad0e51fdd4ef5689e26c5c7c966158c97b2dec",
+    "src/fork/ui/popup/App.tsx": "a740cdd2481a493289f5fd57739cb8127e5a8c7c58ef15348b275da1630a2110",
+    "src/fork/ui/popup/blog-notification.tsx": "aaab2179eb55f2307e2ba2966d4ad97ed41227e93bedb6b85eedffb6d5e2a868",
+    "src/fork/ui/popup/providers-field.tsx": "6cded3fc3b39cb012425bcffa97c354e2f043af9e806e1f4dc8578ddc2160930",
+    "src/fork/ui/selection-content/App.tsx": "ed7516a1afad55a944f44bf8a12f0a625a672c8770fd1601ee22d15a970d5e6f",
+    "src/fork/ui/selection-content/SelectionCustomActionProvider.tsx": "383ab6918345c9cf3ff31722640794fc18d25a9aa85c64d9ce2a7a706a5d7431",
+    "src/fork/ui/selection-content/use-custom-action-controller.ts": "bc70b3c457ea89d8f6a7dff07ab639191d05d88c6b2b185993c7f12d85fd13d8",
+    "src/fork/ui/subtitles/ai-quota.tsx": "ceecb723fb1bf4e1a40a22c3e8040258ac63f2437da7a335e948951ea674ce92",
+    "src/fork/ui/subtitles/request-ai-subtitles-item.tsx": "80705dcf45bca6ecfeca8a2b2e21c8293408fd82522d43db8b767cda808a0822",
+    "src/fork/ui/translation-hub/translation-card.tsx": "f6c6d78a5c05771bed3c468ceb86b92789d3f394e8df22dad7fd8b527e2cfc6f",
+    "src/fork/upstream-admission.ts": "b1bb30b5cc77e5558dd70f73e0d447bd1d05abb313cf6d47a8ac7a3fcd84a077",
+    "src/fork/upstream-services/ai-subtitles-access.ts": "7c6b669011ba266b5528b8fdefc3c3360796720b592861febdd9687a4d2d79f6",
+    "src/fork/upstream-services/auth-client.ts": "dac6a1b370afb6875de5cb980d288b19a08a5e2ebbd4da7205e49c7bdc54494a",
+    "src/fork/upstream-services/blog.ts": "f0ea447d79e131bb79bf840f66f981326fac1bcdd1b0f68deb4fcb1c27c35b4c",
+    "src/fork/upstream-services/custom-actions.ts": "21c6faca33f6438454361977e8245378b2e29906a22b24e6a385f74444e0af10",
+    "src/fork/upstream-services/disabled-rpc-link.ts": "8bffe63d969c75d12b13d87ca52f24ed7a5fe7542f4df3f061cbbfcb4406e817",
+    "src/fork/upstream-services/hosted-ai-status.ts": "a7e34e0c7708b1a455b64d053d6d5b92fea8f857c79ba606feb92bccdbe26e8f",
+    "src/fork/upstream-services/notebase-pending-save.ts": "1f7a399e39a9a12f3ec8aae201c8497a60fd693774a26dc17395dc039b333b76",
+    "src/fork/upstream-services/provider-ref.ts": "df82eafcc3f5dfc74ac00cf3c1129e7a34f25b46ed084283ff89b2dcd0dd2bef",
+    "src/fork/upstream-services/provider-registry.ts": "fce37f17e9adde387c10d87d417edd198bc40dc3ea36942bb1b5f820c1a0a40a",
+    "src/fork/upstream-services/subtitles-sidebar.ts": "f0b2983cb29c1c53b32621c3b3c3ec58a8954f572dc30dab0018b54d560f9447",
+    "src/fork/upstream-services/video-adapter.ts": "12850d94460920a704e75a0401016f411f0fafe348a39505ffd991ec0249fb82",
+    "src/fork/upstream-services/video-summary-background.ts": "251157ed9d053e5618a701ec1d1c7591bf9f2c8dbf65554a9d4a0627757d1deb",
+    "src/hooks/use-google-drive-auth.ts": "6000d32541a8fc6aa2e64fb034fae9d2e2dd81ea5606cd562f55ed20977f56ad",
+    "src/utils/hosted-ai/status.ts": "2c499e287059bcc02791cf198081e7ffbde4a01f31e2eadcbda7e5b51c1dfdff",
+    "wxt.config.ts": "79c39ef33e144f93e6346a13750ca659992b902519b25e3b94ee66f49394f3ef"
+  },
+  "validation": {
+    "productionModified": false,
+    "testsModified": false,
+    "testsRun": false,
+    "browserRun": false,
+    "networkChecked": false,
+    "credentialsRead": false,
+    "writtenFiles": [
+      "admission-audit.md",
+      "admission-audit.json"
+    ]
+  }
+}

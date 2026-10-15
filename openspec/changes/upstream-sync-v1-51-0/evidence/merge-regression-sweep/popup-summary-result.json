@@ -1,0 +1,172 @@
+{
+  "task": "W04 popup词典provider头像摘要遗漏",
+  "repository": "/Users/yisen/.codex/worktrees/upstream-sync-v1-51-0/translatebuff",
+  "head": "e1d90dc928ca5fbbbba112e480131e1c909c93ce",
+  "upstreamTarget": "55bcef1e684fb4e70f4dce3063e7bd3066f46891",
+  "createdAt": "2026-10-15T11:43:03.451367+00:00",
+  "rootDecision": "初始要求重复provider去重，经源码确认当前及固定上游都保留功能slot后已由root撤回；本轮仅保留原重复slot契约对照。",
+  "cause": "内置词典已从selectionToolbar.customActions迁入builtInActions.dictionary；保留的fork摘要仍只遍历customActions，因而漏掉仅供已启用词典使用的本地provider。",
+  "productionDiff": {
+    "file": "src/fork/ui/popup/providers-field.tsx",
+    "changes": [
+      "增加现成getSelectionToolbarActions导入",
+      "动作枚举config.selectionToolbar.customActions改为getSelectionToolbarActions(config.selectionToolbar)"
+    ],
+    "unchanged": [
+      "功能slot及重复slot计数",
+      "会员/登录/key配置",
+      "provider准入与选择",
+      "Drawer、Avatar和Theme",
+      "MoreMenu和Hub TTS"
+    ]
+  },
+  "actualEntry": [
+    "src/entrypoints/popup/app.tsx:2 → fork/ui/popup/App.tsx",
+    "fork/ui/popup/App.tsx:13/35 → actual ForkProvidersField",
+    "wxt.config.ts:129–131 utils/custom-actions重定向 → fork/upstream-services/custom-actions.ts:getSelectionToolbarActions",
+    "获准helper只合并已批准dictionary和用户customActions，并由原enabled=false守卫过滤"
+  ],
+  "impact": {
+    "componentRawRisk": "LOW",
+    "componentRawImpactedCount": 0,
+    "enumerationRisk": "LOW",
+    "enumerationImpactedCount": 1,
+    "enumerationDirectCaller": "selectedProviders useMemo",
+    "zeroCallerHandling": "组件0caller未当安全证据；default-export/JSX解析盲点已以popup App的直接import和实际挂载补证；未宣称无消费者。",
+    "files": ["popup-summary-field-impact.json", "popup-summary-enumeration-impact.json"],
+    "index": "e1d90dc与HEAD匹配；dirty修复以当前源补证"
+  },
+  "testFile": "src/fork/ui/popup/__tests__/providers-field-actions.forktest.tsx",
+  "testBoundary": {
+    "actual": [
+      "ForkProvidersField React组件",
+      "真实configSchema.parse及storageAdapter",
+      "真实getSelectionToolbarActions fork准入与provider解析",
+      "真实useEnsureRenyimiaoSeeded幂等链",
+      "真实ThemeProvider/TooltipProvider/BaseUI Drawer和Avatar DOM"
+    ],
+    "mocked": [
+      "WxtVitest默认fake browser/storage",
+      "fork membership messaging边界，无真实会员/网关网络",
+      "浏览器Image complete/naturalWidth，JSDOM不抓取或解码图像"
+    ],
+    "notMocked": [
+      "schema",
+      "action准入",
+      "getSelectionToolbarActions",
+      "provider解析",
+      "Avatar组件",
+      "ProvidersField组件"
+    ]
+  },
+  "red": {
+    "passed": 3,
+    "failed": 1,
+    "failure": "词典sole-action摘要查询不到img[alt=\"Dictionary-only provider\"]；真实DOM只含4个Microsoft feature slot。",
+    "log": "popup-summary-red.log",
+    "dom": "popup-summary-red-dom.json",
+    "compactDom": [
+      {
+        "test": "actual fork popup action-provider summary > includes a provider used only by the enabled built-in dictionary",
+        "imageAlt": [
+          "Microsoft Translator",
+          "Microsoft Translator",
+          "Microsoft Translator",
+          "Microsoft Translator"
+        ]
+      },
+      {
+        "test": "actual fork popup action-provider summary > keeps repeated feature slots while omitting disabled dictionary providers",
+        "imageAlt": [
+          "Microsoft Translator",
+          "Microsoft Translator",
+          "Microsoft Translator",
+          "Microsoft Translator"
+        ]
+      },
+      {
+        "test": "actual fork popup action-provider summary > does not include non-admitted built-ins even when enabled with a local provider",
+        "imageAlt": [
+          "Microsoft Translator",
+          "Microsoft Translator",
+          "Microsoft Translator",
+          "Microsoft Translator"
+        ]
+      },
+      {
+        "test": "actual fork popup action-provider summary > keeps a user action's provider in the summary",
+        "imageAlt": [
+          "Microsoft Translator",
+          "Microsoft Translator",
+          "Microsoft Translator",
+          "Microsoft Translator",
+          "Dictionary-only provider"
+        ]
+      }
+    ]
+  },
+  "green": {
+    "files": 4,
+    "passed": 9,
+    "failed": 0,
+    "log": "popup-summary-green.log",
+    "dom": "popup-summary-green-dom.json",
+    "compactDom": [
+      {
+        "test": "actual fork popup action-provider summary > includes a provider used only by the enabled built-in dictionary",
+        "imageAlt": [
+          "Microsoft Translator",
+          "Microsoft Translator",
+          "Microsoft Translator",
+          "Microsoft Translator",
+          "Dictionary-only provider"
+        ]
+      },
+      {
+        "test": "actual fork popup action-provider summary > keeps repeated feature slots while omitting disabled dictionary providers",
+        "imageAlt": [
+          "Microsoft Translator",
+          "Microsoft Translator",
+          "Microsoft Translator",
+          "Microsoft Translator"
+        ]
+      },
+      {
+        "test": "actual fork popup action-provider summary > does not include non-admitted built-ins even when enabled with a local provider",
+        "imageAlt": [
+          "Microsoft Translator",
+          "Microsoft Translator",
+          "Microsoft Translator",
+          "Microsoft Translator"
+        ]
+      },
+      {
+        "test": "actual fork popup action-provider summary > keeps a user action's provider in the summary",
+        "imageAlt": [
+          "Microsoft Translator",
+          "Microsoft Translator",
+          "Microsoft Translator",
+          "Microsoft Translator",
+          "Dictionary-only provider"
+        ]
+      }
+    ]
+  },
+  "testCases": [
+    "词典sole-action的独立provider确实可见",
+    "4个功能共用provider仍显示4个slot且disabled词典不显示",
+    "未准入内置动作即使enabled且指向有效本地provider也不进入摘要",
+    "用户自定义动作provider继续进入摘要"
+  ],
+  "validation": {
+    "command": "SKIP_FREE_API=true pnpm vitest run --config vitest.fork.config.ts src/fork/ui/popup/__tests__/providers-field-actions.forktest.tsx src/fork/ui/popup/__tests__/translation-mode-selector.test.tsx src/fork/ui/popup/__tests__/root-width.test.ts src/fork/ui/popup/__tests__/blog-link.forktest.ts",
+    "oxfmt": "PASS，两个修改源码文件",
+    "oxlint": "PASS，两个修改源码文件 --type-aware --type-check",
+    "diffCheck": "PASS",
+    "notPerformed": ["构建包", "真实浏览器/账号", "提交", "根tasks/reports更新"]
+  },
+  "sourceSha256": {
+    "src/fork/ui/popup/providers-field.tsx": "ec2cf7d87dbc92706613ebfac750e32f9b7de02bf26e630278c7f31828c33a0b",
+    "src/fork/ui/popup/__tests__/providers-field-actions.forktest.tsx": "b93e081c38efa4f0723f4ff0dd2e1e60cdc49cd1c3d05e778529db9992701294"
+  }
+}

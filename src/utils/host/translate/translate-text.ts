@@ -379,11 +379,13 @@ export async function translateTextCore(options: TranslateTextOptions): Promise<
     normalizedWebPageContext,
   )
 
-  // A revision identifies the exact glossary snapshot carried by the request.
-  // Even unchanged matches must not reuse an earlier snapshot's result; MT
-  // providers do not consume glossary prompts and keep their original identity.
+  // Nonempty matches retain exact revision isolation. An empty effective set
+  // produces the same prompt as no glossary, so reuse its equivalent cache
+  // rather than invalidating it for an unrelated edit or a default empty library.
+  // The request still carries the actual snapshot; MT identity stays unchanged.
   if (
     glossaryEnabled &&
+    glossaryTerms.length > 0 &&
     (providerRef.kind === "system" || isLLMProviderConfig(providerRef.config))
   ) {
     hashComponents.push(`glossaryRevision:${glossaryRevision}`)

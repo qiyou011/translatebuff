@@ -1,0 +1,168 @@
+{
+  "source": "Exact MT_PRESERVATION_METRIC output emitted by fresh assertions in mt-new-final.log",
+  "measurements": [
+    {
+      "name": "item-limit",
+      "provider": "google-translate",
+      "inputItems": 101,
+      "transportCalls": 2,
+      "batchSizes": [
+        100,
+        1
+      ],
+      "bodyBytes": [
+        1514,
+        40
+      ]
+    },
+    {
+      "name": "item-limit",
+      "provider": "microsoft-translate",
+      "inputItems": 101,
+      "transportCalls": 2,
+      "batchSizes": [
+        100,
+        1
+      ],
+      "bodyBytes": [
+        1491,
+        17
+      ]
+    },
+    {
+      "name": "encoded-payload",
+      "provider": "google-translate",
+      "sourceCharacters": 8002,
+      "transportCalls": 2,
+      "batchSizes": [
+        1,
+        1
+      ],
+      "bodyBytes": [
+        20028,
+        20028
+      ]
+    },
+    {
+      "name": "encoded-payload",
+      "provider": "microsoft-translate",
+      "sourceCharacters": 8002,
+      "transportCalls": 2,
+      "batchSizes": [
+        1,
+        1
+      ],
+      "bodyBytes": [
+        20005,
+        20005
+      ]
+    },
+    {
+      "name": "semantic-groups",
+      "inputItems": 13,
+      "transportCalls": 11,
+      "batchSizes": [
+        2,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        2,
+        1,
+        1
+      ],
+      "frozenInputSnapshotRetained": true,
+      "microsoftHtmlCalls": 0
+    },
+    {
+      "name": "four-slots-input-isolation",
+      "pageRequests": 5,
+      "simulatedLatencyMs": 5,
+      "maxPageInFlight": 4,
+      "pageStartedAtMs": [
+        100,
+        100,
+        100,
+        100,
+        105
+      ],
+      "inputWaitBehindPageMs": 0,
+      "inputExecuteMockCalls": 1
+    },
+    {
+      "name": "scope-cancel-cache",
+      "provider": "google-translate",
+      "originalCalls": 2,
+      "callsAfterLateMalformedResult": 2,
+      "cancelledRejected": true,
+      "cacheWrites": 1,
+      "crossTabCacheHitAdditionalCalls": 0
+    },
+    {
+      "name": "scope-cancel-cache",
+      "provider": "microsoft-translate",
+      "originalCalls": 2,
+      "callsAfterLateMalformedResult": 2,
+      "cancelledRejected": true,
+      "cacheWrites": 1,
+      "crossTabCacheHitAdditionalCalls": 0
+    },
+    {
+      "name": "cancel-no-network-retry",
+      "provider": "google-translate",
+      "transportCalls": 1,
+      "cacheWrites": 0,
+      "waitedAfterCancellationMs": 20000
+    },
+    {
+      "name": "cancel-no-network-retry",
+      "provider": "microsoft-translate",
+      "transportCalls": 1,
+      "cacheWrites": 0,
+      "waitedAfterCancellationMs": 20000
+    },
+    {
+      "name": "partial-fallback",
+      "provider": "google-translate",
+      "inputItems": 3,
+      "transportCalls": 2,
+      "batchSizes": [
+        3,
+        1
+      ],
+      "healthyItemsReissued": 0
+    },
+    {
+      "name": "partial-fallback",
+      "provider": "microsoft-translate",
+      "inputItems": 3,
+      "transportCalls": 2,
+      "batchSizes": [
+        3,
+        1
+      ],
+      "healthyItemsReissued": 0
+    },
+    {
+      "name": "cache-decode-once",
+      "provider": "google-translate",
+      "callerHashPreserved": true,
+      "transportCalls": 1,
+      "cacheWrites": 1,
+      "normalizedOutput": "&amp;",
+      "realIndexedDb": false
+    },
+    {
+      "name": "cache-decode-once",
+      "provider": "microsoft-translate",
+      "callerHashPreserved": true,
+      "transportCalls": 1,
+      "cacheWrites": 1,
+      "normalizedOutput": "&amp;",
+      "realIndexedDb": false
+    }
+  ]
+}

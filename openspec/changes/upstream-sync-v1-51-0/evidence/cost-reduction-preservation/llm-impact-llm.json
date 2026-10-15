@@ -1,0 +1,69 @@
+{
+  "target": {
+    "id": "Function:src/fork/page-translation/llm.ts:requestPageLlm",
+    "name": "requestPageLlm",
+    "type": "Function",
+    "filePath": "src/fork/page-translation/llm.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 4,
+  "risk": "LOW",
+  "summary": {
+    "direct": 1,
+    "processes_affected": 0,
+    "modules_affected": 2
+  },
+  "affected_processes": [],
+  "affected_modules": [
+    {
+      "name": "Page-translation",
+      "hits": 3,
+      "impact": "indirect"
+    },
+    {
+      "name": "Background",
+      "hits": 1,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/fork/page-translation/queues.ts:invoke",
+        "name": "invoke",
+        "filePath": "src/fork/page-translation/queues.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "Function:src/fork/page-translation/queues.ts:single",
+        "name": "single",
+        "filePath": "src/fork/page-translation/queues.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/fork/page-translation/queues.ts:executeBatch",
+        "name": "executeBatch",
+        "filePath": "src/fork/page-translation/queues.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      }
+    ],
+    "3": [
+      {
+        "depth": 3,
+        "id": "Method:src/fork/page-translation/queues.ts:enqueue#1",
+        "name": "enqueue",
+        "filePath": "src/fork/page-translation/queues.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      }
+    ]
+  }
+}

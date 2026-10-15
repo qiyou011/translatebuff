@@ -1,0 +1,11 @@
+{
+  "source": "src/utils/host/translate/translate-text.ts",
+  "old": "0922c52288897f74",
+  "new": "7127f4edfbd63b03",
+  "reviewedSourceChange": "glossaryTerms.length > 0 condition and explanatory comment only",
+  "wrapper": "src/fork/upstream-services/page-translation.ts re-exports core; only validator overridden",
+  "wrapperNeedsChange": false,
+  "architectureReview": "cache-scope-arch-review.md",
+  "entryCount": 59,
+  "otherEntriesUpdated": false
+}

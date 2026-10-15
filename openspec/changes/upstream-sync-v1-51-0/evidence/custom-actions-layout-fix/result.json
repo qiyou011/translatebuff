@@ -1,0 +1,93 @@
+{
+  "status": "SOURCE_FIXED_ISOLATED_BROWSER_PASS_USER_CONFIRMED_ACTUAL_LAYOUT",
+  "sourceHead": "e1d90dc928ca5fbbbba112e480131e1c909c93ce",
+  "sourceWorkingTreeDirty": true,
+  "productionChanges": [
+    "src/fork/ui/options/custom-actions-theme.css"
+  ],
+  "cssSha256": "526fd6745ca184ef8ebf18f2f07a42e4e1fa27c69b89f024bcece423b093882f",
+  "rootCause": "Legacy depth selector fixed whole row width after upstream EntityEditorLayout added a named container",
+  "red": {
+    "testsFailed": 2,
+    "testsPassed": 1,
+    "log": "test-red.log"
+  },
+  "green": {
+    "targetedTestsPassed": 7,
+    "mainTestsPassed": 4996,
+    "mainExternalTestsIntentionallySkipped": 4,
+    "forkTestsPassed": 897,
+    "freeApi": "SKIP_FREE_API=true"
+  },
+  "checks": {
+    "scopedTypeCheck": "PASS",
+    "targetedFormat": "PASS",
+    "fullTypeCheck": "FAIL_EXISTING_UNMODIFIED_SCRIPT_DIAGNOSTICS",
+    "fullTypeCheckErrors": [
+      "openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs:71:30: error eslint(no-shadow): 'p' is already declared in the upper scope. help: Consider renaming 'p' to avoid shadowing the variable from the outer scope.",
+      "openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs:81:58: error eslint(no-shadow): 'type' is already declared in the upper scope. help: Consider renaming 'type' to avoid shadowing the variable from the outer scope.",
+      "openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs:81:63: error eslint(no-shadow): 'data' is already declared in the upper scope. help: Consider renaming 'data' to avoid shadowing the variable from the outer scope.",
+      "openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs:6:30: error import(no-absolute-path): Do not import modules using an absolute path help: Replace the absolute path with a relative path or a module alias.",
+      "scripts/dev-local.node-test.mjs:5:1: error typescript(no-floating-promises): Promises must be awaited, add void operator to ignore. help: The promise must end with a call to .catch, or end with a call to .then with a rejection handler, or be explicitly marked as ignored with the `void` operator.",
+      "scripts/dev-local.node-test.mjs:13:3: error typescript(no-floating-promises): Promises must be awaited, add void operator to ignore. help: The promise must end with a call to .catch, or end with a call to .then with a rejection handler, or be explicitly marked as ignored with the `void` operator.",
+      "scripts/dev-local.node-test.mjs:35:3: error typescript(no-floating-promises): Promises must be awaited, add void operator to ignore. help: The promise must end with a call to .catch, or end with a call to .then with a rejection handler, or be explicitly marked as ignored with the `void` operator.",
+      "openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs:131:16: error typescript(no-implied-eval): Implied eval. Do not use the Function constructor to create functions."
+    ],
+    "openSpecStrict": "PASS",
+    "forkBoundaryFixedTarget": "PASS",
+    "independentCodeReview": "PASS; reviewer additionally ran layout/provider tests 6/6",
+    "graphDetect": {
+      "source": "graph-detect.txt",
+      "scope": "all",
+      "cliOutputFormat": "human-readable summary",
+      "changedTrackedFiles": 4,
+      "symbols": 8,
+      "affectedProcesses": 0,
+      "risk": "low",
+      "limitation": "CSS selector behavior and untracked new tests are not represented by this function-symbol summary; not a substitute for complete staged analysis before any future commit."
+    },
+    "brand": "PASS"
+  },
+  "browser": {
+    "scope": "Cua real Chrome with isolated ConfigItem/EntityEditorLayout + actual built CSS and disposable fields; no extension internal page proxy or user settings access",
+    "before": "geometry-before.json",
+    "after": "geometry-after.json",
+    "wideEditorWidth": 712,
+    "narrowContainerEditorWidth": 620,
+    "actualExtensionOptionsPage": "USER_CONFIRMED_VISUAL_PASS: 布局已恢复正常",
+    "actualActionEditingAndExecution": "PENDING; visual confirmation does not prove runtime action"
+  },
+  "artifact": {
+    "old": {
+      "files": 207,
+      "treeSha256": "ea567267f98550bfee72788d6e1e9e2e13e612ee2db28f5e4adc0d07f54f48d6"
+    },
+    "new": {
+      "files": 207,
+      "treeSha256": "6fb916949bfa25b7cc379096acb36cfd227d455e2d0cd5184b7699ab86eeb6fd"
+    },
+    "manifestUnchanged": true,
+    "sourceChanges": "Only src/fork/ui/options/custom-actions-theme.css in production source; tests/changeset/evidence separately recorded",
+    "normalizedJavaScriptEqual": true,
+    "buildPublicEnvironment": "Matched frozen public edition/channel/Google client identity; private credentials not read from browser",
+    "buildDirectory": ".output/layout-fix/chrome-mv3-global"
+  },
+  "downloadPackageUpdate": {
+    "loadedDirectory": "/Users/yisen/Downloads/TranslateBuff-Global-1.5.0-rf1.51.0-20261015",
+    "originalPackageBackup": "/Users/yisen/Downloads/TranslateBuff-Global-1.5.0-rf1.51.0-20261015-frozen-ea567267-6caf86c9",
+    "originalTreeSha256": "ea567267f98550bfee72788d6e1e9e2e13e612ee2db28f5e4adc0d07f54f48d6",
+    "updatedTreeSha256": "6fb916949bfa25b7cc379096acb36cfd227d455e2d0cd5184b7699ab86eeb6fd",
+    "files": 207,
+    "configurationOrProfileModified": false,
+    "browserExtensionReload": "USER_CONFIRMED_RELOADED_AND_LAYOUT_RESTORED"
+  },
+  "discardedBuilds": "Initial direct edition-only build and current-env build were not installed; final build explicitly preserves frozen public edition/channel/Google client identity. Raw logs and discarded comparison retained.",
+  "completeAcceptance": false,
+  "acceptedBaselineAdvanced": false,
+  "excluded": [
+    "H01",
+    "H02",
+    "Reddit",
+    "Telegram"
+  ]
+}

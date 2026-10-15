@@ -6,19 +6,20 @@ html[data-translatebuff-options-theme] #custom-actions {
   background: transparent;
 }
 
-/* 208px list + 24px gutter + 712px editor, with 24px trailing space. */
-html[data-translatebuff-options-theme] #custom-actions > div:last-child > div {
+/* The shared editor owns column widths and responsive stacking. Target its
+ * named container so an added wrapper cannot pin the entire row to list width. */
+html[data-translatebuff-options-theme] #custom-actions [class~="@container/entity-editor"] > div {
   gap: 24px;
-  align-items: flex-start;
 }
 
-html[data-translatebuff-options-theme] #custom-actions > div:last-child > div > div:first-child {
-  width: 208px;
-  flex: 0 0 208px;
-}
-
-html[data-translatebuff-options-theme] #custom-actions > div:last-child > div > div:last-child {
-  padding-right: 24px;
+@container entity-editor (min-width: 51rem) {
+  html[data-translatebuff-options-theme]
+    #custom-actions
+    [class~="@container/entity-editor"]
+    > div
+    > .min-w-0.flex-1 {
+    padding-right: 24px;
+  }
 }
 
 html[data-translatebuff-options-theme] #custom-actions .min-w-0.flex-1 > .flex.flex-col {
@@ -394,19 +395,6 @@ html[data-translatebuff-options-theme] #custom-actions .mt-8 > button:hover {
 }
 
 @media (max-width: 63.999rem) {
-  html[data-translatebuff-options-theme] #custom-actions > div:last-child > div {
-    flex-direction: column;
-  }
-
-  html[data-translatebuff-options-theme] #custom-actions > div:last-child > div > div:first-child {
-    flex-basis: auto;
-  }
-
-  html[data-translatebuff-options-theme] #custom-actions > div:last-child > div > div:last-child {
-    width: 100%;
-    padding: 0;
-  }
-
   html[data-translatebuff-options-theme] #custom-actions [data-slot="textarea"] + div {
     display: flex;
     flex-wrap: wrap;

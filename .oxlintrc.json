@@ -33,7 +33,8 @@
     "openspec/changes/v1-4-0-page-translation-cost-reduction/calibration/used-token-analysis.mjs",
     "**/skills/**",
     "**/*.md/**",
-    "**/pnpm-lock.yaml"
+    "**/pnpm-lock.yaml",
+    "openspec/changes/upstream-sync-v1-51-0/evidence/global-production-live/2026-10-15T07-52-23.376Z/translatebuff-global-prod-live-01a13d86.cjs"
   ],
   "rules": {
     "no-inner-declarations": "error",
@@ -72,7 +73,12 @@
     "oxlint-plugin-query/exhaustive-deps": "error",
     "oxlint-plugin-query/no-rest-destructuring": "warn",
     "oxlint-plugin-query/stable-query-client": "error",
-    "vitest/consistent-test-it": ["error", { "fn": "it" }],
+    "vitest/consistent-test-it": [
+      "error",
+      {
+        "fn": "it"
+      }
+    ],
     "vitest/expect-expect": [
       "error",
       {

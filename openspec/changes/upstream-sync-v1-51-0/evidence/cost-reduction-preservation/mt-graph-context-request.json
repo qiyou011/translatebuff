@@ -1,0 +1,194 @@
+{
+  "status": "found",
+  "symbol": {
+    "uid": "Class:src/utils/request/request-queue.ts:RequestQueue",
+    "name": "RequestQueue",
+    "kind": "Class",
+    "filePath": "src/utils/request/request-queue.ts",
+    "startLine": 47,
+    "endLine": 481
+  },
+  "incoming": {
+    "calls": [
+      {
+        "uid": "Function:src/entrypoints/background/translation-queues.ts:createTranslationQueues",
+        "name": "createTranslationQueues",
+        "filePath": "src/entrypoints/background/translation-queues.ts"
+      },
+      {
+        "uid": "Function:src/fork/page-translation/queues.ts:createPageTranslationQueues",
+        "name": "createPageTranslationQueues",
+        "filePath": "src/fork/page-translation/queues.ts"
+      }
+    ],
+    "imports": [
+      {
+        "uid": "File:src/entrypoints/background/translation-queues.ts",
+        "name": "translation-queues.ts",
+        "filePath": "src/entrypoints/background/translation-queues.ts"
+      },
+      {
+        "uid": "File:src/entrypoints/background/translation-context-summary.ts",
+        "name": "translation-context-summary.ts",
+        "filePath": "src/entrypoints/background/translation-context-summary.ts"
+      },
+      {
+        "uid": "File:src/fork/page-translation/queues.ts",
+        "name": "queues.ts",
+        "filePath": "src/fork/page-translation/queues.ts"
+      }
+    ]
+  },
+  "outgoing": {
+    "has_method": [
+      {
+        "uid": "Function:src/utils/request/request-queue.ts:RequestQueue.cancelMatchingScopes",
+        "name": "cancelMatchingScopes",
+        "filePath": "src/utils/request/request-queue.ts"
+      },
+      {
+        "uid": "Function:src/utils/request/request-queue.ts:RequestQueue.releaseAttempt",
+        "name": "releaseAttempt",
+        "filePath": "src/utils/request/request-queue.ts"
+      },
+      {
+        "uid": "Method:src/utils/request/request-queue.ts:RequestQueue.constructor#1",
+        "name": "constructor",
+        "filePath": "src/utils/request/request-queue.ts"
+      },
+      {
+        "uid": "Method:src/utils/request/request-queue.ts:RequestQueue.enqueue#5",
+        "name": "enqueue",
+        "filePath": "src/utils/request/request-queue.ts"
+      },
+      {
+        "uid": "Method:src/utils/request/request-queue.ts:RequestQueue.setQueueOptions#1",
+        "name": "setQueueOptions",
+        "filePath": "src/utils/request/request-queue.ts"
+      },
+      {
+        "uid": "Method:src/utils/request/request-queue.ts:RequestQueue.cancelByScope#1",
+        "name": "cancelByScope",
+        "filePath": "src/utils/request/request-queue.ts"
+      },
+      {
+        "uid": "Method:src/utils/request/request-queue.ts:RequestQueue.cancelWhere#1",
+        "name": "cancelWhere",
+        "filePath": "src/utils/request/request-queue.ts"
+      },
+      {
+        "uid": "Method:src/utils/request/request-queue.ts:RequestQueue.nextDispatchEtaMs#0",
+        "name": "nextDispatchEtaMs",
+        "filePath": "src/utils/request/request-queue.ts"
+      },
+      {
+        "uid": "Method:src/utils/request/request-queue.ts:RequestQueue.validateConcurrency#1",
+        "name": "validateConcurrency",
+        "filePath": "src/utils/request/request-queue.ts"
+      },
+      {
+        "uid": "Method:src/utils/request/request-queue.ts:RequestQueue.atConcurrencyLimit#0",
+        "name": "atConcurrencyLimit",
+        "filePath": "src/utils/request/request-queue.ts"
+      },
+      {
+        "uid": "Method:src/utils/request/request-queue.ts:RequestQueue.schedule#0",
+        "name": "schedule",
+        "filePath": "src/utils/request/request-queue.ts"
+      },
+      {
+        "uid": "Method:src/utils/request/request-queue.ts:RequestQueue.clearScheduleTimer#0",
+        "name": "clearScheduleTimer",
+        "filePath": "src/utils/request/request-queue.ts"
+      },
+      {
+        "uid": "Method:src/utils/request/request-queue.ts:RequestQueue.armScheduleTimer#1",
+        "name": "armScheduleTimer",
+        "filePath": "src/utils/request/request-queue.ts"
+      },
+      {
+        "uid": "Method:src/utils/request/request-queue.ts:RequestQueue.executeTask#1",
+        "name": "executeTask",
+        "filePath": "src/utils/request/request-queue.ts"
+      },
+      {
+        "uid": "Method:src/utils/request/request-queue.ts:RequestQueue.duplicateTask#1",
+        "name": "duplicateTask",
+        "filePath": "src/utils/request/request-queue.ts"
+      },
+      {
+        "uid": "Method:src/utils/request/request-queue.ts:RequestQueue.failCurrentBacklog#1",
+        "name": "failCurrentBacklog",
+        "filePath": "src/utils/request/request-queue.ts"
+      },
+      {
+        "uid": "Method:src/utils/request/request-queue.ts:RequestQueue.rejectDrainedTask#2",
+        "name": "rejectDrainedTask",
+        "filePath": "src/utils/request/request-queue.ts"
+      },
+      {
+        "uid": "Method:src/utils/request/request-queue.ts:RequestQueue.refillTokens#0",
+        "name": "refillTokens",
+        "filePath": "src/utils/request/request-queue.ts"
+      }
+    ],
+    "has_property": [
+      {
+        "uid": "Property:src/utils/request/request-queue.ts:RequestQueue.activeAttempts",
+        "name": "activeAttempts",
+        "filePath": "src/utils/request/request-queue.ts"
+      },
+      {
+        "uid": "Property:src/utils/request/request-queue.ts:RequestQueue.waitingQueue",
+        "name": "waitingQueue",
+        "filePath": "src/utils/request/request-queue.ts"
+      },
+      {
+        "uid": "Property:src/utils/request/request-queue.ts:RequestQueue.waitingTasks",
+        "name": "waitingTasks",
+        "filePath": "src/utils/request/request-queue.ts"
+      },
+      {
+        "uid": "Property:src/utils/request/request-queue.ts:RequestQueue.executingTasks",
+        "name": "executingTasks",
+        "filePath": "src/utils/request/request-queue.ts"
+      },
+      {
+        "uid": "Property:src/utils/request/request-queue.ts:RequestQueue.nextScheduleTimer",
+        "name": "nextScheduleTimer",
+        "filePath": "src/utils/request/request-queue.ts"
+      },
+      {
+        "uid": "Property:src/utils/request/request-queue.ts:RequestQueue.retryPolicy",
+        "name": "retryPolicy",
+        "filePath": "src/utils/request/request-queue.ts"
+      },
+      {
+        "uid": "Property:src/utils/request/request-queue.ts:RequestQueue.bucketTokens",
+        "name": "bucketTokens",
+        "filePath": "src/utils/request/request-queue.ts"
+      },
+      {
+        "uid": "Property:src/utils/request/request-queue.ts:RequestQueue.lastRefill",
+        "name": "lastRefill",
+        "filePath": "src/utils/request/request-queue.ts"
+      },
+      {
+        "uid": "Property:src/utils/request/request-queue.ts:RequestQueue.pausedUntil",
+        "name": "pausedUntil",
+        "filePath": "src/utils/request/request-queue.ts"
+      },
+      {
+        "uid": "Property:src/utils/request/request-queue.ts:RequestQueue.consecutiveRateLimits",
+        "name": "consecutiveRateLimits",
+        "filePath": "src/utils/request/request-queue.ts"
+      },
+      {
+        "uid": "Property:src/utils/request/request-queue.ts:RequestQueue.options",
+        "name": "options",
+        "filePath": "src/utils/request/request-queue.ts"
+      }
+    ]
+  },
+  "processes": []
+}

@@ -1,0 +1,5 @@
+{
+  "normalization": "Vite 8-character JS/CSS filename hashes only; no code/value normalization",
+  "normalizedJavaScriptEqual": true,
+  "differentGroups": []
+}

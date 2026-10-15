@@ -1,0 +1,565 @@
+{
+  "target": {
+    "id": "Function:src/components/ui/base-ui/switch.tsx:Switch",
+    "name": "Switch",
+    "type": "Function",
+    "filePath": "src/components/ui/base-ui/switch.tsx"
+  },
+  "direction": "upstream",
+  "impactedCount": 54,
+  "risk": "CRITICAL",
+  "summary": {
+    "direct": 28,
+    "processes_affected": 10,
+    "modules_affected": 5
+  },
+  "affected_processes": [
+    {
+      "name": "GlossaryEditorPage",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/advanced/glossary/editor-page.tsx",
+      "affected_process_count": 8,
+      "total_hits": 11,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "TranslationPage",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/translation/index.tsx",
+      "affected_process_count": 4,
+      "total_hits": 8,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "VideoSubtitlesPage",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/video-subtitles/index.tsx",
+      "affected_process_count": 6,
+      "total_hits": 8,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "TranslationControlPage",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/translation/translation-control/control-page.tsx",
+      "affected_process_count": 6,
+      "total_hits": 6,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "NoteSuggestionItems",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/selection-toolbar/actions/note-suggestion-items.tsx",
+      "affected_process_count": 6,
+      "total_hits": 6,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "SiteRulesPage",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/translation/translation-control/site-rules/index.tsx",
+      "affected_process_count": 4,
+      "total_hits": 6,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "ApiProvidersPage",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/api-providers/index.tsx",
+      "affected_process_count": 6,
+      "total_hits": 6,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "SelectionTranslationProvider",
+      "type": "Function",
+      "filePath": "src/entrypoints/selection.content/selection-toolbar/translate-button/provider.tsx",
+      "affected_process_count": 6,
+      "total_hits": 6,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "PreferencePage",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/preference/index.tsx",
+      "affected_process_count": 5,
+      "total_hits": 5,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "SelectionToolbarPage",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/selection-toolbar/index.tsx",
+      "affected_process_count": 2,
+      "total_hits": 4,
+      "earliest_broken_step": 1
+    }
+  ],
+  "affected_modules": [
+    {
+      "name": "Components",
+      "hits": 44,
+      "impact": "direct"
+    },
+    {
+      "name": "Providers-config",
+      "hits": 5,
+      "impact": "direct"
+    },
+    {
+      "name": "Base-ui",
+      "hits": 1,
+      "impact": "direct"
+    },
+    {
+      "name": "Subtitles-settings-panel",
+      "hits": 1,
+      "impact": "indirect"
+    },
+    {
+      "name": "Selection-content",
+      "hits": 1,
+      "impact": "indirect"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/subtitles.content/ui/subtitles-settings-panel/components/subtitles-toggle.tsx:SubtitlesToggle",
+        "name": "SubtitlesToggle",
+        "filePath": "src/entrypoints/subtitles.content/ui/subtitles-settings-panel/components/subtitles-toggle.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/options/components/entity-list-item.tsx:Toggle",
+        "name": "Toggle",
+        "filePath": "src/entrypoints/options/components/entity-list-item.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/options/pages/advanced/glossary/editor/enable-item.tsx:GlossaryEditorEnableItem",
+        "name": "GlossaryEditorEnableItem",
+        "filePath": "src/entrypoints/options/pages/advanced/glossary/editor/enable-item.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/options/pages/advanced/glossary/enable-item.tsx:GlossaryEnableItem",
+        "name": "GlossaryEnableItem",
+        "filePath": "src/entrypoints/options/pages/advanced/glossary/enable-item.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/options/pages/advanced/glossary/glossary-list-item.tsx:GlossaryListItem",
+        "name": "GlossaryListItem",
+        "filePath": "src/entrypoints/options/pages/advanced/glossary/glossary-list-item.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/options/pages/api-providers/ai-content-aware/index.tsx:AIContentAwareConfig",
+        "name": "AIContentAwareConfig",
+        "filePath": "src/entrypoints/options/pages/api-providers/ai-content-aware/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/options/pages/api-providers/providers-config/provider-editor.tsx:AssignmentRow",
+        "name": "AssignmentRow",
+        "filePath": "src/entrypoints/options/pages/api-providers/providers-config/provider-editor.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/options/pages/context-menu/enable-item.tsx:EnableItem",
+        "name": "EnableItem",
+        "filePath": "src/entrypoints/options/pages/context-menu/enable-item.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/options/pages/floating-button/enable-item.tsx:EnableItem",
+        "name": "EnableItem",
+        "filePath": "src/entrypoints/options/pages/floating-button/enable-item.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/options/pages/input-translation/languages/index.tsx:LanguagesSection",
+        "name": "LanguagesSection",
+        "filePath": "src/entrypoints/options/pages/input-translation/languages/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/options/pages/input-translation/trigger/index.tsx:TriggerSection",
+        "name": "TriggerSection",
+        "filePath": "src/entrypoints/options/pages/input-translation/trigger/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/options/pages/preference/user-experience/analytics.tsx:AnalyticsItem",
+        "name": "AnalyticsItem",
+        "filePath": "src/entrypoints/options/pages/preference/user-experience/analytics.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/options/pages/preference/user-experience/beta-experience.tsx:BetaExperienceItem",
+        "name": "BetaExperienceItem",
+        "filePath": "src/entrypoints/options/pages/preference/user-experience/beta-experience.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/options/pages/selection-toolbar/actions/index.tsx:ActionsSection",
+        "name": "ActionsSection",
+        "filePath": "src/entrypoints/options/pages/selection-toolbar/actions/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/options/pages/selection-toolbar/actions/note-suggestion-items.tsx:NoteSuggestionItems",
+        "name": "NoteSuggestionItems",
+        "filePath": "src/entrypoints/options/pages/selection-toolbar/actions/note-suggestion-items.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/options/pages/selection-toolbar/enable-item.tsx:EnableItem",
+        "name": "EnableItem",
+        "filePath": "src/entrypoints/options/pages/selection-toolbar/enable-item.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/options/pages/translation/hover-translation/index.tsx:HoverTranslationSection",
+        "name": "HoverTranslationSection",
+        "filePath": "src/entrypoints/options/pages/translation/hover-translation/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/options/pages/translation/preference/index.tsx:PreferenceSection",
+        "name": "PreferenceSection",
+        "filePath": "src/entrypoints/options/pages/translation/preference/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/options/pages/translation/translation-control/site-rules/built-in-rule-row.tsx:BuiltInRuleRow",
+        "name": "BuiltInRuleRow",
+        "filePath": "src/entrypoints/options/pages/translation/translation-control/site-rules/built-in-rule-row.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/options/pages/translation/translation-control/skip-languages-item.tsx:SkipLanguagesItem",
+        "name": "SkipLanguagesItem",
+        "filePath": "src/entrypoints/options/pages/translation/translation-control/skip-languages-item.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/options/pages/translation/translation-style/index.tsx:TranslationStyleSection",
+        "name": "TranslationStyleSection",
+        "filePath": "src/entrypoints/options/pages/translation/translation-style/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/options/pages/video-subtitles/preference/index.tsx:PreferenceSection",
+        "name": "PreferenceSection",
+        "filePath": "src/entrypoints/options/pages/video-subtitles/preference/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/popup/components/floating-button.tsx:FloatingButton",
+        "name": "FloatingButton",
+        "filePath": "src/entrypoints/popup/components/floating-button.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/popup/components/ai-smart-context.tsx:AISmartContext",
+        "name": "AISmartContext",
+        "filePath": "src/entrypoints/popup/components/ai-smart-context.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/popup/components/always-translate.tsx:AlwaysTranslate",
+        "name": "AlwaysTranslate",
+        "filePath": "src/entrypoints/popup/components/always-translate.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/popup/components/node-translation-hotkey-selector.tsx:NodeTranslationHotkeySelector",
+        "name": "NodeTranslationHotkeySelector",
+        "filePath": "src/entrypoints/popup/components/node-translation-hotkey-selector.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/popup/components/site-control-toggle.tsx:SiteControlToggle",
+        "name": "SiteControlToggle",
+        "filePath": "src/entrypoints/popup/components/site-control-toggle.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/selection.content/selection-toolbar/note-suggestion/note-suggestion-card.tsx:NoteSuggestionCard",
+        "name": "NoteSuggestionCard",
+        "filePath": "src/entrypoints/selection.content/selection-toolbar/note-suggestion/note-suggestion-card.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "Function:src/entrypoints/subtitles.content/ui/subtitles-settings-panel/views/main-menu.tsx:MainMenu",
+        "name": "MainMenu",
+        "filePath": "src/entrypoints/subtitles.content/ui/subtitles-settings-panel/views/main-menu.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/fork/ui/options/context-menu-page.tsx:ContextMenuPage",
+        "name": "ContextMenuPage",
+        "filePath": "src/fork/ui/options/context-menu-page.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/fork/ui/options/floating-button-page.tsx:FloatingButtonPage",
+        "name": "FloatingButtonPage",
+        "filePath": "src/fork/ui/options/floating-button-page.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/fork/ui/options/selection-toolbar-page.tsx:SelectionToolbarPage",
+        "name": "SelectionToolbarPage",
+        "filePath": "src/fork/ui/options/selection-toolbar-page.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/entrypoints/options/pages/advanced/glossary/editor-page.tsx:GlossaryEditorPage",
+        "name": "GlossaryEditorPage",
+        "filePath": "src/entrypoints/options/pages/advanced/glossary/editor-page.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/entrypoints/options/pages/advanced/glossary/glossary-library-item.tsx:GlossaryLibraryItem",
+        "name": "GlossaryLibraryItem",
+        "filePath": "src/entrypoints/options/pages/advanced/glossary/glossary-library-item.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/entrypoints/options/pages/advanced/glossary/index.tsx:GlossaryPage",
+        "name": "GlossaryPage",
+        "filePath": "src/entrypoints/options/pages/advanced/glossary/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/entrypoints/options/pages/api-providers/index.tsx:ApiProvidersPage",
+        "name": "ApiProvidersPage",
+        "filePath": "src/entrypoints/options/pages/api-providers/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/entrypoints/options/pages/api-providers/providers-config/provider-editor.tsx:CompatibleFeatureAssignments",
+        "name": "CompatibleFeatureAssignments",
+        "filePath": "src/entrypoints/options/pages/api-providers/providers-config/provider-editor.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/entrypoints/options/pages/api-providers/providers-config/provider-editor.tsx:LanguageDetectionAssignment",
+        "name": "LanguageDetectionAssignment",
+        "filePath": "src/entrypoints/options/pages/api-providers/providers-config/provider-editor.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/entrypoints/options/pages/api-providers/providers-config/provider-editor.tsx:FeatureAssignment",
+        "name": "FeatureAssignment",
+        "filePath": "src/entrypoints/options/pages/api-providers/providers-config/provider-editor.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/entrypoints/options/pages/api-providers/providers-config/provider-editor.tsx:CustomActionAssignments",
+        "name": "CustomActionAssignments",
+        "filePath": "src/entrypoints/options/pages/api-providers/providers-config/provider-editor.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/entrypoints/options/pages/context-menu/index.tsx:ContextMenuPage",
+        "name": "ContextMenuPage",
+        "filePath": "src/entrypoints/options/pages/context-menu/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/entrypoints/options/pages/floating-button/index.tsx:FloatingButtonPage",
+        "name": "FloatingButtonPage",
+        "filePath": "src/entrypoints/options/pages/floating-button/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/entrypoints/options/pages/input-translation/index.tsx:InputTranslationPage",
+        "name": "InputTranslationPage",
+        "filePath": "src/entrypoints/options/pages/input-translation/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/entrypoints/options/pages/preference/user-experience/index.tsx:UserExperienceSection",
+        "name": "UserExperienceSection",
+        "filePath": "src/entrypoints/options/pages/preference/user-experience/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/entrypoints/options/pages/selection-toolbar/index.tsx:SelectionToolbarPage",
+        "name": "SelectionToolbarPage",
+        "filePath": "src/entrypoints/options/pages/selection-toolbar/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/entrypoints/options/pages/translation/index.tsx:TranslationPage",
+        "name": "TranslationPage",
+        "filePath": "src/entrypoints/options/pages/translation/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/entrypoints/options/pages/translation/translation-control/control-page.tsx:TranslationControlPage",
+        "name": "TranslationControlPage",
+        "filePath": "src/entrypoints/options/pages/translation/translation-control/control-page.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/entrypoints/options/pages/translation/translation-control/site-rules/built-in-rules.tsx:BuiltInRules",
+        "name": "BuiltInRules",
+        "filePath": "src/entrypoints/options/pages/translation/translation-control/site-rules/built-in-rules.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/entrypoints/options/pages/video-subtitles/index.tsx:VideoSubtitlesPage",
+        "name": "VideoSubtitlesPage",
+        "filePath": "src/entrypoints/options/pages/video-subtitles/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/entrypoints/selection.content/selection-toolbar/translate-button/provider.tsx:SelectionTranslationProvider",
+        "name": "SelectionTranslationProvider",
+        "filePath": "src/entrypoints/selection.content/selection-toolbar/translate-button/provider.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/fork/ui/popup/App.tsx:App",
+        "name": "App",
+        "filePath": "src/fork/ui/popup/App.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      }
+    ],
+    "3": [
+      {
+        "depth": 3,
+        "id": "Function:src/entrypoints/subtitles.content/ui/subtitles-settings-panel/index.tsx:SubtitlesSettingsPanel",
+        "name": "SubtitlesSettingsPanel",
+        "filePath": "src/entrypoints/subtitles.content/ui/subtitles-settings-panel/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/entrypoints/options/pages/preference/index.tsx:PreferencePage",
+        "name": "PreferencePage",
+        "filePath": "src/entrypoints/options/pages/preference/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/entrypoints/options/pages/translation/translation-control/site-rules/index.tsx:SiteRulesPage",
+        "name": "SiteRulesPage",
+        "filePath": "src/entrypoints/options/pages/translation/translation-control/site-rules/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      }
+    ]
+  }
+}

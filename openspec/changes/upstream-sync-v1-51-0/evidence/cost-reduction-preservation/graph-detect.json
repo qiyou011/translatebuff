@@ -1,0 +1,186 @@
+{
+  "summary": {
+    "changed_count": 25,
+    "affected_count": 2,
+    "changed_files": 16,
+    "risk_level": "medium"
+  },
+  "changed_symbols": [
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/adaptation.md:L1:B：fork适配与贡献对账",
+      "name": "B：fork适配与贡献对账",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/adaptation.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/adaptation.md:L22:对账结果和独立复审",
+      "name": "对账结果和独立复审",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/adaptation.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/design.md:L13:Decisions",
+      "name": "Decisions",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/design.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/design.md:L41:D6：15项重点逐条绑定真实路径",
+      "name": "D6：15项重点逐条绑定真实路径",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/design.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/specs/fork-upstream-v151-admission/spec.md:L1:ADDED Requirements",
+      "name": "ADDED Requirements",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/specs/fork-upstream-v151-admission/spec.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/specs/fork-upstream-v151-admission/spec.md:L201:Requirement: 术语注入贯通自有 LLM 合批与缓存",
+      "name": "Requirement: 术语注入贯通自有 LLM 合批与缓存",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/specs/fork-upstream-v151-admission/spec.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/specs/fork-upstream-v151-admission/spec.md:L210:Scenario: 修改或删除术语后再次翻译",
+      "name": "Scenario: 修改或删除术语后再次翻译",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/specs/fork-upstream-v151-admission/spec.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/specs/fork-upstream-v151-admission/spec.md:L215:Scenario: 运行时 provider 兼容与术语并存",
+      "name": "Scenario: 运行时 provider 兼容与术语并存",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/specs/fork-upstream-v151-admission/spec.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/tasks.md:L1:v1.51.0 完整上游同步实施计划",
+      "name": "v1.51.0 完整上游同步实施计划",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/tasks.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/tasks.md:L91:9. 真实浏览器回归与候选状态",
+      "name": "9. 真实浏览器回归与候选状态",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/tasks.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/validation.md:L1:C：验证与接纳状态",
+      "name": "C：验证与接纳状态",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/validation.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/validation.md:L11:候选与产物",
+      "name": "候选与产物",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/validation.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/validation.md:L24:G1—G7：沿用附件的正式编号",
+      "name": "G1—G7：沿用附件的正式编号",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/validation.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/validation.md:L38:工程与独立审查",
+      "name": "工程与独立审查",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/validation.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/validation.md:L52:前期真实构建包受控浏览器回归",
+      "name": "前期真实构建包受控浏览器回归",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/validation.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/validation.md:L88:前期受控轮网络证据边界",
+      "name": "前期受控轮网络证据边界",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/validation.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/validation.md:L113:接纳前剩余责任",
+      "name": "接纳前剩余责任",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/validation.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/components/ui/base-ui/switch.tsx:Switch",
+      "name": "Switch",
+      "filePath": "src/components/ui/base-ui/switch.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/custom-actions/action-config-form/layout-field.tsx:EditableLayoutField",
+      "name": "EditableLayoutField",
+      "filePath": "src/entrypoints/options/pages/custom-actions/action-config-form/layout-field.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/fork/ui/popup/providers-field.tsx:getSelectedProviderOptions",
+      "name": "getSelectedProviderOptions",
+      "filePath": "src/fork/ui/popup/providers-field.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/fork/ui/selection-content/SelectionToolbar.tsx:isNodeInsideSelectionOverlay",
+      "name": "isNodeInsideSelectionOverlay",
+      "filePath": "src/fork/ui/selection-content/SelectionToolbar.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/fork/ui/selection-content/SelectionToolbar.tsx:collectSelectionBoundaryNodes",
+      "name": "collectSelectionBoundaryNodes",
+      "filePath": "src/fork/ui/selection-content/SelectionToolbar.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:src/fork/ui/selection-content/SelectionToolbar.tsx:overlayElement",
+      "name": "overlayElement",
+      "filePath": "src/fork/ui/selection-content/SelectionToolbar.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/utils/host/translate/translate-text.ts:translateTextCore",
+      "name": "translateTextCore",
+      "filePath": "src/utils/host/translate/translate-text.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:wxt.config.ts:FORK_UI_REDIRECTS",
+      "name": "FORK_UI_REDIRECTS",
+      "filePath": "wxt.config.ts",
+      "change_type": "touched"
+    }
+  ],
+  "affected_processes": [
+    {
+      "id": "proc_206_editablelayoutfield",
+      "name": "EditableLayoutField → Label",
+      "process_type": "cross_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "EditableLayoutField",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_279_glossaryeditorpage",
+      "name": "GlossaryEditorPage → Switch",
+      "process_type": "intra_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "Switch",
+          "step": 3
+        }
+      ]
+    }
+  ]
+}

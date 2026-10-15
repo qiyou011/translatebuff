@@ -119,24 +119,29 @@ function isNodeInsideSelectionOverlay(
   overlayContainer: HTMLElement | null,
   overlayShadowRoot: ShadowRoot | null,
 ) {
-  if (!node) {
-    return false
+  let current = node
+  while (current) {
+    if (overlayContainer?.contains(current)) {
+      return true
+    }
+
+    const overlayElement = getNearestSelectionOverlayElement(current)
+    if (overlayElement?.closest(SELECTION_OVERLAY_ROOT_SELECTOR)) {
+      return true
+    }
+
+    if (
+      overlayShadowRoot &&
+      (current === overlayShadowRoot || current.getRootNode() === overlayShadowRoot)
+    ) {
+      return true
+    }
+
+    const root = current.getRootNode()
+    current = root instanceof ShadowRoot ? root.host : null
   }
 
-  if (overlayContainer?.contains(node)) {
-    return true
-  }
-
-  const overlayElement = getNearestSelectionOverlayElement(node)
-  if (overlayElement?.closest(SELECTION_OVERLAY_ROOT_SELECTOR)) {
-    return true
-  }
-
-  if (!overlayShadowRoot) {
-    return false
-  }
-
-  return node === overlayShadowRoot || node.getRootNode() === overlayShadowRoot
+  return false
 }
 
 function collectSelectionBoundaryNodes(selection: Selection) {

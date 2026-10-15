@@ -1,0 +1,148 @@
+{
+  "processes": [],
+  "process_symbols": [],
+  "definitions": [
+    {
+      "id": "Function:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/2026-10-15T07-10-40-805Z/unpacked/chunks/storage-B1zrzVxH.js:me",
+      "name": "me",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/2026-10-15T07-10-40-805Z/unpacked/chunks/storage-B1zrzVxH.js",
+      "startLine": 25,
+      "endLine": 25
+    },
+    {
+      "id": "Function:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/2026-10-15T07-10-40-805Z/unpacked/chunks/storage-B1zrzVxH.js:t",
+      "name": "t",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/2026-10-15T07-10-40-805Z/unpacked/chunks/storage-B1zrzVxH.js",
+      "startLine": 25,
+      "endLine": 25,
+      "module": "Chunks"
+    },
+    {
+      "id": "Function:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/2026-10-15T07-10-40-805Z/unpacked/chunks/storage-B1zrzVxH.js:mt",
+      "name": "mt",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/2026-10-15T07-10-40-805Z/unpacked/chunks/storage-B1zrzVxH.js",
+      "startLine": 25,
+      "endLine": 25
+    },
+    {
+      "id": "Function:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/2026-10-15T07-17-26-803Z/unpacked/chunks/storage-CcvFwDcn.js:me",
+      "name": "me",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/2026-10-15T07-17-26-803Z/unpacked/chunks/storage-CcvFwDcn.js",
+      "startLine": 25,
+      "endLine": 25
+    },
+    {
+      "id": "Function:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/2026-10-15T07-17-26-803Z/unpacked/chunks/storage-CcvFwDcn.js:t",
+      "name": "t",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/2026-10-15T07-17-26-803Z/unpacked/chunks/storage-CcvFwDcn.js",
+      "startLine": 25,
+      "endLine": 25,
+      "module": "Chunks"
+    },
+    {
+      "id": "Function:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/2026-10-15T07-17-26-803Z/unpacked/chunks/storage-CcvFwDcn.js:mt",
+      "name": "mt",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/2026-10-15T07-17-26-803Z/unpacked/chunks/storage-CcvFwDcn.js",
+      "startLine": 25,
+      "endLine": 25
+    },
+    {
+      "id": "Method:src/utils/request/batch-queue.ts:BatchQueue.executeBatchWithRetry#4",
+      "name": "executeBatchWithRetry",
+      "filePath": "src/utils/request/batch-queue.ts",
+      "startLine": 351,
+      "endLine": 402,
+      "module": "Request"
+    },
+    {
+      "id": "Interface:src/utils/request/batch-queue.ts:BatchExecutionMeta",
+      "name": "BatchExecutionMeta",
+      "filePath": "src/utils/request/batch-queue.ts",
+      "startLine": 58,
+      "endLine": 65
+    },
+    {
+      "id": "File:src/utils/request/batch-queue.ts",
+      "name": "batch-queue.ts",
+      "filePath": "src/utils/request/batch-queue.ts"
+    },
+    {
+      "id": "Method:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/2026-10-15T07-17-26-803Z/unpacked/background.js:_get#1",
+      "name": "_get",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/2026-10-15T07-17-26-803Z/unpacked/background.js",
+      "startLine": 7,
+      "endLine": 7
+    },
+    {
+      "id": "Method:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/2026-10-15T07-17-26-803Z/unpacked/background.js:page#1",
+      "name": "page",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/2026-10-15T07-17-26-803Z/unpacked/background.js",
+      "startLine": 7,
+      "endLine": 7
+    },
+    {
+      "id": "Method:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/2026-10-15T07-17-26-803Z/unpacked/background.js:p#1",
+      "name": "p",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/2026-10-15T07-17-26-803Z/unpacked/background.js",
+      "startLine": 7,
+      "endLine": 7
+    },
+    {
+      "id": "Method:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/2026-10-15T07-10-40-805Z/unpacked/background.js:_get#1",
+      "name": "_get",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/2026-10-15T07-10-40-805Z/unpacked/background.js",
+      "startLine": 7,
+      "endLine": 7
+    },
+    {
+      "id": "Method:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/2026-10-15T07-10-40-805Z/unpacked/background.js:page#1",
+      "name": "page",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/2026-10-15T07-10-40-805Z/unpacked/background.js",
+      "startLine": 7,
+      "endLine": 7
+    },
+    {
+      "id": "Method:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/2026-10-15T07-10-40-805Z/unpacked/background.js:p#1",
+      "name": "p",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/2026-10-15T07-10-40-805Z/unpacked/background.js",
+      "startLine": 7,
+      "endLine": 7
+    },
+    {
+      "id": "File:openspec/changes/v1-4-0-page-translation-cost-reduction/proposal.md",
+      "name": "proposal.md",
+      "filePath": "openspec/changes/v1-4-0-page-translation-cost-reduction/proposal.md"
+    },
+    {
+      "id": "File:src/fork/page-translation/queues.ts",
+      "name": "queues.ts",
+      "filePath": "src/fork/page-translation/queues.ts"
+    },
+    {
+      "id": "File:openspec/changes/v1-4-0-page-translation-cost-reduction/design.md",
+      "name": "design.md",
+      "filePath": "openspec/changes/v1-4-0-page-translation-cost-reduction/design.md"
+    },
+    {
+      "id": "Interface:src/utils/host/translate/translate-text.ts:TranslateTextOptions",
+      "name": "TranslateTextOptions",
+      "filePath": "src/utils/host/translate/translate-text.ts",
+      "startLine": 278,
+      "endLine": 309
+    },
+    {
+      "id": "File:src/utils/host/translate/translate-text.ts",
+      "name": "translate-text.ts",
+      "filePath": "src/utils/host/translate/translate-text.ts"
+    }
+  ],
+  "timing": {
+    "vector": 7.4,
+    "bm25": 264.7,
+    "merge": 0.1,
+    "symbol_lookup": 149.8,
+    "ranking": 0,
+    "formatting": 0,
+    "wall": 414.8
+  }
+}

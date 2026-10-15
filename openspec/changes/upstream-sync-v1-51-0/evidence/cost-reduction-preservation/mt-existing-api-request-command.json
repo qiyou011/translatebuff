@@ -1,0 +1,28 @@
+{
+  "command": [
+    "pnpm",
+    "run",
+    "test",
+    "src/utils/request/__tests__/request-queue.test.ts",
+    "src/utils/request/__tests__/batch-queue.test.ts",
+    "src/utils/host/translate/api/__tests__/google.test.ts",
+    "src/utils/host/translate/api/__tests__/microsoft.test.ts",
+    "src/utils/host/translate/__tests__/google-roundtrip.test.ts",
+    "src/utils/host/translate/api/__tests__/deeplx-url-builder.test.ts",
+    "--reporter=default",
+    "--reporter=json",
+    "--outputFile=/Users/yisen/.codex/worktrees/upstream-sync-v1-51-0/translatebuff/openspec/changes/upstream-sync-v1-51-0/evidence/cost-reduction-preservation/mt-existing-api-request.json"
+  ],
+  "env": {
+    "SKIP_FREE_API": "true"
+  },
+  "exitCode": 0,
+  "elapsedSeconds": 2.213,
+  "numTotalTestSuites": 34,
+  "numPassedTestSuites": 34,
+  "numTotalTests": 117,
+  "numPassedTests": 117,
+  "numPendingTests": 0,
+  "numFailedTests": 0,
+  "success": true
+}

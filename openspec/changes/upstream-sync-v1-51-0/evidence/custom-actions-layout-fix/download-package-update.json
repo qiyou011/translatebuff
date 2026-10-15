@@ -1,0 +1,9 @@
+{
+  "loadedDirectory": "/Users/yisen/Downloads/TranslateBuff-Global-1.5.0-rf1.51.0-20261015",
+  "originalPackageBackup": "/Users/yisen/Downloads/TranslateBuff-Global-1.5.0-rf1.51.0-20261015-frozen-ea567267-6caf86c9",
+  "originalTreeSha256": "ea567267f98550bfee72788d6e1e9e2e13e612ee2db28f5e4adc0d07f54f48d6",
+  "updatedTreeSha256": "6fb916949bfa25b7cc379096acb36cfd227d455e2d0cd5184b7699ab86eeb6fd",
+  "files": 207,
+  "configurationOrProfileModified": false,
+  "browserExtensionReload": "REQUIRED_USER_ACTION; not performed by filesystem update"
+}

@@ -1,0 +1,70 @@
+{
+  "target": {
+    "id": "Function:src/utils/host/translate/translate-text.ts:translateTextCore",
+    "name": "translateTextCore",
+    "type": "Function",
+    "filePath": "src/utils/host/translate/translate-text.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 4,
+  "risk": "HIGH",
+  "summary": {
+    "direct": 4,
+    "processes_affected": 0,
+    "modules_affected": 3
+  },
+  "affected_processes": [],
+  "affected_modules": [
+    {
+      "name": "Translate",
+      "hits": 2,
+      "impact": "direct"
+    },
+    {
+      "name": "Selection-content",
+      "hits": 1,
+      "impact": "direct"
+    },
+    {
+      "name": "Input-translation",
+      "hits": 1,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/fork/ui/selection-content/use-selection-translation-controller.ts:translateWithStandardProvider",
+        "name": "translateWithStandardProvider",
+        "filePath": "src/fork/ui/selection-content/use-selection-translation-controller.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/utils/host/translate/translate-variants.ts:translateTextUsingPageConfig",
+        "name": "translateTextUsingPageConfig",
+        "filePath": "src/utils/host/translate/translate-variants.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/utils/host/translate/translate-variants.ts:translateTextForInput",
+        "name": "translateTextForInput",
+        "filePath": "src/utils/host/translate/translate-variants.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/selection.content/selection-toolbar/translate-button/provider.tsx:translateWithStandardProvider",
+        "name": "translateWithStandardProvider",
+        "filePath": "src/entrypoints/selection.content/selection-toolbar/translate-button/provider.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      }
+    ]
+  }
+}

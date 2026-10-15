@@ -1,0 +1,25 @@
+{
+  "command": [
+    "pnpm",
+    "run",
+    "test",
+    "src/utils/host/__tests__/translate.integration.test.tsx",
+    "-t",
+    "DeepLX",
+    "--reporter=default",
+    "--reporter=json",
+    "--outputFile=/Users/yisen/.codex/worktrees/upstream-sync-v1-51-0/translatebuff/openspec/changes/upstream-sync-v1-51-0/evidence/cost-reduction-preservation/mt-existing-deeplx-probe.json"
+  ],
+  "env": {
+    "SKIP_FREE_API": "true"
+  },
+  "exitCode": 0,
+  "elapsedSeconds": 2.733,
+  "numTotalTestSuites": 59,
+  "numPassedTestSuites": 59,
+  "numTotalTests": 171,
+  "numPassedTests": 3,
+  "numPendingTests": 168,
+  "numFailedTests": 0,
+  "success": true
+}

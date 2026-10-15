@@ -1,0 +1,19 @@
+{
+  "target": {
+    "id": "Function:src/fork/ui/popup/providers-field.tsx:ForkProvidersField",
+    "name": "ForkProvidersField",
+    "type": "Function",
+    "filePath": "src/fork/ui/popup/providers-field.tsx"
+  },
+  "direction": "upstream",
+  "impactedCount": 0,
+  "risk": "LOW",
+  "summary": {
+    "direct": 0,
+    "processes_affected": 0,
+    "modules_affected": 0
+  },
+  "affected_processes": [],
+  "affected_modules": [],
+  "byDepth": {}
+}

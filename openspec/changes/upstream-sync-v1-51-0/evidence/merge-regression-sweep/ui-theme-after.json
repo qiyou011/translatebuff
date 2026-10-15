@@ -1,0 +1,81 @@
+{
+  "dark": {
+    "result": {
+      "type": "object",
+      "value": {
+        "button": {
+          "background": "rgb(28, 28, 31)",
+          "color": "rgb(235, 235, 235)"
+        },
+        "warning": {
+          "background": "rgb(28, 28, 31)",
+          "color": "rgb(251, 191, 36)"
+        }
+      }
+    }
+  },
+  "light": {
+    "result": {
+      "type": "object",
+      "value": {
+        "button": {
+          "background": "rgb(255, 255, 255)",
+          "color": "rgb(43, 43, 46)"
+        },
+        "warning": {
+          "background": "rgb(255, 255, 255)",
+          "color": "rgb(133, 77, 14)"
+        }
+      }
+    }
+  },
+  "wide": {
+    "result": {
+      "type": "object",
+      "value": {
+        "dialog": {
+          "height": 743.3984375,
+          "width": 1280,
+          "x": 215,
+          "y": 41.296875
+        },
+        "grid": {
+          "height": 599.3984375,
+          "width": 1232,
+          "x": 239,
+          "y": 161.296875
+        },
+        "previewColumn": {
+          "height": 599.3984375,
+          "width": 608,
+          "x": 863,
+          "y": 161.296875
+        },
+        "previewScroll": {
+          "clientWidth": 608,
+          "scrollWidth": 608
+        },
+        "smallButtons": [
+          {
+            "height": 24,
+            "text": "320",
+            "width": 39.6015625,
+            "x": 863,
+            "y": 161.296875
+          },
+          {
+            "height": 24,
+            "text": "500",
+            "width": 38.6015625,
+            "x": 902.6015625,
+            "y": 161.296875
+          }
+        ],
+        "viewport": {
+          "height": 826,
+          "width": 1710
+        }
+      }
+    }
+  }
+}

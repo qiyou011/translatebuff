@@ -1,6 +1,6 @@
 "use client"
 
-import type { Transition } from "motion/react"
+import type { MotionStyle, Transition } from "motion/react"
 import { mergeProps } from "@base-ui/react/merge-props"
 import { Switch as SwitchPrimitive } from "@base-ui/react/switch"
 import { animate, motion, useMotionValue } from "motion/react"
@@ -180,7 +180,7 @@ function Switch({
       data-slot="switch"
       data-size={size}
       className={cn(
-        "peer group/switch focus-visible:border-accent-blue focus-visible:ring-accent-blue/50 dark:focus-visible:ring-accent-blue/60 data-checked:bg-accent-blue data-checked:hover:not-data-disabled:bg-accent-blue-hover relative inline-flex shrink-0 cursor-pointer touch-none items-center rounded-full border border-transparent shadow-xs transition-colors duration-100 outline-none select-none after:absolute after:-inset-x-3 after:-inset-y-2 focus-visible:ring-[3px] aria-invalid:border-destructive aria-invalid:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 data-unchecked:bg-input dark:data-unchecked:bg-input/80 data-disabled:cursor-not-allowed data-disabled:opacity-50",
+        "peer group/switch relative inline-flex shrink-0 cursor-pointer touch-none items-center rounded-full border border-transparent shadow-xs transition-colors duration-100 outline-none select-none after:absolute after:-inset-x-3 after:-inset-y-2 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 data-checked:bg-accent data-unchecked:bg-input dark:data-unchecked:bg-input/80 data-disabled:cursor-not-allowed data-disabled:opacity-50",
         className,
       )}
       {...gestureProps}
@@ -206,8 +206,15 @@ function Switch({
           <motion.span
             className="pointer-events-none absolute top-1/2 left-0 block rounded-full bg-white"
             initial={false}
-            style={{ x, y: "-50%" }}
-            animate={{ width: thumbWidth, height: thumbHeight }}
+            // The options theme maps these same motion values to its larger track.
+            style={{ x, y: "-50%", "--rf-switch-thumb-x": x } as MotionStyle}
+            animate={{
+              width: thumbWidth,
+              height: thumbHeight,
+              "--rf-switch-thumb-width": thumbWidth,
+              "--rf-switch-thumb-height": thumbHeight,
+              "--rf-switch-thumb-y": inset + (thumb - thumbHeight) / 2,
+            }}
             transition={transition}
           />
         }

@@ -1,0 +1,30 @@
+{
+  "target": {
+    "id": "Function:src/fork/ui-redirect-plugin.ts:forkUiRedirectPlugin",
+    "name": "forkUiRedirectPlugin",
+    "type": "Function",
+    "filePath": "src/fork/ui-redirect-plugin.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 1,
+  "risk": "LOW",
+  "summary": {
+    "direct": 1,
+    "processes_affected": 0,
+    "modules_affected": 0
+  },
+  "affected_processes": [],
+  "affected_modules": [],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "File:vitest.fork.config.ts",
+        "name": "vitest.fork.config.ts",
+        "filePath": "vitest.fork.config.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85
+      }
+    ]
+  }
+}

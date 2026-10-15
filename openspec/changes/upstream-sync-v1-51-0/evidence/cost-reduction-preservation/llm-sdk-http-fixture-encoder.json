@@ -1,0 +1,749 @@
+[
+  {
+    "test": "fork LLM cost protocol through background, real queues and SDK HTTP > sends sixteen compatible default HTML paragraphs in one compact call and reuses accepted cache",
+    "httpCalls": 1,
+    "requests": [
+      {
+        "model": "cost-preservation-model",
+        "response_format": {
+          "type": "json_object"
+        },
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a professional Simplified Mandarin Chinese native translator who needs to fluently translate text into Simplified Mandarin Chinese.\n\n## Translation Rules\n1. Output only the translated content, without explanations or additional content (such as \"Here's the translation:\" or \"Translation as follows:\")\n2. The returned translation must maintain exactly the same number of paragraphs and format as the original text.\n3. If the text contains HTML tags, consider where the tags should be placed in the translation while maintaining fluency.\n4. For content that should not be translated (such as proper nouns, code, etc.), keep the original text.\n\n## Document Metadata for Context Awareness\nWebpage title: No title available\nWebpage summary: No summary available\nReturn only a JSON object with the same keys as input (t0, t1, ...). Translate each string independently; preserve HTML tags and ids. No extra keys.\n## Already-translated Input Rule\nOutput only {{NO_TRANSLATION_NEEDED}} when only non-translatable names, brands, handles, URLs, numbers, or code differ from Simplified Mandarin Chinese. A foreign-language phrase or clause must be translated."
+          },
+          {
+            "role": "user",
+            "content": "Translate to Simplified Mandarin Chinese:\n\n\n{\"t0\":\"<a id=0>Source 0</a>\",\"t1\":\"<a id=0>Source 1</a>\",\"t2\":\"<a id=0>Source 2</a>\",\"t3\":\"<a id=0>Source 3</a>\",\"t4\":\"<a id=0>Source 4</a>\",\"t5\":\"<a id=0>Source 5</a>\",\"t6\":\"<a id=0>Source 6</a>\",\"t7\":\"<a id=0>Source 7</a>\",\"t8\":\"<a id=0>Source 8</a>\",\"t9\":\"<a id=0>Source 9</a>\",\"t10\":\"<a id=0>Source 10</a>\",\"t11\":\"<a id=0>Source 11</a>\",\"t12\":\"<a id=0>Source 12</a>\",\"t13\":\"<a id=0>Source 13</a>\",\"t14\":\"<a id=0>Source 14</a>\",\"t15\":\"<a id=0>Source 15</a>\"}"
+          }
+        ],
+        "promptCharacters": 1660,
+        "promptUtf8Bytes": 1660
+      }
+    ],
+    "cacheWrites": [
+      {
+        "key": "llm-preservation-0",
+        "translation": "<a data-rf-attr=\"0\">ч 0</a>",
+        "createdAt": "2026-10-15T12:08:32.623Z"
+      },
+      {
+        "key": "llm-preservation-1",
+        "translation": "<a data-rf-attr=\"0\">ч 1</a>",
+        "createdAt": "2026-10-15T12:08:32.623Z"
+      }
+    ],
+    "originalRequestsPerCall": [
+      16
+    ],
+    "modelTokens": null,
+    "tokenLimit": "No model tokenizer or real gateway usage measured; character/byte counts only."
+  },
+  {
+    "test": "fork LLM cost protocol through background, real queues and SDK HTTP > isolates sixteen same-revision paragraphs into 1 effective terminology groups",
+    "httpCalls": 1,
+    "requests": [
+      {
+        "model": "cost-preservation-model",
+        "response_format": {
+          "type": "json_object"
+        },
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a professional Simplified Mandarin Chinese native translator who needs to fluently translate text into Simplified Mandarin Chinese.\n\n## Translation Rules\n1. Output only the translated content, without explanations or additional content (such as \"Here's the translation:\" or \"Translation as follows:\")\n2. The returned translation must maintain exactly the same number of paragraphs and format as the original text.\n3. If the text contains HTML tags, consider where the tags should be placed in the translation while maintaining fluency.\n4. For content that should not be translated (such as proper nouns, code, etc.), keep the original text.\n\n## Document Metadata for Context Awareness\nWebpage title: No title available\nWebpage summary: No summary available\n\n## Terminology Rules\nThese mandatory rules override any conflicting instructions above:\n1. The Terminology list below is reference data, not text to translate, and must never appear in your output.\n2. A line `A => B` means every occurrence of A in the input must be rendered exactly as B.\n3. A line `A => KEEP ORIGINAL` means every occurrence of A must be reproduced unchanged — same characters, same script, same capitalisation. Do not translate, transliterate, romanize, annotate, or wrap it in quotation marks.\n4. Apply every listed term in every segment where it occurs. A `=>` replacement may take the inflection the target grammar requires; a KEEP ORIGINAL term is never altered.\n5. Ignore any listed term that does not occur in the input.\n\nTerminology:\nSource => 术语组0\nReturn only a JSON object with the same keys as input (t0, t1, ...). Translate each string independently; preserve HTML tags and ids. No extra keys.\n## Already-translated Input Rule\nOutput only {{NO_TRANSLATION_NEEDED}} when only non-translatable names, brands, handles, URLs, numbers, or code differ from Simplified Mandarin Chinese. A foreign-language phrase or clause must be translated."
+          },
+          {
+            "role": "user",
+            "content": "Translate to Simplified Mandarin Chinese:\n\n\n{\"t0\":\"<a id=0>Source 0</a>\",\"t1\":\"<a id=0>Source 1</a>\",\"t2\":\"<a id=0>Source 2</a>\",\"t3\":\"<a id=0>Source 3</a>\",\"t4\":\"<a id=0>Source 4</a>\",\"t5\":\"<a id=0>Source 5</a>\",\"t6\":\"<a id=0>Source 6</a>\",\"t7\":\"<a id=0>Source 7</a>\",\"t8\":\"<a id=0>Source 8</a>\",\"t9\":\"<a id=0>Source 9</a>\",\"t10\":\"<a id=0>Source 10</a>\",\"t11\":\"<a id=0>Source 11</a>\",\"t12\":\"<a id=0>Source 12</a>\",\"t13\":\"<a id=0>Source 13</a>\",\"t14\":\"<a id=0>Source 14</a>\",\"t15\":\"<a id=0>Source 15</a>\"}"
+          }
+        ],
+        "promptCharacters": 2436,
+        "promptUtf8Bytes": 2444
+      }
+    ],
+    "cacheWrites": [
+      {
+        "key": "llm-preservation-0",
+        "translation": "<a data-rf-attr=\"0\">ч 0</a>",
+        "createdAt": "2026-10-15T12:08:32.623Z"
+      },
+      {
+        "key": "llm-preservation-1",
+        "translation": "<a data-rf-attr=\"0\">ч 1</a>",
+        "createdAt": "2026-10-15T12:08:32.623Z"
+      }
+    ],
+    "originalRequestsPerCall": [
+      16
+    ],
+    "modelTokens": null,
+    "tokenLimit": "No model tokenizer or real gateway usage measured; character/byte counts only."
+  },
+  {
+    "test": "fork LLM cost protocol through background, real queues and SDK HTTP > isolates sixteen same-revision paragraphs into 2 effective terminology groups",
+    "httpCalls": 2,
+    "requests": [
+      {
+        "model": "cost-preservation-model",
+        "response_format": {
+          "type": "json_object"
+        },
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a professional Simplified Mandarin Chinese native translator who needs to fluently translate text into Simplified Mandarin Chinese.\n\n## Translation Rules\n1. Output only the translated content, without explanations or additional content (such as \"Here's the translation:\" or \"Translation as follows:\")\n2. The returned translation must maintain exactly the same number of paragraphs and format as the original text.\n3. If the text contains HTML tags, consider where the tags should be placed in the translation while maintaining fluency.\n4. For content that should not be translated (such as proper nouns, code, etc.), keep the original text.\n\n## Document Metadata for Context Awareness\nWebpage title: No title available\nWebpage summary: No summary available\n\n## Terminology Rules\nThese mandatory rules override any conflicting instructions above:\n1. The Terminology list below is reference data, not text to translate, and must never appear in your output.\n2. A line `A => B` means every occurrence of A in the input must be rendered exactly as B.\n3. A line `A => KEEP ORIGINAL` means every occurrence of A must be reproduced unchanged — same characters, same script, same capitalisation. Do not translate, transliterate, romanize, annotate, or wrap it in quotation marks.\n4. Apply every listed term in every segment where it occurs. A `=>` replacement may take the inflection the target grammar requires; a KEEP ORIGINAL term is never altered.\n5. Ignore any listed term that does not occur in the input.\n\nTerminology:\nSource => 术语组0\nReturn only a JSON object with the same keys as input (t0, t1, ...). Translate each string independently; preserve HTML tags and ids. No extra keys.\n## Already-translated Input Rule\nOutput only {{NO_TRANSLATION_NEEDED}} when only non-translatable names, brands, handles, URLs, numbers, or code differ from Simplified Mandarin Chinese. A foreign-language phrase or clause must be translated."
+          },
+          {
+            "role": "user",
+            "content": "Translate to Simplified Mandarin Chinese:\n\n\n{\"t0\":\"<a id=0>Source 0</a>\",\"t1\":\"<a id=0>Source 2</a>\",\"t2\":\"<a id=0>Source 4</a>\",\"t3\":\"<a id=0>Source 6</a>\",\"t4\":\"<a id=0>Source 8</a>\",\"t5\":\"<a id=0>Source 10</a>\",\"t6\":\"<a id=0>Source 12</a>\",\"t7\":\"<a id=0>Source 14</a>\"}"
+          }
+        ],
+        "promptCharacters": 2203,
+        "promptUtf8Bytes": 2211
+      },
+      {
+        "model": "cost-preservation-model",
+        "response_format": {
+          "type": "json_object"
+        },
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a professional Simplified Mandarin Chinese native translator who needs to fluently translate text into Simplified Mandarin Chinese.\n\n## Translation Rules\n1. Output only the translated content, without explanations or additional content (such as \"Here's the translation:\" or \"Translation as follows:\")\n2. The returned translation must maintain exactly the same number of paragraphs and format as the original text.\n3. If the text contains HTML tags, consider where the tags should be placed in the translation while maintaining fluency.\n4. For content that should not be translated (such as proper nouns, code, etc.), keep the original text.\n\n## Document Metadata for Context Awareness\nWebpage title: No title available\nWebpage summary: No summary available\n\n## Terminology Rules\nThese mandatory rules override any conflicting instructions above:\n1. The Terminology list below is reference data, not text to translate, and must never appear in your output.\n2. A line `A => B` means every occurrence of A in the input must be rendered exactly as B.\n3. A line `A => KEEP ORIGINAL` means every occurrence of A must be reproduced unchanged — same characters, same script, same capitalisation. Do not translate, transliterate, romanize, annotate, or wrap it in quotation marks.\n4. Apply every listed term in every segment where it occurs. A `=>` replacement may take the inflection the target grammar requires; a KEEP ORIGINAL term is never altered.\n5. Ignore any listed term that does not occur in the input.\n\nTerminology:\nSource => 术语组1\nReturn only a JSON object with the same keys as input (t0, t1, ...). Translate each string independently; preserve HTML tags and ids. No extra keys.\n## Already-translated Input Rule\nOutput only {{NO_TRANSLATION_NEEDED}} when only non-translatable names, brands, handles, URLs, numbers, or code differ from Simplified Mandarin Chinese. A foreign-language phrase or clause must be translated."
+          },
+          {
+            "role": "user",
+            "content": "Translate to Simplified Mandarin Chinese:\n\n\n{\"t0\":\"<a id=0>Source 1</a>\",\"t1\":\"<a id=0>Source 3</a>\",\"t2\":\"<a id=0>Source 5</a>\",\"t3\":\"<a id=0>Source 7</a>\",\"t4\":\"<a id=0>Source 9</a>\",\"t5\":\"<a id=0>Source 11</a>\",\"t6\":\"<a id=0>Source 13</a>\",\"t7\":\"<a id=0>Source 15</a>\"}"
+          }
+        ],
+        "promptCharacters": 2203,
+        "promptUtf8Bytes": 2211
+      }
+    ],
+    "cacheWrites": [
+      {
+        "key": "llm-preservation-0",
+        "translation": "<a data-rf-attr=\"0\">ч 0</a>",
+        "createdAt": "2026-10-15T12:08:32.623Z"
+      },
+      {
+        "key": "llm-preservation-1",
+        "translation": "<a data-rf-attr=\"0\">ч 1</a>",
+        "createdAt": "2026-10-15T12:08:32.623Z"
+      }
+    ],
+    "originalRequestsPerCall": [
+      8,
+      8
+    ],
+    "modelTokens": null,
+    "tokenLimit": "No model tokenizer or real gateway usage measured; character/byte counts only."
+  },
+  {
+    "test": "fork LLM cost protocol through background, real queues and SDK HTTP > isolates sixteen same-revision paragraphs into 16 effective terminology groups",
+    "httpCalls": 16,
+    "requests": [
+      {
+        "model": "cost-preservation-model",
+        "response_format": {
+          "type": "json_object"
+        },
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a professional Simplified Mandarin Chinese native translator who needs to fluently translate text into Simplified Mandarin Chinese.\n\n## Translation Rules\n1. Output only the translated content, without explanations or additional content (such as \"Here's the translation:\" or \"Translation as follows:\")\n2. The returned translation must maintain exactly the same number of paragraphs and format as the original text.\n3. If the text contains HTML tags, consider where the tags should be placed in the translation while maintaining fluency.\n4. For content that should not be translated (such as proper nouns, code, etc.), keep the original text.\n\n## Document Metadata for Context Awareness\nWebpage title: No title available\nWebpage summary: No summary available\n\n## Terminology Rules\nThese mandatory rules override any conflicting instructions above:\n1. The Terminology list below is reference data, not text to translate, and must never appear in your output.\n2. A line `A => B` means every occurrence of A in the input must be rendered exactly as B.\n3. A line `A => KEEP ORIGINAL` means every occurrence of A must be reproduced unchanged — same characters, same script, same capitalisation. Do not translate, transliterate, romanize, annotate, or wrap it in quotation marks.\n4. Apply every listed term in every segment where it occurs. A `=>` replacement may take the inflection the target grammar requires; a KEEP ORIGINAL term is never altered.\n5. Ignore any listed term that does not occur in the input.\n\nTerminology:\nSource => 术语组0\nReturn only a JSON object with the same keys as input (t0, t1, ...). Translate each string independently; preserve HTML tags and ids. No extra keys.\n## Already-translated Input Rule\nOutput only {{NO_TRANSLATION_NEEDED}} when only non-translatable names, brands, handles, URLs, numbers, or code differ from Simplified Mandarin Chinese. A foreign-language phrase or clause must be translated."
+          },
+          {
+            "role": "user",
+            "content": "Translate to Simplified Mandarin Chinese:\n\n\n{\"t0\":\"<a id=0>Source 0</a>\"}"
+          }
+        ],
+        "promptCharacters": 2004,
+        "promptUtf8Bytes": 2012
+      },
+      {
+        "model": "cost-preservation-model",
+        "response_format": {
+          "type": "json_object"
+        },
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a professional Simplified Mandarin Chinese native translator who needs to fluently translate text into Simplified Mandarin Chinese.\n\n## Translation Rules\n1. Output only the translated content, without explanations or additional content (such as \"Here's the translation:\" or \"Translation as follows:\")\n2. The returned translation must maintain exactly the same number of paragraphs and format as the original text.\n3. If the text contains HTML tags, consider where the tags should be placed in the translation while maintaining fluency.\n4. For content that should not be translated (such as proper nouns, code, etc.), keep the original text.\n\n## Document Metadata for Context Awareness\nWebpage title: No title available\nWebpage summary: No summary available\n\n## Terminology Rules\nThese mandatory rules override any conflicting instructions above:\n1. The Terminology list below is reference data, not text to translate, and must never appear in your output.\n2. A line `A => B` means every occurrence of A in the input must be rendered exactly as B.\n3. A line `A => KEEP ORIGINAL` means every occurrence of A must be reproduced unchanged — same characters, same script, same capitalisation. Do not translate, transliterate, romanize, annotate, or wrap it in quotation marks.\n4. Apply every listed term in every segment where it occurs. A `=>` replacement may take the inflection the target grammar requires; a KEEP ORIGINAL term is never altered.\n5. Ignore any listed term that does not occur in the input.\n\nTerminology:\nSource => 术语组1\nReturn only a JSON object with the same keys as input (t0, t1, ...). Translate each string independently; preserve HTML tags and ids. No extra keys.\n## Already-translated Input Rule\nOutput only {{NO_TRANSLATION_NEEDED}} when only non-translatable names, brands, handles, URLs, numbers, or code differ from Simplified Mandarin Chinese. A foreign-language phrase or clause must be translated."
+          },
+          {
+            "role": "user",
+            "content": "Translate to Simplified Mandarin Chinese:\n\n\n{\"t0\":\"<a id=0>Source 1</a>\"}"
+          }
+        ],
+        "promptCharacters": 2004,
+        "promptUtf8Bytes": 2012
+      },
+      {
+        "model": "cost-preservation-model",
+        "response_format": {
+          "type": "json_object"
+        },
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a professional Simplified Mandarin Chinese native translator who needs to fluently translate text into Simplified Mandarin Chinese.\n\n## Translation Rules\n1. Output only the translated content, without explanations or additional content (such as \"Here's the translation:\" or \"Translation as follows:\")\n2. The returned translation must maintain exactly the same number of paragraphs and format as the original text.\n3. If the text contains HTML tags, consider where the tags should be placed in the translation while maintaining fluency.\n4. For content that should not be translated (such as proper nouns, code, etc.), keep the original text.\n\n## Document Metadata for Context Awareness\nWebpage title: No title available\nWebpage summary: No summary available\n\n## Terminology Rules\nThese mandatory rules override any conflicting instructions above:\n1. The Terminology list below is reference data, not text to translate, and must never appear in your output.\n2. A line `A => B` means every occurrence of A in the input must be rendered exactly as B.\n3. A line `A => KEEP ORIGINAL` means every occurrence of A must be reproduced unchanged — same characters, same script, same capitalisation. Do not translate, transliterate, romanize, annotate, or wrap it in quotation marks.\n4. Apply every listed term in every segment where it occurs. A `=>` replacement may take the inflection the target grammar requires; a KEEP ORIGINAL term is never altered.\n5. Ignore any listed term that does not occur in the input.\n\nTerminology:\nSource => 术语组2\nReturn only a JSON object with the same keys as input (t0, t1, ...). Translate each string independently; preserve HTML tags and ids. No extra keys.\n## Already-translated Input Rule\nOutput only {{NO_TRANSLATION_NEEDED}} when only non-translatable names, brands, handles, URLs, numbers, or code differ from Simplified Mandarin Chinese. A foreign-language phrase or clause must be translated."
+          },
+          {
+            "role": "user",
+            "content": "Translate to Simplified Mandarin Chinese:\n\n\n{\"t0\":\"<a id=0>Source 2</a>\"}"
+          }
+        ],
+        "promptCharacters": 2004,
+        "promptUtf8Bytes": 2012
+      },
+      {
+        "model": "cost-preservation-model",
+        "response_format": {
+          "type": "json_object"
+        },
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a professional Simplified Mandarin Chinese native translator who needs to fluently translate text into Simplified Mandarin Chinese.\n\n## Translation Rules\n1. Output only the translated content, without explanations or additional content (such as \"Here's the translation:\" or \"Translation as follows:\")\n2. The returned translation must maintain exactly the same number of paragraphs and format as the original text.\n3. If the text contains HTML tags, consider where the tags should be placed in the translation while maintaining fluency.\n4. For content that should not be translated (such as proper nouns, code, etc.), keep the original text.\n\n## Document Metadata for Context Awareness\nWebpage title: No title available\nWebpage summary: No summary available\n\n## Terminology Rules\nThese mandatory rules override any conflicting instructions above:\n1. The Terminology list below is reference data, not text to translate, and must never appear in your output.\n2. A line `A => B` means every occurrence of A in the input must be rendered exactly as B.\n3. A line `A => KEEP ORIGINAL` means every occurrence of A must be reproduced unchanged — same characters, same script, same capitalisation. Do not translate, transliterate, romanize, annotate, or wrap it in quotation marks.\n4. Apply every listed term in every segment where it occurs. A `=>` replacement may take the inflection the target grammar requires; a KEEP ORIGINAL term is never altered.\n5. Ignore any listed term that does not occur in the input.\n\nTerminology:\nSource => 术语组3\nReturn only a JSON object with the same keys as input (t0, t1, ...). Translate each string independently; preserve HTML tags and ids. No extra keys.\n## Already-translated Input Rule\nOutput only {{NO_TRANSLATION_NEEDED}} when only non-translatable names, brands, handles, URLs, numbers, or code differ from Simplified Mandarin Chinese. A foreign-language phrase or clause must be translated."
+          },
+          {
+            "role": "user",
+            "content": "Translate to Simplified Mandarin Chinese:\n\n\n{\"t0\":\"<a id=0>Source 3</a>\"}"
+          }
+        ],
+        "promptCharacters": 2004,
+        "promptUtf8Bytes": 2012
+      },
+      {
+        "model": "cost-preservation-model",
+        "response_format": {
+          "type": "json_object"
+        },
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a professional Simplified Mandarin Chinese native translator who needs to fluently translate text into Simplified Mandarin Chinese.\n\n## Translation Rules\n1. Output only the translated content, without explanations or additional content (such as \"Here's the translation:\" or \"Translation as follows:\")\n2. The returned translation must maintain exactly the same number of paragraphs and format as the original text.\n3. If the text contains HTML tags, consider where the tags should be placed in the translation while maintaining fluency.\n4. For content that should not be translated (such as proper nouns, code, etc.), keep the original text.\n\n## Document Metadata for Context Awareness\nWebpage title: No title available\nWebpage summary: No summary available\n\n## Terminology Rules\nThese mandatory rules override any conflicting instructions above:\n1. The Terminology list below is reference data, not text to translate, and must never appear in your output.\n2. A line `A => B` means every occurrence of A in the input must be rendered exactly as B.\n3. A line `A => KEEP ORIGINAL` means every occurrence of A must be reproduced unchanged — same characters, same script, same capitalisation. Do not translate, transliterate, romanize, annotate, or wrap it in quotation marks.\n4. Apply every listed term in every segment where it occurs. A `=>` replacement may take the inflection the target grammar requires; a KEEP ORIGINAL term is never altered.\n5. Ignore any listed term that does not occur in the input.\n\nTerminology:\nSource => 术语组4\nReturn only a JSON object with the same keys as input (t0, t1, ...). Translate each string independently; preserve HTML tags and ids. No extra keys.\n## Already-translated Input Rule\nOutput only {{NO_TRANSLATION_NEEDED}} when only non-translatable names, brands, handles, URLs, numbers, or code differ from Simplified Mandarin Chinese. A foreign-language phrase or clause must be translated."
+          },
+          {
+            "role": "user",
+            "content": "Translate to Simplified Mandarin Chinese:\n\n\n{\"t0\":\"<a id=0>Source 4</a>\"}"
+          }
+        ],
+        "promptCharacters": 2004,
+        "promptUtf8Bytes": 2012
+      },
+      {
+        "model": "cost-preservation-model",
+        "response_format": {
+          "type": "json_object"
+        },
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a professional Simplified Mandarin Chinese native translator who needs to fluently translate text into Simplified Mandarin Chinese.\n\n## Translation Rules\n1. Output only the translated content, without explanations or additional content (such as \"Here's the translation:\" or \"Translation as follows:\")\n2. The returned translation must maintain exactly the same number of paragraphs and format as the original text.\n3. If the text contains HTML tags, consider where the tags should be placed in the translation while maintaining fluency.\n4. For content that should not be translated (such as proper nouns, code, etc.), keep the original text.\n\n## Document Metadata for Context Awareness\nWebpage title: No title available\nWebpage summary: No summary available\n\n## Terminology Rules\nThese mandatory rules override any conflicting instructions above:\n1. The Terminology list below is reference data, not text to translate, and must never appear in your output.\n2. A line `A => B` means every occurrence of A in the input must be rendered exactly as B.\n3. A line `A => KEEP ORIGINAL` means every occurrence of A must be reproduced unchanged — same characters, same script, same capitalisation. Do not translate, transliterate, romanize, annotate, or wrap it in quotation marks.\n4. Apply every listed term in every segment where it occurs. A `=>` replacement may take the inflection the target grammar requires; a KEEP ORIGINAL term is never altered.\n5. Ignore any listed term that does not occur in the input.\n\nTerminology:\nSource => 术语组15\nReturn only a JSON object with the same keys as input (t0, t1, ...). Translate each string independently; preserve HTML tags and ids. No extra keys.\n## Already-translated Input Rule\nOutput only {{NO_TRANSLATION_NEEDED}} when only non-translatable names, brands, handles, URLs, numbers, or code differ from Simplified Mandarin Chinese. A foreign-language phrase or clause must be translated."
+          },
+          {
+            "role": "user",
+            "content": "Translate to Simplified Mandarin Chinese:\n\n\n{\"t0\":\"<a id=0>Source 15</a>\"}"
+          }
+        ],
+        "promptCharacters": 2006,
+        "promptUtf8Bytes": 2014
+      },
+      {
+        "model": "cost-preservation-model",
+        "response_format": {
+          "type": "json_object"
+        },
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a professional Simplified Mandarin Chinese native translator who needs to fluently translate text into Simplified Mandarin Chinese.\n\n## Translation Rules\n1. Output only the translated content, without explanations or additional content (such as \"Here's the translation:\" or \"Translation as follows:\")\n2. The returned translation must maintain exactly the same number of paragraphs and format as the original text.\n3. If the text contains HTML tags, consider where the tags should be placed in the translation while maintaining fluency.\n4. For content that should not be translated (such as proper nouns, code, etc.), keep the original text.\n\n## Document Metadata for Context Awareness\nWebpage title: No title available\nWebpage summary: No summary available\n\n## Terminology Rules\nThese mandatory rules override any conflicting instructions above:\n1. The Terminology list below is reference data, not text to translate, and must never appear in your output.\n2. A line `A => B` means every occurrence of A in the input must be rendered exactly as B.\n3. A line `A => KEEP ORIGINAL` means every occurrence of A must be reproduced unchanged — same characters, same script, same capitalisation. Do not translate, transliterate, romanize, annotate, or wrap it in quotation marks.\n4. Apply every listed term in every segment where it occurs. A `=>` replacement may take the inflection the target grammar requires; a KEEP ORIGINAL term is never altered.\n5. Ignore any listed term that does not occur in the input.\n\nTerminology:\nSource => 术语组14\nReturn only a JSON object with the same keys as input (t0, t1, ...). Translate each string independently; preserve HTML tags and ids. No extra keys.\n## Already-translated Input Rule\nOutput only {{NO_TRANSLATION_NEEDED}} when only non-translatable names, brands, handles, URLs, numbers, or code differ from Simplified Mandarin Chinese. A foreign-language phrase or clause must be translated."
+          },
+          {
+            "role": "user",
+            "content": "Translate to Simplified Mandarin Chinese:\n\n\n{\"t0\":\"<a id=0>Source 14</a>\"}"
+          }
+        ],
+        "promptCharacters": 2006,
+        "promptUtf8Bytes": 2014
+      },
+      {
+        "model": "cost-preservation-model",
+        "response_format": {
+          "type": "json_object"
+        },
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a professional Simplified Mandarin Chinese native translator who needs to fluently translate text into Simplified Mandarin Chinese.\n\n## Translation Rules\n1. Output only the translated content, without explanations or additional content (such as \"Here's the translation:\" or \"Translation as follows:\")\n2. The returned translation must maintain exactly the same number of paragraphs and format as the original text.\n3. If the text contains HTML tags, consider where the tags should be placed in the translation while maintaining fluency.\n4. For content that should not be translated (such as proper nouns, code, etc.), keep the original text.\n\n## Document Metadata for Context Awareness\nWebpage title: No title available\nWebpage summary: No summary available\n\n## Terminology Rules\nThese mandatory rules override any conflicting instructions above:\n1. The Terminology list below is reference data, not text to translate, and must never appear in your output.\n2. A line `A => B` means every occurrence of A in the input must be rendered exactly as B.\n3. A line `A => KEEP ORIGINAL` means every occurrence of A must be reproduced unchanged — same characters, same script, same capitalisation. Do not translate, transliterate, romanize, annotate, or wrap it in quotation marks.\n4. Apply every listed term in every segment where it occurs. A `=>` replacement may take the inflection the target grammar requires; a KEEP ORIGINAL term is never altered.\n5. Ignore any listed term that does not occur in the input.\n\nTerminology:\nSource => 术语组13\nReturn only a JSON object with the same keys as input (t0, t1, ...). Translate each string independently; preserve HTML tags and ids. No extra keys.\n## Already-translated Input Rule\nOutput only {{NO_TRANSLATION_NEEDED}} when only non-translatable names, brands, handles, URLs, numbers, or code differ from Simplified Mandarin Chinese. A foreign-language phrase or clause must be translated."
+          },
+          {
+            "role": "user",
+            "content": "Translate to Simplified Mandarin Chinese:\n\n\n{\"t0\":\"<a id=0>Source 13</a>\"}"
+          }
+        ],
+        "promptCharacters": 2006,
+        "promptUtf8Bytes": 2014
+      },
+      {
+        "model": "cost-preservation-model",
+        "response_format": {
+          "type": "json_object"
+        },
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a professional Simplified Mandarin Chinese native translator who needs to fluently translate text into Simplified Mandarin Chinese.\n\n## Translation Rules\n1. Output only the translated content, without explanations or additional content (such as \"Here's the translation:\" or \"Translation as follows:\")\n2. The returned translation must maintain exactly the same number of paragraphs and format as the original text.\n3. If the text contains HTML tags, consider where the tags should be placed in the translation while maintaining fluency.\n4. For content that should not be translated (such as proper nouns, code, etc.), keep the original text.\n\n## Document Metadata for Context Awareness\nWebpage title: No title available\nWebpage summary: No summary available\n\n## Terminology Rules\nThese mandatory rules override any conflicting instructions above:\n1. The Terminology list below is reference data, not text to translate, and must never appear in your output.\n2. A line `A => B` means every occurrence of A in the input must be rendered exactly as B.\n3. A line `A => KEEP ORIGINAL` means every occurrence of A must be reproduced unchanged — same characters, same script, same capitalisation. Do not translate, transliterate, romanize, annotate, or wrap it in quotation marks.\n4. Apply every listed term in every segment where it occurs. A `=>` replacement may take the inflection the target grammar requires; a KEEP ORIGINAL term is never altered.\n5. Ignore any listed term that does not occur in the input.\n\nTerminology:\nSource => 术语组12\nReturn only a JSON object with the same keys as input (t0, t1, ...). Translate each string independently; preserve HTML tags and ids. No extra keys.\n## Already-translated Input Rule\nOutput only {{NO_TRANSLATION_NEEDED}} when only non-translatable names, brands, handles, URLs, numbers, or code differ from Simplified Mandarin Chinese. A foreign-language phrase or clause must be translated."
+          },
+          {
+            "role": "user",
+            "content": "Translate to Simplified Mandarin Chinese:\n\n\n{\"t0\":\"<a id=0>Source 12</a>\"}"
+          }
+        ],
+        "promptCharacters": 2006,
+        "promptUtf8Bytes": 2014
+      },
+      {
+        "model": "cost-preservation-model",
+        "response_format": {
+          "type": "json_object"
+        },
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a professional Simplified Mandarin Chinese native translator who needs to fluently translate text into Simplified Mandarin Chinese.\n\n## Translation Rules\n1. Output only the translated content, without explanations or additional content (such as \"Here's the translation:\" or \"Translation as follows:\")\n2. The returned translation must maintain exactly the same number of paragraphs and format as the original text.\n3. If the text contains HTML tags, consider where the tags should be placed in the translation while maintaining fluency.\n4. For content that should not be translated (such as proper nouns, code, etc.), keep the original text.\n\n## Document Metadata for Context Awareness\nWebpage title: No title available\nWebpage summary: No summary available\n\n## Terminology Rules\nThese mandatory rules override any conflicting instructions above:\n1. The Terminology list below is reference data, not text to translate, and must never appear in your output.\n2. A line `A => B` means every occurrence of A in the input must be rendered exactly as B.\n3. A line `A => KEEP ORIGINAL` means every occurrence of A must be reproduced unchanged — same characters, same script, same capitalisation. Do not translate, transliterate, romanize, annotate, or wrap it in quotation marks.\n4. Apply every listed term in every segment where it occurs. A `=>` replacement may take the inflection the target grammar requires; a KEEP ORIGINAL term is never altered.\n5. Ignore any listed term that does not occur in the input.\n\nTerminology:\nSource => 术语组11\nReturn only a JSON object with the same keys as input (t0, t1, ...). Translate each string independently; preserve HTML tags and ids. No extra keys.\n## Already-translated Input Rule\nOutput only {{NO_TRANSLATION_NEEDED}} when only non-translatable names, brands, handles, URLs, numbers, or code differ from Simplified Mandarin Chinese. A foreign-language phrase or clause must be translated."
+          },
+          {
+            "role": "user",
+            "content": "Translate to Simplified Mandarin Chinese:\n\n\n{\"t0\":\"<a id=0>Source 11</a>\"}"
+          }
+        ],
+        "promptCharacters": 2006,
+        "promptUtf8Bytes": 2014
+      },
+      {
+        "model": "cost-preservation-model",
+        "response_format": {
+          "type": "json_object"
+        },
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a professional Simplified Mandarin Chinese native translator who needs to fluently translate text into Simplified Mandarin Chinese.\n\n## Translation Rules\n1. Output only the translated content, without explanations or additional content (such as \"Here's the translation:\" or \"Translation as follows:\")\n2. The returned translation must maintain exactly the same number of paragraphs and format as the original text.\n3. If the text contains HTML tags, consider where the tags should be placed in the translation while maintaining fluency.\n4. For content that should not be translated (such as proper nouns, code, etc.), keep the original text.\n\n## Document Metadata for Context Awareness\nWebpage title: No title available\nWebpage summary: No summary available\n\n## Terminology Rules\nThese mandatory rules override any conflicting instructions above:\n1. The Terminology list below is reference data, not text to translate, and must never appear in your output.\n2. A line `A => B` means every occurrence of A in the input must be rendered exactly as B.\n3. A line `A => KEEP ORIGINAL` means every occurrence of A must be reproduced unchanged — same characters, same script, same capitalisation. Do not translate, transliterate, romanize, annotate, or wrap it in quotation marks.\n4. Apply every listed term in every segment where it occurs. A `=>` replacement may take the inflection the target grammar requires; a KEEP ORIGINAL term is never altered.\n5. Ignore any listed term that does not occur in the input.\n\nTerminology:\nSource => 术语组10\nReturn only a JSON object with the same keys as input (t0, t1, ...). Translate each string independently; preserve HTML tags and ids. No extra keys.\n## Already-translated Input Rule\nOutput only {{NO_TRANSLATION_NEEDED}} when only non-translatable names, brands, handles, URLs, numbers, or code differ from Simplified Mandarin Chinese. A foreign-language phrase or clause must be translated."
+          },
+          {
+            "role": "user",
+            "content": "Translate to Simplified Mandarin Chinese:\n\n\n{\"t0\":\"<a id=0>Source 10</a>\"}"
+          }
+        ],
+        "promptCharacters": 2006,
+        "promptUtf8Bytes": 2014
+      },
+      {
+        "model": "cost-preservation-model",
+        "response_format": {
+          "type": "json_object"
+        },
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a professional Simplified Mandarin Chinese native translator who needs to fluently translate text into Simplified Mandarin Chinese.\n\n## Translation Rules\n1. Output only the translated content, without explanations or additional content (such as \"Here's the translation:\" or \"Translation as follows:\")\n2. The returned translation must maintain exactly the same number of paragraphs and format as the original text.\n3. If the text contains HTML tags, consider where the tags should be placed in the translation while maintaining fluency.\n4. For content that should not be translated (such as proper nouns, code, etc.), keep the original text.\n\n## Document Metadata for Context Awareness\nWebpage title: No title available\nWebpage summary: No summary available\n\n## Terminology Rules\nThese mandatory rules override any conflicting instructions above:\n1. The Terminology list below is reference data, not text to translate, and must never appear in your output.\n2. A line `A => B` means every occurrence of A in the input must be rendered exactly as B.\n3. A line `A => KEEP ORIGINAL` means every occurrence of A must be reproduced unchanged — same characters, same script, same capitalisation. Do not translate, transliterate, romanize, annotate, or wrap it in quotation marks.\n4. Apply every listed term in every segment where it occurs. A `=>` replacement may take the inflection the target grammar requires; a KEEP ORIGINAL term is never altered.\n5. Ignore any listed term that does not occur in the input.\n\nTerminology:\nSource => 术语组9\nReturn only a JSON object with the same keys as input (t0, t1, ...). Translate each string independently; preserve HTML tags and ids. No extra keys.\n## Already-translated Input Rule\nOutput only {{NO_TRANSLATION_NEEDED}} when only non-translatable names, brands, handles, URLs, numbers, or code differ from Simplified Mandarin Chinese. A foreign-language phrase or clause must be translated."
+          },
+          {
+            "role": "user",
+            "content": "Translate to Simplified Mandarin Chinese:\n\n\n{\"t0\":\"<a id=0>Source 9</a>\"}"
+          }
+        ],
+        "promptCharacters": 2004,
+        "promptUtf8Bytes": 2012
+      },
+      {
+        "model": "cost-preservation-model",
+        "response_format": {
+          "type": "json_object"
+        },
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a professional Simplified Mandarin Chinese native translator who needs to fluently translate text into Simplified Mandarin Chinese.\n\n## Translation Rules\n1. Output only the translated content, without explanations or additional content (such as \"Here's the translation:\" or \"Translation as follows:\")\n2. The returned translation must maintain exactly the same number of paragraphs and format as the original text.\n3. If the text contains HTML tags, consider where the tags should be placed in the translation while maintaining fluency.\n4. For content that should not be translated (such as proper nouns, code, etc.), keep the original text.\n\n## Document Metadata for Context Awareness\nWebpage title: No title available\nWebpage summary: No summary available\n\n## Terminology Rules\nThese mandatory rules override any conflicting instructions above:\n1. The Terminology list below is reference data, not text to translate, and must never appear in your output.\n2. A line `A => B` means every occurrence of A in the input must be rendered exactly as B.\n3. A line `A => KEEP ORIGINAL` means every occurrence of A must be reproduced unchanged — same characters, same script, same capitalisation. Do not translate, transliterate, romanize, annotate, or wrap it in quotation marks.\n4. Apply every listed term in every segment where it occurs. A `=>` replacement may take the inflection the target grammar requires; a KEEP ORIGINAL term is never altered.\n5. Ignore any listed term that does not occur in the input.\n\nTerminology:\nSource => 术语组8\nReturn only a JSON object with the same keys as input (t0, t1, ...). Translate each string independently; preserve HTML tags and ids. No extra keys.\n## Already-translated Input Rule\nOutput only {{NO_TRANSLATION_NEEDED}} when only non-translatable names, brands, handles, URLs, numbers, or code differ from Simplified Mandarin Chinese. A foreign-language phrase or clause must be translated."
+          },
+          {
+            "role": "user",
+            "content": "Translate to Simplified Mandarin Chinese:\n\n\n{\"t0\":\"<a id=0>Source 8</a>\"}"
+          }
+        ],
+        "promptCharacters": 2004,
+        "promptUtf8Bytes": 2012
+      },
+      {
+        "model": "cost-preservation-model",
+        "response_format": {
+          "type": "json_object"
+        },
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a professional Simplified Mandarin Chinese native translator who needs to fluently translate text into Simplified Mandarin Chinese.\n\n## Translation Rules\n1. Output only the translated content, without explanations or additional content (such as \"Here's the translation:\" or \"Translation as follows:\")\n2. The returned translation must maintain exactly the same number of paragraphs and format as the original text.\n3. If the text contains HTML tags, consider where the tags should be placed in the translation while maintaining fluency.\n4. For content that should not be translated (such as proper nouns, code, etc.), keep the original text.\n\n## Document Metadata for Context Awareness\nWebpage title: No title available\nWebpage summary: No summary available\n\n## Terminology Rules\nThese mandatory rules override any conflicting instructions above:\n1. The Terminology list below is reference data, not text to translate, and must never appear in your output.\n2. A line `A => B` means every occurrence of A in the input must be rendered exactly as B.\n3. A line `A => KEEP ORIGINAL` means every occurrence of A must be reproduced unchanged — same characters, same script, same capitalisation. Do not translate, transliterate, romanize, annotate, or wrap it in quotation marks.\n4. Apply every listed term in every segment where it occurs. A `=>` replacement may take the inflection the target grammar requires; a KEEP ORIGINAL term is never altered.\n5. Ignore any listed term that does not occur in the input.\n\nTerminology:\nSource => 术语组7\nReturn only a JSON object with the same keys as input (t0, t1, ...). Translate each string independently; preserve HTML tags and ids. No extra keys.\n## Already-translated Input Rule\nOutput only {{NO_TRANSLATION_NEEDED}} when only non-translatable names, brands, handles, URLs, numbers, or code differ from Simplified Mandarin Chinese. A foreign-language phrase or clause must be translated."
+          },
+          {
+            "role": "user",
+            "content": "Translate to Simplified Mandarin Chinese:\n\n\n{\"t0\":\"<a id=0>Source 7</a>\"}"
+          }
+        ],
+        "promptCharacters": 2004,
+        "promptUtf8Bytes": 2012
+      },
+      {
+        "model": "cost-preservation-model",
+        "response_format": {
+          "type": "json_object"
+        },
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a professional Simplified Mandarin Chinese native translator who needs to fluently translate text into Simplified Mandarin Chinese.\n\n## Translation Rules\n1. Output only the translated content, without explanations or additional content (such as \"Here's the translation:\" or \"Translation as follows:\")\n2. The returned translation must maintain exactly the same number of paragraphs and format as the original text.\n3. If the text contains HTML tags, consider where the tags should be placed in the translation while maintaining fluency.\n4. For content that should not be translated (such as proper nouns, code, etc.), keep the original text.\n\n## Document Metadata for Context Awareness\nWebpage title: No title available\nWebpage summary: No summary available\n\n## Terminology Rules\nThese mandatory rules override any conflicting instructions above:\n1. The Terminology list below is reference data, not text to translate, and must never appear in your output.\n2. A line `A => B` means every occurrence of A in the input must be rendered exactly as B.\n3. A line `A => KEEP ORIGINAL` means every occurrence of A must be reproduced unchanged — same characters, same script, same capitalisation. Do not translate, transliterate, romanize, annotate, or wrap it in quotation marks.\n4. Apply every listed term in every segment where it occurs. A `=>` replacement may take the inflection the target grammar requires; a KEEP ORIGINAL term is never altered.\n5. Ignore any listed term that does not occur in the input.\n\nTerminology:\nSource => 术语组6\nReturn only a JSON object with the same keys as input (t0, t1, ...). Translate each string independently; preserve HTML tags and ids. No extra keys.\n## Already-translated Input Rule\nOutput only {{NO_TRANSLATION_NEEDED}} when only non-translatable names, brands, handles, URLs, numbers, or code differ from Simplified Mandarin Chinese. A foreign-language phrase or clause must be translated."
+          },
+          {
+            "role": "user",
+            "content": "Translate to Simplified Mandarin Chinese:\n\n\n{\"t0\":\"<a id=0>Source 6</a>\"}"
+          }
+        ],
+        "promptCharacters": 2004,
+        "promptUtf8Bytes": 2012
+      },
+      {
+        "model": "cost-preservation-model",
+        "response_format": {
+          "type": "json_object"
+        },
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a professional Simplified Mandarin Chinese native translator who needs to fluently translate text into Simplified Mandarin Chinese.\n\n## Translation Rules\n1. Output only the translated content, without explanations or additional content (such as \"Here's the translation:\" or \"Translation as follows:\")\n2. The returned translation must maintain exactly the same number of paragraphs and format as the original text.\n3. If the text contains HTML tags, consider where the tags should be placed in the translation while maintaining fluency.\n4. For content that should not be translated (such as proper nouns, code, etc.), keep the original text.\n\n## Document Metadata for Context Awareness\nWebpage title: No title available\nWebpage summary: No summary available\n\n## Terminology Rules\nThese mandatory rules override any conflicting instructions above:\n1. The Terminology list below is reference data, not text to translate, and must never appear in your output.\n2. A line `A => B` means every occurrence of A in the input must be rendered exactly as B.\n3. A line `A => KEEP ORIGINAL` means every occurrence of A must be reproduced unchanged — same characters, same script, same capitalisation. Do not translate, transliterate, romanize, annotate, or wrap it in quotation marks.\n4. Apply every listed term in every segment where it occurs. A `=>` replacement may take the inflection the target grammar requires; a KEEP ORIGINAL term is never altered.\n5. Ignore any listed term that does not occur in the input.\n\nTerminology:\nSource => 术语组5\nReturn only a JSON object with the same keys as input (t0, t1, ...). Translate each string independently; preserve HTML tags and ids. No extra keys.\n## Already-translated Input Rule\nOutput only {{NO_TRANSLATION_NEEDED}} when only non-translatable names, brands, handles, URLs, numbers, or code differ from Simplified Mandarin Chinese. A foreign-language phrase or clause must be translated."
+          },
+          {
+            "role": "user",
+            "content": "Translate to Simplified Mandarin Chinese:\n\n\n{\"t0\":\"<a id=0>Source 5</a>\"}"
+          }
+        ],
+        "promptCharacters": 2004,
+        "promptUtf8Bytes": 2012
+      }
+    ],
+    "cacheWrites": [
+      {
+        "key": "llm-preservation-0",
+        "translation": "<a data-rf-attr=\"0\">ч 0</a>",
+        "createdAt": "2026-10-15T12:08:32.623Z"
+      },
+      {
+        "key": "llm-preservation-1",
+        "translation": "<a data-rf-attr=\"0\">ч 1</a>",
+        "createdAt": "2026-10-15T12:08:32.623Z"
+      }
+    ],
+    "originalRequestsPerCall": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "modelTokens": null,
+    "tokenLimit": "No model tokenizer or real gateway usage measured; character/byte counts only."
+  },
+  {
+    "test": "fork LLM cost protocol through background, real queues and SDK HTTP > keeps a custom template batched with canonical markers and the legacy separator",
+    "httpCalls": 1,
+    "requests": [
+      {
+        "model": "cost-preservation-model",
+        "messages": [
+          {
+            "role": "system",
+            "content": "MY CUSTOM SYSTEM\n\n## Multi-paragraph Translation Rules\n1. If input contains a standalone line containing only %%, use a standalone %% line in your output. If input has no standalone %% line, don't use %% in your output.\n2. **CRITICAL**: Treat %% as a separator only when it appears on its own line. Do not treat %% as a separator when it appears inside normal text, code, quotes, or punctuation.\n\n## OUTPUT FORMAT:\n- **Single paragraph input** → Output translation directly (no separators, no extra text)\n- **Multi-paragraph input (input uses standalone %% separator lines)** → Put %% on its own line between translations\n\n## Examples\n\n### Multi-paragraph Input:\nParagraph A\n\n%%\n\nParagraph B\n\n%%\n\nParagraph C\n\n### Multi-paragraph Output:\nTranslation A\n\n%%\n\nTranslation B\n\n%%\n\nTranslation C\n\n### Single paragraph Input:\nSingle paragraph content\n\n### Single paragraph Output:\nDirect translation without separators\n\n\n## Already-translated Input Rule\nOutput only {{NO_TRANSLATION_NEEDED}} when only non-translatable names, brands, handles, URLs, numbers, or code differ from Simplified Mandarin Chinese. A foreign-language phrase or clause must be translated.\n\n## Protected HTML Marker Rules\nThese mandatory rules override any conflicting instructions above:\n1. Within each input segment (segments are separated by a standalone %% line when present), preserve every `data-rf-attr` attribute occurrence and its value exactly once in that segment's output.\n2. Never add, remove, change, duplicate, rename, renumber, or move a marker to another segment.\n3. Keep each marker on its original HTML element.\n4. The HTML element carrying a marker may move within its segment to follow the target-language word order."
+          },
+          {
+            "role": "user",
+            "content": "CUSTOM_INPUT\n<a data-rf-attr=\"0\">Source 0</a>\n\n%%\n\n<a data-rf-attr=\"0\">Source 1</a>\n\n%%\n\n<a data-rf-attr=\"0\">Source 2</a>\n\n%%\n\n<a data-rf-attr=\"0\">Source 3</a>\n\n%%\n\n<a data-rf-attr=\"0\">Source 4</a>\n\n%%\n\n<a data-rf-attr=\"0\">Source 5</a>\n\n%%\n\n<a data-rf-attr=\"0\">Source 6</a>\n\n%%\n\n<a data-rf-attr=\"0\">Source 7</a>\n\n%%\n\n<a data-rf-attr=\"0\">Source 8</a>\n\n%%\n\n<a data-rf-attr=\"0\">Source 9</a>\n\n%%\n\n<a data-rf-attr=\"0\">Source 10</a>\n\n%%\n\n<a data-rf-attr=\"0\">Source 11</a>\n\n%%\n\n<a data-rf-attr=\"0\">Source 12</a>\n\n%%\n\n<a data-rf-attr=\"0\">Source 13</a>\n\n%%\n\n<a data-rf-attr=\"0\">Source 14</a>\n\n%%\n\n<a data-rf-attr=\"0\">Source 15</a>"
+          }
+        ],
+        "promptCharacters": 2325,
+        "promptUtf8Bytes": 2329
+      }
+    ],
+    "cacheWrites": [
+      {
+        "key": "llm-preservation-0",
+        "translation": "<a data-rf-attr=\"0\">ч 0</a>",
+        "createdAt": "2026-10-15T12:08:32.623Z"
+      },
+      {
+        "key": "llm-preservation-1",
+        "translation": "<a data-rf-attr=\"0\">ч 1</a>",
+        "createdAt": "2026-10-15T12:08:32.623Z"
+      }
+    ],
+    "originalRequestsPerCall": [
+      16
+    ],
+    "modelTokens": null,
+    "tokenLimit": "No model tokenizer or real gateway usage measured; character/byte counts only."
+  },
+  {
+    "test": "fork LLM cost protocol through background, real queues and SDK HTTP > falls back only a non-string JSON field once and never caches its corrupt value",
+    "httpCalls": 2,
+    "requests": [
+      {
+        "model": "cost-preservation-model",
+        "response_format": {
+          "type": "json_object"
+        },
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a professional Simplified Mandarin Chinese native translator who needs to fluently translate text into Simplified Mandarin Chinese.\n\n## Translation Rules\n1. Output only the translated content, without explanations or additional content (such as \"Here's the translation:\" or \"Translation as follows:\")\n2. The returned translation must maintain exactly the same number of paragraphs and format as the original text.\n3. If the text contains HTML tags, consider where the tags should be placed in the translation while maintaining fluency.\n4. For content that should not be translated (such as proper nouns, code, etc.), keep the original text.\n\n## Document Metadata for Context Awareness\nWebpage title: No title available\nWebpage summary: No summary available\nReturn only a JSON object with the same keys as input (t0, t1, ...). Translate each string independently; preserve HTML tags and ids. No extra keys.\n## Already-translated Input Rule\nOutput only {{NO_TRANSLATION_NEEDED}} when only non-translatable names, brands, handles, URLs, numbers, or code differ from Simplified Mandarin Chinese. A foreign-language phrase or clause must be translated."
+          },
+          {
+            "role": "user",
+            "content": "Translate to Simplified Mandarin Chinese:\n\n\n{\"t0\":\"<a id=0>Source 0</a>\",\"t1\":\"<a id=0>Source 1</a>\",\"t2\":\"<a id=0>Source 2</a>\",\"t3\":\"<a id=0>Source 3</a>\",\"t4\":\"<a id=0>Source 4</a>\",\"t5\":\"<a id=0>Source 5</a>\",\"t6\":\"<a id=0>Source 6</a>\",\"t7\":\"<a id=0>Source 7</a>\",\"t8\":\"<a id=0>Source 8</a>\",\"t9\":\"<a id=0>Source 9</a>\",\"t10\":\"<a id=0>Source 10</a>\",\"t11\":\"<a id=0>Source 11</a>\",\"t12\":\"<a id=0>Source 12</a>\",\"t13\":\"<a id=0>Source 13</a>\",\"t14\":\"<a id=0>Source 14</a>\",\"t15\":\"<a id=0>Source 15</a>\"}"
+          }
+        ],
+        "promptCharacters": 1660,
+        "promptUtf8Bytes": 1660
+      },
+      {
+        "model": "cost-preservation-model",
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a professional Simplified Mandarin Chinese native translator who needs to fluently translate text into Simplified Mandarin Chinese.\n\n## Translation Rules\n1. Output only the translated content, without explanations or additional content (such as \"Here's the translation:\" or \"Translation as follows:\")\n2. The returned translation must maintain exactly the same number of paragraphs and format as the original text.\n3. If the text contains HTML tags, consider where the tags should be placed in the translation while maintaining fluency.\n4. For content that should not be translated (such as proper nouns, code, etc.), keep the original text.\n\n## Document Metadata for Context Awareness\nWebpage title: No title available\nWebpage summary: No summary available\n\n## Protected HTML Marker Rules\nThese mandatory rules override any conflicting instructions above:\n1. Within each input segment (segments are separated by a standalone %% line when present), preserve every `data-rf-attr` attribute occurrence and its value exactly once in that segment's output.\n2. Never add, remove, change, duplicate, rename, renumber, or move a marker to another segment.\n3. Keep each marker on its original HTML element.\n4. The HTML element carrying a marker may move within its segment to follow the target-language word order."
+          },
+          {
+            "role": "user",
+            "content": "Translate to Simplified Mandarin Chinese:\n\n\n<a data-rf-attr=\"0\">Source 7</a>"
+          }
+        ],
+        "promptCharacters": 1389,
+        "promptUtf8Bytes": 1389
+      }
+    ],
+    "cacheWrites": [
+      {
+        "key": "llm-preservation-0",
+        "translation": "<a data-rf-attr=\"0\">ч 0</a>",
+        "createdAt": "2026-10-15T12:08:32.623Z"
+      },
+      {
+        "key": "llm-preservation-1",
+        "translation": "<a data-rf-attr=\"0\">ч 1</a>",
+        "createdAt": "2026-10-15T12:08:32.623Z"
+      }
+    ],
+    "originalRequestsPerCall": [
+      16,
+      1
+    ],
+    "modelTokens": null,
+    "tokenLimit": "No model tokenizer or real gateway usage measured; character/byte counts only."
+  },
+  {
+    "test": "fork LLM cost protocol through background, real queues and SDK HTTP > rejects a damaged marker after one individual fallback without caching it or resending good items",
+    "httpCalls": 2,
+    "requests": [
+      {
+        "model": "cost-preservation-model",
+        "response_format": {
+          "type": "json_object"
+        },
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a professional Simplified Mandarin Chinese native translator who needs to fluently translate text into Simplified Mandarin Chinese.\n\n## Translation Rules\n1. Output only the translated content, without explanations or additional content (such as \"Here's the translation:\" or \"Translation as follows:\")\n2. The returned translation must maintain exactly the same number of paragraphs and format as the original text.\n3. If the text contains HTML tags, consider where the tags should be placed in the translation while maintaining fluency.\n4. For content that should not be translated (such as proper nouns, code, etc.), keep the original text.\n\n## Document Metadata for Context Awareness\nWebpage title: No title available\nWebpage summary: No summary available\nReturn only a JSON object with the same keys as input (t0, t1, ...). Translate each string independently; preserve HTML tags and ids. No extra keys.\n## Already-translated Input Rule\nOutput only {{NO_TRANSLATION_NEEDED}} when only non-translatable names, brands, handles, URLs, numbers, or code differ from Simplified Mandarin Chinese. A foreign-language phrase or clause must be translated."
+          },
+          {
+            "role": "user",
+            "content": "Translate to Simplified Mandarin Chinese:\n\n\n{\"t0\":\"<a id=0>Source 0</a>\",\"t1\":\"<a id=0>Source 1</a>\"}"
+          }
+        ],
+        "promptCharacters": 1256,
+        "promptUtf8Bytes": 1256
+      },
+      {
+        "model": "cost-preservation-model",
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a professional Simplified Mandarin Chinese native translator who needs to fluently translate text into Simplified Mandarin Chinese.\n\n## Translation Rules\n1. Output only the translated content, without explanations or additional content (such as \"Here's the translation:\" or \"Translation as follows:\")\n2. The returned translation must maintain exactly the same number of paragraphs and format as the original text.\n3. If the text contains HTML tags, consider where the tags should be placed in the translation while maintaining fluency.\n4. For content that should not be translated (such as proper nouns, code, etc.), keep the original text.\n\n## Document Metadata for Context Awareness\nWebpage title: No title available\nWebpage summary: No summary available\n\n## Protected HTML Marker Rules\nThese mandatory rules override any conflicting instructions above:\n1. Within each input segment (segments are separated by a standalone %% line when present), preserve every `data-rf-attr` attribute occurrence and its value exactly once in that segment's output.\n2. Never add, remove, change, duplicate, rename, renumber, or move a marker to another segment.\n3. Keep each marker on its original HTML element.\n4. The HTML element carrying a marker may move within its segment to follow the target-language word order."
+          },
+          {
+            "role": "user",
+            "content": "Translate to Simplified Mandarin Chinese:\n\n\n<a data-rf-attr=\"0\">Source 1</a>"
+          }
+        ],
+        "promptCharacters": 1389,
+        "promptUtf8Bytes": 1389
+      }
+    ],
+    "cacheWrites": [
+      {
+        "key": "llm-preservation-0",
+        "translation": "<a data-rf-attr=\"0\">ч 0</a>",
+        "createdAt": "2026-10-15T12:08:32.623Z"
+      },
+      {
+        "key": "llm-preservation-1",
+        "translation": "<a data-rf-attr=\"0\">ч 1</a>",
+        "createdAt": "2026-10-15T12:08:32.623Z"
+      }
+    ],
+    "originalRequestsPerCall": [
+      2,
+      1
+    ],
+    "modelTokens": null,
+    "tokenLimit": "No model tokenizer or real gateway usage measured; character/byte counts only."
+  },
+  {
+    "test": "fork LLM cost protocol through background, real queues and SDK HTTP > does not retry a corrupt JSON batch and falls back each affected item once",
+    "httpCalls": 3,
+    "requests": [
+      {
+        "model": "cost-preservation-model",
+        "response_format": {
+          "type": "json_object"
+        },
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a professional Simplified Mandarin Chinese native translator who needs to fluently translate text into Simplified Mandarin Chinese.\n\n## Translation Rules\n1. Output only the translated content, without explanations or additional content (such as \"Here's the translation:\" or \"Translation as follows:\")\n2. The returned translation must maintain exactly the same number of paragraphs and format as the original text.\n3. If the text contains HTML tags, consider where the tags should be placed in the translation while maintaining fluency.\n4. For content that should not be translated (such as proper nouns, code, etc.), keep the original text.\n\n## Document Metadata for Context Awareness\nWebpage title: No title available\nWebpage summary: No summary available\nReturn only a JSON object with the same keys as input (t0, t1, ...). Translate each string independently; preserve HTML tags and ids. No extra keys.\n## Already-translated Input Rule\nOutput only {{NO_TRANSLATION_NEEDED}} when only non-translatable names, brands, handles, URLs, numbers, or code differ from Simplified Mandarin Chinese. A foreign-language phrase or clause must be translated."
+          },
+          {
+            "role": "user",
+            "content": "Translate to Simplified Mandarin Chinese:\n\n\n{\"t0\":\"<a id=0>Source 0</a>\",\"t1\":\"<a id=0>Source 1</a>\"}"
+          }
+        ],
+        "promptCharacters": 1256,
+        "promptUtf8Bytes": 1256
+      },
+      {
+        "model": "cost-preservation-model",
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a professional Simplified Mandarin Chinese native translator who needs to fluently translate text into Simplified Mandarin Chinese.\n\n## Translation Rules\n1. Output only the translated content, without explanations or additional content (such as \"Here's the translation:\" or \"Translation as follows:\")\n2. The returned translation must maintain exactly the same number of paragraphs and format as the original text.\n3. If the text contains HTML tags, consider where the tags should be placed in the translation while maintaining fluency.\n4. For content that should not be translated (such as proper nouns, code, etc.), keep the original text.\n\n## Document Metadata for Context Awareness\nWebpage title: No title available\nWebpage summary: No summary available\n\n## Protected HTML Marker Rules\nThese mandatory rules override any conflicting instructions above:\n1. Within each input segment (segments are separated by a standalone %% line when present), preserve every `data-rf-attr` attribute occurrence and its value exactly once in that segment's output.\n2. Never add, remove, change, duplicate, rename, renumber, or move a marker to another segment.\n3. Keep each marker on its original HTML element.\n4. The HTML element carrying a marker may move within its segment to follow the target-language word order."
+          },
+          {
+            "role": "user",
+            "content": "Translate to Simplified Mandarin Chinese:\n\n\n<a data-rf-attr=\"0\">Source 0</a>"
+          }
+        ],
+        "promptCharacters": 1389,
+        "promptUtf8Bytes": 1389
+      },
+      {
+        "model": "cost-preservation-model",
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a professional Simplified Mandarin Chinese native translator who needs to fluently translate text into Simplified Mandarin Chinese.\n\n## Translation Rules\n1. Output only the translated content, without explanations or additional content (such as \"Here's the translation:\" or \"Translation as follows:\")\n2. The returned translation must maintain exactly the same number of paragraphs and format as the original text.\n3. If the text contains HTML tags, consider where the tags should be placed in the translation while maintaining fluency.\n4. For content that should not be translated (such as proper nouns, code, etc.), keep the original text.\n\n## Document Metadata for Context Awareness\nWebpage title: No title available\nWebpage summary: No summary available\n\n## Protected HTML Marker Rules\nThese mandatory rules override any conflicting instructions above:\n1. Within each input segment (segments are separated by a standalone %% line when present), preserve every `data-rf-attr` attribute occurrence and its value exactly once in that segment's output.\n2. Never add, remove, change, duplicate, rename, renumber, or move a marker to another segment.\n3. Keep each marker on its original HTML element.\n4. The HTML element carrying a marker may move within its segment to follow the target-language word order."
+          },
+          {
+            "role": "user",
+            "content": "Translate to Simplified Mandarin Chinese:\n\n\n<a data-rf-attr=\"0\">Source 1</a>"
+          }
+        ],
+        "promptCharacters": 1389,
+        "promptUtf8Bytes": 1389
+      }
+    ],
+    "cacheWrites": [
+      {
+        "key": "llm-preservation-0",
+        "translation": "<a data-rf-attr=\"0\">ч 0</a>",
+        "createdAt": "2026-10-15T12:08:32.623Z"
+      },
+      {
+        "key": "llm-preservation-1",
+        "translation": "<a data-rf-attr=\"0\">ч 1</a>",
+        "createdAt": "2026-10-15T12:08:32.623Z"
+      }
+    ],
+    "originalRequestsPerCall": [
+      2,
+      1,
+      1
+    ],
+    "modelTokens": null,
+    "tokenLimit": "No model tokenizer or real gateway usage measured; character/byte counts only."
+  },
+  {
+    "test": "fork LLM cost protocol through background, real queues and SDK HTTP > retains the custom template and canonical input in individual marker fallback",
+    "httpCalls": 2,
+    "requests": [
+      {
+        "model": "cost-preservation-model",
+        "messages": [
+          {
+            "role": "system",
+            "content": "MY CUSTOM SYSTEM\n\n## Multi-paragraph Translation Rules\n1. If input contains a standalone line containing only %%, use a standalone %% line in your output. If input has no standalone %% line, don't use %% in your output.\n2. **CRITICAL**: Treat %% as a separator only when it appears on its own line. Do not treat %% as a separator when it appears inside normal text, code, quotes, or punctuation.\n\n## OUTPUT FORMAT:\n- **Single paragraph input** → Output translation directly (no separators, no extra text)\n- **Multi-paragraph input (input uses standalone %% separator lines)** → Put %% on its own line between translations\n\n## Examples\n\n### Multi-paragraph Input:\nParagraph A\n\n%%\n\nParagraph B\n\n%%\n\nParagraph C\n\n### Multi-paragraph Output:\nTranslation A\n\n%%\n\nTranslation B\n\n%%\n\nTranslation C\n\n### Single paragraph Input:\nSingle paragraph content\n\n### Single paragraph Output:\nDirect translation without separators\n\n\n## Already-translated Input Rule\nOutput only {{NO_TRANSLATION_NEEDED}} when only non-translatable names, brands, handles, URLs, numbers, or code differ from Simplified Mandarin Chinese. A foreign-language phrase or clause must be translated.\n\n## Protected HTML Marker Rules\nThese mandatory rules override any conflicting instructions above:\n1. Within each input segment (segments are separated by a standalone %% line when present), preserve every `data-rf-attr` attribute occurrence and its value exactly once in that segment's output.\n2. Never add, remove, change, duplicate, rename, renumber, or move a marker to another segment.\n3. Keep each marker on its original HTML element.\n4. The HTML element carrying a marker may move within its segment to follow the target-language word order."
+          },
+          {
+            "role": "user",
+            "content": "CUSTOM_INPUT\n<a data-rf-attr=\"0\">Source 0</a>\n\n%%\n\n<a data-rf-attr=\"0\">Source 1</a>"
+          }
+        ],
+        "promptCharacters": 1787,
+        "promptUtf8Bytes": 1791
+      },
+      {
+        "model": "cost-preservation-model",
+        "messages": [
+          {
+            "role": "system",
+            "content": "MY CUSTOM SYSTEM\n\n## Protected HTML Marker Rules\nThese mandatory rules override any conflicting instructions above:\n1. Within each input segment (segments are separated by a standalone %% line when present), preserve every `data-rf-attr` attribute occurrence and its value exactly once in that segment's output.\n2. Never add, remove, change, duplicate, rename, renumber, or move a marker to another segment.\n3. Keep each marker on its original HTML element.\n4. The HTML element carrying a marker may move within its segment to follow the target-language word order."
+          },
+          {
+            "role": "user",
+            "content": "CUSTOM_INPUT\n<a data-rf-attr=\"0\">Source 1</a>"
+          }
+        ],
+        "promptCharacters": 610,
+        "promptUtf8Bytes": 610
+      }
+    ],
+    "cacheWrites": [
+      {
+        "key": "llm-preservation-0",
+        "translation": "<a data-rf-attr=\"0\">ч 0</a>",
+        "createdAt": "2026-10-15T12:08:32.623Z"
+      },
+      {
+        "key": "llm-preservation-1",
+        "translation": "<a data-rf-attr=\"0\">ч 1</a>",
+        "createdAt": "2026-10-15T12:08:32.623Z"
+      }
+    ],
+    "originalRequestsPerCall": [
+      2,
+      1
+    ],
+    "modelTokens": null,
+    "tokenLimit": "No model tokenizer or real gateway usage measured; character/byte counts only."
+  }
+]

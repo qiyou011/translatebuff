@@ -1,0 +1,299 @@
+{
+  "scope": "非云UI调用契约源码审计，含经root明确批准的单函数ShadowRoot适配修复；不重审页面路由或云throw消费者",
+  "createdAt": "2026-10-15T11:30:43.606606+00:00",
+  "repository": "/Users/yisen/.codex/worktrees/upstream-sync-v1-51-0/translatebuff",
+  "sourceHead": "e1d90dc928ca5fbbbba112e480131e1c909c93ce",
+  "upstreamTarget": "55bcef1e684fb4e70f4dce3063e7bd3066f46891",
+  "graph": {
+    "indexedCommit": "e1d90dc",
+    "statusAtAudit": "HEAD匹配；未提交修复及构建redirect视为索引盲点",
+    "limitations": [
+      "Vite forkUiRedirectPlugin 属构建期接线，fork TranslationCard 的图0caller已由 wxt.config.ts:162–168 + TranslationPanel 补源链，不作无影响结论。",
+      "查询同名函数必须用 file/UID 消歧。helper impact 用精确 fork UID。",
+      "本轮未重建索引；其他人的未提交修复只读现状核对。"
+    ]
+  },
+  "findings": [
+    {
+      "id": "W01",
+      "classification": "已证回归，最小修复已GREEN",
+      "severity": "P2",
+      "title": "嵌套动作布局 ShadowRoot 的选区被误判为页面选区",
+      "entry": "selection.content/app.tsx shim → fork App → fork SelectionToolbar",
+      "newDependency": "SelectionCustomActionProvider → 共享 CustomActionContent → CustomActionLayoutView → @read-frog/layout-engine 0.5.0 LayoutView/createLayoutMount，布局新增一层 open ShadowRoot。",
+      "failure": "原 fork 守卫只检查一次 contains/closest/getRootNode；选区边界位于布局 ShadowRoot 时三项均无法识别外层扩展覆盖层。document mouseup 随后把扩展结果正文建立成新 selectionSession/contextSnapshot。",
+      "evidence": [
+        {
+          "file": "src/entrypoints/selection.content/index.tsx",
+          "line": 62,
+          "detail": "外层 createShadowRootUi 及 App 挂载"
+        },
+        {
+          "file": "src/fork/ui/selection-content/SelectionCustomActionProvider.tsx",
+          "line": 75,
+          "detail": "实际组合共享 CustomActionContent"
+        },
+        {
+          "file": "src/components/custom-action/custom-action-content.tsx",
+          "line": 73,
+          "detail": "实际挂载 CustomActionLayoutView"
+        },
+        {
+          "file": "src/components/layout-host/custom-action-layout-view.tsx",
+          "line": 92,
+          "detail": "实际 LayoutView"
+        },
+        {
+          "file": "src/entrypoints/selection.content/selection-toolbar/index.tsx",
+          "line": 112,
+          "detail": "固定上游的逐层 host 遍历，当前该原件与 55bcef 一致"
+        },
+        {
+          "file": "src/entrypoints/selection.content/selection-toolbar/__tests__/selection-toolbar.test.tsx",
+          "line": 660,
+          "detail": "固定上游嵌套 shadow 回归来源"
+        },
+        {
+          "file": "src/fork/ui/selection-content/SelectionToolbar.tsx",
+          "line": 117,
+          "detail": "本轮唯一生产修改函数"
+        }
+      ],
+      "impact": {
+        "risk": "LOW",
+        "impactedCount": 6,
+        "directCallers": [
+          "isSelectionInsideSelectionOverlay",
+          "isMouseEventInsideSelectionOverlay"
+        ],
+        "indirectCallers": [
+          "handleMouseUp",
+          "handleMouseDown",
+          "handleSelectionChange",
+          "handleDeferredSelection"
+        ],
+        "processesAffected": 0,
+        "artifact": "wiring-shadow-impact.json",
+        "original": "/tmp/tb-sweep-shadow-impact.json"
+      },
+      "red": {
+        "file": "src/fork/ui/selection-content/__tests__/nested-shadow-overlay.forktest.tsx",
+        "counts": {
+          "passed": 1,
+          "failed": 1
+        },
+        "assertion": "nested=true: expected selectionSession null; received session containing Translated custom action result",
+        "artifact": "wiring-shadow-red.log"
+      },
+      "fix": "仅将 isNodeInsideSelectionOverlay 改为逐层 current.getRootNode().host 遍历；三种原判据保持不变；无新配置、context、渲染、模型选择或请求。",
+      "green": {
+        "files": 2,
+        "passed": 5,
+        "failed": 0,
+        "artifact": "wiring-shadow-green.log"
+      },
+      "limits": "真实 fork React 组件及 document 事件处理被执行；JSDOM 的 Selection 与几何受控。是组件组合回归，不声称实站浏览器已复现/验收。"
+    },
+    {
+      "id": "W02",
+      "classification": "兼容性gap，不作为当前可见UI故障，不改生产",
+      "title": "fork 药丸未接完整 order/unpinned/MoreMenu 契约",
+      "evidence": [
+        {
+          "file": "src/entrypoints/options/pages/custom-actions/components/action-card-list.tsx",
+          "line": 77,
+          "detail": "实际可见拖拽调用 setSelectionToolbarCustomActions"
+        },
+        {
+          "file": "src/utils/selection-toolbar-items.ts",
+          "line": 84,
+          "detail": "同时更新 customActions 新数组和 order"
+        },
+        {
+          "file": "src/fork/ui/selection-content/SelectionToolbar.tsx",
+          "line": 538,
+          "detail": "取 features 和 getSelectionToolbarActions"
+        },
+        {
+          "file": "src/fork/ui/selection-content/SelectionToolbar.tsx",
+          "line": 578,
+          "detail": "固定 translate/speak 后遍历全部 enabled actions"
+        },
+        {
+          "file": "src/entrypoints/selection.content/selection-toolbar/more-menu.tsx",
+          "line": 144,
+          "detail": "unpinned 唯一交互写入点；fork 没有挂载该菜单"
+        },
+        {
+          "file": "src/fork/upstream-admission.ts",
+          "line": 15,
+          "detail": "仅 dictionary 内置动作获准；不能用 improveWriting 默认 unpinned 作为实际产品故障例子"
+        }
+      ],
+      "counterEvidence": "用户动作拖拽会重排 customActions；fork 读取该数组，所以用户动作彼此排序仍生效。当前可见 fork 设置没有独立 pin/unpin 写入控件。",
+      "productBoundary": "2026-07-22-fork-selection-toolbar-shell/design.md 明确保留 fork 药丸 JSX 和功能对等，但未明确批准或排除后来的 MoreMenu/pin 交互。根代理决定保留 compatibility gap，本轮不引入菜单。",
+      "minimalFutureAdaptation": "若以后批准完整语义，基于 getSelectionToolbarItems 过滤获准字典及用户动作，保持 fork context/触发器；不能直接导入上游 MoreMenu，因为其翻译/动作 hook 消费上游私有 context。需要先为 fork context 补 openToolbarTranslation 才能等价接线。"
+    },
+    {
+      "id": "W03",
+      "classification": "待产品边界判断的UI功能gap，不定产品bug，不改生产",
+      "title": "Hub fork 翻译结果卡缺目标朗读入口",
+      "evidence": [
+        {
+          "file": "src/entrypoints/translation-hub/components/translation-card.tsx",
+          "line": 50,
+          "detail": "目标读取 tts 配置并 useTextToSpeech"
+        },
+        {
+          "file": "src/entrypoints/translation-hub/components/translation-card.tsx",
+          "line": 203,
+          "detail": "加载/播放/停止状态及 handleSpeak"
+        },
+        {
+          "file": "src/entrypoints/translation-hub/components/translation-card.tsx",
+          "line": 249,
+          "detail": "成功结果朗读按钮"
+        },
+        {
+          "file": "src/fork/ui/translation-hub/translation-card.tsx",
+          "line": 34,
+          "detail": "fork 卡片未挂 TTS hook，成功结果只提供复制/重试等原有控件"
+        },
+        {
+          "file": "src/entrypoints/translation-hub/components/__tests__/translation-card.test.tsx",
+          "line": 111,
+          "detail": "上游 speech 测试导入未重定向原件；不能证明 fork 卡片具备此行为"
+        },
+        {
+          "file": "src/hooks/use-text-to-speech.tsx",
+          "line": 112,
+          "detail": "共用 Edge TTS 消息；非本次云 throw 消费者审计"
+        }
+      ],
+      "disposition": "Root 要求独立UI差异未确认前只列 gap，不在本轮恢复朗读按钮。"
+    },
+    {
+      "id": "W04",
+      "classification": "已确认展示回归，真实组件RED→GREEN并独立复审关闭",
+      "title": "Popup 头像摘要仍只枚举 customActions，未纳入移至 builtInActions 的已启用词典",
+      "evidence": [
+        {
+          "file": "src/fork/ui/popup/providers-field.tsx",
+          "line": 45,
+          "detail": "FEATURE_KEYS 后仅遍历 selectionToolbar.customActions"
+        },
+        {
+          "file": "src/entrypoints/popup/components/providers-field.tsx",
+          "line": 53,
+          "detail": "目标使用 getSelectionToolbarActions，包含内置动作"
+        },
+        {
+          "file": "src/fork/upstream-services/custom-actions.ts",
+          "line": 29,
+          "detail": "实际 fork 获准集合为已批准内置动作和用户动作"
+        }
+      ],
+      "effect": "词典 provider 若不与任何 FEATURE_KEYS 或用户动作共用，实际可配置/可执行但不会出现在 popup 折叠头像摘要或其数量中；不影响执行、provider 选择和账号/key。",
+      "coverageGap": "当前 fork popup 测试覆盖 mode/root-width/blog；没有 ProvidersField 头像摘要的 builtInActions-only 行为测试。",
+      "minimalFutureAdaptation": "如要补齐摘要，仅把 action 遍历改为获准 getSelectionToolbarActions；不要改变云准入、配置、账号或 key。",
+      "originalClassification": "非阻断展示gap，只读记录",
+      "finalDisposition": {
+        "fix": "getSelectionToolbarActions replaces customActions enumeration only",
+        "newCasesPassed": 4,
+        "report": "popup-summary-result.md",
+        "review": "review.md",
+        "actualPopupBrowserAcceptance": false
+      }
+    }
+  ],
+  "consumerMatrix": [
+    {
+      "entry": "popup/app.tsx → fork/popup/App.tsx",
+      "dependency": "共享 Hotkey / TranslateButton / TranslatePromptSelector / SiteControlToggle",
+      "result": "按现 props 组合；配置字段 node.enabled/hotkey、pageTranslation.mode/providerId 与上游一致。未发现新增必挂 context 被遗漏。",
+      "tests": "fork/ui/popup/__tests__/translation-mode-selector.test.tsx；本轮只读，未重跑"
+    },
+    {
+      "entry": "fork popup → fork language-options-selector",
+      "dependency": "BaseUI Combobox 的 LanguageItem 对象 value / onValueChange(item|null)",
+      "result": "与55bcef仅布局样式差异；语言对象形态和 source=auto 处理相同。",
+      "tests": "未发现实际 fork language selector 组合行为测试"
+    },
+    {
+      "entry": "fork popup → fork ProvidersField",
+      "dependency": "FeatureProviderSelectorList / local ProviderSelectorOption",
+      "result": "选择器新 props 已传 providerSelectorTriggerSize；仅 W04 摘要枚举旧数据位置。",
+      "tests": "缺少 builtInActions-only 摘要测试"
+    },
+    {
+      "entry": "translation-hub app → TranslationPanel → 构建重定向 fork TranslationCard",
+      "dependency": "providerId/isExpanded/onExpandedChange；公用 request atom；AbortSignal；mutation loading/error",
+      "result": "三项 props 与目标一致；新请求/卸载取消、timestamp触发、迟响应id守卫和错误态保留。TTS 差异见W03。",
+      "tests": "原件 translation-card.test.tsx 不经 fork 插件；实际 fork Card 的请求取消/错误态缺专门组合测试"
+    },
+    {
+      "entry": "Hub TextInput/Panel/Dropdown → fork atoms",
+      "dependency": "公用持久选择 atom、ProviderRef 形态和 TranslateRequest",
+      "result": "已修的 persisted public selection 接线保持；fork Card 获取原始 ProviderConfig 后传 executeTranslate，符合其参数类型，不能把两种层级的 provider 形态当成新错。",
+      "tests": "fork/ui/translation-hub/__tests__/atoms.test.ts；translate-request-activity.test.tsx（本轮未重跑）"
+    },
+    {
+      "entry": "selection.content app shim → fork App",
+      "dependency": "Toast/Theme/QueryClient、SelectionSpeechProvider、InputTranslationBar callbacks",
+      "result": "已修项源码仍在，未反复复测：speech provider 包裹实际工具栏；bar 的 retran/undo/retry/dismiss/interaction/menu callbacks 全接。",
+      "tests": "app-speech-provider.test.tsx；input-translation 既有行为测试"
+    },
+    {
+      "entry": "fork SelectionTranslationProvider → 共享 SelectionPopover / TranslationContent / Footer",
+      "dependency": "actionsRef/requestOpen/onReuseRequest、thinking/error/isTranslating、provider options",
+      "result": "Root 的 pinned reuse 入口、close cancel/runId守卫、流式快照、error对象和 footer 回调签名已匹配；fork 三元组 context 一致。",
+      "tests": "fork custom-action-input-context 与 shared原件 request-rerun 分开；实际 fork translation controller pinned-reuse/late-chunk 缺组合级用例"
+    },
+    {
+      "entry": "fork SelectionCustomActionProvider → CustomActionContent",
+      "dependency": "status/selection/targetCode、value/thinking、layout ShadowRoot",
+      "result": "新增 layout 状态/selection/targetCode 数据均已传；布局升级产生的 DOM 边界遗漏为W01，已修。",
+      "tests": "本轮新增真实fork组件嵌套shadow RED→GREEN；无网络/浏览器"
+    }
+  ],
+  "verification": {
+    "command": "SKIP_FREE_API=true node_modules/.bin/node --import ./scripts/test-env.mjs ./node_modules/vitest/vitest.mjs run --config vitest.fork.config.ts src/fork/ui/selection-content/__tests__/nested-shadow-overlay.forktest.tsx src/fork/ui/selection-content/__tests__/toolbar-deferred-selection.test.tsx",
+    "red": "wiring-shadow-red.log: 1 PASS / 1 FAIL，错误发生在nested=true实际fork selectionSession断言",
+    "green": "wiring-shadow-green.log: 2 files / 5 tests PASS",
+    "format": "oxfmt --check 两个修改文件 PASS；wiring-shadow-format.log",
+    "type": "oxlint --type-aware --type-check 两个修改文件 PASS；wiring-shadow-type.log",
+    "diffCheck": "git diff --check 两个修改文件 PASS",
+    "setupAttempts": [
+      "wiring-shadow-discovery.log: 根vitest默认不收forktest后缀，不是产品RED。",
+      "wiring-shadow-fixture-error.log: 首次Range几何spy不存在，改为仅为测试Range实例提供几何方法；不是产品RED。"
+    ],
+    "notPerformed": [
+      "真实浏览器/账号/网络调用",
+      "全量测试",
+      "构建包",
+      "commit或根tasks/reports更新"
+    ]
+  },
+  "ownedChangedFiles": [
+    "src/fork/ui/selection-content/SelectionToolbar.tsx",
+    "src/fork/ui/selection-content/__tests__/nested-shadow-overlay.forktest.tsx",
+    "openspec/changes/upstream-sync-v1-51-0/evidence/merge-regression-sweep/wiring-*"
+  ],
+  "sourceHashes": {
+    "src/fork/ui/popup/App.tsx": "a740cdd2481a493289f5fd57739cb8127e5a8c7c58ef15348b275da1630a2110",
+    "src/fork/ui/popup/providers-field.tsx": "6cded3fc3b39cb012425bcffa97c354e2f043af9e806e1f4dc8578ddc2160930",
+    "src/fork/ui/popup/language-options-selector.tsx": "f10a9498f56d6c6d18fe0def0a384cee94f20ced1bdbb3836ebd0d1a4d7e428b",
+    "src/fork/ui/popup/translation-mode-selector.tsx": "a74f797cbf2a24d75df8141f35dc66d6a3bfdee2ec784815dd8c6c57863e65b3",
+    "src/fork/ui/translation-hub/atoms.ts": "3406afbac93d57e678bd17a60e9742223f51f62f472751b767d49d51d7d8e9cd",
+    "src/fork/ui/translation-hub/translation-card.tsx": "f6c6d78a5c05771bed3c468ceb86b92789d3f394e8df22dad7fd8b527e2cfc6f",
+    "src/fork/ui/translation-hub/translation-service-dropdown.tsx": "c2d0209fc13ba0e9843039777c55f3f99cbb462489b81ac00f9b0f261475cb1e",
+    "src/fork/ui/selection-content/App.tsx": "ed7516a1afad55a944f44bf8a12f0a625a672c8770fd1601ee22d15a970d5e6f",
+    "src/fork/ui/selection-content/SelectionTranslationProvider.tsx": "e97e385d653fbce25852f53454fd370d96af9b0e9acd84cd6bf50a7411fb1ead",
+    "src/fork/ui/selection-content/SelectionCustomActionProvider.tsx": "383ab6918345c9cf3ff31722640794fc18d25a9aa85c64d9ce2a7a706a5d7431",
+    "src/fork/ui/selection-content/SelectionToolbar.tsx": "201d3f726d0edf5a5875870ef9da234660d5bb79203b83d05723bc085dd6ceb3",
+    "src/fork/ui/selection-content/context.ts": "2218ad779e5d3f0f9bc2a5cb7ddee76d09f8b5ff29faf63f24f0a8f6fd592ec5",
+    "src/fork/ui/selection-content/use-selection-translation-controller.ts": "010de10485784377a80f8c9b8c75493ef728f728bf083337d570ffeb1a843212",
+    "src/fork/ui/selection-content/use-custom-action-controller.ts": "bc70b3c457ea89d8f6a7dff07ab639191d05d88c6b2b185993c7f12d85fd13d8",
+    "src/fork/ui/selection-content/__tests__/nested-shadow-overlay.forktest.tsx": "256a70c4ef921501e36175239b85327620525a06c2087bc1dfd75e6dd48c73e2"
+  }
+}

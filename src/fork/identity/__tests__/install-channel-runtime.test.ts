@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 import { browser } from "#imports"
 import { onForkMessage, sendForkMessage } from "@/fork/message"
+import forkVersion from "../fork-version.json"
 
 const websiteEnv = vi.hoisted(() => ({ WXT_WEBSITE_URL: "https://www.translatebuff.com" }))
 vi.mock("@/env", () => ({ env: websiteEnv }))
@@ -107,7 +108,7 @@ describe("当前官网 Cookie 渠道优先", () => {
     expect(storageGet).not.toHaveBeenCalled()
   })
 
-  it("会员及 report 请求等待当前 Cookie，第 4 段随 Cookie 改变而版本仍为 1.5.0", async () => {
+  it("会员及 report 请求等待当前 Cookie，第 4 段随 Cookie 改变而版本跟随 fork 发行版本", async () => {
     let finishCookie!: (cookie: { value: string }) => void
     vi.mocked(browser.cookies.get).mockImplementationOnce(
       () =>
@@ -132,11 +133,11 @@ describe("当前官网 Cookie 渠道优先", () => {
     finishCookie({ value: "9899" })
     await report
     expect(fetchMock.mock.calls[0]![1].headers.Useragent.split("/")[3]).toBe("9899")
-    expect(fetchMock.mock.calls[0]![1].headers.Useragent.split("/")[5]).toBe("1.5.0")
+    expect(fetchMock.mock.calls[0]![1].headers.Useragent.split("/")[5]).toBe(forkVersion.version)
     vi.mocked(browser.cookies.get).mockResolvedValue({ value: "66666" } as never)
     const { fetchLoginStatus } = await import("@/fork/membership/api")
     await fetchLoginStatus("credential")
     expect(fetchMock.mock.calls[1]![1].headers.Useragent.split("/")[3]).toBe("66666")
-    expect(fetchMock.mock.calls[1]![1].headers.Useragent.split("/")[5]).toBe("1.5.0")
+    expect(fetchMock.mock.calls[1]![1].headers.Useragent.split("/")[5]).toBe(forkVersion.version)
   })
 })

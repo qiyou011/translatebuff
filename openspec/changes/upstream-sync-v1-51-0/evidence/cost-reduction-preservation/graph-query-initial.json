@@ -1,0 +1,195 @@
+{
+  "processes": [
+    {
+      "id": "proc_63_translationqueuepage",
+      "summary": "TranslationQueuePage → CalculateRequestSavingRatio",
+      "priority": 0.095,
+      "symbol_count": 1,
+      "process_type": "cross_community",
+      "step_count": 5
+    },
+    {
+      "id": "proc_195_translationqueuepage",
+      "summary": "TranslationQueuePage → IsDrillInState",
+      "priority": 0.095,
+      "symbol_count": 1,
+      "process_type": "intra_community",
+      "step_count": 4
+    },
+    {
+      "id": "proc_196_translationqueuepage",
+      "summary": "TranslationQueuePage → IsPlainLeftClick",
+      "priority": 0.095,
+      "symbol_count": 1,
+      "process_type": "intra_community",
+      "step_count": 4
+    },
+    {
+      "id": "proc_197_translationqueuepage",
+      "summary": "TranslationQueuePage → Input",
+      "priority": 0.095,
+      "symbol_count": 1,
+      "process_type": "cross_community",
+      "step_count": 4
+    }
+  ],
+  "process_symbols": [
+    {
+      "id": "Function:src/entrypoints/options/pages/translation/translation-queue/queue-page.tsx:TranslationQueuePage",
+      "name": "TranslationQueuePage",
+      "filePath": "src/entrypoints/options/pages/translation/translation-queue/queue-page.tsx",
+      "startLine": 11,
+      "endLine": 29,
+      "module": "Components",
+      "process_id": "proc_63_translationqueuepage",
+      "step_index": 1
+    }
+  ],
+  "definitions": [
+    {
+      "id": "Method:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/2026-10-15T07-17-26-803Z/unpacked/background.js:isOpen#1",
+      "name": "isOpen",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/2026-10-15T07-17-26-803Z/unpacked/background.js",
+      "startLine": 13,
+      "endLine": 13
+    },
+    {
+      "id": "Method:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/2026-10-15T07-17-26-803Z/unpacked/background.js:markClosed#1",
+      "name": "markClosed",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/2026-10-15T07-17-26-803Z/unpacked/background.js",
+      "startLine": 13,
+      "endLine": 13,
+      "module": "Unpacked"
+    },
+    {
+      "id": "Method:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/2026-10-15T07-17-26-803Z/unpacked/background.js:markOpened#1",
+      "name": "markOpened",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-cn-test/2026-10-15T07-17-26-803Z/unpacked/background.js",
+      "startLine": 13,
+      "endLine": 13,
+      "module": "Unpacked"
+    },
+    {
+      "id": "Method:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/2026-10-15T07-10-40-805Z/unpacked/background.js:isOpen#1",
+      "name": "isOpen",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/2026-10-15T07-10-40-805Z/unpacked/background.js",
+      "startLine": 13,
+      "endLine": 13
+    },
+    {
+      "id": "Method:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/2026-10-15T07-10-40-805Z/unpacked/background.js:markClosed#1",
+      "name": "markClosed",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/2026-10-15T07-10-40-805Z/unpacked/background.js",
+      "startLine": 13,
+      "endLine": 13,
+      "module": "Unpacked"
+    },
+    {
+      "id": "Method:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/2026-10-15T07-10-40-805Z/unpacked/background.js:markOpened#1",
+      "name": "markOpened",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/2026-10-15T07-10-40-805Z/unpacked/background.js",
+      "startLine": 13,
+      "endLine": 13,
+      "module": "Unpacked"
+    },
+    {
+      "id": "Function:src/utils/prompts/subtitles.ts:getSubtitlesTranslatePrompt",
+      "name": "getSubtitlesTranslatePrompt",
+      "filePath": "src/utils/prompts/subtitles.ts",
+      "startLine": 19,
+      "endLine": 82,
+      "module": "Prompts"
+    },
+    {
+      "id": "File:src/utils/prompts/subtitles.ts",
+      "name": "subtitles.ts",
+      "filePath": "src/utils/prompts/subtitles.ts"
+    },
+    {
+      "id": "Method:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/2026-10-15T07-10-40-805Z/unpacked/chunks/options-BCGCIeaK.js:action#0",
+      "name": "action",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/2026-10-15T07-10-40-805Z/unpacked/chunks/options-BCGCIeaK.js",
+      "startLine": 1,
+      "endLine": 1
+    },
+    {
+      "id": "Method:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/2026-10-15T07-10-40-805Z/unpacked/chunks/options-BCGCIeaK.js:go#1",
+      "name": "go",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/2026-10-15T07-10-40-805Z/unpacked/chunks/options-BCGCIeaK.js",
+      "startLine": 1,
+      "endLine": 1
+    },
+    {
+      "id": "Method:openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/2026-10-15T07-10-40-805Z/unpacked/chunks/options-BCGCIeaK.js:get#1",
+      "name": "get",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/real-account-browser/build-global-test/2026-10-15T07-10-40-805Z/unpacked/chunks/options-BCGCIeaK.js",
+      "startLine": 1,
+      "endLine": 1
+    },
+    {
+      "id": "File:src/utils/glossary/active-matcher.ts",
+      "name": "active-matcher.ts",
+      "filePath": "src/utils/glossary/active-matcher.ts"
+    },
+    {
+      "id": "Interface:src/utils/glossary/active-matcher.ts:GlossarySnapshot",
+      "name": "GlossarySnapshot",
+      "filePath": "src/utils/glossary/active-matcher.ts",
+      "startLine": 8,
+      "endLine": 19
+    },
+    {
+      "id": "Interface:src/utils/glossary/active-matcher.ts:ResolvedGlossaryTerms",
+      "name": "ResolvedGlossaryTerms",
+      "filePath": "src/utils/glossary/active-matcher.ts",
+      "startLine": 232,
+      "endLine": 243
+    },
+    {
+      "id": "File:src/entrypoints/background/translation-queues.ts",
+      "name": "translation-queues.ts",
+      "filePath": "src/entrypoints/background/translation-queues.ts"
+    },
+    {
+      "id": "Interface:src/entrypoints/background/translation-queues.ts:TranslationQueueSetupConfig",
+      "name": "TranslationQueueSetupConfig",
+      "filePath": "src/entrypoints/background/translation-queues.ts",
+      "startLine": 274,
+      "endLine": 285
+    },
+    {
+      "id": "File:scripts/fork-allowlist.json",
+      "name": "fork-allowlist.json",
+      "filePath": "scripts/fork-allowlist.json"
+    },
+    {
+      "id": "Class:src/entrypoints/host.content/translation-control/page-translation.ts:PageTranslationManager",
+      "name": "PageTranslationManager",
+      "filePath": "src/entrypoints/host.content/translation-control/page-translation.ts",
+      "startLine": 135,
+      "endLine": 1568,
+      "module": "Translation-control"
+    },
+    {
+      "id": "File:src/entrypoints/host.content/translation-control/page-translation.ts",
+      "name": "page-translation.ts",
+      "filePath": "src/entrypoints/host.content/translation-control/page-translation.ts"
+    },
+    {
+      "id": "Interface:src/entrypoints/host.content/translation-control/page-translation.ts:IPageTranslationManager",
+      "name": "IPageTranslationManager",
+      "filePath": "src/entrypoints/host.content/translation-control/page-translation.ts",
+      "startLine": 88,
+      "endLine": 133
+    }
+  ],
+  "timing": {
+    "vector": 8.4,
+    "bm25": 168.2,
+    "merge": 0.1,
+    "symbol_lookup": 151.1,
+    "ranking": 0.1,
+    "formatting": 0.1,
+    "wall": 319.7
+  }
+}

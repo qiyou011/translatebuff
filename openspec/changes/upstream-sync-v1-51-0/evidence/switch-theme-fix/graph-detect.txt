@@ -1,0 +1,17 @@
+Changes: 6 files, 9 symbols
+Affected processes: 1
+Risk level: medium
+
+Changed symbols:
+  undefined v1.51.0 完整上游同步实施计划 → openspec/changes/upstream-sync-v1-51-0/tasks.md
+  undefined 9. 真实浏览器回归与候选状态 → openspec/changes/upstream-sync-v1-51-0/tasks.md
+  undefined C：验证与接纳状态 → openspec/changes/upstream-sync-v1-51-0/validation.md
+  undefined 候选与产物 → openspec/changes/upstream-sync-v1-51-0/validation.md
+  undefined G1—G7：沿用附件的正式编号 → openspec/changes/upstream-sync-v1-51-0/validation.md
+  undefined 前期真实构建包受控浏览器回归 → openspec/changes/upstream-sync-v1-51-0/validation.md
+  undefined 前期受控轮网络证据边界 → openspec/changes/upstream-sync-v1-51-0/validation.md
+  undefined 接纳前剩余责任 → openspec/changes/upstream-sync-v1-51-0/validation.md
+  undefined Switch → src/components/ui/base-ui/switch.tsx
+
+Affected execution flows:
+  • GlossaryEditorPage → Switch (3 steps) — changed: Switch

@@ -1,0 +1,18 @@
+{
+  "algorithm": "sha256(JSON.stringify(DFS sorted entries array of {path,bytes,sha256}))",
+  "expected": "ea567267f98550bfee72788d6e1e9e2e13e612ee2db28f5e4adc0d07f54f48d6",
+  "artifacts": [
+    {
+      "artifact": ".output/chrome-mv3-global",
+      "files": 207,
+      "treeSha256": "ea567267f98550bfee72788d6e1e9e2e13e612ee2db28f5e4adc0d07f54f48d6",
+      "matchesFrozen": true
+    },
+    {
+      "artifact": "/Users/yisen/Downloads/TranslateBuff-Global-1.5.0-rf1.51.0-20261015",
+      "files": 207,
+      "treeSha256": "ea567267f98550bfee72788d6e1e9e2e13e612ee2db28f5e4adc0d07f54f48d6",
+      "matchesFrozen": true
+    }
+  ]
+}

@@ -1,0 +1,242 @@
+{
+  "status": "COMPLETED_WITH_FINDINGS_AND_COVERAGE_GAPS",
+  "environment": "cn-test",
+  "website": "https://test.translatebuff.cn",
+  "authAndClawOrigin": "https://cbs1sit.htjsq.com",
+  "observedGatewayOrigin": "https://oneapi-test.6fast.com",
+  "sourceCandidateSha": "5ac5122a6a4d390b3131f917dd09aa2caf5f5342",
+  "sourceSnapshotSha": "e1d90dc928ca5fbbbba112e480131e1c909c93ce",
+  "artifactTreeSha256": "841c7a8c620366d2724b2e290096f69cbae4fa0d6722e48c41af5c977d563e57",
+  "browser": "Chrome for Testing 151.0.7922.34",
+  "playwright": "1.62.1",
+  "evidenceType": "Sanitized observations returned by live tool calls plus raw screenshots. Not a reconstructed raw network trace.",
+  "account": {
+    "officialCookiePresent": true,
+    "sessionPresent": true,
+    "membershipTier": "pro",
+    "quotaPositive": true,
+    "managedProviders": 8,
+    "allKeysPresent": true,
+    "sharedKeyConsistent": true,
+    "credentialValuesRecorded": false
+  },
+  "passed": [
+    {
+      "id": "account-ui",
+      "proBadgeVisible": true,
+      "remainingQuotaLabelVisible": true,
+      "expiryLabelVisible": true,
+      "myOrdersVisible": true
+    },
+    {
+      "id": "real-model-refresh-ui",
+      "httpStatus": 200,
+      "feedback": "已更新 8 个模型",
+      "managedKeyReadonlyMasked": true
+    },
+    {
+      "id": "real-llm-probe-ui",
+      "httpStatus": 200,
+      "feedback": "成功",
+      "input": "Hi"
+    },
+    {
+      "id": "wikipedia-bilingual",
+      "realGesture": "Control keydown/keyup, isTrusted=true",
+      "sourcePreserved": true,
+      "translatedWrapperCount": 1,
+      "chineseVisible": true,
+      "restoredExactly": true,
+      "screenshot": "wikipedia-bilingual.png"
+    },
+    {
+      "id": "wikipedia-translation-only",
+      "chineseVisible": true,
+      "englishSourceVisible": false,
+      "wrapperCount": 0,
+      "restoredExactly": true,
+      "screenshot": "wikipedia-translation-only.png",
+      "note": "First attempt after mode shortcut failed; second independent Control succeeded. See H01."
+    },
+    {
+      "id": "arxiv-bilingual-inline-code",
+      "url": "https://arxiv.org/html/2609.26891",
+      "paragraphId": "S1.p2",
+      "actualListingSpanCount": 278,
+      "originalCodeValues": [
+        "invoke",
+        "invoke",
+        "invoke"
+      ],
+      "translationCodeValues": [
+        "invoke",
+        "invoke",
+        "invoke"
+      ],
+      "originalTextPreserved": true,
+      "restoredExactly": true,
+      "screenshot": "arxiv-inline-code-bilingual.png"
+    },
+    {
+      "id": "arxiv-translation-only-inline-code",
+      "chineseVisible": true,
+      "englishSourceVisible": false,
+      "visibleCodeValues": [
+        "invoke",
+        "invoke",
+        "invoke"
+      ],
+      "restoredExactly": true,
+      "screenshot": "arxiv-inline-code-translation-only.png"
+    },
+    {
+      "id": "authenticated-cold-restart",
+      "sessionPresent": true,
+      "membershipTier": "pro",
+      "quotaPositive": true,
+      "nodeTranslationDisabledAfterRestart": true
+    }
+  ],
+  "findings": [
+    {
+      "id": "H01",
+      "status": "REPRODUCED",
+      "title": "Independent Control first press suppressed after mode shortcut",
+      "rounds": [
+        {
+          "mode": "bilingual",
+          "firstControlChinese": false,
+          "secondControlChinese": true,
+          "restored": true
+        },
+        {
+          "mode": "translationOnly",
+          "firstControlChinese": false,
+          "secondControlChinese": true,
+          "restored": true
+        }
+      ],
+      "sourceComparison": {
+        "oldBusinessRefs": [
+          "4be99b34",
+          "6a6f0076"
+        ],
+        "oldFileBlobPrefix": "bda2a382",
+        "candidateAndUpstreamFileBlobPrefix": "a8446ae2",
+        "existingPureStateLogicUnchanged": true,
+        "newDiff": "SELECTION_SHORTCUT_CLAIMED_EVENT listener"
+      },
+      "attribution": "Candidate reproduction plus source comparison supports pre-existing logic; old binary was not rerun for this exact gesture."
+    },
+    {
+      "id": "H02",
+      "status": "UNRESOLVED",
+      "title": "Unexpected broad hover translation and HTTP429 during GitHub test",
+      "observedWrappers": {
+        "wikipedia": 5,
+        "github": 136,
+        "arxiv": 0,
+        "kaggle": 0,
+        "google": 0
+      },
+      "pageTranslationEnabledState": false,
+      "sampledGatewayResponses": {
+        "200": 177,
+        "429": 10
+      },
+      "countsProvenance": "Counters returned by live tool call before browser termination. Individual request journal was not persisted.",
+      "cause": "Actual node selected at keydown was not captured; API429 response body was not read. Do not infer quota exhaustion, server capacity, page-mode activation, or synchronization regression.",
+      "stop": "Owned browser/context closed to terminate service-worker memory queues; closing tabs alone did not prove cancellation."
+    }
+  ],
+  "coverageGaps": [
+    {
+      "id": "P01",
+      "status": "INCOMPLETE",
+      "reason": "Real GitHub sup/sub exists, computed line-height 0px; source parent block line-height 24px. Target multiline block-overlap boundary not reproduced; translation did not reach verified completion before429."
+    },
+    {
+      "id": "P02",
+      "status": "NOT_EXECUTED",
+      "reason": "Wikipedia 79 nested tables observed; no live custom-action prompt context-length assertion."
+    },
+    {
+      "id": "P03/P04/P11/P15",
+      "status": "NOT_EXECUTED_ON_LIVE_SITE",
+      "reason": "No stable public-site trigger for exact dynamic wrapper, React19 rewrite, iframe permission combinations, or body replacement."
+    },
+    {
+      "id": "P05",
+      "status": "NOT_EXECUTED_ON_LIVE_SITE",
+      "reason": "Input-value action privacy has previous controlled proof only."
+    },
+    {
+      "id": "P06",
+      "status": "UNAVAILABLE",
+      "reason": "Google redirected to /sorry/index before AI Overview citation dialog."
+    },
+    {
+      "id": "P07",
+      "status": "PARTIAL",
+      "reason": "Wikipedia real translation and restore passed; global short-text threshold high/low comparison not executed."
+    },
+    {
+      "id": "P08",
+      "status": "INCOMPLETE",
+      "reason": "Kaggle live guide HTTP200, eight learnGuide matches and two p nodes; no formula nodes observed before browser stop. No translated guide geometry verdict."
+    },
+    {
+      "id": "P09/P13",
+      "status": "NOT_EXECUTED_ON_LIVE_SITE",
+      "reason": "YouTube precheck after authenticated restart failed with automation context closure. Previous controlled subtitle cases do not count as live YouTube proof."
+    },
+    {
+      "id": "P12",
+      "status": "PARTIAL",
+      "reason": "Mode shortcut and restore exercised; translateTitle live on/off not separately exercised."
+    },
+    {
+      "id": "P14",
+      "status": "NOT_EXECUTED_ON_LIVE_SITE",
+      "reason": "Reddit, Telegram and Discord real editor login/draft tests were not run in this round."
+    }
+  ],
+  "limitations": [
+    "Pre-restart CDP listener reused stale REPL context, so initial content-script attribution is unavailable.",
+    "A later REPL reset discarded the CN run in-memory network journal. Historical observations are retained here from actual sanitized tool returns, and are not described as raw request-level evidence.",
+    "Earlier liveFlush helper wrote to its captured old run path rather than this CN run. Original stopped CN-production/global result.json records were not replaced.",
+    "An initial arxiv assertion incorrectly compared combined bilingual code count6 against original count3 and exact combined text. Raw tool failure was investigated; detached clone minus wrapper plus separate source/translation code comparisons both passed. Product code was not changed.",
+    "No zero-commercial-request or complete G5 conclusion from this round.",
+    "No Edge/Firefox runtime proof, production release, store upload or accepted upstream metadata advancement."
+  ],
+  "screenshots": [
+    {
+      "path": "arxiv-inline-code-bilingual.png",
+      "bytes": 295768,
+      "sha256": "ebf9cc2646ad36a27048cba4e5a91dee6ddc034d59cb3a4558cb1848c568b518"
+    },
+    {
+      "path": "arxiv-inline-code-translation-only.png",
+      "bytes": 331663,
+      "sha256": "1c5b2fe394ac5ff7b54d9f7220c505a45829a3043ad854eaba1d86cc3e5a498e"
+    },
+    {
+      "path": "wikipedia-bilingual.png",
+      "bytes": 427726,
+      "sha256": "4dc4dc66508ad8226a61573948f6a6d9fdfb79716c54c55909c0475d72d7d73a"
+    },
+    {
+      "path": "wikipedia-translation-only.png",
+      "bytes": 452716,
+      "sha256": "03d83de9ac1fea53d5d209d561bdc45adac7d9930be375ec1a30a67bc6dde415"
+    }
+  ],
+  "testSetup": {
+    "initialPageProviderWasManaged": false,
+    "managedProviderIdSelectedForTests": "renyimiao-prefer_quality_optimized",
+    "configurationUpdatedVia": "preserved existing storage config, no credential or membership fabrication",
+    "nodeTranslationEnabledForTests": true,
+    "pageTranslationEnabled": false,
+    "mode": "storage setup plus actual Alt+Shift+M interaction"
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "light": {
+    "result": {
+      "type": "object",
+      "value": {
+        "button": {
+          "background": "rgb(255, 255, 255)",
+          "color": "rgb(230, 230, 233)"
+        },
+        "warning": {
+          "background": "rgb(255, 255, 255)",
+          "color": "rgb(253, 230, 138)"
+        }
+      }
+    }
+  },
+  "wide": {
+    "result": {
+      "type": "object",
+      "value": {
+        "dialog": {
+          "height": 601.3984375,
+          "width": 640,
+          "x": 535,
+          "y": 264.59375
+        },
+        "grid": {
+          "height": 457.3984375,
+          "width": 592,
+          "x": 559,
+          "y": 384.59375
+        },
+        "previewColumn": {
+          "height": 457.3984375,
+          "width": 288,
+          "x": 863,
+          "y": 384.59375
+        },
+        "previewScroll": {
+          "clientWidth": 288,
+          "scrollWidth": 532
+        },
+        "smallButtons": [
+          {
+            "height": 40,
+            "text": "320",
+            "width": 132,
+            "x": 863,
+            "y": 384.59375
+          },
+          {
+            "height": 40,
+            "text": "500",
+            "width": 132,
+            "x": 995,
+            "y": 384.59375
+          }
+        ]
+      }
+    }
+  },
+  "dark": {
+    "result": {
+      "type": "object",
+      "value": {
+        "button": {
+          "background": "oklab(0.306747 0.00196885 -0.00682326 / 0.1)",
+          "color": "rgb(250, 250, 250)"
+        },
+        "warning": {
+          "background": "rgb(28, 28, 31)",
+          "color": "rgb(113, 63, 18)"
+        }
+      }
+    }
+  }
+}
