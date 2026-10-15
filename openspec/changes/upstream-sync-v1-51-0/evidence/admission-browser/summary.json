@@ -1,0 +1,22 @@
+{
+  "run": "runs/2026-10-15T05-00-28.321Z/result.json",
+  "status": "PASS_BOUNDED_SUBSET",
+  "caseCount": 10,
+  "passCount": 10,
+  "treeSha256": "2440c52300adfeed0fa087659a2a3dedbda2c614d0c2b7ba12f17654c1253906",
+  "artifactUnchanged": true,
+  "upstreamHostRequests": [],
+  "networkSummary": {
+    "noCommercialRouteBlocking": true,
+    "playwrightRequests": 340,
+    "cdpRequests": 247,
+    "contexts": ["extension-page", "service-worker", "page-or-unresolved", "content-script"],
+    "providerRequests": 3,
+    "commercial": []
+  },
+  "cleanup": {
+    "ownedProfileRemoved": true,
+    "localServerClosed": true,
+    "browserContextClosed": true
+  }
+}

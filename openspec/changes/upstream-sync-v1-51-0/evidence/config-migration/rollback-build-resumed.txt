@@ -1,0 +1,285 @@
+
+WXT 0.21.4
+ℹ [i18n] Default locale: en
+ℹ Building chrome-mv3 for production with Vite 8.2.1
+[?25l⠋ Preparing...[K⠋ [1/8] background, offscreen, options, popup, sidepanel, translation-hub[K⠙ [1/8] background, offscreen, options, popup, sidepanel, translation-hub[K⠹ [1/8] background, offscreen, options, popup, sidepanel, translation-hub[K⠸ [1/8] background, offscreen, options, popup, sidepanel, translation-hub[K⠼ [1/8] background, offscreen, options, popup, sidepanel, translation-hub[K⠴ [1/8] background, offscreen, options, popup, sidepanel, translation-hub[K⠦ [1/8] background, offscreen, options, popup, sidepanel, translation-hub[K⠧ [1/8] background, offscreen, options, popup, sidepanel, translation-hub[K⠇ [1/8] background, offscreen, options, popup, sidepanel, translation-hub[K⠏ [1/8] background, offscreen, options, popup, sidepanel, translation-hub[K⠋ [1/8] background, offscreen, options, popup, sidepanel, translation-hub[K⠙ [1/8] background, offscreen, options, popup, sidepanel, translation-hub[K⠹ [1/8] background, offscreen, options, popup, sidepanel, translation-hub[K⠸ [1/8] background, offscreen, options, popup, sidepanel, translation-hub[K⠸ [2/8] guide[K⠼ [2/8] guide[K⠼ [3/8] host[K⠴ [3/8] host[K⠦ [3/8] host[K⠧ [3/8] host[K⠇ [3/8] host[K⠏ [3/8] host[K⠋ [3/8] host[K⠋ [4/8] input-injector[K⠋ [5/8] interceptor[K⠋ [6/8] selection[K⠙ [6/8] selection[K⠹ [6/8] selection[K⠸ [6/8] selection[K⠼ [6/8] selection[K⠴ [6/8] selection[K⠦ [6/8] selection[K⠧ [6/8] selection[K⠇ [6/8] selection[K⠇ [7/8] side[K⠏ [7/8] side[K⠋ [7/8] side[K⠙ [7/8] side[K⠹ [7/8] side[K⠸ [7/8] side[K⠸ [8/8] subtitles[K⠼ [8/8] subtitles[K⠴ [8/8] subtitles[K⠦ [8/8] subtitles[K⠧ [8/8] subtitles[K⠇ [8/8] subtitles[K⠏ [8/8] subtitles[K⠋ [8/8] subtitles[K[K[?25h[K[?25h✔ Built extension in 4.167 s
+  ├─ .output/chrome-mv3/manifest.json                                         1.64 kB  
+  ├─ .output/chrome-mv3/offscreen.html                                        741 B    
+  ├─ .output/chrome-mv3/options.html                                          6.26 kB  
+  ├─ .output/chrome-mv3/popup.html                                            8.66 kB  
+  ├─ .output/chrome-mv3/sidepanel.html                                        1.45 kB  
+  ├─ .output/chrome-mv3/translation-hub.html                                  6.12 kB  
+  ├─ .output/chrome-mv3/background.js                                         366.86 kB
+  ├─ .output/chrome-mv3/chunks/_virtual_wxt-html-plugins-BaAyCpKt.js          713 B    
+  ├─ .output/chrome-mv3/chunks/_virtual_wxt-plugins-DB4ZMZxa.js               29 B     
+  ├─ .output/chrome-mv3/chunks/activation-page-mjqfwlpz.js                    2.08 kB  
+  ├─ .output/chrome-mv3/chunks/alert-dialog-BamH7BHu.js                       10.87 kB 
+  ├─ .output/chrome-mv3/chunks/alert-LOrMSzmO.js                              1.40 kB  
+  ├─ .output/chrome-mv3/chunks/analytics-CMDu2hc1.js                          1.60 kB  
+  ├─ .output/chrome-mv3/chunks/analytics-xDL_Cg2N.js                          145 B    
+  ├─ .output/chrome-mv3/chunks/AnimatePresence-Cncaq3rn.js                    4.24 kB  
+  ├─ .output/chrome-mv3/chunks/api-BJCai8tv.js                                2.46 kB  
+  ├─ .output/chrome-mv3/chunks/api-DRcQvSQe.js                                208 B    
+  ├─ .output/chrome-mv3/chunks/api-providers-DV1GZhk4.js                      18.58 kB 
+  ├─ .output/chrome-mv3/chunks/app-CQZw9EXa.js                                122 B    
+  ├─ .output/chrome-mv3/chunks/atoms-Bg2FQS8F.js                              1.46 kB  
+  ├─ .output/chrome-mv3/chunks/badge-BPbxWS2q.js                              1.72 kB  
+  ├─ .output/chrome-mv3/chunks/batch-request-record-DuWP8axh.js               97.33 kB 
+  ├─ .output/chrome-mv3/chunks/batch-savings-note-DoBQ4Haa.js                 463 B    
+  ├─ .output/chrome-mv3/chunks/brand-mark-BRcu1WN2.js                         543 B    
+  ├─ .output/chrome-mv3/chunks/built-in-prompts-CKu_mNPS.js                   837 B    
+  ├─ .output/chrome-mv3/chunks/button-CmOW9IIz.js                             3.98 kB  
+  ├─ .output/chrome-mv3/chunks/card-BaBQ34Jo.js                               1.68 kB  
+  ├─ .output/chrome-mv3/chunks/checkbox-BOFyNLCT.js                           7.47 kB  
+  ├─ .output/chrome-mv3/chunks/chunk-ikMtSI0b.js                              3.13 kB  
+  ├─ .output/chrome-mv3/chunks/client-CsoL69t6.js                             178.24 kB
+  ├─ .output/chrome-mv3/chunks/combobox-CFBL0fJf.js                           39.31 kB 
+  ├─ .output/chrome-mv3/chunks/composite-DGFtfw5u.js                          2.15 kB  
+  ├─ .output/chrome-mv3/chunks/CompositeItem-boQgINrL.js                      835 B    
+  ├─ .output/chrome-mv3/chunks/CompositeList-pIAAm_rn.js                      3.04 kB  
+  ├─ .output/chrome-mv3/chunks/config-backup-DkBuOsJ1.js                      8.54 kB  
+  ├─ .output/chrome-mv3/chunks/config-detail-section-AbDI-brC.js              657 B    
+  ├─ .output/chrome-mv3/chunks/config-item-DK2OK25j.js                        909 B    
+  ├─ .output/chrome-mv3/chunks/config-nav-item-CXuiISd1.js                    655 B    
+  ├─ .output/chrome-mv3/chunks/config-section-BNq31QR_.js                     439 B    
+  ├─ .output/chrome-mv3/chunks/context-menu-page-BPRsZrRl.js                  1.07 kB  
+  ├─ .output/chrome-mv3/chunks/control-page-CdEUxX6y.js                       5.89 kB  
+  ├─ .output/chrome-mv3/chunks/create-atoms-B6Nr8N8S.js                       10.68 kB 
+  ├─ .output/chrome-mv3/chunks/createBaseUIEventDetails-LGHwLnsh.js           82.04 kB 
+  ├─ .output/chrome-mv3/chunks/createReactComponent-A9hXT-Rv.js               833 B    
+  ├─ .output/chrome-mv3/chunks/css-code-editor-CRiG5YDo.js                    232.88 kB
+  ├─ .output/chrome-mv3/chunks/custom-actions-Cqp8EPmH.js                     151.52 kB
+  ├─ .output/chrome-mv3/chunks/custom-css-Bo0OGKbp.js                         3.96 kB  
+  ├─ .output/chrome-mv3/chunks/custom-css-page-DZW_6ZI5.js                    4.72 kB  
+  ├─ .output/chrome-mv3/chunks/DialogRoot-6VTXRmYm.js                         92 B     
+  ├─ .output/chrome-mv3/chunks/dist-mqgyIid1.js                               2.93 kB  
+  ├─ .output/chrome-mv3/chunks/dom-audio-controller-DdwRZ8_U.js               1.59 kB  
+  ├─ .output/chrome-mv3/chunks/drill-in-FlCFz0wH.js                           413 B    
+  ├─ .output/chrome-mv3/chunks/dropdown-menu-jwhwYQ7K.js                      3.13 kB  
+  ├─ .output/chrome-mv3/chunks/empty-DNjfrC3D.js                              1.59 kB  
+  ├─ .output/chrome-mv3/chunks/field-BHpRi2je.js                              3.13 kB  
+  ├─ .output/chrome-mv3/chunks/FieldItemContext-DqxOXz9n.js                   152 B    
+  ├─ .output/chrome-mv3/chunks/FileSaver.min-CQoX8EtI.js                      2.68 kB  
+  ├─ .output/chrome-mv3/chunks/floating-button-page-BMQXZktd.js               3.37 kB  
+  ├─ .output/chrome-mv3/chunks/FloatingPortalLite-C-aPEnbI.js                 451 B    
+  ├─ .output/chrome-mv3/chunks/getPseudoElementBounds-CSeP7WSY.js             8.57 kB  
+  ├─ .output/chrome-mv3/chunks/gradient-background-BGAbPbbM.js                962 B    
+  ├─ .output/chrome-mv3/chunks/hash-CWcD_kxz.js                               7.71 kB  
+  ├─ .output/chrome-mv3/chunks/help-and-community-CsjFh_Y1.js                 8.23 kB  
+  ├─ .output/chrome-mv3/chunks/help-tooltip-jj6cqQGa.js                       534 B    
+  ├─ .output/chrome-mv3/chunks/hooks-_3L-Nf-4.js                              70.29 kB 
+  ├─ .output/chrome-mv3/chunks/IconCheck-DTIrjg4V.js                          146 B    
+  ├─ .output/chrome-mv3/chunks/iconify-DGlBA6Pj.js                            17.80 kB 
+  ├─ .output/chrome-mv3/chunks/IconRefresh-CB-kxF7m.js                        239 B    
+  ├─ .output/chrome-mv3/chunks/IconSettings-C7RuLWKg.js                       720 B    
+  ├─ .output/chrome-mv3/chunks/IconX-BjOJwZr_.js                              172 B    
+  ├─ .output/chrome-mv3/chunks/input-BSsKj6vn.js                              2.34 kB  
+  ├─ .output/chrome-mv3/chunks/input-group-23zQfwjf.js                        2.83 kB  
+  ├─ .output/chrome-mv3/chunks/input-translation-CIK9v0SY.js                  4.34 kB  
+  ├─ .output/chrome-mv3/chunks/isElementDisabled-KSuuBj8D.js                  114 B    
+  ├─ .output/chrome-mv3/chunks/item-DvYdfqW3.js                               2.19 kB  
+  ├─ .output/chrome-mv3/chunks/jsx-runtime-DzTLX39d.js                        644.03 kB
+  ├─ .output/chrome-mv3/chunks/label-C2_Dk8LM.js                              429 B    
+  ├─ .output/chrome-mv3/chunks/language-combobox-ClAnaWct.js                  1.41 kB  
+  ├─ .output/chrome-mv3/chunks/language-labels-DG1pW1IT.js                    212 B    
+  ├─ .output/chrome-mv3/chunks/language-uZJe4rPG.js                           250.38 kB
+  ├─ .output/chrome-mv3/chunks/languages-DdegU6jh.js                          503 B    
+  ├─ .output/chrome-mv3/chunks/locale-boundary-OBVxZ_jh.js                    347 B    
+  ├─ .output/chrome-mv3/chunks/logger-hMNF_uej.js                             120 B    
+  ├─ .output/chrome-mv3/chunks/MenuTrigger-Dr81vhwa.js                        19.79 kB 
+  ├─ .output/chrome-mv3/chunks/message-7RFLCcf-.js                            96 B     
+  ├─ .output/chrome-mv3/chunks/message-D8b1XNSO.js                            96 B     
+  ├─ .output/chrome-mv3/chunks/navigation-WCSDu6gV.js                         523 B    
+  ├─ .output/chrome-mv3/chunks/offscreen-BI5YmXTP.js                          300 B    
+  ├─ .output/chrome-mv3/chunks/options-CnnsfuhJ.js                            139.09 kB
+  ├─ .output/chrome-mv3/chunks/os-CiDfi6rm.js                                 7.72 kB  
+  ├─ .output/chrome-mv3/chunks/overlay-feature-preview-B1xhTpUh.js            7.87 kB  
+  ├─ .output/chrome-mv3/chunks/page-layout-DEBZhNAg.js                        860 B    
+  ├─ .output/chrome-mv3/chunks/patterns-table-DOJUwKkr.js                     3.95 kB  
+  ├─ .output/chrome-mv3/chunks/PopoverPopup-DgGffe2k.js                       9.54 kB  
+  ├─ .output/chrome-mv3/chunks/popup-animation-classes-BdOuK4sw.js            25.84 kB 
+  ├─ .output/chrome-mv3/chunks/popup-DCYz6B90.js                              50.82 kB 
+  ├─ .output/chrome-mv3/chunks/popupStateMapping-i_CyoH9l.js                  21.32 kB 
+  ├─ .output/chrome-mv3/chunks/preference-BSGb332A.js                         10.27 kB 
+  ├─ .output/chrome-mv3/chunks/prompts-6tw7QCeo.js                            934 B    
+  ├─ .output/chrome-mv3/chunks/prompts-DYCWk1jv.js                            1.19 kB  
+  ├─ .output/chrome-mv3/chunks/provider-display-Cp5sHs83.js                   4.82 kB  
+  ├─ .output/chrome-mv3/chunks/provider-selector-DTX5u4qK.js                  1.67 kB  
+  ├─ .output/chrome-mv3/chunks/query-BL76BN08.js                              7.63 kB  
+  ├─ .output/chrome-mv3/chunks/QueryClientProvider-BVc_6gsK.js                7.81 kB  
+  ├─ .output/chrome-mv3/chunks/queue-page-cfSKEco0.js                         4.66 kB  
+  ├─ .output/chrome-mv3/chunks/queue-page-D3pO7w6C.js                         3.51 kB  
+  ├─ .output/chrome-mv3/chunks/radio-group-CsOPwhjc.js                        10.16 kB 
+  ├─ .output/chrome-mv3/chunks/react-dom-BFc9RjUn.js                          3.55 kB  
+  ├─ .output/chrome-mv3/chunks/renyimiao-SY3Rr1Dd.js                          2.71 kB  
+  ├─ .output/chrome-mv3/chunks/resolveAriaLabelledBy-VqsS-KDf.js              2.18 kB  
+  ├─ .output/chrome-mv3/chunks/safePolygon-aI7l2Q1D.js                        12.55 kB 
+  ├─ .output/chrome-mv3/chunks/sample-Bvi3mTLM.js                             8.08 kB  
+  ├─ .output/chrome-mv3/chunks/scrollEdges-BTGlIfAo.js                        609 B    
+  ├─ .output/chrome-mv3/chunks/select-content-props-BXS7ejAM.js               35 B     
+  ├─ .output/chrome-mv3/chunks/select-DfNku-_g.js                             28.38 kB 
+  ├─ .output/chrome-mv3/chunks/selection-toolbar-page-ByTXBBAq.js             5.16 kB  
+  ├─ .output/chrome-mv3/chunks/separator-tn_FfuNa.js                          699 B    
+  ├─ .output/chrome-mv3/chunks/serializeValue-B_EucO5O.js                     133 B    
+  ├─ .output/chrome-mv3/chunks/shortcut-link-ZGGZtBdX.js                      925 B    
+  ├─ .output/chrome-mv3/chunks/shortcuts-DwUirKmp.js                          4.08 kB  
+  ├─ .output/chrome-mv3/chunks/sidepanel-DbNIoEz7.js                          2.44 kB  
+  ├─ .output/chrome-mv3/chunks/site-rules-C8QoZ5Am.js                         138.00 kB
+  ├─ .output/chrome-mv3/chunks/slider-1YUQC9Hb.js                             37.53 kB 
+  ├─ .output/chrome-mv3/chunks/springs-C4ZUQYVh.js                            121.23 kB
+  ├─ .output/chrome-mv3/chunks/storage-adapter-CfU2lop1.js                    442.95 kB
+  ├─ .output/chrome-mv3/chunks/storage-D-AXSPA2.js                            63.83 kB 
+  ├─ .output/chrome-mv3/chunks/storage-DVPlJgyz.js                            973 B    
+  ├─ .output/chrome-mv3/chunks/stringifyLocale-CkHjdQTJ.js                    99 B     
+  ├─ .output/chrome-mv3/chunks/style-editor-zK5jTbg2.js                       8.37 kB  
+  ├─ .output/chrome-mv3/chunks/style-preview-B3HiB6-q.js                      3.40 kB  
+  ├─ .output/chrome-mv3/chunks/subtitles-preview-ZB2ELHN2.js                  288.95 kB
+  ├─ .output/chrome-mv3/chunks/switch-CHdgHlGP.js                             12.97 kB 
+  ├─ .output/chrome-mv3/chunks/tanstack-query-D4o2yt9Q.js                     7.10 kB  
+  ├─ .output/chrome-mv3/chunks/text-to-speech-Cet5bglP.js                     10.10 kB 
+  ├─ .output/chrome-mv3/chunks/textarea-CgKA1uJN.js                           650 B    
+  ├─ .output/chrome-mv3/chunks/theme-DxVfZv8F.js                              613 B    
+  ├─ .output/chrome-mv3/chunks/theme-provider-D7LvB5Zf.js                     1.75 kB  
+  ├─ .output/chrome-mv3/chunks/tier-kyLj2yN-.js                               1.53 kB  
+  ├─ .output/chrome-mv3/chunks/toast-Cmft9zOd.js                              38.87 kB 
+  ├─ .output/chrome-mv3/chunks/ToolbarRootContext-Cx4s5703.js                 251 B    
+  ├─ .output/chrome-mv3/chunks/tooltip-DIaSS7pW.js                            13.64 kB 
+  ├─ .output/chrome-mv3/chunks/translate-D-H3yDUv.js                          1.57 MB  
+  ├─ .output/chrome-mv3/chunks/translation-BEY9pAxZ.js                        7.47 kB  
+  ├─ .output/chrome-mv3/chunks/translation-hub-DY8VIF9n.js                    15.39 kB 
+  ├─ .output/chrome-mv3/chunks/translation-only-gate-DAUoDYVJ.js              415 B    
+  ├─ .output/chrome-mv3/chunks/use-debounced-value-DyAjV0Si.js                421.97 kB
+  ├─ .output/chrome-mv3/chunks/use-ensure-renyimiao-seeded-p-BXMJ3s.js        294 B    
+  ├─ .output/chrome-mv3/chunks/use-export-config-BhcYHZko.js                  663 B    
+  ├─ .output/chrome-mv3/chunks/use-feature-providers-C_Psg8Xf.js              1.27 kB  
+  ├─ .output/chrome-mv3/chunks/use-hosted-ai-provider-options-BklfjIKq.js     480 B    
+  ├─ .output/chrome-mv3/chunks/use-proximity-hover-VDddjAfa.js                2.31 kB  
+  ├─ .output/chrome-mv3/chunks/useAriaLabelledBy-DkbBrgZv.js                  597 B    
+  ├─ .output/chrome-mv3/chunks/useBaseUiId-VYsLcegY.js                        105 B    
+  ├─ .output/chrome-mv3/chunks/useMutation-eJH7naFe.js                        5.58 kB  
+  ├─ .output/chrome-mv3/chunks/usePopupHandleStore-C_yn_xI-.js                2.04 kB  
+  ├─ .output/chrome-mv3/chunks/usePositioner-Bpinr5w6.js                      25.65 kB 
+  ├─ .output/chrome-mv3/chunks/useQuery-W22g3_Gx.js                           8.84 kB  
+  ├─ .output/chrome-mv3/chunks/useRegisterFieldControl-CHUGUMz6.js            2.48 kB  
+  ├─ .output/chrome-mv3/chunks/useTransitionStatus-p29nLRc_.js                743 B    
+  ├─ .output/chrome-mv3/chunks/useTriggerFocusGuards-DhIoHV4_.js              861 B    
+  ├─ .output/chrome-mv3/chunks/useValueAsRef-DG8h5GFP.js                      3.09 kB  
+  ├─ .output/chrome-mv3/chunks/useValueChanged-BGjg5X5L.js                    247 B    
+  ├─ .output/chrome-mv3/chunks/utils-J4r5c-dI.js                              28.26 kB 
+  ├─ .output/chrome-mv3/chunks/valueToPercent-Cs2PS_zz.js                     326 B    
+  ├─ .output/chrome-mv3/chunks/video-subtitles-CuwJ3Lj8.js                    4.15 kB  
+  ├─ .output/chrome-mv3/chunks/view-config-C_rfKKKR.js                        13.09 kB 
+  ├─ .output/chrome-mv3/chunks/website-patterns-page-B9QhJgu5.js              1.88 kB  
+  ├─ .output/chrome-mv3/chunks/website-routes-JKo5pNZa.js                     2.87 kB  
+  ├─ .output/chrome-mv3/chunks/website-url-2li_woSf.js                        399 B    
+  ├─ .output/chrome-mv3/chunks/zod-config-CG-GDaaH.js                         67 B     
+  ├─ .output/chrome-mv3/content-scripts/guide.js                              1.12 MB  
+  ├─ .output/chrome-mv3/content-scripts/host.js                               2.94 MB  
+  ├─ .output/chrome-mv3/content-scripts/input-injector.js                     4.61 kB  
+  ├─ .output/chrome-mv3/content-scripts/interceptor.js                        4.58 kB  
+  ├─ .output/chrome-mv3/content-scripts/selection.js                          3.11 MB  
+  ├─ .output/chrome-mv3/content-scripts/side.js                               1.57 MB  
+  ├─ .output/chrome-mv3/content-scripts/subtitles.js                          2.20 MB  
+  ├─ .output/chrome-mv3/assets/options-DhH55HHd.css                           57.45 kB 
+  ├─ .output/chrome-mv3/assets/text-small-Is2Gj_lh.css                        84 B     
+  ├─ .output/chrome-mv3/assets/theme-CboTzRuH.css                             227.72 kB
+  ├─ .output/chrome-mv3/content-scripts/selection.css                         225.85 kB
+  ├─ .output/chrome-mv3/content-scripts/side.css                              225.93 kB
+  ├─ .output/chrome-mv3/_locales/en/messages.json                             114.51 kB
+  ├─ .output/chrome-mv3/_locales/es/messages.json                             122.03 kB
+  ├─ .output/chrome-mv3/_locales/ja/messages.json                             120.72 kB
+  ├─ .output/chrome-mv3/_locales/ko/messages.json                             114.28 kB
+  ├─ .output/chrome-mv3/_locales/ru/messages.json                             141.48 kB
+  ├─ .output/chrome-mv3/_locales/tr/messages.json                             112.06 kB
+  ├─ .output/chrome-mv3/_locales/vi/messages.json                             118.27 kB
+  ├─ .output/chrome-mv3/_locales/zh_CN/messages.json                          111.08 kB
+  ├─ .output/chrome-mv3/_locales/zh_TW/messages.json                          111.70 kB
+  ├─ .output/chrome-mv3/assets/close-icon-CZhIWHgk.svg                        315 B    
+  ├─ .output/chrome-mv3/assets/close-icon-CZhIWHgk.svg                        315 B    
+  ├─ .output/chrome-mv3/assets/close-icon-light-CofVji4-.svg                  315 B    
+  ├─ .output/chrome-mv3/assets/custom-provider-DZh1oYPE.svg                   876 B    
+  ├─ .output/chrome-mv3/assets/custom-provider-DZh1oYPE.svg                   876 B    
+  ├─ .output/chrome-mv3/assets/custom-provider-DZh1oYPE.svg                   876 B    
+  ├─ .output/chrome-mv3/assets/custom-provider-DZh1oYPE.svg                   876 B    
+  ├─ .output/chrome-mv3/assets/custom-provider-DZh1oYPE.svg                   876 B    
+  ├─ .output/chrome-mv3/assets/custom-provider-DZh1oYPE.svg                   876 B    
+  ├─ .output/chrome-mv3/assets/custom-responses-D4S_A99h.svg                  871 B    
+  ├─ .output/chrome-mv3/assets/custom-responses-D4S_A99h.svg                  871 B    
+  ├─ .output/chrome-mv3/assets/custom-responses-D4S_A99h.svg                  871 B    
+  ├─ .output/chrome-mv3/assets/custom-responses-D4S_A99h.svg                  871 B    
+  ├─ .output/chrome-mv3/assets/custom-responses-D4S_A99h.svg                  871 B    
+  ├─ .output/chrome-mv3/assets/custom-responses-D4S_A99h.svg                  871 B    
+  ├─ .output/chrome-mv3/assets/deeplx-dark-GAkKoMnq.svg                       1.42 kB  
+  ├─ .output/chrome-mv3/assets/deeplx-dark-GAkKoMnq.svg                       1.42 kB  
+  ├─ .output/chrome-mv3/assets/deeplx-dark-GAkKoMnq.svg                       1.42 kB  
+  ├─ .output/chrome-mv3/assets/deeplx-dark-GAkKoMnq.svg                       1.42 kB  
+  ├─ .output/chrome-mv3/assets/deeplx-dark-GAkKoMnq.svg                       1.42 kB  
+  ├─ .output/chrome-mv3/assets/deeplx-dark-GAkKoMnq.svg                       1.42 kB  
+  ├─ .output/chrome-mv3/assets/deeplx-light-BGOHpMGx.svg                      1.42 kB  
+  ├─ .output/chrome-mv3/assets/deeplx-light-BGOHpMGx.svg                      1.42 kB  
+  ├─ .output/chrome-mv3/assets/deeplx-light-BGOHpMGx.svg                      1.42 kB  
+  ├─ .output/chrome-mv3/assets/deeplx-light-BGOHpMGx.svg                      1.42 kB  
+  ├─ .output/chrome-mv3/assets/deeplx-light-BGOHpMGx.svg                      1.42 kB  
+  ├─ .output/chrome-mv3/assets/deeplx-light-BGOHpMGx.svg                      1.42 kB  
+  ├─ .output/chrome-mv3/assets/floating-logo-dark-xMjWxg5I.svg                3.30 kB  
+  ├─ .output/chrome-mv3/assets/floating-logo-DecOuzu1.svg                     3.28 kB  
+  ├─ .output/chrome-mv3/assets/floating-logo-light-Dzcbx6xJ.svg               3.27 kB  
+  ├─ .output/chrome-mv3/assets/inter-cyrillic-ext-wght-normal-BOeWTOD4.woff2  25.96 kB 
+  ├─ .output/chrome-mv3/assets/inter-cyrillic-wght-normal-DqGufNeO.woff2      18.75 kB 
+  ├─ .output/chrome-mv3/assets/inter-greek-ext-wght-normal-DlzME5K_.woff2     11.23 kB 
+  ├─ .output/chrome-mv3/assets/inter-greek-wght-normal-CkhJZR-_.woff2         19.00 kB 
+  ├─ .output/chrome-mv3/assets/inter-latin-ext-wght-normal-DO1Apj_S.woff2     85.07 kB 
+  ├─ .output/chrome-mv3/assets/inter-latin-wght-normal-Dx4kXJAl.woff2         48.26 kB 
+  ├─ .output/chrome-mv3/assets/inter-vietnamese-wght-normal-CBcvBZtf.woff2    10.25 kB 
+  ├─ .output/chrome-mv3/assets/jalapeno-cloud-B6d-8M_0.png                    59.84 kB 
+  ├─ .output/chrome-mv3/assets/jalapeno-cloud-B6d-8M_0.png                    59.84 kB 
+  ├─ .output/chrome-mv3/assets/jalapeno-cloud-B6d-8M_0.png                    59.84 kB 
+  ├─ .output/chrome-mv3/assets/jalapeno-cloud-B6d-8M_0.png                    59.84 kB 
+  ├─ .output/chrome-mv3/assets/jalapeno-cloud-B6d-8M_0.png                    59.84 kB 
+  ├─ .output/chrome-mv3/assets/jalapeno-cloud-B6d-8M_0.png                    59.84 kB 
+  ├─ .output/chrome-mv3/assets/locked-icon-BSU1P60V.svg                       1.39 kB  
+  ├─ .output/chrome-mv3/assets/locked-icon-dark-CtU-WanK.svg                  1.39 kB  
+  ├─ .output/chrome-mv3/assets/onest-cyrillic-ext-wght-normal-DOFToQv1.woff2  10.54 kB 
+  ├─ .output/chrome-mv3/assets/onest-cyrillic-wght-normal-DayYxulF.woff2      15.86 kB 
+  ├─ .output/chrome-mv3/assets/onest-latin-ext-wght-normal-QAhDxQuo.woff2     28.45 kB 
+  ├─ .output/chrome-mv3/assets/onest-latin-wght-normal-Dun_Rd-l.woff2         33.76 kB 
+  ├─ .output/chrome-mv3/assets/onest-math-wght-normal-Bl4ZGkZl.woff2          25.48 kB 
+  ├─ .output/chrome-mv3/assets/onest-symbols-wght-normal-DxQzqQfC.woff2       18.17 kB 
+  ├─ .output/chrome-mv3/assets/onest-vietnamese-wght-normal-BBxOatbv.woff2    12.40 kB 
+  ├─ .output/chrome-mv3/assets/read-frog-provider-oW74Nf7Q.png                50.34 kB 
+  ├─ .output/chrome-mv3/assets/read-frog-provider-oW74Nf7Q.png                50.34 kB 
+  ├─ .output/chrome-mv3/assets/read-frog-provider-oW74Nf7Q.png                50.34 kB 
+  ├─ .output/chrome-mv3/assets/read-frog-provider-oW74Nf7Q.png                50.34 kB 
+  ├─ .output/chrome-mv3/assets/read-frog-provider-oW74Nf7Q.png                50.34 kB 
+  ├─ .output/chrome-mv3/assets/read-frog-provider-oW74Nf7Q.png                50.34 kB 
+  ├─ .output/chrome-mv3/assets/renyimiao-DlBLwGot.svg                         1.02 kB  
+  ├─ .output/chrome-mv3/assets/settings-icon-light-BlAc2_0h.svg               2.36 kB  
+  ├─ .output/chrome-mv3/assets/settings-icon-y1dskTpk.svg                     2.36 kB  
+  ├─ .output/chrome-mv3/assets/settings-icon-y1dskTpk.svg                     2.36 kB  
+  ├─ .output/chrome-mv3/assets/tensdaq-color-eIFTZc9T.svg                     7.20 kB  
+  ├─ .output/chrome-mv3/assets/tensdaq-color-eIFTZc9T.svg                     7.20 kB  
+  ├─ .output/chrome-mv3/assets/tensdaq-color-eIFTZc9T.svg                     7.20 kB  
+  ├─ .output/chrome-mv3/assets/tensdaq-color-eIFTZc9T.svg                     7.20 kB  
+  ├─ .output/chrome-mv3/assets/tensdaq-color-eIFTZc9T.svg                     7.20 kB  
+  ├─ .output/chrome-mv3/assets/tensdaq-color-eIFTZc9T.svg                     7.20 kB  
+  ├─ .output/chrome-mv3/assets/translate-icon-BgaOuXnI.svg                    849 B    
+  ├─ .output/chrome-mv3/assets/translate-icon-BgaOuXnI.svg                    849 B    
+  ├─ .output/chrome-mv3/assets/translate-icon-light-BMVQVeaH.svg              796 B    
+  ├─ .output/chrome-mv3/assets/unlocked-icon-DljrJmDB.svg                     1.41 kB  
+  ├─ .output/chrome-mv3/assets/unlocked-icon-DljrJmDB.svg                     1.41 kB  
+  ├─ .output/chrome-mv3/assets/unlocked-icon-light-MpH5RSmA.svg               1.37 kB  
+  ├─ .output/chrome-mv3/icon/128.png                                          2.41 kB  
+  ├─ .output/chrome-mv3/icon/16-active.png                                    661 B    
+  ├─ .output/chrome-mv3/icon/16.png                                           521 B    
+  ├─ .output/chrome-mv3/icon/32-active.png                                    1.49 kB  
+  ├─ .output/chrome-mv3/icon/32.png                                           1.05 kB  
+  ├─ .output/chrome-mv3/icon/48-active.png                                    2.54 kB  
+  ├─ .output/chrome-mv3/icon/48.png                                           1.78 kB  
+  └─ .output/chrome-mv3/icon/96.png                                           3.93 kB  
+Σ Total size: 19.95 MB                                                      
+✔ Finished in 4.316 s
+[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.

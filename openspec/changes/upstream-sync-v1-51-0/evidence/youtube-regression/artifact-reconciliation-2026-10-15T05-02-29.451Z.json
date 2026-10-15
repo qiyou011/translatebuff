@@ -1,0 +1,52 @@
+{
+  "recordedAt": "2026-10-15T05:02:29.450Z",
+  "artifactDirectory": "/Users/yisen/.codex/worktrees/upstream-sync-v1-51-0/translatebuff/.output/chrome-mv3",
+  "sourceBaselinePath": "openspec/changes/upstream-sync-v1-51-0/evidence/browser-regression/runs/2026-10-15T04-51-44.917Z/result.json",
+  "sourceBaselineSha256": "769c45903f8ac0fda0bdb0523f3d58f1b470527f2e7f3396b602ce844b2833fc",
+  "candidateSha": "5ac5122a6a4d390b3131f917dd09aa2caf5f5342",
+  "explanation": "The original YouTube tree hash omitted bytes from each serialized file row. Both algorithms use identical relative paths, depth-first sorted filenames and content SHA-256. The differing tree hash reflects row serialization only. Every current artifact path, byte length and content SHA equals the saved main-run baseline; every saved YouTube path and content SHA equals the same artifact. Raw historical results were read only.",
+  "mainAlgorithm": "SHA256(UTF8(JSON.stringify(files))) with files from recursively sorted readdir, ordered row keys {path: relative(directory,file), bytes: stat.size, sha256: SHA256(fileBytes)}; no JSON whitespace or trailing newline",
+  "legacyAlgorithm": "SHA256(UTF8(JSON.stringify(files))) using same ordering and {path,sha256} rows, without bytes",
+  "mainTreeSha256": "2440c52300adfeed0fa087659a2a3dedbda2c614d0c2b7ba12f17654c1253906",
+  "legacyTreeSha256": "cc6251ce53132d3954fae33caafec74d0d2d63103d565dc297e3103aad863ab7",
+  "fileCount": 207,
+  "currentVsMainBaselineDifferences": [],
+  "runs": [
+    {
+      "rawPath": "openspec/changes/upstream-sync-v1-51-0/evidence/youtube-regression/runs/2026-10-15T04-56-51.007Z/result.json",
+      "rawResultSha256": "d803b773e03bffcc2669b350f07c561a11c9dcd907e0d8db178b73ba86b46487",
+      "candidateSha": "5ac5122a6a4d390b3131f917dd09aa2caf5f5342",
+      "historicalAlgorithm": "legacy path+sha256",
+      "historicalTreeSha256": "cc6251ce53132d3954fae33caafec74d0d2d63103d565dc297e3103aad863ab7",
+      "originalArtifactUnchanged": true,
+      "perFileCount": 207,
+      "pathsAndContentHashesEqual": true,
+      "differences": [],
+      "sameArtifactNormalizedMainTreeSha256": "2440c52300adfeed0fa087659a2a3dedbda2c614d0c2b7ba12f17654c1253906"
+    },
+    {
+      "rawPath": "openspec/changes/upstream-sync-v1-51-0/evidence/youtube-regression/runs/2026-10-15T04-58-15.572Z/result.json",
+      "rawResultSha256": "e7c949fbf0085101b0022ecfcf6324953ddca329ab02f4635dad5d03d3f8945e",
+      "candidateSha": "5ac5122a6a4d390b3131f917dd09aa2caf5f5342",
+      "historicalAlgorithm": "legacy path+sha256",
+      "historicalTreeSha256": "cc6251ce53132d3954fae33caafec74d0d2d63103d565dc297e3103aad863ab7",
+      "originalArtifactUnchanged": true,
+      "perFileCount": 207,
+      "pathsAndContentHashesEqual": true,
+      "differences": [],
+      "sameArtifactNormalizedMainTreeSha256": "2440c52300adfeed0fa087659a2a3dedbda2c614d0c2b7ba12f17654c1253906"
+    },
+    {
+      "rawPath": "openspec/changes/upstream-sync-v1-51-0/evidence/youtube-regression/runs/2026-10-15T04-59-32.424Z/result.json",
+      "rawResultSha256": "a22b49c90d4141f59aec12af19a2d430baa7cfc6e7b12d82e44d21f287cd3cb8",
+      "candidateSha": "5ac5122a6a4d390b3131f917dd09aa2caf5f5342",
+      "historicalAlgorithm": "legacy path+sha256",
+      "historicalTreeSha256": "cc6251ce53132d3954fae33caafec74d0d2d63103d565dc297e3103aad863ab7",
+      "originalArtifactUnchanged": true,
+      "perFileCount": 207,
+      "pathsAndContentHashesEqual": true,
+      "differences": [],
+      "sameArtifactNormalizedMainTreeSha256": "2440c52300adfeed0fa087659a2a3dedbda2c614d0c2b7ba12f17654c1253906"
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+
+WXT 0.21.4
+ℹ [i18n] Default locale: en
+ℹ Building chrome-mv3 for production with Vite 8.2.1
+[?25l⠋ Preparing...[K⠋ [1/8] background, offscreen, options, popup, sidepanel, translation-hub[K⠙ [1/8] background, offscreen, options, popup, sidepanel, translation-hub[K⠹ [1/8] background, offscreen, options, popup, sidepanel, translation-hub[K⠸ [1/8] background, offscreen, options, popup, sidepanel, translation-hub[K⠼ [1/8] background, offscreen, options, popup, sidepanel, translation-hub[K⠴ [1/8] background, offscreen, options, popup, sidepanel, translation-hub[K⠦ [1/8] background, offscreen, options, popup, sidepanel, translation-hub[K⠧ [1/8] background, offscreen, options, popup, sidepanel, translation-hub[K⠇ [1/8] background, offscreen, options, popup, sidepanel, translation-hub[K⠏ [1/8] background, offscreen, options, popup, sidepanel, translation-hub[K⠋ [1/8] background, offscreen, options, popup, sidepanel, translation-hub[K⠙ [1/8] background, offscreen, options, popup, sidepanel, translation-hub[K⠹ [1/8] background, offscreen, options, popup, sidepanel, translation-hub[K[K[?25h[K[?25h✖ Command failed after 3.757 s
+[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✗ Build failed in 1.63s
+
+ ERROR  Build failed with 1 error:
+
+Error: [vite]: Rolldown failed to resolve import "@fontsource-variable/onest/index.css" from "/private/var/folders/ds/cvjtz9y54sgghn3g3nf93qrh0000gn/T/translatebuff-rollback-build-NScKLa/old-source/src/fork/ui/options/app-shell.tsx".
+This is most likely unintended because it can break your application at runtime.
+If you do want to externalize this module explicitly add it to
+build.rolldownOptions.external
+    at viteLog (file:///private/var/folders/ds/cvjtz9y54sgghn3g3nf93qrh0000gn/T/translatebuff-rollback-build-NScKLa/old-source/node_modules/.pnpm/vite@8.2.1_@types+node@26.1.1_esbuild@0.27.7_jiti@2.7.0_yaml@2.9.0/node_modules/vite/dist/node/chunks/node.js:33823:57)
+    at file:///private/var/folders/ds/cvjtz9y54sgghn3g3nf93qrh0000gn/T/translatebuff-rollback-build-NScKLa/old-source/node_modules/.pnpm/vite@8.2.1_@types+node@26.1.1_esbuild@0.27.7_jiti@2.7.0_yaml@2.9.0/node_modules/vite/dist/node/chunks/node.js:33859:71
+    at onwarn (file:///private/var/folders/ds/cvjtz9y54sgghn3g3nf93qrh0000gn/T/translatebuff-rollback-build-NScKLa/old-source/node_modules/.pnpm/@vitejs+plugin-react@6.0.5_vite@8.2.1_@types+node@26.1.1_esbuild@0.27.7_jiti@2.7.0_yaml@2.9.0_/node_modules/@vitejs/plugin-react/dist/index.js:40:7)
+    at file:///private/var/folders/ds/cvjtz9y54sgghn3g3nf93qrh0000gn/T/translatebuff-rollback-build-NScKLa/old-source/node_modules/.pnpm/vite@8.2.1_@types+node@26.1.1_esbuild@0.27.7_jiti@2.7.0_yaml@2.9.0/node_modules/vite/dist/node/chunks/node.js:33859:28
+    at onRollupLog (file:///private/var/folders/ds/cvjtz9y54sgghn3g3nf93qrh0000gn/T/translatebuff-rollback-build-NScKLa/old-source/node_modules/.pnpm/vite@8.2.1_@types+node@26.1.1_esbuild@0.27.7_jiti@2.7.0_yaml@2.9.0/node_modules/vite/dist/node/chunks/node.js:33854:63)
+    at onLog (file:///private/var/folders/ds/cvjtz9y54sgghn3g3nf93qrh0000gn/T/translatebuff-rollback-build-NScKLa/old-source/node_modules/.pnpm/vite@8.2.1_@types+node@26.1.1_esbuild@0.27.7_jiti@2.7.0_yaml@2.9.0/node_modules/vite/dist/node/chunks/node.js:33619:4)
+    at file:///private/var/folders/ds/cvjtz9y54sgghn3g3nf93qrh0000gn/T/translatebuff-rollback-build-NScKLa/old-source/node_modules/.pnpm/rolldown@1.2.1/node_modules/rolldown/dist/shared/create-bundler-option-4QtiLLuz.mjs:48:26
+    at logger (file:///private/var/folders/ds/cvjtz9y54sgghn3g3nf93qrh0000gn/T/translatebuff-rollback-build-NScKLa/old-source/node_modules/.pnpm/rolldown@1.2.1/node_modules/rolldown/dist/shared/create-bundler-option-4QtiLLuz.mjs:39:3)
+
+    at aggregateBindingErrorsIntoJsError (node_modules/.pnpm/rolldown@1.2.1/node_modules/rolldown/dist/shared/error-BgfXq0Tb.mjs:48:18)
+    at unwrapBindingResult (node_modules/.pnpm/rolldown@1.2.1/node_modules/rolldown/dist/shared/error-BgfXq0Tb.mjs:18:128)
+    at #build (node_modules/.pnpm/rolldown@1.2.1/node_modules/rolldown/dist/shared/rolldown-DP_p9pd3.mjs:132:34)
+    at async buildEnvironment (node_modules/.pnpm/vite@8.2.1_@types+node@26.1.1_esbuild@0.27.7_jiti@2.7.0_yaml@2.9.0/node_modules/vite/dist/node/chunks/node.js:33730:66)
+    at async Object.build (node_modules/.pnpm/vite@8.2.1_@types+node@26.1.1_esbuild@0.27.7_jiti@2.7.0_yaml@2.9.0/node_modules/vite/dist/node/chunks/node.js:34150:19)
+    at async Object.build (node_modules/.pnpm/wxt@0.21.4_eslint@9.39.4_jiti@2.7.0_supports-color@7.2.0__rollup@4.53.2_typescript@7.0._78554037835de8dcdac670deb0a08d0b/node_modules/wxt/dist/core/builders/vite/index.mjs:211:72)
+    at async buildEntrypoints (node_modules/.pnpm/wxt@0.21.4_eslint@9.39.4_jiti@2.7.0_supports-color@7.2.0__rollup@4.53.2_typescript@7.0._78554037835de8dcdac670deb0a08d0b/node_modules/wxt/dist/core/utils/building/build-entrypoints.mjs:16:15)
+    at async rebuild (node_modules/.pnpm/wxt@0.21.4_eslint@9.39.4_jiti@2.7.0_supports-color@7.2.0__rollup@4.53.2_typescript@7.0._78554037835de8dcdac670deb0a08d0b/node_modules/wxt/dist/core/utils/building/rebuild.mjs:34:20)
+    at async internalBuild (node_modules/.pnpm/wxt@0.21.4_eslint@9.39.4_jiti@2.7.0_supports-color@7.2.0__rollup@4.53.2_typescript@7.0._78554037835de8dcdac670deb0a08d0b/node_modules/wxt/dist/core/utils/building/internal-build.mjs:47:31)
+    at async build (node_modules/.pnpm/wxt@0.21.4_eslint@9.39.4_jiti@2.7.0_supports-color@7.2.0__rollup@4.53.2_typescript@7.0._78554037835de8dcdac670deb0a08d0b/node_modules/wxt/dist/core/build.mjs:21:9)
+    at async node_modules/.pnpm/wxt@0.21.4_eslint@9.39.4_jiti@2.7.0_supports-color@7.2.0__rollup@4.53.2_typescript@7.0._78554037835de8dcdac670deb0a08d0b/node_modules/wxt/dist/cli/commands.mjs:31:2
+    at async CAC.<anonymous> (node_modules/.pnpm/wxt@0.21.4_eslint@9.39.4_jiti@2.7.0_supports-color@7.2.0__rollup@4.53.2_typescript@7.0._78554037835de8dcdac670deb0a08d0b/node_modules/wxt/dist/cli/cli-utils.mjs:22:10)
+    at async node_modules/.pnpm/wxt@0.21.4_eslint@9.39.4_jiti@2.7.0_supports-color@7.2.0__rollup@4.53.2_typescript@7.0._78554037835de8dcdac670deb0a08d0b/node_modules/wxt/dist/cli/index.mjs:11:1
+
+
+ ERROR  Failed to build background, offscreen, options, popup, sidepanel, translation-hub
+
+    at buildEntrypoints (node_modules/.pnpm/wxt@0.21.4_eslint@9.39.4_jiti@2.7.0_supports-color@7.2.0__rollup@4.53.2_typescript@7.0._78554037835de8dcdac670deb0a08d0b/node_modules/wxt/dist/core/utils/building/build-entrypoints.mjs:21:10)
+    at async rebuild (node_modules/.pnpm/wxt@0.21.4_eslint@9.39.4_jiti@2.7.0_supports-color@7.2.0__rollup@4.53.2_typescript@7.0._78554037835de8dcdac670deb0a08d0b/node_modules/wxt/dist/core/utils/building/rebuild.mjs:34:20)
+    at async internalBuild (node_modules/.pnpm/wxt@0.21.4_eslint@9.39.4_jiti@2.7.0_supports-color@7.2.0__rollup@4.53.2_typescript@7.0._78554037835de8dcdac670deb0a08d0b/node_modules/wxt/dist/core/utils/building/internal-build.mjs:47:31)
+    at async build (node_modules/.pnpm/wxt@0.21.4_eslint@9.39.4_jiti@2.7.0_supports-color@7.2.0__rollup@4.53.2_typescript@7.0._78554037835de8dcdac670deb0a08d0b/node_modules/wxt/dist/core/build.mjs:21:9)
+    at async node_modules/.pnpm/wxt@0.21.4_eslint@9.39.4_jiti@2.7.0_supports-color@7.2.0__rollup@4.53.2_typescript@7.0._78554037835de8dcdac670deb0a08d0b/node_modules/wxt/dist/cli/commands.mjs:31:2
+    at async CAC.<anonymous> (node_modules/.pnpm/wxt@0.21.4_eslint@9.39.4_jiti@2.7.0_supports-color@7.2.0__rollup@4.53.2_typescript@7.0._78554037835de8dcdac670deb0a08d0b/node_modules/wxt/dist/cli/cli-utils.mjs:22:10)
+    at async node_modules/.pnpm/wxt@0.21.4_eslint@9.39.4_jiti@2.7.0_supports-color@7.2.0__rollup@4.53.2_typescript@7.0._78554037835de8dcdac670deb0a08d0b/node_modules/wxt/dist/cli/index.mjs:11:1
+
+  [cause]: Build failed with 1 error:
+
+Error: [vite]: Rolldown failed to resolve import "@fontsource-variable/onest/index.css" from "/private/var/folders/ds/cvjtz9y54sgghn3g3nf93qrh0000gn/T/translatebuff-rollback-build-NScKLa/old-source/src/fork/ui/options/app-shell.tsx".
+This is most likely unintended because it can break your application at runtime.
+If you do want to externalize this module explicitly add it to
+build.rolldownOptions.external
+    at viteLog (file:///private/var/folders/ds/cvjtz9y54sgghn3g3nf93qrh0000gn/T/translatebuff-rollback-build-NScKLa/old-source/node_modules/.pnpm/vite@8.2.1_@types+node@26.1.1_esbuild@0.27.7_jiti@2.7.0_yaml@2.9.0/node_modules/vite/dist/node/chunks/node.js:33823:57)
+    at file:///private/var/folders/ds/cvjtz9y54sgghn3g3nf93qrh0000gn/T/translatebuff-rollback-build-NScKLa/old-source/node_modules/.pnpm/vite@8.2.1_@types+node@26.1.1_esbuild@0.27.7_jiti@2.7.0_yaml@2.9.0/node_modules/vite/dist/node/chunks/node.js:33859:71
+    at onwarn (file:///private/var/folders/ds/cvjtz9y54sgghn3g3nf93qrh0000gn/T/translatebuff-rollback-build-NScKLa/old-source/node_modules/.pnpm/@vitejs+plugin-react@6.0.5_vite@8.2.1_@types+node@26.1.1_esbuild@0.27.7_jiti@2.7.0_yaml@2.9.0_/node_modules/@vitejs/plugin-react/di

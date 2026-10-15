@@ -1,0 +1,3 @@
+﻿source,target,targetLanguage,caseSensitive
+QuantumWidget,量子组件甲,cmn,false
+StableToken,,all,true

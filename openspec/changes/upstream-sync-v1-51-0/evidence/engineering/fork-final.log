@@ -1,0 +1,34 @@
+$ node --import ./scripts/test-env.mjs ./node_modules/vitest/vitest.mjs run --config vitest.fork.config.ts src/fork
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - import "./src/fork/ui-redirect-plugin" without a file extension (vitest.fork.config.ts:3:38). Add the file extension
+  - import "./vitest.config" without a file extension (vitest.fork.config.ts:4:24). Add the file extension
+  - import "./wxt.config" without a file extension (vitest.fork.config.ts:5:35). Add the file extension
+  - `__dirname` (wxt.config.ts:33:18). Use `import.meta.dirname` instead
+  - import "./src/env/shared" without a file extension (wxt.config.ts:12:8). Add the file extension
+  - import "./src/fork/branding" without a file extension (wxt.config.ts:13:70). Add the file extension
+  - import "./src/fork/i18n/chrome-messages" without a file extension (wxt.config.ts:14:37). Add the file extension
+  - import "./src/fork/identity/channel" without a file extension (wxt.config.ts:15:38). Add the file extension
+  - import "./src/fork/identity/edition" without a file extension (wxt.config.ts:16:32). Add the file extension
+  - import "./src/fork/identity/version" without a file extension (wxt.config.ts:21:8). Add the file extension
+  - import "./src/fork/ui-redirect-plugin" without a file extension (wxt.config.ts:22:38). Add the file extension
+  - JSON import "./fork-version.json" without import attributes (src/fork/identity/version.ts:1:27). Add `with { type: 'json' }`
+  - import "./identity/edition" without a file extension (src/fork/branding.ts:4:34). Add the file extension
+  - import "./edition" without a file extension (src/fork/identity/channel.ts:8:34). Add the file extension
+  - JSON import "./channels.json" without import attributes (src/fork/identity/channel.ts:9:22). Add `with { type: 'json' }`
+  - import "../identity/edition" without a file extension (src/fork/i18n/chrome-messages.ts:1:34). Add the file extension
+  - import "./identity/edition" without a file extension (src/fork/branding.ts:5:32). Add the file extension
+  - import "./edition" without a file extension (src/fork/identity/channel.ts:10:32). Add the file extension
+  - import "../branding" without a file extension (src/fork/i18n/chrome-messages.ts:2:51). Add the file extension
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v5.0.3 /Users/yisen/.codex/worktrees/upstream-sync-v1-51-0/translatebuff
+
+
+ Test Files  111 passed (111)
+      Tests  894 passed (894)
+   Start at  12:31:53
+   Duration  10.33s (import 24%, environment 22%, tests 21%, transform 18%, setup 14%, worker 1%)
+
+    Isolate  111 workers spawned · ~268ms startup each (spawn + environment, per file)
+             at least ~1.86s faster with isolate: false — reuses workers across files instead of one per file
+

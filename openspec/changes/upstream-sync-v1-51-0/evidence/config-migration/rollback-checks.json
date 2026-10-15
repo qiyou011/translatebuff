@@ -1,0 +1,99 @@
+{
+  "status": "PASS",
+  "checkedAt": "2026-10-15T05:03:48.447Z",
+  "source": {
+    "path": "/Users/yisen/Desktop/Junyun/Projects/Company/translatebuff",
+    "refReadFromPlainRefFile": "4be99b341a7c940a48794232f066db43339cc2d2",
+    "sourceBeforeTreeSha256": "d7cdd6b17cd451562c590a3ee46db88610be394ca684ecfd1525ab9f98b876af",
+    "sourceFilesChecked": 1940,
+    "changedSourceFiles": [],
+    "allPreviouslyHashedSourceFilesUnchanged": true,
+    "mainNodeModulesPolicy": "Only read and cp -cR cloned; font supplement/build occurred in private temporary clone"
+  },
+  "checks": [
+    {
+      "command": [
+        "/Users/yisen/.nvm/versions/node/v22.15.0/bin/node",
+        "--check",
+        "/Users/yisen/.codex/worktrees/upstream-sync-v1-51-0/translatebuff/openspec/changes/upstream-sync-v1-51-0/evidence/config-migration/rollback-build.mjs"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/Users/yisen/.nvm/versions/node/v22.15.0/bin/node",
+        "--check",
+        "/Users/yisen/.codex/worktrees/upstream-sync-v1-51-0/translatebuff/openspec/changes/upstream-sync-v1-51-0/evidence/config-migration/rollback-build-resume.mjs"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/Users/yisen/.nvm/versions/node/v22.15.0/bin/node",
+        "--check",
+        "/Users/yisen/.codex/worktrees/upstream-sync-v1-51-0/translatebuff/openspec/changes/upstream-sync-v1-51-0/evidence/config-migration/rollback-browser.mjs"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/Users/yisen/.nvm/versions/node/v22.15.0/bin/node",
+        "--check",
+        "/Users/yisen/.codex/worktrees/upstream-sync-v1-51-0/translatebuff/openspec/changes/upstream-sync-v1-51-0/evidence/config-migration/rollback-verify.mjs"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/Users/yisen/.nvm/versions/node/v22.15.0/bin/node",
+        "--check",
+        "/Users/yisen/.codex/worktrees/upstream-sync-v1-51-0/translatebuff/openspec/changes/upstream-sync-v1-51-0/evidence/config-migration/browser-migration.mjs"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "pnpm",
+        "run",
+        "type-check",
+        "/Users/yisen/.codex/worktrees/upstream-sync-v1-51-0/translatebuff/openspec/changes/upstream-sync-v1-51-0/evidence/config-migration/rollback-build.mjs",
+        "/Users/yisen/.codex/worktrees/upstream-sync-v1-51-0/translatebuff/openspec/changes/upstream-sync-v1-51-0/evidence/config-migration/rollback-build-resume.mjs",
+        "/Users/yisen/.codex/worktrees/upstream-sync-v1-51-0/translatebuff/openspec/changes/upstream-sync-v1-51-0/evidence/config-migration/rollback-browser.mjs",
+        "/Users/yisen/.codex/worktrees/upstream-sync-v1-51-0/translatebuff/openspec/changes/upstream-sync-v1-51-0/evidence/config-migration/rollback-verify.mjs",
+        "/Users/yisen/.codex/worktrees/upstream-sync-v1-51-0/translatebuff/openspec/changes/upstream-sync-v1-51-0/evidence/config-migration/browser-migration.mjs"
+      ],
+      "exitCode": 0,
+      "stdout": "",
+      "stderr": "$ oxlint --type-aware --type-check /Users/yisen/.codex/worktrees/upstream-sync-v1-51-0/translatebuff/openspec/changes/upstream-sync-v1-51-0/evidence/config-migration/rollback-build.mjs /Users/yisen/.codex/worktrees/upstream-sync-v1-51-0/translatebuff/openspec/changes/upstream-sync-v1-51-0/evidence/config-migration/rollback-build-resume.mjs /Users/yisen/.codex/worktrees/upstream-sync-v1-51-0/translatebuff/openspec/changes/upstream-sync-v1-51-0/evidence/config-migration/rollback-browser.mjs /Users/yisen/.codex/worktrees/upstream-sync-v1-51-0/translatebuff/openspec/changes/upstream-sync-v1-51-0/evidence/config-migration/rollback-verify.mjs /Users/yisen/.codex/worktrees/upstream-sync-v1-51-0/translatebuff/openspec/changes/upstream-sync-v1-51-0/evidence/config-migration/browser-migration.mjs\n"
+    },
+    {
+      "command": [
+        "/Users/yisen/.nvm/versions/node/v22.15.0/bin/node",
+        "/Users/yisen/.codex/worktrees/upstream-sync-v1-51-0/translatebuff/node_modules/oxfmt/bin/oxfmt",
+        "--check",
+        "/Users/yisen/.codex/worktrees/upstream-sync-v1-51-0/translatebuff/openspec/changes/upstream-sync-v1-51-0/evidence/config-migration/rollback-build.mjs",
+        "/Users/yisen/.codex/worktrees/upstream-sync-v1-51-0/translatebuff/openspec/changes/upstream-sync-v1-51-0/evidence/config-migration/rollback-build-resume.mjs",
+        "/Users/yisen/.codex/worktrees/upstream-sync-v1-51-0/translatebuff/openspec/changes/upstream-sync-v1-51-0/evidence/config-migration/rollback-browser.mjs",
+        "/Users/yisen/.codex/worktrees/upstream-sync-v1-51-0/translatebuff/openspec/changes/upstream-sync-v1-51-0/evidence/config-migration/rollback-verify.mjs",
+        "/Users/yisen/.codex/worktrees/upstream-sync-v1-51-0/translatebuff/openspec/changes/upstream-sync-v1-51-0/evidence/config-migration/browser-migration.mjs"
+      ],
+      "exitCode": 0,
+      "stdout": "Checking formatting...\n\nAll matched files use the correct format.\nFinished in 1ms on 5 files using 15 threads.\n",
+      "stderr": ""
+    }
+  ],
+  "browserReport": "rollback-runs/2026-10-15T05-02-08.747Z/report.json",
+  "browserResult": "PASS",
+  "browserStagesPassed": 7,
+  "runnerReportingNote": "Final runner conditionally aggregates the directDowngrade status. Prior 05-00 run's hardcoded top-level string is preserved as history; its seven per-stage results were PASS."
+}

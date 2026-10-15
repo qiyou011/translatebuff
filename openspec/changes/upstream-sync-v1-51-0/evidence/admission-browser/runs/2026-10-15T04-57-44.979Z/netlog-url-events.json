@@ -1,0 +1,116 @@
+[
+  {
+    "time": "2710002284",
+    "url": "http://clients2.google.com/time/1/current",
+    "sourceType": "URL_REQUEST",
+    "commercial": false
+  },
+  {
+    "time": "2710002284",
+    "url": "http://clients2.google.com/time/1/current",
+    "sourceType": "URL_REQUEST",
+    "commercial": false
+  },
+  {
+    "time": "2710002284",
+    "url": "http://clients2.google.com/time/1/current",
+    "sourceType": "URL_REQUEST",
+    "commercial": false
+  },
+  {
+    "time": "2710002284",
+    "url": "http://clients2.google.com/time/1/current",
+    "sourceType": "HTTP_STREAM_JOB_CONTROLLER",
+    "commercial": false
+  },
+  {
+    "time": "2710002286",
+    "url": "https://accounts.google.com/ListAccounts",
+    "sourceType": "URL_REQUEST",
+    "commercial": false
+  },
+  {
+    "time": "2710002286",
+    "url": "https://accounts.google.com/ListAccounts",
+    "sourceType": "URL_REQUEST",
+    "commercial": false
+  },
+  {
+    "time": "2710002286",
+    "url": "https://accounts.google.com/ListAccounts",
+    "sourceType": "URL_REQUEST",
+    "commercial": false
+  },
+  {
+    "time": "2710002311",
+    "url": "https://www.google.com/async/folae",
+    "sourceType": "URL_REQUEST",
+    "commercial": false
+  },
+  {
+    "time": "2710002311",
+    "url": "https://www.google.com/async/folae",
+    "sourceType": "URL_REQUEST",
+    "commercial": false
+  },
+  {
+    "time": "2710002311",
+    "url": "https://www.google.com/async/folae",
+    "sourceType": "URL_REQUEST",
+    "commercial": false
+  },
+  {
+    "time": "2710002311",
+    "url": "https://www.google.com/",
+    "sourceType": "HTTP_STREAM_JOB_CONTROLLER",
+    "commercial": false
+  },
+  {
+    "time": "2710002316",
+    "url": "https://www.google.com/",
+    "sourceType": "HTTP_STREAM_JOB_CONTROLLER",
+    "commercial": false
+  },
+  {
+    "time": "2710002331",
+    "url": "https://accounts.google.com/ListAccounts",
+    "sourceType": "HTTP_STREAM_JOB_CONTROLLER",
+    "commercial": false
+  },
+  {
+    "time": "2710002332",
+    "url": "https://www.google.com/async/folae",
+    "sourceType": "HTTP_STREAM_JOB_CONTROLLER",
+    "commercial": false
+  },
+  {
+    "time": "2710002404",
+    "url": "https://www.google.com/",
+    "sourceType": "HTTP_STREAM_JOB_CONTROLLER",
+    "commercial": false
+  },
+  {
+    "time": "2710002405",
+    "url": "https://www.google.com/",
+    "sourceType": "HTTP_STREAM_JOB_CONTROLLER",
+    "commercial": false
+  },
+  {
+    "time": "2710002406",
+    "url": "https://www.google.com/",
+    "sourceType": "HTTP_STREAM_JOB_CONTROLLER",
+    "commercial": false
+  },
+  {
+    "time": "2710002437",
+    "url": "https://www.google.com/",
+    "sourceType": "HTTP_STREAM_JOB_CONTROLLER",
+    "commercial": false
+  },
+  {
+    "time": "2710002596",
+    "url": "https://www.google.com/",
+    "sourceType": "HTTP_STREAM_JOB_CONTROLLER",
+    "commercial": false
+  }
+]

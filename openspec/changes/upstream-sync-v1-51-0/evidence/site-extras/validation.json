@@ -1,0 +1,46 @@
+{
+  "checkedAt": "2026-10-15T04:54:45.066Z",
+  "checks": [
+    {
+      "command": "node --check openspec/changes/upstream-sync-v1-51-0/evidence/site-extras/site-extras.mjs",
+      "exitCode": 0,
+      "stdout": ""
+    },
+    {
+      "command": "node_modules/.bin/oxfmt --check openspec/changes/upstream-sync-v1-51-0/evidence/site-extras/site-extras.mjs openspec/changes/upstream-sync-v1-51-0/evidence/site-extras/README.md",
+      "exitCode": 0,
+      "stdout": "Checking formatting...\n\nAll matched files use the correct format.\nFinished in 1ms on 2 files using 15 threads.\n"
+    },
+    {
+      "command": "node_modules/.bin/oxlint --type-aware --type-check openspec/changes/upstream-sync-v1-51-0/evidence/site-extras/site-extras.mjs",
+      "exitCode": 0,
+      "stdout": ""
+    }
+  ],
+  "browserRunner": {
+    "command": "node openspec/changes/upstream-sync-v1-51-0/evidence/site-extras/site-extras.mjs",
+    "exitCode": 0,
+    "result": "runs/2026-10-15T04-53-10.042Z/result.json",
+    "cases": [
+      {
+        "id": "P02-long-page-nested-table-context",
+        "status": "PASS"
+      },
+      {
+        "id": "P06-google-citation-card",
+        "status": "PASS"
+      }
+    ]
+  },
+  "integrity": {
+    "runnerHashMatchesExecutedFile": true,
+    "builtArtifactUnchangedDuringRun": true,
+    "rawScreenshotsExist": 5,
+    "networkRecordsStripped": 240,
+    "cleanup": {
+      "browserClosed": true,
+      "serverClosed": true,
+      "freshProfileRemoved": true
+    }
+  }
+}

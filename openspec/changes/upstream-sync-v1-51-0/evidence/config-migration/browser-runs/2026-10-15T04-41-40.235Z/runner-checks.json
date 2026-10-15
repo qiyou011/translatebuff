@@ -1,0 +1,49 @@
+{
+  "runnerSha256": "1e8265e0ad46086e57b6f98fff82f229e48aa123198a126dd5ba59fd36d50d43",
+  "checks": [
+    {
+      "name": "syntax",
+      "command": [
+        "node",
+        "--check",
+        "openspec/changes/upstream-sync-v1-51-0/evidence/config-migration/browser-migration.mjs"
+      ],
+      "exitCode": 0,
+      "output": ""
+    },
+    {
+      "name": "oxlint",
+      "command": [
+        "./node_modules/.bin/oxlint",
+        "--type-aware",
+        "--type-check",
+        "openspec/changes/upstream-sync-v1-51-0/evidence/config-migration/browser-migration.mjs"
+      ],
+      "exitCode": 0,
+      "output": ""
+    },
+    {
+      "name": "format",
+      "command": [
+        "./node_modules/.bin/oxfmt",
+        "--check",
+        "openspec/changes/upstream-sync-v1-51-0/evidence/config-migration/browser-migration.mjs"
+      ],
+      "exitCode": 0,
+      "output": "Checking formatting...\n\nAll matched files use the correct format.\nFinished in 1ms on 1 files using 15 threads.\n"
+    },
+    {
+      "name": "diff",
+      "command": [
+        "git",
+        "diff",
+        "--check",
+        "--",
+        "openspec/changes/upstream-sync-v1-51-0/evidence/config-migration"
+      ],
+      "exitCode": 0,
+      "output": ""
+    }
+  ],
+  "allPassed": true
+}

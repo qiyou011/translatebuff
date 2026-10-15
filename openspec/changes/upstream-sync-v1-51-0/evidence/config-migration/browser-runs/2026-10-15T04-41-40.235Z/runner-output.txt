@@ -1,0 +1,35 @@
+seed-v100-and-preexisting-backup: PASS
+reload-real-background-migrates-100-to-111: PASS
+real-options-import-ui-restores-v100-envelope-as-v111: PASS
+real-options-schema100-backup-restore-ui: PASS
+second-extension-reload-keeps-v111-and-options-usable: PASS
+{
+  "status": "PASS",
+  "report": "/Users/yisen/.codex/worktrees/upstream-sync-v1-51-0/translatebuff/openspec/changes/upstream-sync-v1-51-0/evidence/config-migration/browser-runs/2026-10-15T04-41-40.235Z/report.json",
+  "stages": [
+    {
+      "name": "seed-v100-and-preexisting-backup",
+      "status": "PASS"
+    },
+    {
+      "name": "reload-real-background-migrates-100-to-111",
+      "status": "PASS"
+    },
+    {
+      "name": "real-options-import-ui-restores-v100-envelope-as-v111",
+      "status": "PASS"
+    },
+    {
+      "name": "real-options-schema100-backup-restore-ui",
+      "status": "PASS"
+    },
+    {
+      "name": "second-extension-reload-keeps-v111-and-options-usable",
+      "status": "PASS"
+    }
+  ],
+  "cleanup": {
+    "ownContextClosed": true,
+    "ownFreshProfileRemoved": true
+  }
+}

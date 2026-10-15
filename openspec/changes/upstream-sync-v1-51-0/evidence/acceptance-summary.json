@@ -1,0 +1,164 @@
+{
+  "sourceCandidateSha": "5ac5122a6a4d390b3131f917dd09aa2caf5f5342",
+  "upstreamVersion": "1.51.0",
+  "fixedTargetSha": "55bcef1e684fb4e70f4dce3063e7bd3066f46891",
+  "acceptedBaselineUnchanged": {
+    "version": "1.46.6",
+    "sha": "02ad422c1e1260960e141e4012a20d93e85082aa"
+  },
+  "overall": "CANDIDATE_NOT_ACCEPTED",
+  "controlledProductCases": [
+    {
+      "productId": "P01",
+      "status": "CONTROLLED_BROWSER_PASS",
+      "evidence": "browser-regression/runs/2026-10-15T04-49-45.909Z/result.json",
+      "caseId": "P01-footnote",
+      "wholeRunAllPass": false,
+      "reportSemanticSha256": "6ef5fd226eda551d90bd518c83e4dab9805148c1bf0d0488585c6b674274126a"
+    },
+    {
+      "productId": "P02",
+      "status": "CONTROLLED_BROWSER_PASS",
+      "evidence": "site-extras/runs/2026-10-15T04-53-10.042Z/result.json",
+      "caseId": "P02-long-page-nested-table-context",
+      "wholeRunAllPass": true,
+      "reportSemanticSha256": "9a23bf97f3fc2fba464cb90d89489b7ed45501f90afb0019d4c0ac348951e594"
+    },
+    {
+      "productId": "P03",
+      "status": "CONTROLLED_BROWSER_PASS",
+      "evidence": "browser-regression/runs/2026-10-15T04-49-45.909Z/result.json",
+      "caseId": "P03-dynamic-wrapper",
+      "wholeRunAllPass": false,
+      "reportSemanticSha256": "6ef5fd226eda551d90bd518c83e4dab9805148c1bf0d0488585c6b674274126a"
+    },
+    {
+      "productId": "P04",
+      "status": "CONTROLLED_BROWSER_PASS",
+      "evidence": "browser-regression/framework-runs/2026-10-15T04-54-54.487Z/result.json",
+      "caseId": "P04-real-react19",
+      "wholeRunAllPass": true,
+      "reportSemanticSha256": "2ff0f0b3021a4d145ecc92afafe546947d878bcf08b2f767acf4bbeceedea0e5"
+    },
+    {
+      "productId": "P05",
+      "status": "CONTROLLED_BROWSER_PASS",
+      "evidence": "browser-regression/runs/2026-10-15T04-49-45.909Z/result.json",
+      "caseId": "P05-isolated-value-reads",
+      "wholeRunAllPass": false,
+      "reportSemanticSha256": "6ef5fd226eda551d90bd518c83e4dab9805148c1bf0d0488585c6b674274126a"
+    },
+    {
+      "productId": "P06",
+      "status": "CONTROLLED_BROWSER_PASS",
+      "evidence": "site-extras/runs/2026-10-15T04-53-10.042Z/result.json",
+      "caseId": "P06-google-citation-card",
+      "wholeRunAllPass": true,
+      "reportSemanticSha256": "9a23bf97f3fc2fba464cb90d89489b7ed45501f90afb0019d4c0ac348951e594"
+    },
+    {
+      "productId": "P07",
+      "status": "CONTROLLED_BROWSER_PASS",
+      "evidence": "browser-regression/runs/2026-10-15T04-51-44.917Z/result.json",
+      "caseId": "P07-wikipedia-fixture",
+      "wholeRunAllPass": false,
+      "reportSemanticSha256": "0ff655c112d6799181bd546a58243f6d7b610cf3dfc57962aa0eba7208c814be"
+    },
+    {
+      "productId": "P08",
+      "status": "CONTROLLED_BROWSER_PASS",
+      "evidence": "browser-regression/runs/2026-10-15T04-51-44.917Z/result.json",
+      "caseId": "P08-kaggle-fixture",
+      "wholeRunAllPass": false,
+      "reportSemanticSha256": "0ff655c112d6799181bd546a58243f6d7b610cf3dfc57962aa0eba7208c814be"
+    },
+    {
+      "productId": "P09",
+      "status": "CONTROLLED_BROWSER_PASS",
+      "evidence": "youtube-regression/runs/2026-10-15T04-59-32.424Z/result.json",
+      "caseId": "P09-native-automatic-cue-duration",
+      "wholeRunAllPass": true,
+      "reportSemanticSha256": "74903e7c684cf69b828d1f7d2628a5170eb1f1a54704c801bcb34f29f5ac5931"
+    },
+    {
+      "productId": "P10",
+      "status": "CONTROLLED_BROWSER_PASS",
+      "evidence": "browser-regression/runs/2026-10-15T04-51-44.917Z/result.json",
+      "caseId": "P10-ar5iv-fixture",
+      "wholeRunAllPass": false,
+      "reportSemanticSha256": "0ff655c112d6799181bd546a58243f6d7b610cf3dfc57962aa0eba7208c814be"
+    },
+    {
+      "productId": "P11",
+      "status": "CONTROLLED_BROWSER_PASS",
+      "evidence": "browser-regression/runs/2026-10-15T04-49-45.909Z/result.json",
+      "caseId": "P11-iframe-trusted-gesture",
+      "wholeRunAllPass": false,
+      "reportSemanticSha256": "6ef5fd226eda551d90bd518c83e4dab9805148c1bf0d0488585c6b674274126a"
+    },
+    {
+      "productId": "P12",
+      "status": "CONTROLLED_BROWSER_PASS",
+      "evidence": "browser-regression/runs/2026-10-15T04-49-45.909Z/result.json",
+      "caseId": "P12-title",
+      "wholeRunAllPass": false,
+      "reportSemanticSha256": "6ef5fd226eda551d90bd518c83e4dab9805148c1bf0d0488585c6b674274126a"
+    },
+    {
+      "productId": "P13",
+      "status": "CONTROLLED_BROWSER_PASS",
+      "evidence": "youtube-regression/runs/2026-10-15T04-59-32.424Z/result.json",
+      "caseId": "P13-pointercapture-menu",
+      "wholeRunAllPass": true,
+      "reportSemanticSha256": "74903e7c684cf69b828d1f7d2628a5170eb1f1a54704c801bcb34f29f5ac5931"
+    },
+    {
+      "productId": "P14",
+      "status": "CONTROLLED_BROWSER_PASS",
+      "evidence": "browser-regression/framework-runs/2026-10-15T04-44-03.934Z/result.json",
+      "caseId": "P14-real-lexical-reddit-fixture",
+      "wholeRunAllPass": false,
+      "reportSemanticSha256": "4a5ec56635dcb71d028fb5e177ec5166125b0471e3cafd42cb96cde84f3f568c"
+    },
+    {
+      "productId": "P15",
+      "status": "CONTROLLED_BROWSER_PASS",
+      "evidence": "browser-regression/runs/2026-10-15T04-49-45.909Z/result.json",
+      "caseId": "P15-body-replacement",
+      "wholeRunAllPass": false,
+      "reportSemanticSha256": "6ef5fd226eda551d90bd518c83e4dab9805148c1bf0d0488585c6b674274126a"
+    }
+  ],
+  "controlledProductCasesPassed": 15,
+  "admission": {
+    "status": "PASS_BOUNDED_SUBSET",
+    "casesPassed": 10,
+    "evidence": "admission-browser/runs/2026-10-15T05-00-28.321Z/result.json"
+  },
+  "engineering": "engineering/results.json",
+  "artifactHashes": {
+    "algorithm": "sha256(JSON.stringify(sorted array of {path,bytes,sha256}))",
+    "cn": "2440c52300adfeed0fa087659a2a3dedbda2c614d0c2b7ba12f17654c1253906",
+    "global": "ea567267f98550bfee72788d6e1e9e2e13e612ee2db28f5e4adc0d07f54f48d6"
+  },
+  "limitations": [
+    "Controlled site fixtures and localhost model transport are explicitly distinguished from live third-party sites and real own-account gateway.",
+    "Historical FAIL reports remain FAIL. A PASS case may belong to an older mixed-result run, explicitly marked wholeRunAllPass=false.",
+    "Real own-account permissions/quota/gateway/channel and Telegram/Discord live-site acceptance remain outstanding.",
+    "GitNexus full detect_changes is complete, historical impact depth3 has tool guard limitations documented under source-review/impact-followup.md.",
+    "Edge and Firefox builds passed; browser runtime coverage is Chrome for Testing.",
+    "No push, release, store upload, outbound message or archive occurred."
+  ],
+  "migration": {
+    "status": "PASS_CONTROLLED_BROWSER",
+    "evidence": "config-migration/browser-runs/2026-10-15T04-41-40.235Z/report.json",
+    "stagesPassed": 5
+  },
+  "rollback": {
+    "status": "PASS_CONTROLLED_OLD_BINARY",
+    "evidence": "config-migration/rollback-runs/2026-10-15T05-02-08.747Z/report.json",
+    "stagesPassed": 7,
+    "configurationOnlyDowngrade": "Old binary translates and reads cache without deleting upgraded DB60 or entries",
+    "completeProfileRestore": "Returns to pre-upgrade DB40 and snapshot data; post-snapshot new data is not retained"
+  }
+}

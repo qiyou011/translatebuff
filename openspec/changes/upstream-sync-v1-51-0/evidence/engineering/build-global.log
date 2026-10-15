@@ -1,0 +1,617 @@
+Fork brand OK（无上游残留、无品牌写法漂移）
+
+WXT 0.21.4
+ℹ [i18n] Default locale: en
+ℹ Building chrome-mv3 for production with Vite 8.3.4
+[?25l⠋ Preparing...[K
+ WARN  Unsupported locales: [az].
+
+Web extensions only support a limited set of locales as described here: https://developer.chrome.com/docs/extensions/reference/api/i18n#locales
+
+⠋ [1/10] background, offscreen, options, popup, sidepanel, translation-hub[K⠙ [1/10] background, offscreen, options, popup, sidepanel, translation-hub[K⠹ [1/10] background, offscreen, options, popup, sidepanel, translation-hub[K⠸ [1/10] background, offscreen, options, popup, sidepanel, translation-hub[K⠼ [1/10] background, offscreen, options, popup, sidepanel, translation-hub[K⠴ [1/10] background, offscreen, options, popup, sidepanel, translation-hub[K⠦ [1/10] background, offscreen, options, popup, sidepanel, translation-hub[K⠧ [1/10] background, offscreen, options, popup, sidepanel, translation-hub[K⠇ [1/10] background, offscreen, options, popup, sidepanel, translation-hub[K⠏ [1/10] background, offscreen, options, popup, sidepanel, translation-hub[K[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+⠋ [1/10] background, offscreen, options, popup, sidepanel, translation-hub[K[33m[MODULE_LEVEL_DIRECTIVE] [0mThe semantics of the module level directive "" in "node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/handlers/blockquote.js" may not be preserved when bundling.
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/handlers/blockquote.js:8:1 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m8 │[0m ''
+ [38;5;240m  │[0m ─┬  
+ [38;5;240m  │[0m  ╰── module level directive may not be preserved
+ [38;5;240m  │[0m 
+ [38;5;240m  │[0m [38;5;115mHelp[0m: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+[38;5;246m───╯[0m
+
+[33m[MODULE_LEVEL_DIRECTIVE] [0mThe semantics of the module level directive "" in "node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/handlers/delete.js" may not be preserved when bundling.
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/handlers/delete.js:8:1 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m8 │[0m ''
+ [38;5;240m  │[0m ─┬  
+ [38;5;240m  │[0m  ╰── module level directive may not be preserved
+ [38;5;240m  │[0m 
+ [38;5;240m  │[0m [38;5;115mHelp[0m: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+[38;5;246m───╯[0m
+
+[33m[MODULE_LEVEL_DIRECTIVE] [0mThe semantics of the module level directive "" in "node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/handlers/code.js" may not be preserved when bundling.
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/handlers/code.js:9:1 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m9 │[0m ''
+ [38;5;240m  │[0m ─┬  
+ [38;5;240m  │[0m  ╰── module level directive may not be preserved
+ [38;5;240m  │[0m 
+ [38;5;240m  │[0m [38;5;115mHelp[0m: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+[38;5;246m───╯[0m
+
+[33m[MODULE_LEVEL_DIRECTIVE] [0mThe semantics of the module level directive "" in "node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/handlers/html.js" may not be preserved when bundling.
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/handlers/html.js:9:1 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m9 │[0m ''
+ [38;5;240m  │[0m ─┬  
+ [38;5;240m  │[0m  ╰── module level directive may not be preserved
+ [38;5;240m  │[0m 
+ [38;5;240m  │[0m [38;5;115mHelp[0m: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+[38;5;246m───╯[0m
+
+[33m[MODULE_LEVEL_DIRECTIVE] [0mThe semantics of the module level directive "" in "node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/handlers/break.js" may not be preserved when bundling.
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/handlers/break.js:9:1 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m9 │[0m ''
+ [38;5;240m  │[0m ─┬  
+ [38;5;240m  │[0m  ╰── module level directive may not be preserved
+ [38;5;240m  │[0m 
+ [38;5;240m  │[0m [38;5;115mHelp[0m: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+[38;5;246m───╯[0m
+
+[33m[MODULE_LEVEL_DIRECTIVE] [0mThe semantics of the module level directive "" in "node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/handlers/thematic-break.js" may not be preserved when bundling.
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/handlers/thematic-break.js:8:1 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m8 │[0m ''
+ [38;5;240m  │[0m ─┬  
+ [38;5;240m  │[0m  ╰── module level directive may not be preserved
+ [38;5;240m  │[0m 
+ [38;5;240m  │[0m [38;5;115mHelp[0m: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+[38;5;246m───╯[0m
+
+[33m[MODULE_LEVEL_DIRECTIVE] [0mThe semantics of the module level directive "" in "node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/handlers/emphasis.js" may not be preserved when bundling.
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/handlers/emphasis.js:8:1 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m8 │[0m ''
+ [38;5;240m  │[0m ─┬  
+ [38;5;240m  │[0m  ╰── module level directive may not be preserved
+ [38;5;240m  │[0m 
+ [38;5;240m  │[0m [38;5;115mHelp[0m: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+[38;5;246m───╯[0m
+
+[33m[MODULE_LEVEL_DIRECTIVE] [0mThe semantics of the module level directive "" in "node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/handlers/inline-code.js" may not be preserved when bundling.
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/handlers/inline-code.js:9:1 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m9 │[0m ''
+ [38;5;240m  │[0m ─┬  
+ [38;5;240m  │[0m  ╰── module level directive may not be preserved
+ [38;5;240m  │[0m 
+ [38;5;240m  │[0m [38;5;115mHelp[0m: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+[38;5;246m───╯[0m
+
+[33m[MODULE_LEVEL_DIRECTIVE] [0mThe semantics of the module level directive "" in "node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/handlers/heading.js" may not be preserved when bundling.
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/handlers/heading.js:8:1 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m8 │[0m ''
+ [38;5;240m  │[0m ─┬  
+ [38;5;240m  │[0m  ╰── module level directive may not be preserved
+ [38;5;240m  │[0m 
+ [38;5;240m  │[0m [38;5;115mHelp[0m: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+[38;5;246m───╯[0m
+
+[33m[MODULE_LEVEL_DIRECTIVE] [0mThe semantics of the module level directive "" in "node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/handlers/paragraph.js" may not be preserved when bundling.
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/handlers/paragraph.js:8:1 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m8 │[0m ''
+ [38;5;240m  │[0m ─┬  
+ [38;5;240m  │[0m  ╰── module level directive may not be preserved
+ [38;5;240m  │[0m 
+ [38;5;240m  │[0m [38;5;115mHelp[0m: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+[38;5;246m───╯[0m
+
+[33m[MODULE_LEVEL_DIRECTIVE] [0mThe semantics of the module level directive "" in "node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/handlers/list.js" may not be preserved when bundling.
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/handlers/list.js:9:1 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m9 │[0m ''
+ [38;5;240m  │[0m ─┬  
+ [38;5;240m  │[0m  ╰── module level directive may not be preserved
+ [38;5;240m  │[0m 
+ [38;5;240m  │[0m [38;5;115mHelp[0m: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+[38;5;246m───╯[0m
+
+[33m[MODULE_LEVEL_DIRECTIVE] [0mThe semantics of the module level directive "" in "node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/handlers/table-cell.js" may not be preserved when bundling.
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/handlers/table-cell.js:8:1 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m8 │[0m ''
+ [38;5;240m  │[0m ─┬  
+ [38;5;240m  │[0m  ╰── module level directive may not be preserved
+ [38;5;240m  │[0m 
+ [38;5;240m  │[0m [38;5;115mHelp[0m: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+[38;5;246m───╯[0m
+
+[33m[MODULE_LEVEL_DIRECTIVE] [0mThe semantics of the module level directive "" in "node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/handlers/list-item.js" may not be preserved when bundling.
+    [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/handlers/list-item.js:11:1 [38;5;246m][0m
+    [38;5;246m│[0m
+ [38;5;246m11 │[0m ''
+ [38;5;240m   │[0m ─┬  
+ [38;5;240m   │[0m  ╰── module level directive may not be preserved
+ [38;5;240m   │[0m 
+ [38;5;240m   │[0m [38;5;115mHelp[0m: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+[38;5;246m────╯[0m
+
+[33m[MODULE_LEVEL_DIRECTIVE] [0mThe semantics of the module level directive "" in "node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/handlers/root.js" may not be preserved when bundling.
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/handlers/root.js:9:1 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m9 │[0m ''
+ [38;5;240m  │[0m ─┬  
+ [38;5;240m  │[0m  ╰── module level directive may not be preserved
+ [38;5;240m  │[0m 
+ [38;5;240m  │[0m [38;5;115mHelp[0m: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+[38;5;246m───╯[0m
+
+[33m[MODULE_LEVEL_DIRECTIVE] [0mThe semantics of the module level directive "" in "node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/handlers/strong.js" may not be preserved when bundling.
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/handlers/strong.js:8:1 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m8 │[0m ''
+ [38;5;240m  │[0m ─┬  
+ [38;5;240m  │[0m  ╰── module level directive may not be preserved
+ [38;5;240m  │[0m 
+ [38;5;240m  │[0m [38;5;115mHelp[0m: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+[38;5;246m───╯[0m
+
+[33m[MODULE_LEVEL_DIRECTIVE] [0mThe semantics of the module level directive "" in "node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/handlers/table-row.js" may not be preserved when bundling.
+    [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/handlers/table-row.js:11:1 [38;5;246m][0m
+    [38;5;246m│[0m
+ [38;5;246m11 │[0m ''
+ [38;5;240m   │[0m ─┬  
+ [38;5;240m   │[0m  ╰── module level directive may not be preserved
+ [38;5;240m   │[0m 
+ [38;5;240m   │[0m [38;5;115mHelp[0m: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+[38;5;246m────╯[0m
+
+[33m[MODULE_LEVEL_DIRECTIVE] [0mThe semantics of the module level directive "" in "node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/revert.js" may not be preserved when bundling.
+    [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/revert.js:11:1 [38;5;246m][0m
+    [38;5;246m│[0m
+ [38;5;246m11 │[0m ''
+ [38;5;240m   │[0m ─┬  
+ [38;5;240m   │[0m  ╰── module level directive may not be preserved
+ [38;5;240m   │[0m 
+ [38;5;240m   │[0m [38;5;115mHelp[0m: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+[38;5;246m────╯[0m
+
+⠋ [2/10] guide[K⠙ [2/10] guide[K⠙ [3/10] host[K⠹ [3/10] host[K⠸ [3/10] host[K⠼ [3/10] host[K⠴ [3/10] host[K⠦ [3/10] host[K⠧ [3/10] host[K⠇ [3/10] host[K⠇ [4/10] iframe-selection-trigger[K⠇ [5/10] input-injector[K⠇ [6/10] interceptor[K⠇ [7/10] netflix-interceptor[K⠇ [8/10] selection[K⠏ [8/10] selection[K⠋ [8/10] selection[K⠙ [8/10] selection[K⠹ [8/10] selection[K⠸ [8/10] selection[K⠼ [8/10] selection[K⠴ [8/10] selection[K⠴ [9/10] side[K⠦ [9/10] side[K⠧ [9/10] side[K⠇ [9/10] side[K⠏ [9/10] side[K⠏ [10/10] subtitles[K⠋ [10/10] subtitles[K⠙ [10/10] subtitles[K⠹ [10/10] subtitles[K⠸ [10/10] subtitles[K⠼ [10/10] subtitles[K⠴ [10/10] subtitles[K[33m[MODULE_LEVEL_DIRECTIVE] [0mThe semantics of the module level directive "" in "node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/handlers/blockquote.js" may not be preserved when bundling.
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/handlers/blockquote.js:8:1 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m8 │[0m ''
+ [38;5;240m  │[0m ─┬  
+ [38;5;240m  │[0m  ╰── module level directive may not be preserved
+ [38;5;240m  │[0m 
+ [38;5;240m  │[0m [38;5;115mHelp[0m: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+[38;5;246m───╯[0m
+
+[33m[MODULE_LEVEL_DIRECTIVE] [0mThe semantics of the module level directive "" in "node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/handlers/html.js" may not be preserved when bundling.
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/handlers/html.js:9:1 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m9 │[0m ''
+ [38;5;240m  │[0m ─┬  
+ [38;5;240m  │[0m  ╰── module level directive may not be preserved
+ [38;5;240m  │[0m 
+ [38;5;240m  │[0m [38;5;115mHelp[0m: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+[38;5;246m───╯[0m
+
+[33m[MODULE_LEVEL_DIRECTIVE] [0mThe semantics of the module level directive "" in "node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/handlers/heading.js" may not be preserved when bundling.
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/handlers/heading.js:8:1 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m8 │[0m ''
+ [38;5;240m  │[0m ─┬  
+ [38;5;240m  │[0m  ╰── module level directive may not be preserved
+ [38;5;240m  │[0m 
+ [38;5;240m  │[0m [38;5;115mHelp[0m: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+[38;5;246m───╯[0m
+
+[33m[MODULE_LEVEL_DIRECTIVE] [0mThe semantics of the module level directive "" in "node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/handlers/thematic-break.js" may not be preserved when bundling.
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/handlers/thematic-break.js:8:1 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m8 │[0m ''
+ [38;5;240m  │[0m ─┬  
+ [38;5;240m  │[0m  ╰── module level directive may not be preserved
+ [38;5;240m  │[0m 
+ [38;5;240m  │[0m [38;5;115mHelp[0m: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+[38;5;246m───╯[0m
+
+[33m[MODULE_LEVEL_DIRECTIVE] [0mThe semantics of the module level directive "" in "node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/handlers/break.js" may not be preserved when bundling.
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/handlers/break.js:9:1 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m9 │[0m ''
+ [38;5;240m  │[0m ─┬  
+ [38;5;240m  │[0m  ╰── module level directive may not be preserved
+ [38;5;240m  │[0m 
+ [38;5;240m  │[0m [38;5;115mHelp[0m: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+[38;5;246m───╯[0m
+
+[33m[MODULE_LEVEL_DIRECTIVE] [0mThe semantics of the module level directive "" in "node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/handlers/code.js" may not be preserved when bundling.
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/handlers/code.js:9:1 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m9 │[0m ''
+ [38;5;240m  │[0m ─┬  
+ [38;5;240m  │[0m  ╰── module level directive may not be preserved
+ [38;5;240m  │[0m 
+ [38;5;240m  │[0m [38;5;115mHelp[0m: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+[38;5;246m───╯[0m
+
+[33m[MODULE_LEVEL_DIRECTIVE] [0mThe semantics of the module level directive "" in "node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/handlers/delete.js" may not be preserved when bundling.
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/handlers/delete.js:8:1 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m8 │[0m ''
+ [38;5;240m  │[0m ─┬  
+ [38;5;240m  │[0m  ╰── module level directive may not be preserved
+ [38;5;240m  │[0m 
+ [38;5;240m  │[0m [38;5;115mHelp[0m: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+[38;5;246m───╯[0m
+
+[33m[MODULE_LEVEL_DIRECTIVE] [0mThe semantics of the module level directive "" in "node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/handlers/emphasis.js" may not be preserved when bundling.
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/handlers/emphasis.js:8:1 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m8 │[0m ''
+ [38;5;240m  │[0m ─┬  
+ [38;5;240m  │[0m  ╰── module level directive may not be preserved
+ [38;5;240m  │[0m 
+ [38;5;240m  │[0m [38;5;115mHelp[0m: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+[38;5;246m───╯[0m
+
+[33m[MODULE_LEVEL_DIRECTIVE] [0mThe semantics of the module level directive "" in "node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/handlers/inline-code.js" may not be preserved when bundling.
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/handlers/inline-code.js:9:1 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m9 │[0m ''
+ [38;5;240m  │[0m ─┬  
+ [38;5;240m  │[0m  ╰── module level directive may not be preserved
+ [38;5;240m  │[0m 
+ [38;5;240m  │[0m [38;5;115mHelp[0m: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+[38;5;246m───╯[0m
+
+[33m[MODULE_LEVEL_DIRECTIVE] [0mThe semantics of the module level directive "" in "node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/handlers/paragraph.js" may not be preserved when bundling.
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/handlers/paragraph.js:8:1 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m8 │[0m ''
+ [38;5;240m  │[0m ─┬  
+ [38;5;240m  │[0m  ╰── module level directive may not be preserved
+ [38;5;240m  │[0m 
+ [38;5;240m  │[0m [38;5;115mHelp[0m: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+[38;5;246m───╯[0m
+
+[33m[MODULE_LEVEL_DIRECTIVE] [0mThe semantics of the module level directive "" in "node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/handlers/root.js" may not be preserved when bundling.
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/handlers/root.js:9:1 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m9 │[0m ''
+ [38;5;240m  │[0m ─┬  
+ [38;5;240m  │[0m  ╰── module level directive may not be preserved
+ [38;5;240m  │[0m 
+ [38;5;240m  │[0m [38;5;115mHelp[0m: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+[38;5;246m───╯[0m
+
+[33m[MODULE_LEVEL_DIRECTIVE] [0mThe semantics of the module level directive "" in "node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/handlers/list.js" may not be preserved when bundling.
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/handlers/list.js:9:1 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m9 │[0m ''
+ [38;5;240m  │[0m ─┬  
+ [38;5;240m  │[0m  ╰── module level directive may not be preserved
+ [38;5;240m  │[0m 
+ [38;5;240m  │[0m [38;5;115mHelp[0m: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+[38;5;246m───╯[0m
+
+[33m[MODULE_LEVEL_DIRECTIVE] [0mThe semantics of the module level directive "" in "node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/handlers/strong.js" may not be preserved when bundling.
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/handlers/strong.js:8:1 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m8 │[0m ''
+ [38;5;240m  │[0m ─┬  
+ [38;5;240m  │[0m  ╰── module level directive may not be preserved
+ [38;5;240m  │[0m 
+ [38;5;240m  │[0m [38;5;115mHelp[0m: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+[38;5;246m───╯[0m
+
+[33m[MODULE_LEVEL_DIRECTIVE] [0mThe semantics of the module level directive "" in "node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/handlers/table-cell.js" may not be preserved when bundling.
+   [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/handlers/table-cell.js:8:1 [38;5;246m][0m
+   [38;5;246m│[0m
+ [38;5;246m8 │[0m ''
+ [38;5;240m  │[0m ─┬  
+ [38;5;240m  │[0m  ╰── module level directive may not be preserved
+ [38;5;240m  │[0m 
+ [38;5;240m  │[0m [38;5;115mHelp[0m: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+[38;5;246m───╯[0m
+
+[33m[MODULE_LEVEL_DIRECTIVE] [0mThe semantics of the module level directive "" in "node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/handlers/list-item.js" may not be preserved when bundling.
+    [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/handlers/list-item.js:11:1 [38;5;246m][0m
+    [38;5;246m│[0m
+ [38;5;246m11 │[0m ''
+ [38;5;240m   │[0m ─┬  
+ [38;5;240m   │[0m  ╰── module level directive may not be preserved
+ [38;5;240m   │[0m 
+ [38;5;240m   │[0m [38;5;115mHelp[0m: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+[38;5;246m────╯[0m
+
+[33m[MODULE_LEVEL_DIRECTIVE] [0mThe semantics of the module level directive "" in "node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/handlers/table-row.js" may not be preserved when bundling.
+    [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/handlers/table-row.js:11:1 [38;5;246m][0m
+    [38;5;246m│[0m
+ [38;5;246m11 │[0m ''
+ [38;5;240m   │[0m ─┬  
+ [38;5;240m   │[0m  ╰── module level directive may not be preserved
+ [38;5;240m   │[0m 
+ [38;5;240m   │[0m [38;5;115mHelp[0m: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+[38;5;246m────╯[0m
+
+[33m[MODULE_LEVEL_DIRECTIVE] [0mThe semantics of the module level directive "" in "node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/revert.js" may not be preserved when bundling.
+    [38;5;246m╭[0m[38;5;246m─[0m[38;5;246m[[0m node_modules/.pnpm/mdast-util-to-hast@13.2.0/node_modules/mdast-util-to-hast/lib/revert.js:11:1 [38;5;246m][0m
+    [38;5;246m│[0m
+ [38;5;246m11 │[0m ''
+ [38;5;240m   │[0m ─┬  
+ [38;5;240m   │[0m  ╰── module level directive may not be preserved
+ [38;5;240m   │[0m 
+ [38;5;240m   │[0m [38;5;115mHelp[0m: For more information, see https://rolldown.rs/in-depth/directives#other-directives
+[38;5;246m────╯[0m
+
+
+ WARN  Unsupported locales: [az].
+
+Web extensions only support a limited set of locales as described here: https://developer.chrome.com/docs/extensions/reference/api/i18n#locales
+
+⠦ [10/10] subtitles[K[K[?25h[K[?25h✔ Built extension in 3.899 s
+  ├─ .output/chrome-mv3-global/manifest.json                                         2.03 kB  
+  ├─ .output/chrome-mv3-global/offscreen.html                                        741 B    
+  ├─ .output/chrome-mv3-global/options.html                                          2.11 kB  
+  ├─ .output/chrome-mv3-global/popup.html                                            4.82 kB  
+  ├─ .output/chrome-mv3-global/sidepanel.html                                        968 B    
+  ├─ .output/chrome-mv3-global/translation-hub.html                                  3.27 kB  
+  ├─ .output/chrome-mv3-global/background.js                                         458.63 kB
+  ├─ .output/chrome-mv3-global/chunks/_virtual_wxt-html-plugins-BaAyCpKt.js          713 B    
+  ├─ .output/chrome-mv3-global/chunks/_virtual_wxt-plugins-DB4ZMZxa.js               29 B     
+  ├─ .output/chrome-mv3-global/chunks/activation-page-D-Vq8QzE.js                    2.02 kB  
+  ├─ .output/chrome-mv3-global/chunks/analytics-7266GEG6.js                          3.17 kB  
+  ├─ .output/chrome-mv3-global/chunks/analytics-xDL_Cg2N.js                          145 B    
+  ├─ .output/chrome-mv3-global/chunks/AnimatePresence-Cn0VZAK8.js                    4.23 kB  
+  ├─ .output/chrome-mv3-global/chunks/api-CKjHKjqp.js                                2.57 kB  
+  ├─ .output/chrome-mv3-global/chunks/api-DRcQvSQe.js                                208 B    
+  ├─ .output/chrome-mv3-global/chunks/api-providers-BXY6V3-s.js                      17.56 kB 
+  ├─ .output/chrome-mv3-global/chunks/app-D2iydxNR.js                                148 B    
+  ├─ .output/chrome-mv3-global/chunks/badge-DFylSaAU.js                              1.70 kB  
+  ├─ .output/chrome-mv3-global/chunks/batch-request-record-51wIfb94.js               724 B    
+  ├─ .output/chrome-mv3-global/chunks/batch-savings-note-BG-4-l6w.js                 464 B    
+  ├─ .output/chrome-mv3-global/chunks/built-in-BN16U1lJ.js                           126.95 kB
+  ├─ .output/chrome-mv3-global/chunks/built-in-prompts-BaqbE9B3.js                   797 B    
+  ├─ .output/chrome-mv3-global/chunks/button-CYhQOptW.js                             174.78 kB
+  ├─ .output/chrome-mv3-global/chunks/button-group-OkM2SRGE.js                       1.05 kB  
+  ├─ .output/chrome-mv3-global/chunks/card-BovUG3Q5.js                               1.66 kB  
+  ├─ .output/chrome-mv3-global/chunks/checkbox-BVCwdD9L.js                           5.86 kB  
+  ├─ .output/chrome-mv3-global/chunks/chunk-DI3oqMdz.js                              3.57 kB  
+  ├─ .output/chrome-mv3-global/chunks/combobox-C7tX2dyf.js                           40.83 kB 
+  ├─ .output/chrome-mv3-global/chunks/CompositeItem-BnxuGyrW.js                      811 B    
+  ├─ .output/chrome-mv3-global/chunks/config-backup-Dh_QB8PH.js                      6.99 kB  
+  ├─ .output/chrome-mv3-global/chunks/config-detail-section-BaP1YH6K.js              760 B    
+  ├─ .output/chrome-mv3-global/chunks/config-item-pNir8YBM.js                        927 B    
+  ├─ .output/chrome-mv3-global/chunks/config-nav-item-DhS8pcVU.js                    661 B    
+  ├─ .output/chrome-mv3-global/chunks/config-section-Cx_qQhx3.js                     445 B    
+  ├─ .output/chrome-mv3-global/chunks/context-menu-page-ClOAqkT5.js                  1.01 kB  
+  ├─ .output/chrome-mv3-global/chunks/control-page-CbGC_CJr.js                       5.73 kB  
+  ├─ .output/chrome-mv3-global/chunks/create-atoms-Eu6ZXeOR.js                       10.58 kB 
+  ├─ .output/chrome-mv3-global/chunks/css-code-editor-BNgU4NyW.js                    208.50 kB
+  ├─ .output/chrome-mv3-global/chunks/custom-actions-D36QmyKI.js                     375.80 kB
+  ├─ .output/chrome-mv3-global/chunks/custom-css-DjTczGKp.js                         3.84 kB  
+  ├─ .output/chrome-mv3-global/chunks/custom-css-page-D1xKLQ51.js                    4.61 kB  
+  ├─ .output/chrome-mv3-global/chunks/dist-CmSwqxOM.js                               24.22 kB 
+  ├─ .output/chrome-mv3-global/chunks/dist-CUgYeDyC.js                               2.93 kB  
+  ├─ .output/chrome-mv3-global/chunks/dom-audio-controller-DdwRZ8_U.js               1.59 kB  
+  ├─ .output/chrome-mv3-global/chunks/drill-in-pT2i-LZT.js                           415 B    
+  ├─ .output/chrome-mv3-global/chunks/editor-page-CibViJ5k.js                        18.46 kB 
+  ├─ .output/chrome-mv3-global/chunks/empty-BavMqV_6.js                              1.55 kB  
+  ├─ .output/chrome-mv3-global/chunks/esm-pG-2-VU1.js                                434.70 kB
+  ├─ .output/chrome-mv3-global/chunks/execute-translate-DzteCcHF.js                  1.91 MB  
+  ├─ .output/chrome-mv3-global/chunks/field-DFQONbs2.js                              3.32 kB  
+  ├─ .output/chrome-mv3-global/chunks/FieldItemContext-yUs1b3Vx.js                   154 B    
+  ├─ .output/chrome-mv3-global/chunks/FileSaver.min-BjAWqbSd.js                      2.69 kB  
+  ├─ .output/chrome-mv3-global/chunks/floating-button-page-DFwBEvit.js               3.31 kB  
+  ├─ .output/chrome-mv3-global/chunks/glossary-DgbgN2jC.js                           3.73 kB  
+  ├─ .output/chrome-mv3-global/chunks/gradient-background-CehwW2gd.js                965 B    
+  ├─ .output/chrome-mv3-global/chunks/hash-BStNtZPP.js                               7.68 kB  
+  ├─ .output/chrome-mv3-global/chunks/help-and-community-C64Q02yM.js                 8.11 kB  
+  ├─ .output/chrome-mv3-global/chunks/help-tooltip-BM9MZ91K.js                       505 B    
+  ├─ .output/chrome-mv3-global/chunks/iconify-BTbxeCfJ.js                            122.37 kB
+  ├─ .output/chrome-mv3-global/chunks/IconRefresh-BffNkL4U.js                        225 B    
+  ├─ .output/chrome-mv3-global/chunks/IconSettings-C8QC4GQI.js                       706 B    
+  ├─ .output/chrome-mv3-global/chunks/IconTrash-D10jZLTN.js                          343 B    
+  ├─ .output/chrome-mv3-global/chunks/IconVolume-D2v7DUJY.js                         320 B    
+  ├─ .output/chrome-mv3-global/chunks/input-translation-DqZGARdi.js                  4.21 kB  
+  ├─ .output/chrome-mv3-global/chunks/insertable-textarea-COkuKAtO.js                1.49 kB  
+  ├─ .output/chrome-mv3-global/chunks/isElementDisabled-KSuuBj8D.js                  114 B    
+  ├─ .output/chrome-mv3-global/chunks/item-CTym5sZT.js                               2.15 kB  
+  ├─ .output/chrome-mv3-global/chunks/ItemIndicator-Cm1Uleiq.js                      3.00 kB  
+  ├─ .output/chrome-mv3-global/chunks/jsx-runtime-9E4mItj-.js                        1.30 MB  
+  ├─ .output/chrome-mv3-global/chunks/label-C5UvR6Pp.js                              426 B    
+  ├─ .output/chrome-mv3-global/chunks/language-combobox-ClmvQluK.js                  1.40 kB  
+  ├─ .output/chrome-mv3-global/chunks/language-labels-C5aSeV-O.js                    254 B    
+  ├─ .output/chrome-mv3-global/chunks/language-Ydo5ORGW.js                           249.55 kB
+  ├─ .output/chrome-mv3-global/chunks/languages-BxA6jLai.js                          192 B    
+  ├─ .output/chrome-mv3-global/chunks/liquid-code-editor-Cefs8lP0.js                 142.25 kB
+  ├─ .output/chrome-mv3-global/chunks/llm-feature-status-list-BqeskG99.js            1.48 kB  
+  ├─ .output/chrome-mv3-global/chunks/MenuTrigger-DzGWVibO.js                        25.82 kB 
+  ├─ .output/chrome-mv3-global/chunks/message-B-kOa62o.js                            96 B     
+  ├─ .output/chrome-mv3-global/chunks/offscreen-CjlpqgmU.js                          300 B    
+  ├─ .output/chrome-mv3-global/chunks/options-DjtCC2Qx.js                            213.67 kB
+  ├─ .output/chrome-mv3-global/chunks/os-CSPmNBpX.js                                 29.54 kB 
+  ├─ .output/chrome-mv3-global/chunks/overlay-feature-preview-BGMkeoy1.js            7.49 kB  
+  ├─ .output/chrome-mv3-global/chunks/page-layout-bZvgOttA.js                        751 B    
+  ├─ .output/chrome-mv3-global/chunks/patterns-table-CgjvaWwM.js                     2.94 kB  
+  ├─ .output/chrome-mv3-global/chunks/popup-bpLTCR2X.js                              49.03 kB 
+  ├─ .output/chrome-mv3-global/chunks/preference-BCsDIJqh.js                         11.39 kB 
+  ├─ .output/chrome-mv3-global/chunks/prompts-BF8gx05B.js                            1.15 kB  
+  ├─ .output/chrome-mv3-global/chunks/prompts-BTshXchw.js                            1.48 kB  
+  ├─ .output/chrome-mv3-global/chunks/provider-Cz4y6iNJ.js                           1.02 kB  
+  ├─ .output/chrome-mv3-global/chunks/provider-display-4PWl1keR.js                   4.74 kB  
+  ├─ .output/chrome-mv3-global/chunks/provider-ref-DfW4Vlhy.js                       812 B    
+  ├─ .output/chrome-mv3-global/chunks/provider-selector-Bi0p8lmq.js                  1.63 kB  
+  ├─ .output/chrome-mv3-global/chunks/provider-setup-error-DQoQVy4c.js               109 B    
+  ├─ .output/chrome-mv3-global/chunks/queue-page-CUmi57dK.js                         4.61 kB  
+  ├─ .output/chrome-mv3-global/chunks/queue-page-l6JymqRs.js                         3.46 kB  
+  ├─ .output/chrome-mv3-global/chunks/radio-group-C2TeyJo2.js                        10.35 kB 
+  ├─ .output/chrome-mv3-global/chunks/sample-BuLCQobN.js                             7.92 kB  
+  ├─ .output/chrome-mv3-global/chunks/scrollEdges-rhye3afp.js                        605 B    
+  ├─ .output/chrome-mv3-global/chunks/select-CMXYlRy1.js                             29.32 kB 
+  ├─ .output/chrome-mv3-global/chunks/select-content-props-BXS7ejAM.js               35 B     
+  ├─ .output/chrome-mv3-global/chunks/selection-toolbar-items-D_0YtnTh.js            628 B    
+  ├─ .output/chrome-mv3-global/chunks/selection-toolbar-page-CeLWtd42.js             5.34 kB  
+  ├─ .output/chrome-mv3-global/chunks/serializeValue-B_EucO5O.js                     133 B    
+  ├─ .output/chrome-mv3-global/chunks/shadow-host-builder-X7mmUZkr.js                265.31 kB
+  ├─ .output/chrome-mv3-global/chunks/shortcut-link-CdCXLJjh.js                      538 B    
+  ├─ .output/chrome-mv3-global/chunks/shortcuts-CysFyBUA.js                          6.76 kB  
+  ├─ .output/chrome-mv3-global/chunks/sidepanel-C7uAKdQP.js                          2.33 kB  
+  ├─ .output/chrome-mv3-global/chunks/site-rules-DIGqcYvA.js                         11.41 kB 
+  ├─ .output/chrome-mv3-global/chunks/slider-BOWjqTdp.js                             36.05 kB 
+  ├─ .output/chrome-mv3-global/chunks/springs-Cb6ZN0IT.js                            122.57 kB
+  ├─ .output/chrome-mv3-global/chunks/storage-qVvIRlKg.js                            88.92 kB 
+  ├─ .output/chrome-mv3-global/chunks/stringifyLocale-CkHjdQTJ.js                    99 B     
+  ├─ .output/chrome-mv3-global/chunks/style-editor-LFqxLOwf.js                       8.24 kB  
+  ├─ .output/chrome-mv3-global/chunks/style-preview-D1zshSjO.js                      3.27 kB  
+  ├─ .output/chrome-mv3-global/chunks/subtitles-BozEyIx_.js                          1.19 kB  
+  ├─ .output/chrome-mv3-global/chunks/subtitles-preview-CG7e_u51.js                  108.14 kB
+  ├─ .output/chrome-mv3-global/chunks/switch-B3y4aV21.js                             17.12 kB 
+  ├─ .output/chrome-mv3-global/chunks/text-to-speech-C1yHQf0X.js                     6.75 kB  
+  ├─ .output/chrome-mv3-global/chunks/theme-CxqxLrHw.js                              208.83 kB
+  ├─ .output/chrome-mv3-global/chunks/toast-BLZPYwzq.js                              38.00 kB 
+  ├─ .output/chrome-mv3-global/chunks/translate-DbPCqZjo.js                          15.69 kB 
+  ├─ .output/chrome-mv3-global/chunks/translation-hub-BJJ_M-bf.js                    16.49 kB 
+  ├─ .output/chrome-mv3-global/chunks/translation-only-gate-D5bdB0iQ.js              355 B    
+  ├─ .output/chrome-mv3-global/chunks/translation-vUmc0dGF.js                        7.73 kB  
+  ├─ .output/chrome-mv3-global/chunks/use-debounced-value-Jr9aY611.js                222 B    
+  ├─ .output/chrome-mv3-global/chunks/use-ensure-renyimiao-seeded-BT-3-qcx.js        199 B    
+  ├─ .output/chrome-mv3-global/chunks/use-feature-providers-B6jHutHF.js              1.21 kB  
+  ├─ .output/chrome-mv3-global/chunks/use-glossary-BgXPAkW7.js                       1.78 kB  
+  ├─ .output/chrome-mv3-global/chunks/use-hosted-ai-provider-options-B49sf5xm.js     429 B    
+  ├─ .output/chrome-mv3-global/chunks/use-hosted-ai-status-tAxDQHpw.js               92 B     
+  ├─ .output/chrome-mv3-global/chunks/use-proximity-hover-CQBr7Uwq.js                2.17 kB  
+  ├─ .output/chrome-mv3-global/chunks/use-text-to-speech-CNj_dRAK.js                 3.66 kB  
+  ├─ .output/chrome-mv3-global/chunks/useAriaLabelledBy-Cdz_9J5X.js                  607 B    
+  ├─ .output/chrome-mv3-global/chunks/useQuery-Cl1fXEhO.js                           7.98 kB  
+  ├─ .output/chrome-mv3-global/chunks/valueToPercent-WOg0Wm1T.js                     500 B    
+  ├─ .output/chrome-mv3-global/chunks/video-subtitles-pHYvxjZ5.js                    4.09 kB  
+  ├─ .output/chrome-mv3-global/chunks/view-config-COJNTA9o.js                        12.89 kB 
+  ├─ .output/chrome-mv3-global/chunks/website-patterns-page-CaO6YXyN.js              1.83 kB  
+  ├─ .output/chrome-mv3-global/chunks/website-routes-bfVNmYVj.js                     114.28 kB
+  ├─ .output/chrome-mv3-global/chunks/website-url-CGefan_H.js                        395 B    
+  ├─ .output/chrome-mv3-global/content-scripts/guide.js                              1.30 MB  
+  ├─ .output/chrome-mv3-global/content-scripts/host.js                               3.20 MB  
+  ├─ .output/chrome-mv3-global/content-scripts/iframe-selection-trigger.js           8.13 kB  
+  ├─ .output/chrome-mv3-global/content-scripts/input-injector.js                     5.25 kB  
+  ├─ .output/chrome-mv3-global/content-scripts/interceptor.js                        4.63 kB  
+  ├─ .output/chrome-mv3-global/content-scripts/netflix-interceptor.js                3.39 kB  
+  ├─ .output/chrome-mv3-global/content-scripts/selection.js                          3.48 MB  
+  ├─ .output/chrome-mv3-global/content-scripts/side.js                               1.79 MB  
+  ├─ .output/chrome-mv3-global/content-scripts/subtitles.js                          2.66 MB  
+  ├─ .output/chrome-mv3-global/assets/options-Ceq_qEuc.css                           57.59 kB 
+  ├─ .output/chrome-mv3-global/assets/text-small-Is2Gj_lh.css                        84 B     
+  ├─ .output/chrome-mv3-global/assets/theme-CsIj8PA6.css                             250.41 kB
+  ├─ .output/chrome-mv3-global/content-scripts/selection.css                         248.55 kB
+  ├─ .output/chrome-mv3-global/content-scripts/side.css                              248.63 kB
+  ├─ .output/chrome-mv3-global/_locales/az/messages.json                             164.44 kB
+  ├─ .output/chrome-mv3-global/_locales/en/messages.json                             168.05 kB
+  ├─ .output/chrome-mv3-global/_locales/es/messages.json                             160.89 kB
+  ├─ .output/chrome-mv3-global/_locales/ja/messages.json                             171.36 kB
+  ├─ .output/chrome-mv3-global/_locales/ko/messages.json                             162.24 kB
+  ├─ .output/chrome-mv3-global/_locales/ru/messages.json                             200.38 kB
+  ├─ .output/chrome-mv3-global/_locales/tr/messages.json                             158.67 kB
+  ├─ .output/chrome-mv3-global/_locales/vi/messages.json                             168.20 kB
+  ├─ .output/chrome-mv3-global/_locales/zh_CN/messages.json                          147.55 kB
+  ├─ .output/chrome-mv3-global/_locales/zh_TW/messages.json                          148.39 kB
+  ├─ .output/chrome-mv3-global/assets/close-icon-CZhIWHgk.svg                        315 B    
+  ├─ .output/chrome-mv3-global/assets/close-icon-CZhIWHgk.svg                        315 B    
+  ├─ .output/chrome-mv3-global/assets/close-icon-light-CofVji4-.svg                  315 B    
+  ├─ .output/chrome-mv3-global/assets/custom-provider-DZh1oYPE.svg                   876 B    
+  ├─ .output/chrome-mv3-global/assets/custom-provider-DZh1oYPE.svg                   876 B    
+  ├─ .output/chrome-mv3-global/assets/custom-provider-DZh1oYPE.svg                   876 B    
+  ├─ .output/chrome-mv3-global/assets/custom-provider-DZh1oYPE.svg                   876 B    
+  ├─ .output/chrome-mv3-global/assets/custom-provider-DZh1oYPE.svg                   876 B    
+  ├─ .output/chrome-mv3-global/assets/custom-provider-DZh1oYPE.svg                   876 B    
+  ├─ .output/chrome-mv3-global/assets/custom-responses-D4S_A99h.svg                  871 B    
+  ├─ .output/chrome-mv3-global/assets/custom-responses-D4S_A99h.svg                  871 B    
+  ├─ .output/chrome-mv3-global/assets/custom-responses-D4S_A99h.svg                  871 B    
+  ├─ .output/chrome-mv3-global/assets/custom-responses-D4S_A99h.svg                  871 B    
+  ├─ .output/chrome-mv3-global/assets/custom-responses-D4S_A99h.svg                  871 B    
+  ├─ .output/chrome-mv3-global/assets/custom-responses-D4S_A99h.svg                  871 B    
+  ├─ .output/chrome-mv3-global/assets/deeplx-dark-GAkKoMnq.svg                       1.42 kB  
+  ├─ .output/chrome-mv3-global/assets/deeplx-dark-GAkKoMnq.svg                       1.42 kB  
+  ├─ .output/chrome-mv3-global/assets/deeplx-dark-GAkKoMnq.svg                       1.42 kB  
+  ├─ .output/chrome-mv3-global/assets/deeplx-dark-GAkKoMnq.svg                       1.42 kB  
+  ├─ .output/chrome-mv3-global/assets/deeplx-dark-GAkKoMnq.svg                       1.42 kB  
+  ├─ .output/chrome-mv3-global/assets/deeplx-dark-GAkKoMnq.svg                       1.42 kB  
+  ├─ .output/chrome-mv3-global/assets/deeplx-light-BGOHpMGx.svg                      1.42 kB  
+  ├─ .output/chrome-mv3-global/assets/deeplx-light-BGOHpMGx.svg                      1.42 kB  
+  ├─ .output/chrome-mv3-global/assets/deeplx-light-BGOHpMGx.svg                      1.42 kB  
+  ├─ .output/chrome-mv3-global/assets/deeplx-light-BGOHpMGx.svg                      1.42 kB  
+  ├─ .output/chrome-mv3-global/assets/deeplx-light-BGOHpMGx.svg                      1.42 kB  
+  ├─ .output/chrome-mv3-global/assets/deeplx-light-BGOHpMGx.svg                      1.42 kB  
+  ├─ .output/chrome-mv3-global/assets/floating-logo-dark-xMjWxg5I.svg                3.30 kB  
+  ├─ .output/chrome-mv3-global/assets/floating-logo-DecOuzu1.svg                     3.28 kB  
+  ├─ .output/chrome-mv3-global/assets/floating-logo-light-Dzcbx6xJ.svg               3.27 kB  
+  ├─ .output/chrome-mv3-global/assets/inter-cyrillic-ext-wght-normal-BOeWTOD4.woff2  25.96 kB 
+  ├─ .output/chrome-mv3-global/assets/inter-cyrillic-wght-normal-DqGufNeO.woff2      18.75 kB 
+  ├─ .output/chrome-mv3-global/assets/inter-greek-ext-wght-normal-DlzME5K_.woff2     11.23 kB 
+  ├─ .output/chrome-mv3-global/assets/inter-greek-wght-normal-CkhJZR-_.woff2         19.00 kB 
+  ├─ .output/chrome-mv3-global/assets/inter-latin-ext-wght-normal-DO1Apj_S.woff2     85.07 kB 
+  ├─ .output/chrome-mv3-global/assets/inter-latin-wght-normal-Dx4kXJAl.woff2         48.26 kB 
+  ├─ .output/chrome-mv3-global/assets/inter-vietnamese-wght-normal-CBcvBZtf.woff2    10.25 kB 
+  ├─ .output/chrome-mv3-global/assets/jalapeno-cloud-B6d-8M_0.png                    59.84 kB 
+  ├─ .output/chrome-mv3-global/assets/jalapeno-cloud-B6d-8M_0.png                    59.84 kB 
+  ├─ .output/chrome-mv3-global/assets/jalapeno-cloud-B6d-8M_0.png                    59.84 kB 
+  ├─ .output/chrome-mv3-global/assets/jalapeno-cloud-B6d-8M_0.png                    59.84 kB 
+  ├─ .output/chrome-mv3-global/assets/jalapeno-cloud-B6d-8M_0.png                    59.84 kB 
+  ├─ .output/chrome-mv3-global/assets/jalapeno-cloud-B6d-8M_0.png                    59.84 kB 
+  ├─ .output/chrome-mv3-global/assets/locked-icon-BSU1P60V.svg                       1.39 kB  
+  ├─ .output/chrome-mv3-global/assets/locked-icon-dark-CtU-WanK.svg                  1.39 kB  
+  ├─ .output/chrome-mv3-global/assets/onest-cyrillic-ext-wght-normal-DOFToQv1.woff2  10.54 kB 
+  ├─ .output/chrome-mv3-global/assets/onest-cyrillic-wght-normal-DayYxulF.woff2      15.86 kB 
+  ├─ .output/chrome-mv3-global/assets/onest-latin-ext-wght-normal-QAhDxQuo.woff2     28.45 kB 
+  ├─ .output/chrome-mv3-global/assets/onest-latin-wght-normal-Dun_Rd-l.woff2         33.76 kB 
+  ├─ .output/chrome-mv3-global/assets/onest-math-wght-normal-Bl4ZGkZl.woff2          25.48 kB 
+  ├─ .output/chrome-mv3-global/assets/onest-symbols-wght-normal-DxQzqQfC.woff2       18.17 kB 
+  ├─ .output/chrome-mv3-global/assets/onest-vietnamese-wght-normal-BBxOatbv.woff2    12.40 kB 
+  ├─ .output/chrome-mv3-global/assets/read-frog-provider-oW74Nf7Q.png                50.34 kB 
+  ├─ .output/chrome-mv3-global/assets/read-frog-provider-oW74Nf7Q.png                50.34 kB 
+  ├─ .output/chrome-mv3-global/assets/read-frog-provider-oW74Nf7Q.png                50.34 kB 
+  ├─ .output/chrome-mv3-global/assets/read-frog-provider-oW74Nf7Q.png                50.34 kB 
+  ├─ .output/chrome-mv3-global/assets/read-frog-provider-oW74Nf7Q.png                50.34 kB 
+  ├─ .output/chrome-mv3-global/assets/read-frog-provider-oW74Nf7Q.png                50.34 kB 
+  ├─ .output/chrome-mv3-global/assets/renyimiao-DlBLwGot.svg                         1.02 kB  
+  ├─ .output/chrome-mv3-global/assets/settings-icon-light-BlAc2_0h.svg               2.36 kB  
+  ├─ .output/chrome-mv3-global/assets/settings-icon-y1dskTpk.svg                     2.36 kB  
+  ├─ .output/chrome-mv3-global/assets/settings-icon-y1dskTpk.svg                     2.36 kB  
+  ├─ .output/chrome-mv3-global/assets/tensdaq-color-eIFTZc9T.svg                     7.20 kB  
+  ├─ .output/chrome-mv3-global/assets/tensdaq-color-eIFTZc9T.svg                     7.20 kB  
+  ├─ .output/chrome-mv3-global/assets/tensdaq-color-eIFTZc9T.svg                     7.20 kB  
+  ├─ .output/chrome-mv3-global/assets/tensdaq-color-eIFTZc9T.svg                     7.20 kB  
+  ├─ .output/chrome-mv3-global/assets/tensdaq-color-eIFTZc9T.svg                     7.20 kB  
+  ├─ .output/chrome-mv3-global/assets/tensdaq-color-eIFTZc9T.svg                     7.20 kB  
+  ├─ .output/chrome-mv3-global/assets/translate-icon-BgaOuXnI.svg                    849 B    
+  ├─ .output/chrome-mv3-global/assets/translate-icon-BgaOuXnI.svg                    849 B    
+  ├─ .output/chrome-mv3-global/assets/translate-icon-light-BMVQVeaH.svg              796 B    
+  ├─ .output/chrome-mv3-global/assets/unlocked-icon-DljrJmDB.svg                     1.41 kB  
+  ├─ .output/chrome-mv3-global/assets/unlocked-icon-DljrJmDB.svg                     1.41 kB  
+  ├─ .output/chrome-mv3-global/assets/unlocked-icon-light-MpH5RSmA.svg               1.37 kB  
+  ├─ .output/chrome-mv3-global/icon/128.png                                          2.41 kB  
+  ├─ .output/chrome-mv3-global/icon/16-active.png                                    661 B    
+  ├─ .output/chrome-mv3-global/icon/16.png                                           521 B    
+  ├─ .output/chrome-mv3-global/icon/32-active.png                                    1.49 kB  
+  ├─ .output/chrome-mv3-global/icon/32.png                                           1.05 kB  
+  ├─ .output/chrome-mv3-global/icon/48-active.png                                    2.54 kB  
+  ├─ .output/chrome-mv3-global/icon/48.png                                           1.78 kB  
+  └─ .output/chrome-mv3-global/icon/96.png                                           3.93 kB  
+Σ Total size: 23.31 MB                                                             
+ℹ Zipping extension...
+✔ Zipped extension in 745 ms
+  └─ .output/translatebuff-1.5.0-global-zip.zip  7.02 MB
+Σ Total size: 7.02 MB                          
+✔ Finished in 4.756 s
+提示：产物仍含上游域名（默认回退字面量或未重建的 UI 链接，待完整 UI 重建清理）: api.readfrog.app, www.readfrog.app
+Fork build domain check OK（edition=global，本线域名已生效、无另一线域名）
+
+✓ 渠道 global-zip（chrome，edition=global）正式包 OK

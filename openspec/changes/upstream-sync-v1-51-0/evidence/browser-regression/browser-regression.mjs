@@ -17,7 +17,7 @@ import { dirname, join, relative, resolve } from "node:path"
 import { fileURLToPath, pathToFileURL } from "node:url"
 import { fixture } from "./fixtures.mjs"
 
-// No account/profile reuse, no network blocking, and no credentials in evidence.
+// No existing user account/profile reuse, no network blocking, and no credentials in evidence.
 const here = dirname(fileURLToPath(import.meta.url))
 const repo = resolve(process.env.TEST_REPO ?? join(here, "../../../../.."))
 const extensionPath = resolve(process.env.EXTENSION_PATH ?? join(repo, ".output/chrome-mv3"))
@@ -58,6 +58,9 @@ let context,
   providerOrigin,
   casePage,
   configSchemaChunks,
+  chromiumType,
+  browserLaunchOptions,
+  activeNetlogPath,
   phase = "startup",
   providerDelay = 1200
 const cdpTasks = new Set()
@@ -112,11 +115,14 @@ function commercialUrl(value) {
     const upstream = upstreamHosts.some(
       (host) => url.hostname === host || url.hostname.endsWith(`.${host}`),
     )
+    const apiPrefix = /\/api\/(identity|rpc|blog)(\/|$)/.test(url.pathname)
+    const controlledProviderRequest =
+      providerOrigin &&
+      url.origin === providerOrigin &&
+      url.pathname === "/api/rpc/chat/completions"
     return (
-      (upstream &&
-        /\/api\/(identity|rpc|blog)(\/|$)|hosted|subscri|billing|purchase|notebase|transcri/i.test(
-          url.pathname,
-        )) ||
+      (apiPrefix && !controlledProviderRequest) ||
+      (upstream && /hosted|subscri|billing|purchase|notebase|transcri/i.test(url.pathname)) ||
       (/^(?:www\.)?googleapis\.com$/.test(url.hostname) && url.pathname.includes("/drive/")) ||
       url.hostname === "oauth2.googleapis.com"
     )
@@ -225,20 +231,64 @@ function makeTranslation(body) {
     target: m[2],
   }))
   function translate(text) {
-    let value = String(text)
-    for (const term of terms)
-      value = value.replaceAll(
-        term.source,
-        term.target === "KEEP ORIGINAL" ? term.source : term.target,
-      )
-    return value
+    const stack = []
+    const voidTags = new Set([
+      "br",
+      "hr",
+      "img",
+      "input",
+      "meta",
+      "link",
+      "wbr",
+      "source",
+      "area",
+      "base",
+      "embed",
+      "param",
+      "track",
+      "col",
+    ])
+    return String(text)
       .split(/(<[^>]+>)/g)
-      .map((part) => (part.startsWith("<") || !/[A-Za-z]/.test(part) ? part : `受控译文：${part}`))
+      .map((part) => {
+        if (part.startsWith("<")) {
+          const closing = /^<\s*\/\s*([\w:-]+)/.exec(part)?.[1]?.toLowerCase()
+          if (closing) {
+            const match = stack.findLastIndex((entry) => entry.tag === closing)
+            if (match >= 0) stack.splice(match)
+          } else {
+            const tag = /^<\s*([\w:-]+)/.exec(part)?.[1]?.toLowerCase()
+            if (tag && !voidTags.has(tag) && !/\/\s*>$/.test(part)) {
+              const classes = /\bclass\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+))/i.exec(part)
+              const classNames = (classes?.[1] ?? classes?.[2] ?? classes?.[3] ?? "").split(/\s+/)
+              stack.push({
+                tag,
+                protected:
+                  stack.some((entry) => entry.protected) ||
+                  tag === "code" ||
+                  /\btranslate\s*=\s*(?:"no"|'no'|no)(?=\s|>)/i.test(part) ||
+                  classNames.includes("notranslate"),
+              })
+            }
+          }
+          return part
+        }
+        if (stack.some((entry) => entry.protected)) return part
+        let value = part
+        for (const term of terms)
+          value = value.replaceAll(
+            term.source,
+            term.target === "KEEP ORIGINAL" ? term.source : term.target,
+          )
+        return /[A-Za-z]/.test(value) ? `受控译文：${value}` : value
+      })
       .join("")
   }
   const jsonStart = input.indexOf('{"t0"')
   let content
-  if (jsonStart >= 0) {
+  if (system.includes("CONTROLLED_CONTEXT_ACTION")) {
+    content = JSON.stringify({ contextProof: "received" })
+  } else if (jsonStart >= 0) {
     const values = JSON.parse(input.slice(jsonStart).trim())
     content = JSON.stringify(
       Object.fromEntries(Object.entries(values).map(([key, value]) => [key, translate(value)])),
@@ -540,11 +590,24 @@ async function toggle(page, enabled) {
   return message("tryToSetEnablePageTranslationByTabId", { tabId: await tabId(page), enabled })
 }
 async function translated(page, selector = "#normal") {
-  await page
-    .locator(`${selector} ${wrapper}`)
-    .filter({ hasText: "受控译文" })
-    .first()
-    .waitFor({ state: "visible", timeout: 30000 })
+  const mode = await popup.evaluate(
+    async () => (await chrome.storage.local.get("config")).config.pageTranslation.mode,
+  )
+  if (mode === "bilingual") {
+    await page
+      .locator(`${selector} ${wrapper}`)
+      .filter({ hasText: "受控译文" })
+      .first()
+      .waitFor({ state: "visible", timeout: 30000 })
+  } else {
+    assert.equal(mode, "translationOnly", "Unknown page translation mode")
+    // This mode replaces content in place and intentionally has no bilingual wrapper.
+    await page
+      .locator(selector)
+      .filter({ hasText: "受控译文" })
+      .first()
+      .waitFor({ state: "visible", timeout: 30000 })
+  }
   await waitUntil(
     () =>
       page
@@ -553,6 +616,10 @@ async function translated(page, selector = "#normal") {
         .then((n) => n === 0),
     "translation completion",
     30000,
+  )
+  assert.ok(
+    (await page.locator(selector).first().innerText()).includes("受控译文"),
+    "A translated marker must be visible in the actual content",
   )
   await sleep(250)
 }
@@ -723,34 +790,36 @@ async function core() {
   })
   await runCase("translation-only-restore", async () => {
     await updateConfig({ pageTranslation: { mode: "translationOnly" } })
-    const page = await newFixture("/?mode=only")
-    await toggle(page, true)
-    await translated(page)
-    const on = await snapshot(page)
-    const visible = await page.locator("#normal").innerText()
-    assert.equal(
-      visible.split("A complete English paragraph").length - 1,
-      1,
-      "translationOnly must show one translated copy, without a second visible source copy",
-    )
-    await screenshot(page, "normal-translation-only")
-    await toggle(page, false)
-    await waitUntil(
-      () =>
-        page
-          .locator(`#normal ${wrapper}`)
-          .count()
-          .then((n) => n === 0) || Promise.resolve(false),
-      "translated wrappers removed",
-    ).catch(async () => {
-      // Some implementations retain hidden wrappers. Visible content is authoritative.
-      assert.equal(await page.locator(`#normal ${wrapper}:visible`).count(), 0)
-    })
-    assert.ok(await page.locator("#normal").isVisible())
-    assert.ok(!(await page.locator("#normal").innerText()).includes("受控译文"))
-    await screenshot(page, "normal-restored")
-    await updateConfig({ pageTranslation: { mode: "bilingual" } })
-    return { on, restored: await snapshot(page) }
+    try {
+      const page = await newFixture("/?mode=only")
+      await toggle(page, true)
+      await translated(page)
+      const on = await snapshot(page)
+      const visible = await page.locator("#normal").innerText()
+      assert.equal(
+        visible.split("A complete English paragraph").length - 1,
+        1,
+        "translationOnly must show one translated copy, without a second visible source copy",
+      )
+      await screenshot(page, "normal-translation-only")
+      await toggle(page, false)
+      await waitUntil(
+        () =>
+          page
+            .locator("#normal")
+            .innerText()
+            .then(
+              (text) => text.includes("A complete English paragraph") && !text.includes("受控译文"),
+            ),
+        "original content visibly restored",
+      )
+      assert.ok(await page.locator("#normal").isVisible())
+      assert.ok(!(await page.locator("#normal").innerText()).includes("受控译文"))
+      await screenshot(page, "normal-restored")
+      return { on, restored: await snapshot(page) }
+    } finally {
+      await updateConfig({ pageTranslation: { mode: "bilingual" } })
+    }
   })
   await runCase("P15-body-replacement", async () => {
     const page = await newFixture("/?body=replace")
@@ -829,6 +898,7 @@ async function core() {
 
 async function glossary() {
   await runCase("glossary-csv-and-cache", async () => {
+    await updateConfig({ pageTranslation: { mode: "bilingual" } })
     const options = await context.newPage()
     casePage = options
     await options.goto(`chrome-extension://${extensionId}/options.html#/advanced/glossary`)
@@ -935,6 +1005,30 @@ async function glossary() {
 
 async function privacy() {
   await runCase("P05-isolated-value-reads", async () => {
+    await updateConfig({
+      selectionToolbar: {
+        customActions: [
+          {
+            id: "controlled-input-context-action",
+            name: "Fixture context action",
+            enabled: true,
+            icon: "tabler:flask",
+            providerId,
+            systemPrompt:
+              "CONTROLLED_CONTEXT_ACTION. Return JSON matching the required output schema.",
+            prompt: "Selection: {{selection}}\nParagraphs: {{paragraphs}}",
+            outputSchema: [
+              {
+                id: "context-proof-field",
+                name: "contextProof",
+                type: "string",
+                description: "A deterministic fixture acknowledgement",
+              },
+            ],
+          },
+        ],
+      },
+    })
     const page = await newFixture("/privacy")
     const id = await tabId(page)
     async function reads(reset = false) {
@@ -973,28 +1067,34 @@ async function privacy() {
       )
     }
     await reads(true)
-    const drag = await page.locator("#ordinary").evaluate((node) => {
-      const box = node.getBoundingClientRect()
-      const style = getComputedStyle(node)
-      const canvas = document.createElement("canvas")
-      const measure = canvas.getContext("2d")
-      measure.font = style.font
-      const start = box.left + parseFloat(style.paddingLeft) + parseFloat(style.borderLeftWidth) + 1
-      return {
-        start,
-        end: start + measure.measureText("Selected ordinary sentence.").width,
-        y: box.top + box.height / 2,
-      }
-    })
-    await page.mouse.move(drag.start, drag.y)
-    await page.mouse.down()
-    await page.mouse.move(drag.end, drag.y, { steps: 8 })
+    const selectedPrefix = "Selected ordinary sentence."
+    await page.locator("#ordinary").click()
+    await page.keyboard.press("ControlOrMeta+A")
+    await page.keyboard.press("ArrowLeft")
+    await page.keyboard.down("Shift")
+    for (let index = 0; index < selectedPrefix.length; index++)
+      await page.keyboard.press("ArrowRight")
+    await page.keyboard.up("Shift")
+    // A trusted mouseup reaches the extension's display handler without changing the keyboard range.
     await page.mouse.up()
     await sleep(500)
-    const selected = await page.evaluate(() => getSelection()?.toString() ?? "")
+    const selectionDiagnostics = await page.locator("#ordinary").evaluate((node) => ({
+      start: node.selectionStart,
+      end: node.selectionEnd,
+      selected: node.value.slice(node.selectionStart, node.selectionEnd),
+      documentSelection: getSelection()?.toString() ?? "",
+      focused: document.activeElement === node,
+    }))
+    evidence.privacySelection = selectionDiagnostics
+    flushPartial()
+    const selected = selectionDiagnostics.selected
+    assert.equal(
+      selected,
+      selectedPrefix,
+      "Trusted keyboard selection must cover exactly the known prefix",
+    )
     assert.ok(
-      selected.includes("Selected ordinary sentence") &&
-        !selected.includes("PUBLIC_CONTEXT_CANARY"),
+      !selected.includes("PUBLIC_CONTEXT_CANARY"),
       "Explicit action must select only the sentence; canary must come from captured field context",
     )
     const displayReads = await reads()
@@ -1004,22 +1104,26 @@ async function privacy() {
       "Displaying input selection tools must not read the whole value in the content-script isolated world",
     )
     const before = evidence.providerRequests.length
-    await page
-      .getByRole("button", { name: /^Translate$|^翻译$/i })
-      .first()
-      .click()
+    await page.getByRole("button", { name: "Fixture context action", exact: true }).first().click()
     await waitUntil(
       () => evidence.providerRequests.length > before,
-      "explicit selection action provider request",
+      "explicit approved custom action provider request",
     )
     const actionReads = await reads()
     assert.ok(actionReads.some((read) => read.field === "ordinary"))
     const requests = evidence.providerRequests.slice(before)
     assert.ok(
-      requests.some((request) =>
-        `${request.system}\n${request.input}`.includes("PUBLIC_CONTEXT_CANARY"),
+      requests.some(
+        (request) =>
+          request.system.includes("CONTROLLED_CONTEXT_ACTION") &&
+          request.input.includes("PUBLIC_CONTEXT_CANARY"),
       ),
+      "The custom action's real {{paragraphs}} token must contain current ordinary-input context",
     )
+    await page
+      .getByText("received", { exact: true })
+      .first()
+      .waitFor({ state: "visible", timeout: 15000 })
     await screenshot(page, "P05-explicit-action")
     await page.keyboard.press("Escape")
     const sensitive = []
@@ -1041,6 +1145,7 @@ async function privacy() {
     return {
       world: "ISOLATED",
       selected,
+      selectionDiagnostics,
       displayReads,
       actionReads,
       sensitive,
@@ -1224,36 +1329,64 @@ async function isolation() {
     }, pending)
     const cachedStatus = await message("getHostedAiStatus", undefined)
     assert.equal(cachedStatus, null)
-    // Reload only this temporary-profile extension; unlike profile reuse, this covers persisted fixture state.
-    const beforeWorkerUrls = context.serviceWorkers().map((worker) => worker.url())
-    await popup
-      .evaluate(() => {
-        setTimeout(() => chrome.runtime.reload(), 0)
-      })
-      .catch(() => {})
-    await sleep(1500)
+    const beforeWorkerUrls = context.serviceWorkers().map((currentWorker) => currentWorker.url())
+    evidence.restart = {
+      method: "owned-profile-full-cold-restart",
+      sameProfile: true,
+      runtimeReload:
+        "Not attempted in this run; prior Chrome for Testing unpacked runtime.reload attempts failed to recreate the worker/popup. Historical failures are preserved.",
+      completed: false,
+    }
+    flushPartial()
+    // Close only this script's owned browser, preserve its profile, and start the same artifact against it.
+    await context.close()
+    parseNetlog(activeNetlogPath)
+    attachedTargets.clear()
+    context = await launchOwnedBrowser("restart-netlog.json")
+    evidence.restart.browserVersion = context.browser().version()
+    await startNetworkCapture()
+    const restartedWorker =
+      context
+        .serviceWorkers()
+        .find((nextWorker) => nextWorker.url().startsWith(`chrome-extension://${extensionId}/`)) ??
+      (await context.waitForEvent("serviceworker", {
+        predicate: (nextWorker) =>
+          nextWorker.url().startsWith(`chrome-extension://${extensionId}/`),
+        timeout: 30000,
+      }))
+    evidence.restart.workerUrl = safeUrl(restartedWorker.url())
     popup = await context.newPage()
-    await popup.goto(`chrome-extension://${extensionId}/popup.html`)
+    await popup.goto(`chrome-extension://${extensionId}/popup.html`, {
+      waitUntil: "domcontentloaded",
+    })
+    assert.equal(
+      await popup.evaluate(() => chrome.runtime.id),
+      extensionId,
+      "Cold restart must load the same extension identity",
+    )
+    casePage = popup
     await waitUntil(
       () =>
         popup.evaluate(async () =>
           Boolean((await chrome.storage.local.get("config")).config?.pageTranslation),
         ),
-      "config after extension reload",
+      "persisted config after owned-profile cold restart",
     )
+    await validateBuiltConfig()
     assert.equal(await message("getHostedAiStatus", undefined), null)
     const kept = await popup.evaluate(
       async () => (await chrome.storage.local.get("notebasePendingSave")).notebasePendingSave,
     )
     assert.deepEqual(kept, pending, "Disabled cloud processor must not delete pending-save fixture")
-    await screenshot(popup, "G5-popup-after-reload")
-    const page = await newFixture("/?after-reload=1")
+    evidence.restart.completed = true
+    await screenshot(popup, "G5-popup-after-cold-restart")
+    const page = await newFixture("/?after-cold-restart=1")
     const beforeRequests = evidence.providerRequests.length
     await toggle(page, true)
     await translated(page)
     assert.ok(
       evidence.providerRequests.length > beforeRequests,
-      "Local provider still works on /api/rpc path after reload",
+      "Local provider still works on /api/rpc path after owned-profile cold restart",
     )
     await screenshot(page, "G5-provider-positive-control")
     await sleep(1000)
@@ -1268,12 +1401,25 @@ async function isolation() {
       cachedStatus,
       pendingSavePreserved: true,
       beforeWorkerUrls,
+      restart: evidence.restart,
       afterWorkerUrls: context.serviceWorkers().map((worker) => worker.url()),
       providerPositiveControl: true,
       interceptedCommercialRequests: false,
       limitation:
-        "No real account; hosted status, reload and pending-save subset only. Direct denied capabilities, schema100 migration and own login/permission/quota/gateway remain pending",
+        "No real account; hosted status, same-profile full cold restart and pending-save subset only. runtime.reload remains an environment-limited historical failure. Direct denied capabilities, schema100 migration and own login/permission/quota/gateway remain pending",
     }
+  })
+}
+
+async function launchOwnedBrowser(netlogName) {
+  activeNetlogPath = join(profile, netlogName)
+  return chromiumType.launchPersistentContext(profile, {
+    ...browserLaunchOptions,
+    args: [
+      ...browserLaunchOptions.args,
+      `--log-net-log=${activeNetlogPath}`,
+      "--net-log-capture-mode=Default",
+    ],
   })
 }
 
@@ -1299,11 +1445,16 @@ function parseNetlog(path) {
           commercial: commercialUrl(value),
         })
     }
+    const previousUrls = evidence.startupNetlog?.urls ?? []
+    evidence.netlogCaptures ??= []
+    evidence.netlogCaptures.push({ file: relative(profile, path), urls: [...urls.values()] })
     evidence.startupNetlog = {
       captureMode: "Default",
       description:
         "Covers requests before Playwright launch returns; only redacted URL/source rows survive. Network headers and raw netlog are discarded with own temp profile.",
-      urls: [...urls.values()],
+      urls: [
+        ...new Map([...previousUrls, ...urls.values()].map((entry) => [entry.url, entry])).values(),
+      ],
     }
   } catch (error) {
     evidence.limitations.push(`Startup netlog could not be parsed: ${error.message}`)
@@ -1324,6 +1475,7 @@ try {
   const { chromium } = await import(
     playwrightModule.startsWith("/") ? pathToFileURL(playwrightModule).href : playwrightModule
   )
+  chromiumType = chromium
   const executablePath = process.env.BROWSER_EXECUTABLE ?? chromium.executablePath()
   assert.ok(existsSync(executablePath), `Browser executable missing: ${executablePath}`)
   assert.ok(
@@ -1377,7 +1529,7 @@ try {
   mkdirSync(output, { recursive: true })
   profile = mkdtempSync(join(tmpdir(), "translatebuff-v151-browser-"))
   await startServer()
-  context = await chromium.launchPersistentContext(profile, {
+  browserLaunchOptions = {
     executablePath,
     headless: false,
     ignoreDefaultArgs: ["--disable-extensions"],
@@ -1388,10 +1540,9 @@ try {
       "--no-default-browser-check",
       `--disable-extensions-except=${extensionPath}`,
       `--load-extension=${extensionPath}`,
-      `--log-net-log=${join(profile, "startup-netlog.json")}`,
-      "--net-log-capture-mode=Default",
     ],
-  })
+  }
+  context = await launchOwnedBrowser("startup-netlog.json")
   evidence.identity.browserVersion = context.browser().version()
   evidence.identity.freshProfile = true
   await startNetworkCapture()
@@ -1509,7 +1660,7 @@ try {
     await context
       .close()
       .catch((error) => evidence.errors.push({ source: "browser-close", error: error.message }))
-  if (profile) parseNetlog(join(profile, "startup-netlog.json"))
+  if (profile && activeNetlogPath) parseNetlog(activeNetlogPath)
   if (server)
     await new Promise((done) => {
       server.close(done)

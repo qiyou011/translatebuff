@@ -1,0 +1,97 @@
+{
+  "sourceCandidateSha": "5ac5122a6a4d390b3131f917dd09aa2caf5f5342",
+  "fixedUpstreamSha": "55bcef1e684fb4e70f4dce3063e7bd3066f46891",
+  "freeApi": "SKIP_FREE_API=true intentionally skips live external service suite",
+  "results": [
+    {
+      "file": "main-final.log",
+      "sha256": "b9a0dc167df5f892b87432985ab8628ca6a19361ddf3cbd46bf18f2f1acc63d8",
+      "command": "SKIP_FREE_API=true pnpm run test",
+      "recordedStatus": "PASS",
+      "counts": {
+        "filesPassed": 477,
+        "filesSkipped": 1,
+        "testsPassed": 4993,
+        "testsSkipped": 4
+      }
+    },
+    {
+      "file": "fork-final.log",
+      "sha256": "31d5e5aceb74861b4a05d8c84c1a4ccf2abf30110c7110bd9c81f66315afa426",
+      "command": "SKIP_FREE_API=true pnpm run test --config vitest.fork.config.ts src/fork",
+      "recordedStatus": "PASS",
+      "counts": {
+        "filesPassed": 111,
+        "testsPassed": 894
+      }
+    },
+    {
+      "file": "type-check-source.log",
+      "sha256": "48608ae66eb905a4a6dd7a3bc7cf5cb7f34e905dae1be8576bba19104aff6ad4",
+      "command": "pnpm run type-check",
+      "recordedStatus": "PASS",
+      "counts": {}
+    },
+    {
+      "file": "format-source.log",
+      "sha256": "ef28f9b45d8cca2dc41b941cf4e128bc8355ee4b6afe8a11e5e1a16581a18cc6",
+      "command": "pnpm run fmt:check",
+      "recordedStatus": "PASS",
+      "counts": {}
+    },
+    {
+      "file": "build-cn-chrome.log",
+      "sha256": "186fce3619edcbab0c0b1b135b22ccaae1b9883db7ac6f07f8753a256351a747",
+      "command": "pnpm run build",
+      "recordedStatus": "PASS",
+      "counts": {}
+    },
+    {
+      "file": "build-cn-edge.log",
+      "sha256": "582563de38173f20d28d2380262580fe53dd6ef75c91e1a8347f2b733169b366",
+      "command": "pnpm run build:edge",
+      "recordedStatus": "PASS",
+      "counts": {}
+    },
+    {
+      "file": "build-cn-firefox.log",
+      "sha256": "58a2fadf926fb9eeeb9005b1b5414950b395ab3fd6f8726d1fdf5ec32b8c3c0c",
+      "command": "pnpm run build:firefox",
+      "recordedStatus": "PASS",
+      "counts": {}
+    },
+    {
+      "file": "build-global.log",
+      "sha256": "e4824a9e2c3e0e04a33fcf745625654bd94ff8852147ebd6145bd7427e918174",
+      "command": "node scripts/pack.mjs store --edition global --channel global-zip",
+      "recordedStatus": "PASS",
+      "counts": {}
+    },
+    {
+      "file": "boundary-final.log",
+      "sha256": "f4530d6494fd4fcf6d66e03b0e1e2fac12e90d1e9f117066d64567b14927eddb",
+      "command": "FORK_SYNC_MODE=1 FORK_SYNC_BASE=55bcef1e684fb4e70f4dce3063e7bd3066f46891 FORK_BASE_REF=feat/1.6.0 node scripts/check-fork-boundary.mjs",
+      "recordedStatus": "PASS",
+      "counts": {}
+    },
+    {
+      "file": "type-check-all-final.log",
+      "sha256": "48608ae66eb905a4a6dd7a3bc7cf5cb7f34e905dae1be8576bba19104aff6ad4",
+      "command": "pnpm run type-check",
+      "recordedStatus": "PASS",
+      "scope": "Full repository including all final evidence scripts"
+    },
+    {
+      "file": "format-all-final.log",
+      "sha256": "5e6236bf37d2b134caa597eb973afcaa0e7b45adf102e81a60c511963a7ea6de",
+      "command": "pnpm run fmt:check",
+      "recordedStatus": "PASS",
+      "scope": "Full repository including all final evidence scripts"
+    }
+  ],
+  "limitations": [
+    "Source suite results precede later evidence-only script/doc edits. Final evidence scripts receive a separate type/format check.",
+    "Build success is not browser runtime coverage. Edge and Firefox runtime are not claimed.",
+    "Global store command packages locally; no upload, release or publication occurred."
+  ]
+}
