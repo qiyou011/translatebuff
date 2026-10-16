@@ -154,3 +154,7 @@ React最初相同__html被19.3优化而未替换，现以惰性revision属性强
 用户随后明确授权将worktree代码合入feat/1.6.0并提交推送。本仓发行源fork-version.json更新为1.6.0；manifest、UA和启动上报复用同源配置，package.json上游引擎1.51.0及接纳基线1.46.6保持。更新已有渠道测试的硬编码版本断言，版本相关108项、fork997项、Node脚本2项通过；新隔离global生产构建核验manifest为1.6.0（rf1.51.0）。这不关闭原功能待验项，也不代表正式发布。
 
 正常提交/推送门禁准备中，对59份历史原始证据只添加formatter精确路径排除，对一份归档CJS添加lint精确排除，未放开生产代码检查；508份已记录/拟提交证据按文件hash冻结。Node脚本测试显式处理runner Promise，使用临时Git目录及清理，避免依赖机器上不存在的上游兄弟monorepo；未修改开发连接生产实现。此前8条脚本诊断已按上述边界处理。原始日志及生成构建仍按既有ignore保留本地，不force-add日志、编译包或浏览器档案。完整本轮检查、图影响及不变证据见[evidence/integration-v1-6-0](evidence/integration-v1-6-0/README.md)。历史报告中的“未提交/未推送”和旧包1.5.0是当时状态，Git实际提交/推送以随后分支记录为准。
+
+## 分发包排除仓库维护与验收材料
+
+2026-10-16，用户要求提案/规格/验证/交接及回归证据不得打包。仅补WXT安装ZIP及源码ZIP的排除目录，不删除仓库文档。两项实际文件选择回归先RED后GREEN，相关35项通过，独立复审通过；真实安装ZIP208文件与原1.6.0运行内容逐字节一致，sources ZIP1263文件，两类禁止路径均零命中，重建输入保留。详细规则、归档SHA/文件清单及未验边界见[evidence/package-exclusions/README.md](evidence/package-exclusions/README.md)。

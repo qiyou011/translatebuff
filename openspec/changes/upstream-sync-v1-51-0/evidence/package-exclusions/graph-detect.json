@@ -1,0 +1,71 @@
+{
+  "summary": {
+    "changed_count": 10,
+    "affected_count": 0,
+    "changed_files": 6,
+    "risk_level": "low"
+  },
+  "changed_symbols": [
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/design.md:L85:Open Questions",
+      "name": "Open Questions",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/design.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/specs/upstream-sync/spec.md:L55:ADDED Requirements",
+      "name": "ADDED Requirements",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/specs/upstream-sync/spec.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/specs/upstream-sync/spec.md:L129:Requirement: 上游工具链与配置演进复用同一体系",
+      "name": "Requirement: 上游工具链与配置演进复用同一体系",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/specs/upstream-sync/spec.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/specs/upstream-sync/spec.md:L138:Scenario: 准备验证 Firefox 与回退",
+      "name": "Scenario: 准备验证 Firefox 与回退",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/specs/upstream-sync/spec.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/tasks.md:L1:v1.51.0 完整上游同步实施计划",
+      "name": "v1.51.0 完整上游同步实施计划",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/tasks.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/tasks.md:L138:14. 原翻译降本保留性复核",
+      "name": "14. 原翻译降本保留性复核",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/tasks.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/validation.md:L1:C：验证与接纳状态",
+      "name": "C：验证与接纳状态",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/validation.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/validation.md:L152:1.6.0版本定位与分支集成准备",
+      "name": "1.6.0版本定位与分支集成准备",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/validation.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:wxt.config.ts:locale",
+      "name": "locale",
+      "filePath": "wxt.config.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:wxt.config.ts:build:publicAssets",
+      "name": "build:publicAssets",
+      "filePath": "wxt.config.ts",
+      "change_type": "touched"
+    }
+  ],
+  "affected_processes": []
+}

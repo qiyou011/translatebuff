@@ -1,0 +1,18 @@
+{
+  "scope": "dirty tracked and nonignored untracked paths",
+  "paths": [
+    "openspec/changes/upstream-sync-v1-51-0/design.md",
+    "openspec/changes/upstream-sync-v1-51-0/specs/upstream-sync/spec.md",
+    "openspec/changes/upstream-sync-v1-51-0/tasks.md",
+    "openspec/changes/upstream-sync-v1-51-0/validation.md",
+    "scripts/fork-allowlist.json",
+    "wxt.config.ts",
+    ".changeset/exclude-repository-documents-from-packages.md",
+    "openspec/changes/upstream-sync-v1-51-0/evidence/package-exclusions/README.md",
+    "openspec/changes/upstream-sync-v1-51-0/evidence/package-exclusions/archive-check.json",
+    "openspec/changes/upstream-sync-v1-51-0/evidence/package-exclusions/build-archives.mjs",
+    "openspec/changes/upstream-sync-v1-51-0/evidence/package-exclusions/graph-detect.json",
+    "scripts/__tests__/package-exclusions.test.ts"
+  ],
+  "violations": []
+}

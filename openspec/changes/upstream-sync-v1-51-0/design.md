@@ -84,4 +84,8 @@ G1来源/完整合并/无未解决图风险，G2测试类型格式边界品牌�
 
 ## Open Questions
 
+### 追加：分发包排除仓库维护材料
+
+用户要求提案、规格、验证、交接与回归证据不进入分发包。WXT安装ZIP只收构建目录，源码ZIP默认从仓库根收集且不遵循Git ignore；只修改zip.exclude和zip.excludeSources，排除openspec、docs、readmes及UPSTREAM_FOLLOW_UPS.md。现有源码assets/repos排除保持，保留SOURCE_CODE_REVIEW.md的源码审查构建说明；不按所有Markdown、图片、JSON、HTML扩展名排除，不新增打包框架或删除历史证据。使用同一Tinyglobby及实际配置做临时文件正反例，再实查WXT生成的安装及sources两个ZIP。
+
 需求和架构无未决阻断。真实业务账号、外部平台登录及发布组合在执行时按可用条件验证；不足项明确待验收，不替代或伪造。用户已授权本地提案→实施→浏览器回归，发布/推送/归档不在本次范围。

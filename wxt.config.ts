@@ -481,6 +481,8 @@ export default defineConfig({
   // 默认模板是 `{{browser}}-mv{{manifestVersion}}{{modeSuffix}}`，此处只在末尾追加 edition 后缀。
   outDirTemplate: `{{browser}}-mv{{manifestVersion}}{{modeSuffix}}${forkEditionDirSuffix}`,
   zip: {
+    // Repository planning, handoff and regression records are never distribution assets.
+    exclude: ["openspec/**/*", "docs/**/*", "readmes/**/*", "UPSTREAM_FOLLOW_UPS.md"],
     // fork 品牌命名：translatebuff-<版本>[-test]-<浏览器>.zip。artifactTemplate 才是 WXT 真·文件名模板；
     // 刻意不用 {{version}}（它取的是中文全角 version_name、会产出丑名），干净版本号从 forkVersion 注入。
     // -test 后缀由 FORK_PACK env 驱动（scripts/pack.mjs 打测试包时置 FORK_PACK=test）。sourcesTemplate 同步改，
@@ -488,7 +490,14 @@ export default defineConfig({
     artifactTemplate: `${FORK_BRANDING.name.toLowerCase()}-${forkVersion}${forkPackSuffix}${forkChannelSuffix}.zip`,
     sourcesTemplate: `${FORK_BRANDING.name.toLowerCase()}-${forkVersion}${forkPackSuffix}-sources.zip`,
     includeSources: ["**/*", ".env.production", ".env.global.production"],
-    excludeSources: ["docs/**/*", "assets/**/*", "repos/**/*", "readmes/**/*"],
+    excludeSources: [
+      "docs/**/*",
+      "assets/**/*",
+      "repos/**/*",
+      "readmes/**/*",
+      "openspec/**/*",
+      "UPSTREAM_FOLLOW_UPS.md",
+    ],
   },
   hooks: {
     "build:publicAssets": (_, assets) => {
