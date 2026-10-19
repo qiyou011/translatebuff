@@ -1,0 +1,239 @@
+{
+  "summary": {
+    "changed_count": 38,
+    "affected_count": 0,
+    "changed_files": 26,
+    "risk_level": "low"
+  },
+  "changed_symbols": [
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/design.md:L85:Open Questions",
+      "name": "Open Questions",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/design.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/design.md:L87:2026-10-19提测修复范围",
+      "name": "2026-10-19提测修复范围",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/design.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/v150-merge-and-windows-migration/migration-loader-regression.mjs:repo",
+      "name": "repo",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/v150-merge-and-windows-migration/migration-loader-regression.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/v150-merge-and-windows-migration/migration-loader-regression.mjs:relativeFile",
+      "name": "relativeFile",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/v150-merge-and-windows-migration/migration-loader-regression.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/v150-merge-and-windows-migration/migration-loader-regression.mjs:source",
+      "name": "source",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/v150-merge-and-windows-migration/migration-loader-regression.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/v150-merge-and-windows-migration/migration-loader-regression.mjs:baseline",
+      "name": "baseline",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/v150-merge-and-windows-migration/migration-loader-regression.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/v150-merge-and-windows-migration/migration-loader-regression.mjs:legacyPaths",
+      "name": "legacyPaths",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/v150-merge-and-windows-migration/migration-loader-regression.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/v150-merge-and-windows-migration/migration-loader-regression.mjs:begin",
+      "name": "begin",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/v150-merge-and-windows-migration/migration-loader-regression.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/v150-merge-and-windows-migration/migration-loader-regression.mjs:end",
+      "name": "end",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/v150-merge-and-windows-migration/migration-loader-regression.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/v150-merge-and-windows-migration/migration-loader-regression.mjs:actualDeclaration",
+      "name": "actualDeclaration",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/v150-merge-and-windows-migration/migration-loader-regression.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/v150-merge-and-windows-migration/migration-loader-regression.mjs:repoRequire",
+      "name": "repoRequire",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/v150-merge-and-windows-migration/migration-loader-regression.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/v150-merge-and-windows-migration/migration-loader-regression.mjs:declaration",
+      "name": "declaration",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/v150-merge-and-windows-migration/migration-loader-regression.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/v150-merge-and-windows-migration/migration-loader-regression.mjs:evaluate",
+      "name": "evaluate",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/v150-merge-and-windows-migration/migration-loader-regression.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/v150-merge-and-windows-migration/migration-loader-regression.mjs:cases",
+      "name": "cases",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/v150-merge-and-windows-migration/migration-loader-regression.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/v150-merge-and-windows-migration/migration-loader-regression.mjs:rows",
+      "name": "rows",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/v150-merge-and-windows-migration/migration-loader-regression.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/v150-merge-and-windows-migration/migration-loader-regression.mjs:api",
+      "name": "api",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/v150-merge-and-windows-migration/migration-loader-regression.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/v150-merge-and-windows-migration/migration-loader-regression.mjs:resolver",
+      "name": "resolver",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/v150-merge-and-windows-migration/migration-loader-regression.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/v150-merge-and-windows-migration/migration-loader-regression.mjs:actual",
+      "name": "actual",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/v150-merge-and-windows-migration/migration-loader-regression.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:openspec/changes/upstream-sync-v1-51-0/evidence/v150-merge-and-windows-migration/migration-loader-regression.mjs:failed",
+      "name": "failed",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/v150-merge-and-windows-migration/migration-loader-regression.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:openspec/changes/upstream-sync-v1-51-0/evidence/v150-merge-and-windows-migration/migration-loader-regression.mjs:rows",
+      "name": "rows",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/v150-merge-and-windows-migration/migration-loader-regression.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:openspec/changes/upstream-sync-v1-51-0/evidence/v150-merge-and-windows-migration/migration-loader-regression.mjs:resolver",
+      "name": "resolver",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/evidence/v150-merge-and-windows-migration/migration-loader-regression.mjs",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/specs/upstream-sync/spec.md:L1:MODIFIED Requirements",
+      "name": "MODIFIED Requirements",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/specs/upstream-sync/spec.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/specs/upstream-sync/spec.md:L17:Requirement: merge-only 同步仪式",
+      "name": "Requirement: merge-only 同步仪式",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/specs/upstream-sync/spec.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/specs/upstream-sync/spec.md:L31:Scenario: 补合本仓业务分支的后续提交",
+      "name": "Scenario: 补合本仓业务分支的后续提交",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/specs/upstream-sync/spec.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/specs/upstream-sync/spec.md:L60:ADDED Requirements",
+      "name": "ADDED Requirements",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/specs/upstream-sync/spec.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/specs/upstream-sync/spec.md:L95:Requirement: G1 到 G7 验收绑定冻结候选和真实产物",
+      "name": "Requirement: G1 到 G7 验收绑定冻结候选和真实产物",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/specs/upstream-sync/spec.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/specs/upstream-sync/spec.md:L129:Scenario: Windows测试加载冻结的旧源码",
+      "name": "Scenario: Windows测试加载冻结的旧源码",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/specs/upstream-sync/spec.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/tasks.md:L1:v1.51.0 完整上游同步实施计划",
+      "name": "v1.51.0 完整上游同步实施计划",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/tasks.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/tasks.md:L148:15. 分发包排除仓库维护与验收材料",
+      "name": "15. 分发包排除仓库维护与验收材料",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/tasks.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/tasks.md:L155:16. 提测后的1.5业务分支回流与Windows测试修复",
+      "name": "16. 提测后的1.5业务分支回流与Windows测试修复",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/tasks.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/validation.md:L1:C：验证与接纳状态",
+      "name": "C：验证与接纳状态",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/validation.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Section:openspec/changes/upstream-sync-v1-51-0/validation.md:L158:分发包排除仓库维护与验收材料",
+      "name": "分发包排除仓库维护与验收材料",
+      "filePath": "openspec/changes/upstream-sync-v1-51-0/validation.md",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:src/fork/membership/atoms.ts:session",
+      "name": "session",
+      "filePath": "src/fork/membership/atoms.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:src/fork/membership/atoms.ts:redeemPath",
+      "name": "redeemPath",
+      "filePath": "src/fork/membership/atoms.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:src/fork/membership/atoms.ts:path",
+      "name": "path",
+      "filePath": "src/fork/membership/atoms.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/fork/membership/atoms.ts:useOpenForkRedeem",
+      "name": "useOpenForkRedeem",
+      "filePath": "src/fork/membership/atoms.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:src/fork/ui/popup/account-menu.tsx:label",
+      "name": "label",
+      "filePath": "src/fork/ui/popup/account-menu.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/fork/ui/popup/account-menu.tsx:ForkAccountMenu",
+      "name": "ForkAccountMenu",
+      "filePath": "src/fork/ui/popup/account-menu.tsx",
+      "change_type": "touched"
+    }
+  ],
+  "affected_processes": []
+}

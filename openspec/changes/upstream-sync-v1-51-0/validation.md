@@ -158,3 +158,9 @@ React最初相同__html被19.3优化而未替换，现以惰性revision属性强
 ## 分发包排除仓库维护与验收材料
 
 2026-10-16，用户要求提案/规格/验证/交接及回归证据不得打包。仅补WXT安装ZIP及源码ZIP的排除目录，不删除仓库文档。两项实际文件选择回归先RED后GREEN，相关35项通过，独立复审通过；真实安装ZIP208文件与原1.6.0运行内容逐字节一致，sources ZIP1263文件，两类禁止路径均零命中，重建输入保留。详细规则、归档SHA/文件清单及未验边界见[evidence/package-exclusions/README.md](evidence/package-exclusions/README.md)。
+
+## 1.5业务分支回流与Windows迁移测试修复
+
+2026-10-19，用户授权合并origin/feat/1.5.0并处理Windows迁移测试。唯一待回流提交f89d6418通过完整merge纳入1.6，无文本冲突；兑换入口按仅海外范围限制，保留未登录兑换意图回跳、语言、会员状态和当前渠道。迁移测试仅将Git tree相对导入改用posix，ROOT保留原生路径，不改生产迁移、冻结旧源码、fixture或skip。
+
+兑换国内负例RED9FAIL/9PASS，最终UI/URL矩阵21项通过；迁移11项及实际加载器Win32/POSIX模拟6项通过。最终主5021通过、4项外部在线服务依约跳过，fork1018通过；全仓type-check/fmt、固定边界/品牌、strict规格、两线Chrome构建与域名/环境断言、独立代码复审通过。当前图输出LOW，未出现partial/truncated；未将未索引的测试符号当作无影响。未执行真实Windows、最新包覆盖升级或官网兑换账号联调，原有F01/F02、完整G5及用户暂缓项保持。详见[本轮证据](evidence/v150-merge-and-windows-migration/README.md)。

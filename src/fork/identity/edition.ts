@@ -22,6 +22,7 @@
 // |                                         | （两线不同实例）。global 缺配即抛错   |                   |
 // | fork/membership/account-label.ts        | 账户展示字段（global 脱敏邮箱 /       | bundle 运行期     |
 // |                                         | cn 脱敏手机号）                       |                   |
+// | fork/ui/popup/account-menu.tsx          | 官网兑换码入口仅海外展示             | bundle 运行期     |
 // | fork/identity/channels.json             | 渠道号与 edition 归属               | JSON，两侧共读    |
 // | fork/identity/channel.ts DEFAULT_CHANNEL| 各线默认渠道                        | bundle 运行期     |
 // | wxt.config.ts                           | 商店显示名、Firefox 扩展 ID、        | Node 构建期       |

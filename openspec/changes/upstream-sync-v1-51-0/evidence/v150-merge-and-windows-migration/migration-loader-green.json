@@ -1,0 +1,66 @@
+{
+  "platform": "darwin",
+  "testFile": "src/fork/__tests__/upstream-v151-migration.test.ts",
+  "baseline": "4be99b341a7c940a48794232f066db43339cc2d2",
+  "sourceSha256": "ce014d9700dabca6bd1fe7e27718cc054070749ed9381769478b6c3a2f087cae",
+  "actualLegacyRequireExecuted": true,
+  "pinnedPathCount": 2408,
+  "passed": 6,
+  "failed": 0,
+  "rows": [
+    {
+      "nativeApi": "win32",
+      "caller": "src/types/config/provider/index.ts",
+      "specifier": "./constants",
+      "expected": "src/types/config/provider/constants.ts",
+      "actual": "src/types/config/provider/constants.ts",
+      "error": null,
+      "status": "passed"
+    },
+    {
+      "nativeApi": "win32",
+      "caller": "src/types/config/config.ts",
+      "specifier": "./provider",
+      "expected": "src/types/config/provider/index.ts",
+      "actual": "src/types/config/provider/index.ts",
+      "error": null,
+      "status": "passed"
+    },
+    {
+      "nativeApi": "win32",
+      "caller": "src/types/config/provider/index.ts",
+      "specifier": "../config",
+      "expected": "src/types/config/config.ts",
+      "actual": "src/types/config/config.ts",
+      "error": null,
+      "status": "passed"
+    },
+    {
+      "nativeApi": "win32",
+      "caller": "src/types/config/provider/index.ts",
+      "specifier": "@/types/config/provider/constants",
+      "expected": "src/types/config/provider/constants.ts",
+      "actual": "src/types/config/provider/constants.ts",
+      "error": null,
+      "status": "passed"
+    },
+    {
+      "nativeApi": "posix",
+      "caller": "src/types/config/provider/index.ts",
+      "specifier": "./constants",
+      "expected": "src/types/config/provider/constants.ts",
+      "actual": "src/types/config/provider/constants.ts",
+      "error": null,
+      "status": "passed"
+    },
+    {
+      "nativeApi": "posix",
+      "caller": "src/types/config/config.ts",
+      "specifier": "./provider",
+      "expected": "src/types/config/provider/index.ts",
+      "actual": "src/types/config/provider/index.ts",
+      "error": null,
+      "status": "passed"
+    }
+  ]
+}

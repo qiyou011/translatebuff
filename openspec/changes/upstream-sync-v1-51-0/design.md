@@ -84,6 +84,12 @@ G1来源/完整合并/无未解决图风险，G2测试类型格式边界品牌�
 
 ## Open Questions
 
+### 2026-10-19提测修复范围
+
+用户授权把本仓 `origin/feat/1.5.0` 合并到 `feat/1.6.0` 并修复Windows迁移测试。两分支共同业务起点为4be99b34，1.5新增的唯一提交为f89d6418官网兑换入口；使用完整merge保留来源，按已确认的仅海外范围增加edition限制，保持登录回跳、多语言和当前Cookie渠道。不引入独立兑换余额、比例或到期展示的新业务范围，上游目标仍固定1.51.0。
+
+迁移问题仅在测试加载器：Git tree路径固定正斜杠，仓库相对导入使用node:path.posix；本机ROOT等文件系统绝对路径继续使用原生dirname/resolve。冻结的4be旧源码、fixture、迁移链和skip规则保持原样；用真实加载器路径模拟和现有迁移用例验证，不把macOS模拟记作真实Windows或最新实包覆盖升级验收。
+
 ### 追加：分发包排除仓库维护材料
 
 用户要求提案、规格、验证、交接与回归证据不进入分发包。WXT安装ZIP只收构建目录，源码ZIP默认从仓库根收集且不遵循Git ignore；只修改zip.exclude和zip.excludeSources，排除openspec、docs、readmes及UPSTREAM_FOLLOW_UPS.md。现有源码assets/repos排除保持，保留SOURCE_CODE_REVIEW.md的源码审查构建说明；不按所有Markdown、图片、JSON、HTML扩展名排除，不新增打包框架或删除历史证据。使用同一Tinyglobby及实际配置做临时文件正反例，再实查WXT生成的安装及sources两个ZIP。

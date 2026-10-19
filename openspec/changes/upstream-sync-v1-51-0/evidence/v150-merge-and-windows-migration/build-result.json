@@ -1,0 +1,18 @@
+[
+  {
+    "edition": "cn",
+    "output": ".output/v150-merge-20261019/chrome-mv3",
+    "manifestVersion": "1.6.0",
+    "upstreamVersion": "1.51.0",
+    "build": "PASS",
+    "domainAndEnvironmentAssertions": "PASS"
+  },
+  {
+    "edition": "global",
+    "output": ".output/v150-merge-20261019/chrome-mv3-global",
+    "manifestVersion": "1.6.0",
+    "upstreamVersion": "1.51.0",
+    "build": "PASS",
+    "domainAndEnvironmentAssertions": "PASS"
+  }
+]

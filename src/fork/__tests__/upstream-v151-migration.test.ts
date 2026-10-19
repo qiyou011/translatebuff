@@ -1,6 +1,6 @@
 import { execFileSync } from "node:child_process"
 import { createRequire } from "node:module"
-import { dirname, join, normalize, resolve } from "node:path"
+import { dirname, posix, resolve } from "node:path"
 import { fileURLToPath } from "node:url"
 import { Script } from "node:vm"
 import * as apiContract from "@read-frog/api-contract"
@@ -76,7 +76,7 @@ function legacyModule(path: string): any {
     if (!specifier.startsWith("@/") && !specifier.startsWith(".")) return require(specifier)
     const stem = specifier.startsWith("@/")
       ? `src/${specifier.slice(2)}`
-      : normalize(join(dirname(path), specifier))
+      : posix.join(posix.dirname(path), specifier)
     const resolved = [stem, `${stem}.ts`, `${stem}.tsx`, `${stem}.json`, `${stem}/index.ts`].find(
       (candidate) => legacyPaths.has(candidate),
     )

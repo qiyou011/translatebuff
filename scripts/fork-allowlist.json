@@ -19,6 +19,7 @@
     ".changeset/merge-regression-theme-shadow.md",
     ".changeset/fix-empty-glossary-cache-cost.md",
     ".changeset/exclude-repository-documents-from-packages.md",
+    ".changeset/quick-cats-redeem.md",
     "src/components/ui/base-ui/input.tsx",
     "src/components/ui/base-ui/textarea.tsx",
     "src/components/ui/base-ui/input-group.tsx",

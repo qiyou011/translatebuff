@@ -1,0 +1,66 @@
+{
+  "platform": "darwin",
+  "testFile": "src/fork/__tests__/upstream-v151-migration.test.ts",
+  "baseline": "4be99b341a7c940a48794232f066db43339cc2d2",
+  "sourceSha256": "384d4843eae9b502b67cd77decebeb12b3652ee546eb503e58122550b50e6608",
+  "actualLegacyRequireExecuted": true,
+  "pinnedPathCount": 2408,
+  "passed": 3,
+  "failed": 3,
+  "rows": [
+    {
+      "nativeApi": "win32",
+      "caller": "src/types/config/provider/index.ts",
+      "specifier": "./constants",
+      "expected": "src/types/config/provider/constants.ts",
+      "actual": null,
+      "error": "Missing pinned module src/types/config/provider/index.ts -> ./constants",
+      "status": "failed"
+    },
+    {
+      "nativeApi": "win32",
+      "caller": "src/types/config/config.ts",
+      "specifier": "./provider",
+      "expected": "src/types/config/provider/index.ts",
+      "actual": null,
+      "error": "Missing pinned module src/types/config/config.ts -> ./provider",
+      "status": "failed"
+    },
+    {
+      "nativeApi": "win32",
+      "caller": "src/types/config/provider/index.ts",
+      "specifier": "../config",
+      "expected": "src/types/config/config.ts",
+      "actual": null,
+      "error": "Missing pinned module src/types/config/provider/index.ts -> ../config",
+      "status": "failed"
+    },
+    {
+      "nativeApi": "win32",
+      "caller": "src/types/config/provider/index.ts",
+      "specifier": "@/types/config/provider/constants",
+      "expected": "src/types/config/provider/constants.ts",
+      "actual": "src/types/config/provider/constants.ts",
+      "error": null,
+      "status": "passed"
+    },
+    {
+      "nativeApi": "posix",
+      "caller": "src/types/config/provider/index.ts",
+      "specifier": "./constants",
+      "expected": "src/types/config/provider/constants.ts",
+      "actual": "src/types/config/provider/constants.ts",
+      "error": null,
+      "status": "passed"
+    },
+    {
+      "nativeApi": "posix",
+      "caller": "src/types/config/config.ts",
+      "specifier": "./provider",
+      "expected": "src/types/config/provider/index.ts",
+      "actual": "src/types/config/provider/index.ts",
+      "error": null,
+      "status": "passed"
+    }
+  ]
+}
