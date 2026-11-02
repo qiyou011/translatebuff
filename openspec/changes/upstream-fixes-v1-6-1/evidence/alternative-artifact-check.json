@@ -1,0 +1,34 @@
+{
+  "sourceHash": "91e14ac679309c45a9f1e92def3b3cc07604c4d118bd2013e992b620aa3c4a3c",
+  "results": [
+    {
+      "path": "D:\\project\\translatebuff\\.output\\chrome-mv3",
+      "browser": "chrome",
+      "edition": "cn",
+      "unchanged": true,
+      "verifiedFileCount": 209
+    },
+    {
+      "path": "D:\\project\\translatebuff\\.output\\edge-mv3",
+      "browser": "edge",
+      "edition": "cn",
+      "unchanged": true,
+      "verifiedFileCount": 209
+    },
+    {
+      "path": "D:\\project\\translatebuff\\.output\\firefox-mv3",
+      "browser": "firefox",
+      "edition": "cn",
+      "unchanged": true,
+      "verifiedFileCount": 209
+    },
+    {
+      "path": "D:\\project\\translatebuff\\.output\\chrome-mv3-global",
+      "browser": "chrome",
+      "edition": "global",
+      "unchanged": true,
+      "verifiedFileCount": 209
+    }
+  ],
+  "zipUnchanged": true
+}

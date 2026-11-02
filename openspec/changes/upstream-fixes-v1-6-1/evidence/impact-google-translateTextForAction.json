@@ -1,0 +1,196 @@
+{
+  "target": {
+    "id": "Function:src/utils/host/translate/core/translation-request.ts:translateTextForAction",
+    "name": "translateTextForAction",
+    "type": "Function",
+    "filePath": "src/utils/host/translate/core/translation-request.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 5,
+  "risk": "LOW",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 2,
+    "processes_affected": 2,
+    "modules_affected": 2
+  },
+  "byDepthCounts": {
+    "1": 2,
+    "2": 1,
+    "3": 2
+  },
+  "affected_processes": [
+    {
+      "name": "translateRequest",
+      "type": "Function",
+      "filePath": "src/utils/host/translate/core/translation-request.ts",
+      "affected_process_count": 12,
+      "total_hits": 12,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "translateNodesBilingualMode",
+      "type": "Function",
+      "filePath": "src/utils/host/translate/core/translation-modes.ts",
+      "affected_process_count": 2,
+      "total_hits": 2,
+      "earliest_broken_step": 1
+    }
+  ],
+  "affected_modules": [
+    {
+      "name": "Dom",
+      "hits": 3,
+      "impact": "indirect"
+    },
+    {
+      "name": "Translate",
+      "hits": 2,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/utils/host/translate/core/translation-request.ts:createPageTranslationRequest.translateLegacyHtml@172:2",
+        "name": "translateLegacyHtml",
+        "filePath": "src/utils/host/translate/core/translation-request.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/utils/host/translate/core/translation-request.ts:createPageTranslationRequest.translateRequest@180:2",
+        "name": "translateRequest",
+        "filePath": "src/utils/host/translate/core/translation-request.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_25_translaterequest",
+            "label": "TranslateRequest → Warn",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_215_translaterequest",
+            "label": "TranslateRequest → GetStorageItem",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_105_translaterequest",
+            "label": "TranslateRequest → GetPageTranslationSessionId",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_26_translaterequest",
+            "label": "TranslateRequest → TruncateWebPageContent",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_16_translaterequest",
+            "label": "TranslateRequest → SplitUrlFragment",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_24_translaterequest",
+            "label": "TranslateRequest → Error",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_8_translaterequest",
+            "label": "TranslateRequest → FlattenNestedTables",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_9_translaterequest",
+            "label": "TranslateRequest → KeepLeadingText",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_15_translaterequest",
+            "label": "TranslateRequest → IsInPageFragment",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_192_translaterequest",
+            "label": "TranslateRequest → CreateDeepLXHtmlAttributeProbe",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_14_translaterequest",
+            "label": "TranslateRequest → CreateDefuddleSnapshotDocument",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_58_translaterequest",
+            "label": "TranslateRequest → GetOrGenerateWebPageSummary",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "Function:src/utils/host/translate/core/translation-request.ts:createPageTranslationRequest",
+        "name": "createPageTranslationRequest",
+        "filePath": "src/utils/host/translate/core/translation-request.ts",
+        "relationType": "USES",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "3": [
+      {
+        "depth": 3,
+        "id": "Function:src/utils/host/translate/core/translation-modes.ts:translateNodesBilingualMode",
+        "name": "translateNodesBilingualMode",
+        "filePath": "src/utils/host/translate/core/translation-modes.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_191_translatenodesbiling",
+            "label": "TranslateNodesBilingualMode → IsTextNode",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_238_translatenodesbiling",
+            "label": "TranslateNodesBilingualMode → IsHTMLElement",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/utils/host/translate/core/translation-modes.ts:translateTranslationOnlyRun",
+        "name": "translateTranslationOnlyRun",
+        "filePath": "src/utils/host/translate/core/translation-modes.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ]
+  }
+}

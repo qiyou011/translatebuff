@@ -22,6 +22,7 @@ import {
   isWithinIncludeScope,
   setNaturalTransNodeKind,
 } from "./filter"
+import { prepareLatexmlTextBoxes } from "./latexml-text-box"
 
 const NON_NEWLINE_WHITESPACE_RE = /[^\S\n]/
 
@@ -256,6 +257,7 @@ export function walkAndLabelElement(
   config: Config,
   callbacks: WalkCallbacks = {},
 ): WalkResult {
+  prepareLatexmlTextBoxes(element, config)
   if (isWalkBlockedElement(element, config)) {
     callbacks.onBlockedElement?.(element)
     return SKIPPED_WALK_RESULT
@@ -286,6 +288,7 @@ export async function walkAndLabelElementChunked(
   const { budgetMs = DEFAULT_WALK_BUDGET_MS, shouldContinue = () => true, ...callbacks } = options
 
   if (!shouldContinue()) return null
+  prepareLatexmlTextBoxes(element, config)
   if (isWalkBlockedElement(element, config)) {
     callbacks.onBlockedElement?.(element)
     return SKIPPED_WALK_RESULT

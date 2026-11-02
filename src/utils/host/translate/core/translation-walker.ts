@@ -1,6 +1,7 @@
 import type { Config } from "@/types/config/config"
 import type { WorkPacer } from "@/utils/scheduler"
 import { createWorkPacer, pauseIfBudgetSpent } from "@/utils/scheduler"
+import { getEffectiveSiteRule } from "@/utils/site-rules/effective"
 import {
   BLOCK_ATTRIBUTE,
   CONTENT_WRAPPER_CLASS,
@@ -70,6 +71,18 @@ export async function translateWalkedElement(
   // if the walkId is not the same, return
   if (element.getAttribute(WALKED_ATTRIBUTE) !== walkId) return
 
+  const { walkHiddenSelector } = getEffectiveSiteRule(config, window.location.href)
+  const hiddenRegion = walkHiddenSelector ? element.closest(walkHiddenSelector) : null
+  if (!toggle && hiddenRegion) {
+    const style = window.getComputedStyle(hiddenRegion)
+    if (style.display === "none" || style.visibility === "hidden") return
+  }
+  // These regions have their own viewport gate. Keep them out of a visible
+  // parent's HTML request, including regions nested inside inline children.
+  const containsHiddenRegion = (child: HTMLElement) =>
+    walkHiddenSelector !== null &&
+    (child.matches(walkHiddenSelector) || child.querySelector(walkHiddenSelector) !== null)
+
   const promises: Promise<void>[] = []
 
   if (element.hasAttribute(PARAGRAPH_ATTRIBUTE)) {
@@ -78,7 +91,7 @@ export async function translateWalkedElement(
 
     for (const child of element.childNodes) {
       if (isHTMLElement(child)) {
-        if (child.hasAttribute(BLOCK_ATTRIBUTE)) {
+        if (child.hasAttribute(BLOCK_ATTRIBUTE) || containsHiddenRegion(child)) {
           hasBlockNodeChild = true
         }
         if (
@@ -100,7 +113,11 @@ export async function translateWalkedElement(
       const children = [...element.childNodes]
       let consecutiveInlineNodes: ChildNode[] = []
       for (const child of children) {
-        if (isTransNode(child) && isBlockTransNode(child) && !isTextNode(child)) {
+        if (
+          isTransNode(child) &&
+          !isTextNode(child) &&
+          (isBlockTransNode(child) || containsHiddenRegion(child))
+        ) {
           // A Node-only forced block may split the translation run without
           // changing wrapper layout. Natural block children and the combined
           // Node+Style shape produced by legacy force-block migration retain

@@ -1,0 +1,117 @@
+{
+  "target": {
+    "id": "Function:src/entrypoints/options/pages/translation/translation-control/site-rules/built-in-rule-row.tsx:BuiltInRuleRow",
+    "name": "BuiltInRuleRow",
+    "type": "Function",
+    "filePath": "src/entrypoints/options/pages/translation/translation-control/site-rules/built-in-rule-row.tsx"
+  },
+  "direction": "upstream",
+  "impactedCount": 2,
+  "risk": "LOW",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 1,
+    "processes_affected": 1,
+    "modules_affected": 1
+  },
+  "byDepthCounts": {
+    "1": 1,
+    "2": 1
+  },
+  "affected_processes": [
+    {
+      "name": "SiteRulesPage",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/translation/translation-control/site-rules/index.tsx",
+      "affected_process_count": 6,
+      "total_hits": 8,
+      "earliest_broken_step": 1
+    }
+  ],
+  "affected_modules": [
+    {
+      "name": "Components",
+      "hits": 2,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/options/pages/translation/translation-control/site-rules/built-in-rules.tsx:BuiltInRules",
+        "name": "BuiltInRules",
+        "filePath": "src/entrypoints/options/pages/translation/translation-control/site-rules/built-in-rules.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_365_siterulespage",
+            "label": "SiteRulesPage → ConfigItem",
+            "processType": "intra_community",
+            "step": 2
+          },
+          {
+            "id": "proc_372_siterulespage",
+            "label": "SiteRulesPage → RawT",
+            "processType": "intra_community",
+            "step": 2
+          }
+        ]
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "Function:src/entrypoints/options/pages/translation/translation-control/site-rules/index.tsx:SiteRulesPage",
+        "name": "SiteRulesPage",
+        "filePath": "src/entrypoints/options/pages/translation/translation-control/site-rules/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_372_siterulespage",
+            "label": "SiteRulesPage → RawT",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_306_siterulespage",
+            "label": "SiteRulesPage → IsPlainLeftClick",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_168_siterulespage",
+            "label": "SiteRulesPage → SyncFromExternal",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_305_siterulespage",
+            "label": "SiteRulesPage → IsDrillInState",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_365_siterulespage",
+            "label": "SiteRulesPage → ConfigItem",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_342_siterulespage",
+            "label": "SiteRulesPage → ConfigSection",
+            "processType": "intra_community",
+            "step": 1
+          }
+        ]
+      }
+    ]
+  }
+}

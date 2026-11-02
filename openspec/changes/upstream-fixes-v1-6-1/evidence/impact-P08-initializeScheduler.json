@@ -1,0 +1,124 @@
+{
+  "target": {
+    "id": "Method:src/entrypoints/subtitles.content/universal-adapter.ts:UniversalVideoAdapter.initializeScheduler#0",
+    "name": "initializeScheduler",
+    "type": "Method",
+    "filePath": "src/entrypoints/subtitles.content/universal-adapter.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 9,
+  "risk": "LOW",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 2,
+    "processes_affected": 0,
+    "modules_affected": 1
+  },
+  "byDepthCounts": {
+    "1": 2,
+    "2": 3,
+    "3": 4
+  },
+  "affected_processes": [],
+  "affected_modules": [
+    {
+      "name": "Subtitles.content",
+      "hits": 9,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Method:src/entrypoints/subtitles.content/universal-adapter.ts:UniversalVideoAdapter.handleNavigation#0",
+        "name": "handleNavigation",
+        "filePath": "src/entrypoints/subtitles.content/universal-adapter.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Method:src/entrypoints/subtitles.content/universal-adapter.ts:UniversalVideoAdapter.initialize#0",
+        "name": "initialize",
+        "filePath": "src/entrypoints/subtitles.content/universal-adapter.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "Class:src/entrypoints/subtitles.content/universal-adapter.ts:UniversalVideoAdapter",
+        "name": "UniversalVideoAdapter",
+        "filePath": "src/entrypoints/subtitles.content/universal-adapter.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/entrypoints/subtitles.content/init-netflix-subtitles.ts:initNetflixSubtitles.init@42:2",
+        "name": "init",
+        "filePath": "src/entrypoints/subtitles.content/init-netflix-subtitles.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Method:src/entrypoints/subtitles.content/universal-adapter.ts:UniversalVideoAdapter.notifyNavigation#0",
+        "name": "notifyNavigation",
+        "filePath": "src/entrypoints/subtitles.content/universal-adapter.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "3": [
+      {
+        "depth": 3,
+        "id": "Function:src/entrypoints/subtitles.content/init-netflix-subtitles.ts:initNetflixSubtitles",
+        "name": "initNetflixSubtitles",
+        "filePath": "src/entrypoints/subtitles.content/init-netflix-subtitles.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/entrypoints/subtitles.content/init-netflix-subtitles.ts:initNetflixSubtitles.tick@56:2",
+        "name": "tick",
+        "filePath": "src/entrypoints/subtitles.content/init-netflix-subtitles.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/entrypoints/subtitles.content/platforms/xcom/index.ts:createXcomSubtitlesAdapter",
+        "name": "createXcomSubtitlesAdapter",
+        "filePath": "src/entrypoints/subtitles.content/platforms/xcom/index.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/entrypoints/subtitles.content/platforms/youtube/index.ts:createYoutubeSubtitlesAdapter",
+        "name": "createYoutubeSubtitlesAdapter",
+        "filePath": "src/entrypoints/subtitles.content/platforms/youtube/index.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ]
+  }
+}

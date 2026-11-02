@@ -187,6 +187,109 @@ describe("translate", () => {
     })
   }
 
+  it.each(
+    (["bilingual", "translationOnly"] as const).flatMap((mode) =>
+      [false, true].map((inline) => ({ mode, inline })),
+    ),
+  )("defers a nested CSS menu in $mode mode (inline=$inline)", async ({ mode, inline }) => {
+    await withHost("example.com", async () => {
+      const config = bilingualConfigWithSiteRule({ walkHiddenSelectors: [".deferred-menu"] })
+      config.pageTranslation.mode = mode
+      const parent = document.createElement("div")
+      const tag = inline ? "span" : "div"
+      parent.innerHTML = `Visible parent text readers can translate.<${tag} class="deferred-menu" style="${inline ? "visibility:hidden;display:inline" : "display:none"}"><span>Hidden menu text must wait until opened.</span></${tag}>`
+      document.body.append(parent)
+      try {
+        const menu = parent.querySelector<HTMLElement>(".deferred-menu")!
+        const original = parent.textContent
+        const walkId = crypto.randomUUID()
+        walkAndLabelElement(document.body, walkId, config)
+        vi.mocked(translateTextForPage).mockClear()
+        await translateWalkedElement(parent, walkId, config)
+        flushBatchedOperations()
+        expect(translateTextForPage).toHaveBeenCalled()
+        expect(
+          vi
+            .mocked(translateTextForPage)
+            .mock.calls.some(([text]) => text.includes("Hidden menu text")),
+        ).toBe(false)
+        expect(menu.textContent).toBe("Hidden menu text must wait until opened.")
+        menu.style.display = inline ? "inline" : "block"
+        menu.style.visibility = "visible"
+        await translateWalkedElement(menu, walkId, config)
+        flushBatchedOperations()
+        const calls = vi.mocked(translateTextForPage).mock.calls.length
+        expect(menu.textContent).toContain(MOCK_TRANSLATION)
+        await translateWalkedElement(menu, walkId, config)
+        flushBatchedOperations()
+        expect(translateTextForPage).toHaveBeenCalledTimes(calls)
+        removeAllTranslatedWrapperNodes()
+        expect(parent.textContent).toBe(original)
+      } finally {
+        removeAllTranslatedWrapperNodes()
+        parent.remove()
+      }
+    })
+  })
+
+  describe("LaTeXML SVG text boxes", () => {
+    // Shapes reported on arxiv.org/html/2609.32423 and /2601.21557v2.
+    // The latter puts its title, authors and abstract inside the same SVG.
+    const fixtures = [
+      {
+        paper: "2609.32423",
+        content:
+          '<span class="ltx_para"><span class="ltx_p" style="display:block">Abstract</span><span class="ltx_p" style="display:block"><span>The harness surrounding a language model is a central determinant of agent performance.</span></span></span>',
+      },
+      {
+        paper: "2601.21557v2",
+        content:
+          '<span class="ltx_para"><span class="ltx_p" style="display:block">Meta Context Engineering via Agentic Skill Evolution</span><span class="ltx_p" style="display:block">Haoran Ye<sup>1</sup></span></span><span class="ltx_para"><span class="ltx_p" style="display:block"><b>Abstract:</b><span>The operational efficacy of large language models relies heavily on their inference-time context.</span></span></span>',
+      },
+    ]
+
+    it.each(
+      fixtures.flatMap((fixture) =>
+        (["bilingual", "translationOnly"] as const).map((mode) => ({ ...fixture, mode })),
+      ),
+    )("translates $paper in $mode mode and restores the SVG nodes", async ({ content, mode }) => {
+      await withHost(
+        "arxiv.org",
+        async () => {
+          const host = document.createElement("div")
+          host.innerHTML = `<span class="ltx_inline-block"><svg class="ltx_picture" width="550" height="357" viewBox="0 0 550 357"><g fill="#F3F8FA"><path d="M0 0H550V357H0Z"></path></g><g><foreignObject width="500" height="320" style="font-size:10pt"><span class="ltx_foreignobject_container"><span class="ltx_foreignobject_content"><span class="ltx_minipage">${content}<span class="ltx_p" style="display:block"><a href="https://example.com/code">Code repository</a></span></span></span></span></foreignObject></g></svg></span>`
+          document.body.append(host)
+          const svg = host.querySelector("svg")!
+          const source = host.querySelector(".ltx_foreignobject_content")!
+          const link = host.querySelector("a")!
+          const original = svg.textContent
+          const onClick = vi.fn<(event: MouseEvent) => void>((event) => event.preventDefault())
+          link.addEventListener("click", onClick)
+
+          await removeOrShowPageTranslation(mode)
+
+          expect(host.querySelector("svg")).toBeNull()
+          expect(host.querySelector("[data-read-frog-latexml-text-box]")?.contains(source)).toBe(
+            true,
+          )
+          expect(translateTextForPage).toHaveBeenCalled()
+          expect(host.textContent).toContain(MOCK_TRANSLATION)
+          expect(host.textContent?.includes("Abstract")).toBe(mode === "bilingual")
+
+          removeAllTranslatedWrapperNodes()
+          expect(host.querySelector("svg")).toBe(svg)
+          expect(svg.querySelector(".ltx_foreignobject_content")).toBe(source)
+          expect(svg.textContent).toBe(original)
+          expect(svg.querySelector("a")).toBe(link)
+          link.dispatchEvent(new MouseEvent("click", { cancelable: true }))
+          expect(onClick).toHaveBeenCalledOnce()
+          host.remove()
+        },
+        "/html/test-paper",
+      )
+    })
+  })
+
   describe("translateTextForPage stub", () => {
     it("translateTextForPage should be mocked", async () => {
       expect(await translateTextForPage("任何文字")).toBe(MOCK_TRANSLATION)
@@ -712,9 +815,11 @@ describe("translate", () => {
           await removeOrShowPageTranslation("translationOnly", true)
 
           expect(translateTextForPage).toHaveBeenCalledTimes(1)
-          expect(translateTextForPage).toHaveBeenCalledWith(sourceText, "html", {
-            forceRetranslation: false,
-          })
+          expect(translateTextForPage).toHaveBeenCalledWith(
+            sourceText,
+            "html",
+            DEFAULT_PAGE_TRANSLATION_OPTIONS,
+          )
           expectInPlaceTranslation(sourceSpan, translatedText)
           expect(sourceSpan.firstChild).toBe(sourceTextNode)
           expect([...tweet.children]).toEqual([sourceSpan, ...emojiImages])
@@ -3367,6 +3472,35 @@ describe("translate", () => {
         expect(viewer).toHaveAttribute(TRANSLATION_ONLY_ATTRIBUTE)
       })
 
+      it("translation only mode: keeps the single line breaks inside each paragraph", async () => {
+        // A text/plain guide's banner (`===` / `---[VERSION HISTORY]---` / `===`)
+        // is one paragraph of single-newline lines. The request has to say the
+        // newlines matter, or Google returns the banner as one wrapped line.
+        const lineTranslations = paragraphs.map((paragraph, index) =>
+          paragraph
+            .split("\n")
+            .map((_, line) => `【第${index + 1}段第${line + 1}行】`)
+            .join("\n"),
+        )
+        vi.mocked(translateTextForPage).mockImplementation(async (text) => {
+          const index = paragraphs.indexOf(text)
+          if (index === -1) throw new Error(`Unexpected paragraph: ${JSON.stringify(text)}`)
+          return lineTranslations[index]!
+        })
+        const viewer = renderPlainTextViewer()
+
+        await removeOrShowPageTranslation("translationOnly", true)
+
+        paragraphs.forEach((paragraph) => {
+          expect(translateTextForPage).toHaveBeenCalledWith(
+            paragraph,
+            "html",
+            PRESERVE_LINE_BREAKS_TRANSLATION_OPTIONS,
+          )
+        })
+        expect(viewer.textContent).toBe(lineTranslations.join("\n\n"))
+      })
+
       it("translation only mode: restores the original single text node on toggle", async () => {
         mockPerParagraphTranslations()
         const viewer = renderPlainTextViewer()
@@ -4519,12 +4653,18 @@ describe("translate", () => {
         await removeOrShowPageTranslation("translationOnly", true)
 
         expect(translateTextForPage).toHaveBeenCalledTimes(2)
-        expect(translateTextForPage).toHaveBeenNthCalledWith(1, MOCK_ORIGINAL_TEXT, "html", {
-          forceRetranslation: false,
-        })
-        expect(translateTextForPage).toHaveBeenNthCalledWith(2, MOCK_ORIGINAL_TEXT, "html", {
-          forceRetranslation: false,
-        })
+        expect(translateTextForPage).toHaveBeenNthCalledWith(
+          1,
+          MOCK_ORIGINAL_TEXT,
+          "html",
+          DEFAULT_PAGE_TRANSLATION_OPTIONS,
+        )
+        expect(translateTextForPage).toHaveBeenNthCalledWith(
+          2,
+          MOCK_ORIGINAL_TEXT,
+          "html",
+          DEFAULT_PAGE_TRANSLATION_OPTIONS,
+        )
       })
     })
   })

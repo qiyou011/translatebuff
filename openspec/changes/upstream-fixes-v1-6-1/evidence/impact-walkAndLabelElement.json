@@ -1,0 +1,46 @@
+{
+  "target": {
+    "id": "Function:src/utils/host/dom/traversal.ts:walkAndLabelElement",
+    "name": "walkAndLabelElement",
+    "type": "Function",
+    "filePath": "src/utils/host/dom/traversal.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 1,
+  "risk": "LOW",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 1,
+    "processes_affected": 0,
+    "modules_affected": 1
+  },
+  "byDepthCounts": {
+    "1": 1
+  },
+  "affected_processes": [],
+  "affected_modules": [
+    {
+      "name": "Dom",
+      "hits": 1,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/utils/host/translate/node-manipulation.ts:removeOrShowNodeTranslation",
+        "name": "removeOrShowNodeTranslation",
+        "filePath": "src/utils/host/translate/node-manipulation.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ]
+  }
+}

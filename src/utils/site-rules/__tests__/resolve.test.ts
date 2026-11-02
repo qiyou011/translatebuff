@@ -57,6 +57,22 @@ describe("resolveSiteRule", () => {
     ).toBeNull()
   })
 
+  it("lets user rules override the built-in LaTeXML text box reflow", () => {
+    const builtIn = rule({ id: "built-in", reflowLatexmlTextBoxes: true })
+    expect(resolveSiteRule(URL_ON_SITE, [builtIn], [], []).reflowLatexmlTextBoxes).toBe(true)
+    expect(
+      resolveSiteRule(
+        URL_ON_SITE,
+        [builtIn],
+        [rule({ id: "user", reflowLatexmlTextBoxes: false })],
+        [],
+      ).reflowLatexmlTextBoxes,
+    ).toBe(false)
+    expect(
+      resolveSiteRule(URL_ON_SITE, [builtIn], [], [builtIn.id]).reflowLatexmlTextBoxes,
+    ).toBeNull()
+  })
+
   it("concatenates injectedCss instead of replacing it", () => {
     const resolved = resolveSiteRule(
       URL_ON_SITE,
@@ -170,6 +186,9 @@ describe("resolveSiteRule", () => {
           atomSelectors: [".formula"],
           "atomSelectors.add": [".formula-added"],
           "atomSelectors.remove": [".formula"],
+          walkHiddenSelectors: [".menu"],
+          "walkHiddenSelectors.add": [".menu-added"],
+          "walkHiddenSelectors.remove": [".menu"],
         }),
       ],
       [],
@@ -182,6 +201,7 @@ describe("resolveSiteRule", () => {
     expect(resolved.forceInlineNodeSelector).toBe(".inline-node-added")
     expect(resolved.forceInlineStyleSelector).toBe(".inline-style-added")
     expect(resolved.atomSelector).toBe(".formula-added")
+    expect(resolved.walkHiddenSelector).toBe(".menu-added")
     // Atom selectors are folded into preserve-text so atoms stop the walk.
     expect(resolved.preserveTextSelector).toBe(".math,.formula-added")
   })

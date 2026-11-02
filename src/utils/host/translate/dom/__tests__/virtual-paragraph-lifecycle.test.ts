@@ -1,7 +1,7 @@
 import type { VirtualParagraphUnit } from "../paragraph-segmentation"
 // @vitest-environment jsdom
 import type { TransNode } from "@/types/dom"
-import { beforeEach, describe, expect, it } from "vitest"
+import { beforeEach, describe, expect, it, vi } from "vitest"
 import { DEFAULT_CONFIG } from "@/utils/constants/config"
 import {
   CONTENT_WRAPPER_CLASS,
@@ -410,6 +410,48 @@ describe("virtual paragraph lifecycle", () => {
     expect(isVirtualParagraphGroupCurrent(group)).toBe(true)
     wrappers[0]!.remove()
 
+    expect(isVirtualParagraphGroupCurrent(group)).toBe(false)
+    disposeVirtualParagraphGroup(group)
+  })
+
+  it("stays current across a Text split into hundreds of fragments", () => {
+    const paragraphs = Array.from({ length: 300 }, (_, index) => `paragraph ${index}`)
+    const originalValue = paragraphs.join("\n\n")
+    const layoutSource = document.createElement("div")
+    const source = document.createTextNode(originalValue)
+    layoutSource.append(source)
+    document.body.append(layoutSource)
+    let end = 0
+    const offsets = paragraphs.map((paragraph, index) => {
+      end += paragraph.length + (index === 0 ? 0 : 2)
+      return end
+    })
+    const { group, wrappers } = createSplitGroup(layoutSource, source, offsets)
+
+    expect(group.splitRecords[0]!.createdTails).toHaveLength(299)
+    const readChildren = vi.spyOn(layoutSource, "childNodes", "get")
+    expect(isVirtualParagraphGroupCurrent(group)).toBe(true)
+    // Repeated viewport checks must not enumerate the full list per fragment.
+    expect(readChildren.mock.calls.length).toBeLessThan(10)
+    readChildren.mockRestore()
+    expect(isVirtualParagraphGroupCurrent(group, wrappers[150])).toBe(true)
+    disposeVirtualParagraphGroup(group)
+  })
+
+  it("treats split fragments the host reordered as stale", () => {
+    // Identical tails keep the host text unchanged, so only the fragment order
+    // check can tell that the cut Text nodes were swapped.
+    const layoutSource = document.createElement("div")
+    const source = document.createTextNode("a\n\nx\n\nx")
+    layoutSource.append(source)
+    document.body.append(layoutSource)
+    const { group } = createSplitGroup(layoutSource, source, [1, 4, source.data.length])
+    const [first, second] = group.splitRecords[0]!.createdTails
+
+    expect(isVirtualParagraphGroupCurrent(group)).toBe(true)
+    layoutSource.insertBefore(second!, first!)
+
+    expect(collectSourceTextExcludingWrappers(layoutSource)).toBe("a\n\nx\n\nx")
     expect(isVirtualParagraphGroupCurrent(group)).toBe(false)
     disposeVirtualParagraphGroup(group)
   })

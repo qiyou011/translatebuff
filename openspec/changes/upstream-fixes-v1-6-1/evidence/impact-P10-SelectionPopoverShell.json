@@ -1,0 +1,363 @@
+{
+  "target": {
+    "id": "Function:src/components/ui/selection-popover/index.tsx:SelectionPopoverShell",
+    "name": "SelectionPopoverShell",
+    "type": "Function",
+    "filePath": "src/components/ui/selection-popover/index.tsx"
+  },
+  "direction": "upstream",
+  "impactedCount": 19,
+  "risk": "HIGH",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 1,
+    "processes_affected": 3,
+    "modules_affected": 2
+  },
+  "byDepthCounts": {
+    "1": 1,
+    "2": 12,
+    "3": 6
+  },
+  "affected_processes": [
+    {
+      "name": "CustomActionCardList",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/custom-actions/components/action-card-list.tsx",
+      "affected_process_count": 6,
+      "total_hits": 11,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "SelectionTranslationProvider",
+      "type": "Function",
+      "filePath": "src/entrypoints/selection.content/selection-toolbar/translate-button/provider.tsx",
+      "affected_process_count": 5,
+      "total_hits": 5,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "SelectionCustomActionProvider",
+      "type": "Function",
+      "filePath": "src/entrypoints/selection.content/selection-toolbar/custom-action-button/provider.tsx",
+      "affected_process_count": 3,
+      "total_hits": 3,
+      "earliest_broken_step": 1
+    }
+  ],
+  "affected_modules": [
+    {
+      "name": "Base-ui",
+      "hits": 17,
+      "impact": "direct"
+    },
+    {
+      "name": "Action-config-form",
+      "hits": 1,
+      "impact": "indirect"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/components/ui/selection-popover/index.tsx:SelectionPopoverContent",
+        "name": "SelectionPopoverContent",
+        "filePath": "src/components/ui/selection-popover/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "File:src/components/ui/selection-popover/index.tsx",
+        "name": "index.tsx",
+        "filePath": "src/components/ui/selection-popover/index.tsx",
+        "relationType": "USES",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/components/ui/base-ui/drawer.tsx:DrawerBody",
+        "name": "DrawerBody",
+        "filePath": "src/components/ui/base-ui/drawer.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.7,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/components/ui/base-ui/toast.tsx:AnchoredToasts",
+        "name": "AnchoredToasts",
+        "filePath": "src/components/ui/base-ui/toast.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.7,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/components/ui/base-ui/toast.tsx:FullToastContent",
+        "name": "FullToastContent",
+        "filePath": "src/components/ui/base-ui/toast.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.7,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/entrypoints/options/pages/api-providers/providers-config/index.tsx:BuiltInProviderCard",
+        "name": "BuiltInProviderCard",
+        "filePath": "src/entrypoints/options/pages/api-providers/providers-config/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.7,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/entrypoints/options/pages/api-providers/providers-config/index.tsx:ProviderCard",
+        "name": "ProviderCard",
+        "filePath": "src/entrypoints/options/pages/api-providers/providers-config/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.7,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/entrypoints/options/pages/custom-actions/components/action-card-list.tsx:BuiltInActionCard",
+        "name": "BuiltInActionCard",
+        "filePath": "src/entrypoints/options/pages/custom-actions/components/action-card-list.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.7,
+        "processes": [
+          {
+            "id": "proc_155_customactioncardlist",
+            "label": "CustomActionCardList → Badges",
+            "processType": "intra_community",
+            "step": 2
+          },
+          {
+            "id": "proc_157_customactioncardlist",
+            "label": "CustomActionCardList → Identity",
+            "processType": "intra_community",
+            "step": 2
+          },
+          {
+            "id": "proc_158_customactioncardlist",
+            "label": "CustomActionCardList → Root",
+            "processType": "intra_community",
+            "step": 2
+          },
+          {
+            "id": "proc_156_customactioncardlist",
+            "label": "CustomActionCardList → Content",
+            "processType": "intra_community",
+            "step": 2
+          }
+        ]
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/entrypoints/options/pages/custom-actions/components/action-card-list.tsx:CustomActionCard",
+        "name": "CustomActionCard",
+        "filePath": "src/entrypoints/options/pages/custom-actions/components/action-card-list.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.7,
+        "processes": [
+          {
+            "id": "proc_159_customactioncardlist",
+            "label": "CustomActionCardList → Toggle",
+            "processType": "intra_community",
+            "step": 2
+          }
+        ]
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/entrypoints/selection.content/selection-toolbar/custom-action-button/provider.tsx:SelectionCustomActionProvider",
+        "name": "SelectionCustomActionProvider",
+        "filePath": "src/entrypoints/selection.content/selection-toolbar/custom-action-button/provider.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.7,
+        "processes": [
+          {
+            "id": "proc_48_selectioncustomactio",
+            "label": "SelectionCustomActionProvider → SetAnchor",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_100_selectioncustomactio",
+            "label": "SelectionCustomActionProvider → CommitOpenRequest",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_218_selectioncustomactio",
+            "label": "SelectionCustomActionProvider → SetPinned",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/entrypoints/selection.content/selection-toolbar/translate-button/provider.tsx:SelectionTranslationProvider",
+        "name": "SelectionTranslationProvider",
+        "filePath": "src/entrypoints/selection.content/selection-toolbar/translate-button/provider.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.7,
+        "processes": [
+          {
+            "id": "proc_52_selectiontranslation",
+            "label": "SelectionTranslationProvider → RegisterAbortController",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_54_selectiontranslation",
+            "label": "SelectionTranslationProvider → ThrowIfAborted",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_103_selectiontranslation",
+            "label": "SelectionTranslationProvider → ResetTranslationState",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_102_selectiontranslation",
+            "label": "SelectionTranslationProvider → NormalizeSelectedText",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_53_selectiontranslation",
+            "label": "SelectionTranslationProvider → GetSelectionWebPagePromptContext",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/fork/ui/selection-content/SelectionCustomActionProvider.tsx:SelectionCustomActionProvider",
+        "name": "SelectionCustomActionProvider",
+        "filePath": "src/fork/ui/selection-content/SelectionCustomActionProvider.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.7,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/fork/ui/selection-content/SelectionTranslationProvider.tsx:SelectionTranslationProvider",
+        "name": "SelectionTranslationProvider",
+        "filePath": "src/fork/ui/selection-content/SelectionTranslationProvider.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.7,
+        "processes": []
+      }
+    ],
+    "3": [
+      {
+        "depth": 3,
+        "id": "Function:src/components/ui/base-ui/toast.tsx:AnchoredToastProvider",
+        "name": "AnchoredToastProvider",
+        "filePath": "src/components/ui/base-ui/toast.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/components/ui/base-ui/toast.tsx:Toasts",
+        "name": "Toasts",
+        "filePath": "src/components/ui/base-ui/toast.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/entrypoints/options/pages/api-providers/providers-config/index.tsx:BuiltInProviderSection",
+        "name": "BuiltInProviderSection",
+        "filePath": "src/entrypoints/options/pages/api-providers/providers-config/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/entrypoints/options/pages/api-providers/providers-config/index.tsx:ProviderCardList",
+        "name": "ProviderCardList",
+        "filePath": "src/entrypoints/options/pages/api-providers/providers-config/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/entrypoints/options/pages/custom-actions/components/action-card-list.tsx:CustomActionCardList",
+        "name": "CustomActionCardList",
+        "filePath": "src/entrypoints/options/pages/custom-actions/components/action-card-list.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_155_customactioncardlist",
+            "label": "CustomActionCardList → Badges",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_157_customactioncardlist",
+            "label": "CustomActionCardList → Identity",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_156_customactioncardlist",
+            "label": "CustomActionCardList → Content",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_158_customactioncardlist",
+            "label": "CustomActionCardList → Root",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_159_customactioncardlist",
+            "label": "CustomActionCardList → Toggle",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_346_customactioncardlist",
+            "label": "CustomActionCardList → RawT",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/fork/ui/selection-content/App.tsx:App",
+        "name": "App",
+        "filePath": "src/fork/ui/selection-content/App.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ]
+  }
+}

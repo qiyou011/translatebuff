@@ -1,0 +1,144 @@
+{
+  "target": {
+    "id": "Function:src/utils/host/translate/api/google.ts:restoreGoogleTranslation",
+    "name": "restoreGoogleTranslation",
+    "type": "Function",
+    "filePath": "src/utils/host/translate/api/google.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 3,
+  "risk": "LOW",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 1,
+    "processes_affected": 1,
+    "modules_affected": 1
+  },
+  "byDepthCounts": {
+    "1": 1,
+    "2": 2
+  },
+  "affected_processes": [
+    {
+      "name": "executeTranslate",
+      "type": "Function",
+      "filePath": "src/utils/host/translate/execute-translate.ts",
+      "affected_process_count": 8,
+      "total_hits": 11,
+      "earliest_broken_step": 1
+    }
+  ],
+  "affected_modules": [
+    {
+      "name": "Api",
+      "hits": 3,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/utils/host/translate/api/google.ts:googleTranslate",
+        "name": "googleTranslate",
+        "filePath": "src/utils/host/translate/api/google.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_106_executetranslate",
+            "label": "ExecuteTranslate → SplitPreservedLines",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_1_executetranslate",
+            "label": "ExecuteTranslate → RequestGoogleTranslationBatch",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_107_executetranslate",
+            "label": "ExecuteTranslate → ReassemblePreservedLine",
+            "processType": "cross_community",
+            "step": 2
+          }
+        ]
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "Function:src/utils/host/translate/api/google.ts:isGoogleTranslateReachable",
+        "name": "isGoogleTranslateReachable",
+        "filePath": "src/utils/host/translate/api/google.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/utils/host/translate/execute-translate.ts:executeTranslate",
+        "name": "executeTranslate",
+        "filePath": "src/utils/host/translate/execute-translate.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_106_executetranslate",
+            "label": "ExecuteTranslate → SplitPreservedLines",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_1_executetranslate",
+            "label": "ExecuteTranslate → RequestGoogleTranslationBatch",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_2_executetranslate",
+            "label": "ExecuteTranslate → RequestMicrosoftTranslationBatch",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_107_executetranslate",
+            "label": "ExecuteTranslate → ReassemblePreservedLine",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_195_executetranslate",
+            "label": "ExecuteTranslate → BuildDeepLXUrl",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_0_executetranslate",
+            "label": "ExecuteTranslate → FetchDirect",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_196_executetranslate",
+            "label": "ExecuteTranslate → FormatLang",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_197_executetranslate",
+            "label": "ExecuteTranslate → ParseDeepLXResponse",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      }
+    ]
+  }
+}

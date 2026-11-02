@@ -620,6 +620,8 @@ function SaturationSquare({ h, s, v, onChange }: SaturationSquareProps) {
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
       onPointerUp={() => setDragging(false)}
+      onPointerCancel={() => setDragging(false)}
+      onLostPointerCapture={() => setDragging(false)}
       onKeyDown={onKeyDown}
       className={cn(
         "relative w-full cursor-none touch-none outline-none select-none",
@@ -1109,6 +1111,7 @@ function TextColorInput({
 }: ColorInputProps) {
   const [draft, setDraft] = useState(value)
   const interactingRef = useRef(false)
+  const cancelledRef = useRef(false)
 
   useEffect(() => {
     if (!interactingRef.current) setDraft(value)
@@ -1140,10 +1143,16 @@ function TextColorInput({
         onChange={(e) => setDraft(e.target.value)}
         onFocus={(e) => {
           interactingRef.current = true
+          cancelledRef.current = false
           e.currentTarget.select()
         }}
         onBlur={() => {
           interactingRef.current = false
+          if (cancelledRef.current) {
+            cancelledRef.current = false
+            setDraft(value)
+            return
+          }
           if (draft === value) {
             setDraft(value)
             return
@@ -1157,6 +1166,7 @@ function TextColorInput({
           if (e.key === "Enter") {
             e.currentTarget.blur()
           } else if (e.key === "Escape") {
+            cancelledRef.current = true
             setDraft(value)
             e.currentTarget.blur()
           } else if (
@@ -1202,6 +1212,7 @@ function ScrubColorInput({
   // Set on pointerdown inside the scrub area (capture phase, before Base UI focuses the
   // input for scrubbing) so onFocus can tell scrub-focus from keyboard focus.
   const pointerDownRef = useRef(false)
+  const cancelledRef = useRef(false)
 
   const numeric = Number.parseFloat(value.replace("%", ""))
   const fieldValue = Number.isNaN(numeric) ? null : numeric
@@ -1243,6 +1254,10 @@ function ScrubColorInput({
         // blur land the final value. Nudges, scrubbing and wheel commit immediately.
         const reason = eventDetails.reason
         if (reason === "input-change" || reason === "input-paste" || reason === "input-clear") {
+          return
+        }
+        if (reason === "input-blur" && cancelledRef.current) {
+          eventDetails.cancel()
           return
         }
         commit(next)
@@ -1307,6 +1322,7 @@ function ScrubColorInput({
             if (editing) e.stopPropagation()
           }}
           onFocus={(e) => {
+            cancelledRef.current = false
             if (pointerDownRef.current) return // scrub-initiated focus
             setEditing(true)
             e.currentTarget.select()
@@ -1317,24 +1333,10 @@ function ScrubColorInput({
               e.currentTarget.blur()
               return
             }
-            if (e.key !== "Escape") return
-            // Restore the committed value's text before blurring, so the blur commit is a
-            // no-op. Goes through the native setter because NumberField owns the value.
-            const input = e.currentTarget
-            // eslint-disable-next-line typescript/unbound-method -- invoked via .call below
-            const setter = Object.getOwnPropertyDescriptor(
-              window.HTMLInputElement.prototype,
-              "value",
-            )?.set
-            if (setter && fieldValue !== null) {
-              const restored =
-                decimals !== undefined
-                  ? fieldValue.toFixed(decimals)
-                  : String(Math.round(fieldValue))
-              setter.call(input, hasPercent ? `${restored}%` : restored)
-              input.dispatchEvent(new Event("input", { bubbles: true }))
+            if (e.key === "Escape") {
+              cancelledRef.current = true
+              e.currentTarget.blur()
             }
-            input.blur()
           }}
           className={cn(
             "min-w-0 flex-1 bg-transparent text-[13px] font-medium text-foreground tabular-nums outline-none",
@@ -1560,10 +1562,13 @@ function ColorPicker({
 
   // External sync — when a controlled value changes from outside, re-seed HSV. Values we
   // emitted ourselves are skipped, since they'd otherwise round-trip and fight the drag.
-  const lastEmittedRef = useRef<string>("")
+  const lastEmittedRef = useRef<string | null>(null)
   useEffect(() => {
     if (!isControlled) return
-    if (value === lastEmittedRef.current) return
+    if (value === lastEmittedRef.current) {
+      lastEmittedRef.current = null
+      return
+    }
     const p = parseColor(value)
     if (!p) return
     oklchHueRef.current = null
@@ -1590,8 +1595,11 @@ function ColorPicker({
   )
 
   const updateHsv = useCallback(
-    (next: { h?: number; s?: number; v?: number; a?: number }) => {
+    (next: { h?: number; s?: number; v?: number; a?: number }, keepOklchHue = false) => {
       const merged = { ...hsv, ...next }
+      if (!keepOklchHue && (merged.h !== hsv.h || merged.s !== hsv.s || merged.v !== hsv.v)) {
+        oklchHueRef.current = null
+      }
       setHsv(merged)
       emit(buildParsed(merged.h, merged.s, merged.v, merged.a), currentFormat)
     },
@@ -1723,7 +1731,7 @@ function ColorPicker({
               oklchHueRef.current = H
               const rgb = oklchToRgb(clamp01(L), Math.max(0, C), H)
               const next = rgbToHsv(rgb.r, rgb.g, rgb.b)
-              updateHsv({ h: next.s === 0 ? hsv.h : next.h, s: next.s, v: next.v })
+              updateHsv({ h: next.s === 0 ? hsv.h : next.h, s: next.s, v: next.v }, true)
               return
             }
             case "alphaPercent":
@@ -1995,6 +2003,7 @@ function ColorPickerPopover({
   const valueLabel = parsed
     ? rgbToHexStr(parsed.r, parsed.g, parsed.b, 1).replace(/^#/, "").toUpperCase()
     : currentValue
+  const swatchOnly = !triggerLabel && !triggerShowValue
 
   return (
     <Popover.Root
@@ -2007,6 +2016,7 @@ function ColorPickerPopover({
     >
       <div ref={ref} className="inline-flex">
         <Popover.Trigger
+          aria-label={swatchOnly ? `Color ${valueLabel}` : undefined}
           className={cn(
             "flex cursor-pointer items-center gap-2 border border-border px-2 text-[13px] font-medium hover:bg-muted",
             CONTROL_CLASS,

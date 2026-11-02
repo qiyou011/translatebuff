@@ -1,4 +1,6 @@
+import type { PageTranslationData } from "../types"
 import { afterEach, expect, it, vi } from "vitest"
+import { DEFAULT_CONFIG } from "@/utils/constants/config"
 import {
   prepareGoogleTranslation,
   requestGoogleTranslationBatch,
@@ -6,8 +8,54 @@ import {
 } from "@/utils/host/translate/api/google"
 import { requestMicrosoftTranslationBatch } from "@/utils/host/translate/api/microsoft"
 import { normalizeTranslationOutput } from "@/utils/host/translate/translation-output-normalization"
+import { decodePageMt, requestPageMt } from "../mt"
 
 afterEach(() => vi.unstubAllGlobals())
+
+it("restores punctuation and line state independently for every Google batch item", async () => {
+  const provider = DEFAULT_CONFIG.providersConfig.find(
+    (item) => item.provider === "google-translate",
+  )!
+  const make = (text: string, textFormat: "plain" | "html"): PageTranslationData => ({
+    text,
+    textFormat,
+    provider,
+    preserveLineBreaks: true,
+    hash: text,
+    scheduleAt: 0,
+    langConfig: { ...DEFAULT_CONFIG.language, sourceCode: "eng", targetCode: "cmn" },
+    promptConfig: DEFAULT_CONFIG.pageTranslation.customPromptsConfig,
+  })
+  const items = [
+    make("<b>===== Hello\nWorld -----</b>", "html"),
+    make("----- Hello\nWorld =====", "plain"),
+  ]
+  const fetcher = vi.fn<typeof fetch>(async (_url, options) => {
+    const body = options?.body
+    if (typeof body !== "string") throw new Error("Expected a serialized Google request")
+    const inputs = JSON.parse(body)[0][0] as string[]
+    // A provider that damages visible punctuation cannot damage empty markers.
+    return {
+      ok: true,
+      json: async () => [
+        inputs.map((text) =>
+          text
+            .replaceAll("Hello", "你好")
+            .replaceAll("World", "世界")
+            .replace(/={3,}|-{3,}/g, ""),
+        ),
+      ],
+    } as Response
+  })
+  vi.stubGlobal("fetch", fetcher)
+  const raw = await requestPageMt(items)
+  expect(decodePageMt(raw, items)).toEqual([
+    "<b>===== 你好\n世界 -----</b>",
+    "----- 你好\n世界 =====",
+  ])
+  expect(fetcher).toHaveBeenCalledTimes(1)
+  expect(JSON.parse(fetcher.mock.calls[0]![1]!.body as string)[0][0]).toHaveLength(2)
+})
 it("Google sends multiple items in one call while keeping per-item newline state", async () => {
   const fetcher = vi
     .fn<(...args: any[]) => any>()

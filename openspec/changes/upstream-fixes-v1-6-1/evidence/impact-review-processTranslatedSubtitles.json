@@ -1,0 +1,152 @@
+{
+  "target": {
+    "id": "Method:src/entrypoints/subtitles.content/universal-adapter.ts:UniversalVideoAdapter.processTranslatedSubtitles#1",
+    "name": "processTranslatedSubtitles",
+    "type": "Method",
+    "filePath": "src/entrypoints/subtitles.content/universal-adapter.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 6,
+  "risk": "LOW",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 1,
+    "processes_affected": 2,
+    "modules_affected": 1
+  },
+  "byDepthCounts": {
+    "1": 1,
+    "2": 2,
+    "3": 3
+  },
+  "affected_processes": [
+    {
+      "name": "refreshSourceTrackIfNeeded",
+      "type": "Function",
+      "filePath": "src/entrypoints/subtitles.content/universal-adapter.ts",
+      "affected_process_count": 3,
+      "total_hits": 3,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "startTranslation",
+      "type": "Function",
+      "filePath": "src/entrypoints/subtitles.content/universal-adapter.ts",
+      "affected_process_count": 3,
+      "total_hits": 3,
+      "earliest_broken_step": 1
+    }
+  ],
+  "affected_modules": [
+    {
+      "name": "Subtitles.content",
+      "hits": 6,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Method:src/entrypoints/subtitles.content/universal-adapter.ts:UniversalVideoAdapter.startTranslation#1",
+        "name": "startTranslation",
+        "filePath": "src/entrypoints/subtitles.content/universal-adapter.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_257_starttranslation",
+            "label": "StartTranslation → CreateYoutubeAiSubtitlesContext",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_258_starttranslation",
+            "label": "StartTranslation → CreateAiSubtitlesContext",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_250_starttranslation",
+            "label": "StartTranslation → PostMessageRequest",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "Method:src/entrypoints/subtitles.content/universal-adapter.ts:UniversalVideoAdapter.refreshSourceTrackIfNeeded#0",
+        "name": "refreshSourceTrackIfNeeded",
+        "filePath": "src/entrypoints/subtitles.content/universal-adapter.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_114_refreshsourcetrackif",
+            "label": "RefreshSourceTrackIfNeeded → PostMessageRequest",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_207_refreshsourcetrackif",
+            "label": "RefreshSourceTrackIfNeeded → CreateYoutubeAiSubtitlesContext",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_208_refreshsourcetrackif",
+            "label": "RefreshSourceTrackIfNeeded → CreateAiSubtitlesContext",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 2,
+        "id": "Method:src/entrypoints/subtitles.content/universal-adapter.ts:UniversalVideoAdapter.switchSubtitlesFetcher#2",
+        "name": "switchSubtitlesFetcher",
+        "filePath": "src/entrypoints/subtitles.content/universal-adapter.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "3": [
+      {
+        "depth": 3,
+        "id": "Class:src/entrypoints/subtitles.content/universal-adapter.ts:UniversalVideoAdapter",
+        "name": "UniversalVideoAdapter",
+        "filePath": "src/entrypoints/subtitles.content/universal-adapter.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Method:src/entrypoints/subtitles.content/universal-adapter.ts:UniversalVideoAdapter.handleSourceTrackChanged#0",
+        "name": "handleSourceTrackChanged",
+        "filePath": "src/entrypoints/subtitles.content/universal-adapter.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Method:src/entrypoints/subtitles.content/universal-adapter.ts:UniversalVideoAdapter.handleToggleSubtitles#2",
+        "name": "handleToggleSubtitles",
+        "filePath": "src/entrypoints/subtitles.content/universal-adapter.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ]
+  }
+}

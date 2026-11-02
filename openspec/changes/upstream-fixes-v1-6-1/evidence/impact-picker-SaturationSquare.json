@@ -1,0 +1,58 @@
+{
+  "target": {
+    "id": "Function:src/components/ui/base-ui/color-picker.tsx:SaturationSquare",
+    "name": "SaturationSquare",
+    "type": "Function",
+    "filePath": "src/components/ui/base-ui/color-picker.tsx"
+  },
+  "direction": "upstream",
+  "impactedCount": 2,
+  "risk": "LOW",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 1,
+    "processes_affected": 0,
+    "modules_affected": 1
+  },
+  "byDepthCounts": {
+    "1": 1,
+    "2": 1
+  },
+  "affected_processes": [],
+  "affected_modules": [
+    {
+      "name": "Base-ui",
+      "hits": 2,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/components/ui/base-ui/color-picker.tsx:ColorPicker",
+        "name": "ColorPicker",
+        "filePath": "src/components/ui/base-ui/color-picker.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "Function:src/components/ui/base-ui/color-picker.tsx:ColorPickerPopover",
+        "name": "ColorPickerPopover",
+        "filePath": "src/components/ui/base-ui/color-picker.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ]
+  }
+}

@@ -1,0 +1,171 @@
+{
+  "target": {
+    "id": "Function:src/entrypoints/subtitles.content/renderer/mount-subtitles-sidebar.tsx:followFullscreen",
+    "name": "followFullscreen",
+    "type": "Function",
+    "filePath": "src/entrypoints/subtitles.content/renderer/mount-subtitles-sidebar.tsx"
+  },
+  "direction": "upstream",
+  "impactedCount": 8,
+  "risk": "HIGH",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 1,
+    "processes_affected": 1,
+    "modules_affected": 3
+  },
+  "byDepthCounts": {
+    "1": 1,
+    "2": 3,
+    "3": 4
+  },
+  "affected_processes": [
+    {
+      "name": "intervalId",
+      "type": "Function",
+      "filePath": "src/entrypoints/subtitles.content/init-xcom-subtitles.ts",
+      "affected_process_count": 6,
+      "total_hits": 6,
+      "earliest_broken_step": 1
+    }
+  ],
+  "affected_modules": [
+    {
+      "name": "Subtitles.content",
+      "hits": 5,
+      "impact": "indirect"
+    },
+    {
+      "name": "Xcom",
+      "hits": 2,
+      "impact": "indirect"
+    },
+    {
+      "name": "Renderer",
+      "hits": 1,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/subtitles.content/renderer/mount-subtitles-sidebar.tsx:mountSubtitlesSidebar",
+        "name": "mountSubtitlesSidebar",
+        "filePath": "src/entrypoints/subtitles.content/renderer/mount-subtitles-sidebar.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "Function:src/entrypoints/subtitles.content/init-netflix-subtitles.ts:initNetflixSubtitles.init@42:2",
+        "name": "init",
+        "filePath": "src/entrypoints/subtitles.content/init-netflix-subtitles.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/entrypoints/subtitles.content/init-xcom-subtitles.ts:initXcomSubtitles.tryInit@68:2",
+        "name": "tryInit",
+        "filePath": "src/entrypoints/subtitles.content/init-xcom-subtitles.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/entrypoints/subtitles.content/init-youtube-subtitles.ts:initYoutubeSubtitles.tryInit@42:2",
+        "name": "tryInit",
+        "filePath": "src/entrypoints/subtitles.content/init-youtube-subtitles.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "3": [
+      {
+        "depth": 3,
+        "id": "Function:src/entrypoints/subtitles.content/init-netflix-subtitles.ts:initNetflixSubtitles.tick@56:2",
+        "name": "tick",
+        "filePath": "src/entrypoints/subtitles.content/init-netflix-subtitles.ts",
+        "relationType": "CALLS",
+        "confidence": 0.8,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/entrypoints/subtitles.content/init-xcom-subtitles.ts:initXcomSubtitles",
+        "name": "initXcomSubtitles",
+        "filePath": "src/entrypoints/subtitles.content/init-xcom-subtitles.ts",
+        "relationType": "CALLS",
+        "confidence": 0.8,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/entrypoints/subtitles.content/init-xcom-subtitles.ts:initXcomSubtitles.intervalId@92:2",
+        "name": "intervalId",
+        "filePath": "src/entrypoints/subtitles.content/init-xcom-subtitles.ts",
+        "relationType": "CALLS",
+        "confidence": 0.8,
+        "processes": [
+          {
+            "id": "proc_23_intervalid",
+            "label": "IntervalId → PickSingleCandidate",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_55_intervalid",
+            "label": "IntervalId → BelongsToStatus",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_175_intervalid",
+            "label": "IntervalId → GetXcomStatusVideoContainer",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_176_intervalid",
+            "label": "IntervalId → GetXcomVideoStatusId",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_177_intervalid",
+            "label": "IntervalId → ClearStamps",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_178_intervalid",
+            "label": "IntervalId → RemoveTranslateButton",
+            "processType": "intra_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/entrypoints/subtitles.content/init-youtube-subtitles.ts:initYoutubeSubtitles",
+        "name": "initYoutubeSubtitles",
+        "filePath": "src/entrypoints/subtitles.content/init-youtube-subtitles.ts",
+        "relationType": "CALLS",
+        "confidence": 0.8,
+        "processes": []
+      }
+    ]
+  }
+}

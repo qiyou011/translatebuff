@@ -1,0 +1,93 @@
+{
+  "target": {
+    "id": "Function:src/utils/host/translate/text-preparation.ts:normalizeForComparison",
+    "name": "normalizeForComparison",
+    "type": "Function",
+    "filePath": "src/utils/host/translate/text-preparation.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 5,
+  "risk": "LOW",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 1,
+    "processes_affected": 0,
+    "modules_affected": 2
+  },
+  "byDepthCounts": {
+    "1": 1,
+    "2": 3,
+    "3": 1
+  },
+  "affected_processes": [],
+  "affected_modules": [
+    {
+      "name": "Translate",
+      "hits": 3,
+      "impact": "direct"
+    },
+    {
+      "name": "Dom",
+      "hits": 2,
+      "impact": "indirect"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/utils/host/translate/core/translation-request.ts:getDisplayTranslation",
+        "name": "getDisplayTranslation",
+        "filePath": "src/utils/host/translate/core/translation-request.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "Function:src/utils/host/translate/core/translation-modes.ts:translateVirtualParagraph",
+        "name": "translateVirtualParagraph",
+        "filePath": "src/utils/host/translate/core/translation-modes.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/utils/host/translate/core/translation-request.ts:createPageTranslationRequest.getDisplayText@159:6",
+        "name": "getDisplayText",
+        "filePath": "src/utils/host/translate/core/translation-request.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/utils/host/translate/core/translation-request.ts:createPageTranslationRequest.getDisplayText@231:4",
+        "name": "getDisplayText",
+        "filePath": "src/utils/host/translate/core/translation-request.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "3": [
+      {
+        "depth": 3,
+        "id": "Function:src/utils/host/translate/core/translation-modes.ts:translateVirtualParagraphs",
+        "name": "translateVirtualParagraphs",
+        "filePath": "src/utils/host/translate/core/translation-modes.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ]
+  }
+}

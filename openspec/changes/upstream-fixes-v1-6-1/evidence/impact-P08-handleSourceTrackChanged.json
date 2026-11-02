@@ -1,0 +1,70 @@
+{
+  "target": {
+    "id": "Method:src/entrypoints/subtitles.content/universal-adapter.ts:UniversalVideoAdapter.handleSourceTrackChanged#0",
+    "name": "handleSourceTrackChanged",
+    "type": "Method",
+    "filePath": "src/entrypoints/subtitles.content/universal-adapter.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 3,
+  "risk": "LOW",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 1,
+    "processes_affected": 0,
+    "modules_affected": 1
+  },
+  "byDepthCounts": {
+    "1": 1,
+    "2": 1,
+    "3": 1
+  },
+  "affected_processes": [],
+  "affected_modules": [
+    {
+      "name": "Subtitles.content",
+      "hits": 3,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/subtitles.content/init-netflix-subtitles.ts:initNetflixSubtitles.tick@56:2",
+        "name": "tick",
+        "filePath": "src/entrypoints/subtitles.content/init-netflix-subtitles.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "Function:src/entrypoints/subtitles.content/init-netflix-subtitles.ts:initNetflixSubtitles",
+        "name": "initNetflixSubtitles",
+        "filePath": "src/entrypoints/subtitles.content/init-netflix-subtitles.ts",
+        "relationType": "CALLS",
+        "confidence": 0.8,
+        "processes": []
+      }
+    ],
+    "3": [
+      {
+        "depth": 3,
+        "id": "Function:src/entrypoints/subtitles.content/runtime.ts:bootstrapSubtitlesRuntime",
+        "name": "bootstrapSubtitlesRuntime",
+        "filePath": "src/entrypoints/subtitles.content/runtime.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ]
+  }
+}

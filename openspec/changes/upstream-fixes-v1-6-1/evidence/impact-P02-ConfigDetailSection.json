@@ -1,0 +1,807 @@
+{
+  "target": {
+    "id": "Function:src/entrypoints/options/components/config-detail-section.tsx:ConfigDetailSection",
+    "name": "ConfigDetailSection",
+    "type": "Function",
+    "filePath": "src/entrypoints/options/components/config-detail-section.tsx"
+  },
+  "direction": "upstream",
+  "impactedCount": 14,
+  "risk": "CRITICAL",
+  "riskSharedAxes": "MEDIUM",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 12,
+    "processes_affected": 13,
+    "modules_affected": 1
+  },
+  "byDepthCounts": {
+    "1": 12,
+    "2": 2
+  },
+  "affected_processes": [
+    {
+      "name": "AutoTranslateWebsitesPage",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/translation/translation-control/website-patterns-page.tsx",
+      "affected_process_count": 5,
+      "total_hits": 10,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "NeverAutoTranslateWebsitesPage",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/translation/translation-control/website-patterns-page.tsx",
+      "affected_process_count": 5,
+      "total_hits": 10,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "GlossaryEditorPage",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/advanced/glossary/editor-page.tsx",
+      "affected_process_count": 8,
+      "total_hits": 8,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "CustomCssPage",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/translation/translation-style/custom-css/index.tsx",
+      "affected_process_count": 8,
+      "total_hits": 8,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "SubtitlesCustomCssPage",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/video-subtitles/subtitles-style/custom-css/index.tsx",
+      "affected_process_count": 8,
+      "total_hits": 8,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "SubtitlesStylePage",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/video-subtitles/subtitles-style/style-editor/index.tsx",
+      "affected_process_count": 8,
+      "total_hits": 8,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "TranslationQueuePage",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/translation/translation-queue/queue-page.tsx",
+      "affected_process_count": 7,
+      "total_hits": 7,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "SubtitlesQueuePage",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/video-subtitles/subtitles-queue/queue-page.tsx",
+      "affected_process_count": 7,
+      "total_hits": 7,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "TranslationControlPage",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/translation/translation-control/control-page.tsx",
+      "affected_process_count": 6,
+      "total_hits": 6,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "SiteRulesPage",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/translation/translation-control/site-rules/index.tsx",
+      "affected_process_count": 6,
+      "total_hits": 6,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "ExtensionActivationPage",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/preference/extension-activation/activation-page.tsx",
+      "affected_process_count": 3,
+      "total_hits": 3,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "PersonalizedPromptsPage",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/translation/personalized-prompts/prompts/index.tsx",
+      "affected_process_count": 3,
+      "total_hits": 3,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "SubtitlesCustomPromptsPage",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/video-subtitles/custom-prompts/prompts/index.tsx",
+      "affected_process_count": 3,
+      "total_hits": 3,
+      "earliest_broken_step": 1
+    }
+  ],
+  "affected_modules": [
+    {
+      "name": "Components",
+      "hits": 14,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/options/pages/advanced/glossary/editor-page.tsx:GlossaryEditorPage",
+        "name": "GlossaryEditorPage",
+        "filePath": "src/entrypoints/options/pages/advanced/glossary/editor-page.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_134_glossaryeditorpage",
+            "label": "GlossaryEditorPage → Save",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_270_glossaryeditorpage",
+            "label": "GlossaryEditorPage → IsDrillInState",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_295_glossaryeditorpage",
+            "label": "GlossaryEditorPage → ConfigItem",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_135_glossaryeditorpage",
+            "label": "GlossaryEditorPage → GlossaryQueryKey",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_221_glossaryeditorpage",
+            "label": "GlossaryEditorPage → UseGlossaryInvalidation",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_384_glossaryeditorpage",
+            "label": "GlossaryEditorPage → RawT",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_271_glossaryeditorpage",
+            "label": "GlossaryEditorPage → IsPlainLeftClick",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_276_glossaryeditorpage",
+            "label": "GlossaryEditorPage → ConfigSection",
+            "processType": "intra_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/options/pages/preference/extension-activation/activation-page.tsx:ExtensionActivationPage",
+        "name": "ExtensionActivationPage",
+        "filePath": "src/entrypoints/options/pages/preference/extension-activation/activation-page.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_285_extensionactivationp",
+            "label": "ExtensionActivationPage → IsPlainLeftClick",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_302_extensionactivationp",
+            "label": "ExtensionActivationPage → ConfigSection",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_284_extensionactivationp",
+            "label": "ExtensionActivationPage → IsDrillInState",
+            "processType": "intra_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/options/pages/translation/personalized-prompts/prompts/index.tsx:PersonalizedPromptsPage",
+        "name": "PersonalizedPromptsPage",
+        "filePath": "src/entrypoints/options/pages/translation/personalized-prompts/prompts/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_293_personalizedpromptsp",
+            "label": "PersonalizedPromptsPage → IsDrillInState",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_294_personalizedpromptsp",
+            "label": "PersonalizedPromptsPage → IsPlainLeftClick",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_332_personalizedpromptsp",
+            "label": "PersonalizedPromptsPage → ConfigSection",
+            "processType": "intra_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/options/pages/translation/translation-control/control-page.tsx:TranslationControlPage",
+        "name": "TranslationControlPage",
+        "filePath": "src/entrypoints/options/pages/translation/translation-control/control-page.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_167_translationcontrolpa",
+            "label": "TranslationControlPage → LanguageChips",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_359_translationcontrolpa",
+            "label": "TranslationControlPage → ConfigItem",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_300_translationcontrolpa",
+            "label": "TranslationControlPage → IsPlainLeftClick",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_299_translationcontrolpa",
+            "label": "TranslationControlPage → IsDrillInState",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_402_translationcontrolpa",
+            "label": "TranslationControlPage → RawT",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_337_translationcontrolpa",
+            "label": "TranslationControlPage → ConfigSection",
+            "processType": "intra_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/options/pages/translation/translation-control/site-rules/index.tsx:SiteRulesPage",
+        "name": "SiteRulesPage",
+        "filePath": "src/entrypoints/options/pages/translation/translation-control/site-rules/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_372_siterulespage",
+            "label": "SiteRulesPage → RawT",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_305_siterulespage",
+            "label": "SiteRulesPage → IsDrillInState",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_365_siterulespage",
+            "label": "SiteRulesPage → ConfigItem",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_306_siterulespage",
+            "label": "SiteRulesPage → IsPlainLeftClick",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_342_siterulespage",
+            "label": "SiteRulesPage → ConfigSection",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_168_siterulespage",
+            "label": "SiteRulesPage → SyncFromExternal",
+            "processType": "intra_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/options/pages/translation/translation-control/website-patterns-page.tsx:WebsitePatternsPage",
+        "name": "WebsitePatternsPage",
+        "filePath": "src/entrypoints/options/pages/translation/translation-control/website-patterns-page.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_92_autotranslatewebsite",
+            "label": "AutoTranslateWebsitesPage → ConfigSection",
+            "processType": "intra_community",
+            "step": 2
+          },
+          {
+            "id": "proc_279_neverautotranslatewe",
+            "label": "NeverAutoTranslateWebsitesPage → PatternsTable",
+            "processType": "intra_community",
+            "step": 2
+          },
+          {
+            "id": "proc_46_autotranslatewebsite",
+            "label": "AutoTranslateWebsitesPage → IsPlainLeftClick",
+            "processType": "intra_community",
+            "step": 2
+          },
+          {
+            "id": "proc_235_neverautotranslatewe",
+            "label": "NeverAutoTranslateWebsitesPage → IsDrillInState",
+            "processType": "intra_community",
+            "step": 2
+          },
+          {
+            "id": "proc_45_autotranslatewebsite",
+            "label": "AutoTranslateWebsitesPage → IsDrillInState",
+            "processType": "intra_community",
+            "step": 2
+          },
+          {
+            "id": "proc_404_autotranslatewebsite",
+            "label": "AutoTranslateWebsitesPage → RawT",
+            "processType": "intra_community",
+            "step": 2
+          },
+          {
+            "id": "proc_236_neverautotranslatewe",
+            "label": "NeverAutoTranslateWebsitesPage → IsPlainLeftClick",
+            "processType": "intra_community",
+            "step": 2
+          },
+          {
+            "id": "proc_255_autotranslatewebsite",
+            "label": "AutoTranslateWebsitesPage → PatternsTable",
+            "processType": "intra_community",
+            "step": 2
+          },
+          {
+            "id": "proc_247_neverautotranslatewe",
+            "label": "NeverAutoTranslateWebsitesPage → ConfigSection",
+            "processType": "intra_community",
+            "step": 2
+          },
+          {
+            "id": "proc_405_neverautotranslatewe",
+            "label": "NeverAutoTranslateWebsitesPage → RawT",
+            "processType": "intra_community",
+            "step": 2
+          }
+        ]
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/options/pages/translation/translation-queue/queue-page.tsx:TranslationQueuePage",
+        "name": "TranslationQueuePage",
+        "filePath": "src/entrypoints/options/pages/translation/translation-queue/queue-page.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_169_translationqueuepage",
+            "label": "TranslationQueuePage → BatchNumberInput",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_312_translationqueuepage",
+            "label": "TranslationQueuePage → IsPlainLeftClick",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_311_translationqueuepage",
+            "label": "TranslationQueuePage → IsDrillInState",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_369_translationqueuepage",
+            "label": "TranslationQueuePage → ConfigItem",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_170_translationqueuepage",
+            "label": "TranslationQueuePage → TranslateNumberInput",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_374_translationqueuepage",
+            "label": "TranslationQueuePage → RawT",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_345_translationqueuepage",
+            "label": "TranslationQueuePage → ConfigSection",
+            "processType": "intra_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/options/pages/translation/translation-style/custom-css/index.tsx:CustomCssPage",
+        "name": "CustomCssPage",
+        "filePath": "src/entrypoints/options/pages/translation/translation-style/custom-css/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_93_customcsspage",
+            "label": "CustomCssPage → Measure",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_376_customcsspage",
+            "label": "CustomCssPage → RawT",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_95_customcsspage",
+            "label": "CustomCssPage → BuildFrameCSS",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_317_customcsspage",
+            "label": "CustomCssPage → IsDrillInState",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_94_customcsspage",
+            "label": "CustomCssPage → Attach",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_96_customcsspage",
+            "label": "CustomCssPage → UseAppliedTheme",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_348_customcsspage",
+            "label": "CustomCssPage → ConfigSection",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_318_customcsspage",
+            "label": "CustomCssPage → IsPlainLeftClick",
+            "processType": "intra_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/options/pages/video-subtitles/custom-prompts/prompts/index.tsx:SubtitlesCustomPromptsPage",
+        "name": "SubtitlesCustomPromptsPage",
+        "filePath": "src/entrypoints/options/pages/video-subtitles/custom-prompts/prompts/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_323_subtitlescustompromp",
+            "label": "SubtitlesCustomPromptsPage → IsDrillInState",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_351_subtitlescustompromp",
+            "label": "SubtitlesCustomPromptsPage → ConfigSection",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_324_subtitlescustompromp",
+            "label": "SubtitlesCustomPromptsPage → IsPlainLeftClick",
+            "processType": "intra_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/options/pages/video-subtitles/subtitles-queue/queue-page.tsx:SubtitlesQueuePage",
+        "name": "SubtitlesQueuePage",
+        "filePath": "src/entrypoints/options/pages/video-subtitles/subtitles-queue/queue-page.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_378_subtitlesqueuepage",
+            "label": "SubtitlesQueuePage → RawT",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_357_subtitlesqueuepage",
+            "label": "SubtitlesQueuePage → ConfigSection",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_172_subtitlesqueuepage",
+            "label": "SubtitlesQueuePage → SubtitlesRateInput",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_329_subtitlesqueuepage",
+            "label": "SubtitlesQueuePage → IsDrillInState",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_171_subtitlesqueuepage",
+            "label": "SubtitlesQueuePage → BatchNumberInput",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_379_subtitlesqueuepage",
+            "label": "SubtitlesQueuePage → ConfigItem",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_330_subtitlesqueuepage",
+            "label": "SubtitlesQueuePage → IsPlainLeftClick",
+            "processType": "intra_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/options/pages/video-subtitles/subtitles-style/custom-css/index.tsx:SubtitlesCustomCssPage",
+        "name": "SubtitlesCustomCssPage",
+        "filePath": "src/entrypoints/options/pages/video-subtitles/subtitles-style/custom-css/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_360_subtitlescustomcsspa",
+            "label": "SubtitlesCustomCssPage → ConfigSection",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_334_subtitlescustomcsspa",
+            "label": "SubtitlesCustomCssPage → IsDrillInState",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_222_subtitlescustomcsspa",
+            "label": "SubtitlesCustomCssPage → DeleteAction",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_233_subtitlescustomcsspa",
+            "label": "SubtitlesCustomCssPage → SplitShadowRootCss",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_217_subtitlescustomcsspa",
+            "label": "SubtitlesCustomCssPage → Sha256Hex",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_380_subtitlescustomcsspa",
+            "label": "SubtitlesCustomCssPage → RawT",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_335_subtitlescustomcsspa",
+            "label": "SubtitlesCustomCssPage → IsPlainLeftClick",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_243_subtitlescustomcsspa",
+            "label": "SubtitlesCustomCssPage → ShadowHostBuilder",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/options/pages/video-subtitles/subtitles-style/style-editor/index.tsx:SubtitlesStylePage",
+        "name": "SubtitlesStylePage",
+        "filePath": "src/entrypoints/options/pages/video-subtitles/subtitles-style/style-editor/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_382_subtitlesstylepage",
+            "label": "SubtitlesStylePage → RawT",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_267_subtitlesstylepage",
+            "label": "SubtitlesStylePage → DeleteAction",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_363_subtitlesstylepage",
+            "label": "SubtitlesStylePage → ConfigSection",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_268_subtitlesstylepage",
+            "label": "SubtitlesStylePage → SplitShadowRootCss",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_340_subtitlesstylepage",
+            "label": "SubtitlesStylePage → IsPlainLeftClick",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_263_subtitlesstylepage",
+            "label": "SubtitlesStylePage → Sha256Hex",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_272_subtitlesstylepage",
+            "label": "SubtitlesStylePage → ShadowHostBuilder",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_339_subtitlesstylepage",
+            "label": "SubtitlesStylePage → IsDrillInState",
+            "processType": "intra_community",
+            "step": 1
+          }
+        ]
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "Function:src/entrypoints/options/pages/translation/translation-control/website-patterns-page.tsx:AutoTranslateWebsitesPage",
+        "name": "AutoTranslateWebsitesPage",
+        "filePath": "src/entrypoints/options/pages/translation/translation-control/website-patterns-page.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_46_autotranslatewebsite",
+            "label": "AutoTranslateWebsitesPage → IsPlainLeftClick",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_92_autotranslatewebsite",
+            "label": "AutoTranslateWebsitesPage → ConfigSection",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_255_autotranslatewebsite",
+            "label": "AutoTranslateWebsitesPage → PatternsTable",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_45_autotranslatewebsite",
+            "label": "AutoTranslateWebsitesPage → IsDrillInState",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_404_autotranslatewebsite",
+            "label": "AutoTranslateWebsitesPage → RawT",
+            "processType": "intra_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/entrypoints/options/pages/translation/translation-control/website-patterns-page.tsx:NeverAutoTranslateWebsitesPage",
+        "name": "NeverAutoTranslateWebsitesPage",
+        "filePath": "src/entrypoints/options/pages/translation/translation-control/website-patterns-page.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_236_neverautotranslatewe",
+            "label": "NeverAutoTranslateWebsitesPage → IsPlainLeftClick",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_247_neverautotranslatewe",
+            "label": "NeverAutoTranslateWebsitesPage → ConfigSection",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_405_neverautotranslatewe",
+            "label": "NeverAutoTranslateWebsitesPage → RawT",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_279_neverautotranslatewe",
+            "label": "NeverAutoTranslateWebsitesPage → PatternsTable",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_235_neverautotranslatewe",
+            "label": "NeverAutoTranslateWebsitesPage → IsDrillInState",
+            "processType": "intra_community",
+            "step": 1
+          }
+        ]
+      }
+    ]
+  }
+}

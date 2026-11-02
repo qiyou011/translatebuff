@@ -1,0 +1,147 @@
+{
+  "target": {
+    "id": "Method:src/entrypoints/subtitles.content/universal-adapter.ts:UniversalVideoAdapter.switchSubtitlesFetcher#2",
+    "name": "switchSubtitlesFetcher",
+    "type": "Method",
+    "filePath": "src/entrypoints/subtitles.content/universal-adapter.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 11,
+  "risk": "LOW",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 2,
+    "processes_affected": 0,
+    "modules_affected": 2
+  },
+  "byDepthCounts": {
+    "1": 2,
+    "2": 4,
+    "3": 5
+  },
+  "affected_processes": [],
+  "affected_modules": [
+    {
+      "name": "Subtitles.content",
+      "hits": 10,
+      "impact": "direct"
+    },
+    {
+      "name": "Xcom",
+      "hits": 1,
+      "impact": "indirect"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Class:src/entrypoints/subtitles.content/universal-adapter.ts:UniversalVideoAdapter",
+        "name": "UniversalVideoAdapter",
+        "filePath": "src/entrypoints/subtitles.content/universal-adapter.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Method:src/entrypoints/subtitles.content/universal-adapter.ts:UniversalVideoAdapter.handleToggleSubtitles#2",
+        "name": "handleToggleSubtitles",
+        "filePath": "src/entrypoints/subtitles.content/universal-adapter.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "Function:src/entrypoints/subtitles.content/init-netflix-subtitles.ts:initNetflixSubtitles",
+        "name": "initNetflixSubtitles",
+        "filePath": "src/entrypoints/subtitles.content/init-netflix-subtitles.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/entrypoints/subtitles.content/platforms/xcom/index.ts:createXcomSubtitlesAdapter",
+        "name": "createXcomSubtitlesAdapter",
+        "filePath": "src/entrypoints/subtitles.content/platforms/xcom/index.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/entrypoints/subtitles.content/platforms/youtube/index.ts:createYoutubeSubtitlesAdapter",
+        "name": "createYoutubeSubtitlesAdapter",
+        "filePath": "src/entrypoints/subtitles.content/platforms/youtube/index.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Method:src/entrypoints/subtitles.content/universal-adapter.ts:UniversalVideoAdapter.toggleSubtitlesWithSource#2",
+        "name": "toggleSubtitlesWithSource",
+        "filePath": "src/entrypoints/subtitles.content/universal-adapter.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "3": [
+      {
+        "depth": 3,
+        "id": "Function:src/entrypoints/subtitles.content/init-xcom-subtitles.ts:initXcomSubtitles.tryInit@68:2",
+        "name": "tryInit",
+        "filePath": "src/entrypoints/subtitles.content/init-xcom-subtitles.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/entrypoints/subtitles.content/init-youtube-subtitles.ts:initYoutubeSubtitles.tryInit@42:2",
+        "name": "tryInit",
+        "filePath": "src/entrypoints/subtitles.content/init-youtube-subtitles.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/entrypoints/subtitles.content/runtime.ts:bootstrapSubtitlesRuntime",
+        "name": "bootstrapSubtitlesRuntime",
+        "filePath": "src/entrypoints/subtitles.content/runtime.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/entrypoints/subtitles.content/universal-adapter.ts:UniversalVideoAdapter.tryAutoStartSubtitles.start@599:6",
+        "name": "start",
+        "filePath": "src/entrypoints/subtitles.content/universal-adapter.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Method:src/entrypoints/subtitles.content/universal-adapter.ts:UniversalVideoAdapter.tryAutoStartSubtitles#0",
+        "name": "tryAutoStartSubtitles",
+        "filePath": "src/entrypoints/subtitles.content/universal-adapter.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ]
+  }
+}

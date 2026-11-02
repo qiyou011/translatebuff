@@ -81,6 +81,12 @@ const GOOGLE_LINE_BREAK_MARKER_SINGLE_REGEX = new RegExp(
   "g",
 )
 const LINE_SPLIT_REGEX = /\r\n?|\n/
+// html payloads are serializer output (translationOnly page mode), so a raw
+// "<" in them always opens a tag and attribute values are always
+// double-quoted: a tag runs from "<" to the first ">" outside quotes. Only
+// newlines between tags are line structure — one inside a tag sits in an
+// attribute value and must stay where it is.
+const HTML_TAG_SPLIT_REGEX = /(<(?:[^>"]|"[^"]*")*>)/
 const LINE_INDENT_REGEX = /^[ \t]*/
 // A dash-family bullet must be followed by horizontal whitespace so negative
 // numbers ("-5°C") and emphasis ("*bold*") never count as list markers.
@@ -103,17 +109,66 @@ export interface PreservedLine {
   content: string
 }
 
+function toPreservedLine(line: string): PreservedLine {
+  const indent = LINE_INDENT_REGEX.exec(line)?.[0] ?? ""
+  const rest = line.slice(indent.length)
+  const bullet = LINE_BULLET_REGEX.exec(rest)?.[0] ?? ""
+  return { content: rest, prefix: indent + bullet }
+}
+
 export function splitPreservedLines(text: string): PreservedLine[] {
-  return text.split(LINE_SPLIT_REGEX).map((line) => {
-    const indent = LINE_INDENT_REGEX.exec(line)?.[0] ?? ""
-    const rest = line.slice(indent.length)
-    const bullet = LINE_BULLET_REGEX.exec(rest)?.[0] ?? ""
-    return { content: rest, prefix: indent + bullet }
+  return text.split(LINE_SPLIT_REGEX).map(toPreservedLine)
+}
+
+/**
+ * The html counterpart of `splitPreservedLines`: lines end only at newlines in
+ * text content. A line may open a tag that a later line closes; rejoined with
+ * marker pairs it is the same markup with each newline swapped for markers.
+ * A line that starts with a tag has no prefix.
+ */
+export function splitPreservedHtmlLines(html: string): PreservedLine[] {
+  const lines = [""]
+  html.split(HTML_TAG_SPLIT_REGEX).forEach((part, index) => {
+    // split() with a capture group alternates text (even) and tags (odd).
+    const [first = "", ...rest] = index % 2 === 0 ? part.split(LINE_SPLIT_REGEX) : [part]
+    lines[lines.length - 1] += first
+    lines.push(...rest)
   })
+  return lines.map(toPreservedLine)
 }
 
 export function reassemblePreservedLine(line: PreservedLine, translation: string): string {
   return line.prefix + translation.replace(TRANSLATED_LINE_PREFIX_REGEX, "")
+}
+
+// Separator runs are layout: send empty markers so the model cannot rewrite
+// their characters or the horizontal whitespace belonging to them.
+const PUNCTUATION_RUN_REGEX = /([ \t]*)(?:([-=_*~#])\2{2,}|\.{4,})([ \t]*)/g
+const PUNCTUATION_RUN_PLACEHOLDER_REGEX =
+  /[ \t]*<span data-read-frog-run="(\d+)"\s*(?:\/>|>\s*<\/span>)[ \t]*/g
+
+function protectPunctuationRuns(requestText: string): { text: string; runs: string[] } {
+  const runs: string[] = []
+  const text = requestText
+    .split(HTML_TAG_SPLIT_REGEX)
+    .map((part, index) =>
+      index % 2 === 1
+        ? part
+        : part.replace(PUNCTUATION_RUN_REGEX, (run, leading: string, _char, trailing: string) => {
+            runs.push(run)
+            return `${leading}<span data-read-frog-run="${runs.length - 1}"></span>${trailing}`
+          }),
+    )
+    .join("")
+  return { text, runs }
+}
+
+function restorePunctuationRuns(translatedText: string, runs: readonly string[]): string {
+  if (runs.length === 0) return translatedText
+  return translatedText.replace(
+    PUNCTUATION_RUN_PLACEHOLDER_REGEX,
+    (_placeholder, index: string) => runs[Number(index)] ?? " ",
+  )
 }
 
 export interface GoogleTranslationOptions {
@@ -129,23 +184,26 @@ export function prepareGoogleTranslation(sourceText: string, options?: GoogleTra
   // HTML-encoded and is decoded exactly once by normalizeTranslationOutput in
   // executeTranslate — line reassembly happens before that and only ever
   // concatenates response items with plain prefixes, so it cannot interfere.
-  const preserveLineBreaks = options?.preserveLineBreaks === true && options?.textFormat !== "html"
+  const isHtml = options?.textFormat === "html"
   let preservedLines: PreservedLine[] | undefined
   let requestText: string
-  if (options?.textFormat === "html") {
-    requestText = sourceText
-  } else if (!preserveLineBreaks) {
-    requestText = escapeText(sourceText)
-  } else {
+  if (options?.preserveLineBreaks === true) {
     // ONE item joined by marker pairs — never per-line items, so the
     // endpoint detects the language of the whole unit (see notes above).
     // Blank lines become adjacent pairs and survive verbatim.
-    preservedLines = splitPreservedLines(sourceText)
+    preservedLines = isHtml ? splitPreservedHtmlLines(sourceText) : splitPreservedLines(sourceText)
     requestText = preservedLines
-      .map((line) => escapeText(line.content))
+      .map((line) => (isHtml ? line.content : escapeText(line.content)))
       .join(GOOGLE_LINE_BREAK_MARKER_PAIR)
+  } else {
+    requestText = isHtml ? sourceText : escapeText(sourceText)
   }
-  return { requestText, preservedLines }
+  const punctuationRuns = protectPunctuationRuns(requestText)
+  return {
+    requestText: punctuationRuns.text,
+    preservedLines,
+    punctuationRuns: punctuationRuns.runs,
+  }
 }
 
 /** Raw page batch transport: shape validation belongs outside RequestQueue. */
@@ -196,7 +254,9 @@ export async function requestGoogleTranslationBatch(
 export function restoreGoogleTranslation(
   translatedText: string,
   preservedLines?: PreservedLine[],
+  punctuationRuns: readonly string[] = [],
 ): string {
+  translatedText = restorePunctuationRuns(translatedText, punctuationRuns)
   if (!preservedLines) {
     return translatedText
   }
@@ -231,7 +291,10 @@ export async function googleTranslate(
   toLang: string,
   options?: GoogleTranslationOptions,
 ): Promise<string> {
-  const { requestText, preservedLines } = prepareGoogleTranslation(sourceText, options)
+  const { requestText, preservedLines, punctuationRuns } = prepareGoogleTranslation(
+    sourceText,
+    options,
+  )
   const result = await requestGoogleTranslationBatch(
     [requestText],
     fromLang,
@@ -242,7 +305,7 @@ export async function googleTranslate(
     if (!Array.isArray(result) || !Array.isArray(result[0]) || typeof result[0][0] !== "string") {
       throw new TypeError("Unexpected response format from translation API")
     }
-    return restoreGoogleTranslation(result[0][0], preservedLines)
+    return restoreGoogleTranslation(result[0][0], preservedLines, punctuationRuns)
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error)
     throw new Error(`Failed to parse translation response: ${message}`, { cause: error })

@@ -1,0 +1,75 @@
+{
+  "target": {
+    "id": "Function:src/utils/subtitles/fetchers/youtube/noise-filter.ts:filterNoiseText",
+    "name": "filterNoiseText",
+    "type": "Function",
+    "filePath": "src/utils/subtitles/fetchers/youtube/noise-filter.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 3,
+  "risk": "LOW",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 1,
+    "processes_affected": 0,
+    "modules_affected": 2
+  },
+  "byDepthCounts": {
+    "1": 1,
+    "2": 1,
+    "3": 1
+  },
+  "affected_processes": [],
+  "affected_modules": [
+    {
+      "name": "Parser",
+      "hits": 2,
+      "impact": "direct"
+    },
+    {
+      "name": "Youtube",
+      "hits": 1,
+      "impact": "indirect"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/utils/subtitles/fetchers/youtube/noise-filter.ts:filterNoiseFromEvents",
+        "name": "filterNoiseFromEvents",
+        "filePath": "src/utils/subtitles/fetchers/youtube/noise-filter.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "Method:src/utils/subtitles/fetchers/youtube/index.ts:YoutubeSubtitlesFetcher.processRawEvents#1",
+        "name": "processRawEvents",
+        "filePath": "src/utils/subtitles/fetchers/youtube/index.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "3": [
+      {
+        "depth": 3,
+        "id": "Method:src/utils/subtitles/fetchers/youtube/index.ts:YoutubeSubtitlesFetcher.fetch#0",
+        "name": "fetch",
+        "filePath": "src/utils/subtitles/fetchers/youtube/index.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ]
+  }
+}

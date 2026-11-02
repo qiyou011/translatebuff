@@ -1,0 +1,290 @@
+{
+  "target": {
+    "id": "Function:src/entrypoints/options/components/shortcut-link.tsx:ShortcutLink",
+    "name": "ShortcutLink",
+    "type": "Function",
+    "filePath": "src/entrypoints/options/components/shortcut-link.tsx"
+  },
+  "direction": "upstream",
+  "impactedCount": 7,
+  "risk": "HIGH",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 4,
+    "processes_affected": 3,
+    "modules_affected": 1
+  },
+  "byDepthCounts": {
+    "1": 4,
+    "2": 3
+  },
+  "affected_processes": [
+    {
+      "name": "SelectionToolbarPage",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/selection-toolbar/index.tsx",
+      "affected_process_count": 5,
+      "total_hits": 10,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "TranslationPage",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/translation/index.tsx",
+      "affected_process_count": 4,
+      "total_hits": 8,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "VideoSubtitlesPage",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/video-subtitles/index.tsx",
+      "affected_process_count": 7,
+      "total_hits": 8,
+      "earliest_broken_step": 1
+    }
+  ],
+  "affected_modules": [
+    {
+      "name": "Components",
+      "hits": 7,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/options/pages/selection-toolbar/actions/index.tsx:ActionsSection",
+        "name": "ActionsSection",
+        "filePath": "src/entrypoints/options/pages/selection-toolbar/actions/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_244_selectiontoolbarpage",
+            "label": "SelectionToolbarPage → ConfigItem",
+            "processType": "intra_community",
+            "step": 2
+          },
+          {
+            "id": "proc_90_selectiontoolbarpage",
+            "label": "SelectionToolbarPage → ActionIdentity",
+            "processType": "intra_community",
+            "step": 2
+          },
+          {
+            "id": "proc_314_selectiontoolbarpage",
+            "label": "SelectionToolbarPage → ConfigSection",
+            "processType": "intra_community",
+            "step": 2
+          },
+          {
+            "id": "proc_364_selectiontoolbarpage",
+            "label": "SelectionToolbarPage → RawT",
+            "processType": "intra_community",
+            "step": 2
+          },
+          {
+            "id": "proc_89_selectiontoolbarpage",
+            "label": "SelectionToolbarPage → BuildSectionSearch",
+            "processType": "cross_community",
+            "step": 2
+          }
+        ]
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/options/pages/translation/hover-translation/index.tsx:HoverTranslationSection",
+        "name": "HoverTranslationSection",
+        "filePath": "src/entrypoints/options/pages/translation/hover-translation/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_245_translationpage",
+            "label": "TranslationPage → BuildSectionSearch",
+            "processType": "cross_community",
+            "step": 2
+          },
+          {
+            "id": "proc_326_translationpage",
+            "label": "TranslationPage → ConfigSection",
+            "processType": "intra_community",
+            "step": 2
+          },
+          {
+            "id": "proc_353_translationpage",
+            "label": "TranslationPage → ConfigItem",
+            "processType": "intra_community",
+            "step": 2
+          },
+          {
+            "id": "proc_370_translationpage",
+            "label": "TranslationPage → RawT",
+            "processType": "intra_community",
+            "step": 2
+          }
+        ]
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/options/pages/translation/preference/index.tsx:PreferenceSection",
+        "name": "PreferenceSection",
+        "filePath": "src/entrypoints/options/pages/translation/preference/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/options/pages/video-subtitles/preference/index.tsx:PreferenceSection",
+        "name": "PreferenceSection",
+        "filePath": "src/entrypoints/options/pages/video-subtitles/preference/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_274_videosubtitlespage",
+            "label": "VideoSubtitlesPage → BuildSectionSearch",
+            "processType": "cross_community",
+            "step": 2
+          }
+        ]
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "Function:src/entrypoints/options/pages/selection-toolbar/index.tsx:SelectionToolbarPage",
+        "name": "SelectionToolbarPage",
+        "filePath": "src/entrypoints/options/pages/selection-toolbar/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_90_selectiontoolbarpage",
+            "label": "SelectionToolbarPage → ActionIdentity",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_364_selectiontoolbarpage",
+            "label": "SelectionToolbarPage → RawT",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_244_selectiontoolbarpage",
+            "label": "SelectionToolbarPage → ConfigItem",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_89_selectiontoolbarpage",
+            "label": "SelectionToolbarPage → BuildSectionSearch",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_314_selectiontoolbarpage",
+            "label": "SelectionToolbarPage → ConfigSection",
+            "processType": "intra_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/entrypoints/options/pages/translation/index.tsx:TranslationPage",
+        "name": "TranslationPage",
+        "filePath": "src/entrypoints/options/pages/translation/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_370_translationpage",
+            "label": "TranslationPage → RawT",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_326_translationpage",
+            "label": "TranslationPage → ConfigSection",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_353_translationpage",
+            "label": "TranslationPage → ConfigItem",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_245_translationpage",
+            "label": "TranslationPage → BuildSectionSearch",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/entrypoints/options/pages/video-subtitles/index.tsx:VideoSubtitlesPage",
+        "name": "VideoSubtitlesPage",
+        "filePath": "src/entrypoints/options/pages/video-subtitles/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_98_videosubtitlespage",
+            "label": "VideoSubtitlesPage → ErrorStatus",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_47_videosubtitlespage",
+            "label": "VideoSubtitlesPage → QuotaNotice",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_354_videosubtitlespage",
+            "label": "VideoSubtitlesPage → ConfigSection",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_97_videosubtitlespage",
+            "label": "VideoSubtitlesPage → QuotaSkeleton",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_375_videosubtitlespage",
+            "label": "VideoSubtitlesPage → ConfigItem",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_274_videosubtitlespage",
+            "label": "VideoSubtitlesPage → BuildSectionSearch",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_264_videosubtitlespage",
+            "label": "VideoSubtitlesPage → RawT",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,3129 @@
+{
+  "summary": {
+    "changed_count": 203,
+    "affected_count": 121,
+    "changed_files": 76,
+    "risk_level": "critical"
+  },
+  "changed_symbols": [
+    {
+      "id": "Function:src/components/ui/base-ui/color-picker.tsx:SaturationSquare",
+      "name": "SaturationSquare",
+      "type": "Function",
+      "filePath": "src/components/ui/base-ui/color-picker.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/components/ui/base-ui/color-picker.tsx:TextColorInput",
+      "name": "TextColorInput",
+      "type": "Function",
+      "filePath": "src/components/ui/base-ui/color-picker.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/components/ui/base-ui/color-picker.tsx:ScrubColorInput",
+      "name": "ScrubColorInput",
+      "type": "Function",
+      "filePath": "src/components/ui/base-ui/color-picker.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/components/ui/base-ui/color-picker.tsx:ColorPicker",
+      "name": "ColorPicker",
+      "type": "Function",
+      "filePath": "src/components/ui/base-ui/color-picker.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/components/ui/base-ui/color-picker.tsx:ColorPicker.updateHsv@1596:2",
+      "name": "updateHsv",
+      "type": "Function",
+      "filePath": "src/components/ui/base-ui/color-picker.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/components/ui/base-ui/color-picker.tsx:ColorPickerPopover",
+      "name": "ColorPickerPopover",
+      "type": "Function",
+      "filePath": "src/components/ui/base-ui/color-picker.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/components/ui/selection-popover/index.tsx:SelectionPopoverShell",
+      "name": "SelectionPopoverShell",
+      "type": "Function",
+      "filePath": "src/components/ui/selection-popover/index.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/host.content/mount-host-toast.tsx:mountHostToast",
+      "name": "mountHostToast",
+      "type": "Function",
+      "filePath": "src/entrypoints/host.content/mount-host-toast.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/host.content/translation-control/page-translation.ts:hasBox",
+      "name": "hasBox",
+      "type": "Function",
+      "filePath": "src/entrypoints/host.content/translation-control/page-translation.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/host.content/translation-control/page-translation.ts:collectRenderedBoxes",
+      "name": "collectRenderedBoxes",
+      "type": "Function",
+      "filePath": "src/entrypoints/host.content/translation-control/page-translation.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/host.content/translation-control/page-translation.ts:parentElementAcrossShadow",
+      "name": "parentElementAcrossShadow",
+      "type": "Function",
+      "filePath": "src/entrypoints/host.content/translation-control/page-translation.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/host.content/translation-control/page-translation.ts:isInHiddenRegion",
+      "name": "isInHiddenRegion",
+      "type": "Function",
+      "filePath": "src/entrypoints/host.content/translation-control/page-translation.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/host.content/translation-control/page-translation.ts:findLayoutBox",
+      "name": "findLayoutBox",
+      "type": "Function",
+      "filePath": "src/entrypoints/host.content/translation-control/page-translation.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/host.content/translation-control/page-translation.ts:layoutExtent",
+      "name": "layoutExtent",
+      "type": "Function",
+      "filePath": "src/entrypoints/host.content/translation-control/page-translation.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/host.content/translation-control/page-translation.ts:renderedHeight",
+      "name": "renderedHeight",
+      "type": "Function",
+      "filePath": "src/entrypoints/host.content/translation-control/page-translation.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/host.content/translation-control/page-translation.ts:maxUnitHeight",
+      "name": "maxUnitHeight",
+      "type": "Function",
+      "filePath": "src/entrypoints/host.content/translation-control/page-translation.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/host.content/translation-control/page-translation.ts:maxUnitWidth",
+      "name": "maxUnitWidth",
+      "type": "Function",
+      "filePath": "src/entrypoints/host.content/translation-control/page-translation.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/host.content/translation-control/page-translation.ts:layoutFitsSplitCap",
+      "name": "layoutFitsSplitCap",
+      "type": "Function",
+      "filePath": "src/entrypoints/host.content/translation-control/page-translation.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Class:src/entrypoints/host.content/translation-control/page-translation.ts:PageTranslationManager",
+      "name": "PageTranslationManager",
+      "type": "Class",
+      "filePath": "src/entrypoints/host.content/translation-control/page-translation.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/entrypoints/host.content/translation-control/page-translation.ts:PageTranslationManager.boxlessUnitObserver",
+      "name": "boxlessUnitObserver",
+      "type": "Property",
+      "filePath": "src/entrypoints/host.content/translation-control/page-translation.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/entrypoints/host.content/translation-control/page-translation.ts:PageTranslationManager.pendingBoxlessUnits",
+      "name": "pendingBoxlessUnits",
+      "type": "Property",
+      "filePath": "src/entrypoints/host.content/translation-control/page-translation.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Method:src/entrypoints/host.content/translation-control/page-translation.ts:PageTranslationManager.runStart#2",
+      "name": "runStart",
+      "type": "Method",
+      "filePath": "src/entrypoints/host.content/translation-control/page-translation.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Method:src/entrypoints/host.content/translation-control/page-translation.ts:PageTranslationManager.stopInternal#1",
+      "name": "stopInternal",
+      "type": "Method",
+      "filePath": "src/entrypoints/host.content/translation-control/page-translation.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Method:src/entrypoints/host.content/translation-control/page-translation.ts:PageTranslationManager.observeTopLevelParagraphs#3",
+      "name": "observeTopLevelParagraphs",
+      "type": "Method",
+      "filePath": "src/entrypoints/host.content/translation-control/page-translation.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Method:src/entrypoints/host.content/translation-control/page-translation.ts:PageTranslationManager.observeParagraphUnit#4",
+      "name": "observeParagraphUnit",
+      "type": "Method",
+      "filePath": "src/entrypoints/host.content/translation-control/page-translation.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Method:src/entrypoints/host.content/translation-control/page-translation.ts:PageTranslationManager.observeUnit#3",
+      "name": "observeUnit",
+      "type": "Method",
+      "filePath": "src/entrypoints/host.content/translation-control/page-translation.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Method:src/entrypoints/host.content/translation-control/page-translation.ts:PageTranslationManager.registerUnitAgain#1",
+      "name": "registerUnitAgain",
+      "type": "Method",
+      "filePath": "src/entrypoints/host.content/translation-control/page-translation.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Method:src/entrypoints/host.content/translation-control/page-translation.ts:PageTranslationManager.getBoxlessUnitObserver#1",
+      "name": "getBoxlessUnitObserver",
+      "type": "Method",
+      "filePath": "src/entrypoints/host.content/translation-control/page-translation.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Method:src/entrypoints/host.content/translation-control/page-translation.ts:PageTranslationManager.takePendingUnitsAt#1",
+      "name": "takePendingUnitsAt",
+      "type": "Method",
+      "filePath": "src/entrypoints/host.content/translation-control/page-translation.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/host.content/translation-control/page-translation.ts:PageTranslationManager.takePendingUnitsAt.take@1086:4",
+      "name": "take",
+      "type": "Function",
+      "filePath": "src/entrypoints/host.content/translation-control/page-translation.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/host.content/translation-control/page-translation.ts:PageTranslationManager.takePendingUnitsAt.inside@1108:6",
+      "name": "inside",
+      "type": "Function",
+      "filePath": "src/entrypoints/host.content/translation-control/page-translation.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Method:src/entrypoints/host.content/translation-control/page-translation.ts:PageTranslationManager.unobserveRemovedGates#1",
+      "name": "unobserveRemovedGates",
+      "type": "Method",
+      "filePath": "src/entrypoints/host.content/translation-control/page-translation.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Method:src/entrypoints/host.content/translation-control/page-translation.ts:PageTranslationManager.translateIntersectedUnits#2",
+      "name": "translateIntersectedUnits",
+      "type": "Method",
+      "filePath": "src/entrypoints/host.content/translation-control/page-translation.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/host.content/translation-control/page-translation.ts:PageTranslationManager.translateIntersectedUnits.fn@1130:10.isWalkCurrent@1143:6",
+      "name": "isWalkCurrent",
+      "type": "Function",
+      "filePath": "src/entrypoints/host.content/translation-control/page-translation.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Method:src/entrypoints/host.content/translation-control/page-translation.ts:PageTranslationManager.isSelfInflictedRecord#1",
+      "name": "isSelfInflictedRecord",
+      "type": "Method",
+      "filePath": "src/entrypoints/host.content/translation-control/page-translation.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Method:src/entrypoints/host.content/translation-control/page-translation.ts:PageTranslationManager.handleMutationRecords#2",
+      "name": "handleMutationRecords",
+      "type": "Method",
+      "filePath": "src/entrypoints/host.content/translation-control/page-translation.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Interface:src/entrypoints/interceptor.content/inject-player-api.ts:YouTubePlayer",
+      "name": "YouTubePlayer",
+      "type": "Interface",
+      "filePath": "src/entrypoints/interceptor.content/inject-player-api.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/entrypoints/interceptor.content/inject-player-api.ts:YouTubePlayer.getVideoData",
+      "name": "getVideoData",
+      "type": "Property",
+      "filePath": "src/entrypoints/interceptor.content/inject-player-api.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:src/entrypoints/interceptor.content/inject-player-api.ts:SHORTS_PLAYER_SELECTOR",
+      "name": "SHORTS_PLAYER_SELECTOR",
+      "type": "Const",
+      "filePath": "src/entrypoints/interceptor.content/inject-player-api.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/interceptor.content/inject-player-api.ts:getPlayerVideoId",
+      "name": "getPlayerVideoId",
+      "type": "Function",
+      "filePath": "src/entrypoints/interceptor.content/inject-player-api.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/interceptor.content/inject-player-api.ts:getLoadedVideoId",
+      "name": "getLoadedVideoId",
+      "type": "Function",
+      "filePath": "src/entrypoints/interceptor.content/inject-player-api.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/interceptor.content/inject-player-api.ts:findYoutubePlayer",
+      "name": "findYoutubePlayer",
+      "type": "Function",
+      "filePath": "src/entrypoints/interceptor.content/inject-player-api.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/interceptor.content/inject-player-api.ts:handleMessage",
+      "name": "handleMessage",
+      "type": "Function",
+      "filePath": "src/entrypoints/interceptor.content/inject-player-api.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/interceptor.content/inject-player-api.ts:getPlayerData",
+      "name": "getPlayerData",
+      "type": "Function",
+      "filePath": "src/entrypoints/interceptor.content/inject-player-api.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/interceptor.content/inject-player-api.ts:ensureSubtitlesEnabled",
+      "name": "ensureSubtitlesEnabled",
+      "type": "Function",
+      "filePath": "src/entrypoints/interceptor.content/inject-player-api.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/app-sidebar/features-nav.tsx:FeaturesNav",
+      "name": "FeaturesNav",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/app-sidebar/features-nav.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/app-sidebar/features-nav.tsx:CollapsibleNavGroup",
+      "name": "CollapsibleNavGroup",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/app-sidebar/features-nav.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/components/config-detail-section.tsx:ConfigDetailSection",
+      "name": "ConfigDetailSection",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/components/config-detail-section.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/components/llm-feature-status-list.tsx:LlmFeatureStatusList",
+      "name": "LlmFeatureStatusList",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/components/llm-feature-status-list.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/components/shortcut-link.tsx:ShortcutLink",
+      "name": "ShortcutLink",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/components/shortcut-link.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/components/get-api-key-button.tsx:GetAPIKeyButton",
+      "name": "GetAPIKeyButton",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/components/get-api-key-button.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/config-header.tsx:ConfigHeader",
+      "name": "ConfigHeader",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/config-header.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/options/pages/translation/translation-control/site-rules/built-in-rule-row.tsx:BuiltInRuleRow",
+      "name": "BuiltInRuleRow",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/translation/translation-control/site-rules/built-in-rule-row.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/selection.content/use-context-menu-read-aloud.ts:useContextMenuReadAloud",
+      "name": "useContextMenuReadAloud",
+      "type": "Function",
+      "filePath": "src/entrypoints/selection.content/use-context-menu-read-aloud.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/selection.content/use-context-menu-read-aloud.ts:useContextMenuReadAloud.handleReadAloud@14:2",
+      "name": "handleReadAloud",
+      "type": "Function",
+      "filePath": "src/entrypoints/selection.content/use-context-menu-read-aloud.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:src/entrypoints/selection.content/utils.ts:RUBY_ANNOTATION_ELEMENT_NAMES",
+      "name": "RUBY_ANNOTATION_ELEMENT_NAMES",
+      "type": "Const",
+      "filePath": "src/entrypoints/selection.content/utils.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:src/entrypoints/selection.content/utils.ts:RUBY_ANNOTATION_SELECTOR",
+      "name": "RUBY_ANNOTATION_SELECTOR",
+      "type": "Const",
+      "filePath": "src/entrypoints/selection.content/utils.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:src/entrypoints/selection.content/utils.ts:NEWLINE_PADDING_REGEX",
+      "name": "NEWLINE_PADDING_REGEX",
+      "type": "Const",
+      "filePath": "src/entrypoints/selection.content/utils.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:src/entrypoints/selection.content/utils.ts:NON_NEWLINE_WHITESPACE_REGEX",
+      "name": "NON_NEWLINE_WHITESPACE_REGEX",
+      "type": "Const",
+      "filePath": "src/entrypoints/selection.content/utils.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:src/entrypoints/selection.content/utils.ts:LINE_BREAK_PRESERVING_WHITE_SPACE",
+      "name": "LINE_BREAK_PRESERVING_WHITE_SPACE",
+      "type": "Const",
+      "filePath": "src/entrypoints/selection.content/utils.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/selection.content/utils.ts:readSelectionSnapshot",
+      "name": "readSelectionSnapshot",
+      "type": "Function",
+      "filePath": "src/entrypoints/selection.content/utils.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/selection.content/utils.ts:removeRubyAnnotationsFromSelectedText",
+      "name": "removeRubyAnnotationsFromSelectedText",
+      "type": "Function",
+      "filePath": "src/entrypoints/selection.content/utils.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/selection.content/utils.ts:doesRangeIncludeRubyAnnotation",
+      "name": "doesRangeIncludeRubyAnnotation",
+      "type": "Function",
+      "filePath": "src/entrypoints/selection.content/utils.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/selection.content/utils.ts:readRangeTextWithoutRubyAnnotations",
+      "name": "readRangeTextWithoutRubyAnnotations",
+      "type": "Function",
+      "filePath": "src/entrypoints/selection.content/utils.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Method:src/entrypoints/selection.content/utils.ts:readRangeTextWithoutRubyAnnotations.acceptNode@352:6#1",
+      "name": "acceptNode",
+      "type": "Method",
+      "filePath": "src/entrypoints/selection.content/utils.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/selection.content/utils.ts:collapseSelectedWhitespace",
+      "name": "collapseSelectedWhitespace",
+      "type": "Function",
+      "filePath": "src/entrypoints/selection.content/utils.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/selection.content/utils.ts:isSkippedTextElement",
+      "name": "isSkippedTextElement",
+      "type": "Function",
+      "filePath": "src/entrypoints/selection.content/utils.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/selection.content/utils.ts:createContentTextWalker",
+      "name": "createContentTextWalker",
+      "type": "Function",
+      "filePath": "src/entrypoints/selection.content/utils.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Method:src/entrypoints/selection.content/utils.ts:createContentTextWalker.acceptNode@512:4#1",
+      "name": "acceptNode",
+      "type": "Method",
+      "filePath": "src/entrypoints/selection.content/utils.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/subtitles.content/init-youtube-subtitles.ts:resolveYoutubeMode",
+      "name": "resolveYoutubeMode",
+      "type": "Function",
+      "filePath": "src/entrypoints/subtitles.content/init-youtube-subtitles.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Interface:src/entrypoints/subtitles.content/init-youtube-subtitles.ts:YoutubeSession",
+      "name": "YoutubeSession",
+      "type": "Interface",
+      "filePath": "src/entrypoints/subtitles.content/init-youtube-subtitles.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/entrypoints/subtitles.content/init-youtube-subtitles.ts:YoutubeSession.mode",
+      "name": "mode",
+      "type": "Property",
+      "filePath": "src/entrypoints/subtitles.content/init-youtube-subtitles.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/entrypoints/subtitles.content/init-youtube-subtitles.ts:YoutubeSession.adapter",
+      "name": "adapter",
+      "type": "Property",
+      "filePath": "src/entrypoints/subtitles.content/init-youtube-subtitles.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/entrypoints/subtitles.content/init-youtube-subtitles.ts:YoutubeSession.teardown",
+      "name": "teardown",
+      "type": "Property",
+      "filePath": "src/entrypoints/subtitles.content/init-youtube-subtitles.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/subtitles.content/init-youtube-subtitles.ts:initYoutubeSubtitles",
+      "name": "initYoutubeSubtitles",
+      "type": "Function",
+      "filePath": "src/entrypoints/subtitles.content/init-youtube-subtitles.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/subtitles.content/init-youtube-subtitles.ts:initYoutubeSubtitles.teardownSession@63:2",
+      "name": "teardownSession",
+      "type": "Function",
+      "filePath": "src/entrypoints/subtitles.content/init-youtube-subtitles.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/subtitles.content/init-youtube-subtitles.ts:initYoutubeSubtitles.startSession@68:2",
+      "name": "startSession",
+      "type": "Function",
+      "filePath": "src/entrypoints/subtitles.content/init-youtube-subtitles.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/entrypoints/subtitles.content/init-youtube-subtitles.ts:initYoutubeSubtitles.startSession@68:23.mode@77:6",
+      "name": "mode",
+      "type": "Property",
+      "filePath": "src/entrypoints/subtitles.content/init-youtube-subtitles.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/entrypoints/subtitles.content/init-youtube-subtitles.ts:initYoutubeSubtitles.startSession@68:23.adapter@78:6",
+      "name": "adapter",
+      "type": "Property",
+      "filePath": "src/entrypoints/subtitles.content/init-youtube-subtitles.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/subtitles.content/init-youtube-subtitles.ts:initYoutubeSubtitles.startSession@68:23.teardown@79:6",
+      "name": "teardown",
+      "type": "Function",
+      "filePath": "src/entrypoints/subtitles.content/init-youtube-subtitles.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/subtitles.content/init-youtube-subtitles.ts:initYoutubeSubtitles.startSession@68:23.isCurrent@84:4",
+      "name": "isCurrent",
+      "type": "Function",
+      "filePath": "src/entrypoints/subtitles.content/init-youtube-subtitles.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/subtitles.content/init-youtube-subtitles.ts:initYoutubeSubtitles.startSession@68:23.onTrackChanged@103:6",
+      "name": "onTrackChanged",
+      "type": "Function",
+      "filePath": "src/entrypoints/subtitles.content/init-youtube-subtitles.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/subtitles.content/init-youtube-subtitles.ts:initYoutubeSubtitles.startSession@68:23.unwatchReel@116:6",
+      "name": "unwatchReel",
+      "type": "Function",
+      "filePath": "src/entrypoints/subtitles.content/init-youtube-subtitles.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/subtitles.content/init-youtube-subtitles.ts:initYoutubeSubtitles.syncSession@124:2",
+      "name": "syncSession",
+      "type": "Function",
+      "filePath": "src/entrypoints/subtitles.content/init-youtube-subtitles.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/subtitles.content/init-youtube-subtitles.ts:initYoutubeSubtitles.tryInit@153:2",
+      "name": "tryInit",
+      "type": "Function",
+      "filePath": "src/entrypoints/subtitles.content/init-youtube-subtitles.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Class:src/entrypoints/subtitles.content/platforms/youtube/caption-track-listener.ts:YoutubeCaptionTrackListener",
+      "name": "YoutubeCaptionTrackListener",
+      "type": "Class",
+      "filePath": "src/entrypoints/subtitles.content/platforms/youtube/caption-track-listener.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Method:src/entrypoints/subtitles.content/platforms/youtube/caption-track-listener.ts:YoutubeCaptionTrackListener.stop#0",
+      "name": "stop",
+      "type": "Method",
+      "filePath": "src/entrypoints/subtitles.content/platforms/youtube/caption-track-listener.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "TypeAlias:src/entrypoints/subtitles.content/platforms/youtube/config.ts:YoutubeMode",
+      "name": "YoutubeMode",
+      "type": "TypeAlias",
+      "filePath": "src/entrypoints/subtitles.content/platforms/youtube/config.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/subtitles.content/platforms/youtube/shorts-active-reel-watcher.ts:watchShortsActiveReel",
+      "name": "watchShortsActiveReel",
+      "type": "Function",
+      "filePath": "src/entrypoints/subtitles.content/platforms/youtube/shorts-active-reel-watcher.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Interface:src/entrypoints/subtitles.content/renderer/mount-shorts-translate-button.ts:ShortsTranslateButtonMount",
+      "name": "ShortsTranslateButtonMount",
+      "type": "Interface",
+      "filePath": "src/entrypoints/subtitles.content/renderer/mount-shorts-translate-button.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/entrypoints/subtitles.content/renderer/mount-shorts-translate-button.ts:ShortsTranslateButtonMount.mount",
+      "name": "mount",
+      "type": "Property",
+      "filePath": "src/entrypoints/subtitles.content/renderer/mount-shorts-translate-button.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/entrypoints/subtitles.content/renderer/mount-shorts-translate-button.ts:ShortsTranslateButtonMount.dispose",
+      "name": "dispose",
+      "type": "Property",
+      "filePath": "src/entrypoints/subtitles.content/renderer/mount-shorts-translate-button.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/subtitles.content/renderer/mount-shorts-translate-button.ts:mountShortsTranslateButton",
+      "name": "mountShortsTranslateButton",
+      "type": "Function",
+      "filePath": "src/entrypoints/subtitles.content/renderer/mount-shorts-translate-button.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/subtitles.content/renderer/mount-shorts-translate-button.ts:mountShortsTranslateButton.mount@21:2",
+      "name": "mount",
+      "type": "Function",
+      "filePath": "src/entrypoints/subtitles.content/renderer/mount-shorts-translate-button.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/subtitles.content/renderer/mount-shorts-translate-button.ts:mountShortsTranslateButton.dispose@29:2",
+      "name": "dispose",
+      "type": "Function",
+      "filePath": "src/entrypoints/subtitles.content/renderer/mount-shorts-translate-button.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/entrypoints/subtitles.content/renderer/mount-shorts-translate-button.ts:mountShortsTranslateButton.dispose@35:18",
+      "name": "dispose",
+      "type": "Property",
+      "filePath": "src/entrypoints/subtitles.content/renderer/mount-shorts-translate-button.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/entrypoints/subtitles.content/renderer/mount-shorts-translate-button.ts:mountShortsTranslateButton.mount@35:11",
+      "name": "mount",
+      "type": "Property",
+      "filePath": "src/entrypoints/subtitles.content/renderer/mount-shorts-translate-button.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/subtitles.content/renderer/mount-subtitles-sidebar.tsx:followFullscreen",
+      "name": "followFullscreen",
+      "type": "Function",
+      "filePath": "src/entrypoints/subtitles.content/renderer/mount-subtitles-sidebar.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:src/entrypoints/subtitles.content/renderer/mount-subtitles-sidebar.tsx:mountedSidebar",
+      "name": "mountedSidebar",
+      "type": "Const",
+      "filePath": "src/entrypoints/subtitles.content/renderer/mount-subtitles-sidebar.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/subtitles.content/renderer/mount-subtitles-sidebar.tsx:mountSubtitlesSidebar",
+      "name": "mountSubtitlesSidebar",
+      "type": "Function",
+      "filePath": "src/entrypoints/subtitles.content/renderer/mount-subtitles-sidebar.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/subtitles.content/renderer/mount-subtitles-sidebar.tsx:unmountSubtitlesSidebar",
+      "name": "unmountSubtitlesSidebar",
+      "type": "Function",
+      "filePath": "src/entrypoints/subtitles.content/renderer/mount-subtitles-sidebar.tsx",
+      "change_type": "touched"
+    },
+    {
+      "id": "Class:src/entrypoints/subtitles.content/universal-adapter.ts:UniversalVideoAdapter",
+      "name": "UniversalVideoAdapter",
+      "type": "Class",
+      "filePath": "src/entrypoints/subtitles.content/universal-adapter.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/entrypoints/subtitles.content/universal-adapter.ts:UniversalVideoAdapter.adOverlappedLoad",
+      "name": "adOverlappedLoad",
+      "type": "Property",
+      "filePath": "src/entrypoints/subtitles.content/universal-adapter.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/entrypoints/subtitles.content/universal-adapter.ts:UniversalVideoAdapter.retryAfterAdOperationId",
+      "name": "retryAfterAdOperationId",
+      "type": "Property",
+      "filePath": "src/entrypoints/subtitles.content/universal-adapter.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/entrypoints/subtitles.content/universal-adapter.ts:UniversalVideoAdapter.destroyed",
+      "name": "destroyed",
+      "type": "Property",
+      "filePath": "src/entrypoints/subtitles.content/universal-adapter.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Method:src/entrypoints/subtitles.content/universal-adapter.ts:UniversalVideoAdapter.initialize#0",
+      "name": "initialize",
+      "type": "Method",
+      "filePath": "src/entrypoints/subtitles.content/universal-adapter.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Method:src/entrypoints/subtitles.content/universal-adapter.ts:UniversalVideoAdapter.destroy#0",
+      "name": "destroy",
+      "type": "Method",
+      "filePath": "src/entrypoints/subtitles.content/universal-adapter.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Method:src/entrypoints/subtitles.content/universal-adapter.ts:UniversalVideoAdapter.handleSourceTrackChanged#0",
+      "name": "handleSourceTrackChanged",
+      "type": "Method",
+      "filePath": "src/entrypoints/subtitles.content/universal-adapter.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Method:src/entrypoints/subtitles.content/universal-adapter.ts:UniversalVideoAdapter.initializeScheduler#0",
+      "name": "initializeScheduler",
+      "type": "Method",
+      "filePath": "src/entrypoints/subtitles.content/universal-adapter.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Method:src/entrypoints/subtitles.content/universal-adapter.ts:UniversalVideoAdapter.getOrLoadSourceSubtitles#1",
+      "name": "getOrLoadSourceSubtitles",
+      "type": "Method",
+      "filePath": "src/entrypoints/subtitles.content/universal-adapter.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Method:src/entrypoints/subtitles.content/universal-adapter.ts:UniversalVideoAdapter.notifyNavigation#0",
+      "name": "notifyNavigation",
+      "type": "Method",
+      "filePath": "src/entrypoints/subtitles.content/universal-adapter.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Method:src/entrypoints/subtitles.content/universal-adapter.ts:UniversalVideoAdapter.handleNavigation#0",
+      "name": "handleNavigation",
+      "type": "Method",
+      "filePath": "src/entrypoints/subtitles.content/universal-adapter.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Method:src/entrypoints/subtitles.content/universal-adapter.ts:UniversalVideoAdapter.syncAdPlayingState#0",
+      "name": "syncAdPlayingState",
+      "type": "Method",
+      "filePath": "src/entrypoints/subtitles.content/universal-adapter.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Method:src/entrypoints/subtitles.content/universal-adapter.ts:UniversalVideoAdapter.runRetryAfterAd#0",
+      "name": "runRetryAfterAd",
+      "type": "Method",
+      "filePath": "src/entrypoints/subtitles.content/universal-adapter.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Method:src/entrypoints/subtitles.content/universal-adapter.ts:UniversalVideoAdapter.renderTranslateButton#0",
+      "name": "renderTranslateButton",
+      "type": "Method",
+      "filePath": "src/entrypoints/subtitles.content/universal-adapter.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Method:src/entrypoints/subtitles.content/universal-adapter.ts:UniversalVideoAdapter.tryAutoStartSubtitles#0",
+      "name": "tryAutoStartSubtitles",
+      "type": "Method",
+      "filePath": "src/entrypoints/subtitles.content/universal-adapter.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Method:src/entrypoints/subtitles.content/universal-adapter.ts:UniversalVideoAdapter.switchSubtitlesFetcher#2",
+      "name": "switchSubtitlesFetcher",
+      "type": "Method",
+      "filePath": "src/entrypoints/subtitles.content/universal-adapter.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Method:src/entrypoints/subtitles.content/universal-adapter.ts:UniversalVideoAdapter.refreshSourceTrackIfNeeded#0",
+      "name": "refreshSourceTrackIfNeeded",
+      "type": "Method",
+      "filePath": "src/entrypoints/subtitles.content/universal-adapter.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Method:src/entrypoints/subtitles.content/universal-adapter.ts:UniversalVideoAdapter.startTranslation#1",
+      "name": "startTranslation",
+      "type": "Method",
+      "filePath": "src/entrypoints/subtitles.content/universal-adapter.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/entrypoints/subtitles.content/universal-adapter.ts:UniversalVideoAdapter.startTranslation.isCurrent@858:4",
+      "name": "isCurrent",
+      "type": "Function",
+      "filePath": "src/entrypoints/subtitles.content/universal-adapter.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Method:src/entrypoints/subtitles.content/universal-adapter.ts:UniversalVideoAdapter.processTranslatedSubtitles#1",
+      "name": "processTranslatedSubtitles",
+      "type": "Method",
+      "filePath": "src/entrypoints/subtitles.content/universal-adapter.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/fork/page-translation/mt.ts:decodePageMt",
+      "name": "decodePageMt",
+      "type": "Function",
+      "filePath": "src/fork/page-translation/mt.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/fork/upstream-services/subtitles-sidebar.ts:unmountSubtitlesSidebar",
+      "name": "unmountSubtitlesSidebar",
+      "type": "Function",
+      "filePath": "src/fork/upstream-services/subtitles-sidebar.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:src/types/config/site-rules.ts:siteRuleSchema",
+      "name": "siteRuleSchema",
+      "type": "Const",
+      "filePath": "src/types/config/site-rules.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:src/utils/constants/subtitles.ts:PLAYER_RESPONSE_PENDING_ERROR",
+      "name": "PLAYER_RESPONSE_PENDING_ERROR",
+      "type": "Const",
+      "filePath": "src/utils/constants/subtitles.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:src/utils/constants/subtitles.ts:MAX_PLAYER_RESPONSE_WAIT_ATTEMPTS",
+      "name": "MAX_PLAYER_RESPONSE_WAIT_ATTEMPTS",
+      "type": "Const",
+      "filePath": "src/utils/constants/subtitles.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/utils/host/dom/filter.ts:isDontWalkIntoAndDontTranslateAsChildElement",
+      "name": "isDontWalkIntoAndDontTranslateAsChildElement",
+      "type": "Function",
+      "filePath": "src/utils/host/dom/filter.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/utils/host/dom/filter.ts:isSiteRuleWalkHiddenElement",
+      "name": "isSiteRuleWalkHiddenElement",
+      "type": "Function",
+      "filePath": "src/utils/host/dom/filter.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:src/utils/host/dom/latexml-text-box.ts:TEXT_BOX_ATTRIBUTE",
+      "name": "TEXT_BOX_ATTRIBUTE",
+      "type": "Const",
+      "filePath": "src/utils/host/dom/latexml-text-box.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:src/utils/host/dom/latexml-text-box.ts:ORIGINAL_ATTRIBUTE",
+      "name": "ORIGINAL_ATTRIBUTE",
+      "type": "Const",
+      "filePath": "src/utils/host/dom/latexml-text-box.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:src/utils/host/dom/latexml-text-box.ts:reflowedNodes",
+      "name": "reflowedNodes",
+      "type": "Const",
+      "filePath": "src/utils/host/dom/latexml-text-box.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/utils/host/dom/latexml-text-box.ts:isLatexmlTextBoxReflowRecord",
+      "name": "isLatexmlTextBoxReflowRecord",
+      "type": "Function",
+      "filePath": "src/utils/host/dom/latexml-text-box.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/utils/host/dom/latexml-text-box.ts:prepareLatexmlTextBoxes",
+      "name": "prepareLatexmlTextBoxes",
+      "type": "Function",
+      "filePath": "src/utils/host/dom/latexml-text-box.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/utils/host/dom/latexml-text-box.ts:applyBoxColors",
+      "name": "applyBoxColors",
+      "type": "Function",
+      "filePath": "src/utils/host/dom/latexml-text-box.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/utils/host/dom/latexml-text-box.ts:declaredFill",
+      "name": "declaredFill",
+      "type": "Function",
+      "filePath": "src/utils/host/dom/latexml-text-box.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/utils/host/dom/latexml-text-box.ts:restoreLatexmlTextBoxes",
+      "name": "restoreLatexmlTextBoxes",
+      "type": "Function",
+      "filePath": "src/utils/host/dom/latexml-text-box.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/utils/host/dom/traversal.ts:walkAndLabelElement",
+      "name": "walkAndLabelElement",
+      "type": "Function",
+      "filePath": "src/utils/host/dom/traversal.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/utils/host/dom/traversal.ts:walkAndLabelElementChunked",
+      "name": "walkAndLabelElementChunked",
+      "type": "Function",
+      "filePath": "src/utils/host/dom/traversal.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:src/utils/host/translate/api/google.ts:HTML_TAG_SPLIT_REGEX",
+      "name": "HTML_TAG_SPLIT_REGEX",
+      "type": "Const",
+      "filePath": "src/utils/host/translate/api/google.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/utils/host/translate/api/google.ts:toPreservedLine",
+      "name": "toPreservedLine",
+      "type": "Function",
+      "filePath": "src/utils/host/translate/api/google.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/utils/host/translate/api/google.ts:toPreservedLine.content@115:11",
+      "name": "content",
+      "type": "Property",
+      "filePath": "src/utils/host/translate/api/google.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/utils/host/translate/api/google.ts:toPreservedLine.prefix@115:26",
+      "name": "prefix",
+      "type": "Property",
+      "filePath": "src/utils/host/translate/api/google.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/utils/host/translate/api/google.ts:splitPreservedLines",
+      "name": "splitPreservedLines",
+      "type": "Function",
+      "filePath": "src/utils/host/translate/api/google.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/utils/host/translate/api/google.ts:splitPreservedHtmlLines",
+      "name": "splitPreservedHtmlLines",
+      "type": "Function",
+      "filePath": "src/utils/host/translate/api/google.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:src/utils/host/translate/api/google.ts:PUNCTUATION_RUN_REGEX",
+      "name": "PUNCTUATION_RUN_REGEX",
+      "type": "Const",
+      "filePath": "src/utils/host/translate/api/google.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:src/utils/host/translate/api/google.ts:PUNCTUATION_RUN_PLACEHOLDER_REGEX",
+      "name": "PUNCTUATION_RUN_PLACEHOLDER_REGEX",
+      "type": "Const",
+      "filePath": "src/utils/host/translate/api/google.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/utils/host/translate/api/google.ts:protectPunctuationRuns",
+      "name": "protectPunctuationRuns",
+      "type": "Function",
+      "filePath": "src/utils/host/translate/api/google.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/utils/host/translate/api/google.ts:protectPunctuationRuns.runs@162:17",
+      "name": "runs",
+      "type": "Property",
+      "filePath": "src/utils/host/translate/api/google.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/utils/host/translate/api/google.ts:protectPunctuationRuns.text@162:11",
+      "name": "text",
+      "type": "Property",
+      "filePath": "src/utils/host/translate/api/google.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/utils/host/translate/api/google.ts:restorePunctuationRuns",
+      "name": "restorePunctuationRuns",
+      "type": "Function",
+      "filePath": "src/utils/host/translate/api/google.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/utils/host/translate/api/google.ts:prepareGoogleTranslation",
+      "name": "prepareGoogleTranslation",
+      "type": "Function",
+      "filePath": "src/utils/host/translate/api/google.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/utils/host/translate/api/google.ts:prepareGoogleTranslation.requestText@202:4",
+      "name": "requestText",
+      "type": "Property",
+      "filePath": "src/utils/host/translate/api/google.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/utils/host/translate/api/google.ts:prepareGoogleTranslation.preservedLines@203:4",
+      "name": "preservedLines",
+      "type": "Property",
+      "filePath": "src/utils/host/translate/api/google.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/utils/host/translate/api/google.ts:prepareGoogleTranslation.punctuationRuns@204:4",
+      "name": "punctuationRuns",
+      "type": "Property",
+      "filePath": "src/utils/host/translate/api/google.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/utils/host/translate/api/google.ts:restoreGoogleTranslation",
+      "name": "restoreGoogleTranslation",
+      "type": "Function",
+      "filePath": "src/utils/host/translate/api/google.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/utils/host/translate/api/google.ts:googleTranslate",
+      "name": "googleTranslate",
+      "type": "Function",
+      "filePath": "src/utils/host/translate/api/google.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/utils/host/translate/core/translation-modes.ts:translateTranslationOnlyRun",
+      "name": "translateTranslationOnlyRun",
+      "type": "Function",
+      "filePath": "src/utils/host/translate/core/translation-modes.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/utils/host/translate/core/translation-request.ts:createPageTranslationRequest",
+      "name": "createPageTranslationRequest",
+      "type": "Function",
+      "filePath": "src/utils/host/translate/core/translation-request.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/utils/host/translate/core/translation-request.ts:createPageTranslationRequest.translateLegacyHtml@164:2",
+      "name": "translateLegacyHtml",
+      "type": "Function",
+      "filePath": "src/utils/host/translate/core/translation-request.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/utils/host/translate/core/translation-request.ts:createPageTranslationRequest.translateRequest@172:2",
+      "name": "translateRequest",
+      "type": "Function",
+      "filePath": "src/utils/host/translate/core/translation-request.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/utils/host/translate/core/translation-state.ts:isVirtualParagraphGroupCurrent",
+      "name": "isVirtualParagraphGroupCurrent",
+      "type": "Function",
+      "filePath": "src/utils/host/translate/core/translation-state.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/utils/host/translate/core/translation-walker.ts:translateWalkedElement",
+      "name": "translateWalkedElement",
+      "type": "Function",
+      "filePath": "src/utils/host/translate/core/translation-walker.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/utils/host/translate/core/translation-walker.ts:translateWalkedElement.containsHiddenRegion@81:2",
+      "name": "containsHiddenRegion",
+      "type": "Function",
+      "filePath": "src/utils/host/translate/core/translation-walker.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/utils/host/translate/dom/translation-cleanup.ts:removeAllTranslatedWrapperNodes",
+      "name": "removeAllTranslatedWrapperNodes",
+      "type": "Function",
+      "filePath": "src/utils/host/translate/dom/translation-cleanup.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:src/utils/host/translate/text-preparation.ts:CJK_LATIN_BOUNDARY_SPACE_REGEX",
+      "name": "CJK_LATIN_BOUNDARY_SPACE_REGEX",
+      "type": "Const",
+      "filePath": "src/utils/host/translate/text-preparation.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/utils/host/translate/text-preparation.ts:normalizeForComparison",
+      "name": "normalizeForComparison",
+      "type": "Function",
+      "filePath": "src/utils/host/translate/text-preparation.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:src/utils/select-all.ts:PROTECTED_HOST_ATTRIBUTE",
+      "name": "PROTECTED_HOST_ATTRIBUTE",
+      "type": "Const",
+      "filePath": "src/utils/select-all.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/utils/select-all.ts:protectSelectAllShadowRoot",
+      "name": "protectSelectAllShadowRoot",
+      "type": "Function",
+      "filePath": "src/utils/select-all.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/utils/select-all.ts:getProtectedHosts",
+      "name": "getProtectedHosts",
+      "type": "Function",
+      "filePath": "src/utils/select-all.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/utils/select-all.ts:getDeepActiveElement",
+      "name": "getDeepActiveElement",
+      "type": "Function",
+      "filePath": "src/utils/select-all.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/utils/select-all.ts:rebuildSelectionWithoutHost",
+      "name": "rebuildSelectionWithoutHost",
+      "type": "Function",
+      "filePath": "src/utils/select-all.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/utils/shadow-root.ts:isBodyRendered",
+      "name": "isBodyRendered",
+      "type": "Function",
+      "filePath": "src/utils/shadow-root.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/utils/shadow-root.ts:isWithin",
+      "name": "isWithin",
+      "type": "Function",
+      "filePath": "src/utils/shadow-root.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/utils/shadow-root.ts:reattachShadowHostOnBodySwap",
+      "name": "reattachShadowHostOnBodySwap",
+      "type": "Function",
+      "filePath": "src/utils/shadow-root.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/utils/shadow-root.ts:reattachShadowHostOnBodySwap.place@62:2",
+      "name": "place",
+      "type": "Function",
+      "filePath": "src/utils/shadow-root.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Interface:src/utils/site-rules/resolve.ts:ResolvedSiteRule",
+      "name": "ResolvedSiteRule",
+      "type": "Interface",
+      "filePath": "src/utils/site-rules/resolve.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/utils/site-rules/resolve.ts:ResolvedSiteRule.walkHiddenSelector",
+      "name": "walkHiddenSelector",
+      "type": "Property",
+      "filePath": "src/utils/site-rules/resolve.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/utils/site-rules/resolve.ts:ResolvedSiteRule.reflowLatexmlTextBoxes",
+      "name": "reflowLatexmlTextBoxes",
+      "type": "Property",
+      "filePath": "src/utils/site-rules/resolve.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:src/utils/site-rules/resolve.ts:EMPTY_RESOLVED_SITE_RULE",
+      "name": "EMPTY_RESOLVED_SITE_RULE",
+      "type": "Const",
+      "filePath": "src/utils/site-rules/resolve.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/utils/site-rules/resolve.ts:EMPTY_RESOLVED_SITE_RULE.walkHiddenSelector",
+      "name": "walkHiddenSelector",
+      "type": "Property",
+      "filePath": "src/utils/site-rules/resolve.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/utils/site-rules/resolve.ts:EMPTY_RESOLVED_SITE_RULE.reflowLatexmlTextBoxes",
+      "name": "reflowLatexmlTextBoxes",
+      "type": "Property",
+      "filePath": "src/utils/site-rules/resolve.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/utils/site-rules/resolve.ts:resolveSiteRule",
+      "name": "resolveSiteRule",
+      "type": "Function",
+      "filePath": "src/utils/site-rules/resolve.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/utils/site-rules/resolve.ts:resolveSiteRule.walkHiddenSelector@371:4",
+      "name": "walkHiddenSelector",
+      "type": "Property",
+      "filePath": "src/utils/site-rules/resolve.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/utils/site-rules/resolve.ts:resolveSiteRule.reflowLatexmlTextBoxes@413:4",
+      "name": "reflowLatexmlTextBoxes",
+      "type": "Property",
+      "filePath": "src/utils/site-rules/resolve.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Class:src/utils/subtitles/fetchers/youtube/index.ts:YoutubeSubtitlesFetcher",
+      "name": "YoutubeSubtitlesFetcher",
+      "type": "Class",
+      "filePath": "src/utils/subtitles/fetchers/youtube/index.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/utils/subtitles/fetchers/youtube/index.ts:YoutubeSubtitlesFetcher.lookupGeneration",
+      "name": "lookupGeneration",
+      "type": "Property",
+      "filePath": "src/utils/subtitles/fetchers/youtube/index.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Method:src/utils/subtitles/fetchers/youtube/index.ts:YoutubeSubtitlesFetcher.cleanup#0",
+      "name": "cleanup",
+      "type": "Method",
+      "filePath": "src/utils/subtitles/fetchers/youtube/index.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Method:src/utils/subtitles/fetchers/youtube/index.ts:YoutubeSubtitlesFetcher.hasAvailableSubtitles#0",
+      "name": "hasAvailableSubtitles",
+      "type": "Method",
+      "filePath": "src/utils/subtitles/fetchers/youtube/index.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Method:src/utils/subtitles/fetchers/youtube/index.ts:YoutubeSubtitlesFetcher.waitForPlayerData#1",
+      "name": "waitForPlayerData",
+      "type": "Method",
+      "filePath": "src/utils/subtitles/fetchers/youtube/index.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Method:src/utils/subtitles/fetchers/youtube/index.ts:YoutubeSubtitlesFetcher.ensureTrackSelection#2",
+      "name": "ensureTrackSelection",
+      "type": "Method",
+      "filePath": "src/utils/subtitles/fetchers/youtube/index.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Method:src/utils/subtitles/fetchers/youtube/index.ts:YoutubeSubtitlesFetcher.getPlayerDataWithPot#1",
+      "name": "getPlayerDataWithPot",
+      "type": "Method",
+      "filePath": "src/utils/subtitles/fetchers/youtube/index.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Method:src/utils/subtitles/fetchers/youtube/index.ts:YoutubeSubtitlesFetcher.hasPotInAudioTracks#1",
+      "name": "hasPotInAudioTracks",
+      "type": "Method",
+      "filePath": "src/utils/subtitles/fetchers/youtube/index.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Method:src/utils/subtitles/fetchers/youtube/index.ts:YoutubeSubtitlesFetcher.ensureSubtitlesEnabled#1",
+      "name": "ensureSubtitlesEnabled",
+      "type": "Method",
+      "filePath": "src/utils/subtitles/fetchers/youtube/index.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Method:src/utils/subtitles/fetchers/youtube/index.ts:YoutubeSubtitlesFetcher.fetchWithRetry#1",
+      "name": "fetchWithRetry",
+      "type": "Method",
+      "filePath": "src/utils/subtitles/fetchers/youtube/index.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:src/utils/subtitles/fetchers/youtube/noise-filter.ts:NOISE_PATTERNS",
+      "name": "NOISE_PATTERNS",
+      "type": "Const",
+      "filePath": "src/utils/subtitles/fetchers/youtube/noise-filter.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Const:src/utils/subtitles/fetchers/youtube/noise-filter.ts:MUSIC_NOTES_PATTERN",
+      "name": "MUSIC_NOTES_PATTERN",
+      "type": "Const",
+      "filePath": "src/utils/subtitles/fetchers/youtube/noise-filter.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/utils/subtitles/fetchers/youtube/noise-filter.ts:hasSpeechText",
+      "name": "hasSpeechText",
+      "type": "Function",
+      "filePath": "src/utils/subtitles/fetchers/youtube/noise-filter.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/utils/subtitles/fetchers/youtube/noise-filter.ts:filterNoiseFromEvents",
+      "name": "filterNoiseFromEvents",
+      "type": "Function",
+      "filePath": "src/utils/subtitles/fetchers/youtube/noise-filter.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/utils/subtitles/fetchers/youtube/pot-token.ts:getUrlVideoId",
+      "name": "getUrlVideoId",
+      "type": "Function",
+      "filePath": "src/utils/subtitles/fetchers/youtube/pot-token.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/utils/subtitles/fetchers/youtube/pot-token.ts:findOwnAudioCaptionTrack",
+      "name": "findOwnAudioCaptionTrack",
+      "type": "Function",
+      "filePath": "src/utils/subtitles/fetchers/youtube/pot-token.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Function:src/utils/subtitles/fetchers/youtube/pot-token.ts:extractPotToken",
+      "name": "extractPotToken",
+      "type": "Function",
+      "filePath": "src/utils/subtitles/fetchers/youtube/pot-token.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/utils/subtitles/fetchers/youtube/pot-token.ts:extractPotToken.pot@48:15",
+      "name": "pot",
+      "type": "Property",
+      "filePath": "src/utils/subtitles/fetchers/youtube/pot-token.ts",
+      "change_type": "touched"
+    },
+    {
+      "id": "Property:src/utils/subtitles/fetchers/youtube/pot-token.ts:extractPotToken.potc@48:20",
+      "name": "potc",
+      "type": "Property",
+      "filePath": "src/utils/subtitles/fetchers/youtube/pot-token.ts",
+      "change_type": "touched"
+    }
+  ],
+  "affected_processes": [
+    {
+      "id": "proc_1_executetranslate",
+      "name": "ExecuteTranslate → RequestGoogleTranslationBatch",
+      "process_type": "cross_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "googleTranslate",
+          "step": 2
+        }
+      ]
+    },
+    {
+      "id": "proc_3_handlemutationrecord",
+      "name": "HandleMutationRecords → Take",
+      "process_type": "cross_community",
+      "step_count": 10,
+      "changed_steps": [
+        {
+          "symbol": "handleMutationRecords",
+          "step": 1
+        },
+        {
+          "symbol": "takePendingUnitsAt",
+          "step": 9
+        },
+        {
+          "symbol": "getBoxlessUnitObserver",
+          "step": 8
+        },
+        {
+          "symbol": "observeUnit",
+          "step": 7
+        },
+        {
+          "symbol": "observeParagraphUnit",
+          "step": 6
+        },
+        {
+          "symbol": "observeTopLevelParagraphs",
+          "step": 5
+        },
+        {
+          "symbol": "take",
+          "step": 10
+        }
+      ]
+    },
+    {
+      "id": "proc_4_handlemutationrecord",
+      "name": "HandleMutationRecords → LayoutFitsSplitCap",
+      "process_type": "cross_community",
+      "step_count": 10,
+      "changed_steps": [
+        {
+          "symbol": "handleMutationRecords",
+          "step": 1
+        },
+        {
+          "symbol": "takePendingUnitsAt",
+          "step": 9
+        },
+        {
+          "symbol": "getBoxlessUnitObserver",
+          "step": 8
+        },
+        {
+          "symbol": "observeUnit",
+          "step": 7
+        },
+        {
+          "symbol": "observeParagraphUnit",
+          "step": 6
+        },
+        {
+          "symbol": "observeTopLevelParagraphs",
+          "step": 5
+        },
+        {
+          "symbol": "layoutFitsSplitCap",
+          "step": 10
+        }
+      ]
+    },
+    {
+      "id": "proc_5_handlemutationrecord",
+      "name": "HandleMutationRecords → ParentElementAcrossShadow",
+      "process_type": "cross_community",
+      "step_count": 10,
+      "changed_steps": [
+        {
+          "symbol": "handleMutationRecords",
+          "step": 1
+        },
+        {
+          "symbol": "takePendingUnitsAt",
+          "step": 9
+        },
+        {
+          "symbol": "getBoxlessUnitObserver",
+          "step": 8
+        },
+        {
+          "symbol": "observeUnit",
+          "step": 7
+        },
+        {
+          "symbol": "observeParagraphUnit",
+          "step": 6
+        },
+        {
+          "symbol": "observeTopLevelParagraphs",
+          "step": 5
+        },
+        {
+          "symbol": "parentElementAcrossShadow",
+          "step": 10
+        }
+      ]
+    },
+    {
+      "id": "proc_6_handlemutationrecord",
+      "name": "HandleMutationRecords → RegisterUnitAgain",
+      "process_type": "cross_community",
+      "step_count": 10,
+      "changed_steps": [
+        {
+          "symbol": "handleMutationRecords",
+          "step": 1
+        },
+        {
+          "symbol": "takePendingUnitsAt",
+          "step": 9
+        },
+        {
+          "symbol": "getBoxlessUnitObserver",
+          "step": 8
+        },
+        {
+          "symbol": "registerUnitAgain",
+          "step": 10
+        },
+        {
+          "symbol": "observeUnit",
+          "step": 7
+        },
+        {
+          "symbol": "observeParagraphUnit",
+          "step": 6
+        },
+        {
+          "symbol": "observeTopLevelParagraphs",
+          "step": 5
+        }
+      ]
+    },
+    {
+      "id": "proc_7_startsession",
+      "name": "StartSession → PostMessageRequest",
+      "process_type": "cross_community",
+      "step_count": 9,
+      "changed_steps": [
+        {
+          "symbol": "UniversalVideoAdapter",
+          "step": 3
+        },
+        {
+          "symbol": "startSession",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_8_startsession",
+      "name": "StartSession → ClearRehideTimer",
+      "process_type": "cross_community",
+      "step_count": 9,
+      "changed_steps": [
+        {
+          "symbol": "UniversalVideoAdapter",
+          "step": 3
+        },
+        {
+          "symbol": "switchSubtitlesFetcher",
+          "step": 6
+        },
+        {
+          "symbol": "startSession",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_9_startsession",
+      "name": "StartSession → UnwatchTrackChanges",
+      "process_type": "cross_community",
+      "step_count": 9,
+      "changed_steps": [
+        {
+          "symbol": "UniversalVideoAdapter",
+          "step": 3
+        },
+        {
+          "symbol": "switchSubtitlesFetcher",
+          "step": 6
+        },
+        {
+          "symbol": "startSession",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_10_handlemutationrecord",
+      "name": "HandleMutationRecords → TranslateIntersectedUnits",
+      "process_type": "cross_community",
+      "step_count": 9,
+      "changed_steps": [
+        {
+          "symbol": "handleMutationRecords",
+          "step": 1
+        },
+        {
+          "symbol": "translateIntersectedUnits",
+          "step": 9
+        },
+        {
+          "symbol": "getBoxlessUnitObserver",
+          "step": 8
+        },
+        {
+          "symbol": "observeUnit",
+          "step": 7
+        },
+        {
+          "symbol": "observeParagraphUnit",
+          "step": 6
+        },
+        {
+          "symbol": "observeTopLevelParagraphs",
+          "step": 5
+        }
+      ]
+    },
+    {
+      "id": "proc_12_bootstraphostcontent",
+      "name": "BootstrapHostContent → ShouldManageDocumentTitle",
+      "process_type": "cross_community",
+      "step_count": 8,
+      "changed_steps": [
+        {
+          "symbol": "runStart",
+          "step": 3
+        }
+      ]
+    },
+    {
+      "id": "proc_14_startsession",
+      "name": "StartSession → GetVideoElement",
+      "process_type": "cross_community",
+      "step_count": 8,
+      "changed_steps": [
+        {
+          "symbol": "UniversalVideoAdapter",
+          "step": 3
+        },
+        {
+          "symbol": "startSession",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_18_startsession",
+      "name": "StartSession → UpdateVisibility",
+      "process_type": "cross_community",
+      "step_count": 7,
+      "changed_steps": [
+        {
+          "symbol": "UniversalVideoAdapter",
+          "step": 3
+        },
+        {
+          "symbol": "startSession",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_19_startsession",
+      "name": "StartSession → Stop",
+      "process_type": "cross_community",
+      "step_count": 7,
+      "changed_steps": [
+        {
+          "symbol": "UniversalVideoAdapter",
+          "step": 3
+        },
+        {
+          "symbol": "startSession",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_20_startsession",
+      "name": "StartSession → ShowNativeSubtitles",
+      "process_type": "cross_community",
+      "step_count": 7,
+      "changed_steps": [
+        {
+          "symbol": "UniversalVideoAdapter",
+          "step": 3
+        },
+        {
+          "symbol": "startSession",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_21_startsession",
+      "name": "StartSession → Cleanup",
+      "process_type": "cross_community",
+      "step_count": 7,
+      "changed_steps": [
+        {
+          "symbol": "UniversalVideoAdapter",
+          "step": 3
+        },
+        {
+          "symbol": "switchSubtitlesFetcher",
+          "step": 6
+        },
+        {
+          "symbol": "startSession",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_22_startsession",
+      "name": "StartSession → Cleanup",
+      "process_type": "cross_community",
+      "step_count": 7,
+      "changed_steps": [
+        {
+          "symbol": "UniversalVideoAdapter",
+          "step": 3
+        },
+        {
+          "symbol": "switchSubtitlesFetcher",
+          "step": 6
+        },
+        {
+          "symbol": "startSession",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_23_startsession",
+      "name": "StartSession → Cleanup",
+      "process_type": "cross_community",
+      "step_count": 7,
+      "changed_steps": [
+        {
+          "symbol": "UniversalVideoAdapter",
+          "step": 3
+        },
+        {
+          "symbol": "switchSubtitlesFetcher",
+          "step": 6
+        },
+        {
+          "symbol": "startSession",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_24_translaterequest",
+      "name": "TranslateRequest → FlattenNestedTables",
+      "process_type": "cross_community",
+      "step_count": 7,
+      "changed_steps": [
+        {
+          "symbol": "translateRequest",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_25_translaterequest",
+      "name": "TranslateRequest → KeepLeadingText",
+      "process_type": "cross_community",
+      "step_count": 7,
+      "changed_steps": [
+        {
+          "symbol": "translateRequest",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_32_translaterequest",
+      "name": "TranslateRequest → CreateDefuddleSnapshotDocument",
+      "process_type": "cross_community",
+      "step_count": 6,
+      "changed_steps": [
+        {
+          "symbol": "translateRequest",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_33_translaterequest",
+      "name": "TranslateRequest → IsInPageFragment",
+      "process_type": "cross_community",
+      "step_count": 6,
+      "changed_steps": [
+        {
+          "symbol": "translateRequest",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_34_translaterequest",
+      "name": "TranslateRequest → SplitUrlFragment",
+      "process_type": "cross_community",
+      "step_count": 6,
+      "changed_steps": [
+        {
+          "symbol": "translateRequest",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_35_removealltranslatedw",
+      "name": "RemoveAllTranslatedWrapperNodes → Cancel",
+      "process_type": "cross_community",
+      "step_count": 6,
+      "changed_steps": [
+        {
+          "symbol": "removeAllTranslatedWrapperNodes",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_38_handlemutationrecord",
+      "name": "HandleMutationRecords → IsExtensionUtilityNode",
+      "process_type": "intra_community",
+      "step_count": 6,
+      "changed_steps": [
+        {
+          "symbol": "handleMutationRecords",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_54_autotranslatewebsite",
+      "name": "AutoTranslateWebsitesPage → IsDrillInState",
+      "process_type": "intra_community",
+      "step_count": 5,
+      "changed_steps": [
+        {
+          "symbol": "ConfigDetailSection",
+          "step": 3
+        }
+      ]
+    },
+    {
+      "id": "proc_55_autotranslatewebsite",
+      "name": "AutoTranslateWebsitesPage → IsPlainLeftClick",
+      "process_type": "intra_community",
+      "step_count": 5,
+      "changed_steps": [
+        {
+          "symbol": "ConfigDetailSection",
+          "step": 3
+        }
+      ]
+    },
+    {
+      "id": "proc_59_handlemouseup",
+      "name": "HandleMouseUp → CollectSelectionBoundaryNodes",
+      "process_type": "cross_community",
+      "step_count": 5,
+      "changed_steps": [
+        {
+          "symbol": "readSelectionSnapshot",
+          "step": 2
+        }
+      ]
+    },
+    {
+      "id": "proc_60_handlemouseup",
+      "name": "HandleMouseUp → GetReadFrogSubtitleShadowRoot",
+      "process_type": "cross_community",
+      "step_count": 5,
+      "changed_steps": [
+        {
+          "symbol": "readSelectionSnapshot",
+          "step": 2
+        }
+      ]
+    },
+    {
+      "id": "proc_67_translaterequest",
+      "name": "TranslateRequest → Error",
+      "process_type": "cross_community",
+      "step_count": 5,
+      "changed_steps": [
+        {
+          "symbol": "translateRequest",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_68_translaterequest",
+      "name": "TranslateRequest → Warn",
+      "process_type": "cross_community",
+      "step_count": 5,
+      "changed_steps": [
+        {
+          "symbol": "translateRequest",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_69_translaterequest",
+      "name": "TranslateRequest → TruncateWebPageContent",
+      "process_type": "cross_community",
+      "step_count": 5,
+      "changed_steps": [
+        {
+          "symbol": "translateRequest",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_70_removealltranslatedw",
+      "name": "RemoveAllTranslatedWrapperNodes → IsHTMLElement",
+      "process_type": "cross_community",
+      "step_count": 5,
+      "changed_steps": [
+        {
+          "symbol": "removeAllTranslatedWrapperNodes",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_71_removealltranslatedw",
+      "name": "RemoveAllTranslatedWrapperNodes → RemoveReactShadowHost",
+      "process_type": "cross_community",
+      "step_count": 5,
+      "changed_steps": [
+        {
+          "symbol": "removeAllTranslatedWrapperNodes",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_74_handlemutationrecord",
+      "name": "HandleMutationRecords → IsWalkBlockedElement",
+      "process_type": "intra_community",
+      "step_count": 5,
+      "changed_steps": [
+        {
+          "symbol": "handleMutationRecords",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_75_handlemutationrecord",
+      "name": "HandleMutationRecords → ObserveMutations",
+      "process_type": "intra_community",
+      "step_count": 5,
+      "changed_steps": [
+        {
+          "symbol": "handleMutationRecords",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_90_glossarypage",
+      "name": "GlossaryPage → BuildSectionSearch",
+      "process_type": "intra_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "LlmFeatureStatusList",
+          "step": 3
+        }
+      ]
+    },
+    {
+      "id": "proc_103_autotranslatewebsite",
+      "name": "AutoTranslateWebsitesPage → ConfigSection",
+      "process_type": "intra_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "ConfigDetailSection",
+          "step": 3
+        }
+      ]
+    },
+    {
+      "id": "proc_112_handlemouseup",
+      "name": "HandleMouseUp → CreateRangeSnapshot",
+      "process_type": "cross_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "readSelectionSnapshot",
+          "step": 2
+        }
+      ]
+    },
+    {
+      "id": "proc_113_handlemouseup",
+      "name": "HandleMouseUp → NormalizeSelectedText",
+      "process_type": "cross_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "removeRubyAnnotationsFromSelectedText",
+          "step": 3
+        },
+        {
+          "symbol": "readSelectionSnapshot",
+          "step": 2
+        }
+      ]
+    },
+    {
+      "id": "proc_116_translaterequest",
+      "name": "TranslateRequest → GetOrGenerateWebPageSummary",
+      "process_type": "cross_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "translateRequest",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_117_executetranslate",
+      "name": "ExecuteTranslate → ProtectPunctuationRuns",
+      "process_type": "cross_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "googleTranslate",
+          "step": 2
+        },
+        {
+          "symbol": "prepareGoogleTranslation",
+          "step": 3
+        },
+        {
+          "symbol": "protectPunctuationRuns",
+          "step": 4
+        }
+      ]
+    },
+    {
+      "id": "proc_118_executetranslate",
+      "name": "ExecuteTranslate → SplitPreservedHtmlLines",
+      "process_type": "cross_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "googleTranslate",
+          "step": 2
+        },
+        {
+          "symbol": "prepareGoogleTranslation",
+          "step": 3
+        },
+        {
+          "symbol": "splitPreservedHtmlLines",
+          "step": 4
+        }
+      ]
+    },
+    {
+      "id": "proc_119_executetranslate",
+      "name": "ExecuteTranslate → SplitPreservedLines",
+      "process_type": "cross_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "googleTranslate",
+          "step": 2
+        },
+        {
+          "symbol": "prepareGoogleTranslation",
+          "step": 3
+        },
+        {
+          "symbol": "splitPreservedLines",
+          "step": 4
+        }
+      ]
+    },
+    {
+      "id": "proc_120_executetranslate",
+      "name": "ExecuteTranslate → ReassemblePreservedLine",
+      "process_type": "cross_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "googleTranslate",
+          "step": 2
+        },
+        {
+          "symbol": "restoreGoogleTranslation",
+          "step": 3
+        }
+      ]
+    },
+    {
+      "id": "proc_121_executetranslate",
+      "name": "ExecuteTranslate → RestorePunctuationRuns",
+      "process_type": "cross_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "googleTranslate",
+          "step": 2
+        },
+        {
+          "symbol": "restoreGoogleTranslation",
+          "step": 3
+        },
+        {
+          "symbol": "restorePunctuationRuns",
+          "step": 4
+        }
+      ]
+    },
+    {
+      "id": "proc_186_handlemouseup",
+      "name": "HandleMouseUp → ReadTextControlSelection",
+      "process_type": "cross_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "readSelectionSnapshot",
+          "step": 2
+        }
+      ]
+    },
+    {
+      "id": "proc_191_syncsession",
+      "name": "SyncSession → IsYoutubeEmbed",
+      "process_type": "cross_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "syncSession",
+          "step": 1
+        },
+        {
+          "symbol": "resolveYoutubeMode",
+          "step": 2
+        }
+      ]
+    },
+    {
+      "id": "proc_192_syncsession",
+      "name": "SyncSession → IsYoutubeLive",
+      "process_type": "cross_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "syncSession",
+          "step": 1
+        },
+        {
+          "symbol": "resolveYoutubeMode",
+          "step": 2
+        }
+      ]
+    },
+    {
+      "id": "proc_193_syncsession",
+      "name": "SyncSession → IsYoutubeShorts",
+      "process_type": "cross_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "syncSession",
+          "step": 1
+        },
+        {
+          "symbol": "resolveYoutubeMode",
+          "step": 2
+        }
+      ]
+    },
+    {
+      "id": "proc_194_syncsession",
+      "name": "SyncSession → IsYoutubeWatch",
+      "process_type": "cross_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "syncSession",
+          "step": 1
+        },
+        {
+          "symbol": "resolveYoutubeMode",
+          "step": 2
+        }
+      ]
+    },
+    {
+      "id": "proc_195_syncsession",
+      "name": "SyncSession → UnmountSubtitlesUI",
+      "process_type": "cross_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "syncSession",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_209_translaterequest",
+      "name": "TranslateRequest → CreateDeepLXHtmlAttributeProbe",
+      "process_type": "intra_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "translateRequest",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_210_translaterequest",
+      "name": "TranslateRequest → GetPageTranslationSessionId",
+      "process_type": "cross_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "translateRequest",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_211_removealltranslatedw",
+      "name": "RemoveAllTranslatedWrapperNodes → GetVirtualParagraphGroupForWrapper",
+      "process_type": "cross_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "removeAllTranslatedWrapperNodes",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_212_removealltranslatedw",
+      "name": "RemoveAllTranslatedWrapperNodes → MarkExtensionDrivenNodeRemoval",
+      "process_type": "cross_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "removeAllTranslatedWrapperNodes",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_224_destroy",
+      "name": "Destroy → ClearSuccessTimeout",
+      "process_type": "cross_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "destroy",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_225_destroy",
+      "name": "Destroy → SetStatus",
+      "process_type": "cross_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "destroy",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_226_destroy",
+      "name": "Destroy → CancelVideoSummary",
+      "process_type": "intra_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "destroy",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_227_processtranslatedsub",
+      "name": "ProcessTranslatedSubtitles → GetVideoElement",
+      "process_type": "cross_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "processTranslatedSubtitles",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_228_refreshsourcetrackif",
+      "name": "RefreshSourceTrackIfNeeded → CreateYoutubeAiSubtitlesContext",
+      "process_type": "cross_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "refreshSourceTrackIfNeeded",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_229_refreshsourcetrackif",
+      "name": "RefreshSourceTrackIfNeeded → CreateAiSubtitlesContext",
+      "process_type": "cross_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "refreshSourceTrackIfNeeded",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_232_refreshsourcetrackif",
+      "name": "RefreshSourceTrackIfNeeded → PostMessageRequest",
+      "process_type": "cross_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "refreshSourceTrackIfNeeded",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_233_bootstraphostcontent",
+      "name": "BootstrapHostContent → TranslateIntersectedUnits",
+      "process_type": "cross_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "translateIntersectedUnits",
+          "step": 4
+        },
+        {
+          "symbol": "runStart",
+          "step": 3
+        }
+      ]
+    },
+    {
+      "id": "proc_235_handletranslationmod",
+      "name": "HandleTranslationModeChange → ShouldManageDocumentTitle",
+      "process_type": "cross_community",
+      "step_count": 8,
+      "changed_steps": [
+        {
+          "symbol": "runStart",
+          "step": 3
+        }
+      ]
+    },
+    {
+      "id": "proc_236_translaterequest",
+      "name": "TranslateRequest → GetStorageItem",
+      "process_type": "cross_community",
+      "step_count": 5,
+      "changed_steps": [
+        {
+          "symbol": "translateRequest",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_253_neverautotranslatewe",
+      "name": "NeverAutoTranslateWebsitesPage → IsDrillInState",
+      "process_type": "intra_community",
+      "step_count": 5,
+      "changed_steps": [
+        {
+          "symbol": "ConfigDetailSection",
+          "step": 3
+        }
+      ]
+    },
+    {
+      "id": "proc_254_neverautotranslatewe",
+      "name": "NeverAutoTranslateWebsitesPage → IsPlainLeftClick",
+      "process_type": "intra_community",
+      "step_count": 5,
+      "changed_steps": [
+        {
+          "symbol": "ConfigDetailSection",
+          "step": 3
+        }
+      ]
+    },
+    {
+      "id": "proc_262_selectiontoolbarpage",
+      "name": "SelectionToolbarPage → BuildSectionSearch",
+      "process_type": "intra_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "ShortcutLink",
+          "step": 3
+        }
+      ]
+    },
+    {
+      "id": "proc_266_neverautotranslatewe",
+      "name": "NeverAutoTranslateWebsitesPage → ConfigSection",
+      "process_type": "intra_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "ConfigDetailSection",
+          "step": 3
+        }
+      ]
+    },
+    {
+      "id": "proc_277_starttranslation",
+      "name": "StartTranslation → CreateYoutubeAiSubtitlesContext",
+      "process_type": "cross_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "startTranslation",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_278_starttranslation",
+      "name": "StartTranslation → CreateAiSubtitlesContext",
+      "process_type": "cross_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "startTranslation",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_279_starttranslation",
+      "name": "StartTranslation → PostMessageRequest",
+      "process_type": "cross_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "startTranslation",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_280_handletranslationmod",
+      "name": "HandleTranslationModeChange → TranslateIntersectedUnits",
+      "process_type": "cross_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "translateIntersectedUnits",
+          "step": 4
+        },
+        {
+          "symbol": "runStart",
+          "step": 3
+        }
+      ]
+    },
+    {
+      "id": "proc_281_onend",
+      "name": "OnEnd → ShouldManageDocumentTitle",
+      "process_type": "cross_community",
+      "step_count": 8,
+      "changed_steps": [
+        {
+          "symbol": "runStart",
+          "step": 3
+        }
+      ]
+    },
+    {
+      "id": "proc_288_glossaryeditorpage",
+      "name": "GlossaryEditorPage → IsDrillInState",
+      "process_type": "intra_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "ConfigDetailSection",
+          "step": 2
+        }
+      ]
+    },
+    {
+      "id": "proc_289_glossaryeditorpage",
+      "name": "GlossaryEditorPage → IsPlainLeftClick",
+      "process_type": "intra_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "ConfigDetailSection",
+          "step": 2
+        }
+      ]
+    },
+    {
+      "id": "proc_290_translationpage",
+      "name": "TranslationPage → BuildSectionSearch",
+      "process_type": "intra_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "ShortcutLink",
+          "step": 3
+        }
+      ]
+    },
+    {
+      "id": "proc_293_glossaryeditorpage",
+      "name": "GlossaryEditorPage → ConfigSection",
+      "process_type": "intra_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "ConfigDetailSection",
+          "step": 2
+        }
+      ]
+    },
+    {
+      "id": "proc_298_onend",
+      "name": "OnEnd → TranslateIntersectedUnits",
+      "process_type": "cross_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "translateIntersectedUnits",
+          "step": 4
+        },
+        {
+          "symbol": "runStart",
+          "step": 3
+        }
+      ]
+    },
+    {
+      "id": "proc_300_syncsession",
+      "name": "SyncSession → Sha256Hex",
+      "process_type": "cross_community",
+      "step_count": 6,
+      "changed_steps": [
+        {
+          "symbol": "syncSession",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_303_removealltranslatedw",
+      "name": "RemoveAllTranslatedWrapperNodes → DeleteAction",
+      "process_type": "cross_community",
+      "step_count": 6,
+      "changed_steps": [
+        {
+          "symbol": "removeAllTranslatedWrapperNodes",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_304_syncsession",
+      "name": "SyncSession → SplitShadowRootCss",
+      "process_type": "cross_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "syncSession",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_305_extensionactivationp",
+      "name": "ExtensionActivationPage → IsDrillInState",
+      "process_type": "intra_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "ConfigDetailSection",
+          "step": 2
+        }
+      ]
+    },
+    {
+      "id": "proc_306_extensionactivationp",
+      "name": "ExtensionActivationPage → IsPlainLeftClick",
+      "process_type": "intra_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "ConfigDetailSection",
+          "step": 2
+        }
+      ]
+    },
+    {
+      "id": "proc_307_videosubtitlespage",
+      "name": "VideoSubtitlesPage → BuildSectionSearch",
+      "process_type": "intra_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "ShortcutLink",
+          "step": 3
+        }
+      ]
+    },
+    {
+      "id": "proc_308_syncsession",
+      "name": "SyncSession → ShadowHostBuilder",
+      "process_type": "cross_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "syncSession",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_316_personalizedpromptsp",
+      "name": "PersonalizedPromptsPage → IsDrillInState",
+      "process_type": "intra_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "ConfigDetailSection",
+          "step": 2
+        }
+      ]
+    },
+    {
+      "id": "proc_317_personalizedpromptsp",
+      "name": "PersonalizedPromptsPage → IsPlainLeftClick",
+      "process_type": "intra_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "ConfigDetailSection",
+          "step": 2
+        }
+      ]
+    },
+    {
+      "id": "proc_318_aicontentawareconfig",
+      "name": "AIContentAwareConfig → BuildSectionSearch",
+      "process_type": "intra_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "LlmFeatureStatusList",
+          "step": 2
+        }
+      ]
+    },
+    {
+      "id": "proc_323_syncsession",
+      "name": "SyncSession → DeleteAction",
+      "process_type": "cross_community",
+      "step_count": 5,
+      "changed_steps": [
+        {
+          "symbol": "syncSession",
+          "step": 1
+        }
+      ]
+    },
+    {
+      "id": "proc_324_translationcontrolpa",
+      "name": "TranslationControlPage → IsDrillInState",
+      "process_type": "intra_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "ConfigDetailSection",
+          "step": 2
+        }
+      ]
+    },
+    {
+      "id": "proc_325_translationcontrolpa",
+      "name": "TranslationControlPage → IsPlainLeftClick",
+      "process_type": "intra_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "ConfigDetailSection",
+          "step": 2
+        }
+      ]
+    },
+    {
+      "id": "proc_327_extensionactivationp",
+      "name": "ExtensionActivationPage → ConfigSection",
+      "process_type": "intra_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "ConfigDetailSection",
+          "step": 2
+        }
+      ]
+    },
+    {
+      "id": "proc_330_siterulespage",
+      "name": "SiteRulesPage → IsDrillInState",
+      "process_type": "intra_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "ConfigDetailSection",
+          "step": 2
+        }
+      ]
+    },
+    {
+      "id": "proc_331_siterulespage",
+      "name": "SiteRulesPage → IsPlainLeftClick",
+      "process_type": "intra_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "ConfigDetailSection",
+          "step": 2
+        }
+      ]
+    },
+    {
+      "id": "proc_336_translationqueuepage",
+      "name": "TranslationQueuePage → IsDrillInState",
+      "process_type": "intra_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "ConfigDetailSection",
+          "step": 2
+        }
+      ]
+    },
+    {
+      "id": "proc_337_translationqueuepage",
+      "name": "TranslationQueuePage → IsPlainLeftClick",
+      "process_type": "intra_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "ConfigDetailSection",
+          "step": 2
+        }
+      ]
+    },
+    {
+      "id": "proc_342_customcsspage",
+      "name": "CustomCssPage → IsDrillInState",
+      "process_type": "intra_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "ConfigDetailSection",
+          "step": 2
+        }
+      ]
+    },
+    {
+      "id": "proc_343_customcsspage",
+      "name": "CustomCssPage → IsPlainLeftClick",
+      "process_type": "intra_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "ConfigDetailSection",
+          "step": 2
+        }
+      ]
+    },
+    {
+      "id": "proc_348_subtitlescustompromp",
+      "name": "SubtitlesCustomPromptsPage → IsDrillInState",
+      "process_type": "intra_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "ConfigDetailSection",
+          "step": 2
+        }
+      ]
+    },
+    {
+      "id": "proc_349_subtitlescustompromp",
+      "name": "SubtitlesCustomPromptsPage → IsPlainLeftClick",
+      "process_type": "intra_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "ConfigDetailSection",
+          "step": 2
+        }
+      ]
+    },
+    {
+      "id": "proc_354_subtitlesqueuepage",
+      "name": "SubtitlesQueuePage → IsDrillInState",
+      "process_type": "intra_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "ConfigDetailSection",
+          "step": 2
+        }
+      ]
+    },
+    {
+      "id": "proc_355_subtitlesqueuepage",
+      "name": "SubtitlesQueuePage → IsPlainLeftClick",
+      "process_type": "intra_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "ConfigDetailSection",
+          "step": 2
+        }
+      ]
+    },
+    {
+      "id": "proc_357_personalizedpromptsp",
+      "name": "PersonalizedPromptsPage → ConfigSection",
+      "process_type": "intra_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "ConfigDetailSection",
+          "step": 2
+        }
+      ]
+    },
+    {
+      "id": "proc_358_glossarypage",
+      "name": "GlossaryPage → RawT",
+      "process_type": "intra_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "LlmFeatureStatusList",
+          "step": 3
+        }
+      ]
+    },
+    {
+      "id": "proc_359_subtitlescustomcsspa",
+      "name": "SubtitlesCustomCssPage → IsDrillInState",
+      "process_type": "intra_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "ConfigDetailSection",
+          "step": 2
+        }
+      ]
+    },
+    {
+      "id": "proc_360_subtitlescustomcsspa",
+      "name": "SubtitlesCustomCssPage → IsPlainLeftClick",
+      "process_type": "intra_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "ConfigDetailSection",
+          "step": 2
+        }
+      ]
+    },
+    {
+      "id": "proc_362_translationcontrolpa",
+      "name": "TranslationControlPage → ConfigSection",
+      "process_type": "intra_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "ConfigDetailSection",
+          "step": 2
+        }
+      ]
+    },
+    {
+      "id": "proc_364_subtitlesstylepage",
+      "name": "SubtitlesStylePage → IsDrillInState",
+      "process_type": "intra_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "ConfigDetailSection",
+          "step": 2
+        }
+      ]
+    },
+    {
+      "id": "proc_365_subtitlesstylepage",
+      "name": "SubtitlesStylePage → IsPlainLeftClick",
+      "process_type": "intra_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "ConfigDetailSection",
+          "step": 2
+        }
+      ]
+    },
+    {
+      "id": "proc_367_siterulespage",
+      "name": "SiteRulesPage → ConfigSection",
+      "process_type": "intra_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "ConfigDetailSection",
+          "step": 2
+        }
+      ]
+    },
+    {
+      "id": "proc_370_translationqueuepage",
+      "name": "TranslationQueuePage → ConfigSection",
+      "process_type": "intra_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "ConfigDetailSection",
+          "step": 2
+        }
+      ]
+    },
+    {
+      "id": "proc_373_customcsspage",
+      "name": "CustomCssPage → ConfigSection",
+      "process_type": "intra_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "ConfigDetailSection",
+          "step": 2
+        }
+      ]
+    },
+    {
+      "id": "proc_376_subtitlescustompromp",
+      "name": "SubtitlesCustomPromptsPage → ConfigSection",
+      "process_type": "intra_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "ConfigDetailSection",
+          "step": 2
+        }
+      ]
+    },
+    {
+      "id": "proc_382_subtitlesqueuepage",
+      "name": "SubtitlesQueuePage → ConfigSection",
+      "process_type": "intra_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "ConfigDetailSection",
+          "step": 2
+        }
+      ]
+    },
+    {
+      "id": "proc_385_subtitlescustomcsspa",
+      "name": "SubtitlesCustomCssPage → ConfigSection",
+      "process_type": "intra_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "ConfigDetailSection",
+          "step": 2
+        }
+      ]
+    },
+    {
+      "id": "proc_388_subtitlesstylepage",
+      "name": "SubtitlesStylePage → ConfigSection",
+      "process_type": "intra_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "ConfigDetailSection",
+          "step": 2
+        }
+      ]
+    },
+    {
+      "id": "proc_389_selectiontoolbarpage",
+      "name": "SelectionToolbarPage → RawT",
+      "process_type": "intra_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "ShortcutLink",
+          "step": 3
+        }
+      ]
+    },
+    {
+      "id": "proc_393_translationpage",
+      "name": "TranslationPage → RawT",
+      "process_type": "intra_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "ShortcutLink",
+          "step": 3
+        }
+      ]
+    },
+    {
+      "id": "proc_395_siterulespage",
+      "name": "SiteRulesPage → RawT",
+      "process_type": "intra_community",
+      "step_count": 4,
+      "changed_steps": [
+        {
+          "symbol": "BuiltInRuleRow",
+          "step": 3
+        }
+      ]
+    },
+    {
+      "id": "proc_408_aicontentawareconfig",
+      "name": "AIContentAwareConfig → RawT",
+      "process_type": "intra_community",
+      "step_count": 3,
+      "changed_steps": [
+        {
+          "symbol": "LlmFeatureStatusList",
+          "step": 2
+        }
+      ]
+    }
+  ]
+}

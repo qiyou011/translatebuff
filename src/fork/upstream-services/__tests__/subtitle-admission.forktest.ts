@@ -4,6 +4,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest"
 import { setupVideoSummaryHandlers } from "@/entrypoints/background/video-summary"
 import { mountSubtitlesSidebar } from "@/entrypoints/subtitles.content/renderer/mount-subtitles-sidebar"
 import { UniversalVideoAdapter } from "@/entrypoints/subtitles.content/universal-adapter"
+import * as disabledSidebar from "@/fork/upstream-services/subtitles-sidebar"
 import { DEFAULT_CONFIG } from "@/utils/constants/config"
 import { requestAiSubtitles } from "@/utils/subtitles/ai/request-ai-subtitles"
 import { NetflixSubtitlesFetcher } from "@/utils/subtitles/fetchers/netflix"
@@ -30,6 +31,9 @@ describe("real redirected subtitle boundaries", () => {
       },
     )
     expect(() => mountSubtitlesSidebar(forbidden as never)).not.toThrow()
+    const unmount = Reflect.get(disabledSidebar, "unmountSubtitlesSidebar")
+    expect(unmount).toBeTypeOf("function")
+    expect(() => unmount()).not.toThrow()
     expect(document.querySelector('[id*="subtitles-sidebar"]')).toBeNull()
   })
 

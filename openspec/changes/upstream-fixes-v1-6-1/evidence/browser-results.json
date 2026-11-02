@@ -1,0 +1,123 @@
+{
+  "browser": "Chrome/156.0.8078.76",
+  "extensionId": "dpjljamigpipdclbdjeoapiflkpkihge",
+  "build": "D:\\project\\translatebuff\\.output\\chrome-mv3",
+  "config": {
+    "mode": "translationOnly",
+    "provider": "fixture-local",
+    "target": "cmn"
+  },
+  "results": [
+    {
+      "url": "https://arxiv.org/html/upstream-fixes-fixture",
+      "kind": "controlled DOM fixture in real built extension",
+      "translated": true,
+      "restored": true,
+      "requests": 1,
+      "state": {
+        "text": "已译正文.",
+        "wrappers": 0,
+        "anchors": 1,
+        "reflows": 1
+      }
+    },
+    {
+      "url": "https://github.com/upstream-fixture/issues",
+      "kind": "controlled DOM fixture in real built extension",
+      "translated": true,
+      "restored": true,
+      "requests": 1,
+      "state": {
+        "text": "已译正文.Repository number must stay original",
+        "wrappers": 0,
+        "anchors": 1,
+        "reflows": 0
+      }
+    },
+    {
+      "url": "https://web.telegram.org/upstream-fixture",
+      "kind": "controlled DOM fixture in real built extension",
+      "translated": true,
+      "restored": true,
+      "requests": 1,
+      "state": {
+        "text": "已译正文.",
+        "wrappers": 0,
+        "anchors": 1,
+        "reflows": 0
+      }
+    },
+    {
+      "url": "https://www.thenorthfacekorea.co.kr/upstream-fixture",
+      "kind": "controlled DOM fixture in real built extension",
+      "translated": true,
+      "restored": true,
+      "requests": 2,
+      "state": {
+        "text": "已译正文已译正文.",
+        "wrappers": 0,
+        "anchors": 2,
+        "reflows": 0
+      }
+    },
+    {
+      "url": "https://gamefaqs.gamespot.com/game/faqs/upstream-fixture",
+      "kind": "controlled DOM fixture in real built extension",
+      "translated": true,
+      "restored": true,
+      "requests": 1,
+      "state": {
+        "text": "已译正文.\n\n已译正文.",
+        "wrappers": 0,
+        "anchors": 1,
+        "reflows": 0
+      }
+    },
+    {
+      "kind": "selection Ctrl+A and hidden-body smoke",
+      "selected": "Tokyopronunciation\nAnother selected sentence.\n\nA fresh selection remains possible after closing a card.",
+      "hosts": []
+    }
+  ],
+  "providerRequests": [
+    {
+      "items": 1,
+      "input": {
+        "t0": "An abstract readers must be able to translate."
+      }
+    },
+    {
+      "items": 1,
+      "input": {
+        "t0": "The new issue title should translate correctly."
+      }
+    },
+    {
+      "items": 1,
+      "input": {
+        "t0": "This message belongs to a boxless container with a child layout box."
+      }
+    },
+    {
+      "items": 1,
+      "input": {
+        "t0": "Open menu"
+      }
+    },
+    {
+      "items": 1,
+      "input": {
+        "t0": "The hidden product menu opens with CSS hover alone."
+      }
+    },
+    {
+      "items": 2,
+      "input": {
+        "t0": "The first paragraph explains how to play this adventure.",
+        "t1": "The second paragraph describes where the hero should travel."
+      }
+    }
+  ],
+  "forbidden": [],
+  "errors": []
+}

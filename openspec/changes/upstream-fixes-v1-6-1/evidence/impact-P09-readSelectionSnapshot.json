@@ -1,0 +1,140 @@
+{
+  "target": {
+    "id": "Function:src/entrypoints/selection.content/utils.ts:readSelectionSnapshot",
+    "name": "readSelectionSnapshot",
+    "type": "Function",
+    "filePath": "src/entrypoints/selection.content/utils.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 5,
+  "risk": "LOW",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 2,
+    "processes_affected": 1,
+    "modules_affected": 1
+  },
+  "byDepthCounts": {
+    "1": 2,
+    "2": 2,
+    "3": 1
+  },
+  "affected_processes": [
+    {
+      "name": "handleMouseUp",
+      "type": "Function",
+      "filePath": "src/entrypoints/selection.content/selection-toolbar/index.tsx",
+      "affected_process_count": 7,
+      "total_hits": 7,
+      "earliest_broken_step": 1
+    }
+  ],
+  "affected_modules": [
+    {
+      "name": "Selection-toolbar",
+      "hits": 5,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/selection.content/selection-toolbar/index.tsx:SelectionToolbar.fn@375:12.handleMouseUp@376:4",
+        "name": "handleMouseUp",
+        "filePath": "src/entrypoints/selection.content/selection-toolbar/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_50_handlemouseup",
+            "label": "HandleMouseUp → CollectSelectionBoundaryNodes",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_51_handlemouseup",
+            "label": "HandleMouseUp → GetReadFrogSubtitleShadowRoot",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_101_handlemouseup",
+            "label": "HandleMouseUp → CreateRangeSnapshot",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_49_handlemouseup",
+            "label": "HandleMouseUp → GetNearestSelectionOverlayElement",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_173_handlemouseup",
+            "label": "HandleMouseUp → CollectSelectionBoundaryNodes",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_174_handlemouseup",
+            "label": "HandleMouseUp → ReadTextControlSelection",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_249_handlemouseup",
+            "label": "HandleMouseUp → NormalizeSelectedText",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/selection.content/selection-toolbar/use-selection-shortcuts.ts:readLiveSelectionSession",
+        "name": "readLiveSelectionSession",
+        "filePath": "src/entrypoints/selection.content/selection-toolbar/use-selection-shortcuts.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "Function:src/entrypoints/selection.content/selection-toolbar/index.tsx:SelectionToolbar.fn@375:12.handleDeferredSelection@514:4",
+        "name": "handleDeferredSelection",
+        "filePath": "src/entrypoints/selection.content/selection-toolbar/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.8,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/entrypoints/selection.content/selection-toolbar/use-selection-shortcuts.ts:useSelectionShortcuts.onRun@87:2",
+        "name": "onRun",
+        "filePath": "src/entrypoints/selection.content/selection-toolbar/use-selection-shortcuts.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "3": [
+      {
+        "depth": 3,
+        "id": "Function:src/entrypoints/selection.content/selection-toolbar/use-selection-shortcuts.ts:useSelectionShortcuts.fn@95:12.handleKeydown@104:4",
+        "name": "handleKeydown",
+        "filePath": "src/entrypoints/selection.content/selection-toolbar/use-selection-shortcuts.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ]
+  }
+}

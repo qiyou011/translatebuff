@@ -65,11 +65,10 @@ export function decodePageMt(raw: unknown, items: PageTranslationData[]): (strin
       : (value as { translations?: { text?: unknown }[] } | null)?.translations?.[0]?.text
     if (typeof text !== "string" || !text.trim()) return undefined
     try {
-      if (google)
-        text = restoreGoogleTranslation(
-          text,
-          prepareGoogleTranslation(item.text, item).preservedLines,
-        )
+      if (google) {
+        const prepared = prepareGoogleTranslation(item.text, item)
+        text = restoreGoogleTranslation(text, prepared.preservedLines, prepared.punctuationRuns)
+      }
       const normalized = normalizeTranslationOutput(item.provider, text as string).trim()
       if (!normalized) return undefined
       if (item.textFormat === "html") assertHtmlAttributeMarkerIntegrity(item.text, normalized)

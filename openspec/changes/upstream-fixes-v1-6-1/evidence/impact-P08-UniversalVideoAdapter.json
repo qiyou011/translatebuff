@@ -1,0 +1,301 @@
+{
+  "target": {
+    "id": "Class:src/entrypoints/subtitles.content/universal-adapter.ts:UniversalVideoAdapter",
+    "name": "UniversalVideoAdapter",
+    "type": "Class",
+    "filePath": "src/entrypoints/subtitles.content/universal-adapter.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 23,
+  "risk": "MEDIUM",
+  "riskSharedAxes": "MEDIUM",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 13,
+    "processes_affected": 1,
+    "modules_affected": 2
+  },
+  "byDepthCounts": {
+    "1": 13,
+    "2": 6,
+    "3": 4
+  },
+  "affected_processes": [
+    {
+      "name": "intervalId",
+      "type": "Function",
+      "filePath": "src/entrypoints/subtitles.content/init-xcom-subtitles.ts",
+      "affected_process_count": 6,
+      "total_hits": 6,
+      "earliest_broken_step": 1
+    }
+  ],
+  "affected_modules": [
+    {
+      "name": "Subtitles.content",
+      "hits": 7,
+      "impact": "direct"
+    },
+    {
+      "name": "Xcom",
+      "hits": 2,
+      "impact": "indirect"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "File:src/entrypoints/subtitles.content/bind-subtitles-toggle-shortcut.ts",
+        "name": "bind-subtitles-toggle-shortcut.ts",
+        "filePath": "src/entrypoints/subtitles.content/bind-subtitles-toggle-shortcut.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:src/entrypoints/subtitles.content/init-netflix-subtitles.ts",
+        "name": "init-netflix-subtitles.ts",
+        "filePath": "src/entrypoints/subtitles.content/init-netflix-subtitles.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:src/entrypoints/subtitles.content/platforms/netflix/translate-button.ts",
+        "name": "translate-button.ts",
+        "filePath": "src/entrypoints/subtitles.content/platforms/netflix/translate-button.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:src/entrypoints/subtitles.content/platforms/xcom/index.ts",
+        "name": "index.ts",
+        "filePath": "src/entrypoints/subtitles.content/platforms/xcom/index.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:src/entrypoints/subtitles.content/platforms/xcom/overlay-entry.ts",
+        "name": "overlay-entry.ts",
+        "filePath": "src/entrypoints/subtitles.content/platforms/xcom/overlay-entry.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:src/entrypoints/subtitles.content/platforms/youtube/index.ts",
+        "name": "index.ts",
+        "filePath": "src/entrypoints/subtitles.content/platforms/youtube/index.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:src/entrypoints/subtitles.content/renderer/mount-shorts-translate-button.ts",
+        "name": "mount-shorts-translate-button.ts",
+        "filePath": "src/entrypoints/subtitles.content/renderer/mount-shorts-translate-button.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:src/entrypoints/subtitles.content/renderer/mount-subtitles-sidebar.tsx",
+        "name": "mount-subtitles-sidebar.tsx",
+        "filePath": "src/entrypoints/subtitles.content/renderer/mount-subtitles-sidebar.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:src/entrypoints/subtitles.content/renderer/mount-subtitles-ui.tsx",
+        "name": "mount-subtitles-ui.tsx",
+        "filePath": "src/entrypoints/subtitles.content/renderer/mount-subtitles-ui.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "File:src/entrypoints/subtitles.content/renderer/render-translate-button.tsx",
+        "name": "render-translate-button.tsx",
+        "filePath": "src/entrypoints/subtitles.content/renderer/render-translate-button.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/subtitles.content/init-netflix-subtitles.ts:initNetflixSubtitles",
+        "name": "initNetflixSubtitles",
+        "filePath": "src/entrypoints/subtitles.content/init-netflix-subtitles.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/subtitles.content/platforms/xcom/index.ts:createXcomSubtitlesAdapter",
+        "name": "createXcomSubtitlesAdapter",
+        "filePath": "src/entrypoints/subtitles.content/platforms/xcom/index.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/subtitles.content/platforms/youtube/index.ts:createYoutubeSubtitlesAdapter",
+        "name": "createYoutubeSubtitlesAdapter",
+        "filePath": "src/entrypoints/subtitles.content/platforms/youtube/index.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "File:src/entrypoints/subtitles.content/init-xcom-subtitles.ts",
+        "name": "init-xcom-subtitles.ts",
+        "filePath": "src/entrypoints/subtitles.content/init-xcom-subtitles.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/entrypoints/subtitles.content/init-youtube-subtitles.ts",
+        "name": "init-youtube-subtitles.ts",
+        "filePath": "src/entrypoints/subtitles.content/init-youtube-subtitles.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "File:src/entrypoints/subtitles.content/runtime.ts",
+        "name": "runtime.ts",
+        "filePath": "src/entrypoints/subtitles.content/runtime.ts",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/entrypoints/subtitles.content/init-xcom-subtitles.ts:initXcomSubtitles.tryInit@68:2",
+        "name": "tryInit",
+        "filePath": "src/entrypoints/subtitles.content/init-xcom-subtitles.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/entrypoints/subtitles.content/init-youtube-subtitles.ts:initYoutubeSubtitles.tryInit@42:2",
+        "name": "tryInit",
+        "filePath": "src/entrypoints/subtitles.content/init-youtube-subtitles.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/entrypoints/subtitles.content/runtime.ts:bootstrapSubtitlesRuntime",
+        "name": "bootstrapSubtitlesRuntime",
+        "filePath": "src/entrypoints/subtitles.content/runtime.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "3": [
+      {
+        "depth": 3,
+        "id": "File:src/entrypoints/subtitles.content/index.tsx",
+        "name": "index.tsx",
+        "filePath": "src/entrypoints/subtitles.content/index.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/entrypoints/subtitles.content/init-xcom-subtitles.ts:initXcomSubtitles",
+        "name": "initXcomSubtitles",
+        "filePath": "src/entrypoints/subtitles.content/init-xcom-subtitles.ts",
+        "relationType": "CALLS",
+        "confidence": 0.8,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/entrypoints/subtitles.content/init-xcom-subtitles.ts:initXcomSubtitles.intervalId@92:2",
+        "name": "intervalId",
+        "filePath": "src/entrypoints/subtitles.content/init-xcom-subtitles.ts",
+        "relationType": "CALLS",
+        "confidence": 0.8,
+        "processes": [
+          {
+            "id": "proc_55_intervalid",
+            "label": "IntervalId → BelongsToStatus",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_175_intervalid",
+            "label": "IntervalId → GetXcomStatusVideoContainer",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_176_intervalid",
+            "label": "IntervalId → GetXcomVideoStatusId",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_23_intervalid",
+            "label": "IntervalId → PickSingleCandidate",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_177_intervalid",
+            "label": "IntervalId → ClearStamps",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_178_intervalid",
+            "label": "IntervalId → RemoveTranslateButton",
+            "processType": "intra_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/entrypoints/subtitles.content/init-youtube-subtitles.ts:initYoutubeSubtitles",
+        "name": "initYoutubeSubtitles",
+        "filePath": "src/entrypoints/subtitles.content/init-youtube-subtitles.ts",
+        "relationType": "CALLS",
+        "confidence": 0.8,
+        "processes": []
+      }
+    ]
+  }
+}

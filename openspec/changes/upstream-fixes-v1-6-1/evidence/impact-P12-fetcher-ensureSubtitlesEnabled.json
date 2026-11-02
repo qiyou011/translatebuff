@@ -1,0 +1,88 @@
+{
+  "target": {
+    "id": "Method:src/utils/subtitles/fetchers/youtube/index.ts:YoutubeSubtitlesFetcher.ensureSubtitlesEnabled#0",
+    "name": "ensureSubtitlesEnabled",
+    "type": "Method",
+    "filePath": "src/utils/subtitles/fetchers/youtube/index.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 5,
+  "risk": "LOW",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 2,
+    "processes_affected": 0,
+    "modules_affected": 1
+  },
+  "byDepthCounts": {
+    "1": 2,
+    "2": 2,
+    "3": 1
+  },
+  "affected_processes": [],
+  "affected_modules": [
+    {
+      "name": "Youtube",
+      "hits": 5,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Method:src/utils/subtitles/fetchers/youtube/index.ts:YoutubeSubtitlesFetcher.ensureTrackSelection#2",
+        "name": "ensureTrackSelection",
+        "filePath": "src/utils/subtitles/fetchers/youtube/index.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Method:src/utils/subtitles/fetchers/youtube/index.ts:YoutubeSubtitlesFetcher.getPlayerDataWithPot#1",
+        "name": "getPlayerDataWithPot",
+        "filePath": "src/utils/subtitles/fetchers/youtube/index.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "Method:src/utils/subtitles/fetchers/youtube/index.ts:YoutubeSubtitlesFetcher.fetchWithFallback#2",
+        "name": "fetchWithFallback",
+        "filePath": "src/utils/subtitles/fetchers/youtube/index.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Method:src/utils/subtitles/fetchers/youtube/index.ts:YoutubeSubtitlesFetcher.tryFastFetch#1",
+        "name": "tryFastFetch",
+        "filePath": "src/utils/subtitles/fetchers/youtube/index.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "3": [
+      {
+        "depth": 3,
+        "id": "Method:src/utils/subtitles/fetchers/youtube/index.ts:YoutubeSubtitlesFetcher.fetch#0",
+        "name": "fetch",
+        "filePath": "src/utils/subtitles/fetchers/youtube/index.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ]
+  }
+}

@@ -1,0 +1,161 @@
+{
+  "target": {
+    "id": "Function:src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/config-header.tsx:ConfigHeader",
+    "name": "ConfigHeader",
+    "type": "Function",
+    "filePath": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/config-header.tsx"
+  },
+  "direction": "upstream",
+  "impactedCount": 6,
+  "risk": "LOW",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 1,
+    "processes_affected": 1,
+    "modules_affected": 2
+  },
+  "byDepthCounts": {
+    "1": 1,
+    "2": 2,
+    "3": 3
+  },
+  "affected_processes": [
+    {
+      "name": "ApiProvidersPage",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/api-providers/index.tsx",
+      "affected_process_count": 4,
+      "total_hits": 8,
+      "earliest_broken_step": 3
+    }
+  ],
+  "affected_modules": [
+    {
+      "name": "Providers-config",
+      "hits": 2,
+      "impact": "direct"
+    },
+    {
+      "name": "Components",
+      "hits": 1,
+      "impact": "indirect"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/options/pages/api-providers/providers-config/provider-editor.tsx:ConfigHeader",
+        "name": "ConfigHeader",
+        "filePath": "src/entrypoints/options/pages/api-providers/providers-config/provider-editor.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "File:src/entrypoints/options/pages/api-providers/providers-config/provider-editor.tsx",
+        "name": "provider-editor.tsx",
+        "filePath": "src/entrypoints/options/pages/api-providers/providers-config/provider-editor.tsx",
+        "relationType": "USES",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/index.tsx:EditableProviderConfig",
+        "name": "EditableProviderConfig",
+        "filePath": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.7,
+        "processes": [
+          {
+            "id": "proc_37_apiproviderspage",
+            "label": "ApiProvidersPage → Body",
+            "processType": "cross_community",
+            "step": 4
+          },
+          {
+            "id": "proc_40_apiproviderspage",
+            "label": "ApiProvidersPage → Form",
+            "processType": "cross_community",
+            "step": 4
+          },
+          {
+            "id": "proc_39_apiproviderspage",
+            "label": "ApiProvidersPage → Provider",
+            "processType": "cross_community",
+            "step": 4
+          },
+          {
+            "id": "proc_38_apiproviderspage",
+            "label": "ApiProvidersPage → Root",
+            "processType": "cross_community",
+            "step": 4
+          }
+        ]
+      }
+    ],
+    "3": [
+      {
+        "depth": 3,
+        "id": "File:src/entrypoints/options/pages/api-providers/providers-config/index.tsx",
+        "name": "index.tsx",
+        "filePath": "src/entrypoints/options/pages/api-providers/providers-config/index.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "File:src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/index.tsx",
+        "name": "index.tsx",
+        "filePath": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/index.tsx",
+        "relationType": "IMPORTS",
+        "confidence": 1,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/index.tsx:ProviderConfigForm",
+        "name": "ProviderConfigForm",
+        "filePath": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_38_apiproviderspage",
+            "label": "ApiProvidersPage → Root",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_39_apiproviderspage",
+            "label": "ApiProvidersPage → Provider",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_40_apiproviderspage",
+            "label": "ApiProvidersPage → Form",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_37_apiproviderspage",
+            "label": "ApiProvidersPage → Body",
+            "processType": "cross_community",
+            "step": 3
+          }
+        ]
+      }
+    ]
+  }
+}

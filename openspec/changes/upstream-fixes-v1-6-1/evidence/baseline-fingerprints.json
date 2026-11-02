@@ -1,0 +1,14 @@
+[
+  {
+    "path": "src/fork/identity/upstream-baseline.json",
+    "sha256": "1F06EA1A7129188FC66004AD336A8E096B42692D06ABD04CDE685A7425499BA5"
+  },
+  {
+    "path": "src/fork/identity/selective-upstream-patches.json",
+    "sha256": "E0419FCFE0C52E4CCB06A0FB7CF1668FE5C95C2412AE796797E92A109BDC18BE"
+  },
+  {
+    "path": "src/fork/identity/redirect-baseline.json",
+    "sha256": "F8A880DE9E82CAB353A83595A5BAC221D3645B800C810810E1019DEADC4AFA87"
+  }
+]

@@ -1,0 +1,262 @@
+{
+  "target": {
+    "id": "Function:src/entrypoints/options/components/llm-feature-status-list.tsx:scrollToFeatureProviders",
+    "name": "scrollToFeatureProviders",
+    "type": "Function",
+    "filePath": "src/entrypoints/options/components/llm-feature-status-list.tsx"
+  },
+  "direction": "upstream",
+  "impactedCount": 5,
+  "risk": "HIGH",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 1,
+    "processes_affected": 3,
+    "modules_affected": 1
+  },
+  "byDepthCounts": {
+    "1": 1,
+    "2": 2,
+    "3": 2
+  },
+  "affected_processes": [
+    {
+      "name": "GlossaryPage",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/advanced/glossary/index.tsx",
+      "affected_process_count": 6,
+      "total_hits": 11,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "ApiProvidersPage",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/api-providers/index.tsx",
+      "affected_process_count": 9,
+      "total_hits": 9,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "AIContentAwareConfig",
+      "type": "Function",
+      "filePath": "src/entrypoints/options/pages/api-providers/ai-content-aware/index.tsx",
+      "affected_process_count": 2,
+      "total_hits": 4,
+      "earliest_broken_step": 1
+    }
+  ],
+  "affected_modules": [
+    {
+      "name": "Components",
+      "hits": 5,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/options/components/llm-feature-status-list.tsx:LlmFeatureStatusList",
+        "name": "LlmFeatureStatusList",
+        "filePath": "src/entrypoints/options/components/llm-feature-status-list.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_242_aicontentawareconfig",
+            "label": "AIContentAwareConfig → ScrollToFeatureProviders",
+            "processType": "intra_community",
+            "step": 2
+          },
+          {
+            "id": "proc_385_aicontentawareconfig",
+            "label": "AIContentAwareConfig → RawT",
+            "processType": "intra_community",
+            "step": 2
+          },
+          {
+            "id": "proc_333_glossarypage",
+            "label": "GlossaryPage → RawT",
+            "processType": "intra_community",
+            "step": 3
+          },
+          {
+            "id": "proc_78_glossarypage",
+            "label": "GlossaryPage → ScrollToFeatureProviders",
+            "processType": "intra_community",
+            "step": 3
+          }
+        ]
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "Function:src/entrypoints/options/pages/advanced/glossary/enable-item.tsx:GlossaryEnableItem",
+        "name": "GlossaryEnableItem",
+        "filePath": "src/entrypoints/options/pages/advanced/glossary/enable-item.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_301_glossarypage",
+            "label": "GlossaryPage → ConfigItem",
+            "processType": "intra_community",
+            "step": 2
+          },
+          {
+            "id": "proc_78_glossarypage",
+            "label": "GlossaryPage → ScrollToFeatureProviders",
+            "processType": "intra_community",
+            "step": 2
+          },
+          {
+            "id": "proc_333_glossarypage",
+            "label": "GlossaryPage → RawT",
+            "processType": "intra_community",
+            "step": 2
+          }
+        ]
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/entrypoints/options/pages/api-providers/ai-content-aware/index.tsx:AIContentAwareConfig",
+        "name": "AIContentAwareConfig",
+        "filePath": "src/entrypoints/options/pages/api-providers/ai-content-aware/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_385_aicontentawareconfig",
+            "label": "AIContentAwareConfig → RawT",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_242_aicontentawareconfig",
+            "label": "AIContentAwareConfig → ScrollToFeatureProviders",
+            "processType": "intra_community",
+            "step": 1
+          }
+        ]
+      }
+    ],
+    "3": [
+      {
+        "depth": 3,
+        "id": "Function:src/entrypoints/options/pages/advanced/glossary/index.tsx:GlossaryPage",
+        "name": "GlossaryPage",
+        "filePath": "src/entrypoints/options/pages/advanced/glossary/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_301_glossarypage",
+            "label": "GlossaryPage → ConfigItem",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_266_glossarypage",
+            "label": "GlossaryPage → UseGlossaryInvalidation",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_138_glossarypage",
+            "label": "GlossaryPage → UseGlossaryTermCounts",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_137_glossarypage",
+            "label": "GlossaryPage → UseGlossaries",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_333_glossarypage",
+            "label": "GlossaryPage → RawT",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_78_glossarypage",
+            "label": "GlossaryPage → ScrollToFeatureProviders",
+            "processType": "intra_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/entrypoints/options/pages/api-providers/index.tsx:ApiProvidersPage",
+        "name": "ApiProvidersPage",
+        "filePath": "src/entrypoints/options/pages/api-providers/index.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_39_apiproviderspage",
+            "label": "ApiProvidersPage → Provider",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_40_apiproviderspage",
+            "label": "ApiProvidersPage → Form",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_80_apiproviderspage",
+            "label": "ApiProvidersPage → Provider",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_38_apiproviderspage",
+            "label": "ApiProvidersPage → Root",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_37_apiproviderspage",
+            "label": "ApiProvidersPage → Body",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_82_apiproviderspage",
+            "label": "ApiProvidersPage → HighlightRequestedField",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_232_apiproviderspage",
+            "label": "ApiProvidersPage → AddProvider",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_81_apiproviderspage",
+            "label": "ApiProvidersPage → Identity",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_313_apiproviderspage",
+            "label": "ApiProvidersPage → ConfigItem",
+            "processType": "intra_community",
+            "step": 1
+          }
+        ]
+      }
+    ]
+  }
+}

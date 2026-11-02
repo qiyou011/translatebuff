@@ -1,0 +1,9 @@
+{
+  "error": "Target 'isNoiseSegment' not found",
+  "target": {
+    "name": "isNoiseSegment"
+  },
+  "direction": "upstream",
+  "impactedCount": null,
+  "risk": "UNKNOWN"
+}

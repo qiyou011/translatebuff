@@ -1,0 +1,9 @@
+{
+  "error": "Target 'isExtensionDrivenMutation' not found",
+  "target": {
+    "name": "isExtensionDrivenMutation"
+  },
+  "direction": "upstream",
+  "impactedCount": null,
+  "risk": "UNKNOWN"
+}
