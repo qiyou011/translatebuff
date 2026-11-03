@@ -120,6 +120,9 @@ const legacySchema = hasBaseline
   : undefined
 const legacyVersion = hasBaseline ? legacyModule("package.json").version : undefined
 const legacyBackup = hasBaseline ? legacyModule("src/utils/backup/storage.ts") : undefined
+// Load the old migration chain before test timers start: each module reads Git
+// history and runs esbuild, which is slow on Windows under parallel test load.
+const legacyMigration = hasBaseline ? legacyModule("src/utils/config/migration.ts") : undefined
 
 function scenario() {
   const config: any = structuredClone(fixture.config)
@@ -320,12 +323,11 @@ describe.skipIf(!hasBaseline)(
       const { config: before, backup } = await backupBeforeUpgrade()
       await initializeConfig()
       const upgraded = await storage.getItem("local:config")
-      const oldMigration = legacyModule("src/utils/config/migration.ts")
       const oldErrors = legacyModule("src/utils/config/errors.ts")
-      await expect(oldMigration.migrateConfig(upgraded, 111)).rejects.toBeInstanceOf(
+      await expect(legacyMigration.migrateConfig(upgraded, 111)).rejects.toBeInstanceOf(
         oldErrors.ConfigVersionTooNewError,
       )
-      const restored = await oldMigration.migrateConfig(
+      const restored = await legacyMigration.migrateConfig(
         structuredClone(backup.config),
         backup.schemaVersion,
       )
