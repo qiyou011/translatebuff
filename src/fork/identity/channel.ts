@@ -21,7 +21,8 @@ export interface ChannelEntry {
 // 渠道 id → 后端渠道（渠道供应商名称 / 号码）映射，供溯源：
 //   zip=7100 任译喵-OFFICIAL_WEB · chrome-store=7101 任译喵-Google · edge=7102 任译喵-Edge · firefox=7103 任译喵-FireFox
 //   360=7104 任译喵-360 · quark=7105 任译喵-夸克 · qq=7106 任译喵-QQ · sogou=7107 任译喵-搜狗
-//   global-zip=7150 · global-chrome-store=7151 · global-edge=7152 · global-firefox=7153（海外线）
+//   global-zip=7150 · global-chrome-store=7151 · global-edge=7152 · global-firefox=7153 · global-opera=7159（海外线）
+// Opera 商店包沿用 chrome 构建目标，兼容从该商店安装扩展的 Chromium 浏览器。
 // 号码是后端「渠道标识(ID)」，id 是本仓构建期内部键。新增渠道若号码待分配，先以 number:null 占位（护栏拦截）。
 //
 // ⚠️ 新增渠道时号码**必须留在 71 段内**：两个官网仓（ai-trans-official-website /

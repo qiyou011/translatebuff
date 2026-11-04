@@ -156,40 +156,46 @@ it("读取存量 Cookie，清除后生成新标识，不使用永久内存缓存
   expect(result[1].device_info.sn).not.toBe(SN)
 })
 
-it("海外渠道仍为 AITRANS，数值渠道进入 extra", async () => {
+it.each([
+  ["global-firefox", 7153],
+  ["global-opera", 7159],
+] as const)("海外渠道 %s 仍为 AITRANS，数值渠道进入 extra", async (channel, cid) => {
   vi.stubEnv("WXT_FORK_EDITION", "global")
-  vi.stubEnv("WXT_FORK_CHANNEL", "global-firefox")
+  vi.stubEnv("WXT_FORK_CHANNEL", channel)
   startup()
   const [event] = await events()
   expect(event.product_line).toBe("AITRANS")
-  expect(event.action_extra_info.launch_channel_id).toBe(7153)
-  expect(event.action_extra_info.origin_cid).toBe(7153)
+  expect(event.action_extra_info.launch_channel_id).toBe(cid)
+  expect(event.action_extra_info.origin_cid).toBe(cid)
 })
 
-it("海外启动跟随当前 Cookie 变化，报文保留包内 7151", async () => {
+it.each([
+  ["global-chrome-store", 7151],
+  ["global-opera", 7159],
+] as const)("海外 %s 启动跟随 Cookie 变化并保留包内来源", async (channel, cid) => {
   vi.stubEnv("WXT_FORK_EDITION", "global")
-  vi.stubEnv("WXT_FORK_CHANNEL", "global-chrome-store")
+  vi.stubEnv("WXT_FORK_CHANNEL", channel)
   channelCookie = { value: "9899" }
   const { reportAppStartUp } = await import("../track-startup")
   await reportAppStartUp("install", NOW)
   const [event] = await events()
   expect(event.action_extra_info).toMatchObject({
     launch_channel_id: 9899,
-    origin_cid: 7151,
+    origin_cid: cid,
   })
   expect(fetchMock.mock.calls[0]![1].headers.Useragent.split("/")[3]).toBe("9899")
   channelCookie = { value: "66666" }
   await reportAppStartUp("update", NOW + 1)
   const result = await events(2)
-  expect(result[1].action_extra_info).toMatchObject({ launch_channel_id: 66666, origin_cid: 7151 })
+  expect(result[1].action_extra_info).toMatchObject({ launch_channel_id: 66666, origin_cid: cid })
   expect(fetchMock.mock.calls[1]![1].headers.Useragent.split("/")[3]).toBe("66666")
   channelCookie = null
   await reportAppStartUp("startup", NOW + 2)
   expect((await events(3))[2].action_extra_info).toMatchObject({
-    launch_channel_id: 7151,
-    origin_cid: 7151,
+    launch_channel_id: cid,
+    origin_cid: cid,
   })
-  expect(fetchMock.mock.calls[2]![1].headers.Useragent.split("/")[3]).toBe("7151")
+  expect(fetchMock.mock.calls[2]![1].headers.Useragent.split("/")[3]).toBe(String(cid))
 })
 
 it("国内启动事件和 UA 都使用当前 Cookie 渠道", async () => {

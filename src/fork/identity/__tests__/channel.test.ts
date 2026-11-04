@@ -60,6 +60,21 @@ describe("resolveChannelNumber（edition 分区）", () => {
   })
 })
 
+describe("Opera 商店渠道", () => {
+  it("海外包使用 7159，并将渠道带入官网链接", () => {
+    vi.stubEnv("WXT_FORK_EDITION", "global")
+    vi.stubEnv("WXT_FORK_CHANNEL", "global-opera")
+    expect(resolveChannelNumber()).toBe("7159")
+    expect(appendChannelId("https://www.translatebuff.com/login")).toBe(
+      "https://www.translatebuff.com/login?cid=7159",
+    )
+  })
+
+  it("国内版不能使用海外 Opera 渠道", () => {
+    expect(() => resolveChannelNumber("global-opera")).toThrow(/edition/)
+  })
+})
+
 describe("channels.json 跨仓契约", () => {
   it("每个渠道号都落在官网 cid 放行的 71 段内（段外会被官网静默回落 7100）", () => {
     for (const [id, entry] of Object.entries(channels)) {

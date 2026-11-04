@@ -104,12 +104,13 @@ function readChannels() {
 // assert-fork-build 读 FORK_OUT_DIR 定位产物目录（见 outDirOf）。品牌校验只扫源码、与渠道无关，
 // 由 store 入口统一跑一次（不随渠道重复扫源），故不在此。
 function packChannel(id, entry, editionEnv) {
-  const zipArgs = ["exec", "wxt", "zip", "-b", entry.browser]
+  // Run WXT with Node directly: Windows cannot spawn pnpm's PowerShell/CMD wrappers.
+  const zipArgs = ["node_modules/wxt/bin/wxt.mjs", "zip", "-b", entry.browser]
   if (entry.browser === "firefox") zipArgs.push("--mv3")
   const outDir = outDirOf(entry.browser)
   const forkEnv = { ...editionEnv, WXT_FORK_CHANNEL: id, WXT_FORK_EDITION: edition }
   rmSync(outDir, { recursive: true, force: true }) // 同 test 分支：防旧 chunk 残留致 env 串味
-  run("pnpm", zipArgs, forkEnv)
+  run(process.execPath, zipArgs, forkEnv)
   run("node", ["scripts/assert-fork-build.mjs"], { ...forkEnv, FORK_OUT_DIR: outDir })
   console.log(`\n✓ 渠道 ${id}（${entry.browser}，edition=${edition}）正式包 OK`)
 }
@@ -134,7 +135,7 @@ if (mode === "test") {
   rmSync(outDirOf("chrome"), { recursive: true, force: true })
 
   // 注入测试值（盖过 .env.production 的生产值）+ 打包意图 + edition（驱动跳转路径 / 商店身份 / 渠道表）
-  run("pnpm", ["exec", "wxt", "zip"], {
+  run(process.execPath, ["node_modules/wxt/bin/wxt.mjs", "zip"], {
     ...parseDotenv(envText),
     FORK_PACK: "test",
     WXT_FORK_EDITION: edition,

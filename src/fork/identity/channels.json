@@ -10,5 +10,6 @@
   "global-zip": { "number": "7150", "browser": "chrome", "edition": "global" },
   "global-chrome-store": { "number": "7151", "browser": "chrome", "edition": "global" },
   "global-edge": { "number": "7152", "browser": "edge", "edition": "global" },
-  "global-firefox": { "number": "7153", "browser": "firefox", "edition": "global" }
+  "global-firefox": { "number": "7153", "browser": "firefox", "edition": "global" },
+  "global-opera": { "number": "7159", "browser": "chrome", "edition": "global" }
 }

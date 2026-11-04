@@ -44,6 +44,7 @@ afterEach(() => {
 describe("当前官网 Cookie 渠道优先", () => {
   it.each([
     ["global", "global-edge", "https://www.translatebuff.com"],
+    ["global", "global-opera", "https://www.translatebuff.com"],
     ["cn", "edge", "https://www.translatebuff.cn"],
     ["global", "global-edge", "https://test.translatebuff.com"],
   ])("%s 请求优先使用当前环境的 aitrans_cid=9899", async (edition, channel, website) => {
@@ -73,6 +74,16 @@ describe("当前官网 Cookie 渠道优先", () => {
     else vi.mocked(browser.cookies.get).mockResolvedValue(null as never)
     const { getBackgroundInstallChannel } = await import("../install-channel-runtime")
     expect(await getBackgroundInstallChannel()).toBe("7152")
+  })
+
+  it.each(["empty", "error", "missing"])("Opera Cookie %s 时回退包内 7159", async (state) => {
+    vi.stubEnv("WXT_FORK_CHANNEL", "global-opera")
+    if (state === "error") vi.mocked(browser.cookies.get).mockRejectedValue(new Error("denied"))
+    else if (state === "empty")
+      vi.mocked(browser.cookies.get).mockResolvedValue({ value: "" } as never)
+    else vi.mocked(browser.cookies.get).mockResolvedValue(null as never)
+    const { getBackgroundInstallChannel } = await import("../install-channel-runtime")
+    expect(await getBackgroundInstallChannel()).toBe("7159")
   })
 
   it("Cookie 读取超时后放行请求，下一次可恢复读取", async () => {
