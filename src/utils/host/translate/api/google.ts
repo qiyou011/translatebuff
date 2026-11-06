@@ -1,6 +1,7 @@
 import type { TranslationTextFormat } from "@/types/config/translate"
 import { escapeText } from "entities"
 import { attachRequestErrorMeta } from "@/utils/request/retry-policy"
+import { resolveGoogleSourceLanguage } from "./google-local-language"
 
 /**
  * Upper bound for the install-time reachability probe. Where Google is blocked the request
@@ -213,6 +214,46 @@ export async function requestGoogleTranslationBatch(
   toLang: string,
   signal?: AbortSignal,
 ): Promise<unknown> {
+  signal?.throwIfAborted()
+  if (fromLang === "auto") {
+    const sources = requestTexts.map(resolveGoogleSourceLanguage)
+    if (sources.some((source) => source !== "auto")) {
+      const groups = new Map<string, number[]>()
+      sources.forEach((source, index) => {
+        const indices = groups.get(source) ?? []
+        indices.push(index)
+        groups.set(source, indices)
+      })
+      const values: unknown[] = Array.from({ length: requestTexts.length })
+      for (const [source, indices] of groups) {
+        signal?.throwIfAborted()
+        try {
+          // Each group still uses the HTML endpoint. The auto group contains
+          // no confident local hints, so this recursion is bounded to one level.
+          const result = await requestGoogleTranslationBatch(
+            indices.map((i) => requestTexts[i]!),
+            source,
+            toLang,
+            signal,
+          )
+          signal?.throwIfAborted()
+          if (
+            Array.isArray(result) &&
+            Array.isArray(result[0]) &&
+            result[0].length === indices.length
+          ) {
+            indices.forEach((index, i) => {
+              values[index] = result[0][i]
+            })
+          }
+        } catch {
+          signal?.throwIfAborted()
+          // Preserve healthy siblings when one language group fails.
+        }
+      }
+      return [values, sources]
+    }
+  }
   const resp = await fetch(GOOGLE_TRANSLATE_HTML_URL, {
     method: "POST",
     headers: {

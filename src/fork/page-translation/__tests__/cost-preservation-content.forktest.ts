@@ -3,7 +3,11 @@ import type { MatchedTerm } from "@/utils/glossary/types"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 import { DEFAULT_CONFIG } from "@/utils/constants/config"
 import { resolveGlossaryTerms } from "@/utils/glossary/active-matcher"
-import { clearInMemoryTranslationCache } from "@/utils/host/translate/in-memory-translation-cache"
+import { Sha256Hex } from "@/utils/hash"
+import {
+  clearInMemoryTranslationCache,
+  storeInMemoryTranslation,
+} from "@/utils/host/translate/in-memory-translation-cache"
 import { translateTextCore } from "@/utils/host/translate/translate-text"
 import {
   beginPageTranslationSession,
@@ -64,6 +68,48 @@ const translate = (glossaryEnabled: boolean) =>
     sessionId,
     glossaryEnabled,
   })
+
+it.each([
+  ["Hello world", "auto", "plain", false],
+  ["このゲームは面白いです", "auto", "plain", false],
+  ["حاسس المراجعه منطقيه", "eng", "plain", false],
+  ['<a title="مرحبا">hello</a>', "auto", "html", false],
+  ["حاسس المراجعه منطقيه", "auto", "plain", true],
+  ["<مرحبا>", "auto", "plain", true],
+  ["<b>&#x645;&#x631;&#x62d;&#x628;&#x627;</b>", "auto", "html", true],
+] as const)(
+  "scopes local Google detector cache migration for %s (%s/%s)",
+  async (text, sourceCode, textFormat, changed) => {
+    const config = DEFAULT_CONFIG.providersConfig.find((p) => p.provider === "google-translate")!
+    const oldHash = Sha256Hex(
+      text,
+      JSON.stringify(config),
+      sourceCode,
+      "cmn",
+      `textFormat:${textFormat}`,
+    )
+    const options = {
+      text,
+      textFormat,
+      langConfig: { ...DEFAULT_CONFIG.language, sourceCode, targetCode: "cmn" as const },
+      providerConfig: { kind: "local" as const, id: config.id, name: config.name, config },
+      hostedFeature: "pageTranslation" as const,
+      sessionId,
+    }
+    sender.mockImplementation(
+      vi.fn<(...args: any[]) => any>(async (_type, data) =>
+        data.hash === oldHash ? "旧缓存" : "新译文",
+      ),
+    )
+    expect(await translateTextCore(options)).toBe(changed ? "新译文" : "旧缓存")
+    expect(sender.mock.calls[0]![1].hash === oldHash).toBe(!changed)
+    clearInMemoryTranslationCache()
+    storeInMemoryTranslation(oldHash, "旧缓存")
+    sender.mockClear()
+    expect(await translateTextCore(options)).toBe(changed ? "新译文" : "旧缓存")
+    expect(sender).toHaveBeenCalledTimes(changed ? 1 : 0)
+  },
+)
 
 describe("cost preservation for empty effective terminology", () => {
   it("reuses a no-glossary translation after enabling an empty glossary", async () => {

@@ -24,6 +24,7 @@ import { resolveProviderRefForCapability } from "@/utils/providers/provider-regi
 import { TranslationCancelledError } from "@/utils/request/cancellation"
 import { Sha256Hex } from "../../hash"
 import { sendMessage } from "../../message"
+import { hasGoogleArabicSource } from "./google-source"
 import { getInMemoryTranslation, storeInMemoryTranslation } from "./in-memory-translation-cache"
 import { prepareTranslationText } from "./text-preparation"
 import {
@@ -132,6 +133,13 @@ async function buildWebPageHashComponents(
     // cache entries must too. This component also orphans entries cached before
     // the format-aware pipeline existed, which could hold corrupted output.
     hashComponents.push(`textFormat:${textFormat}`)
+    if (
+      providerConfig.provider === "google-translate" &&
+      partialLangConfig.sourceCode === "auto" &&
+      hasGoogleArabicSource(preparedText, textFormat)
+    ) {
+      hashComponents.push("googleSourceDetection:eld-large-1")
+    }
     // Pushed only when the flag actually changes the provider request —
     // today that is Google alone — so cache entries written before the flag
     // existed stay valid and identical Microsoft/DeepL requests are not
