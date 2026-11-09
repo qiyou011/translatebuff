@@ -11,6 +11,7 @@ import {
   resolveExtensionEnv,
 } from "./src/env/shared"
 import { FORK_BRANDING, getForkDisplayName, getForkStoreTitle } from "./src/fork/branding"
+import { eldLanguageDataChunk, firefoxScriptSizePlugin } from "./src/fork/eld-build"
 import { brandChromeMessages } from "./src/fork/i18n/chrome-messages"
 import { resolveChannelNumber } from "./src/fork/identity/channel"
 import { resolveEdition } from "./src/fork/identity/edition"
@@ -515,6 +516,22 @@ export default defineConfig({
       if (useLocalPackages) throw new Error("Do not zip a build made with local packages")
     },
     "vite:build:extendConfig": (entrypoints, viteConfig) => {
+      // Only background/HTML entry groups support static code splitting.
+      // Content scripts use IIFE output and must retain WXT's unsplit build.
+      if (
+        entrypoints.some(
+          (entrypoint) =>
+            entrypoint.type === "background" || entrypoint.inputPath.endsWith(".html"),
+        )
+      ) {
+        viteConfig.build ??= {}
+        viteConfig.build.rollupOptions ??= {}
+        viteConfig.build.rollupOptions.output ??= {}
+        const outputs = viteConfig.build.rollupOptions.output
+        for (const output of Array.isArray(outputs) ? outputs : [outputs]) {
+          output.manualChunks = eldLanguageDataChunk
+        }
+      }
       const entrypoint = entrypoints.length === 1 ? entrypoints[0] : undefined
       if (entrypoint?.type !== "content-script") return
 
@@ -562,6 +579,9 @@ export default defineConfig({
       ],
     },
     plugins: [
+      ...(configEnv.mode === "production" && configEnv.browser === "firefox"
+        ? [firefoxScriptSizePlugin()]
+        : []),
       forkUiRedirectPlugin(FORK_UI_REDIRECTS),
       // Lets the runtime i18next facade (src/utils/i18n) `import` the `src/locales/*.yml`
       // files as JS objects so i18next can bundle them for runtime language switching.
