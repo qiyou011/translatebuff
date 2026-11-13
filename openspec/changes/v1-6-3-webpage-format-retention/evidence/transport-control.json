@@ -1,0 +1,15 @@
+{
+  "runtime": "v26.11.1",
+  "out": [
+    {
+      "body": "[\"Hello world.\"]",
+      "status": 200,
+      "response": "[{\"translations\":[{\"text\":\"你好，世界。\",\"to\":\"zh-Hans\",\"sentLen\":{\"srcSentLen\":[12],\"transSentLen\":[6]}}]}]"
+    },
+    {
+      "body": "[\"Hello world.\",\"Please ⟦B0⟧save your changes⟦/B0⟧ before closing. Keep ⟦A0⟧ unchanged.\",\"Please [B0]save your changes[/B0] before closing. Keep {{0}} unchanged.\",\"The {#0}first account{/#0} is active; the {#1}second account{/#1} expires tomorrow. Keep {{0}} unchanged.\",\"Before the [[S0]]payment deadline[[E0]], confirm the [[S1]]shipping address[[E1]]. Keep {{0}} unchanged.\",\"The ⟦B0⟧new delivery date⟦/B0⟧ is ⟦H1⟧next Thursday⟦/H1⟧. Keep ⟦A0⟧ unchanged and calculate ⟦A1⟧.\",\"The [B0]account[/B0] is active, but the [H1]account[/H1] must be verified. Run {{0}} then calculate {{1}}.\"]",
+      "status": 200,
+      "response": "[{\"translations\":[{\"text\":\"你好，世界。\",\"to\":\"zh-Hans\",\"sentLen\":{\"srcSentLen\":[12],\"transSentLen\":[6]}}]},{\"translations\":[{\"text\":\"请在关闭前⟦B0⟧保存您的更改⟦/B0⟧。保持⟦A0⟧不变。\",\"to\":\"zh-Hans\",\"sentLen\":{\"srcSentLen\":[50,20],\"transSentLen\":[21,9]}}]},{\"translations\":[{\"text\":\"请在关闭前保存您的更改[/B0]。保持{{0}}不变。\",\"to\":\"zh-Hans\",\"sentLen\":{\"srcSentLen\":[50,21],\"transSentLen\":[17,10]}}]},{\"translations\":[{\"text\":\"{#0}第一个账户{/#0}是活跃的;{#1}第二个账户{/#1}明天到期。保持{{0}}不变。\",\"to\":\"zh-Hans\",\"sentLen\":{\"srcSentLen\":[38,46,21],\"transSentLen\":[19,19,10]}}]},{\"translations\":[{\"text\":\"在付款截止日期[[E0]]之前，确认[[S1]]的收货地址[[E1]]。保持{{0}}不变。\",\"to\":\"zh-Hans\",\"sentLen\":{\"srcSentLen\":[83,21],\"transSentLen\":[36,10]}}]},{\"translations\":[{\"text\":\"⟦B0⟧新交付日期⟦/B0⟧是⟦H1⟧下周四⟦/H1⟧。保持⟦A0⟧不变，计算⟦A1⟧。\",\"to\":\"zh-Hans\",\"sentLen\":{\"srcSentLen\":[58,39],\"transSentLen\":[28,16]}}]},{\"translations\":[{\"text\":\"[B0]账户[/B0]是活跃的，但[H1]账户[/H1]必须验证。运行{{0}}然后计算{{1}}。\",\"to\":\"zh-Hans\",\"sentLen\":{\"srcSentLen\":[75,31],\"transSentLen\":[33,17]}}]}]"
+    }
+  ]
+}

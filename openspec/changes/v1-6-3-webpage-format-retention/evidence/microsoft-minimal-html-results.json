@@ -1,0 +1,644 @@
+{
+  "at": "2026-11-13T06:50:36.377Z",
+  "note": "Experimental fetch wrapper unescapes minimal serializer payload; production queue and HTML guard unchanged.",
+  "wireRequests": [
+    {
+      "url": "https://edge.microsoft.com/translate/translatetext?from=en&to=zh&isEnterpriseClient=false",
+      "body": [
+        "A daemon on your Mac drives the phone in three forms: an <span id=\"H0\">MCP server</span> for your agent; an <span id=\"B1\">HTTP API</span> for scripts (<span translate=\"no\">ZXQATOM2QXZ</span>); and a <span id=\"B3\">web page and native iOS app</span> for people.",
+        "A daemon on your Mac drives the phone and offers the same control in three forms: an <span id=\"H0\">MCP server</span> for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an <span id=\"B1\">HTTP API</span> for agents and scripts (<span translate=\"no\">ZXQATOM2QXZ</span>); and a <span id=\"B3\">web page and native iOS app</span> for people.",
+        "<span id=\"H0\">Let AI agents use your real iPhone.</span> With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app, <span id=\"B1\">including the ones with no API</span>: Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+        "Before you close the window, please <span id=\"B0\">save your changes</span> and confirm the <span id=\"H1\">delivery address</span>.",
+        "The <span id=\"B0\">account</span> is active, but the <span id=\"H1\">account</span> must be verified. Run <span translate=\"no\">ZXQATOM2QXZ</span> then calculate <span translate=\"no\">ZXQATOM3QXZ</span>.",
+        "Keep the <span id=\"B0\">new <span id=\"H1\">payment deadline</span> unchanged</span> and run <span translate=\"no\">ZXQATOM2QXZ</span>.",
+        "First step: <span id=\"B0\">save the file</span>.\n\nSecond step: run <span translate=\"no\">ZXQATOM1QXZ</span>.\nLast step: close the window."
+      ]
+    },
+    {
+      "url": "https://edge.microsoft.com/translate/translatetext?from=en&to=ja&isEnterpriseClient=false",
+      "body": [
+        "A daemon on your Mac drives the phone in three forms: an <span id=\"H0\">MCP server</span> for your agent; an <span id=\"B1\">HTTP API</span> for scripts (<span translate=\"no\">ZXQATOM2QXZ</span>); and a <span id=\"B3\">web page and native iOS app</span> for people.",
+        "A daemon on your Mac drives the phone and offers the same control in three forms: an <span id=\"H0\">MCP server</span> for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an <span id=\"B1\">HTTP API</span> for agents and scripts (<span translate=\"no\">ZXQATOM2QXZ</span>); and a <span id=\"B3\">web page and native iOS app</span> for people.",
+        "<span id=\"H0\">Let AI agents use your real iPhone.</span> With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app, <span id=\"B1\">including the ones with no API</span>: Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+        "Before you close the window, please <span id=\"B0\">save your changes</span> and confirm the <span id=\"H1\">delivery address</span>.",
+        "The <span id=\"B0\">account</span> is active, but the <span id=\"H1\">account</span> must be verified. Run <span translate=\"no\">ZXQATOM2QXZ</span> then calculate <span translate=\"no\">ZXQATOM3QXZ</span>.",
+        "Keep the <span id=\"B0\">new <span id=\"H1\">payment deadline</span> unchanged</span> and run <span translate=\"no\">ZXQATOM2QXZ</span>.",
+        "First step: <span id=\"B0\">save the file</span>.\n\nSecond step: run <span translate=\"no\">ZXQATOM1QXZ</span>.\nLast step: close the window."
+      ]
+    },
+    {
+      "url": "https://edge.microsoft.com/translate/translatetext?from=en&to=de&isEnterpriseClient=false",
+      "body": [
+        "A daemon on your Mac drives the phone in three forms: an <span id=\"H0\">MCP server</span> for your agent; an <span id=\"B1\">HTTP API</span> for scripts (<span translate=\"no\">ZXQATOM2QXZ</span>); and a <span id=\"B3\">web page and native iOS app</span> for people.",
+        "A daemon on your Mac drives the phone and offers the same control in three forms: an <span id=\"H0\">MCP server</span> for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an <span id=\"B1\">HTTP API</span> for agents and scripts (<span translate=\"no\">ZXQATOM2QXZ</span>); and a <span id=\"B3\">web page and native iOS app</span> for people.",
+        "<span id=\"H0\">Let AI agents use your real iPhone.</span> With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app, <span id=\"B1\">including the ones with no API</span>: Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+        "Before you close the window, please <span id=\"B0\">save your changes</span> and confirm the <span id=\"H1\">delivery address</span>.",
+        "The <span id=\"B0\">account</span> is active, but the <span id=\"H1\">account</span> must be verified. Run <span translate=\"no\">ZXQATOM2QXZ</span> then calculate <span translate=\"no\">ZXQATOM3QXZ</span>.",
+        "Keep the <span id=\"B0\">new <span id=\"H1\">payment deadline</span> unchanged</span> and run <span translate=\"no\">ZXQATOM2QXZ</span>.",
+        "First step: <span id=\"B0\">save the file</span>.\n\nSecond step: run <span translate=\"no\">ZXQATOM1QXZ</span>.\nLast step: close the window."
+      ]
+    },
+    {
+      "url": "https://edge.microsoft.com/translate/translatetext?from=en&to=zh&isEnterpriseClient=false",
+      "body": [
+        "A daemon on your Mac drives the phone in three forms: an <span data-rf-attr=\"H0\">MCP server</span> for your agent; an <span data-rf-attr=\"B1\">HTTP API</span> for scripts (<span translate=\"no\">ZXQATOM2QXZ</span>); and a <span data-rf-attr=\"B3\">web page and native iOS app</span> for people.",
+        "A daemon on your Mac drives the phone and offers the same control in three forms: an <span data-rf-attr=\"H0\">MCP server</span> for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an <span data-rf-attr=\"B1\">HTTP API</span> for agents and scripts (<span translate=\"no\">ZXQATOM2QXZ</span>); and a <span data-rf-attr=\"B3\">web page and native iOS app</span> for people.",
+        "<span data-rf-attr=\"H0\">Let AI agents use your real iPhone.</span> With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app, <span data-rf-attr=\"B1\">including the ones with no API</span>: Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+        "Before you close the window, please <span data-rf-attr=\"B0\">save your changes</span> and confirm the <span data-rf-attr=\"H1\">delivery address</span>.",
+        "The <span data-rf-attr=\"B0\">account</span> is active, but the <span data-rf-attr=\"H1\">account</span> must be verified. Run <span translate=\"no\">ZXQATOM2QXZ</span> then calculate <span translate=\"no\">ZXQATOM3QXZ</span>.",
+        "Keep the <span data-rf-attr=\"B0\">new <span data-rf-attr=\"H1\">payment deadline</span> unchanged</span> and run <span translate=\"no\">ZXQATOM2QXZ</span>.",
+        "First step: <span data-rf-attr=\"B0\">save the file</span>.\n\nSecond step: run <span translate=\"no\">ZXQATOM1QXZ</span>.\nLast step: close the window."
+      ]
+    },
+    {
+      "url": "https://edge.microsoft.com/translate/translatetext?from=en&to=ja&isEnterpriseClient=false",
+      "body": [
+        "A daemon on your Mac drives the phone in three forms: an <span data-rf-attr=\"H0\">MCP server</span> for your agent; an <span data-rf-attr=\"B1\">HTTP API</span> for scripts (<span translate=\"no\">ZXQATOM2QXZ</span>); and a <span data-rf-attr=\"B3\">web page and native iOS app</span> for people.",
+        "A daemon on your Mac drives the phone and offers the same control in three forms: an <span data-rf-attr=\"H0\">MCP server</span> for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an <span data-rf-attr=\"B1\">HTTP API</span> for agents and scripts (<span translate=\"no\">ZXQATOM2QXZ</span>); and a <span data-rf-attr=\"B3\">web page and native iOS app</span> for people.",
+        "<span data-rf-attr=\"H0\">Let AI agents use your real iPhone.</span> With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app, <span data-rf-attr=\"B1\">including the ones with no API</span>: Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+        "Before you close the window, please <span data-rf-attr=\"B0\">save your changes</span> and confirm the <span data-rf-attr=\"H1\">delivery address</span>.",
+        "The <span data-rf-attr=\"B0\">account</span> is active, but the <span data-rf-attr=\"H1\">account</span> must be verified. Run <span translate=\"no\">ZXQATOM2QXZ</span> then calculate <span translate=\"no\">ZXQATOM3QXZ</span>.",
+        "Keep the <span data-rf-attr=\"B0\">new <span data-rf-attr=\"H1\">payment deadline</span> unchanged</span> and run <span translate=\"no\">ZXQATOM2QXZ</span>.",
+        "First step: <span data-rf-attr=\"B0\">save the file</span>.\n\nSecond step: run <span translate=\"no\">ZXQATOM1QXZ</span>.\nLast step: close the window."
+      ]
+    },
+    {
+      "url": "https://edge.microsoft.com/translate/translatetext?from=en&to=de&isEnterpriseClient=false",
+      "body": [
+        "A daemon on your Mac drives the phone in three forms: an <span data-rf-attr=\"H0\">MCP server</span> for your agent; an <span data-rf-attr=\"B1\">HTTP API</span> for scripts (<span translate=\"no\">ZXQATOM2QXZ</span>); and a <span data-rf-attr=\"B3\">web page and native iOS app</span> for people.",
+        "A daemon on your Mac drives the phone and offers the same control in three forms: an <span data-rf-attr=\"H0\">MCP server</span> for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an <span data-rf-attr=\"B1\">HTTP API</span> for agents and scripts (<span translate=\"no\">ZXQATOM2QXZ</span>); and a <span data-rf-attr=\"B3\">web page and native iOS app</span> for people.",
+        "<span data-rf-attr=\"H0\">Let AI agents use your real iPhone.</span> With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app, <span data-rf-attr=\"B1\">including the ones with no API</span>: Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+        "Before you close the window, please <span data-rf-attr=\"B0\">save your changes</span> and confirm the <span data-rf-attr=\"H1\">delivery address</span>.",
+        "The <span data-rf-attr=\"B0\">account</span> is active, but the <span data-rf-attr=\"H1\">account</span> must be verified. Run <span translate=\"no\">ZXQATOM2QXZ</span> then calculate <span translate=\"no\">ZXQATOM3QXZ</span>.",
+        "Keep the <span data-rf-attr=\"B0\">new <span data-rf-attr=\"H1\">payment deadline</span> unchanged</span> and run <span translate=\"no\">ZXQATOM2QXZ</span>.",
+        "First step: <span data-rf-attr=\"B0\">save the file</span>.\n\nSecond step: run <span translate=\"no\">ZXQATOM1QXZ</span>.\nLast step: close the window."
+      ]
+    },
+    {
+      "url": "https://edge.microsoft.com/translate/translatetext?from=en&to=zh&isEnterpriseClient=false",
+      "body": [
+        "A daemon on your Mac drives the phone in three forms: an <b id=\"H0\">MCP server</b> for your agent; an <b id=\"B1\">HTTP API</b> for scripts (<span translate=\"no\">ZXQATOM2QXZ</span>); and a <b id=\"B3\">web page and native iOS app</b> for people.",
+        "A daemon on your Mac drives the phone and offers the same control in three forms: an <b id=\"H0\">MCP server</b> for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an <b id=\"B1\">HTTP API</b> for agents and scripts (<span translate=\"no\">ZXQATOM2QXZ</span>); and a <b id=\"B3\">web page and native iOS app</b> for people.",
+        "<b id=\"H0\">Let AI agents use your real iPhone.</b> With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app, <b id=\"B1\">including the ones with no API</b>: Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+        "Before you close the window, please <b id=\"B0\">save your changes</b> and confirm the <b id=\"H1\">delivery address</b>.",
+        "The <b id=\"B0\">account</b> is active, but the <b id=\"H1\">account</b> must be verified. Run <span translate=\"no\">ZXQATOM2QXZ</span> then calculate <span translate=\"no\">ZXQATOM3QXZ</span>.",
+        "Keep the <b id=\"B0\">new <b id=\"H1\">payment deadline</b> unchanged</b> and run <span translate=\"no\">ZXQATOM2QXZ</span>.",
+        "First step: <b id=\"B0\">save the file</b>.\n\nSecond step: run <span translate=\"no\">ZXQATOM1QXZ</span>.\nLast step: close the window."
+      ]
+    },
+    {
+      "url": "https://edge.microsoft.com/translate/translatetext?from=en&to=ja&isEnterpriseClient=false",
+      "body": [
+        "A daemon on your Mac drives the phone in three forms: an <b id=\"H0\">MCP server</b> for your agent; an <b id=\"B1\">HTTP API</b> for scripts (<span translate=\"no\">ZXQATOM2QXZ</span>); and a <b id=\"B3\">web page and native iOS app</b> for people.",
+        "A daemon on your Mac drives the phone and offers the same control in three forms: an <b id=\"H0\">MCP server</b> for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an <b id=\"B1\">HTTP API</b> for agents and scripts (<span translate=\"no\">ZXQATOM2QXZ</span>); and a <b id=\"B3\">web page and native iOS app</b> for people.",
+        "<b id=\"H0\">Let AI agents use your real iPhone.</b> With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app, <b id=\"B1\">including the ones with no API</b>: Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+        "Before you close the window, please <b id=\"B0\">save your changes</b> and confirm the <b id=\"H1\">delivery address</b>.",
+        "The <b id=\"B0\">account</b> is active, but the <b id=\"H1\">account</b> must be verified. Run <span translate=\"no\">ZXQATOM2QXZ</span> then calculate <span translate=\"no\">ZXQATOM3QXZ</span>.",
+        "Keep the <b id=\"B0\">new <b id=\"H1\">payment deadline</b> unchanged</b> and run <span translate=\"no\">ZXQATOM2QXZ</span>.",
+        "First step: <b id=\"B0\">save the file</b>.\n\nSecond step: run <span translate=\"no\">ZXQATOM1QXZ</span>.\nLast step: close the window."
+      ]
+    },
+    {
+      "url": "https://edge.microsoft.com/translate/translatetext?from=en&to=de&isEnterpriseClient=false",
+      "body": [
+        "A daemon on your Mac drives the phone in three forms: an <b id=\"H0\">MCP server</b> for your agent; an <b id=\"B1\">HTTP API</b> for scripts (<span translate=\"no\">ZXQATOM2QXZ</span>); and a <b id=\"B3\">web page and native iOS app</b> for people.",
+        "A daemon on your Mac drives the phone and offers the same control in three forms: an <b id=\"H0\">MCP server</b> for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an <b id=\"B1\">HTTP API</b> for agents and scripts (<span translate=\"no\">ZXQATOM2QXZ</span>); and a <b id=\"B3\">web page and native iOS app</b> for people.",
+        "<b id=\"H0\">Let AI agents use your real iPhone.</b> With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app, <b id=\"B1\">including the ones with no API</b>: Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+        "Before you close the window, please <b id=\"B0\">save your changes</b> and confirm the <b id=\"H1\">delivery address</b>.",
+        "The <b id=\"B0\">account</b> is active, but the <b id=\"H1\">account</b> must be verified. Run <span translate=\"no\">ZXQATOM2QXZ</span> then calculate <span translate=\"no\">ZXQATOM3QXZ</span>.",
+        "Keep the <b id=\"B0\">new <b id=\"H1\">payment deadline</b> unchanged</b> and run <span translate=\"no\">ZXQATOM2QXZ</span>.",
+        "First step: <b id=\"B0\">save the file</b>.\n\nSecond step: run <span translate=\"no\">ZXQATOM1QXZ</span>.\nLast step: close the window."
+      ]
+    },
+    {
+      "url": "https://edge.microsoft.com/translate/translatetext?from=en&to=zh&isEnterpriseClient=false",
+      "body": [
+        "A daemon on your Mac drives the phone in three forms: an <rfh0>MCP server</rfh0> for your agent; an <rfb1>HTTP API</rfb1> for scripts (<span translate=\"no\">ZXQATOM2QXZ</span>); and a <rfb3>web page and native iOS app</rfb3> for people.",
+        "A daemon on your Mac drives the phone and offers the same control in three forms: an <rfh0>MCP server</rfh0> for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an <rfb1>HTTP API</rfb1> for agents and scripts (<span translate=\"no\">ZXQATOM2QXZ</span>); and a <rfb3>web page and native iOS app</rfb3> for people.",
+        "<rfh0>Let AI agents use your real iPhone.</rfh0> With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app, <rfb1>including the ones with no API</rfb1>: Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+        "Before you close the window, please <rfb0>save your changes</rfb0> and confirm the <rfh1>delivery address</rfh1>.",
+        "The <rfb0>account</rfb0> is active, but the <rfh1>account</rfh1> must be verified. Run <span translate=\"no\">ZXQATOM2QXZ</span> then calculate <span translate=\"no\">ZXQATOM3QXZ</span>.",
+        "Keep the <rfb0>new <rfh1>payment deadline</rfh1> unchanged</rfb0> and run <span translate=\"no\">ZXQATOM2QXZ</span>.",
+        "First step: <rfb0>save the file</rfb0>.\n\nSecond step: run <span translate=\"no\">ZXQATOM1QXZ</span>.\nLast step: close the window."
+      ]
+    },
+    {
+      "url": "https://edge.microsoft.com/translate/translatetext?from=en&to=ja&isEnterpriseClient=false",
+      "body": [
+        "A daemon on your Mac drives the phone in three forms: an <rfh0>MCP server</rfh0> for your agent; an <rfb1>HTTP API</rfb1> for scripts (<span translate=\"no\">ZXQATOM2QXZ</span>); and a <rfb3>web page and native iOS app</rfb3> for people.",
+        "A daemon on your Mac drives the phone and offers the same control in three forms: an <rfh0>MCP server</rfh0> for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an <rfb1>HTTP API</rfb1> for agents and scripts (<span translate=\"no\">ZXQATOM2QXZ</span>); and a <rfb3>web page and native iOS app</rfb3> for people.",
+        "<rfh0>Let AI agents use your real iPhone.</rfh0> With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app, <rfb1>including the ones with no API</rfb1>: Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+        "Before you close the window, please <rfb0>save your changes</rfb0> and confirm the <rfh1>delivery address</rfh1>.",
+        "The <rfb0>account</rfb0> is active, but the <rfh1>account</rfh1> must be verified. Run <span translate=\"no\">ZXQATOM2QXZ</span> then calculate <span translate=\"no\">ZXQATOM3QXZ</span>.",
+        "Keep the <rfb0>new <rfh1>payment deadline</rfh1> unchanged</rfb0> and run <span translate=\"no\">ZXQATOM2QXZ</span>.",
+        "First step: <rfb0>save the file</rfb0>.\n\nSecond step: run <span translate=\"no\">ZXQATOM1QXZ</span>.\nLast step: close the window."
+      ]
+    },
+    {
+      "url": "https://edge.microsoft.com/translate/translatetext?from=en&to=de&isEnterpriseClient=false",
+      "body": [
+        "A daemon on your Mac drives the phone in three forms: an <rfh0>MCP server</rfh0> for your agent; an <rfb1>HTTP API</rfb1> for scripts (<span translate=\"no\">ZXQATOM2QXZ</span>); and a <rfb3>web page and native iOS app</rfb3> for people.",
+        "A daemon on your Mac drives the phone and offers the same control in three forms: an <rfh0>MCP server</rfh0> for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an <rfb1>HTTP API</rfb1> for agents and scripts (<span translate=\"no\">ZXQATOM2QXZ</span>); and a <rfb3>web page and native iOS app</rfb3> for people.",
+        "<rfh0>Let AI agents use your real iPhone.</rfh0> With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app, <rfb1>including the ones with no API</rfb1>: Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+        "Before you close the window, please <rfb0>save your changes</rfb0> and confirm the <rfh1>delivery address</rfh1>.",
+        "The <rfb0>account</rfb0> is active, but the <rfh1>account</rfh1> must be verified. Run <span translate=\"no\">ZXQATOM2QXZ</span> then calculate <span translate=\"no\">ZXQATOM3QXZ</span>.",
+        "Keep the <rfb0>new <rfh1>payment deadline</rfh1> unchanged</rfb0> and run <span translate=\"no\">ZXQATOM2QXZ</span>.",
+        "First step: <rfb0>save the file</rfb0>.\n\nSecond step: run <span translate=\"no\">ZXQATOM1QXZ</span>.\nLast step: close the window."
+      ]
+    }
+  ],
+  "groups": [
+    {
+      "candidate": "span-id",
+      "targetCode": "cmn",
+      "records": [
+        {
+          "id": "F01",
+          "wire": "A daemon on your Mac drives the phone in three forms: an <span id=\"H0\">MCP server</span> for your agent; an <span id=\"B1\">HTTP API</span> for scripts (<span translate=\"no\">ZXQATOM2QXZ</span>); and a <span id=\"B3\">web page and native iOS app</span> for people.",
+          "result": "Mac上的守护进程以三种形式驱动手机：<span id=“H0”>MCP服务器</span>用于代理;一个 <span id=“B1”>HTTP API</span>（<span translate=“no”>ZXQATOM2QXZ</span>）;以及一个<跨度id=“B3”>网页和原生iOS应用</span>。"
+        },
+        {
+          "id": "F24",
+          "wire": "A daemon on your Mac drives the phone and offers the same control in three forms: an <span id=\"H0\">MCP server</span> for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an <span id=\"B1\">HTTP API</span> for agents and scripts (<span translate=\"no\">ZXQATOM2QXZ</span>); and a <span id=\"B3\">web page and native iOS app</span> for people.",
+          "result": "Mac上的守护进程驱动手机，提供三种形式的相同控制：<span id=“H0”>MCP服务器</span>，用于Claude Code、Codex、Claude桌面、光标及其他MCP客户端;<span id=“B1”>HTTP API</span>，用于代理和脚本（<span translate=“no”>ZXQATOM2QXZ</span>）;以及一个<跨度id=“B3”>网页和原生iOS应用</span>。"
+        },
+        {
+          "id": "LIVE-1",
+          "wire": "<span id=\"H0\">Let AI agents use your real iPhone.</span> With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app, <span id=\"B1\">including the ones with no API</span>: Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+          "result": "<span id=“H0”>让AI代理使用你的真实iPhone。</span>在你的Mac上安装了iPhone使用时，Claude Code、Codex或任何MCP客户端会将手机屏幕读取为文本，在任何应用中点击、输入和滑动，<span id=“B1”>包括那些没有API的应用</span>：健康、银行、聊天应用或你正在测试的应用。你可以随时观看直播，并把手机拿回去。"
+        },
+        {
+          "id": "REORDER",
+          "wire": "Before you close the window, please <span id=\"B0\">save your changes</span> and confirm the <span id=\"H1\">delivery address</span>.",
+          "result": "关闭窗口前，请<span id=“B0”保存您的更改></span>并确认<span id=“H1”>送达地址</span>。"
+        },
+        {
+          "id": "REPEAT",
+          "wire": "The <span id=\"B0\">account</span> is active, but the <span id=\"H1\">account</span> must be verified. Run <span translate=\"no\">ZXQATOM2QXZ</span> then calculate <span translate=\"no\">ZXQATOM3QXZ</span>.",
+          "result": "<span id=“B0”>账户</span>是活跃的，但<span id=“H1”>账户</span>必须验证。运行 <span 翻译=“no”>ZXQATOM2QXZ</span>然后计算 <span translate=“no”>ZXQATOM3QXZ</span>。"
+        },
+        {
+          "id": "NESTED",
+          "wire": "Keep the <span id=\"B0\">new <span id=\"H1\">payment deadline</span> unchanged</span> and run <span translate=\"no\">ZXQATOM2QXZ</span>.",
+          "result": "保持<span id=“B0”>new <span id=“H1”>付款截止日期</span>不变</span>，运行<span translate=“no”>ZXQATOM2QXZ</span>。"
+        },
+        {
+          "id": "BREAKS",
+          "wire": "First step: <span id=\"B0\">save the file</span>.\n\nSecond step: run <span translate=\"no\">ZXQATOM1QXZ</span>.\nLast step: close the window.",
+          "result": "第一步：<span id=“B0”>保存文件</span>。\n\n第二步：运行 < span 翻译=“no”>ZXQATOM1QXZ</span>。\n最后一步：关上窗户。"
+        }
+      ]
+    },
+    {
+      "candidate": "span-id",
+      "targetCode": "jpn",
+      "records": [
+        {
+          "id": "F01",
+          "wire": "A daemon on your Mac drives the phone in three forms: an <span id=\"H0\">MCP server</span> for your agent; an <span id=\"B1\">HTTP API</span> for scripts (<span translate=\"no\">ZXQATOM2QXZ</span>); and a <span id=\"B3\">web page and native iOS app</span> for people.",
+          "result": "Mac上のデーモンは3つの形態で電話を駆動します:エージェント用の <span id=\"H0\">MCP サーバー</span>;スクリプト用の <span id=\"B1\">HTTP API</span>(<span translate=\"no\">ZXQATOM2QXZ</span>);そして<span id=\"B3\">ウェブページとネイティブiOSアプリも提供</span>しています。"
+        },
+        {
+          "id": "F24",
+          "wire": "A daemon on your Mac drives the phone and offers the same control in three forms: an <span id=\"H0\">MCP server</span> for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an <span id=\"B1\">HTTP API</span> for agents and scripts (<span translate=\"no\">ZXQATOM2QXZ</span>); and a <span id=\"B3\">web page and native iOS app</span> for people.",
+          "result": "Mac上のデーモンが電話を駆動し、同じ制御機能を3つの形態で提供します。<span id=\"H0\">MCPサーバー</span>(Claude Code、Codex、Claude Desktop、カーソル、その他のMCPクライアント用)、エージェントおよびスクリプト用の <span id=\"B1\">HTTP API</span>(<span translate=\"no\">ZXQATOM2QXZ</span>);そして<span id=\"B3\">ウェブページとネイティブiOSアプリも提供</span>しています。"
+        },
+        {
+          "id": "LIVE-1",
+          "wire": "<span id=\"H0\">Let AI agents use your real iPhone.</span> With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app, <span id=\"B1\">including the ones with no API</span>: Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+          "result": "<span id=\"H0\">AIエージェントに本物のiPhoneを使わせましょう。</span>MacにiPhoneがインストールされている場合、Claude Code、Codex、または任意のMCPクライアントがスマートフォンの画面をテキストとして読み取り、どのアプリでもタップ、入力、スワイプを行います。<span id=\"B1\">APIなしのアプリも含</span>む:ヘルス、銀行、チャットアプリ、またはテストしているアプリです。ライブ視聴もでき、いつでも電話を取り戻すことができます。"
+        },
+        {
+          "id": "REORDER",
+          "wire": "Before you close the window, please <span id=\"B0\">save your changes</span> and confirm the <span id=\"H1\">delivery address</span>.",
+          "result": "ウィンドウを閉じる前に、<span id=\"B0\">変更を保存</span>し、<span id=\"H1\">配達住所を確認してください</span>。"
+        },
+        {
+          "id": "REPEAT",
+          "wire": "The <span id=\"B0\">account</span> is active, but the <span id=\"H1\">account</span> must be verified. Run <span translate=\"no\">ZXQATOM2QXZ</span> then calculate <span translate=\"no\">ZXQATOM3QXZ</span>.",
+          "result": "<span id=\"B0\">account</span>は有効ですが、<span id=\"H1\">account</span>は検証が必要です。<span translate=\"no\"を実行し>ZXQATOM2QXZ</span><span translate=\"no\">ZXQATOM3QXZを計算</span>します。"
+        },
+        {
+          "id": "NESTED",
+          "wire": "Keep the <span id=\"B0\">new <span id=\"H1\">payment deadline</span> unchanged</span> and run <span translate=\"no\">ZXQATOM2QXZ</span>.",
+          "result": "<span id=\"B0\">new <span id=\"H1\">支払い期限</span>は変更せず</span>、<span translate=\"no\">ZXQATOM2QXZ</span>を実行してください。"
+        },
+        {
+          "id": "BREAKS",
+          "wire": "First step: <span id=\"B0\">save the file</span>.\n\nSecond step: run <span translate=\"no\">ZXQATOM1QXZ</span>.\nLast step: close the window.",
+          "result": "最初のステップ:<span id=\"B0\">ファイルを保存します</span>。\n\n次のステップ:<span translate=\"no\">ZXQATOM1QXZ</span>を実行します。\n最後のステップ:窓を閉めること。"
+        }
+      ]
+    },
+    {
+      "candidate": "span-id",
+      "targetCode": "deu",
+      "records": [
+        {
+          "id": "F01",
+          "wire": "A daemon on your Mac drives the phone in three forms: an <span id=\"H0\">MCP server</span> for your agent; an <span id=\"B1\">HTTP API</span> for scripts (<span translate=\"no\">ZXQATOM2QXZ</span>); and a <span id=\"B3\">web page and native iOS app</span> for people.",
+          "result": "Ein Daemon auf Ihrem Mac steuert das Telefon in drei Formen: ein <span id=\"H0\">MCP-Server</span> für Ihren Agenten; eine <span id=\"B1\">HTTP API</span> für Skripte (<span translate=\"no\">ZXQATOM2QXZ</span>); sowie eine <span-id=\"B3\">Webseite sowie eine native iOS-App</span> für Personen."
+        },
+        {
+          "id": "F24",
+          "wire": "A daemon on your Mac drives the phone and offers the same control in three forms: an <span id=\"H0\">MCP server</span> for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an <span id=\"B1\">HTTP API</span> for agents and scripts (<span translate=\"no\">ZXQATOM2QXZ</span>); and a <span id=\"B3\">web page and native iOS app</span> for people.",
+          "result": "Ein Daemon auf Ihrem Mac steuert das Telefon und bietet dieselbe Steuerung in drei Formen: einen <span-id=\"H0\">MCP-Server</span> für Claude Code, Codex, Claude Desktop, Cursor und andere MCP-Clients; eine <span id=\"B1\">HTTP-API</span> für Agenten und Skripte (<span translate=\"no\">ZXQATOM2QXZ</span>); sowie eine <span-id=\"B3\">Webseite sowie eine native iOS-App</span> für Personen."
+        },
+        {
+          "id": "LIVE-1",
+          "wire": "<span id=\"H0\">Let AI agents use your real iPhone.</span> With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app, <span id=\"B1\">including the ones with no API</span>: Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+          "result": "<span id=\"H0\">Lassen Sie KI-Agenten Ihr echtes iPhone verwenden.</span> Mit iPhone-Nutzung auf Ihrem Mac liest Claude Code, Codex oder jeder MCP-Client den Bildschirm des Telefons als Text, tippt, tippt und wischt in jeder App, <spanid=\"B1\">einschließlich der Apps ohne API:</span> Gesundheit, Banking, Chat-Apps oder die App, die Sie testen. Du kannst es live ansehen und das Handy jederzeit zurücknehmen."
+        },
+        {
+          "id": "REORDER",
+          "wire": "Before you close the window, please <span id=\"B0\">save your changes</span> and confirm the <span id=\"H1\">delivery address</span>.",
+          "result": "Bevor Sie das Fenster schließen, <span id=\"B0\">speichern Sie Ihre Änderungen</span> und bestätigen Sie die <span id=\"H1\">Lieferadresse</span>."
+        },
+        {
+          "id": "REPEAT",
+          "wire": "The <span id=\"B0\">account</span> is active, but the <span id=\"H1\">account</span> must be verified. Run <span translate=\"no\">ZXQATOM2QXZ</span> then calculate <span translate=\"no\">ZXQATOM3QXZ</span>.",
+          "result": "Das <span id=\"B0\">Konto</span> ist aktiv, aber das <span id=\"H1\">Konto</span> muss verifiziert werden. Führe <span translate=\"no\">ZXQATOM2QXZ</span> und berechne dann <span translate=\"no\">ZXQATOM3QXZ</span>."
+        },
+        {
+          "id": "NESTED",
+          "wire": "Keep the <span id=\"B0\">new <span id=\"H1\">payment deadline</span> unchanged</span> and run <span translate=\"no\">ZXQATOM2QXZ</span>.",
+          "result": "Lassen Sie die <span id=\"B0\">new <span id=\"H1\">Zahlungsfrist</span> unverändert</span> und führen Sie <span translate=\"no\">ZXQATOM2QXZ aus.</span>"
+        },
+        {
+          "id": "BREAKS",
+          "wire": "First step: <span id=\"B0\">save the file</span>.\n\nSecond step: run <span translate=\"no\">ZXQATOM1QXZ</span>.\nLast step: close the window.",
+          "result": "Erster Schritt: <span id=\"B0\">Speichere die Datei</span>.\n\nZweiter Schritt: Lauf <span translate=\"no\">ZXQATOM1QXZ</span>.\nLetzter Schritt: Fenster schließen."
+        }
+      ]
+    },
+    {
+      "candidate": "span-data",
+      "targetCode": "cmn",
+      "records": [
+        {
+          "id": "F01",
+          "wire": "A daemon on your Mac drives the phone in three forms: an <span data-rf-attr=\"H0\">MCP server</span> for your agent; an <span data-rf-attr=\"B1\">HTTP API</span> for scripts (<span translate=\"no\">ZXQATOM2QXZ</span>); and a <span data-rf-attr=\"B3\">web page and native iOS app</span> for people.",
+          "result": "Mac上的守护进程以三种形式驱动手机：<span data-rf-attr=“H0”>MCP服务器</span>用于代理;一个<span data-rf-attr=“B1”>HTTP API</span>（<span 翻译=“no”>ZXQATOM2QXZ</span>）;以及一个<span data-rf-attr=“B3”>网页和原生iOS应用</span>。"
+        },
+        {
+          "id": "F24",
+          "wire": "A daemon on your Mac drives the phone and offers the same control in three forms: an <span data-rf-attr=\"H0\">MCP server</span> for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an <span data-rf-attr=\"B1\">HTTP API</span> for agents and scripts (<span translate=\"no\">ZXQATOM2QXZ</span>); and a <span data-rf-attr=\"B3\">web page and native iOS app</span> for people.",
+          "result": "Mac上的守护进程驱动手机，提供三种形式的相同控制：<span data-rf-attr=“H0”>MCP服务器</span>，用于Claude Code、Codex、Claude Desktop、Cursor及其他MCP客户端;一个<span data-rf-attr=“B1”>HTTP API</span>，用于代理和脚本（<span translate=“no”>ZXQATOM2QXZ</span>）;以及一个<span data-rf-attr=“B3”>网页和原生iOS应用</span>。"
+        },
+        {
+          "id": "LIVE-1",
+          "wire": "<span data-rf-attr=\"H0\">Let AI agents use your real iPhone.</span> With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app, <span data-rf-attr=\"B1\">including the ones with no API</span>: Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+          "result": "<span data-rf-attr=“H0”>让AI代理使用你的真实iPhone。</span>在你的Mac上安装了iPhone使用，Claude Code、Codex或任何MCP客户端会将手机屏幕读取为文本，在任何应用中点击、输入和滑动，<span data-rf-attr=“B1”>包括那些没有API的应用</span>：健康、银行、聊天应用或你正在测试的应用。你可以随时观看直播，并把手机拿回去。"
+        },
+        {
+          "id": "REORDER",
+          "wire": "Before you close the window, please <span data-rf-attr=\"B0\">save your changes</span> and confirm the <span data-rf-attr=\"H1\">delivery address</span>.",
+          "result": "关闭窗口前，请<span data-rf-attr=“B0”>保存您的更改</span>并确认<span data-rf-attr=“H1”>送达地址</span>。"
+        },
+        {
+          "id": "REPEAT",
+          "wire": "The <span data-rf-attr=\"B0\">account</span> is active, but the <span data-rf-attr=\"H1\">account</span> must be verified. Run <span translate=\"no\">ZXQATOM2QXZ</span> then calculate <span translate=\"no\">ZXQATOM3QXZ</span>.",
+          "result": "该<span data-rf-attr=“B0”>account</span>是活跃的，但必须验证该<span data-rf-attr=“H1”>account</span>。运行 <span 翻译=“no”>ZXQATOM2QXZ</span>然后计算 <span translate=“no”>ZXQATOM3QXZ</span>。"
+        },
+        {
+          "id": "NESTED",
+          "wire": "Keep the <span data-rf-attr=\"B0\">new <span data-rf-attr=\"H1\">payment deadline</span> unchanged</span> and run <span translate=\"no\">ZXQATOM2QXZ</span>.",
+          "result": "保持<span data-rf-attr=“B0”>新<span data-rf-attr=“H1”>付款截止日期</span>不变</span>，运行<span trans=“no”>ZXQATOM2QXZ</span>。"
+        },
+        {
+          "id": "BREAKS",
+          "wire": "First step: <span data-rf-attr=\"B0\">save the file</span>.\n\nSecond step: run <span translate=\"no\">ZXQATOM1QXZ</span>.\nLast step: close the window.",
+          "result": "第一步：<span data-rf-attr=“B0”>保存文件</span>。\n\n第二步：运行 < span 翻译=“no”>ZXQATOM1QXZ</span>。\n最后一步：关上窗户。"
+        }
+      ]
+    },
+    {
+      "candidate": "span-data",
+      "targetCode": "jpn",
+      "records": [
+        {
+          "id": "F01",
+          "wire": "A daemon on your Mac drives the phone in three forms: an <span data-rf-attr=\"H0\">MCP server</span> for your agent; an <span data-rf-attr=\"B1\">HTTP API</span> for scripts (<span translate=\"no\">ZXQATOM2QXZ</span>); and a <span data-rf-attr=\"B3\">web page and native iOS app</span> for people.",
+          "result": "Mac上のデーモンは3つの形態で電話を駆動します:エージェント用の<span data-rf-attr=\"H0\">MCPサーバー</span>;スクリプト用の <span data-rf-attr=\"B1\">HTTP API</span> (<span translate=\"no\">ZXQATOM2QXZ</span>);そして<span data-rf-attr=\"B3\">ウェブページおよびネイティブiOSアプリを用意しています</span>。"
+        },
+        {
+          "id": "F24",
+          "wire": "A daemon on your Mac drives the phone and offers the same control in three forms: an <span data-rf-attr=\"H0\">MCP server</span> for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an <span data-rf-attr=\"B1\">HTTP API</span> for agents and scripts (<span translate=\"no\">ZXQATOM2QXZ</span>); and a <span data-rf-attr=\"B3\">web page and native iOS app</span> for people.",
+          "result": "Mac上のデーモンが電話を駆動し、同じ制御機能を3つの形態で提供します。1</span>つは、Claude Code、Codex、Claude Desktop、Cursorおよびその他のMCPクライアント向けの<span data-rf-attr=\"H0\">MCPサーバー;エージェントおよびスクリプト用の <span data-rf-attr=\"B1\">HTTP API</span>(<span translate=\"no\">ZXQATOM2QXZ</span>);そして<span data-rf-attr=\"B3\">ウェブページおよびネイティブiOSアプリを用意しています</span>。"
+        },
+        {
+          "id": "LIVE-1",
+          "wire": "<span data-rf-attr=\"H0\">Let AI agents use your real iPhone.</span> With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app, <span data-rf-attr=\"B1\">including the ones with no API</span>: Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+          "result": "<span data-rf-attr=\"H0\">AIエージェントに本物のiPhoneを使わせて。</span>MacにiPhone使用がインストールされている場合、Claude Code、Codex、または他のMCPクライアントは、iPhoneの画面をテキストとして読み取り、どのアプリでもタップ、入力、スワイプを行います。<span data-rf-attr=\"B1\">APIなしのアプリも含</span>めて、健康、銀行、チャットアプリ、またはテストしているアプリです。ライブ視聴もでき、いつでも電話を取り戻すことができます。"
+        },
+        {
+          "id": "REORDER",
+          "wire": "Before you close the window, please <span data-rf-attr=\"B0\">save your changes</span> and confirm the <span data-rf-attr=\"H1\">delivery address</span>.",
+          "result": "ウィンドウを閉じる前に、<span data-rf-attr=\"B0\">変更を保存</span>し、<span data-rf-attr=\"H1\">配送アドレスを確認してください</span>。"
+        },
+        {
+          "id": "REPEAT",
+          "wire": "The <span data-rf-attr=\"B0\">account</span> is active, but the <span data-rf-attr=\"H1\">account</span> must be verified. Run <span translate=\"no\">ZXQATOM2QXZ</span> then calculate <span translate=\"no\">ZXQATOM3QXZ</span>.",
+          "result": "<span data-rf-attr=\"B0\">account</span>はアクティブですが、<span data-rf-attr=\"H1\">account</span>は検証が必要です。<span translate=\"no\"を実行し>ZXQATOM2QXZ</span><span translate=\"no\">ZXQATOM3QXZを計算</span>します。"
+        },
+        {
+          "id": "NESTED",
+          "wire": "Keep the <span data-rf-attr=\"B0\">new <span data-rf-attr=\"H1\">payment deadline</span> unchanged</span> and run <span translate=\"no\">ZXQATOM2QXZ</span>.",
+          "result": "<span data-rf-attr=\"B0\">new <span data-rf-attr=\"H1\">payment deadline</span>は変更せず</span>、実行<span translate=\"no\">ZXQATOM2QXZ</span>。"
+        },
+        {
+          "id": "BREAKS",
+          "wire": "First step: <span data-rf-attr=\"B0\">save the file</span>.\n\nSecond step: run <span translate=\"no\">ZXQATOM1QXZ</span>.\nLast step: close the window.",
+          "result": "最初のステップ:<span data-rf-attr=\"B0\">ファイルを保存します</span>。\n\n次のステップ:<span translate=\"no\">ZXQATOM1QXZ</span>を実行します。\n最後のステップ:窓を閉めること。"
+        }
+      ]
+    },
+    {
+      "candidate": "span-data",
+      "targetCode": "deu",
+      "records": [
+        {
+          "id": "F01",
+          "wire": "A daemon on your Mac drives the phone in three forms: an <span data-rf-attr=\"H0\">MCP server</span> for your agent; an <span data-rf-attr=\"B1\">HTTP API</span> for scripts (<span translate=\"no\">ZXQATOM2QXZ</span>); and a <span data-rf-attr=\"B3\">web page and native iOS app</span> for people.",
+          "result": "Ein Daemon auf Ihrem Mac steuert das Telefon in drei Formen: ein <span data-rf-attr=\"H0\">MCP-Server</span> für Ihren Agenten; eine <span data-rf-attr=\"B1\">HTTP API</span> für Skripte (<span translate=\"no\">ZXQATOM2QXZ</span>); sowie eine <span data-rf-attr=\"B3\">Webseite sowie eine native iOS-App</span> für Personen."
+        },
+        {
+          "id": "F24",
+          "wire": "A daemon on your Mac drives the phone and offers the same control in three forms: an <span data-rf-attr=\"H0\">MCP server</span> for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an <span data-rf-attr=\"B1\">HTTP API</span> for agents and scripts (<span translate=\"no\">ZXQATOM2QXZ</span>); and a <span data-rf-attr=\"B3\">web page and native iOS app</span> for people.",
+          "result": "Ein Daemon auf Ihrem Mac steuert das Telefon und bietet dieselbe Steuerung in drei Formen: ein <span data-rf-attr=\"H0\">MCP-Server</span> für Claude Code, Codex, Claude Desktop, Cursor und andere MCP-Clients; eine <span data-rf-attr=\"B1\">HTTP-API</span> für Agenten und Skripte (<span translate=\"no\">ZXQATOM2QXZ</span>); sowie eine <span data-rf-attr=\"B3\">Webseite sowie eine native iOS-App</span> für Personen."
+        },
+        {
+          "id": "LIVE-1",
+          "wire": "<span data-rf-attr=\"H0\">Let AI agents use your real iPhone.</span> With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app, <span data-rf-attr=\"B1\">including the ones with no API</span>: Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+          "result": "<span data-rf-attr=\"H0\">Lassen Sie KI-Agenten Ihr echtes iPhone verwenden.</span> Mit iPhone-Nutzung auf Ihrem Mac liest Claude Code, Codex oder jeder MCP-Client den Bildschirm des Telefons als Text, tippt, tippt und wischt in jeder App <span data-rf-attr=\"B1\">einschließlich der Apps ohne API:</span> Gesundheit, Banking, Chat-Apps oder die App, die Sie testen. Du kannst es live ansehen und das Handy jederzeit zurücknehmen."
+        },
+        {
+          "id": "REORDER",
+          "wire": "Before you close the window, please <span data-rf-attr=\"B0\">save your changes</span> and confirm the <span data-rf-attr=\"H1\">delivery address</span>.",
+          "result": "Bevor Sie das Fenster schließen, speichern Sie bitte <span data-rf-attr=\"B0\">speichern Sie Ihre Änderungen</span> und bestätigen Sie die <span data-rf-attr=\"H1\">Lieferadresse</span>."
+        },
+        {
+          "id": "REPEAT",
+          "wire": "The <span data-rf-attr=\"B0\">account</span> is active, but the <span data-rf-attr=\"H1\">account</span> must be verified. Run <span translate=\"no\">ZXQATOM2QXZ</span> then calculate <span translate=\"no\">ZXQATOM3QXZ</span>.",
+          "result": "Das <span data-rf-attr=\"B0\">Konto</span> ist aktiv, aber das <span data-rf-attr=\"H1\">Konto</span> muss verifiziert werden. Führe <span translate=\"no\">ZXQATOM2QXZ</span> und berechne dann <span translate=\"no\">ZXQATOM3QXZ</span>."
+        },
+        {
+          "id": "NESTED",
+          "wire": "Keep the <span data-rf-attr=\"B0\">new <span data-rf-attr=\"H1\">payment deadline</span> unchanged</span> and run <span translate=\"no\">ZXQATOM2QXZ</span>.",
+          "result": "Lassen Sie die <span data-rf-attr=\"B0\">new <span data-rf-attr=\"H1\">Zahlungsfrist</span> unverändert</span> und führen Sie <span translate=\"no\">ZXQATOM2QXZ aus.</span>"
+        },
+        {
+          "id": "BREAKS",
+          "wire": "First step: <span data-rf-attr=\"B0\">save the file</span>.\n\nSecond step: run <span translate=\"no\">ZXQATOM1QXZ</span>.\nLast step: close the window.",
+          "result": "Erster Schritt: <span data-rf-attr=\"B0\">die Datei speichern</span>.\n\nZweiter Schritt: Lauf <span translate=\"no\">ZXQATOM1QXZ</span>.\nLetzter Schritt: Fenster schließen."
+        }
+      ]
+    },
+    {
+      "candidate": "b-id",
+      "targetCode": "cmn",
+      "records": [
+        {
+          "id": "F01",
+          "wire": "A daemon on your Mac drives the phone in three forms: an <b id=\"H0\">MCP server</b> for your agent; an <b id=\"B1\">HTTP API</b> for scripts (<span translate=\"no\">ZXQATOM2QXZ</span>); and a <b id=\"B3\">web page and native iOS app</b> for people.",
+          "result": "你Mac上的守护进程以三种形式驱动手机：代理的 <b id=“H0”>MCP 服务器</b>;一个用于脚本的 <b id=“B1”>HTTP API</b>（<span 翻译=“no”>ZXQATOM2QXZ</span>）;以及<b id=“B3”>网页和原生iOS应用</b>。"
+        },
+        {
+          "id": "F24",
+          "wire": "A daemon on your Mac drives the phone and offers the same control in three forms: an <b id=\"H0\">MCP server</b> for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an <b id=\"B1\">HTTP API</b> for agents and scripts (<span translate=\"no\">ZXQATOM2QXZ</span>); and a <b id=\"B3\">web page and native iOS app</b> for people.",
+          "result": "Mac上的守护进程驱动手机，提供三种形式的相同控制：<b id=“H0”>MCP服务器</b>，用于Claude Code、Codex、Claude Desktop、Cursor及其他MCP客户端;一个 <b id=“B1”>HTTP API</b>，用于代理和脚本（<span 翻译=“no”>ZXQATOM2QXZ</span>）;以及<b id=“B3”>网页和原生iOS应用</b>。"
+        },
+        {
+          "id": "LIVE-1",
+          "wire": "<b id=\"H0\">Let AI agents use your real iPhone.</b> With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app, <b id=\"B1\">including the ones with no API</b>: Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+          "result": "<b id=“H0”>让AI代理使用你的真实iPhone。</b>在你的Mac上安装iPhone时，Claude Code、Codex或任何MCP客户端会将手机屏幕读取为文本，在任何应用中点击、输入和滑动，<b id=“B1”>包括那些没有API的</b>应用：健康、银行、聊天应用或你正在测试的应用。你可以随时观看直播，并把手机拿回去。"
+        },
+        {
+          "id": "REORDER",
+          "wire": "Before you close the window, please <b id=\"B0\">save your changes</b> and confirm the <b id=\"H1\">delivery address</b>.",
+          "result": "关闭窗口前，请<b id=“B0”>保存您的更改</b>，并确认<b id=“H1”>配送地址</b>。"
+        },
+        {
+          "id": "REPEAT",
+          "wire": "The <b id=\"B0\">account</b> is active, but the <b id=\"H1\">account</b> must be verified. Run <span translate=\"no\">ZXQATOM2QXZ</span> then calculate <span translate=\"no\">ZXQATOM3QXZ</span>.",
+          "result": "<b id=“B0”>账户</b>是活跃的，但<b id=“H1”>账户</b>必须验证。运行 <span 翻译=“no”>ZXQATOM2QXZ</span>然后计算 <span translate=“no”>ZXQATOM3QXZ</span>。"
+        },
+        {
+          "id": "NESTED",
+          "wire": "Keep the <b id=\"B0\">new <b id=\"H1\">payment deadline</b> unchanged</b> and run <span translate=\"no\">ZXQATOM2QXZ</span>.",
+          "result": "保持<b id=“B0”>new <b id=“H1”>付款截止日期</b>不变</b>，运行<span translate=“no”>ZXQATOM2QXZ</span>。"
+        },
+        {
+          "id": "BREAKS",
+          "wire": "First step: <b id=\"B0\">save the file</b>.\n\nSecond step: run <span translate=\"no\">ZXQATOM1QXZ</span>.\nLast step: close the window.",
+          "result": "第一步：<b id=“B0”>保存文件</b>。\n\n第二步：运行 < span 翻译=“no”>ZXQATOM1QXZ</span>。\n最后一步：关上窗户。"
+        }
+      ]
+    },
+    {
+      "candidate": "b-id",
+      "targetCode": "jpn",
+      "records": [
+        {
+          "id": "F01",
+          "wire": "A daemon on your Mac drives the phone in three forms: an <b id=\"H0\">MCP server</b> for your agent; an <b id=\"B1\">HTTP API</b> for scripts (<span translate=\"no\">ZXQATOM2QXZ</span>); and a <b id=\"B3\">web page and native iOS app</b> for people.",
+          "result": "Mac上のデーモンは3つの形態で電話を駆動します:エージェント用の<b id=\"H0\">MCPサーバー</b>;スクリプト用の <b id=\"B1\">HTTP API</b>(<span translate=\"no\">ZXQATOM2QXZ</span>);そして<b id=\"B3\">ウェブページとネイティブiOSアプリを用意</b>しています。"
+        },
+        {
+          "id": "F24",
+          "wire": "A daemon on your Mac drives the phone and offers the same control in three forms: an <b id=\"H0\">MCP server</b> for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an <b id=\"B1\">HTTP API</b> for agents and scripts (<span translate=\"no\">ZXQATOM2QXZ</span>); and a <b id=\"B3\">web page and native iOS app</b> for people.",
+          "result": "Mac上のデーモンが電話を駆動し、同じ制御機能を3つの形態で提供します。<b id=\"H0\">MCPサーバー</b>(Claude Code、Codex、Claude Desktop、カーソル、その他のMCPクライアント)、エージェントおよびスクリプト用の <b id=\"B1\">HTTP API</b>(<span translate=\"no\">ZXQATOM2QXZ</span>);そして<b id=\"B3\">ウェブページとネイティブiOSアプリを用意</b>しています。"
+        },
+        {
+          "id": "LIVE-1",
+          "wire": "<b id=\"H0\">Let AI agents use your real iPhone.</b> With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app, <b id=\"B1\">including the ones with no API</b>: Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+          "result": "<b id=\"H0\">AIエージェントに本物のiPhoneを使わせましょう。</b>MacにiPhone使用がインストールされている場合、Claude Code、Codex、または他のMCPクライアントはスマートフォンの画面をテキストとして読み取り、<b id=\"B1>\"で、APIなしのアプリ(</b>健康、銀行、チャットアプリ、またはテストしているアプリ)でスワイプを行います。ライブ視聴もでき、いつでも電話を取り戻すことができます。"
+        },
+        {
+          "id": "REORDER",
+          "wire": "Before you close the window, please <b id=\"B0\">save your changes</b> and confirm the <b id=\"H1\">delivery address</b>.",
+          "result": "ウィンドウを閉じる前に、<b id=\"B0\">変更を保存</b>し、<b id=\"H1\">配送アドレスを確認してください</b>。"
+        },
+        {
+          "id": "REPEAT",
+          "wire": "The <b id=\"B0\">account</b> is active, but the <b id=\"H1\">account</b> must be verified. Run <span translate=\"no\">ZXQATOM2QXZ</span> then calculate <span translate=\"no\">ZXQATOM3QXZ</span>.",
+          "result": "<b id=\"B0\">アカウント</b>は有効ですが、<b id=\"H1\">アカウント</b>は認証が必要です。<span translate=\"no\"を実行し>ZXQATOM2QXZ</span><span translate=\"no\">ZXQATOM3QXZを計算</span>します。"
+        },
+        {
+          "id": "NESTED",
+          "wire": "Keep the <b id=\"B0\">new <b id=\"H1\">payment deadline</b> unchanged</b> and run <span translate=\"no\">ZXQATOM2QXZ</span>.",
+          "result": "<b id=\"B0\">new <b id=\"H1\">支払い期限</b>は変更せず</b>、<span translate=\"no\">ZXQATOM2QXZを実行</span>してください。"
+        },
+        {
+          "id": "BREAKS",
+          "wire": "First step: <b id=\"B0\">save the file</b>.\n\nSecond step: run <span translate=\"no\">ZXQATOM1QXZ</span>.\nLast step: close the window.",
+          "result": "最初のステップ:<b id=\"B0\">ファイルを保存します</b>。\n\n次のステップ:<span translate=\"no\">ZXQATOM1QXZ</span>を実行します。\n最後のステップ:窓を閉めること。"
+        }
+      ]
+    },
+    {
+      "candidate": "b-id",
+      "targetCode": "deu",
+      "records": [
+        {
+          "id": "F01",
+          "wire": "A daemon on your Mac drives the phone in three forms: an <b id=\"H0\">MCP server</b> for your agent; an <b id=\"B1\">HTTP API</b> for scripts (<span translate=\"no\">ZXQATOM2QXZ</span>); and a <b id=\"B3\">web page and native iOS app</b> for people.",
+          "result": "Ein Daemon auf Ihrem Mac steuert das Telefon in drei Formen: ein <b id=\"H0\">MCP-Server</b> für Ihren Agenten; eine <b id=\"B1\">HTTP API</b> für Skripte (<span translate=\"no\">ZXQATOM2QXZ</span>); sowie eine <b id=\"B3\">Webseite sowie eine native iOS-App</b> für Personen."
+        },
+        {
+          "id": "F24",
+          "wire": "A daemon on your Mac drives the phone and offers the same control in three forms: an <b id=\"H0\">MCP server</b> for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an <b id=\"B1\">HTTP API</b> for agents and scripts (<span translate=\"no\">ZXQATOM2QXZ</span>); and a <b id=\"B3\">web page and native iOS app</b> for people.",
+          "result": "Ein Daemon auf Ihrem Mac steuert das Telefon an und bietet dieselbe Steuerung in drei Formen: einen <b id=\"H0\">MCP-Server</b> für Claude Code, Codex, Claude Desktop, Cursor und andere MCP-Clients; eine <b id=\"B1\">HTTP-API</b> für Agenten und Skripte (<span translate=\"no\">ZXQATOM2QXZ</span>); sowie eine <b id=\"B3\">Webseite sowie eine native iOS-App</b> für Personen."
+        },
+        {
+          "id": "LIVE-1",
+          "wire": "<b id=\"H0\">Let AI agents use your real iPhone.</b> With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app, <b id=\"B1\">including the ones with no API</b>: Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+          "result": "<b id=\"H0\">Lassen Sie KI-Agenten Ihr echtes iPhone verwenden.</b> Mit iPhone-Nutzung auf Ihrem Mac liest Claude Code, Codex oder jeder MCP-Client den Bildschirm des Telefons als Text, tippt, tippt und wischt in jeder App <b id=\"B1\">einschließlich der Apps ohne API:</b> Gesundheit, Banking, Chat-Apps oder die App, die Sie testen. Du kannst es live ansehen und das Handy jederzeit zurücknehmen."
+        },
+        {
+          "id": "REORDER",
+          "wire": "Before you close the window, please <b id=\"B0\">save your changes</b> and confirm the <b id=\"H1\">delivery address</b>.",
+          "result": "Bevor Sie das Fenster schließen, <b id=\"B0\">speichern Sie Ihre Änderungen</b> und bestätigen Sie die <b id=\"H1\">Lieferadresse</b>."
+        },
+        {
+          "id": "REPEAT",
+          "wire": "The <b id=\"B0\">account</b> is active, but the <b id=\"H1\">account</b> must be verified. Run <span translate=\"no\">ZXQATOM2QXZ</span> then calculate <span translate=\"no\">ZXQATOM3QXZ</span>.",
+          "result": "Das <b id=\"B0\">Konto</b> ist aktiv, aber das <b id=\"H1\">Konto</b> muss verifiziert werden. Führe <span translate=\"no\">ZXQATOM2QXZ</span> und berechne dann <span translate=\"no\">ZXQATOM3QXZ</span>."
+        },
+        {
+          "id": "NESTED",
+          "wire": "Keep the <b id=\"B0\">new <b id=\"H1\">payment deadline</b> unchanged</b> and run <span translate=\"no\">ZXQATOM2QXZ</span>.",
+          "result": "Lassen Sie die <b id=\"B0\">new <b id=\"H1\">Zahlungsfrist</b> unverändert</b> und führen Sie <span translate=\"no\">ZXQATOM2QXZ aus.</span>"
+        },
+        {
+          "id": "BREAKS",
+          "wire": "First step: <b id=\"B0\">save the file</b>.\n\nSecond step: run <span translate=\"no\">ZXQATOM1QXZ</span>.\nLast step: close the window.",
+          "result": "Erster Schritt: <b id=\"B0\">Speichere die Datei</b>.\n\nZweiter Schritt: Lauf <span translate=\"no\">ZXQATOM1QXZ</span>.\nLetzter Schritt: Fenster schließen."
+        }
+      ]
+    },
+    {
+      "candidate": "custom-tag",
+      "targetCode": "cmn",
+      "records": [
+        {
+          "id": "F01",
+          "wire": "A daemon on your Mac drives the phone in three forms: an <rfh0>MCP server</rfh0> for your agent; an <rfb1>HTTP API</rfb1> for scripts (<span translate=\"no\">ZXQATOM2QXZ</span>); and a <rfb3>web page and native iOS app</rfb3> for people.",
+          "result": "你Mac上的守护进程以三种形式驱动手机：为你的代理提供<rfh0>MCP服务器</rfh0>;一个用于脚本的<rfb1>HTTP API</rfb1>（<span 翻译=“no”>ZXQATOM2QXZ</span>）;以及一个面向用户的<rfb3>网页和原生iOS应用</rfb3>。"
+        },
+        {
+          "id": "F24",
+          "wire": "A daemon on your Mac drives the phone and offers the same control in three forms: an <rfh0>MCP server</rfh0> for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an <rfb1>HTTP API</rfb1> for agents and scripts (<span translate=\"no\">ZXQATOM2QXZ</span>); and a <rfb3>web page and native iOS app</rfb3> for people.",
+          "result": "Mac上的守护进程驱动手机，提供三种形式的控制：<rfh0>MCP服务器</rfh0>，用于Claude Code、Codex、Claude Desktop、Cursor及其他MCP客户端;一个用于代理和脚本的<rfb1>HTTP API</rfb1>（<span translate=“no”>ZXQATOM2QXZ</span>）;以及一个面向用户的<rfb3>网页和原生iOS应用</rfb3>。"
+        },
+        {
+          "id": "LIVE-1",
+          "wire": "<rfh0>Let AI agents use your real iPhone.</rfh0> With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app, <rfb1>including the ones with no API</rfb1>: Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+          "result": "<rfh0>让AI代理使用你的真实iPhone。</rfh0>在你的Mac上安装iPhone时，Claude Code、Codex或任何MCP客户端都会将手机屏幕读取为文本，在任何应用中点击、输入和滑动，<rfb1>包括那些没有API的</rfb1>应用：健康、银行、聊天应用或你正在测试的应用。你可以随时观看直播，并把手机拿回去。"
+        },
+        {
+          "id": "REORDER",
+          "wire": "Before you close the window, please <rfb0>save your changes</rfb0> and confirm the <rfh1>delivery address</rfh1>.",
+          "result": "关闭窗口前，请<rfb0>保存您的更改</rfb0>并确认<rfh1>送达地址</rfh1>。"
+        },
+        {
+          "id": "REPEAT",
+          "wire": "The <rfb0>account</rfb0> is active, but the <rfh1>account</rfh1> must be verified. Run <span translate=\"no\">ZXQATOM2QXZ</span> then calculate <span translate=\"no\">ZXQATOM3QXZ</span>.",
+          "result": "<rfb0>账户</rfb0>是活跃的，<rfh1>但必须验证</rfh1>。运行 <span 翻译=“no”>ZXQATOM2QXZ</span>然后计算 <span translate=“no”>ZXQATOM3QXZ</span>。"
+        },
+        {
+          "id": "NESTED",
+          "wire": "Keep the <rfb0>new <rfh1>payment deadline</rfh1> unchanged</rfb0> and run <span translate=\"no\">ZXQATOM2QXZ</span>.",
+          "result": "保持<rfb0>新的<rfh1>付款截止日期</rfh1>不变</rfb0>，并运行<span translate=“no”>ZXQATOM2QXZ</span>。"
+        },
+        {
+          "id": "BREAKS",
+          "wire": "First step: <rfb0>save the file</rfb0>.\n\nSecond step: run <span translate=\"no\">ZXQATOM1QXZ</span>.\nLast step: close the window.",
+          "result": "第一步：<rfb0>保存文件</rfb0>。\n\n第二步：运行 < span 翻译=“no”>ZXQATOM1QXZ</span>。\n最后一步：关上窗户。"
+        }
+      ]
+    },
+    {
+      "candidate": "custom-tag",
+      "targetCode": "jpn",
+      "records": [
+        {
+          "id": "F01",
+          "wire": "A daemon on your Mac drives the phone in three forms: an <rfh0>MCP server</rfh0> for your agent; an <rfb1>HTTP API</rfb1> for scripts (<span translate=\"no\">ZXQATOM2QXZ</span>); and a <rfb3>web page and native iOS app</rfb3> for people.",
+          "result": "Mac上のデーモンは3つの形態で電話を駆動します。エージェント用の<rfh0>MCPサーバー</rfh0>、スクリプト用の<rfb1>HTTP API</rfb1>(<span translate=\"no\">ZXQATOM2QXZ</span>);そして、ウェブ<rfb3>ページとネイティブiOSアプリ</rfb3>も提供しています。"
+        },
+        {
+          "id": "F24",
+          "wire": "A daemon on your Mac drives the phone and offers the same control in three forms: an <rfh0>MCP server</rfh0> for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an <rfb1>HTTP API</rfb1> for agents and scripts (<span translate=\"no\">ZXQATOM2QXZ</span>); and a <rfb3>web page and native iOS app</rfb3> for people.",
+          "result": "Mac上のデーモンが電話を駆動し、同じ制御を3つの形態で提供します:Claude Code、Codex、Claude Desktop、Cursorおよびその他のMCPクライアント用の<rfh0>MCPサーバー</rfh0>;エージェントやスクリプト用の<rfb1>HTTP API</rfb1>(<span translate=\"no\">ZXQATOM2QXZ</span>);そして、ウェブ<rfb3>ページとネイティブiOSアプリ</rfb3>も提供しています。"
+        },
+        {
+          "id": "LIVE-1",
+          "wire": "<rfh0>Let AI agents use your real iPhone.</rfh0> With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app, <rfb1>including the ones with no API</rfb1>: Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+          "result": "<rfh0>AIエージェントに本物のiPhoneを使わせましょう。</rfh0>MacにiPhoneがインストールされている場合、Claude Code、Codex、または他のMCPクライアントは、<rfb1>APIなし</rfb1>の健康、銀行、チャットアプリ、テスト中のアプリなど、あらゆるアプリで画面をテキストとして読み取り、タップ、入力、スワイプを行います。ライブ視聴もでき、いつでも電話を取り戻すことができます。"
+        },
+        {
+          "id": "REORDER",
+          "wire": "Before you close the window, please <rfb0>save your changes</rfb0> and confirm the <rfh1>delivery address</rfh1>.",
+          "result": "ウィンドウを閉じる前に、<rfb0>変更内容を保存</rfb0>し、<rfh1>配達先</rfh1>を必ず確認してください。"
+        },
+        {
+          "id": "REPEAT",
+          "wire": "The <rfb0>account</rfb0> is active, but the <rfh1>account</rfh1> must be verified. Run <span translate=\"no\">ZXQATOM2QXZ</span> then calculate <span translate=\"no\">ZXQATOM3QXZ</span>.",
+          "result": "<rfb0>アカウント</rfb0>は有効ですが、<rfh1>アカウント</rfh1>の認証が必要です。<span translate=\"no\"を実行し>ZXQATOM2QXZ</span><span translate=\"no\">ZXQATOM3QXZを計算</span>します。"
+        },
+        {
+          "id": "NESTED",
+          "wire": "Keep the <rfb0>new <rfh1>payment deadline</rfh1> unchanged</rfb0> and run <span translate=\"no\">ZXQATOM2QXZ</span>.",
+          "result": "<rfb0>新しい<rfh1>支払い期限</rfh1>は変更せず</rfb0>、<span translate=\"no\">ZXQATOM2QXZを実行</span>してください。"
+        },
+        {
+          "id": "BREAKS",
+          "wire": "First step: <rfb0>save the file</rfb0>.\n\nSecond step: run <span translate=\"no\">ZXQATOM1QXZ</span>.\nLast step: close the window.",
+          "result": "最初のステップ:<rfb0>ファイルを保存します</rfb0>。\n\n次のステップ:<span translate=\"no\">ZXQATOM1QXZ</span>を実行します。\n最後のステップ:窓を閉めること。"
+        }
+      ]
+    },
+    {
+      "candidate": "custom-tag",
+      "targetCode": "deu",
+      "records": [
+        {
+          "id": "F01",
+          "wire": "A daemon on your Mac drives the phone in three forms: an <rfh0>MCP server</rfh0> for your agent; an <rfb1>HTTP API</rfb1> for scripts (<span translate=\"no\">ZXQATOM2QXZ</span>); and a <rfb3>web page and native iOS app</rfb3> for people.",
+          "result": "Ein Daemon auf Ihrem Mac steuert das Telefon in drei Formen: ein <rfh0>MCP-Server</rfh0> für Ihren Agenten; eine <rfb1>HTTP-API</rfb1> für Skripte (<span translate=\"no\">ZXQATOM2QXZ</span>); sowie eine <rfb3>Webseite und eine native iOS-App</rfb3> für die Leute."
+        },
+        {
+          "id": "F24",
+          "wire": "A daemon on your Mac drives the phone and offers the same control in three forms: an <rfh0>MCP server</rfh0> for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an <rfb1>HTTP API</rfb1> for agents and scripts (<span translate=\"no\">ZXQATOM2QXZ</span>); and a <rfb3>web page and native iOS app</rfb3> for people.",
+          "result": "Ein Daemon auf Ihrem Mac steuert das Telefon und bietet dieselbe Steuerung in drei Formen: einen <rfh0>MCP-Server</rfh0> für Claude Code, Codex, Claude Desktop, Cursor und andere MCP-Clients; eine <rfb1>HTTP-API</rfb1> für Agenten und Skripte (<span translate=\"no\">ZXQATOM2QXZ</span>); sowie eine <rfb3>Webseite und eine native iOS-App</rfb3> für die Leute."
+        },
+        {
+          "id": "LIVE-1",
+          "wire": "<rfh0>Let AI agents use your real iPhone.</rfh0> With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app, <rfb1>including the ones with no API</rfb1>: Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+          "result": "<rfh0>Lassen Sie KI-Agenten Ihr echtes iPhone benutzen.</rfh0> Mit iPhone-Nutzung auf Ihrem Mac liest Claude Code, Codex oder jeder MCP-Client den Bildschirm des Telefons als Text, tippt, tippt und wischt in jeder App, <rfb1>auch in denen ohne API:</rfb1> Gesundheit, Banking, Chat-Apps oder die von Ihnen getestete App. Du kannst es live ansehen und das Handy jederzeit zurücknehmen."
+        },
+        {
+          "id": "REORDER",
+          "wire": "Before you close the window, please <rfb0>save your changes</rfb0> and confirm the <rfh1>delivery address</rfh1>.",
+          "result": "Bevor Sie das Fenster schließen, speichern Sie <rfb0>bitte Ihre Änderungen</rfb0> und bestätigen Sie die <rfh1>Lieferadresse</rfh1>."
+        },
+        {
+          "id": "REPEAT",
+          "wire": "The <rfb0>account</rfb0> is active, but the <rfh1>account</rfh1> must be verified. Run <span translate=\"no\">ZXQATOM2QXZ</span> then calculate <span translate=\"no\">ZXQATOM3QXZ</span>.",
+          "result": "Das <rfb0>Konto</rfb0> ist aktiv, <rfh1>aber es muss</rfh1> verifiziert werden. Führe <span translate=\"no\">ZXQATOM2QXZ</span> und berechne dann <span translate=\"no\">ZXQATOM3QXZ</span>."
+        },
+        {
+          "id": "NESTED",
+          "wire": "Keep the <rfb0>new <rfh1>payment deadline</rfh1> unchanged</rfb0> and run <span translate=\"no\">ZXQATOM2QXZ</span>.",
+          "result": "Lass die <rfb0>neue <rfh1>Zahlungsfrist</rfh1> unverändert</rfb0> und führe <span translate=\"no\">ZXQATOM2QXZ durch.</span>"
+        },
+        {
+          "id": "BREAKS",
+          "wire": "First step: <rfb0>save the file</rfb0>.\n\nSecond step: run <span translate=\"no\">ZXQATOM1QXZ</span>.\nLast step: close the window.",
+          "result": "Erster Schritt: <rfb0>Speichere die Datei</rfb0>.\n\nZweiter Schritt: Lauf <span translate=\"no\">ZXQATOM1QXZ</span>.\nLetzter Schritt: Fenster schließen."
+        }
+      ]
+    }
+  ]
+}

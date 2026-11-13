@@ -1,0 +1,300 @@
+{
+  "samples": [
+    {
+      "id": "F01",
+      "source": "A daemon on your Mac drives the phone in three forms: an ⟦H0⟧MCP server⟦/H0⟧ for your agent; an ⟦B1⟧HTTP API⟦/B1⟧ for scripts (ZXQATOM2QXZ); and a ⟦B3⟧web page and native iOS app⟦/B3⟧ for people.",
+      "mapping": {
+        "H0": "b",
+        "B1": "mark",
+        "B3": "strong"
+      },
+      "wire": "A daemon on your Mac drives the phone in three forms: an <b>MCP server</b> for your agent; an <mark>HTTP API</mark> for scripts (ZXQATOM2QXZ); and a <strong>web page and native iOS app</strong> for people."
+    },
+    {
+      "id": "F02",
+      "source": "Please ⟦B0⟧save your changes⟦/B0⟧ before closing the window. The ⟦B1⟧primary account⟦/B1⟧ is active, the ⟦I2⟧temporary account⟦/I2⟧ expires tomorrow, and the ⟦I3⟧backup account⟦/I3⟧ stays available. Read the ⟦U4⟧important notice⟦/U4⟧ and ignore the ⟦D5⟧outdated instruction⟦/D5⟧.",
+      "mapping": {
+        "B0": "b",
+        "B1": "mark",
+        "I2": "strong",
+        "I3": "em",
+        "U4": "i",
+        "D5": "u"
+      },
+      "wire": "Please <b>save your changes</b> before closing the window. The <mark>primary account</mark> is active, the <strong>temporary account</strong> expires tomorrow, and the <em>backup account</em> stays available. Read the <i>important notice</i> and ignore the <u>outdated instruction</u>."
+    },
+    {
+      "id": "F04",
+      "source": "The failed payment needs attention, the ⟦B0⟧approved payment needs no action⟦/B0⟧, and the ⟦H1⟧pending payment will be checked tomorrow⟦/H1⟧.",
+      "mapping": {
+        "B0": "b",
+        "H1": "mark"
+      },
+      "wire": "The failed payment needs attention, the <b>approved payment needs no action</b>, and the <mark>pending payment will be checked tomorrow</mark>."
+    },
+    {
+      "id": "F14",
+      "source": "Download the ⟦B0⟧correct package⟦/B0⟧ for your operating system.Review these requirements:Keep the installation directory available.Do not delete your saved browser settings.Restart the browser and verify the result.",
+      "mapping": {
+        "B0": "b"
+      },
+      "wire": "Download the <b>correct package</b> for your operating system.Review these requirements:Keep the installation directory available.Do not delete your saved browser settings.Restart the browser and verify the result."
+    },
+    {
+      "id": "F25",
+      "source": "Please ⟦B0⟧save your changes⟦/B0⟧ before closing the window. The ⟦I1⟧temporary account⟦/I1⟧ expires tomorrow. The ⟦H2⟧shipping address must be confirmed today⟦/H2⟧, and the ⟦H3⟧delivery date is next Friday⟦/H3⟧.",
+      "mapping": {
+        "B0": "b",
+        "I1": "mark",
+        "H2": "strong",
+        "H3": "em"
+      },
+      "wire": "Please <b>save your changes</b> before closing the window. The <mark>temporary account</mark> expires tomorrow. The <strong>shipping address must be confirmed today</strong>, and the <em>delivery date is next Friday</em>."
+    },
+    {
+      "id": "F27",
+      "source": "The ⟦B0⟧installation files⟦/B0⟧ are ready. Keep the ⟦H1⟧original folder⟦/H1⟧ until the process is complete.",
+      "mapping": {
+        "B0": "b",
+        "H1": "mark"
+      },
+      "wire": "The <b>installation files</b> are ready. Keep the <mark>original folder</mark> until the process is complete."
+    }
+  ],
+  "groups": [
+    {
+      "target": "zh-Hans",
+      "status": 200,
+      "results": [
+        {
+          "translations": [
+            {
+              "text": "你Mac上的守护进程以三种形式驱动手机：为你的代理提供<b>MCP服务器</b>;用于脚本的<mark>HTTP API</mark>（ZXQATOM2QXZ）;以及一个面向用户的<strong>网页和原生iOS应用</strong>。",
+              "to": "zh-Hans",
+              "sentLen": {
+                "srcSentLen": [91, 52, 62],
+                "transSentLen": [41, 40, 37]
+              }
+            }
+          ]
+        },
+        {
+          "translations": [
+            {
+              "text": "请在关闭窗口前<b>保存您的更改</b>。<mark>主账户</mark>是活跃的，<strong>临时账户</strong>明天到期，<em>备用账户</em>仍然可用。阅读<i>重要通知</i>，忽略<u>过时的说明。</u>",
+              "to": "zh-Hans",
+              "sentLen": {
+                "srcSentLen": [59, 150, 76],
+                "transSentLen": [21, 65, 29]
+              }
+            }
+          ]
+        },
+        {
+          "translations": [
+            {
+              "text": "未付款需要处理，<b>批准的付款无需处理，</b>待<mark>处理付款将在明天进行检查。</mark>",
+              "to": "zh-Hans",
+              "sentLen": {
+                "srcSentLen": [143],
+                "transSentLen": [52]
+              }
+            }
+          ]
+        },
+        {
+          "translations": [
+            {
+              "text": "下载适合你操作系统的<b>正确软件包</b>。审查这些要求：保持安装目录的可用性。不要删除你保存的浏览器设置。重启浏览器并验证结果。",
+              "to": "zh-Hans",
+              "sentLen": {
+                "srcSentLen": [62, 68, 42, 42],
+                "transSentLen": [23, 18, 14, 11]
+              }
+            }
+          ]
+        },
+        {
+          "translations": [
+            {
+              "text": "请在关闭窗口前<b>保存您的更改</b>。<mark>临时账户</mark>明天到期。<strong>收货地址必须今天确认，</strong><em>送达日期是下周五。</em>",
+              "to": "zh-Hans",
+              "sentLen": {
+                "srcSentLen": [59, 53, 109],
+                "transSentLen": [21, 22, 46]
+              }
+            }
+          ]
+        },
+        {
+          "translations": [
+            {
+              "text": "<b>安装文件</b>已经准备好了。在流程完成前，先保留<mark>原文件夹</mark>。",
+              "to": "zh-Hans",
+              "sentLen": {
+                "srcSentLen": [41, 68],
+                "transSentLen": [18, 28]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "target": "ja",
+      "status": 200,
+      "results": [
+        {
+          "translations": [
+            {
+              "text": "Mac上のデーモンは3つの形態で電話を駆動します。エージェント用の<b>MCPサーバー</b>、スクリプト用の<mark>HTTP API</mark>(ZXQATOM2QXZ);そして、ウェブ<strong>ページとネイティブiOSアプリ</strong>も提供しています。",
+              "to": "ja",
+              "sentLen": {
+                "srcSentLen": [91, 52, 62],
+                "transSentLen": [48, 42, 48]
+              }
+            }
+          ]
+        },
+        {
+          "translations": [
+            {
+              "text": "ウィンドウを閉じる前に<b>変更を保存</b>してください。<mark>主アカウント</mark>は有効で、<strong>一時アカウント</strong>は明日期限切れ、<em>バックアップアカウント</em>は引き続き利用可能です。<i>重要な通知</i>を読んで、古い指示は無視<u>してください。</u>",
+              "to": "ja",
+              "sentLen": {
+                "srcSentLen": [59, 150, 76],
+                "transSentLen": [30, 88, 38]
+              }
+            }
+          ]
+        },
+        {
+          "translations": [
+            {
+              "text": "支払い失敗は対応が必要で、<b>承認された支払いは不要で、</b><mark>保留中の支払いは明日確認されます。</mark>",
+              "to": "ja",
+              "sentLen": {
+                "srcSentLen": [143],
+                "transSentLen": [63]
+              }
+            }
+          ]
+        },
+        {
+          "translations": [
+            {
+              "text": "お使いのOSに適した<b>パッケージ</b>をダウンロードしてください。これらの要件を確認してください:インストールディレクトリを常に利用可能にしておくこと。保存したブラウザ設定は削除しないでください。ブラウザを再起動して結果を確認してください。",
+              "to": "ja",
+              "sentLen": {
+                "srcSentLen": [62, 68, 42, 42],
+                "transSentLen": [36, 43, 22, 22]
+              }
+            }
+          ]
+        },
+        {
+          "translations": [
+            {
+              "text": "ウィンドウを閉じる前に<b>変更を保存</b>してください。<mark>一時的な口座</mark>は明日で期限切れです。<strong>配送先住所は今日中に確認しなければならず、</strong><em>配達予定日は来週の金曜日です。</em>",
+              "to": "ja",
+              "sentLen": {
+                "srcSentLen": [59, 53, 109],
+                "transSentLen": [30, 30, 62]
+              }
+            }
+          ]
+        },
+        {
+          "translations": [
+            {
+              "text": "<b>インストールファイル</b>は準備できています。手続きが完了するまで<mark>元のフォルダ</mark>を保管してください。",
+              "to": "ja",
+              "sentLen": {
+                "srcSentLen": [41, 68],
+                "transSentLen": [27, 39]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "target": "de",
+      "status": 200,
+      "results": [
+        {
+          "translations": [
+            {
+              "text": "Ein Daemon auf Ihrem Mac steuert das Telefon in drei Formen: ein <b>MCP-Server</b> für Ihren Agenten; eine <mark>HTTP-API</mark> für Skripte (ZXQATOM2QXZ); sowie eine <strong>Webseite und eine native iOS-App</strong> für die Leute.",
+              "to": "de",
+              "sentLen": {
+                "srcSentLen": [91, 52, 62],
+                "transSentLen": [102, 54, 75]
+              }
+            }
+          ]
+        },
+        {
+          "translations": [
+            {
+              "text": "Bitte <b>speichern Sie Ihre Änderungen</b>, bevor Sie das Fenster schließen. Das <mark>Hauptkonto</mark> ist aktiv, das <strong>temporäre Konto</strong> läuft morgen ab und das <em>Backup-Konto</em> bleibt verfügbar. Lesen Sie die <i>wichtige Mitteilung</i> und ignorieren Sie die <u>veraltete Anweisung.</u>",
+              "to": "de",
+              "sentLen": {
+                "srcSentLen": [59, 150, 76],
+                "transSentLen": [77, 140, 91]
+              }
+            }
+          ]
+        },
+        {
+          "translations": [
+            {
+              "text": "Die fehlgeschlagene Zahlung muss bearbeitet werden, die <b>genehmigte Zahlung braucht keine Aktion,</b> und die <mark>ausstehende Zahlung wird morgen überprüft.</mark>",
+              "to": "de",
+              "sentLen": {
+                "srcSentLen": [143],
+                "transSentLen": [167]
+              }
+            }
+          ]
+        },
+        {
+          "translations": [
+            {
+              "text": "Lade das <b>richtige Paket</b> für dein Betriebssystem herunter. Überprüfen Sie diese Anforderungen: Halten Sie das Installationsverzeichnis verfügbar. Löschen Sie Ihre gespeicherten Browsereinstellungen nicht. Neustarte den Browser und überprüfe das Ergebnis.",
+              "to": "de",
+              "sentLen": {
+                "srcSentLen": [62, 68, 42, 42],
+                "transSentLen": [65, 87, 59, 49]
+              }
+            }
+          ]
+        },
+        {
+          "translations": [
+            {
+              "text": "Bitte <b>speichern Sie Ihre Änderungen</b>, bevor Sie das Fenster schließen. Das <mark>temporäre Konto</mark> läuft morgen ab. Die <strong>Versandadresse muss heute bestätigt werden,</strong> und das <em>Lieferdatum ist nächsten Freitag.</em>",
+              "to": "de",
+              "sentLen": {
+                "srcSentLen": [59, 53, 109],
+                "transSentLen": [77, 50, 115]
+              }
+            }
+          ]
+        },
+        {
+          "translations": [
+            {
+              "text": "Die <b>Installationsdateien</b> sind bereit. Behalte den <mark>ursprünglichen Ordner</mark>, bis der Prozess abgeschlossen ist.",
+              "to": "de",
+              "sentLen": {
+                "srcSentLen": [41, 68],
+                "transSentLen": [45, 82]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

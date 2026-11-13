@@ -102,6 +102,7 @@ interface ProtocolMap {
   enqueueTranslateRequest: (
     data: ProviderRequestRouting & {
       text: string
+      bilingualFormat?: import("./host/translate/bilingual-format-protocol").BilingualFormatManifest
       langConfig: Config["language"]
       scheduleAt: number
       hash: string

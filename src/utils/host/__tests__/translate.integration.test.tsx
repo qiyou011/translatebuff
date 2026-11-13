@@ -38,7 +38,9 @@ import {
 } from "./utils"
 
 vi.mock("@/utils/host/translate/translate-variants", () => ({
-  translateTextForPage: vi.fn<(...args: any[]) => any>(() => Promise.resolve(MOCK_TRANSLATION)),
+  translateTextForPage: vi.fn<(...args: any[]) => any>((text, _format, options) =>
+    Promise.resolve(options?.bilingualFormat ? `${MOCK_TRANSLATION} ${text}` : MOCK_TRANSLATION),
+  ),
 }))
 
 const DEFAULT_PAGE_TRANSLATION_OPTIONS = {
@@ -718,7 +720,11 @@ describe("translate", () => {
       }
 
       afterEach(() => {
-        vi.mocked(translateTextForPage).mockReset().mockResolvedValue(MOCK_TRANSLATION)
+        vi.mocked(translateTextForPage)
+          .mockReset()
+          .mockImplementation(async (text, _format, options) =>
+            options?.bilingualFormat ? `${MOCK_TRANSLATION} ${text}` : MOCK_TRANSLATION,
+          )
       })
 
       it("keeps a simple single-span tweet as one block translation", async () => {
@@ -1428,9 +1434,9 @@ describe("translate", () => {
 
             expect(translateTextForPage).toHaveBeenCalledTimes(1)
             expect(translateTextForPage).toHaveBeenCalledWith(
-              sourceText,
+              sourceText.replace(/\s+/g, " "),
               "plain",
-              DEFAULT_PAGE_TRANSLATION_OPTIONS,
+              expect.objectContaining({ bilingualFormat: expect.any(Object) }),
             )
             expectBlockTranslations(tweet, ["【整段译文】"])
           })
@@ -1549,7 +1555,6 @@ describe("translate", () => {
     it("translates each Engoo paragraph once with block layout", async () => {
       await withHost("engoo.com", async () => {
         const nestedText = "Brain resonance shapes how music feels."
-        const mixedText = "Shared rhythms connect people."
         vi.mocked(translateTextForPage).mockClear()
         render(
           <article>
@@ -1578,9 +1583,9 @@ describe("translate", () => {
           DEFAULT_PAGE_TRANSLATION_OPTIONS,
         )
         expect(translateTextForPage).toHaveBeenCalledWith(
-          mixedText,
+          "Shared rhythms ⟦I0⟧connect⟦/I0⟧ people.",
           "plain",
-          DEFAULT_PAGE_TRANSLATION_OPTIONS,
+          expect.objectContaining({ bilingualFormat: expect.any(Object) }),
         )
 
         const nestedWrapper = expectTranslationWrapper(deepestSpan, "bilingual")
@@ -2576,16 +2581,26 @@ describe("translate", () => {
       `<span class="katex"><span class="katex-mathml"><math><semantics><mi>${symbol}</mi><annotation encoding="application/x-tex">${symbol}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="mord mathnormal">${symbol}</span></span></span></span>`
 
     beforeEach(() => {
-      vi.mocked(translateTextForPage).mockReset().mockResolvedValue(MOCK_TRANSLATION)
+      vi.mocked(translateTextForPage)
+        .mockReset()
+        .mockImplementation(async (text, _format, options) =>
+          options?.bilingualFormat ? `${MOCK_TRANSLATION} ${text}` : MOCK_TRANSLATION,
+        )
     })
 
     afterEach(() => {
-      vi.mocked(translateTextForPage).mockReset().mockResolvedValue(MOCK_TRANSLATION)
+      vi.mocked(translateTextForPage)
+        .mockReset()
+        .mockImplementation(async (text, _format, options) =>
+          options?.bilingualFormat ? `${MOCK_TRANSLATION} ${text}` : MOCK_TRANSLATION,
+        )
     })
 
     it("sends placeholders, clones the formulas at their translated positions and restores cleanly", async () => {
       vi.mocked(translateTextForPage).mockImplementation(async (text) =>
-        text === "Let {{0}} be smaller than {{1}}." ? "设 {{1}} 大于 {{0}}。" : MOCK_TRANSLATION,
+        text === "Let ZXQATOM0QXZ be smaller than ZXQATOM1QXZ."
+          ? "设 ZXQATOM1QXZ 大于 ZXQATOM0QXZ。"
+          : MOCK_TRANSLATION,
       )
       render(<p data-testid="test-node" />)
       const node = screen.getByTestId("test-node")
@@ -2595,20 +2610,16 @@ describe("translate", () => {
       await removeOrShowPageTranslation("bilingual", true)
 
       expect(translateTextForPage).toHaveBeenCalledWith(
-        "Let {{0}} be smaller than {{1}}.",
+        "Let ZXQATOM0QXZ be smaller than ZXQATOM1QXZ.",
         "plain",
-        DEFAULT_PAGE_TRANSLATION_OPTIONS,
+        expect.objectContaining({ preserveLineBreaks: true, bilingualFormat: expect.any(Object) }),
       )
       const wrapper = expectTranslationWrapper(node, "bilingual")!
       const clones = [...wrapper.querySelectorAll("math")]
       expect(clones).toHaveLength(2)
-      expect(clones[0]?.getAttribute("alttext")).toBe("y")
-      expect(clones[1]?.getAttribute("alttext")).toBe("x")
-      expect(
-        clones.every(
-          (clone) => clone.classList.contains(INLINE_ATOM_CLASS) && !clone.hasAttribute("id"),
-        ),
-      ).toBe(true)
+      expect(clones[0]?.textContent).toBe("y")
+      expect(clones[1]?.textContent).toBe("x")
+      expect(clones.every((clone) => !clone.hasAttribute("id"))).toBe(true)
       expect(clones).not.toContain(sourceMath[0])
       expect(clones).not.toContain(sourceMath[1])
       expect(wrapper.textContent).toBe("设 y 大于 x。")
@@ -2660,14 +2671,14 @@ describe("translate", () => {
       await removeOrShowPageTranslation("bilingual", true)
 
       expect(translateTextForPage).toHaveBeenCalledWith(
-        "Let {{0}} be the mean.",
+        "Let ZXQATOM0QXZ be the mean.",
         "plain",
-        DEFAULT_PAGE_TRANSLATION_OPTIONS,
+        expect.objectContaining({ preserveLineBreaks: true, bilingualFormat: expect.any(Object) }),
       )
       expect(node.querySelector(`.${CONTENT_WRAPPER_CLASS}`)).toBeNull()
     })
 
-    it("appends a formula whose placeholder the provider dropped", async () => {
+    it("fails after one protected recovery when a native formula is missing", async () => {
       vi.mocked(translateTextForPage).mockResolvedValue("设为均值。")
       render(<p data-testid="test-node" />)
       const node = screen.getByTestId("test-node")
@@ -2676,13 +2687,13 @@ describe("translate", () => {
       await removeOrShowPageTranslation("bilingual", true)
 
       const wrapper = expectTranslationWrapper(node, "bilingual")!
-      expect(wrapper.querySelectorAll("math")).toHaveLength(1)
-      expect(wrapper.textContent).toBe("设为均值。 x")
+      expect(wrapper.querySelectorAll("math")).toHaveLength(0)
+      expect(translateTextForPage).toHaveBeenCalledTimes(2)
     })
 
     it("keeps a newline-preserving container with a formula on the whole-run path", async () => {
       vi.mocked(translateTextForPage).mockImplementation(async (text) =>
-        text.includes("{{0}}") ? "第一句 {{0}}。\n\n第二句。" : MOCK_TRANSLATION,
+        text.includes("ZXQATOM0QXZ") ? "第一句 ZXQATOM0QXZ。\n\n第二句。" : MOCK_TRANSLATION,
       )
       render(<div data-testid="test-node" style={{ whiteSpace: "pre-wrap" }} />)
       const node = screen.getByTestId("test-node")
@@ -2692,9 +2703,12 @@ describe("translate", () => {
 
       expect(vi.mocked(translateTextForPage).mock.calls).toEqual([
         [
-          "First {{0}} sentence.\n\nSecond sentence.",
+          "First ZXQATOM0QXZ sentence.\n\nSecond sentence.",
           "plain",
-          PRESERVE_LINE_BREAKS_TRANSLATION_OPTIONS,
+          expect.objectContaining({
+            preserveLineBreaks: true,
+            bilingualFormat: expect.any(Object),
+          }),
         ],
       ])
       const wrapper = expectTranslationWrapper(node, "bilingual")!
@@ -2727,7 +2741,7 @@ describe("translate", () => {
       const [request, textFormat] = vi.mocked(translateTextForPage).mock.calls[0]!
       expect(textFormat).toBe("html")
       expect(request).toContain("<math")
-      expect(request).not.toContain("{{0}}")
+      expect(request).not.toContain("ZXQATOM0QXZ")
     })
   })
 
@@ -2738,11 +2752,19 @@ describe("translate", () => {
       `<span id="${id}" class="ltx_text ltx_lst_emph ltx_lst_language_Python ltx_lstlisting ltx_font_typewriter" style="--ltx-fg-color:#FF00A6;">${text}</span>`
 
     beforeEach(() => {
-      vi.mocked(translateTextForPage).mockReset().mockResolvedValue(MOCK_TRANSLATION)
+      vi.mocked(translateTextForPage)
+        .mockReset()
+        .mockImplementation(async (text, _format, options) =>
+          options?.bilingualFormat ? `${MOCK_TRANSLATION} ${text}` : MOCK_TRANSLATION,
+        )
     })
 
     afterEach(() => {
-      vi.mocked(translateTextForPage).mockReset().mockResolvedValue(MOCK_TRANSLATION)
+      vi.mocked(translateTextForPage)
+        .mockReset()
+        .mockImplementation(async (text, _format, options) =>
+          options?.bilingualFormat ? `${MOCK_TRANSLATION} ${text}` : MOCK_TRANSLATION,
+        )
     })
 
     it.each(["bilingual", "translationOnly"] as const)(
@@ -2954,11 +2976,19 @@ describe("translate", () => {
 
   describe("translationOnly HTML attribute placeholders", () => {
     beforeEach(() => {
-      vi.mocked(translateTextForPage).mockReset().mockResolvedValue(MOCK_TRANSLATION)
+      vi.mocked(translateTextForPage)
+        .mockReset()
+        .mockImplementation(async (text, _format, options) =>
+          options?.bilingualFormat ? `${MOCK_TRANSLATION} ${text}` : MOCK_TRANSLATION,
+        )
     })
 
     afterEach(() => {
-      vi.mocked(translateTextForPage).mockReset().mockResolvedValue(MOCK_TRANSLATION)
+      vi.mocked(translateTextForPage)
+        .mockReset()
+        .mockImplementation(async (text, _format, options) =>
+          options?.bilingualFormat ? `${MOCK_TRANSLATION} ${text}` : MOCK_TRANSLATION,
+        )
     })
 
     it("keeps bilingual translation on the existing plain-text path", async () => {
@@ -3389,7 +3419,11 @@ describe("translate", () => {
 
       afterEach(() => {
         Reflect.deleteProperty(document, "contentType")
-        vi.mocked(translateTextForPage).mockReset().mockResolvedValue(MOCK_TRANSLATION)
+        vi.mocked(translateTextForPage)
+          .mockReset()
+          .mockImplementation(async (text, _format, options) =>
+            options?.bilingualFormat ? `${MOCK_TRANSLATION} ${text}` : MOCK_TRANSLATION,
+          )
       })
 
       it("bilingual mode: translates a text/plain page one blank-line paragraph at a time", async () => {

@@ -1,4 +1,5 @@
 import type { LangCodeISO6393 } from "@read-frog/definitions"
+import type { BilingualFormatManifest } from "./bilingual-format-protocol"
 import type { HostedAiTextStreamRoute } from "@/types/background-stream"
 import type { Config, InputTranslationLang } from "@/types/config/config"
 import type { TranslateProviderConfig } from "@/types/config/provider"
@@ -91,6 +92,7 @@ async function translateTextUsingPageConfig(
   text: string,
   options: {
     extraHashTags?: string[]
+    bilingualFormat?: BilingualFormatManifest
     webPageContext?: {
       webTitle?: string | null
       webDescription?: string | null
@@ -145,10 +147,12 @@ async function translateTextUsingPageConfig(
     preserveLineBreaks: options.preserveLineBreaks,
     sessionId: options.sessionId,
     forceRetranslation: options.forceRetranslation,
+    bilingualFormat: options.bilingualFormat,
   })
 }
 
 export interface PageTranslationRequestOptions {
+  bilingualFormat?: BilingualFormatManifest
   preserveLineBreaks?: boolean
   forceRetranslation?: boolean
 }
@@ -182,6 +186,7 @@ export async function translateTextForPage(
     preserveLineBreaks: options?.preserveLineBreaks,
     sessionId,
     forceRetranslation: options?.forceRetranslation,
+    bilingualFormat: options?.bilingualFormat,
   })
 }
 

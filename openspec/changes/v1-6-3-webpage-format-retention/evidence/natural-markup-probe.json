@@ -1,0 +1,125 @@
+{
+  "at": "2026-11-13T07:28:46.349Z",
+  "output": [
+    {
+      "method": "markdown",
+      "id": "F01",
+      "text": "A daemon on your Mac drives the phone in three forms: an ==MCP server== for your agent; an **HTTP API** for scripts (ZXQATOM2QXZ); and a **web page and native iOS app** for people.",
+      "result": "你Mac上的守护进程以三种形式驱动手机：==MCP服务器==用于代理;一个用于脚本的 **HTTP API**（ZXQATOM2QXZ）;以及一个**网页和原生iOS应用**。"
+    },
+    {
+      "method": "markdown",
+      "id": "F24",
+      "text": "A daemon on your Mac drives the phone and offers the same control in three forms: an ==MCP server== for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an **HTTP API** for agents and scripts (ZXQATOM2QXZ); and a **web page and native iOS app** for people.",
+      "result": "Mac上的守护进程驱动手机，提供三种形式的相同控制：==MCP服务器==用于Claude Code、Codex、Claude Desktop、Cursor及其他MCP客户端;一个用于代理和脚本的 HTTP API（ZXQATOM2QXZ）;以及一个**网页和原生iOS应用**。"
+    },
+    {
+      "method": "markdown",
+      "id": "LIVE-1",
+      "text": "==Let AI agents use your real iPhone.== With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app, **including the ones with no API**: Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+      "result": "==让AI代理使用你的真实iPhone。== 在Mac上安装iPhone时，Claude Code、Codex或任何MCP客户端都能将手机屏幕读取为文本，在任何应用中点击、输入和滑动，**包括那些没有API的应用**：健康、银行、聊天应用或你正在测试的应用。你可以随时观看直播，并把手机拿回去。"
+    },
+    {
+      "method": "markdown",
+      "id": "REORDER",
+      "text": "Before you close the window, please **save your changes** and confirm the ==delivery address==.",
+      "result": "关闭窗口前，请**保存您的更改**并确认==送达地址==。"
+    },
+    {
+      "method": "markdown",
+      "id": "REPEAT",
+      "text": "The **account** is active, but the ==account== must be verified. Run ZXQATOM2QXZ then calculate ZXQATOM3QXZ.",
+      "result": "**账户**是活跃的，但==账户=必须验证。运行ZXQATOM2QXZ然后计算ZXQATOM3QXZ。"
+    },
+    {
+      "method": "link",
+      "id": "F01",
+      "text": "A daemon on your Mac drives the phone in three forms: an [MCP server](https://rf.invalid/H0) for your agent; an [HTTP API](https://rf.invalid/B1) for scripts (ZXQATOM2QXZ); and a [web page and native iOS app](https://rf.invalid/B3) for people.",
+      "result": "你 Mac 上的守护进程以三种形式驱动手机：为你的代理提供 [MCP 服务器]（https://rf.invalid/H0）;一个用于脚本的[HTTP API]（https://rf.invalid/B1） （ZXQATOM2QXZ）;以及一个面向用户的[网页和原生iOS应用]（https://rf.invalid/B3）。"
+    },
+    {
+      "method": "link",
+      "id": "F24",
+      "text": "A daemon on your Mac drives the phone and offers the same control in three forms: an [MCP server](https://rf.invalid/H0) for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an [HTTP API](https://rf.invalid/B1) for agents and scripts (ZXQATOM2QXZ); and a [web page and native iOS app](https://rf.invalid/B3) for people.",
+      "result": "Mac上的守护进程驱动手机，提供三种形式的控制：[MCP服务器]（https://rf.invalid/H0）用于Claude Code、Codex、Claude Desktop、Cursor及其他MCP客户端;一个用于代理和脚本的[HTTP API]（ZXQATOM2QXZ https://rf.invalid/B1）;以及一个面向用户的[网页和原生iOS应用]（https://rf.invalid/B3）。"
+    },
+    {
+      "method": "link",
+      "id": "LIVE-1",
+      "text": "[Let AI agents use your real iPhone.](https://rf.invalid/H0) With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app, [including the ones with no API](https://rf.invalid/B1): Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+      "result": "[让AI代理使用你的真实iPhone。]（https://rf.invalid/H0）在Mac上安装iPhone时，Claude Code、Codex或任何MCP客户端会将手机屏幕读取为文本，点击、输入和滑动任何应用（包括没有API的应用）https://rf.invalid/B1：健康、银行、聊天应用或你正在测试的应用。你可以随时观看直播，并把手机拿回去。"
+    },
+    {
+      "method": "link",
+      "id": "REORDER",
+      "text": "Before you close the window, please [save your changes](https://rf.invalid/B0) and confirm the [delivery address](https://rf.invalid/H1).",
+      "result": "关闭窗口前，请[保存您的更改]（https://rf.invalid/B0）并确认[送达地址]（https://rf.invalid/H1）。"
+    },
+    {
+      "method": "link",
+      "id": "REPEAT",
+      "text": "The [account](https://rf.invalid/B0) is active, but the [account](https://rf.invalid/H1) must be verified. Run ZXQATOM2QXZ then calculate ZXQATOM3QXZ.",
+      "result": "[账户]（https://rf.invalid/B0）是活跃的，但[账户]（https://rf.invalid/H1）必须经过验证。运行ZXQATOM2QXZ然后计算ZXQATOM3QXZ。"
+    },
+    {
+      "method": "markdownId",
+      "id": "F01",
+      "text": "A daemon on your Mac drives the phone in three forms: an [MCP server](rfH0) for your agent; an [HTTP API](rfB1) for scripts (ZXQATOM2QXZ); and a [web page and native iOS app](rfB3) for people.",
+      "result": "你 Mac 上的守护进程以三种形式驱动手机：为你的代理提供 [MCP 服务器]（rfH0）;一个用于脚本的[HTTP API]（rfB1）（ZXQATOM2QXZ）;以及面向用户的[网页和原生iOS应用]（rfB3）。"
+    },
+    {
+      "method": "markdownId",
+      "id": "F24",
+      "text": "A daemon on your Mac drives the phone and offers the same control in three forms: an [MCP server](rfH0) for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an [HTTP API](rfB1) for agents and scripts (ZXQATOM2QXZ); and a [web page and native iOS app](rfB3) for people.",
+      "result": "Mac上的守护进程驱动手机，并以三种形式提供相同的控制：[MCP服务器]（rfH0）用于Claude Code、Codex、Claude Desktop、Cursor及其他MCP客户端;一个用于代理和脚本的[HTTP API]（rfB1）（ZXQATOM2QXZ）;以及面向用户的[网页和原生iOS应用]（rfB3）。"
+    },
+    {
+      "method": "markdownId",
+      "id": "LIVE-1",
+      "text": "[Let AI agents use your real iPhone.](rfH0) With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app, [including the ones with no API](rfB1): Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+      "result": "[让AI代理使用你的真实iPhone。]（rfH0）在您的Mac上安装iPhone时，Claude Code、Codex或任何MCP客户端会将手机屏幕读取为文本，在任何应用中（包括无API的应用）中点击、输入和滑动，包括健康、银行、聊天应用或您正在测试的应用。你可以随时观看直播，并把手机拿回去。"
+    },
+    {
+      "method": "markdownId",
+      "id": "REORDER",
+      "text": "Before you close the window, please [save your changes](rfB0) and confirm the [delivery address](rfH1).",
+      "result": "关闭窗口前，请[保存你的更改]（rfB0）并确认[送达地址]（rfH1）。"
+    },
+    {
+      "method": "markdownId",
+      "id": "REPEAT",
+      "text": "The [account](rfB0) is active, but the [account](rfH1) must be verified. Run ZXQATOM2QXZ then calculate ZXQATOM3QXZ.",
+      "result": "[账户]（rfB0）是活跃的，但必须验证[账户]（rfH1）。运行ZXQATOM2QXZ然后计算ZXQATOM3QXZ。"
+    },
+    {
+      "method": "quotes",
+      "id": "F01",
+      "text": "A daemon on your Mac drives the phone in three forms: an «H0»MCP server«/H0» for your agent; an «B1»HTTP API«/B1» for scripts (ZXQATOM2QXZ); and a «B3»web page and native iOS app«/B3» for people.",
+      "result": "你Mac上的守护进程以三种形式驱动手机：为你的代理提供«H0»MCP服务器«/H0»;用于脚本的«B1»HTTP API«/B1»（ZXQATOM2QXZ）;以及面向用户的“B3”网页和原生iOS应用“/B3”。"
+    },
+    {
+      "method": "quotes",
+      "id": "F24",
+      "text": "A daemon on your Mac drives the phone and offers the same control in three forms: an «H0»MCP server«/H0» for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an «B1»HTTP API«/B1» for agents and scripts (ZXQATOM2QXZ); and a «B3»web page and native iOS app«/B3» for people.",
+      "result": "Mac上的守护进程驱动手机，提供三种形式的控制：用于Claude Code、Codex、Claude桌面、光标及其他MCP客户端的“H0”MCP服务器/H0;用于代理和脚本的«B1»HTTP API«/B1»（ZXQATOM2QXZ）;以及面向用户的“B3”网页和原生iOS应用“/B3”。"
+    },
+    {
+      "method": "quotes",
+      "id": "LIVE-1",
+      "text": "«H0»Let AI agents use your real iPhone.«/H0» With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app, «B1»including the ones with no API«/B1»: Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+      "result": "“H0»让AI代理使用你的真实iPhone。”/H0» 在你的Mac上安装iPhone时，Claude Code、Codex或任何MCP客户端都会将手机屏幕读取为文本，在任何应用中点击、输入和滑动，包括那些没有API«/B1»的应用：健康、银行、聊天应用或你正在测试的应用。你可以随时观看直播，并把手机拿回去。"
+    },
+    {
+      "method": "quotes",
+      "id": "REORDER",
+      "text": "Before you close the window, please «B0»save your changes«/B0» and confirm the «H1»delivery address«/H1».",
+      "result": "关闭窗口前，请“B0”保存您的更改“/B0”并确认“H1”送达地址“/H1”。"
+    },
+    {
+      "method": "quotes",
+      "id": "REPEAT",
+      "text": "The «B0»account«/B0» is active, but the «H1»account«/H1» must be verified. Run ZXQATOM2QXZ then calculate ZXQATOM3QXZ.",
+      "result": "“B0”账户«/B0»是活跃的，但“H1»账户«/H1»必须验证。运行ZXQATOM2QXZ然后计算ZXQATOM3QXZ。"
+    }
+  ]
+}

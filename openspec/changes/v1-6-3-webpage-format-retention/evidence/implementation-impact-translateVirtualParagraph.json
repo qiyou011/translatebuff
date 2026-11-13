@@ -1,0 +1,88 @@
+{
+  "target": {
+    "id": "Function:src/utils/host/translate/core/translation-modes.ts:translateVirtualParagraph",
+    "name": "translateVirtualParagraph",
+    "type": "Function",
+    "filePath": "src/utils/host/translate/core/translation-modes.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 5,
+  "risk": "LOW",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 1,
+    "processes_affected": 0,
+    "modules_affected": 1
+  },
+  "byDepthCounts": {
+    "1": 1,
+    "2": 1,
+    "3": 3
+  },
+  "affected_processes": [],
+  "affected_modules": [
+    {
+      "name": "Dom",
+      "hits": 5,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/utils/host/translate/core/translation-modes.ts:translateVirtualParagraphs",
+        "name": "translateVirtualParagraphs",
+        "filePath": "src/utils/host/translate/core/translation-modes.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "Function:src/utils/host/translate/core/translation-modes.ts:translateNodesBilingualMode",
+        "name": "translateNodesBilingualMode",
+        "filePath": "src/utils/host/translate/core/translation-modes.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "3": [
+      {
+        "depth": 3,
+        "id": "Function:src/components/translation/error/retry-button.tsx:RetryButton.handleRetry@17:2",
+        "name": "handleRetry",
+        "filePath": "src/components/translation/error/retry-button.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/utils/host/translate/core/translation-modes.ts:translateNodes",
+        "name": "translateNodes",
+        "filePath": "src/utils/host/translate/core/translation-modes.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Method:src/entrypoints/host.content/translation-control/page-translation.ts:PageTranslationManager.retranslateChangedSource#3",
+        "name": "retranslateChangedSource",
+        "filePath": "src/entrypoints/host.content/translation-control/page-translation.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ]
+  }
+}

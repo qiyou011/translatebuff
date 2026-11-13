@@ -6,6 +6,9 @@
   "trailingComma": "all",
   "proseWrap": "preserve",
   "ignorePatterns": [
+    "openspec/changes/v1-6-3-webpage-format-retention/evidence/format-fixture.html",
+    "openspec/changes/v1-6-3-webpage-format-retention/evidence/original-site-20261113.html",
+    "openspec/changes/v1-6-3-webpage-format-retention/evidence/original-site-docs-20261113.css",
     "node_modules/**",
     ".wxt/**",
     ".output/**",

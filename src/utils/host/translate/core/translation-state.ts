@@ -23,6 +23,7 @@ interface VirtualParagraphWrapperPlacement {
 }
 
 export interface VirtualParagraphGroup {
+  isFormatCurrent?: () => boolean
   id: string
   walkId: string
   status: "active" | "disposing" | "disposed"
@@ -35,6 +36,7 @@ export interface VirtualParagraphGroup {
 }
 
 export interface BilingualTranslationState {
+  isFormatCurrent?: () => boolean
   layoutSource: HTMLElement
   sourceTextContent: string
   status: "active" | "disposed"
@@ -435,7 +437,8 @@ export function isBilingualTranslationStateCurrent(state: BilingualTranslationSt
   if (
     state.status !== "active" ||
     bilingualTranslationsBySource.get(state.layoutSource) !== state ||
-    !state.layoutSource.isConnected
+    !state.layoutSource.isConnected ||
+    state.isFormatCurrent?.() === false
   ) {
     return false
   }
@@ -553,7 +556,8 @@ export function isVirtualParagraphGroupCurrent(
   if (
     group.status !== "active" ||
     virtualParagraphGroupsBySource.get(group.layoutSource) !== group ||
-    !group.layoutSource.isConnected
+    !group.layoutSource.isConnected ||
+    group.isFormatCurrent?.() === false
   ) {
     return false
   }

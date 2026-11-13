@@ -1,0 +1,211 @@
+{
+  "target": {
+    "id": "Function:src/utils/host/translate/core/translation-request.ts:createPageTranslationRequest",
+    "name": "createPageTranslationRequest",
+    "type": "Function",
+    "filePath": "src/utils/host/translate/core/translation-request.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 11,
+  "risk": "LOW",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 2,
+    "processes_affected": 1,
+    "modules_affected": 2
+  },
+  "byDepthCounts": {
+    "1": 2,
+    "2": 6,
+    "3": 3
+  },
+  "affected_processes": [
+    {
+      "name": "handleMutationRecords",
+      "type": "Function",
+      "filePath": "src/entrypoints/host.content/translation-control/page-translation.ts",
+      "affected_process_count": 9,
+      "total_hits": 9,
+      "earliest_broken_step": 1
+    }
+  ],
+  "affected_modules": [
+    {
+      "name": "Dom",
+      "hits": 9,
+      "impact": "direct"
+    },
+    {
+      "name": "Translation-control",
+      "hits": 2,
+      "impact": "indirect"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/utils/host/translate/core/translation-modes.ts:translateNodesBilingualMode",
+        "name": "translateNodesBilingualMode",
+        "filePath": "src/utils/host/translate/core/translation-modes.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/utils/host/translate/core/translation-modes.ts:translateTranslationOnlyRun",
+        "name": "translateTranslationOnlyRun",
+        "filePath": "src/utils/host/translate/core/translation-modes.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "Function:src/components/translation/error/retry-button.tsx:RetryButton.handleRetry@17:2",
+        "name": "handleRetry",
+        "filePath": "src/components/translation/error/retry-button.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/utils/host/translate/core/translation-modes.ts:maybeTranslateVirtualUnitRuns",
+        "name": "maybeTranslateVirtualUnitRuns",
+        "filePath": "src/utils/host/translate/core/translation-modes.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/utils/host/translate/core/translation-modes.ts:translateNodeTranslationOnlyMode",
+        "name": "translateNodeTranslationOnlyMode",
+        "filePath": "src/utils/host/translate/core/translation-modes.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/utils/host/translate/core/translation-modes.ts:translateNodes",
+        "name": "translateNodes",
+        "filePath": "src/utils/host/translate/core/translation-modes.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/utils/host/translate/core/translation-modes.ts:translateNonMaterializableGiant",
+        "name": "translateNonMaterializableGiant",
+        "filePath": "src/utils/host/translate/core/translation-modes.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Method:src/entrypoints/host.content/translation-control/page-translation.ts:PageTranslationManager.retranslateChangedSource#3",
+        "name": "retranslateChangedSource",
+        "filePath": "src/entrypoints/host.content/translation-control/page-translation.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "3": [
+      {
+        "depth": 3,
+        "id": "Function:src/utils/host/translate/core/translation-walker.ts:translateWalkedElement",
+        "name": "translateWalkedElement",
+        "filePath": "src/utils/host/translate/core/translation-walker.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Method:src/entrypoints/host.content/translation-control/page-translation.ts:PageTranslationManager.handleMutationRecords#2",
+        "name": "handleMutationRecords",
+        "filePath": "src/entrypoints/host.content/translation-control/page-translation.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_10_handlemutationrecord",
+            "label": "HandleMutationRecords → UrlMatchesPattern",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_122_handlemutationrecord",
+            "label": "HandleMutationRecords → IsLatexmlTextBoxReflowRecord",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_74_handlemutationrecord",
+            "label": "HandleMutationRecords → IsHTMLElement",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_120_handlemutationrecord",
+            "label": "HandleMutationRecords → WasNodeRemovedByExtension",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_73_handlemutationrecord",
+            "label": "HandleMutationRecords → Cancel",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_123_handlemutationrecord",
+            "label": "HandleMutationRecords → WasCharacterDataChangeExtensionDriven",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_121_handlemutationrecord",
+            "label": "HandleMutationRecords → RemoveReactShadowHost",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_209_handlemutationrecord",
+            "label": "HandleMutationRecords → Error",
+            "processType": "intra_community",
+            "step": 1
+          },
+          {
+            "id": "proc_147_handlemutationrecord",
+            "label": "HandleMutationRecords → DeleteAction",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      },
+      {
+        "depth": 3,
+        "id": "Method:src/entrypoints/host.content/translation-control/page-translation.ts:PageTranslationManager.runScheduledRetranslate#2",
+        "name": "runScheduledRetranslate",
+        "filePath": "src/entrypoints/host.content/translation-control/page-translation.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ]
+  }
+}

@@ -9,7 +9,15 @@ import {
 import { requestMicrosoftTranslationBatch } from "@/utils/host/translate/api/microsoft"
 import { assertHtmlAttributeMarkerIntegrity } from "@/utils/host/translate/html-attribute-markers"
 import { normalizeTranslationOutput } from "@/utils/host/translate/translation-output-normalization"
+import { decodeBilingualFormat, encodeBilingualFormat } from "./bilingual-format-adapter"
+import { requestMicrosoftFormatBatch } from "./microsoft-format"
 import { PageProtocolError } from "./wire"
+
+function wireItem(data: PageTranslationData): PageTranslationData {
+  return data.bilingualFormat
+    ? { ...data, ...encodeBilingualFormat(data.text, data.bilingualFormat, data.provider.provider) }
+    : data
+}
 
 export function isPageMt(data: PageTranslationData): boolean {
   return (
@@ -19,10 +27,13 @@ export function isPageMt(data: PageTranslationData): boolean {
 }
 
 export function getMtItemBytes(data: PageTranslationData): number {
+  data = wireItem(data)
   const encoded =
     data.provider.provider === "google-translate"
       ? prepareGoogleTranslation(data.text, data).requestText
-      : escapeText(data.text)
+      : data.bilingualFormat
+        ? data.text
+        : escapeText(data.text)
   return new TextEncoder().encode(JSON.stringify(encoded)).length + 1
 }
 
@@ -37,19 +48,28 @@ export async function requestPageMt(
       : (ISO6393_TO_6391[first.langConfig.sourceCode] ?? "auto")
   const to = ISO6393_TO_6391[first.langConfig.targetCode]
   if (!to) throw new Error("Invalid target language code")
+  const wireItems = items.map(wireItem)
+  if (first.provider.provider === "microsoft-translate" && first.bilingualFormat) {
+    return requestMicrosoftFormatBatch(
+      items.map((item) => ({ text: item.text, manifest: item.bilingualFormat! })),
+      from,
+      to,
+      signal,
+    )
+  }
   if (first.provider.provider === "google-translate") {
     return requestGoogleTranslationBatch(
-      items.map((data) => prepareGoogleTranslation(data.text, data).requestText),
+      wireItems.map((data) => prepareGoogleTranslation(data.text, data).requestText),
       from,
       to,
       signal,
     )
   }
   return requestMicrosoftTranslationBatch(
-    items.map((data) => data.text),
+    wireItems.map((data) => data.text),
     from,
     to,
-    { textFormat: first.textFormat, signal },
+    { textFormat: wireItems[0]!.textFormat, signal },
   )
 }
 
@@ -66,9 +86,16 @@ export function decodePageMt(raw: unknown, items: PageTranslationData[]): (strin
     if (typeof text !== "string" || !text.trim()) return undefined
     try {
       if (google) {
-        const prepared = prepareGoogleTranslation(item.text, item)
+        const wire = wireItem(item)
+        const prepared = prepareGoogleTranslation(wire.text, wire)
         text = restoreGoogleTranslation(text, prepared.preservedLines, prepared.punctuationRuns)
       }
+      if (item.bilingualFormat)
+        return decodeBilingualFormat(
+          text as string,
+          item.bilingualFormat,
+          item.provider.provider,
+        ).trim()
       const normalized = normalizeTranslationOutput(item.provider, text as string).trim()
       if (!normalized) return undefined
       if (item.textFormat === "html") assertHtmlAttributeMarkerIntegrity(item.text, normalized)

@@ -8,6 +8,10 @@ import {
   MAX_BATCH_TIMEOUT_MS,
 } from "@/utils/constants/translate"
 import { Sha256Hex } from "@/utils/hash"
+import {
+  bilingualFormatError,
+  parseBilingualFormat,
+} from "@/utils/host/translate/bilingual-format-protocol"
 import { executeTranslate } from "@/utils/host/translate/execute-translate"
 import { prepareTranslationText } from "@/utils/host/translate/text-preparation"
 import { getTranslatePromptFromConfig } from "@/utils/prompts/translate"
@@ -39,6 +43,9 @@ export function getPageBatchKey(data: PageTranslationData): string {
       language: data.langConfig,
       context: data.context,
       format: data.textFormat ?? "plain",
+      bilingualFormat: data.bilingualFormat
+        ? [data.bilingualFormat.version, !!data.bilingualFormat.recovery]
+        : null,
       lines: !!data.preserveLineBreaks,
       scope: data.scope ?? null,
       feature: data.hostedFeature ?? "pageTranslation",
@@ -175,6 +182,10 @@ export function createPageTranslationQueues(config: PageQueueConfig) {
           return failure(error)
         }
         const value = decoded[index]
+        // Format damage gets exactly one recovery at the owning page request.
+        // Repeating the same damaged protocol here would multiply that budget.
+        if (value === undefined && data.bilingualFormat)
+          return failure(bilingualFormatError("provider response failed validation"))
         return value === undefined ? single(data) : { ok: true as const, value }
       }),
     )
@@ -210,6 +221,11 @@ export function createPageTranslationQueues(config: PageQueueConfig) {
       data.text = prepareTranslationText(data.text)
       live(data)
       if (!data.text) return ""
+      if (data.bilingualFormat) {
+        if (!isPageMt(data) || (data.hostedFeature && data.hostedFeature !== "pageTranslation"))
+          throw bilingualFormatError("unsupported queue scope")
+        parseBilingualFormat(data.text, data.bilingualFormat)
+      }
       // Unsupported MT formats fail before networking, not as an automatic retry.
       if (data.provider.provider === "microsoft-translate" && data.textFormat === "html")
         throw new Error("Microsoft translator does not support HTML fragments")

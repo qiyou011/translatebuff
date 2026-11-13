@@ -1,0 +1,66 @@
+{
+  "requestedUrl": "https://iphone-use.leeguoo.com/en/",
+  "finalUrl": "https://iphone-use.leeguoo.com/en/",
+  "capturedAt": "2026-11-13T06:37:26.434Z",
+  "status": 200,
+  "sha256": "644b4733ecba9969bb91f27105403c87c793ba9e42d880f3c526927ffc5af7e5",
+  "lede": "<p class=\"du-lede\">\n        <span class=\"mark\">Let AI agents use your real iPhone.</span> With iphone-use installed on your Mac, Claude Code, Codex\n        or any MCP client reads the phone's screen as text, taps, types and swipes in any app, <strong>including the\n        ones with no API</strong>: Health, banking, chat apps, or the app you are testing. You can watch it live and\n        take the phone back at any time.\n      </p>",
+  "samples": [
+    {
+      "id": "LIVE-1",
+      "selector": "p.du-lede",
+      "source": "<p class=\"du-lede\">\n        <span class=\"mark\">Let AI agents use your real iPhone.</span> With iphone-use installed on your Mac, Claude Code, Codex\n        or any MCP client reads the phone's screen as text, taps, types and swipes in any app, <strong>including the\n        ones with no API</strong>: Health, banking, chat apps, or the app you are testing. You can watch it live and\n        take the phone back at any time.\n      </p>",
+      "text": "Let AI agents use your real iPhone. With iphone-use installed on your Mac, Claude Code, Codex\n        or any MCP client reads the phone's screen as text, taps, types and swipes in any app, including the\n        ones with no API: Health, banking, chat apps, or the app you are testing. You can watch it live and\n        take the phone back at any time.",
+      "bold": 1,
+      "highlight": 1,
+      "code": 0
+    },
+    {
+      "id": "LIVE-2",
+      "selector": "h2",
+      "contains": "Connect your agent in three steps",
+      "source": "<h2>Connect your agent in three steps</h2>",
+      "text": "Connect your agent in three steps",
+      "acceptance": "标题层级、标题与正文实际字体及目标语缺字回退"
+    },
+    {
+      "id": "LIVE-3",
+      "selector": "pre",
+      "contains": "iphone-use doctor",
+      "source": "<pre><code><span class=\"du-prompt\">$</span> iphone-use doctor   <span class=\"du-cmt\"># what is missing, and how to fix it</span>\n<span class=\"du-prompt\">$</span> iphone-use try      <span class=\"du-cmt\"># a harmless check: open Settings, read the screen, go Home</span></code></pre>",
+      "text": "$ iphone-use doctor   # what is missing, and how to fix it\n$ iphone-use try      # a harmless check: open Settings, read the screen, go Home",
+      "acceptance": "代码块字符和换行逐字不变，原节点不替换"
+    },
+    {
+      "id": "LIVE-4",
+      "selector": "p",
+      "contains": "Scripts and other agents can call the HTTP API under",
+      "source": "<p>Claude Code, Codex, Cursor, Claude Desktop and any other MCP client, through the bundled MCP server. Scripts and other agents can call the HTTP API under <code>/agent/*</code>.</p>",
+      "text": "Claude Code, Codex, Cursor, Claude Desktop and any other MCP client, through the bundled MCP server. Scripts and other agents can call the HTTP API under /agent/*.",
+      "acceptance": "正文翻译完整，/agent/* 原样且仍在对应位置"
+    },
+    {
+      "id": "LIVE-5",
+      "selector": "a.du-nav-item[href=\"/en/install\"]",
+      "contains": "Install",
+      "source": "<a class=\"du-nav-item\" href=\"/en/install\"><span class=\"du-nav-ico\">📦</span><span class=\"du-nav-text\">Install</span></a>",
+      "text": "📦Install",
+      "acceptance": "原导航链接目标、节点身份及可点击性保留，不重复图标"
+    },
+    {
+      "id": "LIVE-6",
+      "selector": "button.du-copy-page",
+      "contains": "Copy page",
+      "source": "<button class=\"du-copy-page\" type=\"button\" aria-label=\"Copy page\">\n          <svg viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\"><rect x=\"5\" y=\"5\" width=\"9\" height=\"9\" rx=\"1.5\"></rect><path d=\"M11 5V3.5A1.5 1.5 0 009.5 2h-6A1.5 1.5 0 002 3.5v6A1.5 1.5 0 003.5 11H5\"></path></svg>\n          <span class=\"du-copy-page-label\">Copy page</span>\n        </button>",
+      "text": "\n          \n          Copy page\n        ",
+      "acceptance": "原按钮身份、事件与页面复制功能保留，不克隆按钮"
+    }
+  ],
+  "stylesheet": {
+    "url": "https://iphone-use.leeguoo.com/assets/docs/docs.css",
+    "capturedAt": "2026-11-13T06:47:03.377Z",
+    "status": 200,
+    "sha256": "e97c6874ac3e28aedbb25bed0ae4db477056d2912ba2f113e3c5c9baa8c0bbec",
+    "file": "original-site-docs-20261113.css"
+  }
+}

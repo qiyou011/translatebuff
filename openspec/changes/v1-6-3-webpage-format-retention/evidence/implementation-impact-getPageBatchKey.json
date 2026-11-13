@@ -1,0 +1,143 @@
+{
+  "target": {
+    "id": "Function:src/fork/page-translation/queues.ts:getPageBatchKey",
+    "name": "getPageBatchKey",
+    "type": "Function",
+    "filePath": "src/fork/page-translation/queues.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 10,
+  "risk": "HIGH",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 4,
+    "processes_affected": 0,
+    "modules_affected": 3
+  },
+  "byDepthCounts": {
+    "1": 4,
+    "2": 4,
+    "3": 2
+  },
+  "affected_processes": [],
+  "affected_modules": [
+    {
+      "name": "Background",
+      "hits": 4,
+      "impact": "direct"
+    },
+    {
+      "name": "Page-translation",
+      "hits": 3,
+      "impact": "indirect"
+    },
+    {
+      "name": "Request",
+      "hits": 2,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/fork/page-translation/queues.ts:createPageTranslationQueues",
+        "name": "createPageTranslationQueues",
+        "filePath": "src/fork/page-translation/queues.ts",
+        "relationType": "USES",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/fork/page-translation/queues.ts:createPageTranslationQueues.getDedupKey@187:4",
+        "name": "getDedupKey",
+        "filePath": "src/fork/page-translation/queues.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/fork/page-translation/queues.ts:createPageTranslationQueues.invoke@78:2",
+        "name": "invoke",
+        "filePath": "src/fork/page-translation/queues.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Method:src/utils/request/batch-queue.ts:BatchQueue.enqueue#1",
+        "name": "enqueue",
+        "filePath": "src/utils/request/batch-queue.ts",
+        "relationType": "CALLS",
+        "confidence": 0.7,
+        "processes": []
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "Function:openspec/changes/upstream-fixes-v1-6-1/evidence/alternative-acceptance.forktest.ts:queue",
+        "name": "queue",
+        "filePath": "openspec/changes/upstream-fixes-v1-6-1/evidence/alternative-acceptance.forktest.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/fork/page-translation/queues.ts:createPageTranslationQueues.executeBatch@154:2",
+        "name": "executeBatch",
+        "filePath": "src/fork/page-translation/queues.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/fork/page-translation/queues.ts:createPageTranslationQueues.single@140:2",
+        "name": "single",
+        "filePath": "src/fork/page-translation/queues.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Method:src/fork/page-translation/queues.ts:createPageTranslationQueues.enqueue@207:4#1",
+        "name": "enqueue",
+        "filePath": "src/fork/page-translation/queues.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "3": [
+      {
+        "depth": 3,
+        "id": "File:openspec/changes/upstream-fixes-v1-6-1/evidence/alternative-acceptance.forktest.ts",
+        "name": "alternative-acceptance.forktest.ts",
+        "filePath": "openspec/changes/upstream-fixes-v1-6-1/evidence/alternative-acceptance.forktest.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Method:src/utils/request/batch-queue.ts:BatchQueue.executeBatchWithRetry#4",
+        "name": "executeBatchWithRetry",
+        "filePath": "src/utils/request/batch-queue.ts",
+        "relationType": "CALLS",
+        "confidence": 0.7,
+        "processes": []
+      }
+    ]
+  }
+}

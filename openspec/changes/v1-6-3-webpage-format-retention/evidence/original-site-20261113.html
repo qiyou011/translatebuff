@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>iphone-use: let AI agents use your real iPhone (MCP)</title>
+  <meta name="description" content="Claude Code, Codex or any MCP client reads your iPhone&#x27;s screen as text and taps, types and swipes in any app, even ones with no API. Runs on your Mac." />
+  <meta name="theme-color" content="#fcfbf4" />
+  <meta name="author" content="Guo Li (leeguoo)" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+  <link rel="apple-touch-icon" href="/assets/icon-180.png" />
+  
+  
+  <!-- seo:fonts --><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Permanent+Marker&amp;family=JetBrains+Mono:wght@400;700&amp;display=swap" onload="this.onload=null;this.rel='stylesheet'" /><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Permanent+Marker&amp;family=JetBrains+Mono:wght@400;700&amp;display=swap" /></noscript><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&amp;display=swap&amp;text=%20%21%22%23%24%25%26%27%28%29%2A%2B%2C-.%2F0123456789%3A%3B%3C%3D%3E%3F%40ABCDEFGHIJKLMNOPQRSTUVWXYZ%5B%5C%5D%5E_%60abcdefghijklmnopqrstuvwxyz%7B%7C%7D~" onload="this.onload=null;this.rel='stylesheet'" /><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&amp;display=swap&amp;text=%20%21%22%23%24%25%26%27%28%29%2A%2B%2C-.%2F0123456789%3A%3B%3C%3D%3E%3F%40ABCDEFGHIJKLMNOPQRSTUVWXYZ%5B%5C%5D%5E_%60abcdefghijklmnopqrstuvwxyz%7B%7C%7D~" /></noscript><!-- /seo:fonts -->
+  <link rel="stylesheet" href="/assets/docs/docs.css" />
+  <!-- seo:head -->
+  <link rel="canonical" href="https://iphone-use.leeguoo.com/en/" />
+  <link rel="alternate" hreflang="zh-Hans" href="https://iphone-use.leeguoo.com/" />
+  <link rel="alternate" hreflang="en" href="https://iphone-use.leeguoo.com/en/" />
+  <link rel="alternate" hreflang="x-default" href="https://iphone-use.leeguoo.com/en/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="iphone-use" />
+  <meta property="og:title" content="iphone-use: let AI agents use your real iPhone (MCP)" />
+  <meta property="og:description" content="Claude Code, Codex or any MCP client reads your iPhone&#x27;s screen as text and taps, types and swipes in any app, even ones with no API. Runs on your Mac." />
+  <meta property="og:url" content="https://iphone-use.leeguoo.com/en/" />
+  <meta property="og:image" content="https://iphone-use.leeguoo.com/assets/og.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="iphone-use: let AI agents use your real iPhone" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:locale:alternate" content="zh_CN" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="iphone-use: let AI agents use your real iPhone (MCP)" />
+  <meta name="twitter:description" content="Claude Code, Codex or any MCP client reads your iPhone&#x27;s screen as text and taps, types and swipes in any app, even ones with no API. Runs on your Mac." />
+  <meta name="twitter:image" content="https://iphone-use.leeguoo.com/assets/og.png" />
+  <meta name="twitter:image:alt" content="iphone-use: let AI agents use your real iPhone" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","@id":"https://iphone-use.leeguoo.com/#software","name":"iphone-use","alternateName":"iphone-use by leeguoo","applicationCategory":"DeveloperApplication","applicationSubCategory":"iPhone automation for AI agents (MCP server, HTTP API, CLI)","operatingSystem":"macOS, iOS","description":"Claude Code, Codex or any MCP client reads your iPhone's screen as text and taps, types and swipes in any app, even ones with no API. Runs on your Mac.","url":"https://iphone-use.leeguoo.com/en/","inLanguage":"en","downloadUrl":"https://github.com/leeguooooo/iphone-use/releases","installUrl":"https://iphone-use.leeguoo.com/en/install","softwareVersion":"0.27.7","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"isAccessibleForFree":true,"license":"https://polyformproject.org/licenses/shield/1.0.0","image":"https://iphone-use.leeguoo.com/assets/og.png","screenshot":"https://iphone-use.leeguoo.com/assets/og.png","author":{"@id":"https://leeguoo.com/about#person"},"creator":{"@id":"https://leeguoo.com/about#person"},"codeRepository":"https://github.com/leeguooooo/iphone-use","sameAs":["https://github.com/leeguooooo/iphone-use","https://www.producthunt.com/products/iphone-use","https://glama.ai/mcp/servers/leeguooooo/iphone-use"]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","@id":"https://leeguoo.com/about#person","name":"郭立","alternateName":["Guo Li","Leo","leeguoo"],"url":"https://leeguoo.com/about","sameAs":["https://github.com/leeguooooo","https://blog.leeguoo.com","https://x.com/leeguooooo"]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","inLanguage":"en","url":"https://iphone-use.leeguoo.com/en/","mainEntity":[{"@type":"Question","name":"Does it need a jailbreak?","acceptedAnswer":{"@type":"Answer","text":"No. It needs a signed XCTest runner, and Developer Mode on iOS 16 or later, which the installer builds with your Xcode team."}},{"@type":"Question","name":"Which agents can use it?","acceptedAnswer":{"@type":"Answer","text":"Claude Code, Codex, Cursor, Claude Desktop and any other MCP client, through the bundled MCP server. Scripts and other agents can call the HTTP API under /agent/*."}},{"@type":"Question","name":"Does it need a Mac?","acceptedAnswer":{"@type":"Answer","text":"Yes. The daemon runs on a Mac with macOS 15 or later and Xcode. Other devices can reach its browser page and APIs, but the phone itself is hosted by the Mac."}},{"@type":"Question","name":"Is it free and open source?","acceptedAnswer":{"@type":"Answer","text":"It costs nothing to download and use. It is source-available under the PolyForm Shield 1.0.0 license, not an OSI-approved open-source license: non-competing use, modification and distribution are permitted, while using it to provide a competing product or service is not."}}]}</script>
+  <!-- /seo:head -->
+</head>
+<body data-page="overview" data-lang="en">
+
+  <div id="du-topbar" class="du-topbar"></div>
+
+  <div class="du-shell">
+
+    <nav id="du-sidebar" class="du-sidebar" aria-label="Documentation"><div class="du-nav-group"><div class="du-nav-label">Getting Started</div><a class="du-nav-item active" aria-current="page" href="/en/"><span class="du-nav-ico">🧭</span><span class="du-nav-text">Overview</span></a><a class="du-nav-item" href="/en/install"><span class="du-nav-ico">📦</span><span class="du-nav-text">Install</span></a><a class="du-nav-item" href="/en/compare"><span class="du-nav-ico">⚖️</span><span class="du-nav-text">vs Other Tools</span></a></div><div class="du-nav-group"><div class="du-nav-label">What Agents Can Do</div><a class="du-nav-item" href="/en/tasks"><span class="du-nav-ico">📱</span><span class="du-nav-text">Ask Your Agent</span></a><a class="du-nav-item" href="/en/flows"><span class="du-nav-ico">🔁</span><span class="du-nav-text">Flows &amp; Replay</span></a></div><div class="du-nav-group"><div class="du-nav-label">Connecting Agents</div><a class="du-nav-item" href="/en/phone-agent"><span class="du-nav-ico">🤖</span><span class="du-nav-text">Phone Drives Itself</span></a><a class="du-nav-item" href="/en/remote"><span class="du-nav-ico">📡</span><span class="du-nav-text">Remote Control</span></a><a class="du-nav-item" href="/en/connect"><span class="du-nav-ico">🔌</span><span class="du-nav-text">MCP, HTTP API &amp; Skill</span></a></div><div class="du-nav-group"><div class="du-nav-label">Under the Hood</div><a class="du-nav-item" href="/en/how-it-works"><span class="du-nav-ico">⚙️</span><span class="du-nav-text">How It Works</span></a></div><div class="du-nav-group"><div class="du-nav-label">Reference</div><a class="du-nav-item" href="/en/faq"><span class="du-nav-ico">❓</span><span class="du-nav-text">FAQ</span></a><a class="du-nav-item" href="/en/privacy"><span class="du-nav-ico">🔒</span><span class="du-nav-text">Privacy &amp; Security</span></a></div></nav>
+
+    <main class="du-main">
+
+      <p class="du-eyebrow">Getting Started</p>
+
+      <div class="du-title-row">
+        <h1>iphone-use</h1>
+        <button class="du-copy-page" type="button" aria-label="Copy page">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="5" width="9" height="9" rx="1.5"/><path d="M11 5V3.5A1.5 1.5 0 009.5 2h-6A1.5 1.5 0 002 3.5v6A1.5 1.5 0 003.5 11H5"/></svg>
+          <span class="du-copy-page-label">Copy page</span>
+        </button>
+      </div>
+
+      <span class="du-doodle" style="top:40px; right:8px; width:46px; height:46px;">
+        <svg viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M30 6 l6 16 17 1 -13 11 5 16 -15 -9 -15 9 5 -16 -13 -11 17 -1z"/>
+        </svg>
+      </span>
+
+      <p class="du-lede">
+        <span class="mark">Let AI agents use your real iPhone.</span> With iphone-use installed on your Mac, Claude Code, Codex
+        or any MCP client reads the phone's screen as text, taps, types and swipes in any app, <strong>including the
+        ones with no API</strong>: Health, banking, chat apps, or the app you are testing. You can watch it live and
+        take the phone back at any time.
+      </p>
+
+      <div class="du-code">
+        <div class="du-code-head">
+          <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+          <span class="du-code-name">bash · on the Mac the iPhone is plugged into</span>
+        </div>
+<pre><code><span class="du-prompt">$</span> curl -fsSL https://raw.githubusercontent.com/leeguooooo/iphone-use/main/install.sh | sh</code></pre>
+      </div>
+
+      <h2>Connect your agent in three steps</h2>
+      <ol class="du-steps">
+        <li>
+          <strong>Get the phone ready</strong>: a Mac with macOS 15 or later, Xcode and an Apple ID; an iPhone with iOS 15 or later; and a USB cable for the first setup. Enable Developer Mode on iOS 16 or later (Settings → Privacy &amp; Security → Developer Mode). A free account works on iOS 17 or later; the iOS 15/16 path on Xcode 26 or later needs a paid account’s App Store Connect API key: see <a href="/en/install">installation requirements</a>. Plug the iPhone in and unlock it.
+        </li>
+        <li>
+          <strong>Run the installer</strong> above. It sets the phone up, shows an agent opening Settings and reading it,
+          registers the MCP server with Claude Code and Codex (and with Cursor and Claude Desktop when they are
+          installed), and opens the control page in your browser with a one-time sign-in. If anything is missing, it
+          says what and how to fix it.
+          <div class="du-code">
+            <div class="du-code-head">
+              <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+              <span class="du-code-name">bash</span>
+            </div>
+<pre><code><span class="du-prompt">$</span> iphone-use doctor   <span class="du-cmt"># what is missing, and how to fix it</span>
+<span class="du-prompt">$</span> iphone-use try      <span class="du-cmt"># a harmless check: open Settings, read the screen, go Home</span></code></pre>
+          </div>
+        </li>
+        <li>
+          <strong>Ask your agent</strong>. Start a new chat in Claude Code or Codex and say what you want done on the
+          phone. You do not need to learn any commands; the bundled skill teaches the agent the loop. Other clients:
+          <a href="/en/connect">MCP, HTTP API and skill</a>.
+        </li>
+      </ol>
+      <p>Full requirements, plugins, upgrades and a second phone: <a href="/en/install">Install</a>.</p>
+
+      
+      <div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin:1.5em 0">
+        <a href="/en/remote" style="flex:1 1 220px;max-width:280px;text-align:center"><img src="/assets/shots/remote-control.png" alt="iPhone 17 remotely controlling another iPhone" loading="lazy" style="width:100%;height:auto;border-radius:18px;border:1px solid rgba(0,0,0,.12)" /><div style="font-size:.85em;opacity:.7;margin-top:.4em">iPhone 17 remotely controlling another iPhone</div></a>
+        <a href="/en/phone-agent" style="flex:1 1 220px;max-width:280px;text-align:center;align-self:flex-start"><img src="/assets/shots/phone-agent.png" alt="The phone drives itself: the on-phone assistant" loading="lazy" style="width:100%;height:auto;border-radius:18px;border:1px solid rgba(0,0,0,.12)" /><div style="font-size:.85em;opacity:.7;margin-top:.4em">The phone drives itself: the on-phone assistant</div></a>
+      </div>
+
+      <hr class="du-divider" />
+
+      <h2>Ask your agent</h2>
+      <p>Requests like these work in any app on the phone. The agent finds an app by its name, types long text in one step and reads a list across pages.</p>
+      <div class="du-cards">
+        <a class="du-card" href="/en/tasks">
+          <div class="du-card-title"><span class="du-card-ico">❤️</span> Read data out of apps</div>
+          <p class="du-say">Open Health and tell me how many steps I walked each day this week.</p>
+          <p>The screen comes back as text (an accessibility tree), not pixels.</p>
+        </a>
+        <a class="du-card" href="/en/tasks">
+          <div class="du-card-title"><span class="du-card-ico">💬</span> Chat apps with no API</div>
+          <p class="du-say">Find the newest message from Mom in WeChat and read it to me.</p>
+          <p>Taps, typing (CJK included) and swipes go through a small XCTest runner on the phone.</p>
+        </a>
+        <a class="du-card" href="/en/tasks">
+          <div class="du-card-title"><span class="du-card-ico">🏦</span> Long lists, to the end</div>
+          <p class="du-say">Collect every transaction on this bank statement page, all the way to the end.</p>
+          <p>It reads a list across pages and says whether it reached the end. Screens hidden from capture are driven by their elements.</p>
+        </a>
+        <a class="du-card" href="/en/tasks">
+          <div class="du-card-title"><span class="du-card-ico">📝</span> Long text in one step</div>
+          <p class="du-say">Write this 2,000-word draft into a new note in Notes.</p>
+          <p>Up to 20,000 characters in one typing step.</p>
+        </a>
+        <a class="du-card" href="/en/tasks">
+          <div class="du-card-title"><span class="du-card-ico">🧪</span> Test your own app</div>
+          <p class="du-say">Run my app's login test on the real phone and tell me which step fails.</p>
+          <p>Logs, crash reports, screen recording, installing a build and a simulated location are in the same tools.</p>
+        </a>
+        <a class="du-card" href="/en/flows">
+          <div class="du-card-title"><span class="du-card-ico">🔁</span> Do it once, replay it</div>
+          <p class="du-say">Save what you just did as a flow so it runs in one call next time.</p>
+          <p>A saved flow replays with no model and no tokens.</p>
+        </a>
+      </div>
+
+      <hr class="du-divider" />
+
+      <h2>Without the terminal</h2>
+      <div class="du-cards">
+        <a class="du-card" href="/en/install">
+          <div class="du-card-title"><span class="du-card-ico">🤖</span> Let the agent install it</div>
+          <p>Paste one prompt into Codex or Claude Code. It runs the installer and stops for the steps only you can do, such as tapping Trust on the iPhone. It never asks for a password or a code.</p>
+        </a>
+        <a class="du-card" href="/en/how-it-works">
+          <div class="du-card-title"><span class="du-card-ico">🖥️</span> Drive it from a browser</div>
+          <p>A live H.264 screen: click to tap, drag to swipe, type with your own input method. The Flow panel records what you do.</p>
+        </a>
+        <a class="du-card" href="/en/remote">
+          <div class="du-card-title"><span class="du-card-ico">📲</span> Remote control from another iPhone</div>
+          <p>Pair by scanning a code, then watch, tap, swipe and type. The controlled phone can run the control service itself with no computer, and a self-hosted Cloudflare relay lets you connect from cellular, anywhere.</p>
+        </a>
+        <a class="du-card" href="/en/phone-agent">
+          <div class="du-card-title"><span class="du-card-ico">🤖</span> The phone drives itself</div>
+          <p>Tell the assistant on the iPhone what to do, and it operates that same phone and reports back. No computer; the model uses your own key.</p>
+        </a>
+        <a class="du-card" href="/en/connect">
+          <div class="du-card-title"><span class="du-card-ico">👀</span> Watch the agent live</div>
+          <p>The phone's screen shows in the agent host's side panel where MCP Apps is supported, in a browser, or in the iOS app.</p>
+        </a>
+      </div>
+
+      <hr class="du-divider" />
+
+      <h2>Why a real iPhone</h2>
+      <div class="du-cards">
+        <a class="du-card" href="/en/tasks">
+          <div class="du-card-title"><span class="du-card-ico">🔓</span> Any app, no API needed</div>
+          <p>Health, banking and payment apps (even the ones that black out screen capture), chat apps, and your own app under test, with the sign-ins already on the phone.</p>
+        </a>
+        <a class="du-card" href="/en/how-it-works">
+          <div class="du-card-title"><span class="du-card-ico">📶</span> USB or Wi-Fi, old iPhones too</div>
+          <p>Set the phone up once with a cable; then drive it over Wi-Fi through an encrypted tunnel. iOS 15 and later, without updating the phone.</p>
+        </a>
+        <a class="du-card" href="/en/connect">
+          <div class="du-card-title"><span class="du-card-ico">✅</span> Honest results</div>
+          <p>Every action reports whether it was applied, not sent, or unknown, and whether a retry is safe. Taps on covered elements are refused.</p>
+        </a>
+        <a class="du-card" href="/en/privacy">
+          <div class="du-card-title"><span class="du-card-ico">🖱️</span> Nothing on the Mac moves</div>
+          <p>It never touches the Mac's screen, cursor or focus. Agents and people share the phone; one of them holds it at a time.</p>
+        </a>
+      </div>
+
+      <div class="du-callout note">
+        <div class="du-callout-title">ℹ️ Speed, as measured by the maintainer</div>
+        On the same iPhone 13 over USB (October 2026), the iphone-use runner read the screen in 0.08–0.135 s and a tap plus
+        waiting for the screen to settle took 1.0 s; <a href="https://github.com/callstack/agent-device">agent-device</a>
+        took about 0.7 s and 2.8–3.3 s. Through the full agent API, a tap by label that returns the settled change took about
+        1.9 s on an iPhone 17 Pro Max. These are the project's own measurements from its
+        <a href="https://github.com/leeguooooo/iphone-use#speed">README</a>, not an independent benchmark.
+      </div>
+
+      <hr class="du-divider" />
+
+      <h2>Under the hood</h2>
+      <p>One daemon per phone runs on your Mac. It reads the screen as an accessibility tree, sends taps and typing through its own XCTest runner on the iPhone, and checks that the screen has settled before it answers.</p>
+      <div class="du-cards">
+        <a class="du-card" href="/en/how-it-works">
+          <div class="du-card-title"><span class="du-card-ico">⚙️</span> How it works</div>
+          <p>The daemon, the XCTest runner, USB and the Wi-Fi tunnel, idle release and handing the phone back.</p>
+        </a>
+        <a class="du-card" href="/en/connect">
+          <div class="du-card-title"><span class="du-card-ico">🔌</span> MCP, HTTP API &amp; skill</div>
+          <p>Config for Claude Code, Codex, Cursor, VS Code, Claude Desktop, Gemini CLI, opencode and Windsurf.</p>
+        </a>
+        <a class="du-card" href="/en/flows">
+          <div class="du-card-title"><span class="du-card-ico">🔁</span> Flows &amp; replay</div>
+          <p>Reviewed per-app scripts, the official registry, test suites and scheduled runs.</p>
+        </a>
+        <a class="du-card" href="/en/compare">
+          <div class="du-card-title"><span class="du-card-ico">⚖️</span> vs other tools</div>
+          <p>mobile-mcp, agent-device, Appium and other iPhone MCP servers, from their own READMEs.</p>
+        </a>
+      </div>
+
+      <hr class="du-divider" />
+
+      <section class="du-faq">
+        <h2>Quick answers</h2>
+        <h3>Does it need a jailbreak?</h3>
+        <p>No. It needs a signed XCTest runner, and Developer Mode on iOS 16 or later, which the installer builds with your Xcode team.</p>
+        <h3>Which agents can use it?</h3>
+        <p>Claude Code, Codex, Cursor, Claude Desktop and any other MCP client, through the bundled MCP server. Scripts and other agents can call the HTTP API under <code>/agent/*</code>.</p>
+        <h3>Does it need a Mac?</h3>
+        <p>Yes. The daemon runs on a Mac with macOS 15 or later and Xcode. Other devices can reach its browser page and APIs, but the phone itself is hosted by the Mac.</p>
+        <h3>Is it free and open source?</h3>
+        <p>It costs nothing to download and use. It is source-available under the PolyForm Shield 1.0.0 license, not an OSI-approved open-source license: non-competing use, modification and distribution are permitted, while using it to provide a competing product or service is not.</p>
+      </section>
+      <p>More in the <a href="/en/faq">FAQ</a>.</p>
+
+      <hr class="du-divider" />
+
+      <h2>The *-use family</h2>
+      <p>Small tools that give an AI agent hands on one real thing you already use.</p>
+      <div class="du-cards cols-3">
+        <a class="du-card" href="https://chrome-use.leeguoo.com/en/">
+          <div class="du-card-title"><span class="du-card-ico">🌐</span> chrome-use</div>
+          <p>Lets agents use your real, signed-in Chrome.</p>
+        </a>
+        <a class="du-card" href="https://blog.leeguoo.com/en/posts/iphone-use/">
+          <div class="du-card-title"><span class="du-card-ico">✍️</span> The iphone-use guide</div>
+          <p>The author's blog post: install, MCP setup, flows and how it compares.</p>
+        </a>
+        <a class="du-card" href="https://blog.leeguoo.com/en/posts/iphone-use-video/">
+          <div class="du-card-title"><span class="du-card-ico">🎬</span> Demo video</div>
+          <p>iphone-use in one minute; every phone shot is a real recording.</p>
+        </a>
+      </div>
+
+      <h2>Paid setup and sponsorship</h2>
+      <p>Need help setting up a real iPhone, connecting your agent or creating an iOS app test flow? <a href="mailto:leeguoooo@gmail.com?subject=iphone-use%20paid%20setup%20inquiry">Email the maintainer</a> with your environment, the workflow and expected result, and where you are stuck; scope, acceptance criteria and a quote are agreed before work starts. Bug reports and feature requests stay welcome on <a href="https://github.com/leeguooooo/iphone-use/issues">GitHub issues</a>. Please keep credentials and private account data out of inquiries.</p>
+
+      <p class="du-small" style="margin-top:22px; color:var(--ink-faint); font-size:.85rem;">
+        PolyForm Shield 1.0.0 (source-available) · <a href="https://github.com/leeguooooo/iphone-use">GitHub</a>
+        · made by <a href="https://leeguoo.com/about/en" rel="author">Guo Li (郭立)</a> · <a href="/en/privacy">Privacy</a>
+      </p><!-- seo:footer --><nav class="du-static-footer" aria-label="Site"><a href="/en/">iphone-use</a> · <a href="/en/">Overview</a> · <a href="/en/install">Install</a> · <a href="/en/compare">vs Other Tools</a> · <a href="/en/tasks">Ask Your Agent</a> · <a href="/en/flows">Flows &amp; Replay</a> · <a href="/en/phone-agent">Phone Drives Itself</a> · <a href="/en/remote">Remote Control</a> · <a href="/en/connect">MCP, HTTP API &amp; Skill</a> · <a href="/en/how-it-works">How It Works</a> · <a href="/en/faq">FAQ</a> · <a href="/en/privacy">Privacy &amp; Security</a> · <a href="https://github.com/leeguooooo/iphone-use">GitHub</a> · <a href="https://github.com/leeguooooo/iphone-use/releases">Releases</a> · <a href="https://github.com/leeguooooo/iphone-use-flows">Official flow registry</a> · <a href="https://blog.leeguoo.com/en/posts/iphone-use/">Blog: iphone-use guide</a> · <a href="https://blog.leeguoo.com/en/posts/iphone-use-video/">Blog: demo video</a> · <a href="https://chrome-use.leeguoo.com/en/">chrome-use (agents in your Chrome)</a> · <a href="https://leeguoo.com/about/en">Author</a> · <a href="/" hreflang="zh-Hans">中文</a></nav><!-- /seo:footer -->
+    </main>
+
+    <aside id="du-toc"></aside>
+
+  </div>
+
+  <script src="/assets/docs/docs.js" defer></script>
+</body>
+</html>

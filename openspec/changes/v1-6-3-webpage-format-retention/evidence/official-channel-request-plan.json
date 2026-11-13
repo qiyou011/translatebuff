@@ -1,0 +1,394 @@
+{
+  "preparedAt": "2026-11-13T07:11:58.338Z",
+  "authorization": "preparation-only",
+  "networkExecuted": false,
+  "mode": "official-microsoft-html-feasibility",
+  "status": "awaiting-resource-budget-and-run-confirmation",
+  "limits": {
+    "requests": 3,
+    "itemsPerRequest": 9,
+    "translationItems": 27,
+    "retries": 0,
+    "estimatedCharactersPerRequest": 2518,
+    "estimatedTotalCharacters": 7554,
+    "hardCharacterCap": 20000,
+    "characterCounting": "UTF-16 units including HTML; planning upper bound, not billed usage"
+  },
+  "requiredConfigurationNames": [
+    "resource-or-approved-proxy",
+    "endpoint",
+    "authentication-via-controlled-environment",
+    "region-if-required",
+    "approved-character-budget",
+    "explicit-run-authorization"
+  ],
+  "items": [
+    {
+      "id": "F01",
+      "Text": "<div>A daemon on your Mac drives the phone in three forms: an <mark data-rf-attr=\"H0\">MCP server</mark> for your agent; an <b data-rf-attr=\"B1\">HTTP API</b> for scripts (<span class=\"notranslate\" data-rf-attr=\"ZXQATOM2QXZ\">ZXQATOM2QXZ</span>); and a <b data-rf-attr=\"B3\">web page and native iOS app</b> for people.</div>",
+      "markers": [
+        {
+          "id": "H0",
+          "tag": "mark",
+          "sourcePhrase": "MCP server"
+        },
+        {
+          "id": "B1",
+          "tag": "b",
+          "sourcePhrase": "HTTP API"
+        },
+        {
+          "id": "ZXQATOM2QXZ",
+          "tag": "span",
+          "sourcePhrase": "ZXQATOM2QXZ"
+        },
+        {
+          "id": "B3",
+          "tag": "b",
+          "sourcePhrase": "web page and native iOS app"
+        }
+      ],
+      "atoms": [
+        {
+          "token": "ZXQATOM2QXZ",
+          "originalHtml": "<code data-original=\"code\">/agent/*</code>"
+        }
+      ],
+      "origin": "prototype-public-source",
+      "semanticReview": "not-run"
+    },
+    {
+      "id": "F24",
+      "Text": "<div>A daemon on your Mac drives the phone and offers the same control in three forms: an <mark data-rf-attr=\"H0\">MCP server</mark> for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an <b data-rf-attr=\"B1\">HTTP API</b> for agents and scripts (<span class=\"notranslate\" data-rf-attr=\"ZXQATOM2QXZ\">ZXQATOM2QXZ</span>); and a <b data-rf-attr=\"B3\">web page and native iOS app</b> for people.</div>",
+      "markers": [
+        {
+          "id": "H0",
+          "tag": "mark",
+          "sourcePhrase": "MCP server"
+        },
+        {
+          "id": "B1",
+          "tag": "b",
+          "sourcePhrase": "HTTP API"
+        },
+        {
+          "id": "ZXQATOM2QXZ",
+          "tag": "span",
+          "sourcePhrase": "ZXQATOM2QXZ"
+        },
+        {
+          "id": "B3",
+          "tag": "b",
+          "sourcePhrase": "web page and native iOS app"
+        }
+      ],
+      "atoms": [
+        {
+          "token": "ZXQATOM2QXZ",
+          "originalHtml": "<code>/agent/*</code>"
+        }
+      ],
+      "origin": "prototype-public-source",
+      "semanticReview": "not-run"
+    },
+    {
+      "id": "LIVE-1",
+      "Text": "<div><mark data-rf-attr=\"H0\">Let AI agents use your real iPhone.</mark> With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app, <b data-rf-attr=\"B1\">including the ones with no API</b>: Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.</div>",
+      "markers": [
+        {
+          "id": "H0",
+          "tag": "mark",
+          "sourcePhrase": "Let AI agents use your real iPhone."
+        },
+        {
+          "id": "B1",
+          "tag": "b",
+          "sourcePhrase": "including the ones with no API"
+        }
+      ],
+      "atoms": [],
+      "origin": "captured-public-site",
+      "semanticReview": "not-run"
+    },
+    {
+      "id": "REORDER",
+      "Text": "<div>Before you close the window, please <b data-rf-attr=\"B0\">save your changes</b> and confirm the <mark data-rf-attr=\"H1\">delivery address</mark>.</div>",
+      "markers": [
+        {
+          "id": "B0",
+          "tag": "b",
+          "sourcePhrase": "save your changes"
+        },
+        {
+          "id": "H1",
+          "tag": "mark",
+          "sourcePhrase": "delivery address"
+        }
+      ],
+      "atoms": [],
+      "origin": "synthetic-public-test",
+      "semanticReview": "not-run"
+    },
+    {
+      "id": "REPEAT",
+      "Text": "<div>The <b data-rf-attr=\"B0\">account</b> is active, but the <mark data-rf-attr=\"H1\">account</mark> must be verified. Run <span class=\"notranslate\" data-rf-attr=\"ZXQATOM2QXZ\">ZXQATOM2QXZ</span> then calculate <span class=\"notranslate\" data-rf-attr=\"ZXQATOM3QXZ\">ZXQATOM3QXZ</span>.</div>",
+      "markers": [
+        {
+          "id": "B0",
+          "tag": "b",
+          "sourcePhrase": "account"
+        },
+        {
+          "id": "H1",
+          "tag": "mark",
+          "sourcePhrase": "account"
+        },
+        {
+          "id": "ZXQATOM2QXZ",
+          "tag": "span",
+          "sourcePhrase": "ZXQATOM2QXZ"
+        },
+        {
+          "id": "ZXQATOM3QXZ",
+          "tag": "span",
+          "sourcePhrase": "ZXQATOM3QXZ"
+        }
+      ],
+      "atoms": [
+        {
+          "token": "ZXQATOM2QXZ",
+          "originalHtml": "<code>npm run build</code>"
+        },
+        {
+          "token": "ZXQATOM3QXZ",
+          "originalHtml": "<math><msup><mi>x</mi><mn>2</mn></msup></math>"
+        }
+      ],
+      "origin": "synthetic-public-test",
+      "semanticReview": "not-run"
+    },
+    {
+      "id": "F06",
+      "Text": "<div>Send a request to <span class=\"notranslate\" data-rf-attr=\"ZXQATOM0QXZ\">ZXQATOM0QXZ</span> and set <span class=\"notranslate\" data-rf-attr=\"ZXQATOM1QXZ\">ZXQATOM1QXZ</span> before starting. The result field <span class=\"notranslate\" data-rf-attr=\"ZXQATOM2QXZ\">ZXQATOM2QXZ</span> must remain unchanged in your script.</div>",
+      "markers": [
+        {
+          "id": "ZXQATOM0QXZ",
+          "tag": "span",
+          "sourcePhrase": "ZXQATOM0QXZ"
+        },
+        {
+          "id": "ZXQATOM1QXZ",
+          "tag": "span",
+          "sourcePhrase": "ZXQATOM1QXZ"
+        },
+        {
+          "id": "ZXQATOM2QXZ",
+          "tag": "span",
+          "sourcePhrase": "ZXQATOM2QXZ"
+        }
+      ],
+      "atoms": [
+        {
+          "token": "ZXQATOM0QXZ",
+          "originalHtml": "<code data-original=\"path\">/agent/*</code>"
+        },
+        {
+          "token": "ZXQATOM1QXZ",
+          "originalHtml": "<code data-original=\"parameter\">IPHONE_USE_NO_CLIENT_SETUP=1</code>"
+        },
+        {
+          "token": "ZXQATOM2QXZ",
+          "originalHtml": "<code>retry_safe</code>"
+        }
+      ],
+      "origin": "prototype-public-source",
+      "semanticReview": "not-run"
+    },
+    {
+      "id": "F20",
+      "Text": "<div>The calculation uses <span class=\"notranslate\" data-rf-attr=\"ZXQATOM0QXZ\">ZXQATOM0QXZ</span> to describe the relationship. Keep the formula unchanged and translate this explanation.</div>",
+      "markers": [
+        {
+          "id": "ZXQATOM0QXZ",
+          "tag": "span",
+          "sourcePhrase": "ZXQATOM0QXZ"
+        }
+      ],
+      "atoms": [
+        {
+          "token": "ZXQATOM0QXZ",
+          "originalHtml": "<math data-original=\"math\"><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>=</mo><msup><mi>z</mi><mn>2</mn></msup></math>"
+        }
+      ],
+      "origin": "prototype-public-source",
+      "semanticReview": "not-run"
+    },
+    {
+      "id": "BREAKS",
+      "Text": "<div>First step: <b data-rf-attr=\"B0\">save the file</b>.<br><br>Second step: run <span class=\"notranslate\" data-rf-attr=\"ZXQATOM1QXZ\">ZXQATOM1QXZ</span>.<br>Last step: close the window.</div>",
+      "markers": [
+        {
+          "id": "B0",
+          "tag": "b",
+          "sourcePhrase": "save the file"
+        },
+        {
+          "id": "ZXQATOM1QXZ",
+          "tag": "span",
+          "sourcePhrase": "ZXQATOM1QXZ"
+        }
+      ],
+      "atoms": [
+        {
+          "token": "ZXQATOM1QXZ",
+          "originalHtml": "<code>npm test</code>"
+        }
+      ],
+      "origin": "synthetic-public-test",
+      "semanticReview": "not-run"
+    },
+    {
+      "id": "UNSEEN-REPEAT",
+      "Text": "<div>Please move the <b data-rf-attr=\"B0\">backup account</b> before you delete the <mark data-rf-attr=\"H1\">backup account</mark> from the old device. Keep <span class=\"notranslate\" data-rf-attr=\"ZXQATOM2QXZ\">ZXQATOM2QXZ</span> unchanged.</div>",
+      "markers": [
+        {
+          "id": "B0",
+          "tag": "b",
+          "sourcePhrase": "backup account"
+        },
+        {
+          "id": "H1",
+          "tag": "mark",
+          "sourcePhrase": "backup account"
+        },
+        {
+          "id": "ZXQATOM2QXZ",
+          "tag": "span",
+          "sourcePhrase": "ZXQATOM2QXZ"
+        }
+      ],
+      "atoms": [
+        {
+          "token": "ZXQATOM2QXZ",
+          "originalHtml": "<code>/agent/status</code>"
+        }
+      ],
+      "origin": "synthetic-public-test",
+      "semanticReview": "not-run"
+    }
+  ],
+  "requests": [
+    {
+      "method": "POST",
+      "url": "https://api.cognitive.microsofttranslator.com/translate?api-version=3.0&from=en&to=zh-Hans&textType=html",
+      "contentType": "application/json; charset=UTF-8",
+      "body": [
+        {
+          "Text": "<div>A daemon on your Mac drives the phone in three forms: an <mark data-rf-attr=\"H0\">MCP server</mark> for your agent; an <b data-rf-attr=\"B1\">HTTP API</b> for scripts (<span class=\"notranslate\" data-rf-attr=\"ZXQATOM2QXZ\">ZXQATOM2QXZ</span>); and a <b data-rf-attr=\"B3\">web page and native iOS app</b> for people.</div>"
+        },
+        {
+          "Text": "<div>A daemon on your Mac drives the phone and offers the same control in three forms: an <mark data-rf-attr=\"H0\">MCP server</mark> for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an <b data-rf-attr=\"B1\">HTTP API</b> for agents and scripts (<span class=\"notranslate\" data-rf-attr=\"ZXQATOM2QXZ\">ZXQATOM2QXZ</span>); and a <b data-rf-attr=\"B3\">web page and native iOS app</b> for people.</div>"
+        },
+        {
+          "Text": "<div><mark data-rf-attr=\"H0\">Let AI agents use your real iPhone.</mark> With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app, <b data-rf-attr=\"B1\">including the ones with no API</b>: Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.</div>"
+        },
+        {
+          "Text": "<div>Before you close the window, please <b data-rf-attr=\"B0\">save your changes</b> and confirm the <mark data-rf-attr=\"H1\">delivery address</mark>.</div>"
+        },
+        {
+          "Text": "<div>The <b data-rf-attr=\"B0\">account</b> is active, but the <mark data-rf-attr=\"H1\">account</mark> must be verified. Run <span class=\"notranslate\" data-rf-attr=\"ZXQATOM2QXZ\">ZXQATOM2QXZ</span> then calculate <span class=\"notranslate\" data-rf-attr=\"ZXQATOM3QXZ\">ZXQATOM3QXZ</span>.</div>"
+        },
+        {
+          "Text": "<div>Send a request to <span class=\"notranslate\" data-rf-attr=\"ZXQATOM0QXZ\">ZXQATOM0QXZ</span> and set <span class=\"notranslate\" data-rf-attr=\"ZXQATOM1QXZ\">ZXQATOM1QXZ</span> before starting. The result field <span class=\"notranslate\" data-rf-attr=\"ZXQATOM2QXZ\">ZXQATOM2QXZ</span> must remain unchanged in your script.</div>"
+        },
+        {
+          "Text": "<div>The calculation uses <span class=\"notranslate\" data-rf-attr=\"ZXQATOM0QXZ\">ZXQATOM0QXZ</span> to describe the relationship. Keep the formula unchanged and translate this explanation.</div>"
+        },
+        {
+          "Text": "<div>First step: <b data-rf-attr=\"B0\">save the file</b>.<br><br>Second step: run <span class=\"notranslate\" data-rf-attr=\"ZXQATOM1QXZ\">ZXQATOM1QXZ</span>.<br>Last step: close the window.</div>"
+        },
+        {
+          "Text": "<div>Please move the <b data-rf-attr=\"B0\">backup account</b> before you delete the <mark data-rf-attr=\"H1\">backup account</mark> from the old device. Keep <span class=\"notranslate\" data-rf-attr=\"ZXQATOM2QXZ\">ZXQATOM2QXZ</span> unchanged.</div>"
+        }
+      ]
+    },
+    {
+      "method": "POST",
+      "url": "https://api.cognitive.microsofttranslator.com/translate?api-version=3.0&from=en&to=ja&textType=html",
+      "contentType": "application/json; charset=UTF-8",
+      "body": [
+        {
+          "Text": "<div>A daemon on your Mac drives the phone in three forms: an <mark data-rf-attr=\"H0\">MCP server</mark> for your agent; an <b data-rf-attr=\"B1\">HTTP API</b> for scripts (<span class=\"notranslate\" data-rf-attr=\"ZXQATOM2QXZ\">ZXQATOM2QXZ</span>); and a <b data-rf-attr=\"B3\">web page and native iOS app</b> for people.</div>"
+        },
+        {
+          "Text": "<div>A daemon on your Mac drives the phone and offers the same control in three forms: an <mark data-rf-attr=\"H0\">MCP server</mark> for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an <b data-rf-attr=\"B1\">HTTP API</b> for agents and scripts (<span class=\"notranslate\" data-rf-attr=\"ZXQATOM2QXZ\">ZXQATOM2QXZ</span>); and a <b data-rf-attr=\"B3\">web page and native iOS app</b> for people.</div>"
+        },
+        {
+          "Text": "<div><mark data-rf-attr=\"H0\">Let AI agents use your real iPhone.</mark> With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app, <b data-rf-attr=\"B1\">including the ones with no API</b>: Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.</div>"
+        },
+        {
+          "Text": "<div>Before you close the window, please <b data-rf-attr=\"B0\">save your changes</b> and confirm the <mark data-rf-attr=\"H1\">delivery address</mark>.</div>"
+        },
+        {
+          "Text": "<div>The <b data-rf-attr=\"B0\">account</b> is active, but the <mark data-rf-attr=\"H1\">account</mark> must be verified. Run <span class=\"notranslate\" data-rf-attr=\"ZXQATOM2QXZ\">ZXQATOM2QXZ</span> then calculate <span class=\"notranslate\" data-rf-attr=\"ZXQATOM3QXZ\">ZXQATOM3QXZ</span>.</div>"
+        },
+        {
+          "Text": "<div>Send a request to <span class=\"notranslate\" data-rf-attr=\"ZXQATOM0QXZ\">ZXQATOM0QXZ</span> and set <span class=\"notranslate\" data-rf-attr=\"ZXQATOM1QXZ\">ZXQATOM1QXZ</span> before starting. The result field <span class=\"notranslate\" data-rf-attr=\"ZXQATOM2QXZ\">ZXQATOM2QXZ</span> must remain unchanged in your script.</div>"
+        },
+        {
+          "Text": "<div>The calculation uses <span class=\"notranslate\" data-rf-attr=\"ZXQATOM0QXZ\">ZXQATOM0QXZ</span> to describe the relationship. Keep the formula unchanged and translate this explanation.</div>"
+        },
+        {
+          "Text": "<div>First step: <b data-rf-attr=\"B0\">save the file</b>.<br><br>Second step: run <span class=\"notranslate\" data-rf-attr=\"ZXQATOM1QXZ\">ZXQATOM1QXZ</span>.<br>Last step: close the window.</div>"
+        },
+        {
+          "Text": "<div>Please move the <b data-rf-attr=\"B0\">backup account</b> before you delete the <mark data-rf-attr=\"H1\">backup account</mark> from the old device. Keep <span class=\"notranslate\" data-rf-attr=\"ZXQATOM2QXZ\">ZXQATOM2QXZ</span> unchanged.</div>"
+        }
+      ]
+    },
+    {
+      "method": "POST",
+      "url": "https://api.cognitive.microsofttranslator.com/translate?api-version=3.0&from=en&to=de&textType=html",
+      "contentType": "application/json; charset=UTF-8",
+      "body": [
+        {
+          "Text": "<div>A daemon on your Mac drives the phone in three forms: an <mark data-rf-attr=\"H0\">MCP server</mark> for your agent; an <b data-rf-attr=\"B1\">HTTP API</b> for scripts (<span class=\"notranslate\" data-rf-attr=\"ZXQATOM2QXZ\">ZXQATOM2QXZ</span>); and a <b data-rf-attr=\"B3\">web page and native iOS app</b> for people.</div>"
+        },
+        {
+          "Text": "<div>A daemon on your Mac drives the phone and offers the same control in three forms: an <mark data-rf-attr=\"H0\">MCP server</mark> for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an <b data-rf-attr=\"B1\">HTTP API</b> for agents and scripts (<span class=\"notranslate\" data-rf-attr=\"ZXQATOM2QXZ\">ZXQATOM2QXZ</span>); and a <b data-rf-attr=\"B3\">web page and native iOS app</b> for people.</div>"
+        },
+        {
+          "Text": "<div><mark data-rf-attr=\"H0\">Let AI agents use your real iPhone.</mark> With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app, <b data-rf-attr=\"B1\">including the ones with no API</b>: Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.</div>"
+        },
+        {
+          "Text": "<div>Before you close the window, please <b data-rf-attr=\"B0\">save your changes</b> and confirm the <mark data-rf-attr=\"H1\">delivery address</mark>.</div>"
+        },
+        {
+          "Text": "<div>The <b data-rf-attr=\"B0\">account</b> is active, but the <mark data-rf-attr=\"H1\">account</mark> must be verified. Run <span class=\"notranslate\" data-rf-attr=\"ZXQATOM2QXZ\">ZXQATOM2QXZ</span> then calculate <span class=\"notranslate\" data-rf-attr=\"ZXQATOM3QXZ\">ZXQATOM3QXZ</span>.</div>"
+        },
+        {
+          "Text": "<div>Send a request to <span class=\"notranslate\" data-rf-attr=\"ZXQATOM0QXZ\">ZXQATOM0QXZ</span> and set <span class=\"notranslate\" data-rf-attr=\"ZXQATOM1QXZ\">ZXQATOM1QXZ</span> before starting. The result field <span class=\"notranslate\" data-rf-attr=\"ZXQATOM2QXZ\">ZXQATOM2QXZ</span> must remain unchanged in your script.</div>"
+        },
+        {
+          "Text": "<div>The calculation uses <span class=\"notranslate\" data-rf-attr=\"ZXQATOM0QXZ\">ZXQATOM0QXZ</span> to describe the relationship. Keep the formula unchanged and translate this explanation.</div>"
+        },
+        {
+          "Text": "<div>First step: <b data-rf-attr=\"B0\">save the file</b>.<br><br>Second step: run <span class=\"notranslate\" data-rf-attr=\"ZXQATOM1QXZ\">ZXQATOM1QXZ</span>.<br>Last step: close the window.</div>"
+        },
+        {
+          "Text": "<div>Please move the <b data-rf-attr=\"B0\">backup account</b> before you delete the <mark data-rf-attr=\"H1\">backup account</mark> from the old device. Keep <span class=\"notranslate\" data-rf-attr=\"ZXQATOM2QXZ\">ZXQATOM2QXZ</span> unchanged.</div>"
+        }
+      ]
+    }
+  ],
+  "stopOn": [
+    "401",
+    "403",
+    "429",
+    "unaligned-result-count",
+    "missing-duplicate-unknown-marker",
+    "atom-corruption",
+    "P0-semantic-mismatch"
+  ],
+  "nextGate": "No production integration before independently verified P0 and architecture review"
+}

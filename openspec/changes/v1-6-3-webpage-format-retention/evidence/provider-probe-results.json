@@ -1,0 +1,430 @@
+{
+  "recordedAt": "2026-11-13T06:29:04.849Z",
+  "runtime": "v26.11.1",
+  "fixtures": [
+    {
+      "id": "F01",
+      "text": "A daemon on your Mac drives the phone in three forms: an ⟦H0⟧MCP server⟦/H0⟧ for your agent; an ⟦B1⟧HTTP API⟦/B1⟧ for scripts (ZXQATOM2QXZ); and a ⟦B3⟧web page and native iOS app⟦/B3⟧ for people.",
+      "atoms": [
+        {
+          "token": "ZXQATOM2QXZ",
+          "html": "<code data-original=\"code\">/agent/*</code>"
+        }
+      ]
+    },
+    {
+      "id": "F02",
+      "text": "Please ⟦B0⟧save your changes⟦/B0⟧ before closing the window. The ⟦B1⟧primary account⟦/B1⟧ is active, the temporary account expires tomorrow, and the backup account stays available. Read the important notice and ignore the outdated instruction.",
+      "atoms": []
+    },
+    {
+      "id": "F03",
+      "text": "The report says ⟦H0⟧payment is due next Friday⟦/H0⟧, while the ⟦H1⟧shipping address must be confirmed today⟦/H1⟧. Keep both reminders visible.",
+      "atoms": []
+    },
+    {
+      "id": "F04",
+      "text": "The failed payment needs attention, the ⟦B0⟧approved payment needs no action⟦/B0⟧, and the ⟦H1⟧pending payment will be checked tomorrow⟦/H1⟧.",
+      "atoms": []
+    },
+    {
+      "id": "F05",
+      "text": "You must ⟦B0⟧confirm the correct delivery date⟦/B0⟧ before paying. The next ⟦H1⟧three ⟦B2⟧business days⟦/B2⟧⟦/H1⟧ are reserved for review.",
+      "atoms": []
+    },
+    {
+      "id": "F06",
+      "text": "Send a request to ZXQATOM0QXZ and set ZXQATOM1QXZ before starting. The result field ZXQATOM2QXZ must remain unchanged in your script.",
+      "atoms": [
+        {
+          "token": "ZXQATOM0QXZ",
+          "html": "<code data-original=\"path\">/agent/*</code>"
+        },
+        {
+          "token": "ZXQATOM1QXZ",
+          "html": "<code data-original=\"parameter\">IPHONE_USE_NO_CLIENT_SETUP=1</code>"
+        },
+        {
+          "token": "ZXQATOM2QXZ",
+          "html": "<code>retry_safe</code>"
+        }
+      ]
+    },
+    {
+      "id": "F07",
+      "text": "The command ZXQATOM0QXZ prepares the project. Keep the variable CUSTOM_SESSION_ID unchanged, then read the translated instructions carefully.",
+      "atoms": [
+        {
+          "token": "ZXQATOM0QXZ",
+          "html": "<code data-original=\"no-code\" translate=\"no\">npm install example-package</code>"
+        }
+      ]
+    },
+    {
+      "id": "F08",
+      "text": "Press ZXQATOM0QXZ + ZXQATOM1QXZ to copy the result. The output ZXQATOM2QXZ confirms success. Calculate xZXQATOM3QXZ and check HZXQATOM4QXZO in the reference.",
+      "atoms": [
+        {
+          "token": "ZXQATOM0QXZ",
+          "html": "<kbd data-original=\"kbd\">Ctrl</kbd>"
+        },
+        {
+          "token": "ZXQATOM1QXZ",
+          "html": "<kbd>C</kbd>"
+        },
+        {
+          "token": "ZXQATOM2QXZ",
+          "html": "<samp>READY_OK</samp>"
+        },
+        {
+          "token": "ZXQATOM3QXZ",
+          "html": "<sup data-original=\"sup\">2</sup>"
+        },
+        {
+          "token": "ZXQATOM4QXZ",
+          "html": "<sub data-original=\"sub\">2</sub>"
+        }
+      ]
+    },
+    {
+      "id": "F09",
+      "text": "Read the complete installation guide before you continue. Visit the ⟦B0⟧account security page⟦/B0⟧ if your access has expired.",
+      "atoms": []
+    },
+    {
+      "id": "F10",
+      "text": "Connect your agent to the right deviceCheck the connection before sending a requestThe title and subtitle intentionally use different font families and sizes.",
+      "atoms": []
+    },
+    {
+      "id": "F11",
+      "text": "The first delivery arrives on Monday.The ⟦B0⟧second delivery⟦/B0⟧ arrives on Tuesday.The final delivery must not arrive before Friday.",
+      "atoms": []
+    },
+    {
+      "id": "F12",
+      "text": "Prepare the installation files. - Open the browser settings. - Confirm the correct extension folder. Restart the browser after installation.",
+      "atoms": []
+    },
+    {
+      "id": "F13",
+      "text": "This sentence is split across several lines in the HTML source, but it should remain one normal paragraph in the browser.",
+      "atoms": []
+    },
+    {
+      "id": "F14",
+      "text": "Download the ⟦B0⟧correct package⟦/B0⟧ for your operating system.Review these requirements:Keep the installation directory available.Do not delete your saved browser settings.Restart the browser and verify the result.",
+      "atoms": []
+    },
+    {
+      "id": "F15",
+      "text": "Delivery schedule for three customer groupsCustomer groupDelivery dateStatus⟦B0⟧Business customers⟦/B0⟧November 12⟦H1⟧Confirmation required⟦/H1⟧Personal customersNovember 15Ready for delivery",
+      "atoms": []
+    },
+    {
+      "id": "F16",
+      "text": "Please keep the original receipt until the refund has been confirmed.ZXQATOM0QXZ",
+      "atoms": [
+        {
+          "token": "ZXQATOM0QXZ",
+          "html": "<code data-original=\"code-block\">export API_MODE=\"safe\"\ncurl https://example.invalid/status\n# Do not translate the executable command above.</code>"
+        }
+      ]
+    },
+    {
+      "id": "F17",
+      "text": "Already done by the installer#The installer prepares the required files and checks the current browser version.",
+      "atoms": []
+    },
+    {
+      "id": "F18",
+      "text": "Only the visible delivery instructions should appear in the translated paragraph.Hidden account reset instruction.Invisible payment instruction.Transparent diagnostic message.This entire sentence must remain in English.This second sentence must also remain in English.",
+      "atoms": []
+    },
+    {
+      "id": "F19",
+      "text": "The installation guide is ready. The confirmation symbol should stay next to this sentence.",
+      "atoms": []
+    },
+    {
+      "id": "F20",
+      "text": "The calculation uses ZXQATOM0QXZ to describe the relationship. Keep the formula unchanged and translate this explanation.",
+      "atoms": [
+        {
+          "token": "ZXQATOM0QXZ",
+          "html": "<math data-original=\"math\"><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>=</mo><msup><mi>z</mi><mn>2</mn></msup></math>"
+        }
+      ]
+    },
+    {
+      "id": "F21",
+      "text": "---[INSTALLATION GUIDE]----- Chapter One ............ 12 ##### Important notice ##### +-------------------------+ The process is ready to start.",
+      "atoms": []
+    },
+    {
+      "id": "F22",
+      "text": "Confirm that you have read the installation instructions before continuing.Confirm the installation choice 点击次数：0 Keep the original browser configurationRead the additional installation requirementsThe browser must remain open while the extension folder is being selected.",
+      "atoms": []
+    },
+    {
+      "id": "F23",
+      "text": "The current installation guide is visible before the dynamic content is added.插入动态测试段落",
+      "atoms": []
+    },
+    {
+      "id": "F24",
+      "text": "A daemon on your Mac drives the phone and offers the same control in three forms: an ⟦H0⟧MCP server⟦/H0⟧ for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an ⟦B1⟧HTTP API⟦/B1⟧ for agents and scripts (ZXQATOM2QXZ); and a ⟦B3⟧web page and native iOS app⟦/B3⟧ for people.",
+      "atoms": [
+        {
+          "token": "ZXQATOM2QXZ",
+          "html": "<code>/agent/*</code>"
+        }
+      ]
+    },
+    {
+      "id": "F25",
+      "text": "Please ⟦B0⟧save your changes⟦/B0⟧ before closing the window. The temporary account expires tomorrow. The ⟦H1⟧shipping address must be confirmed today⟦/H1⟧, and the ⟦H2⟧delivery date is next Friday⟦/H2⟧.",
+      "atoms": []
+    },
+    {
+      "id": "F26",
+      "text": "A daemon on your Mac drives the phone and offers the same control in three forms: an ⟦H0⟧MCP server⟦/H0⟧ for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an ⟦B1⟧HTTP API⟦/B1⟧ for agents and scripts (ZXQATOM2QXZ); and a ⟦B3⟧web page and native iOS app⟦/B3⟧ for people.",
+      "atoms": [
+        {
+          "token": "ZXQATOM2QXZ",
+          "html": "<code>/agent/*</code>"
+        }
+      ]
+    },
+    {
+      "id": "F27",
+      "text": "The ⟦B0⟧installation files⟦/B0⟧ are ready. Keep the ⟦H1⟧original folder⟦/H1⟧ until the process is complete.",
+      "atoms": []
+    }
+  ],
+  "requests": [
+    {
+      "endpoint": "https://edge.microsoft.com/translate/translatetext",
+      "query": "?from=en&to=zh&isEnterpriseClient=false",
+      "body": "[\"Hello world.\",\"Please ⟦B0⟧save your changes⟦/B0⟧ before closing. Keep ⟦A0⟧ unchanged.\",\"Please [B0]save your changes[/B0] before closing. Keep {{0}} unchanged.\",\"The {#0}first account{/#0} is active; the {#1}second account{/#1} expires tomorrow. Keep {{0}} unchanged.\",\"Before the [[S0]]payment deadline[[E0]], confirm the [[S1]]shipping address[[E1]]. Keep {{0}} unchanged.\",\"The ⟦B0⟧new delivery date⟦/B0⟧ is ⟦H1⟧next Thursday⟦/H1⟧. Keep ⟦A0⟧ unchanged and calculate ⟦A1⟧.\",\"The [B0]account[/B0] is active, but the [H1]account[/H1] must be verified. Run {{0}} then calculate {{1}}.\",\"A daemon on your Mac drives the phone in three forms: an ⟦H0⟧MCP server⟦/H0⟧ for your agent; an ⟦B1⟧HTTP API⟦/B1⟧ for scripts (ZXQATOM2QXZ); and a ⟦B3⟧web page and native iOS app⟦/B3⟧ for people.\",\"Please ⟦B0⟧save your changes⟦/B0⟧ before closing the window. The ⟦B1⟧primary account⟦/B1⟧ is active, the temporary account expires tomorrow, and the backup account stays available. Read the important notice and ignore the outdated instruction.\",\"The report says ⟦H0⟧payment is due next Friday⟦/H0⟧, while the ⟦H1⟧shipping address must be confirmed today⟦/H1⟧. Keep both reminders visible.\",\"The failed payment needs attention, the ⟦B0⟧approved payment needs no action⟦/B0⟧, and the ⟦H1⟧pending payment will be checked tomorrow⟦/H1⟧.\",\"You must ⟦B0⟧confirm the correct delivery date⟦/B0⟧ before paying. The next ⟦H1⟧three ⟦B2⟧business days⟦/B2⟧⟦/H1⟧ are reserved for review.\",\"Send a request to ZXQATOM0QXZ and set ZXQATOM1QXZ before starting. The result field ZXQATOM2QXZ must remain unchanged in your script.\",\"The command ZXQATOM0QXZ prepares the project. Keep the variable CUSTOM_SESSION_ID unchanged, then read the translated instructions carefully.\",\"Press ZXQATOM0QXZ + ZXQATOM1QXZ to copy the result. The output ZXQATOM2QXZ confirms success. Calculate xZXQATOM3QXZ and check HZXQATOM4QXZO in the reference.\",\"Read the complete installation guide before you continue. Visit the ⟦B0⟧account security page⟦/B0⟧ if your access has expired.\",\"Connect your agent to the right deviceCheck the connection before sending a requestThe title and subtitle intentionally use different font families and sizes.\",\"The first delivery arrives on Monday.The ⟦B0⟧second delivery⟦/B0⟧ arrives on Tuesday.The final delivery must not arrive before Friday.\",\"Prepare the installation files. - Open the browser settings. - Confirm the correct extension folder. Restart the browser after installation.\",\"This sentence is split across several lines in the HTML source, but it should remain one normal paragraph in the browser.\",\"Download the ⟦B0⟧correct package⟦/B0⟧ for your operating system.Review these requirements:Keep the installation directory available.Do not delete your saved browser settings.Restart the browser and verify the result.\",\"Delivery schedule for three customer groupsCustomer groupDelivery dateStatus⟦B0⟧Business customers⟦/B0⟧November 12⟦H1⟧Confirmation required⟦/H1⟧Personal customersNovember 15Ready for delivery\",\"Please keep the original receipt until the refund has been confirmed.ZXQATOM0QXZ\",\"Already done by the installer#The installer prepares the required files and checks the current browser version.\",\"Only the visible delivery instructions should appear in the translated paragraph.Hidden account reset instruction.Invisible payment instruction.Transparent diagnostic message.This entire sentence must remain in English.This second sentence must also remain in English.\",\"The installation guide is ready. The confirmation symbol should stay next to this sentence.\",\"The calculation uses ZXQATOM0QXZ to describe the relationship. Keep the formula unchanged and translate this explanation.\",\"---[INSTALLATION GUIDE]----- Chapter One ............ 12 ##### Important notice ##### +-------------------------+ The process is ready to start.\",\"Confirm that you have read the installation instructions before continuing.Confirm the installation choice 点击次数：0 Keep the original browser configurationRead the additional installation requirementsThe browser must remain open while the extension folder is being selected.\",\"The current installation guide is visible before the dynamic content is added.插入动态测试段落\",\"A daemon on your Mac drives the phone and offers the same control in three forms: an ⟦H0⟧MCP server⟦/H0⟧ for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an ⟦B1⟧HTTP API⟦/B1⟧ for agents and scripts (ZXQATOM2QXZ); and a ⟦B3⟧web page and native iOS app⟦/B3⟧ for people.\",\"Please ⟦B0⟧save your changes⟦/B0⟧ before closing the window. The temporary account expires tomorrow. The ⟦H1⟧shipping address must be confirmed today⟦/H1⟧, and the ⟦H2⟧delivery date is next Friday⟦/H2⟧.\",\"A daemon on your Mac drives the phone and offers the same control in three forms: an ⟦H0⟧MCP server⟦/H0⟧ for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an ⟦B1⟧HTTP API⟦/B1⟧ for agents and scripts (ZXQATOM2QXZ); and a ⟦B3⟧web page and native iOS app⟦/B3⟧ for people.\",\"The ⟦B0⟧installation files⟦/B0⟧ are ready. Keep the ⟦H1⟧original folder⟦/H1⟧ until the process is complete.\",\"A daemon on your Mac drives the phone in three forms: an ⟦H0⟧MCP server⟦/H0⟧ for your agent; an ⟦B1⟧HTTP API⟦/B1⟧ for scripts ({{2}}); and a ⟦B3⟧web page and native iOS app⟦/B3⟧ for people.\",\"A daemon on your Mac drives the phone in three forms: an {#H0}MCP server{#/H0} for your agent; an {#B1}HTTP API{#/B1} for scripts ({{2}}); and a {#B3}web page and native iOS app{#/B3} for people.\",\"A daemon on your Mac drives the phone in three forms: an ⟦H0⟧MCP server⟦/H0⟧ for your agent; an ⟦B1⟧HTTP API⟦/B1⟧ for scripts (⟦A2⟧); and a ⟦B3⟧web page and native iOS app⟦/B3⟧ for people.\"]",
+      "status": 200
+    },
+    {
+      "endpoint": "https://translate-pa.googleapis.com/v1/translateHtml",
+      "query": "",
+      "body": "[[[\"Please <b>save your changes</b> before closing. Keep <span translate=\\\"no\\\">/agent/*</span> unchanged.\",\"The <b>account</b> is active, but the <mark>account</mark> must be verified. Run <span translate=\\\"no\\\">{{0}}</span>.\"],\"en\",\"zh\"],\"wt_lib\"]",
+      "status": 200
+    }
+  ],
+  "records": [
+    {
+      "provider": "microsoft-translate",
+      "texts": [
+        "Hello world.",
+        "Please ⟦B0⟧save your changes⟦/B0⟧ before closing. Keep ⟦A0⟧ unchanged.",
+        "Please [B0]save your changes[/B0] before closing. Keep {{0}} unchanged.",
+        "The {#0}first account{/#0} is active; the {#1}second account{/#1} expires tomorrow. Keep {{0}} unchanged.",
+        "Before the [[S0]]payment deadline[[E0]], confirm the [[S1]]shipping address[[E1]]. Keep {{0}} unchanged.",
+        "The ⟦B0⟧new delivery date⟦/B0⟧ is ⟦H1⟧next Thursday⟦/H1⟧. Keep ⟦A0⟧ unchanged and calculate ⟦A1⟧.",
+        "The [B0]account[/B0] is active, but the [H1]account[/H1] must be verified. Run {{0}} then calculate {{1}}.",
+        "A daemon on your Mac drives the phone in three forms: an ⟦H0⟧MCP server⟦/H0⟧ for your agent; an ⟦B1⟧HTTP API⟦/B1⟧ for scripts (ZXQATOM2QXZ); and a ⟦B3⟧web page and native iOS app⟦/B3⟧ for people.",
+        "Please ⟦B0⟧save your changes⟦/B0⟧ before closing the window. The ⟦B1⟧primary account⟦/B1⟧ is active, the temporary account expires tomorrow, and the backup account stays available. Read the important notice and ignore the outdated instruction.",
+        "The report says ⟦H0⟧payment is due next Friday⟦/H0⟧, while the ⟦H1⟧shipping address must be confirmed today⟦/H1⟧. Keep both reminders visible.",
+        "The failed payment needs attention, the ⟦B0⟧approved payment needs no action⟦/B0⟧, and the ⟦H1⟧pending payment will be checked tomorrow⟦/H1⟧.",
+        "You must ⟦B0⟧confirm the correct delivery date⟦/B0⟧ before paying. The next ⟦H1⟧three ⟦B2⟧business days⟦/B2⟧⟦/H1⟧ are reserved for review.",
+        "Send a request to ZXQATOM0QXZ and set ZXQATOM1QXZ before starting. The result field ZXQATOM2QXZ must remain unchanged in your script.",
+        "The command ZXQATOM0QXZ prepares the project. Keep the variable CUSTOM_SESSION_ID unchanged, then read the translated instructions carefully.",
+        "Press ZXQATOM0QXZ + ZXQATOM1QXZ to copy the result. The output ZXQATOM2QXZ confirms success. Calculate xZXQATOM3QXZ and check HZXQATOM4QXZO in the reference.",
+        "Read the complete installation guide before you continue. Visit the ⟦B0⟧account security page⟦/B0⟧ if your access has expired.",
+        "Connect your agent to the right deviceCheck the connection before sending a requestThe title and subtitle intentionally use different font families and sizes.",
+        "The first delivery arrives on Monday.The ⟦B0⟧second delivery⟦/B0⟧ arrives on Tuesday.The final delivery must not arrive before Friday.",
+        "Prepare the installation files. - Open the browser settings. - Confirm the correct extension folder. Restart the browser after installation.",
+        "This sentence is split across several lines in the HTML source, but it should remain one normal paragraph in the browser.",
+        "Download the ⟦B0⟧correct package⟦/B0⟧ for your operating system.Review these requirements:Keep the installation directory available.Do not delete your saved browser settings.Restart the browser and verify the result.",
+        "Delivery schedule for three customer groupsCustomer groupDelivery dateStatus⟦B0⟧Business customers⟦/B0⟧November 12⟦H1⟧Confirmation required⟦/H1⟧Personal customersNovember 15Ready for delivery",
+        "Please keep the original receipt until the refund has been confirmed.ZXQATOM0QXZ",
+        "Already done by the installer#The installer prepares the required files and checks the current browser version.",
+        "Only the visible delivery instructions should appear in the translated paragraph.Hidden account reset instruction.Invisible payment instruction.Transparent diagnostic message.This entire sentence must remain in English.This second sentence must also remain in English.",
+        "The installation guide is ready. The confirmation symbol should stay next to this sentence.",
+        "The calculation uses ZXQATOM0QXZ to describe the relationship. Keep the formula unchanged and translate this explanation.",
+        "---[INSTALLATION GUIDE]----- Chapter One ............ 12 ##### Important notice ##### +-------------------------+ The process is ready to start.",
+        "Confirm that you have read the installation instructions before continuing.Confirm the installation choice 点击次数：0 Keep the original browser configurationRead the additional installation requirementsThe browser must remain open while the extension folder is being selected.",
+        "The current installation guide is visible before the dynamic content is added.插入动态测试段落",
+        "A daemon on your Mac drives the phone and offers the same control in three forms: an ⟦H0⟧MCP server⟦/H0⟧ for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an ⟦B1⟧HTTP API⟦/B1⟧ for agents and scripts (ZXQATOM2QXZ); and a ⟦B3⟧web page and native iOS app⟦/B3⟧ for people.",
+        "Please ⟦B0⟧save your changes⟦/B0⟧ before closing the window. The temporary account expires tomorrow. The ⟦H1⟧shipping address must be confirmed today⟦/H1⟧, and the ⟦H2⟧delivery date is next Friday⟦/H2⟧.",
+        "A daemon on your Mac drives the phone and offers the same control in three forms: an ⟦H0⟧MCP server⟦/H0⟧ for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an ⟦B1⟧HTTP API⟦/B1⟧ for agents and scripts (ZXQATOM2QXZ); and a ⟦B3⟧web page and native iOS app⟦/B3⟧ for people.",
+        "The ⟦B0⟧installation files⟦/B0⟧ are ready. Keep the ⟦H1⟧original folder⟦/H1⟧ until the process is complete.",
+        "A daemon on your Mac drives the phone in three forms: an ⟦H0⟧MCP server⟦/H0⟧ for your agent; an ⟦B1⟧HTTP API⟦/B1⟧ for scripts ({{2}}); and a ⟦B3⟧web page and native iOS app⟦/B3⟧ for people.",
+        "A daemon on your Mac drives the phone in three forms: an {#H0}MCP server{#/H0} for your agent; an {#B1}HTTP API{#/B1} for scripts ({{2}}); and a {#B3}web page and native iOS app{#/B3} for people.",
+        "A daemon on your Mac drives the phone in three forms: an ⟦H0⟧MCP server⟦/H0⟧ for your agent; an ⟦B1⟧HTTP API⟦/B1⟧ for scripts (⟦A2⟧); and a ⟦B3⟧web page and native iOS app⟦/B3⟧ for people."
+      ],
+      "results": [
+        {
+          "status": "fulfilled",
+          "value": "你好，世界。"
+        },
+        {
+          "status": "fulfilled",
+          "value": "请在关闭前⟦B0⟧保存您的更改⟦/B0⟧。保持⟦A0⟧不变。"
+        },
+        {
+          "status": "fulfilled",
+          "value": "请在关闭前保存您的更改[/B0]。保持{{0}}不变。"
+        },
+        {
+          "status": "fulfilled",
+          "value": "{#0}第一个账户{/#0}是活跃的;{#1}第二个账户{/#1}明天到期。保持{{0}}不变。"
+        },
+        {
+          "status": "fulfilled",
+          "value": "在付款截止日期[[E0]]之前，确认[[S1]]的收货地址[[E1]]。保持{{0}}不变。"
+        },
+        {
+          "status": "fulfilled",
+          "value": "⟦B0⟧新交付日期⟦/B0⟧是⟦H1⟧下周四⟦/H1⟧。保持⟦A0⟧不变，计算⟦A1⟧。"
+        },
+        {
+          "status": "fulfilled",
+          "value": "[B0]账户[/B0]是活跃的，但[H1]账户[/H1]必须验证。运行{{0}}然后计算{{1}}。"
+        },
+        {
+          "status": "fulfilled",
+          "value": "Mac上的守护进程以三种形式驱动手机：代理的⟦H0⟧MCP服务器⟦/H0⟧;用于脚本的⟦B1⟧HTTP API⟦/B1⟧（ZXQATOM2QXZ）;以及面向用户的⟦B3⟧网页和原生iOS应用⟦/B3⟧。"
+        },
+        {
+          "status": "fulfilled",
+          "value": "请在关闭窗口前⟦B0⟧保存您的更改⟦/B0⟧。⟦B1⟧主账户⟦/B1⟧是活跃的，临时账户明天到期，备用账户依然可用。阅读重要通知，忽略过时的说明。"
+        },
+        {
+          "status": "fulfilled",
+          "value": "报告上写着⟦H0⟧付款截止时间为下周五⟦/H0⟧，而⟦H1⟧发货地址必须今天确认⟦/H1⟧。保持两个提醒都可见。"
+        },
+        {
+          "status": "fulfilled",
+          "value": "未付款需要处理，⟦B0⟧批准付款无需操作⟦/B0⟧，⟦H1⟧待处理付款将在明天检查⟦/H1⟧。"
+        },
+        {
+          "status": "fulfilled",
+          "value": "付款前必须⟦B0⟧确认正确的送达日期⟦/B0⟧。接下来的⟦H1⟧三个⟦B2⟧工作日⟦/B2⟧⟦/H1⟧将保留供复核。"
+        },
+        {
+          "status": "fulfilled",
+          "value": "在开始前向ZXQATOM0QXZ发送请求并设置ZXQATOM1QXZ。结果字段ZXQATOM2QXZ必须保持不变。"
+        },
+        {
+          "status": "fulfilled",
+          "value": "指挥ZXQATOM0QXZ准备项目。保持变量CUSTOM_SESSION_ID不变，然后仔细阅读翻译后的说明。"
+        },
+        {
+          "status": "fulfilled",
+          "value": "按ZXQATOM0QXZ+ZXQATOM1QXZ复制结果。输出ZXQATOM2QXZ证实了成功。计算 xZXQATOM3QXZ，并在参考文献中检查HZXQATOM4QXZO。"
+        },
+        {
+          "status": "fulfilled",
+          "value": "在继续之前，请阅读完整的安装指南。如果您的访问权限已过期，请访问⟦B0⟧账户安全页面⟦/B0⟧。"
+        },
+        {
+          "status": "fulfilled",
+          "value": "将您的经纪人连接到合适的设备发送请求前检查连接。标题和字幕有意使用不同的字体家族和大小。"
+        },
+        {
+          "status": "fulfilled",
+          "value": "第一批送货周一到达。⟦B0⟧第二批⟦/B0⟧周二到达。最后一批送货必须在周五之前到达。"
+        },
+        {
+          "status": "fulfilled",
+          "value": "准备安装文件。- 打开浏览器设置。- 确认正确的扩展文件夹。安装后重启浏览器。"
+        },
+        {
+          "status": "fulfilled",
+          "value": "这句话在HTML源代码中被拆分成几行，但在浏览器中应保持为一个正常段落。"
+        },
+        {
+          "status": "fulfilled",
+          "value": "下载适用于您的操作系统的⟦B0⟧正确包⟦/B0⟧。审查这些要求：保持安装目录的可用性。不要删除你保存的浏览器设置。重启浏览器并验证结果。"
+        },
+        {
+          "status": "fulfilled",
+          "value": "三类客户的送货计划客户组交付日期状态⟦B0⟧商务客户⟦/B0⟧11月12日⟦H1⟧需确认⟦/H1⟧个人客户11月15日 准备交付"
+        },
+        {
+          "status": "fulfilled",
+          "value": "请保留原始收据，直到退款确认。ZXQATOM0QXZ"
+        },
+        {
+          "status": "fulfilled",
+          "value": "安装程序已经完成了#安装程序准备所需文件并检查当前浏览器版本。"
+        },
+        {
+          "status": "fulfilled",
+          "value": "只有可见的送达说明应出现在翻译段落中。隐藏账户重置说明。隐形支付指令。透明的诊断信息。这整句话必须保持英文。第二句也必须保持英文。"
+        },
+        {
+          "status": "fulfilled",
+          "value": "安装指南已经准备好了。确认符号应留在这句话旁边。"
+        },
+        {
+          "status": "fulfilled",
+          "value": "计算中使用ZXQATOM0QXZ来描述这种关系。保持公式不变，并翻译这个解释。"
+        },
+        {
+          "status": "fulfilled",
+          "value": "---[安装指南]-----第一章............12 ##### 重要通知 ##### +-------------------------+ 流程准备开始。"
+        },
+        {
+          "status": "fulfilled",
+          "value": "在继续之前，请确认您已阅读安装说明。确认安装选择 点击次数：0 保持原始浏览器配置阅读额外安装要求 浏览器必须在选择扩展文件夹时保持开启状态。"
+        },
+        {
+          "status": "fulfilled",
+          "value": "当前安装指南在动态内容添加前可见。插入动态测试段落"
+        },
+        {
+          "status": "fulfilled",
+          "value": "Mac上的守护进程驱动手机，提供三种形式的相同控制：⟦H0⟧MCP服务器⟦/H0⟧用于Claude Code、Codex、Claude Desktop、Cursor及其他MCP客户端;一个⟦B1⟧HTTP API⟦/B1⟧用于代理和脚本（ZXQATOM2QXZ）;以及面向用户的⟦B3⟧网页和原生iOS应用⟦/B3⟧。"
+        },
+        {
+          "status": "fulfilled",
+          "value": "请在关闭窗口前⟦B0⟧保存您的更改⟦/B0⟧。临时账户明天到期。⟦H1⟧发货地址必须今天确认⟦/H1⟧，⟦H2⟧送达日期是下周五⟦/H2⟧。"
+        },
+        {
+          "status": "fulfilled",
+          "value": "Mac上的守护进程驱动手机，提供三种形式的相同控制：⟦H0⟧MCP服务器⟦/H0⟧用于Claude Code、Codex、Claude Desktop、Cursor及其他MCP客户端;一个⟦B1⟧HTTP API⟦/B1⟧用于代理和脚本（ZXQATOM2QXZ）;以及面向用户的⟦B3⟧网页和原生iOS应用⟦/B3⟧。"
+        },
+        {
+          "status": "fulfilled",
+          "value": "⟦B0⟧安装文件⟦/B0⟧已准备好。在流程完成之前，保留⟦H1⟧原始文件夹⟦/H1⟧。"
+        },
+        {
+          "status": "fulfilled",
+          "value": "Mac上的守护进程以三种形式驱动手机：代理的⟦H0⟧MCP服务器⟦/H0⟧;an ⟦B1⟧HTTP API⟦/B1⟧用于脚本 （{{2}}）;以及面向用户的⟦B3⟧网页和原生iOS应用⟦/B3⟧。"
+        },
+        {
+          "status": "fulfilled",
+          "value": "Mac上的守护进程以三种形式驱动手机：{#H0}MCP服务器{#/H0}用于代理;an {#B1}HTTP API{#/B1} 用于脚本 （{{2}}）;以及面向用户的{#B3}网页和原生iOS应用{#/B3}。"
+        },
+        {
+          "status": "fulfilled",
+          "value": "Mac上的守护进程以三种形式驱动手机：代理的⟦H0⟧MCP服务器⟦/H0⟧;用于脚本的⟦B1⟧HTTP API⟦/B1⟧;以及面向用户的⟦B3⟧网页和原生iOS应用⟦/B3⟧。"
+        }
+      ]
+    },
+    {
+      "provider": "google-translate",
+      "texts": [
+        "Please <b>save your changes</b> before closing. Keep <span translate=\"no\">/agent/*</span> unchanged.",
+        "The <b>account</b> is active, but the <mark>account</mark> must be verified. Run <span translate=\"no\">{{0}}</span>."
+      ],
+      "results": [
+        {
+          "status": "fulfilled",
+          "value": "请在关闭前<b>保存更改</b>。请勿更改<span translate=\"no\">/agent/*</span>目录。"
+        },
+        {
+          "status": "fulfilled",
+          "value": "<b>账户</b>处于激活状态，但是<mark>帐户</mark>必须进行验证。运行<span translate=\"no\">{{0}}</span> 。"
+        }
+      ]
+    }
+  ]
+}

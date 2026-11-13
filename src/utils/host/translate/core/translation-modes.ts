@@ -27,6 +27,7 @@ import {
 import { unwrapDeepestOnlyHTMLChild } from "../../dom/find"
 import { getOwnerDocument } from "../../dom/node"
 import { canSplitGiantWithoutStrandingOwnText } from "../../dom/traversal"
+import { extractBilingualFormat } from "../dom/bilingual-format"
 import { containsInlineAtomOutsideWrappers, renderInlineAtomTranslation } from "../dom/inline-atoms"
 import {
   buildVirtualParagraphPlan,
@@ -60,6 +61,7 @@ import {
 import { translateTextForPage } from "../translate-variants"
 import { setTranslationDirAndLang } from "../translation-attributes"
 import { createSpinnerInside, getTranslatedTextAndRemoveSpinner } from "../ui/spinner"
+import { createBilingualFormatRequest, usesBilingualFormat } from "./bilingual-format-request"
 import {
   createPageTranslationRequest,
   getDisplayTranslation,
@@ -129,6 +131,7 @@ async function translateVirtualParagraph(
   config: Config,
   forceBlockTranslation: boolean,
   forceRetranslation: boolean = false,
+  formatRequest?: ReturnType<typeof createBilingualFormatRequest>,
 ): Promise<void> {
   const { unit, wrapper } = entry
   const isCurrent = () => isVirtualParagraphGroupCurrent(group, wrapper)
@@ -136,25 +139,28 @@ async function translateVirtualParagraph(
 
   const realTranslatedText = await getTranslatedTextAndRemoveSpinner(
     nodes,
-    unit.text,
+    formatRequest?.sourceText ?? unit.text,
     spinner,
     wrapper,
     isCurrent,
     "plain",
     // Virtual units exist only inside newline-preserving containers, so their
     // interior single newlines (bullet lists) are always semantic.
-    () =>
-      translateTextForPage(unit.text, "plain", {
-        preserveLineBreaks: true,
-        forceRetranslation,
-      }),
+    formatRequest?.translate ??
+      (() =>
+        translateTextForPage(unit.text, "plain", {
+          preserveLineBreaks: true,
+          forceRetranslation,
+        })),
   )
   if (!isCurrent()) {
     disposeVirtualParagraphGroup(group)
     return
   }
 
-  const translatedText = getDisplayTranslation(unit.text, realTranslatedText)
+  const translatedText = formatRequest
+    ? formatRequest.getDisplayText(realTranslatedText)
+    : getDisplayTranslation(unit.text, realTranslatedText)
   if (translatedText === "") {
     dropVirtualParagraphWrapper(group, wrapper)
     return
@@ -168,7 +174,12 @@ async function translateVirtualParagraph(
 
   await insertTranslatedNodeIntoWrapper(
     wrapper,
-    { isCurrent, layoutSource: group.layoutSource, sourceText: unit.text },
+    {
+      isCurrent,
+      layoutSource: group.layoutSource,
+      sourceText: unit.text,
+      renderTranslatedContent: formatRequest?.renderTranslatedContent,
+    },
     translatedText,
     config.pageTranslation.translationNodeStyle,
     config,
@@ -187,7 +198,24 @@ async function translateVirtualParagraphs(
   forceBlockTranslation: boolean,
   forceRetranslation: boolean = false,
 ): Promise<void> {
+  const formatRequests = new Map<number, ReturnType<typeof createBilingualFormatRequest>>()
+  let isFormatCurrent: (() => boolean) | undefined
+  if (usesBilingualFormat(config)) {
+    const identity = extractBilingualFormat([layoutSource], true).manifest.identity
+    for (const unit of units) {
+      const source = extractBilingualFormat([layoutSource], true, unit.sourceFragments)
+      if (source.manifest.formats.length || source.manifest.atoms.length)
+        formatRequests.set(
+          unit.id,
+          createBilingualFormatRequest(source, { preserveLineBreaks: true, forceRetranslation }),
+        )
+    }
+    if (formatRequests.size)
+      isFormatCurrent = () =>
+        extractBilingualFormat([layoutSource], true).manifest.identity === identity
+  }
   const group: VirtualParagraphGroup = {
+    isFormatCurrent,
     id: `${walkId}:${virtualParagraphGroupSequence++}`,
     walkId,
     status: "active",
@@ -259,6 +287,7 @@ async function translateVirtualParagraphs(
         config,
         forceBlockTranslation,
         forceRetranslation,
+        formatRequests.get(entry.unit.id),
       ),
     ),
   )
@@ -440,6 +469,15 @@ export async function translateNodesBilingualMode(
     const atomExtraction = preparePageTranslationSource(transNodes, config)
     if (!atomExtraction) return
     const requestText = atomExtraction.requestText
+    const flowContainer =
+      isHTMLElement(layoutSource) && isBlockTransNode(layoutSource)
+        ? layoutSource
+        : layoutSource.parentElement
+    const preserveLineBreaks = flowContainer ? isNewlinePreservingElement(flowContainer) : false
+    const request = createPageTranslationRequest(atomExtraction, config, "plain", {
+      preserveLineBreaks,
+      forceRetranslation,
+    })
 
     let bilingualState: BilingualTranslationState | undefined
     if (isHTMLElement(layoutSource) && sourceTextBeforeFilter !== null) {
@@ -450,6 +488,7 @@ export async function translateNodesBilingualMode(
         walkId,
         wrapper: null,
         wrapperTextContent: null,
+        isFormatCurrent: request.isFormatCurrent,
       }
       registerBilingualTranslationState(bilingualState)
     }
@@ -528,7 +567,7 @@ export async function translateNodesBilingualMode(
     const isCurrent = () =>
       bilingualState
         ? isBilingualTranslationStateCurrent(bilingualState)
-        : translatedWrapperNode.isConnected
+        : translatedWrapperNode.isConnected && request.isFormatCurrent?.() !== false
 
     // Newline-preserving containers render single "\n" as real line breaks
     // (an X tweet whose lines have no blank-line separators is ONE unit here,
@@ -538,16 +577,6 @@ export async function translateNodesBilingualMode(
     // governs how the run's newlines render: for an inline layout source
     // (e.g. a GitHub inline <code> with its own break-spaces inside a normal
     // paragraph) the parent's value is authoritative, not the element's own.
-    const flowContainer =
-      isHTMLElement(layoutSource) && isBlockTransNode(layoutSource)
-        ? layoutSource
-        : layoutSource.parentElement
-    const preserveLineBreaks = flowContainer ? isNewlinePreservingElement(flowContainer) : false
-
-    const request = createPageTranslationRequest(atomExtraction, config, "plain", {
-      preserveLineBreaks,
-      forceRetranslation,
-    })
     const realTranslatedText = await getTranslatedTextAndRemoveSpinner(
       nodes,
       request.sourceText,
@@ -593,10 +622,11 @@ export async function translateNodesBilingualMode(
         // placeholder positions; the tokenized text also stands in for the
         // formulas' visible width in the short-inline layout heuristic.
         renderTranslatedContent:
-          atomExtraction.atoms.length > 0
+          request.renderTranslatedContent ??
+          (atomExtraction.atoms.length > 0
             ? (translatedNode, text) =>
                 renderInlineAtomTranslation(translatedNode, text, atomExtraction)
-            : undefined,
+            : undefined),
         sourceText: requestText,
       },
       translatedText,

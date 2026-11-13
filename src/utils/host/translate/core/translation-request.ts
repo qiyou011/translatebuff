@@ -6,6 +6,7 @@ import type { TransNode } from "@/types/dom"
 import { logger } from "@/utils/logger"
 import { resolvePageTranslationProvider } from "@/utils/providers/provider-ref"
 import { getOwnerDocument } from "../../dom/node"
+import { extractBilingualFormat } from "../dom/bilingual-format"
 import { extractInlineAtomText, getInlineAtomSelector } from "../dom/inline-atoms"
 import { protectTranslationHtmlAttributes } from "../dom/translation-html-attributes"
 import { shouldFilterSmallParagraph } from "../filter-small-paragraph"
@@ -14,12 +15,15 @@ import { shouldSkipAsTargetLanguage } from "../target-language-skip"
 import { normalizeForComparison } from "../text-preparation"
 import { translateTextForPage } from "../translate-variants"
 import { isNumericContent } from "../ui/translation-utils"
+import { createBilingualFormatRequest, usesBilingualFormat } from "./bilingual-format-request"
 
 interface PageTranslationSource extends InlineAtomExtraction {
   nodes: readonly TransNode[]
 }
 
 interface PageTranslationRequest {
+  renderTranslatedContent?: (target: HTMLElement, text: string) => void
+  isFormatCurrent?: () => boolean
   sourceText: string
   textFormat: TranslationTextFormat
   translate: () => Promise<string>
@@ -145,6 +149,29 @@ export function createPageTranslationRequest(
   options: PageTranslationRequestOptions,
 ): PageTranslationRequest {
   if (textFormat === "plain") {
+    // Keep the established renderer for complex third-party formula engines.
+    // Native MathML and the prototype's code/keyboard atoms use the strict path.
+    const hasCustomFormula = source.nodes.some(
+      (node) =>
+        node.nodeType === 1 &&
+        ((node as Element).matches(".katex, mjx-container, .MathJax") ||
+          (node as Element).querySelector(".katex, mjx-container, .MathJax")),
+    )
+    if (usesBilingualFormat(config) && !hasCustomFormula) {
+      const formatted = extractBilingualFormat(source.nodes, options.preserveLineBreaks)
+      if (
+        formatted.manifest.formats.length ||
+        formatted.manifest.atoms.length ||
+        (!options.preserveLineBreaks && source.requestText.includes("\n"))
+      ) {
+        return {
+          ...createBilingualFormatRequest(formatted, { ...options, preserveLineBreaks: true }),
+          isFormatCurrent: () =>
+            extractBilingualFormat(source.nodes, options.preserveLineBreaks).manifest.identity ===
+            formatted.manifest.identity,
+        }
+      }
+    }
     return {
       sourceText: source.requestText,
       textFormat,

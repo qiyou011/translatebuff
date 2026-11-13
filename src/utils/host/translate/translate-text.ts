@@ -24,6 +24,7 @@ import { resolveProviderRefForCapability } from "@/utils/providers/provider-regi
 import { TranslationCancelledError } from "@/utils/request/cancellation"
 import { Sha256Hex } from "../../hash"
 import { sendMessage } from "../../message"
+import { bilingualFormatError, parseBilingualFormat } from "./bilingual-format-protocol"
 import { hasGoogleArabicSource } from "./google-source"
 import { getInMemoryTranslation, storeInMemoryTranslation } from "./in-memory-translation-cache"
 import { prepareTranslationText } from "./text-preparation"
@@ -285,6 +286,7 @@ export async function resolvePageProviderRef(
 }
 
 export interface TranslateTextOptions {
+  bilingualFormat?: import("./bilingual-format-protocol").BilingualFormatManifest
   text: string
   langConfig: {
     sourceCode: LangCodeISO6393 | "auto"
@@ -335,6 +337,7 @@ export async function translateTextCore(options: TranslateTextOptions): Promise<
     forceRetranslation = false,
     glossaryEnabled = false,
     hostedFeature,
+    bilingualFormat,
   } = options
 
   const preparedText = prepareTranslationText(text)
@@ -351,6 +354,16 @@ export async function translateTextCore(options: TranslateTextOptions): Promise<
 
   const normalizedWebPageContext = normalizeWebPagePromptContext(webPageContext)
   const providerRef = await resolvePageProviderRef(providerConfig, sessionId, hostedFeature)
+  if (bilingualFormat) {
+    if (
+      hostedFeature !== "pageTranslation" ||
+      providerRef.kind === "system" ||
+      !["google-translate", "microsoft-translate"].includes(providerRef.config.provider)
+    ) {
+      throw bilingualFormatError("unsupported request scope")
+    }
+    parseBilingualFormat(preparedText, bilingualFormat)
+  }
 
   // Resolved ONCE, here, where `location.href` says which glossaries apply.
   // The same list feeds the cache hash and travels with the request, so the
@@ -401,6 +414,7 @@ export async function translateTextCore(options: TranslateTextOptions): Promise<
 
   // Add extra hash tags for cache differentiation
   hashComponents.push(...extraHashTags)
+  if (bilingualFormat) hashComponents.push("bilingual-format", JSON.stringify(bilingualFormat))
 
   // Final gate before dispatch: if the page-translation session that owned
   // this request has ended (or been replaced) while we were preparing it,
@@ -425,10 +439,15 @@ export async function translateTextCore(options: TranslateTextOptions): Promise<
   // page-translation runs (sessionId) so input/selection behavior is
   // untouched; forceRetranslation bypasses the read exactly like it bypasses
   // the background cache, but its fresh result still lands in the store below.
-  if (sessionId !== undefined && !forceRetranslation) {
+  if (sessionId !== undefined && !forceRetranslation && !bilingualFormat?.recovery) {
     const memoryHit = getInMemoryTranslation(hash)
     if (memoryHit !== undefined) {
-      return isNoTranslationSentinel(memoryHit) ? "" : memoryHit
+      try {
+        if (bilingualFormat) parseBilingualFormat(memoryHit, bilingualFormat)
+        return isNoTranslationSentinel(memoryHit) ? "" : memoryHit
+      } catch {
+        /* A stale or damaged entry must be fetched again. */
+      }
     }
   }
 
@@ -449,8 +468,10 @@ export async function translateTextCore(options: TranslateTextOptions): Promise<
     glossaryTerms,
     glossaryRevision,
     hostedFeature,
+    bilingualFormat,
   })
-  if (sessionId !== undefined) {
+  if (bilingualFormat) parseBilingualFormat(result, bilingualFormat)
+  if (sessionId !== undefined && !bilingualFormat?.recovery) {
     // Raw result, sentinel included, so a "no translation needed" verdict is
     // remembered too; the mapping below stays the single mapping point.
     if (canCacheInlineAtomTranslation(preparedText, result)) {

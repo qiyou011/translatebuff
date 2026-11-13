@@ -1,0 +1,1288 @@
+{
+  "at": "2026-11-13T07:00:01.873Z",
+  "elapsedMs": 4913,
+  "groups": [
+    {
+      "targetCode": "cmn",
+      "records": [
+        {
+          "id": "F01",
+          "source": "A daemon on your Mac drives the phone in three forms: an MCP server for your agent; an HTTP API for scripts (ZXQATOM2QXZ); and a web page and native iOS app for people.",
+          "baseline": {
+            "text": "你Mac上的守护进程以三种形式驱动手机：为你的代理提供MCP服务器;脚本的HTTP API（ZXQATOM2QXZ）;以及一个面向用户的网页和原生iOS应用。"
+          },
+          "probes": [
+            {
+              "key": "H0",
+              "views": [
+                {
+                  "encoding": "padded",
+                  "wire": "A daemon on your Mac drives the phone in three forms: an  ⟦H0⟧ MCP server ⟦/H0⟧  for your agent; an HTTP API for scripts (ZXQATOM2QXZ); and a web page and native iOS app for people.",
+                  "text": "Mac上的守护进程以三种形式驱动手机：为代理提供⟦H0⟧ MCP服务器⟦/H0⟧;脚本的HTTP API（ZXQATOM2QXZ）;以及一个面向用户的网页和原生iOS应用。",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "Mac上的守护进程以三种形式驱动手机：为代理提供 MCP服务器;脚本的HTTP API（ZXQATOM2QXZ）;以及一个面向用户的网页和原生iOS应用。",
+                  "rangeText": " MCP服务器",
+                  "matchesBaseline": false
+                },
+                {
+                  "encoding": "sentinel",
+                  "wire": "A daemon on your Mac drives the phone in three forms: an  ZXQSTARTH0QXZ MCP server ZXQENDH0QXZ  for your agent; an HTTP API for scripts (ZXQATOM2QXZ); and a web page and native iOS app for people.",
+                  "text": "你 Mac 上的守护进程以三种形式驱动手机：ZXQSTARTH0QXZ MCP 服务器，ZXQENDH0QXZ你的代理;脚本的HTTP API（ZXQATOM2QXZ）;以及一个面向用户的网页和原生iOS应用。",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "你 Mac 上的守护进程以三种形式驱动手机： MCP 服务器，你的代理;脚本的HTTP API（ZXQATOM2QXZ）;以及一个面向用户的网页和原生iOS应用。",
+                  "rangeText": " MCP 服务器，",
+                  "matchesBaseline": false
+                }
+              ],
+              "accepted": false
+            },
+            {
+              "key": "B1",
+              "views": [
+                {
+                  "encoding": "padded",
+                  "wire": "A daemon on your Mac drives the phone in three forms: an MCP server for your agent; an  ⟦B1⟧ HTTP API ⟦/B1⟧  for scripts (ZXQATOM2QXZ); and a web page and native iOS app for people.",
+                  "text": "你Mac上的守护进程以三种形式驱动手机：为你的代理提供MCP服务器;一个⟦B1⟧ HTTP API ⟦/B1⟧用于脚本（ZXQATOM2QXZ）;以及一个面向用户的网页和原生iOS应用。",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "你Mac上的守护进程以三种形式驱动手机：为你的代理提供MCP服务器;一个 HTTP API 用于脚本（ZXQATOM2QXZ）;以及一个面向用户的网页和原生iOS应用。",
+                  "rangeText": " HTTP API ",
+                  "matchesBaseline": false
+                },
+                {
+                  "encoding": "sentinel",
+                  "wire": "A daemon on your Mac drives the phone in three forms: an MCP server for your agent; an  ZXQSTARTB1QXZ HTTP API ZXQENDB1QXZ  for scripts (ZXQATOM2QXZ); and a web page and native iOS app for people.",
+                  "text": "你Mac上的守护进程以三种形式驱动手机：为你的代理提供MCP服务器;ZXQSTARTB1QXZ HTTP API ZXQENDB1QXZ用于脚本（ZXQATOM2QXZ）;以及一个面向用户的网页和原生iOS应用。",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "你Mac上的守护进程以三种形式驱动手机：为你的代理提供MCP服务器; HTTP API 用于脚本（ZXQATOM2QXZ）;以及一个面向用户的网页和原生iOS应用。",
+                  "rangeText": " HTTP API ",
+                  "matchesBaseline": false
+                }
+              ],
+              "accepted": false
+            },
+            {
+              "key": "B3",
+              "views": [
+                {
+                  "encoding": "padded",
+                  "wire": "A daemon on your Mac drives the phone in three forms: an MCP server for your agent; an HTTP API for scripts (ZXQATOM2QXZ); and a  ⟦B3⟧ web page and native iOS app ⟦/B3⟧  for people.",
+                  "text": "你Mac上的守护进程以三种形式驱动手机：为你的代理提供MCP服务器;脚本的HTTP API（ZXQATOM2QXZ）;以及面向用户的⟦B3⟧网页和原生iOS应用⟦/B3⟧。",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "你Mac上的守护进程以三种形式驱动手机：为你的代理提供MCP服务器;脚本的HTTP API（ZXQATOM2QXZ）;以及面向用户的网页和原生iOS应用。",
+                  "rangeText": "网页和原生iOS应用",
+                  "matchesBaseline": false
+                },
+                {
+                  "encoding": "sentinel",
+                  "wire": "A daemon on your Mac drives the phone in three forms: an MCP server for your agent; an HTTP API for scripts (ZXQATOM2QXZ); and a  ZXQSTARTB3QXZ web page and native iOS app ZXQENDB3QXZ  for people.",
+                  "text": "你Mac上的守护进程以三种形式驱动手机：为你的代理提供MCP服务器;脚本的HTTP API（ZXQATOM2QXZ）;以及面向用户的 ZXQSTARTB3QXZ 网页和原生 iOS 应用ZXQENDB3QXZ。",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "你Mac上的守护进程以三种形式驱动手机：为你的代理提供MCP服务器;脚本的HTTP API（ZXQATOM2QXZ）;以及面向用户的  网页和原生 iOS 应用。",
+                  "rangeText": " 网页和原生 iOS 应用",
+                  "matchesBaseline": false
+                }
+              ],
+              "accepted": false
+            }
+          ],
+          "normalCandidate": false
+        },
+        {
+          "id": "F24",
+          "source": "A daemon on your Mac drives the phone and offers the same control in three forms: an MCP server for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an HTTP API for agents and scripts (ZXQATOM2QXZ); and a web page and native iOS app for people.",
+          "baseline": {
+            "text": "Mac上的守护进程驱动手机，提供三种形式的控制：MCP服务器，用于Claude Code、Codex、Claude Desktop、Cursor及其他MCP客户端;用于代理和脚本的HTTP API（ZXQATOM2QXZ）;以及一个面向用户的网页和原生iOS应用。"
+          },
+          "probes": [
+            {
+              "key": "H0",
+              "views": [
+                {
+                  "encoding": "padded",
+                  "wire": "A daemon on your Mac drives the phone and offers the same control in three forms: an  ⟦H0⟧ MCP server ⟦/H0⟧  for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an HTTP API for agents and scripts (ZXQATOM2QXZ); and a web page and native iOS app for people.",
+                  "text": "你的Mac上的守护进程驱动手机，提供三种形式的相同控制：一个⟦H0⟧ MCP服务器⟦/H0⟧，用于Claude Code、Codex、Claude Desktop、Cursor及其他MCP客户端;用于代理和脚本的HTTP API（ZXQATOM2QXZ）;以及一个面向用户的网页和原生iOS应用。",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "你的Mac上的守护进程驱动手机，提供三种形式的相同控制：一个 MCP服务器，用于Claude Code、Codex、Claude Desktop、Cursor及其他MCP客户端;用于代理和脚本的HTTP API（ZXQATOM2QXZ）;以及一个面向用户的网页和原生iOS应用。",
+                  "rangeText": " MCP服务器",
+                  "matchesBaseline": false
+                },
+                {
+                  "encoding": "sentinel",
+                  "wire": "A daemon on your Mac drives the phone and offers the same control in three forms: an  ZXQSTARTH0QXZ MCP server ZXQENDH0QXZ  for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an HTTP API for agents and scripts (ZXQATOM2QXZ); and a web page and native iOS app for people.",
+                  "text": "Mac上的守护进程驱动手机，提供三种形式的控制：ZXQSTARTH0QXZ MCP服务器ZXQENDH0QXZ Claude Code、Codex、Claude Desktop、Cursor及其他MCP客户端;用于代理和脚本的HTTP API（ZXQATOM2QXZ）;以及一个面向用户的网页和原生iOS应用。",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "Mac上的守护进程驱动手机，提供三种形式的控制： MCP服务器 Claude Code、Codex、Claude Desktop、Cursor及其他MCP客户端;用于代理和脚本的HTTP API（ZXQATOM2QXZ）;以及一个面向用户的网页和原生iOS应用。",
+                  "rangeText": " MCP服务器",
+                  "matchesBaseline": false
+                }
+              ],
+              "accepted": false
+            },
+            {
+              "key": "B1",
+              "views": [
+                {
+                  "encoding": "padded",
+                  "wire": "A daemon on your Mac drives the phone and offers the same control in three forms: an MCP server for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an  ⟦B1⟧ HTTP API ⟦/B1⟧  for agents and scripts (ZXQATOM2QXZ); and a web page and native iOS app for people.",
+                  "text": "Mac上的守护进程驱动手机，提供三种形式的控制：MCP服务器，用于Claude Code、Codex、Claude Desktop、Cursor及其他MCP客户端;一个⟦B1⟧ HTTP API ⟦/B1⟧用于代理和脚本（ZXQATOM2QXZ）;以及一个面向用户的网页和原生iOS应用。",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "Mac上的守护进程驱动手机，提供三种形式的控制：MCP服务器，用于Claude Code、Codex、Claude Desktop、Cursor及其他MCP客户端;一个 HTTP API 用于代理和脚本（ZXQATOM2QXZ）;以及一个面向用户的网页和原生iOS应用。",
+                  "rangeText": " HTTP API ",
+                  "matchesBaseline": false
+                },
+                {
+                  "encoding": "sentinel",
+                  "wire": "A daemon on your Mac drives the phone and offers the same control in three forms: an MCP server for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an  ZXQSTARTB1QXZ HTTP API ZXQENDB1QXZ  for agents and scripts (ZXQATOM2QXZ); and a web page and native iOS app for people.",
+                  "text": "Mac上的守护进程驱动手机，提供三种形式的控制：MCP服务器，用于Claude Code、Codex、Claude Desktop、Cursor及其他MCP客户端;ZXQSTARTB1QXZ HTTP API ZXQENDB1QXZ用于代理和脚本（ZXQATOM2QXZ）;以及一个面向用户的网页和原生iOS应用。",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "Mac上的守护进程驱动手机，提供三种形式的控制：MCP服务器，用于Claude Code、Codex、Claude Desktop、Cursor及其他MCP客户端; HTTP API 用于代理和脚本（ZXQATOM2QXZ）;以及一个面向用户的网页和原生iOS应用。",
+                  "rangeText": " HTTP API ",
+                  "matchesBaseline": false
+                }
+              ],
+              "accepted": false
+            },
+            {
+              "key": "B3",
+              "views": [
+                {
+                  "encoding": "padded",
+                  "wire": "A daemon on your Mac drives the phone and offers the same control in three forms: an MCP server for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an HTTP API for agents and scripts (ZXQATOM2QXZ); and a  ⟦B3⟧ web page and native iOS app ⟦/B3⟧  for people.",
+                  "text": "Mac上的守护进程驱动手机，提供三种形式的控制：MCP服务器，用于Claude Code、Codex、Claude Desktop、Cursor及其他MCP客户端;用于代理和脚本的HTTP API（ZXQATOM2QXZ）;以及面向用户的⟦B3⟧网页和原生iOS应用⟦/B3⟧。",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "Mac上的守护进程驱动手机，提供三种形式的控制：MCP服务器，用于Claude Code、Codex、Claude Desktop、Cursor及其他MCP客户端;用于代理和脚本的HTTP API（ZXQATOM2QXZ）;以及面向用户的网页和原生iOS应用。",
+                  "rangeText": "网页和原生iOS应用",
+                  "matchesBaseline": false
+                },
+                {
+                  "encoding": "sentinel",
+                  "wire": "A daemon on your Mac drives the phone and offers the same control in three forms: an MCP server for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an HTTP API for agents and scripts (ZXQATOM2QXZ); and a  ZXQSTARTB3QXZ web page and native iOS app ZXQENDB3QXZ  for people.",
+                  "text": "Mac上的守护进程驱动手机，提供三种形式的控制：MCP服务器，用于Claude Code、Codex、Claude Desktop、Cursor及其他MCP客户端;用于代理和脚本的HTTP API（ZXQATOM2QXZ）;以及面向用户的 ZXQSTARTB3QXZ 网页和原生 iOS 应用ZXQENDB3QXZ。",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "Mac上的守护进程驱动手机，提供三种形式的控制：MCP服务器，用于Claude Code、Codex、Claude Desktop、Cursor及其他MCP客户端;用于代理和脚本的HTTP API（ZXQATOM2QXZ）;以及面向用户的  网页和原生 iOS 应用。",
+                  "rangeText": " 网页和原生 iOS 应用",
+                  "matchesBaseline": false
+                }
+              ],
+              "accepted": false
+            }
+          ],
+          "normalCandidate": false
+        },
+        {
+          "id": "LIVE-1",
+          "source": "Let AI agents use your real iPhone. With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app, including the ones with no API: Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+          "baseline": {
+            "text": "让AI代理使用你的真实iPhone。在你的Mac上安装了iPhone，Claude Code、Codex或任何MCP客户端会将手机屏幕读取为文本，在任何应用中点击、输入和滑动，包括那些没有API的应用：健康、银行、聊天应用或你正在测试的应用。你可以随时观看直播，并把手机拿回去。"
+          },
+          "probes": [
+            {
+              "key": "H0",
+              "views": [
+                {
+                  "encoding": "padded",
+                  "wire": " ⟦H0⟧ Let AI agents use your real iPhone. ⟦/H0⟧  With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app, including the ones with no API: Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+                  "text": "⟦H0⟧ 让AI代理使用你的真实iPhone。⟦/H0⟧ 在你的Mac上安装了iPhone，Claude Code、Codex或任何MCP客户端会将手机屏幕读取为文本，在任何应用中点击、输入和滑动，包括那些没有API的应用：健康、银行、聊天或你正在测试的应用。你可以随时观看直播，并把手机拿回去。",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "让AI代理使用你的真实iPhone。 在你的Mac上安装了iPhone，Claude Code、Codex或任何MCP客户端会将手机屏幕读取为文本，在任何应用中点击、输入和滑动，包括那些没有API的应用：健康、银行、聊天或你正在测试的应用。你可以随时观看直播，并把手机拿回去。",
+                  "rangeText": " 让AI代理使用你的真实iPhone。",
+                  "matchesBaseline": false
+                },
+                {
+                  "encoding": "sentinel",
+                  "wire": " ZXQSTARTH0QXZ Let AI agents use your real iPhone. ZXQENDH0QXZ  With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app, including the ones with no API: Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+                  "text": "ZXQSTARTH0QXZ 让AI代理使用你的真实iPhone。ZXQENDH0QXZ 在Mac上安装iPhone后，Claude Code、Codex或任何MCP客户端会将手机屏幕读取为文本，点击、输入和滑动任何应用，包括那些没有API的应用：健康、银行、聊天应用或你正在测试的应用。你可以随时观看直播，并把手机拿回去。",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "让AI代理使用你的真实iPhone。 在Mac上安装iPhone后，Claude Code、Codex或任何MCP客户端会将手机屏幕读取为文本，点击、输入和滑动任何应用，包括那些没有API的应用：健康、银行、聊天应用或你正在测试的应用。你可以随时观看直播，并把手机拿回去。",
+                  "rangeText": " 让AI代理使用你的真实iPhone。",
+                  "matchesBaseline": false
+                }
+              ],
+              "accepted": false
+            },
+            {
+              "key": "B1",
+              "views": [
+                {
+                  "encoding": "padded",
+                  "wire": "Let AI agents use your real iPhone. With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app,  ⟦B1⟧ including the ones with no API ⟦/B1⟧ : Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+                  "text": "让AI代理使用你的真实iPhone。在Mac上安装iPhone时，Claude Code、Codex或任何MCP客户端会读取手机屏幕为文本，点击、输入和滑动任何应用，⟦B1⟧，包括没有API的应用⟦/B1⟧：健康、银行、聊天应用或你正在测试的应用。你可以随时观看直播，并把手机拿回去。",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "让AI代理使用你的真实iPhone。在Mac上安装iPhone时，Claude Code、Codex或任何MCP客户端会读取手机屏幕为文本，点击、输入和滑动任何应用，，包括没有API的应用：健康、银行、聊天应用或你正在测试的应用。你可以随时观看直播，并把手机拿回去。",
+                  "rangeText": "，包括没有API的应用",
+                  "matchesBaseline": false
+                },
+                {
+                  "encoding": "sentinel",
+                  "wire": "Let AI agents use your real iPhone. With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app,  ZXQSTARTB1QXZ including the ones with no API ZXQENDB1QXZ : Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+                  "text": "让AI代理使用你的真实iPhone。在Mac上安装iPhone后，Claude Code、Codex或任何MCP客户端会将手机屏幕读取为文本，点击、输入和滑动，ZXQSTARTB1QXZ包括那些没有API的应用ZXQENDB1QXZ：健康、银行、聊天应用或你正在测试的应用。你可以随时观看直播，并把手机拿回去。",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "让AI代理使用你的真实iPhone。在Mac上安装iPhone后，Claude Code、Codex或任何MCP客户端会将手机屏幕读取为文本，点击、输入和滑动，包括那些没有API的应用：健康、银行、聊天应用或你正在测试的应用。你可以随时观看直播，并把手机拿回去。",
+                  "rangeText": "包括那些没有API的应用",
+                  "matchesBaseline": false
+                }
+              ],
+              "accepted": false
+            }
+          ],
+          "normalCandidate": false
+        },
+        {
+          "id": "REORDER",
+          "source": "Before you close the window, please save your changes and confirm the delivery address.",
+          "baseline": {
+            "text": "关闭窗口前，请保存您的更改并确认送达地址。"
+          },
+          "probes": [
+            {
+              "key": "B0",
+              "views": [
+                {
+                  "encoding": "padded",
+                  "wire": "Before you close the window, please  ⟦B0⟧ save your changes ⟦/B0⟧  and confirm the delivery address.",
+                  "text": "关闭窗口前，请⟦B0⟧保存您的更改⟦/B0⟧并确认送货地址。",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "关闭窗口前，请保存您的更改并确认送货地址。",
+                  "rangeText": "保存您的更改",
+                  "matchesBaseline": false
+                },
+                {
+                  "encoding": "sentinel",
+                  "wire": "Before you close the window, please  ZXQSTARTB0QXZ save your changes ZXQENDB0QXZ  and confirm the delivery address.",
+                  "text": "关闭窗口前，请ZXQSTARTB0QXZ保存您的更改ZXQENDB0QXZ并确认送达地址。",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "关闭窗口前，请保存您的更改并确认送达地址。",
+                  "rangeText": "保存您的更改",
+                  "matchesBaseline": true
+                }
+              ],
+              "accepted": false
+            },
+            {
+              "key": "H1",
+              "views": [
+                {
+                  "encoding": "padded",
+                  "wire": "Before you close the window, please save your changes and confirm the  ⟦H1⟧ delivery address ⟦/H1⟧ .",
+                  "text": "关闭窗口前，请保存您的更改并确认⟦H1⟧送达地址⟦/H1⟧。",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "关闭窗口前，请保存您的更改并确认送达地址。",
+                  "rangeText": "送达地址",
+                  "matchesBaseline": true
+                },
+                {
+                  "encoding": "sentinel",
+                  "wire": "Before you close the window, please save your changes and confirm the  ZXQSTARTH1QXZ delivery address ZXQENDH1QXZ .",
+                  "text": "关闭窗口前，请保存您的更改并确认ZXQSTARTH1QXZ送达地址ZXQENDH1QXZ。",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "关闭窗口前，请保存您的更改并确认送达地址。",
+                  "rangeText": "送达地址",
+                  "matchesBaseline": true
+                }
+              ],
+              "accepted": true
+            }
+          ],
+          "normalCandidate": false
+        },
+        {
+          "id": "REPEAT",
+          "source": "The account is active, but the account must be verified. Run ZXQATOM2QXZ then calculate ZXQATOM3QXZ.",
+          "baseline": {
+            "text": "账户是活跃的，但必须验证。运行ZXQATOM2QXZ然后计算ZXQATOM3QXZ。"
+          },
+          "probes": [
+            {
+              "key": "B0",
+              "views": [
+                {
+                  "encoding": "padded",
+                  "wire": "The  ⟦B0⟧ account ⟦/B0⟧  is active, but the account must be verified. Run ZXQATOM2QXZ then calculate ZXQATOM3QXZ.",
+                  "text": "⟦B0⟧账户⟦/B0⟧是活跃的，但该账户必须经过验证。运行ZXQATOM2QXZ然后计算ZXQATOM3QXZ。",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "账户是活跃的，但该账户必须经过验证。运行ZXQATOM2QXZ然后计算ZXQATOM3QXZ。",
+                  "rangeText": "账户",
+                  "matchesBaseline": false
+                },
+                {
+                  "encoding": "sentinel",
+                  "wire": "The  ZXQSTARTB0QXZ account ZXQENDB0QXZ  is active, but the account must be verified. Run ZXQATOM2QXZ then calculate ZXQATOM3QXZ.",
+                  "text": "ZXQSTARTB0QXZ账户ZXQENDB0QXZ是活跃的，但账户必须经过验证。运行ZXQATOM2QXZ然后计算ZXQATOM3QXZ。",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "账户是活跃的，但账户必须经过验证。运行ZXQATOM2QXZ然后计算ZXQATOM3QXZ。",
+                  "rangeText": "账户",
+                  "matchesBaseline": false
+                }
+              ],
+              "accepted": false
+            },
+            {
+              "key": "H1",
+              "views": [
+                {
+                  "encoding": "padded",
+                  "wire": "The account is active, but the  ⟦H1⟧ account ⟦/H1⟧  must be verified. Run ZXQATOM2QXZ then calculate ZXQATOM3QXZ.",
+                  "text": "该账户仍然活跃，但必须验证⟦H1⟧账户⟦/H1⟧。运行ZXQATOM2QXZ然后计算ZXQATOM3QXZ。",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "该账户仍然活跃，但必须验证账户。运行ZXQATOM2QXZ然后计算ZXQATOM3QXZ。",
+                  "rangeText": "账户",
+                  "matchesBaseline": false
+                },
+                {
+                  "encoding": "sentinel",
+                  "wire": "The account is active, but the  ZXQSTARTH1QXZ account ZXQENDH1QXZ  must be verified. Run ZXQATOM2QXZ then calculate ZXQATOM3QXZ.",
+                  "text": "账户是活跃的，但ZXQSTARTH1QXZ账户ZXQENDH1QXZ必须验证。运行ZXQATOM2QXZ然后计算ZXQATOM3QXZ。",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "账户是活跃的，但账户必须验证。运行ZXQATOM2QXZ然后计算ZXQATOM3QXZ。",
+                  "rangeText": "账户",
+                  "matchesBaseline": false
+                }
+              ],
+              "accepted": false
+            }
+          ],
+          "normalCandidate": false
+        },
+        {
+          "id": "UNSEEN-REPEAT",
+          "source": "Please move the backup account before you delete the backup account from the old device. Keep ZXQATOM2QXZ unchanged.",
+          "baseline": {
+            "text": "请在删除旧设备上的备用账户之前移动备份账户。保持ZXQATOM2QXZ不变。"
+          },
+          "probes": [
+            {
+              "key": "B0",
+              "views": [
+                {
+                  "encoding": "padded",
+                  "wire": "Please move the  ⟦B0⟧ backup account ⟦/B0⟧  before you delete the backup account from the old device. Keep ZXQATOM2QXZ unchanged.",
+                  "text": "请在删除备份账户之前，先移动 ⟦B0⟧ 的备用账户 ⟦/B0⟧。保持ZXQATOM2QXZ不变。",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "请在删除备份账户之前，先移动  的备用账户 。保持ZXQATOM2QXZ不变。",
+                  "rangeText": " 的备用账户 ",
+                  "matchesBaseline": false
+                },
+                {
+                  "encoding": "sentinel",
+                  "wire": "Please move the  ZXQSTARTB0QXZ backup account ZXQENDB0QXZ  before you delete the backup account from the old device. Keep ZXQATOM2QXZ unchanged.",
+                  "text": "请在删除旧设备上的备用账户之前，先把ZXQSTARTB0QXZ备份账户移ZXQENDB0QXZ。保持ZXQATOM2QXZ不变。",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "请在删除旧设备上的备用账户之前，先把备份账户移。保持ZXQATOM2QXZ不变。",
+                  "rangeText": "备份账户移",
+                  "matchesBaseline": false
+                }
+              ],
+              "accepted": false
+            },
+            {
+              "key": "H1",
+              "views": [
+                {
+                  "encoding": "padded",
+                  "wire": "Please move the backup account before you delete the  ⟦H1⟧ backup account ⟦/H1⟧  from the old device. Keep ZXQATOM2QXZ unchanged.",
+                  "text": "请在删除旧设备上的⟦H1⟧备用账户⟦/H1⟧之前，先移动备份账户。保持ZXQATOM2QXZ不变。",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "请在删除旧设备上的备用账户之前，先移动备份账户。保持ZXQATOM2QXZ不变。",
+                  "rangeText": "备用账户",
+                  "matchesBaseline": false
+                },
+                {
+                  "encoding": "sentinel",
+                  "wire": "Please move the backup account before you delete the  ZXQSTARTH1QXZ backup account ZXQENDH1QXZ  from the old device. Keep ZXQATOM2QXZ unchanged.",
+                  "text": "请在删除旧设备上ZXQSTARTH1QXZ备用账户ZXQENDH1QXZ之前先移动备份账户。保持ZXQATOM2QXZ不变。",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "请在删除旧设备上备用账户之前先移动备份账户。保持ZXQATOM2QXZ不变。",
+                  "rangeText": "备用账户",
+                  "matchesBaseline": false
+                }
+              ],
+              "accepted": false
+            }
+          ],
+          "normalCandidate": false
+        }
+      ]
+    },
+    {
+      "targetCode": "jpn",
+      "records": [
+        {
+          "id": "F01",
+          "source": "A daemon on your Mac drives the phone in three forms: an MCP server for your agent; an HTTP API for scripts (ZXQATOM2QXZ); and a web page and native iOS app for people.",
+          "baseline": {
+            "text": "Mac上のデーモンは3つの形態で電話を駆動します。エージェント用のMCPサーバー、スクリプト用のHTTP API(ZXQATOM2QXZ)、そして、ウェブページとネイティブiOSアプリも提供しています。"
+          },
+          "probes": [
+            {
+              "key": "H0",
+              "views": [
+                {
+                  "encoding": "padded",
+                  "wire": "A daemon on your Mac drives the phone in three forms: an  ⟦H0⟧ MCP server ⟦/H0⟧  for your agent; an HTTP API for scripts (ZXQATOM2QXZ); and a web page and native iOS app for people.",
+                  "text": "Mac上のデーモンは3つの形態で電話を駆動します:エージェント用の⟦H0⟧ MCPサーバー⟦/H0⟧;スクリプト用のHTTP API(ZXQATOM2QXZ)、そして、ウェブページとネイティブiOSアプリも提供しています。",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "Mac上のデーモンは3つの形態で電話を駆動します:エージェント用の MCPサーバー;スクリプト用のHTTP API(ZXQATOM2QXZ)、そして、ウェブページとネイティブiOSアプリも提供しています。",
+                  "rangeText": " MCPサーバー",
+                  "matchesBaseline": false
+                },
+                {
+                  "encoding": "sentinel",
+                  "wire": "A daemon on your Mac drives the phone in three forms: an  ZXQSTARTH0QXZ MCP server ZXQENDH0QXZ  for your agent; an HTTP API for scripts (ZXQATOM2QXZ); and a web page and native iOS app for people.",
+                  "text": "Mac上のデーモンは3つの形態で電話を駆動します。エージェント用のZXQSTARTH0QXZ MCPサーバー ZXQENDH0QXZ、スクリプト用のHTTP API(ZXQATOM2QXZ)、そして、ウェブページとネイティブiOSアプリも提供しています。",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "Mac上のデーモンは3つの形態で電話を駆動します。エージェント用の MCPサーバー 、スクリプト用のHTTP API(ZXQATOM2QXZ)、そして、ウェブページとネイティブiOSアプリも提供しています。",
+                  "rangeText": " MCPサーバー ",
+                  "matchesBaseline": false
+                }
+              ],
+              "accepted": false
+            },
+            {
+              "key": "B1",
+              "views": [
+                {
+                  "encoding": "padded",
+                  "wire": "A daemon on your Mac drives the phone in three forms: an MCP server for your agent; an  ⟦B1⟧ HTTP API ⟦/B1⟧  for scripts (ZXQATOM2QXZ); and a web page and native iOS app for people.",
+                  "text": "Mac上のデーモンは3つの形態で電話を駆動します。エージェント用のMCPサーバー、スクリプト用の⟦B1⟧ HTTP API ⟦/B1⟧(ZXQATOM2QXZ);そして、ウェブページとネイティブiOSアプリも提供しています。",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "Mac上のデーモンは3つの形態で電話を駆動します。エージェント用のMCPサーバー、スクリプト用の HTTP API (ZXQATOM2QXZ);そして、ウェブページとネイティブiOSアプリも提供しています。",
+                  "rangeText": " HTTP API ",
+                  "matchesBaseline": false
+                },
+                {
+                  "encoding": "sentinel",
+                  "wire": "A daemon on your Mac drives the phone in three forms: an MCP server for your agent; an  ZXQSTARTB1QXZ HTTP API ZXQENDB1QXZ  for scripts (ZXQATOM2QXZ); and a web page and native iOS app for people.",
+                  "text": "Mac上のデーモンは3つの形態で電話を駆動します。エージェント用のMCPサーバー、スクリプト用のZXQSTARTB1QXZ HTTP API ZXQENDB1QXZ(ZXQATOM2QXZ);そして、ウェブページとネイティブiOSアプリも提供しています。",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "Mac上のデーモンは3つの形態で電話を駆動します。エージェント用のMCPサーバー、スクリプト用の HTTP API (ZXQATOM2QXZ);そして、ウェブページとネイティブiOSアプリも提供しています。",
+                  "rangeText": " HTTP API ",
+                  "matchesBaseline": false
+                }
+              ],
+              "accepted": false
+            },
+            {
+              "key": "B3",
+              "views": [
+                {
+                  "encoding": "padded",
+                  "wire": "A daemon on your Mac drives the phone in three forms: an MCP server for your agent; an HTTP API for scripts (ZXQATOM2QXZ); and a  ⟦B3⟧ web page and native iOS app ⟦/B3⟧  for people.",
+                  "text": "Mac上のデーモンは3つの形態で電話を駆動します。エージェント用のMCPサーバー、スクリプト用のHTTP API(ZXQATOM2QXZ)、そして、人向けには⟦B3⟧のウェブページとネイティブのiOSアプリ⟦/B3⟧も用意されています。",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "Mac上のデーモンは3つの形態で電話を駆動します。エージェント用のMCPサーバー、スクリプト用のHTTP API(ZXQATOM2QXZ)、そして、人向けにはのウェブページとネイティブのiOSアプリも用意されています。",
+                  "rangeText": "のウェブページとネイティブのiOSアプリ",
+                  "matchesBaseline": false
+                },
+                {
+                  "encoding": "sentinel",
+                  "wire": "A daemon on your Mac drives the phone in three forms: an MCP server for your agent; an HTTP API for scripts (ZXQATOM2QXZ); and a  ZXQSTARTB3QXZ web page and native iOS app ZXQENDB3QXZ  for people.",
+                  "text": "Mac上のデーモンは3つの形態で電話を駆動します。エージェント用のMCPサーバー、スクリプト用のHTTP API(ZXQATOM2QXZ)、そして、ZXQSTARTB3QXZウェブページとネイティブiOSアプリZXQENDB3QXZ。",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "Mac上のデーモンは3つの形態で電話を駆動します。エージェント用のMCPサーバー、スクリプト用のHTTP API(ZXQATOM2QXZ)、そして、ウェブページとネイティブiOSアプリ。",
+                  "rangeText": "ウェブページとネイティブiOSアプリ",
+                  "matchesBaseline": false
+                }
+              ],
+              "accepted": false
+            }
+          ],
+          "normalCandidate": false
+        },
+        {
+          "id": "F24",
+          "source": "A daemon on your Mac drives the phone and offers the same control in three forms: an MCP server for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an HTTP API for agents and scripts (ZXQATOM2QXZ); and a web page and native iOS app for people.",
+          "baseline": {
+            "text": "Mac上のデーモンが電話を駆動し、同じ制御を3つの形態で提供します:Claude Code、Codex、Claude Desktop、Cursorおよびその他のMCPクライアント用のMCPサーバー;エージェントやスクリプト用のHTTP API(ZXQATOM2QXZ)、そして、ウェブページとネイティブiOSアプリも提供しています。"
+          },
+          "probes": [
+            {
+              "key": "H0",
+              "views": [
+                {
+                  "encoding": "padded",
+                  "wire": "A daemon on your Mac drives the phone and offers the same control in three forms: an  ⟦H0⟧ MCP server ⟦/H0⟧  for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an HTTP API for agents and scripts (ZXQATOM2QXZ); and a web page and native iOS app for people.",
+                  "text": "Mac上のデーモンが電話を駆動し、同じ制御を3つの形態で提供します。すなわち、Claude Code、Codex、Claude Desktop、Cursor、その他のMCPクライアント用の⟦H0⟧ MCPサーバー ⟦/H0⟧;エージェントやスクリプト用のHTTP API(ZXQATOM2QXZ)、そして、ウェブページとネイティブiOSアプリも提供しています。",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "Mac上のデーモンが電話を駆動し、同じ制御を3つの形態で提供します。すなわち、Claude Code、Codex、Claude Desktop、Cursor、その他のMCPクライアント用の MCPサーバー ;エージェントやスクリプト用のHTTP API(ZXQATOM2QXZ)、そして、ウェブページとネイティブiOSアプリも提供しています。",
+                  "rangeText": " MCPサーバー ",
+                  "matchesBaseline": false
+                },
+                {
+                  "encoding": "sentinel",
+                  "wire": "A daemon on your Mac drives the phone and offers the same control in three forms: an  ZXQSTARTH0QXZ MCP server ZXQENDH0QXZ  for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an HTTP API for agents and scripts (ZXQATOM2QXZ); and a web page and native iOS app for people.",
+                  "text": "Mac上のデーモンが電話を駆動し、同じ制御を3つの形態で提供します。Claude Code、Codex、Claude Desktop、Cursorおよびその他のMCPクライアントのZXQENDH0QXZ ZXQSTARTH0QXZ MCPサーバー;エージェントやスクリプト用のHTTP API(ZXQATOM2QXZ)、そして、ウェブページとネイティブiOSアプリも提供しています。",
+                  "unique": false,
+                  "intactAtoms": true,
+                  "clean": "Mac上のデーモンが電話を駆動し、同じ制御を3つの形態で提供します。Claude Code、Codex、Claude Desktop、Cursorおよびその他のMCPクライアントの  MCPサーバー;エージェントやスクリプト用のHTTP API(ZXQATOM2QXZ)、そして、ウェブページとネイティブiOSアプリも提供しています。",
+                  "matchesBaseline": false
+                }
+              ],
+              "accepted": false
+            },
+            {
+              "key": "B1",
+              "views": [
+                {
+                  "encoding": "padded",
+                  "wire": "A daemon on your Mac drives the phone and offers the same control in three forms: an MCP server for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an  ⟦B1⟧ HTTP API ⟦/B1⟧  for agents and scripts (ZXQATOM2QXZ); and a web page and native iOS app for people.",
+                  "text": "Mac上のデーモンが電話を駆動し、同じ制御を3つの形態で提供します:Claude Code、Codex、Claude Desktop、Cursorおよびその他のMCPクライアント用のMCPサーバー;エージェントおよびスクリプト用の⟦B1⟧ HTTP API ⟦/B1⟧(ZXQATOM2QXZ);そして、ウェブページとネイティブiOSアプリも提供しています。",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "Mac上のデーモンが電話を駆動し、同じ制御を3つの形態で提供します:Claude Code、Codex、Claude Desktop、Cursorおよびその他のMCPクライアント用のMCPサーバー;エージェントおよびスクリプト用の HTTP API (ZXQATOM2QXZ);そして、ウェブページとネイティブiOSアプリも提供しています。",
+                  "rangeText": " HTTP API ",
+                  "matchesBaseline": false
+                },
+                {
+                  "encoding": "sentinel",
+                  "wire": "A daemon on your Mac drives the phone and offers the same control in three forms: an MCP server for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an  ZXQSTARTB1QXZ HTTP API ZXQENDB1QXZ  for agents and scripts (ZXQATOM2QXZ); and a web page and native iOS app for people.",
+                  "text": "Mac上のデーモンが電話を駆動し、同じ制御を3つの形態で提供します:Claude Code、Codex、Claude Desktop、Cursorおよびその他のMCPクライアント用のMCPサーバー;エージェントとスクリプト向けのZXQSTARTB1QXZ HTTP API ZXQENDB1QXZ(ZXQATOM2QXZ)、そして、ウェブページとネイティブiOSアプリも提供しています。",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "Mac上のデーモンが電話を駆動し、同じ制御を3つの形態で提供します:Claude Code、Codex、Claude Desktop、Cursorおよびその他のMCPクライアント用のMCPサーバー;エージェントとスクリプト向けの HTTP API (ZXQATOM2QXZ)、そして、ウェブページとネイティブiOSアプリも提供しています。",
+                  "rangeText": " HTTP API ",
+                  "matchesBaseline": false
+                }
+              ],
+              "accepted": false
+            },
+            {
+              "key": "B3",
+              "views": [
+                {
+                  "encoding": "padded",
+                  "wire": "A daemon on your Mac drives the phone and offers the same control in three forms: an MCP server for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an HTTP API for agents and scripts (ZXQATOM2QXZ); and a  ⟦B3⟧ web page and native iOS app ⟦/B3⟧  for people.",
+                  "text": "Mac上のデーモンが電話を駆動し、同じ制御を3つの形態で提供します:Claude Code、Codex、Claude Desktop、Cursorおよびその他のMCPクライアント用のMCPサーバー;エージェントやスクリプト用のHTTP API(ZXQATOM2QXZ)、そして、人向けには⟦B3⟧のウェブページとネイティブのiOSアプリ⟦/B3⟧も用意されています。",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "Mac上のデーモンが電話を駆動し、同じ制御を3つの形態で提供します:Claude Code、Codex、Claude Desktop、Cursorおよびその他のMCPクライアント用のMCPサーバー;エージェントやスクリプト用のHTTP API(ZXQATOM2QXZ)、そして、人向けにはのウェブページとネイティブのiOSアプリも用意されています。",
+                  "rangeText": "のウェブページとネイティブのiOSアプリ",
+                  "matchesBaseline": false
+                },
+                {
+                  "encoding": "sentinel",
+                  "wire": "A daemon on your Mac drives the phone and offers the same control in three forms: an MCP server for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an HTTP API for agents and scripts (ZXQATOM2QXZ); and a  ZXQSTARTB3QXZ web page and native iOS app ZXQENDB3QXZ  for people.",
+                  "text": "Mac上のデーモンが電話を駆動し、同じ制御を3つの形態で提供します:Claude Code、Codex、Claude Desktop、Cursorおよびその他のMCPクライアント用のMCPサーバー;エージェントやスクリプト用のHTTP API(ZXQATOM2QXZ)、そして、ZXQSTARTB3QXZウェブページとネイティブiOSアプリZXQENDB3QXZ。",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "Mac上のデーモンが電話を駆動し、同じ制御を3つの形態で提供します:Claude Code、Codex、Claude Desktop、Cursorおよびその他のMCPクライアント用のMCPサーバー;エージェントやスクリプト用のHTTP API(ZXQATOM2QXZ)、そして、ウェブページとネイティブiOSアプリ。",
+                  "rangeText": "ウェブページとネイティブiOSアプリ",
+                  "matchesBaseline": false
+                }
+              ],
+              "accepted": false
+            }
+          ],
+          "normalCandidate": false
+        },
+        {
+          "id": "LIVE-1",
+          "source": "Let AI agents use your real iPhone. With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app, including the ones with no API: Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+          "baseline": {
+            "text": "AIエージェントに本物のiPhoneを使わせましょう。MacにiPhoneがインストールされている場合、Claude Code、Codex、または他のMCPクライアントは、APIのないアプリ(ヘルス、銀行、チャットアプリ、テスト対象のアプリも含む)で、画面をテキストとして読み取り、タップ、入力、スワイプを行います。ライブ視聴もでき、いつでも電話を取り戻すことができます。"
+          },
+          "probes": [
+            {
+              "key": "H0",
+              "views": [
+                {
+                  "encoding": "padded",
+                  "wire": " ⟦H0⟧ Let AI agents use your real iPhone. ⟦/H0⟧  With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app, including the ones with no API: Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+                  "text": "⟦H0⟧ AIエージェントに本物のiPhoneを使わせて。⟦/H0⟧ MacにiPhoneがインストールされている場合、Claude Code、Codex、または任意のMCPクライアントが、APIのないアプリ(ヘルス、銀行、チャットアプリ、テスト対象アプリなど)で画面をテキストとして読み取り、タップ、入力、スワイプを行います。ライブ視聴もでき、いつでも電話を取り戻すことができます。",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "AIエージェントに本物のiPhoneを使わせて。 MacにiPhoneがインストールされている場合、Claude Code、Codex、または任意のMCPクライアントが、APIのないアプリ(ヘルス、銀行、チャットアプリ、テスト対象アプリなど)で画面をテキストとして読み取り、タップ、入力、スワイプを行います。ライブ視聴もでき、いつでも電話を取り戻すことができます。",
+                  "rangeText": " AIエージェントに本物のiPhoneを使わせて。",
+                  "matchesBaseline": false
+                },
+                {
+                  "encoding": "sentinel",
+                  "wire": " ZXQSTARTH0QXZ Let AI agents use your real iPhone. ZXQENDH0QXZ  With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app, including the ones with no API: Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+                  "text": "ZXQSTARTH0QXZ AIエージェントに本物のiPhoneを使わせましょう。ZXQENDH0QXZ MacにiPhoneがインストールされている場合、Claude Code、Codex、または任意のMCPクライアントが画面をテキストとして読み取り、APIのないアプリ(健康、銀行、チャットアプリ、テスト中のアプリなど)でタップ、入力、スワイプを行います。ライブ視聴もでき、いつでも電話を取り戻すことができます。",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "AIエージェントに本物のiPhoneを使わせましょう。 MacにiPhoneがインストールされている場合、Claude Code、Codex、または任意のMCPクライアントが画面をテキストとして読み取り、APIのないアプリ(健康、銀行、チャットアプリ、テスト中のアプリなど)でタップ、入力、スワイプを行います。ライブ視聴もでき、いつでも電話を取り戻すことができます。",
+                  "rangeText": " AIエージェントに本物のiPhoneを使わせましょう。",
+                  "matchesBaseline": false
+                }
+              ],
+              "accepted": false
+            },
+            {
+              "key": "B1",
+              "views": [
+                {
+                  "encoding": "padded",
+                  "wire": "Let AI agents use your real iPhone. With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app,  ⟦B1⟧ including the ones with no API ⟦/B1⟧ : Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+                  "text": "AIエージェントに本物のiPhoneを使わせましょう。MacにiPhoneがインストールされている場合、Claude Code、Codex、または任意のMCPクライアントがスマートフォンの画面をテキストとして読み取り、あらゆるアプリ(APIなしを含む)でタップ、入力、スワイプを行います。(健康、銀行、チャット、またはテスト対象のアプリも含む)。ライブ視聴もでき、いつでも電話を取り戻すことができます。",
+                  "unique": false,
+                  "intactAtoms": true,
+                  "clean": "AIエージェントに本物のiPhoneを使わせましょう。MacにiPhoneがインストールされている場合、Claude Code、Codex、または任意のMCPクライアントがスマートフォンの画面をテキストとして読み取り、あらゆるアプリ(APIなしを含む)でタップ、入力、スワイプを行います。(健康、銀行、チャット、またはテスト対象のアプリも含む)。ライブ視聴もでき、いつでも電話を取り戻すことができます。",
+                  "matchesBaseline": false
+                },
+                {
+                  "encoding": "sentinel",
+                  "wire": "Let AI agents use your real iPhone. With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app,  ZXQSTARTB1QXZ including the ones with no API ZXQENDB1QXZ : Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+                  "text": "AIエージェントに本物のiPhoneを使わせましょう。MacにiPhoneがインストールされている場合、Claude Code、Codex、または任意のMCPクライアントが画面をテキストとして読み取り、API ZXQENDB1QXZがないアプリ(健康、銀行、チャットアプリ、テスト中のアプリも含む)で画面を読み込み、タップ、入力、スワイプを行ZXQSTARTB1QXZ。ライブ視聴もでき、いつでも電話を取り戻すことができます。",
+                  "unique": false,
+                  "intactAtoms": true,
+                  "clean": "AIエージェントに本物のiPhoneを使わせましょう。MacにiPhoneがインストールされている場合、Claude Code、Codex、または任意のMCPクライアントが画面をテキストとして読み取り、API がないアプリ(健康、銀行、チャットアプリ、テスト中のアプリも含む)で画面を読み込み、タップ、入力、スワイプを行。ライブ視聴もでき、いつでも電話を取り戻すことができます。",
+                  "matchesBaseline": false
+                }
+              ],
+              "accepted": false
+            }
+          ],
+          "normalCandidate": false
+        },
+        {
+          "id": "REORDER",
+          "source": "Before you close the window, please save your changes and confirm the delivery address.",
+          "baseline": {
+            "text": "ウィンドウを閉じる前に、変更内容を保存し、配達先を必ず確認してください。"
+          },
+          "probes": [
+            {
+              "key": "B0",
+              "views": [
+                {
+                  "encoding": "padded",
+                  "wire": "Before you close the window, please  ⟦B0⟧ save your changes ⟦/B0⟧  and confirm the delivery address.",
+                  "text": "ウィンドウを閉じる前に、変更内容を保存してください ⟦/B0⟧ そして配達先を確認してください。",
+                  "unique": false,
+                  "intactAtoms": true,
+                  "clean": "ウィンドウを閉じる前に、変更内容を保存してください  そして配達先を確認してください。",
+                  "matchesBaseline": false
+                },
+                {
+                  "encoding": "sentinel",
+                  "wire": "Before you close the window, please  ZXQSTARTB0QXZ save your changes ZXQENDB0QXZ  and confirm the delivery address.",
+                  "text": "ウィンドウを閉じる前に、変更内容をZXQENDB0QXZ保存し、配達先をZXQSTARTB0QXZしてください。",
+                  "unique": false,
+                  "intactAtoms": true,
+                  "clean": "ウィンドウを閉じる前に、変更内容を保存し、配達先をしてください。",
+                  "matchesBaseline": false
+                }
+              ],
+              "accepted": false
+            },
+            {
+              "key": "H1",
+              "views": [
+                {
+                  "encoding": "padded",
+                  "wire": "Before you close the window, please save your changes and confirm the  ⟦H1⟧ delivery address ⟦/H1⟧ .",
+                  "text": "ウィンドウを閉じる前に、変更内容を保存し、⟦H1⟧配達先の住所⟦/H1⟧を必ず確認してください。",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "ウィンドウを閉じる前に、変更内容を保存し、配達先の住所を必ず確認してください。",
+                  "rangeText": "配達先の住所",
+                  "matchesBaseline": false
+                },
+                {
+                  "encoding": "sentinel",
+                  "wire": "Before you close the window, please save your changes and confirm the  ZXQSTARTH1QXZ delivery address ZXQENDH1QXZ .",
+                  "text": "ウィンドウを閉じる前に、変更内容を保存し、ZXQSTARTH1QXZ配達先住所をZXQENDH1QXZ確認してください。",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "ウィンドウを閉じる前に、変更内容を保存し、配達先住所を確認してください。",
+                  "rangeText": "配達先住所を",
+                  "matchesBaseline": false
+                }
+              ],
+              "accepted": false
+            }
+          ],
+          "normalCandidate": false
+        },
+        {
+          "id": "REPEAT",
+          "source": "The account is active, but the account must be verified. Run ZXQATOM2QXZ then calculate ZXQATOM3QXZ.",
+          "baseline": {
+            "text": "アカウントは有効ですが、アカウントの認証が必要です。ZXQATOM2QXZを実行してから、ZXQATOM3QXZを計算します。"
+          },
+          "probes": [
+            {
+              "key": "B0",
+              "views": [
+                {
+                  "encoding": "padded",
+                  "wire": "The  ⟦B0⟧ account ⟦/B0⟧  is active, but the account must be verified. Run ZXQATOM2QXZ then calculate ZXQATOM3QXZ.",
+                  "text": "⟦B0⟧アカウント⟦/B0⟧は有効ですが、アカウントの認証が必要です。ZXQATOM2QXZを実行してから、ZXQATOM3QXZを計算します。",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "アカウントは有効ですが、アカウントの認証が必要です。ZXQATOM2QXZを実行してから、ZXQATOM3QXZを計算します。",
+                  "rangeText": "アカウント",
+                  "matchesBaseline": true
+                },
+                {
+                  "encoding": "sentinel",
+                  "wire": "The  ZXQSTARTB0QXZ account ZXQENDB0QXZ  is active, but the account must be verified. Run ZXQATOM2QXZ then calculate ZXQATOM3QXZ.",
+                  "text": "ZXQSTARTB0QXZアカウントZXQENDB0QXZは有効ですが、アカウントの認証が必要です。ZXQATOM2QXZを実行してから、ZXQATOM3QXZを計算します。",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "アカウントは有効ですが、アカウントの認証が必要です。ZXQATOM2QXZを実行してから、ZXQATOM3QXZを計算します。",
+                  "rangeText": "アカウント",
+                  "matchesBaseline": true
+                }
+              ],
+              "accepted": true
+            },
+            {
+              "key": "H1",
+              "views": [
+                {
+                  "encoding": "padded",
+                  "wire": "The account is active, but the  ⟦H1⟧ account ⟦/H1⟧  must be verified. Run ZXQATOM2QXZ then calculate ZXQATOM3QXZ.",
+                  "text": "アカウントは有効ですが、⟦H1⟧アカウント⟦/H1⟧の認証が必要です。ZXQATOM2QXZを実行してから、ZXQATOM3QXZを計算します。",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "アカウントは有効ですが、アカウントの認証が必要です。ZXQATOM2QXZを実行してから、ZXQATOM3QXZを計算します。",
+                  "rangeText": "アカウント",
+                  "matchesBaseline": true
+                },
+                {
+                  "encoding": "sentinel",
+                  "wire": "The account is active, but the  ZXQSTARTH1QXZ account ZXQENDH1QXZ  must be verified. Run ZXQATOM2QXZ then calculate ZXQATOM3QXZ.",
+                  "text": "アカウントは有効ですが、ZXQSTARTH1QXZアカウントZXQENDH1QXZ認証が必要です。ZXQATOM2QXZを実行してから、ZXQATOM3QXZを計算します。",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "アカウントは有効ですが、アカウント認証が必要です。ZXQATOM2QXZを実行してから、ZXQATOM3QXZを計算します。",
+                  "rangeText": "アカウント",
+                  "matchesBaseline": false
+                }
+              ],
+              "accepted": false
+            }
+          ],
+          "normalCandidate": false
+        },
+        {
+          "id": "UNSEEN-REPEAT",
+          "source": "Please move the backup account before you delete the backup account from the old device. Keep ZXQATOM2QXZ unchanged.",
+          "baseline": {
+            "text": "古いデバイスからバックアップアカウントを削除する前に、必ずバックアップアカウントを移動してください。変更ZXQATOM2QXZ維持してください。"
+          },
+          "probes": [
+            {
+              "key": "B0",
+              "views": [
+                {
+                  "encoding": "padded",
+                  "wire": "Please move the  ⟦B0⟧ backup account ⟦/B0⟧  before you delete the backup account from the old device. Keep ZXQATOM2QXZ unchanged.",
+                  "text": "バックアップアカウントを削除する前に、古い端末から⟦B0⟧バックアップアカウント⟦/B0⟧を移動してください。変更ZXQATOM2QXZ維持してください。",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "バックアップアカウントを削除する前に、古い端末からバックアップアカウントを移動してください。変更ZXQATOM2QXZ維持してください。",
+                  "rangeText": "バックアップアカウント",
+                  "matchesBaseline": false
+                },
+                {
+                  "encoding": "sentinel",
+                  "wire": "Please move the  ZXQSTARTB0QXZ backup account ZXQENDB0QXZ  before you delete the backup account from the old device. Keep ZXQATOM2QXZ unchanged.",
+                  "text": "古いデバイスからバックアップアカウントを削除する前に、ZXQSTARTB0QXZバックアップアカウントをZXQENDB0QXZ移動してください。変更ZXQATOM2QXZ維持してください。",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "古いデバイスからバックアップアカウントを削除する前に、バックアップアカウントを移動してください。変更ZXQATOM2QXZ維持してください。",
+                  "rangeText": "バックアップアカウントを",
+                  "matchesBaseline": false
+                }
+              ],
+              "accepted": false
+            },
+            {
+              "key": "H1",
+              "views": [
+                {
+                  "encoding": "padded",
+                  "wire": "Please move the backup account before you delete the  ⟦H1⟧ backup account ⟦/H1⟧  from the old device. Keep ZXQATOM2QXZ unchanged.",
+                  "text": "古いデバイスから⟦H1⟧バックアップアカウント⟦/H1⟧を削除する前に、バックアップアカウントを移動してください。変更ZXQATOM2QXZ維持してください。",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "古いデバイスからバックアップアカウントを削除する前に、バックアップアカウントを移動してください。変更ZXQATOM2QXZ維持してください。",
+                  "rangeText": "バックアップアカウント",
+                  "matchesBaseline": false
+                },
+                {
+                  "encoding": "sentinel",
+                  "wire": "Please move the backup account before you delete the  ZXQSTARTH1QXZ backup account ZXQENDH1QXZ  from the old device. Keep ZXQATOM2QXZ unchanged.",
+                  "text": "古いデバイスからZXQSTARTH1QXZバックアップアカウントZXQENDH1QXZを削除する前に、必ずバックアップアカウントを移動してください。変更ZXQATOM2QXZ維持してください。",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "古いデバイスからバックアップアカウントを削除する前に、必ずバックアップアカウントを移動してください。変更ZXQATOM2QXZ維持してください。",
+                  "rangeText": "バックアップアカウント",
+                  "matchesBaseline": true
+                }
+              ],
+              "accepted": false
+            }
+          ],
+          "normalCandidate": false
+        }
+      ]
+    },
+    {
+      "targetCode": "deu",
+      "records": [
+        {
+          "id": "F01",
+          "source": "A daemon on your Mac drives the phone in three forms: an MCP server for your agent; an HTTP API for scripts (ZXQATOM2QXZ); and a web page and native iOS app for people.",
+          "baseline": {
+            "text": "Ein Daemon auf Ihrem Mac steuert das Telefon in drei Formen: ein MCP-Server für Ihren Agenten; eine HTTP-API für Skripte (ZXQATOM2QXZ); sowie eine Webseite und eine native iOS-App für die Leute."
+          },
+          "probes": [
+            {
+              "key": "H0",
+              "views": [
+                {
+                  "encoding": "padded",
+                  "wire": "A daemon on your Mac drives the phone in three forms: an  ⟦H0⟧ MCP server ⟦/H0⟧  for your agent; an HTTP API for scripts (ZXQATOM2QXZ); and a web page and native iOS app for people.",
+                  "text": "Ein Daemon auf Ihrem Mac steuert das Telefon in drei Formen: ein ⟦H0⟧ MCP-Server ⟦/H0⟧ für Ihren Agenten; eine HTTP-API für Skripte (ZXQATOM2QXZ); sowie eine Webseite und eine native iOS-App für die Leute.",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "Ein Daemon auf Ihrem Mac steuert das Telefon in drei Formen: ein  MCP-Server  für Ihren Agenten; eine HTTP-API für Skripte (ZXQATOM2QXZ); sowie eine Webseite und eine native iOS-App für die Leute.",
+                  "rangeText": " MCP-Server ",
+                  "matchesBaseline": false
+                },
+                {
+                  "encoding": "sentinel",
+                  "wire": "A daemon on your Mac drives the phone in three forms: an  ZXQSTARTH0QXZ MCP server ZXQENDH0QXZ  for your agent; an HTTP API for scripts (ZXQATOM2QXZ); and a web page and native iOS app for people.",
+                  "text": "Ein Daemon auf Ihrem Mac steuert das Telefon in drei Formen: ein ZXQSTARTH0QXZ MCP-Server ZXQENDH0QXZ für Ihren Agenten; eine HTTP-API für Skripte (ZXQATOM2QXZ); sowie eine Webseite und eine native iOS-App für die Leute.",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "Ein Daemon auf Ihrem Mac steuert das Telefon in drei Formen: ein  MCP-Server  für Ihren Agenten; eine HTTP-API für Skripte (ZXQATOM2QXZ); sowie eine Webseite und eine native iOS-App für die Leute.",
+                  "rangeText": " MCP-Server ",
+                  "matchesBaseline": false
+                }
+              ],
+              "accepted": false
+            },
+            {
+              "key": "B1",
+              "views": [
+                {
+                  "encoding": "padded",
+                  "wire": "A daemon on your Mac drives the phone in three forms: an MCP server for your agent; an  ⟦B1⟧ HTTP API ⟦/B1⟧  for scripts (ZXQATOM2QXZ); and a web page and native iOS app for people.",
+                  "text": "Ein Daemon auf Ihrem Mac steuert das Telefon in drei Formen: ein MCP-Server für Ihren Agenten; eine ⟦B1⟧ HTTP API ⟦/B1⟧ für Skripte (ZXQATOM2QXZ); sowie eine Webseite und eine native iOS-App für die Leute.",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "Ein Daemon auf Ihrem Mac steuert das Telefon in drei Formen: ein MCP-Server für Ihren Agenten; eine  HTTP API  für Skripte (ZXQATOM2QXZ); sowie eine Webseite und eine native iOS-App für die Leute.",
+                  "rangeText": " HTTP API ",
+                  "matchesBaseline": false
+                },
+                {
+                  "encoding": "sentinel",
+                  "wire": "A daemon on your Mac drives the phone in three forms: an MCP server for your agent; an  ZXQSTARTB1QXZ HTTP API ZXQENDB1QXZ  for scripts (ZXQATOM2QXZ); and a web page and native iOS app for people.",
+                  "text": "Ein Daemon auf Ihrem Mac steuert das Telefon in drei Formen: ein MCP-Server für Ihren Agenten; eine ZXQSTARTB1QXZ HTTP API ZXQENDB1QXZ für Skripte (ZXQATOM2QXZ); sowie eine Webseite und eine native iOS-App für die Leute.",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "Ein Daemon auf Ihrem Mac steuert das Telefon in drei Formen: ein MCP-Server für Ihren Agenten; eine  HTTP API  für Skripte (ZXQATOM2QXZ); sowie eine Webseite und eine native iOS-App für die Leute.",
+                  "rangeText": " HTTP API ",
+                  "matchesBaseline": false
+                }
+              ],
+              "accepted": false
+            },
+            {
+              "key": "B3",
+              "views": [
+                {
+                  "encoding": "padded",
+                  "wire": "A daemon on your Mac drives the phone in three forms: an MCP server for your agent; an HTTP API for scripts (ZXQATOM2QXZ); and a  ⟦B3⟧ web page and native iOS app ⟦/B3⟧  for people.",
+                  "text": "Ein Daemon auf Ihrem Mac steuert das Telefon in drei Formen: ein MCP-Server für Ihren Agenten; eine HTTP-API für Skripte (ZXQATOM2QXZ); und eine ⟦B3⟧-Webseite und eine native iOS-App ⟦/B3⟧ für die Leute.",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "Ein Daemon auf Ihrem Mac steuert das Telefon in drei Formen: ein MCP-Server für Ihren Agenten; eine HTTP-API für Skripte (ZXQATOM2QXZ); und eine -Webseite und eine native iOS-App  für die Leute.",
+                  "rangeText": "-Webseite und eine native iOS-App ",
+                  "matchesBaseline": false
+                },
+                {
+                  "encoding": "sentinel",
+                  "wire": "A daemon on your Mac drives the phone in three forms: an MCP server for your agent; an HTTP API for scripts (ZXQATOM2QXZ); and a  ZXQSTARTB3QXZ web page and native iOS app ZXQENDB3QXZ  for people.",
+                  "text": "Ein Daemon auf Ihrem Mac steuert das Telefon in drei Formen: ein MCP-Server für Ihren Agenten; eine HTTP-API für Skripte (ZXQATOM2QXZ); und eine ZXQSTARTB3QXZ Webseite sowie eine native iOS-App ZXQENDB3QXZ für die Leute.",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "Ein Daemon auf Ihrem Mac steuert das Telefon in drei Formen: ein MCP-Server für Ihren Agenten; eine HTTP-API für Skripte (ZXQATOM2QXZ); und eine  Webseite sowie eine native iOS-App  für die Leute.",
+                  "rangeText": " Webseite sowie eine native iOS-App ",
+                  "matchesBaseline": false
+                }
+              ],
+              "accepted": false
+            }
+          ],
+          "normalCandidate": false
+        },
+        {
+          "id": "F24",
+          "source": "A daemon on your Mac drives the phone and offers the same control in three forms: an MCP server for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an HTTP API for agents and scripts (ZXQATOM2QXZ); and a web page and native iOS app for people.",
+          "baseline": {
+            "text": "Ein Daemon auf Ihrem Mac steuert das Telefon und bietet dieselbe Steuerung in drei Formen: einen MCP-Server für Claude Code, Codex, Claude Desktop, Cursor und andere MCP-Clients; eine HTTP-API für Agenten und Skripte (ZXQATOM2QXZ); sowie eine Webseite und eine native iOS-App für die Leute."
+          },
+          "probes": [
+            {
+              "key": "H0",
+              "views": [
+                {
+                  "encoding": "padded",
+                  "wire": "A daemon on your Mac drives the phone and offers the same control in three forms: an  ⟦H0⟧ MCP server ⟦/H0⟧  for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an HTTP API for agents and scripts (ZXQATOM2QXZ); and a web page and native iOS app for people.",
+                  "text": "Ein Daemon auf Ihrem Mac steuert das Telefon und bietet dieselbe Steuerung in drei Formen: einen ⟦H0⟧ MCP-Server ⟦/H0⟧ für Claude Code, Codex, Claude Desktop, Cursor und andere MCP-Clients; eine HTTP-API für Agenten und Skripte (ZXQATOM2QXZ); sowie eine Webseite und eine native iOS-App für die Leute.",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "Ein Daemon auf Ihrem Mac steuert das Telefon und bietet dieselbe Steuerung in drei Formen: einen  MCP-Server  für Claude Code, Codex, Claude Desktop, Cursor und andere MCP-Clients; eine HTTP-API für Agenten und Skripte (ZXQATOM2QXZ); sowie eine Webseite und eine native iOS-App für die Leute.",
+                  "rangeText": " MCP-Server ",
+                  "matchesBaseline": false
+                },
+                {
+                  "encoding": "sentinel",
+                  "wire": "A daemon on your Mac drives the phone and offers the same control in three forms: an  ZXQSTARTH0QXZ MCP server ZXQENDH0QXZ  for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an HTTP API for agents and scripts (ZXQATOM2QXZ); and a web page and native iOS app for people.",
+                  "text": "Ein Daemon auf Ihrem Mac steuert das Telefon und bietet dieselbe Steuerung in drei Formen: einen ZXQSTARTH0QXZ MCP-Server ZXQENDH0QXZ für Claude Code, Codex, Claude Desktop, Cursor und andere MCP-Clients; eine HTTP-API für Agenten und Skripte (ZXQATOM2QXZ); sowie eine Webseite und eine native iOS-App für die Leute.",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "Ein Daemon auf Ihrem Mac steuert das Telefon und bietet dieselbe Steuerung in drei Formen: einen  MCP-Server  für Claude Code, Codex, Claude Desktop, Cursor und andere MCP-Clients; eine HTTP-API für Agenten und Skripte (ZXQATOM2QXZ); sowie eine Webseite und eine native iOS-App für die Leute.",
+                  "rangeText": " MCP-Server ",
+                  "matchesBaseline": false
+                }
+              ],
+              "accepted": false
+            },
+            {
+              "key": "B1",
+              "views": [
+                {
+                  "encoding": "padded",
+                  "wire": "A daemon on your Mac drives the phone and offers the same control in three forms: an MCP server for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an  ⟦B1⟧ HTTP API ⟦/B1⟧  for agents and scripts (ZXQATOM2QXZ); and a web page and native iOS app for people.",
+                  "text": "Ein Daemon auf Ihrem Mac steuert das Telefon und bietet dieselbe Steuerung in drei Formen: einen MCP-Server für Claude Code, Codex, Claude Desktop, Cursor und andere MCP-Clients; eine ⟦B1⟧ HTTP API ⟦/B1⟧ für Agenten und Skripte (ZXQATOM2QXZ); sowie eine Webseite und eine native iOS-App für die Leute.",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "Ein Daemon auf Ihrem Mac steuert das Telefon und bietet dieselbe Steuerung in drei Formen: einen MCP-Server für Claude Code, Codex, Claude Desktop, Cursor und andere MCP-Clients; eine  HTTP API  für Agenten und Skripte (ZXQATOM2QXZ); sowie eine Webseite und eine native iOS-App für die Leute.",
+                  "rangeText": " HTTP API ",
+                  "matchesBaseline": false
+                },
+                {
+                  "encoding": "sentinel",
+                  "wire": "A daemon on your Mac drives the phone and offers the same control in three forms: an MCP server for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an  ZXQSTARTB1QXZ HTTP API ZXQENDB1QXZ  for agents and scripts (ZXQATOM2QXZ); and a web page and native iOS app for people.",
+                  "text": "Ein Daemon auf Ihrem Mac steuert das Telefon und bietet dieselbe Steuerung in drei Formen: einen MCP-Server für Claude Code, Codex, Claude Desktop, Cursor und andere MCP-Clients; eine ZXQSTARTB1QXZ HTTP-API ZXQENDB1QXZ für Agenten und Skripte (ZXQATOM2QXZ); sowie eine Webseite und eine native iOS-App für die Leute.",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "Ein Daemon auf Ihrem Mac steuert das Telefon und bietet dieselbe Steuerung in drei Formen: einen MCP-Server für Claude Code, Codex, Claude Desktop, Cursor und andere MCP-Clients; eine  HTTP-API  für Agenten und Skripte (ZXQATOM2QXZ); sowie eine Webseite und eine native iOS-App für die Leute.",
+                  "rangeText": " HTTP-API ",
+                  "matchesBaseline": false
+                }
+              ],
+              "accepted": false
+            },
+            {
+              "key": "B3",
+              "views": [
+                {
+                  "encoding": "padded",
+                  "wire": "A daemon on your Mac drives the phone and offers the same control in three forms: an MCP server for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an HTTP API for agents and scripts (ZXQATOM2QXZ); and a  ⟦B3⟧ web page and native iOS app ⟦/B3⟧  for people.",
+                  "text": "Ein Daemon auf Ihrem Mac steuert das Telefon und bietet dieselbe Steuerung in drei Formen: einen MCP-Server für Claude Code, Codex, Claude Desktop, Cursor und andere MCP-Clients; eine HTTP-API für Agenten und Skripte (ZXQATOM2QXZ); und eine ⟦B3⟧-Webseite und eine native iOS-App ⟦/B3⟧ für die Leute.",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "Ein Daemon auf Ihrem Mac steuert das Telefon und bietet dieselbe Steuerung in drei Formen: einen MCP-Server für Claude Code, Codex, Claude Desktop, Cursor und andere MCP-Clients; eine HTTP-API für Agenten und Skripte (ZXQATOM2QXZ); und eine -Webseite und eine native iOS-App  für die Leute.",
+                  "rangeText": "-Webseite und eine native iOS-App ",
+                  "matchesBaseline": false
+                },
+                {
+                  "encoding": "sentinel",
+                  "wire": "A daemon on your Mac drives the phone and offers the same control in three forms: an MCP server for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an HTTP API for agents and scripts (ZXQATOM2QXZ); and a  ZXQSTARTB3QXZ web page and native iOS app ZXQENDB3QXZ  for people.",
+                  "text": "Ein Daemon auf Ihrem Mac steuert das Telefon und bietet dieselbe Steuerung in drei Formen: einen MCP-Server für Claude Code, Codex, Claude Desktop, Cursor und andere MCP-Clients; eine HTTP-API für Agenten und Skripte (ZXQATOM2QXZ); und eine ZXQSTARTB3QXZ Webseite sowie eine native iOS-App ZXQENDB3QXZ für die Leute.",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "Ein Daemon auf Ihrem Mac steuert das Telefon und bietet dieselbe Steuerung in drei Formen: einen MCP-Server für Claude Code, Codex, Claude Desktop, Cursor und andere MCP-Clients; eine HTTP-API für Agenten und Skripte (ZXQATOM2QXZ); und eine  Webseite sowie eine native iOS-App  für die Leute.",
+                  "rangeText": " Webseite sowie eine native iOS-App ",
+                  "matchesBaseline": false
+                }
+              ],
+              "accepted": false
+            }
+          ],
+          "normalCandidate": false
+        },
+        {
+          "id": "LIVE-1",
+          "source": "Let AI agents use your real iPhone. With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app, including the ones with no API: Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+          "baseline": {
+            "text": "Lassen Sie KI-Agenten Ihr echtes iPhone benutzen. Mit iPhone-Nutzung auf Ihrem Mac liest Claude Code, Codex oder jeder MCP-Client den Bildschirm des Telefons als Text, tippt, tippt und wischt in jeder App, auch in denen ohne API: Health, Banking, Chat-Apps oder die von Ihnen getestete App. Du kannst es live ansehen und das Handy jederzeit zurücknehmen."
+          },
+          "probes": [
+            {
+              "key": "H0",
+              "views": [
+                {
+                  "encoding": "padded",
+                  "wire": " ⟦H0⟧ Let AI agents use your real iPhone. ⟦/H0⟧  With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app, including the ones with no API: Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+                  "text": "⟦H0⟧ Lass KI-Agenten dein echtes iPhone benutzen. ⟦/H0⟧ Mit iPhone-Use auf Ihrem Mac lest Claude Code, Codex oder jeder MCP-Client den Bildschirm des Telefons als Text, tippt, tippt und wischt in jeder App, auch in denen ohne API: Gesundheit, Banking, Chat-Apps oder die von Ihnen getestete App. Du kannst es live ansehen und das Handy jederzeit zurücknehmen.",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "Lass KI-Agenten dein echtes iPhone benutzen.  Mit iPhone-Use auf Ihrem Mac lest Claude Code, Codex oder jeder MCP-Client den Bildschirm des Telefons als Text, tippt, tippt und wischt in jeder App, auch in denen ohne API: Gesundheit, Banking, Chat-Apps oder die von Ihnen getestete App. Du kannst es live ansehen und das Handy jederzeit zurücknehmen.",
+                  "rangeText": " Lass KI-Agenten dein echtes iPhone benutzen. ",
+                  "matchesBaseline": false
+                },
+                {
+                  "encoding": "sentinel",
+                  "wire": " ZXQSTARTH0QXZ Let AI agents use your real iPhone. ZXQENDH0QXZ  With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app, including the ones with no API: Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+                  "text": "ZXQSTARTH0QXZ Lassen Sie KI-Agenten Ihr echtes iPhone benutzen. ZXQENDH0QXZ Mit iPhone-Use auf Ihrem Mac lest Claude Code, Codex oder jeder MCP-Client den Bildschirm des Telefons als Text, tippt, tippt und wischt in jeder App, auch in denen ohne API: Gesundheit, Banking, Chat-Apps oder die von Ihnen getestete App. Du kannst es live ansehen und das Handy jederzeit zurücknehmen.",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "Lassen Sie KI-Agenten Ihr echtes iPhone benutzen.  Mit iPhone-Use auf Ihrem Mac lest Claude Code, Codex oder jeder MCP-Client den Bildschirm des Telefons als Text, tippt, tippt und wischt in jeder App, auch in denen ohne API: Gesundheit, Banking, Chat-Apps oder die von Ihnen getestete App. Du kannst es live ansehen und das Handy jederzeit zurücknehmen.",
+                  "rangeText": " Lassen Sie KI-Agenten Ihr echtes iPhone benutzen. ",
+                  "matchesBaseline": false
+                }
+              ],
+              "accepted": false
+            },
+            {
+              "key": "B1",
+              "views": [
+                {
+                  "encoding": "padded",
+                  "wire": "Let AI agents use your real iPhone. With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app,  ⟦B1⟧ including the ones with no API ⟦/B1⟧ : Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+                  "text": "Lassen Sie KI-Agenten Ihr echtes iPhone benutzen. Mit iPhone-Nutzung auf Ihrem Mac liest Claude Code, Codex oder jeder MCP-Client den Bildschirm des Telefons als Text, tippt, tippt und wischt in jeder App, ⟦B1⟧, einschließlich der ohne API ⟦/B1⟧: Gesundheits-, Banking-, Chat-Apps oder die App, die Sie testen. Du kannst es live ansehen und das Handy jederzeit zurücknehmen.",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "Lassen Sie KI-Agenten Ihr echtes iPhone benutzen. Mit iPhone-Nutzung auf Ihrem Mac liest Claude Code, Codex oder jeder MCP-Client den Bildschirm des Telefons als Text, tippt, tippt und wischt in jeder App, , einschließlich der ohne API : Gesundheits-, Banking-, Chat-Apps oder die App, die Sie testen. Du kannst es live ansehen und das Handy jederzeit zurücknehmen.",
+                  "rangeText": ", einschließlich der ohne API ",
+                  "matchesBaseline": false
+                },
+                {
+                  "encoding": "sentinel",
+                  "wire": "Let AI agents use your real iPhone. With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app,  ZXQSTARTB1QXZ including the ones with no API ZXQENDB1QXZ : Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+                  "text": "Lassen Sie KI-Agenten Ihr echtes iPhone benutzen. Mit iPhone-Nutzung auf Ihrem Mac liest Claude Code, Codex oder jeder MCP-Client den Bildschirm des Telefons als Text, tippt, tippt und wischt in jeder App, ZXQSTARTB1QXZ auch in denen ohne API-ZXQENDB1QXZ: Gesundheit, Banking, Chat-Apps oder die App, die Sie testen. Du kannst es live ansehen und das Handy jederzeit zurücknehmen.",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "Lassen Sie KI-Agenten Ihr echtes iPhone benutzen. Mit iPhone-Nutzung auf Ihrem Mac liest Claude Code, Codex oder jeder MCP-Client den Bildschirm des Telefons als Text, tippt, tippt und wischt in jeder App,  auch in denen ohne API-: Gesundheit, Banking, Chat-Apps oder die App, die Sie testen. Du kannst es live ansehen und das Handy jederzeit zurücknehmen.",
+                  "rangeText": " auch in denen ohne API-",
+                  "matchesBaseline": false
+                }
+              ],
+              "accepted": false
+            }
+          ],
+          "normalCandidate": false
+        },
+        {
+          "id": "REORDER",
+          "source": "Before you close the window, please save your changes and confirm the delivery address.",
+          "baseline": {
+            "text": "Bevor Sie das Fenster schließen, speichern Sie bitte Ihre Änderungen und bestätigen Sie die Lieferadresse."
+          },
+          "probes": [
+            {
+              "key": "B0",
+              "views": [
+                {
+                  "encoding": "padded",
+                  "wire": "Before you close the window, please  ⟦B0⟧ save your changes ⟦/B0⟧  and confirm the delivery address.",
+                  "text": "Bevor Sie das Fenster schließen, speichern Sie bitte ⟦B0⟧ Ihre Änderungen ⟦/B0⟧ und bestätigen Sie die Lieferadresse.",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "Bevor Sie das Fenster schließen, speichern Sie bitte  Ihre Änderungen  und bestätigen Sie die Lieferadresse.",
+                  "rangeText": " Ihre Änderungen ",
+                  "matchesBaseline": false
+                },
+                {
+                  "encoding": "sentinel",
+                  "wire": "Before you close the window, please  ZXQSTARTB0QXZ save your changes ZXQENDB0QXZ  and confirm the delivery address.",
+                  "text": "Bevor Sie das Fenster schließen, speichern Sie bitte ZXQSTARTB0QXZ Ihre Änderungen ZXQENDB0QXZ und bestätigen Sie die Lieferadresse.",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "Bevor Sie das Fenster schließen, speichern Sie bitte  Ihre Änderungen  und bestätigen Sie die Lieferadresse.",
+                  "rangeText": " Ihre Änderungen ",
+                  "matchesBaseline": false
+                }
+              ],
+              "accepted": false
+            },
+            {
+              "key": "H1",
+              "views": [
+                {
+                  "encoding": "padded",
+                  "wire": "Before you close the window, please save your changes and confirm the  ⟦H1⟧ delivery address ⟦/H1⟧ .",
+                  "text": "Bevor Sie das Fenster schließen, speichern Sie bitte Ihre Änderungen und bestätigen Sie die ⟦H1⟧ Lieferadresse ⟦/H1⟧.",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "Bevor Sie das Fenster schließen, speichern Sie bitte Ihre Änderungen und bestätigen Sie die  Lieferadresse .",
+                  "rangeText": " Lieferadresse ",
+                  "matchesBaseline": false
+                },
+                {
+                  "encoding": "sentinel",
+                  "wire": "Before you close the window, please save your changes and confirm the  ZXQSTARTH1QXZ delivery address ZXQENDH1QXZ .",
+                  "text": "Bevor Sie das Fenster schließen, speichern Sie bitte Ihre Änderungen und bestätigen Sie die ZXQSTARTH1QXZ Lieferadresse ZXQENDH1QXZ .",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "Bevor Sie das Fenster schließen, speichern Sie bitte Ihre Änderungen und bestätigen Sie die  Lieferadresse  .",
+                  "rangeText": " Lieferadresse ",
+                  "matchesBaseline": false
+                }
+              ],
+              "accepted": false
+            }
+          ],
+          "normalCandidate": false
+        },
+        {
+          "id": "REPEAT",
+          "source": "The account is active, but the account must be verified. Run ZXQATOM2QXZ then calculate ZXQATOM3QXZ.",
+          "baseline": {
+            "text": "Das Konto ist aktiv, aber es muss verifiziert werden. Laufe ZXQATOM2QXZ und berechne dann ZXQATOM3QXZ."
+          },
+          "probes": [
+            {
+              "key": "B0",
+              "views": [
+                {
+                  "encoding": "padded",
+                  "wire": "The  ⟦B0⟧ account ⟦/B0⟧  is active, but the account must be verified. Run ZXQATOM2QXZ then calculate ZXQATOM3QXZ.",
+                  "text": "Das Konto ⟦B0⟧ ⟦/B0⟧ ist aktiv, aber das Konto muss überprüft werden. Laufe ZXQATOM2QXZ und berechne dann ZXQATOM3QXZ.",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "Das Konto   ist aktiv, aber das Konto muss überprüft werden. Laufe ZXQATOM2QXZ und berechne dann ZXQATOM3QXZ.",
+                  "rangeText": " ",
+                  "matchesBaseline": false
+                },
+                {
+                  "encoding": "sentinel",
+                  "wire": "The  ZXQSTARTB0QXZ account ZXQENDB0QXZ  is active, but the account must be verified. Run ZXQATOM2QXZ then calculate ZXQATOM3QXZ.",
+                  "text": "Das ZXQSTARTB0QXZ Konto ZXQENDB0QXZ aktiv ist, aber das Konto muss verifiziert werden. Laufe ZXQATOM2QXZ und berechne dann ZXQATOM3QXZ.",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "Das  Konto  aktiv ist, aber das Konto muss verifiziert werden. Laufe ZXQATOM2QXZ und berechne dann ZXQATOM3QXZ.",
+                  "rangeText": " Konto ",
+                  "matchesBaseline": false
+                }
+              ],
+              "accepted": false
+            },
+            {
+              "key": "H1",
+              "views": [
+                {
+                  "encoding": "padded",
+                  "wire": "The account is active, but the  ⟦H1⟧ account ⟦/H1⟧  must be verified. Run ZXQATOM2QXZ then calculate ZXQATOM3QXZ.",
+                  "text": "Das Konto ist aktiv, aber das ⟦H1⟧-Konto ⟦/H1⟧ muss überprüft werden. Laufe ZXQATOM2QXZ und berechne dann ZXQATOM3QXZ.",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "Das Konto ist aktiv, aber das -Konto  muss überprüft werden. Laufe ZXQATOM2QXZ und berechne dann ZXQATOM3QXZ.",
+                  "rangeText": "-Konto ",
+                  "matchesBaseline": false
+                },
+                {
+                  "encoding": "sentinel",
+                  "wire": "The account is active, but the  ZXQSTARTH1QXZ account ZXQENDH1QXZ  must be verified. Run ZXQATOM2QXZ then calculate ZXQATOM3QXZ.",
+                  "text": "Das Konto ist aktiv, aber das ZXQSTARTH1QXZ Konto muss ZXQENDH1QXZ überprüft werden. Laufe ZXQATOM2QXZ und berechne dann ZXQATOM3QXZ.",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "Das Konto ist aktiv, aber das  Konto muss  überprüft werden. Laufe ZXQATOM2QXZ und berechne dann ZXQATOM3QXZ.",
+                  "rangeText": " Konto muss ",
+                  "matchesBaseline": false
+                }
+              ],
+              "accepted": false
+            }
+          ],
+          "normalCandidate": false
+        },
+        {
+          "id": "UNSEEN-REPEAT",
+          "source": "Please move the backup account before you delete the backup account from the old device. Keep ZXQATOM2QXZ unchanged.",
+          "baseline": {
+            "text": "Bitte verschiebe das Backup-Konto, bevor du das Backup-Konto vom alten Gerät löschst. Lass ZXQATOM2QXZ unverändert."
+          },
+          "probes": [
+            {
+              "key": "B0",
+              "views": [
+                {
+                  "encoding": "padded",
+                  "wire": "Please move the  ⟦B0⟧ backup account ⟦/B0⟧  before you delete the backup account from the old device. Keep ZXQATOM2QXZ unchanged.",
+                  "text": "Bitte verschieben Sie das ⟦B0⟧-Backup-Konto ⟦/B0⟧, bevor Sie das Backup-Konto vom alten Gerät löschen. Lass ZXQATOM2QXZ unverändert.",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "Bitte verschieben Sie das -Backup-Konto , bevor Sie das Backup-Konto vom alten Gerät löschen. Lass ZXQATOM2QXZ unverändert.",
+                  "rangeText": "-Backup-Konto ",
+                  "matchesBaseline": false
+                },
+                {
+                  "encoding": "sentinel",
+                  "wire": "Please move the  ZXQSTARTB0QXZ backup account ZXQENDB0QXZ  before you delete the backup account from the old device. Keep ZXQATOM2QXZ unchanged.",
+                  "text": "Bitte verschieben Sie das ZXQSTARTB0QXZ Backup-Konto ZXQENDB0QXZ, bevor Sie das Backup-Konto vom alten Gerät löschen. Lass ZXQATOM2QXZ unverändert.",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "Bitte verschieben Sie das  Backup-Konto , bevor Sie das Backup-Konto vom alten Gerät löschen. Lass ZXQATOM2QXZ unverändert.",
+                  "rangeText": " Backup-Konto ",
+                  "matchesBaseline": false
+                }
+              ],
+              "accepted": false
+            },
+            {
+              "key": "H1",
+              "views": [
+                {
+                  "encoding": "padded",
+                  "wire": "Please move the backup account before you delete the  ⟦H1⟧ backup account ⟦/H1⟧  from the old device. Keep ZXQATOM2QXZ unchanged.",
+                  "text": "Bitte verschiebe das Backup-Konto, bevor du das ⟦H1⟧-Backup-Konto ⟦/H1⟧ vom alten Gerät löschst. Lass ZXQATOM2QXZ unverändert.",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "Bitte verschiebe das Backup-Konto, bevor du das -Backup-Konto  vom alten Gerät löschst. Lass ZXQATOM2QXZ unverändert.",
+                  "rangeText": "-Backup-Konto ",
+                  "matchesBaseline": false
+                },
+                {
+                  "encoding": "sentinel",
+                  "wire": "Please move the backup account before you delete the  ZXQSTARTH1QXZ backup account ZXQENDH1QXZ  from the old device. Keep ZXQATOM2QXZ unchanged.",
+                  "text": "Bitte verschiebe das Backup-Konto, bevor du das ZXQSTARTH1QXZ Backup-Konto ZXQENDH1QXZ vom alten Gerät löschst. Lass ZXQATOM2QXZ unverändert.",
+                  "unique": true,
+                  "intactAtoms": true,
+                  "clean": "Bitte verschiebe das Backup-Konto, bevor du das  Backup-Konto  vom alten Gerät löschst. Lass ZXQATOM2QXZ unverändert.",
+                  "rangeText": " Backup-Konto ",
+                  "matchesBaseline": false
+                }
+              ],
+              "accepted": false
+            }
+          ],
+          "normalCandidate": false
+        }
+      ]
+    }
+  ]
+}

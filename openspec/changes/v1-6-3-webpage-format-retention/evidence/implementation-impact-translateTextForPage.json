@@ -1,0 +1,188 @@
+{
+  "target": {
+    "id": "Function:src/utils/host/translate/translate-variants.ts:translateTextForPage",
+    "name": "translateTextForPage",
+    "type": "Function",
+    "filePath": "src/utils/host/translate/translate-variants.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 15,
+  "risk": "HIGH",
+  "riskSharedAxes": "MEDIUM",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 5,
+    "processes_affected": 0,
+    "modules_affected": 3
+  },
+  "byDepthCounts": {
+    "1": 5,
+    "2": 4,
+    "3": 6
+  },
+  "affected_processes": [],
+  "affected_modules": [
+    {
+      "name": "Dom",
+      "hits": 12,
+      "impact": "direct"
+    },
+    {
+      "name": "Translate",
+      "hits": 2,
+      "impact": "direct"
+    },
+    {
+      "name": "Background",
+      "hits": 1,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/utils/host/translate/core/translation-modes.ts:translateVirtualParagraph",
+        "name": "translateVirtualParagraph",
+        "filePath": "src/utils/host/translate/core/translation-modes.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/utils/host/translate/core/translation-request.ts:createPageTranslationRequest.translate@150:6",
+        "name": "translate",
+        "filePath": "src/utils/host/translate/core/translation-request.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/utils/host/translate/core/translation-request.ts:createPageTranslationRequest.translateLegacyHtml@164:2",
+        "name": "translateLegacyHtml",
+        "filePath": "src/utils/host/translate/core/translation-request.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/utils/host/translate/core/translation-request.ts:createPageTranslationRequest.translateRequest@172:2",
+        "name": "translateRequest",
+        "filePath": "src/utils/host/translate/core/translation-request.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/utils/host/translate/ui/spinner.ts:getTranslatedTextAndRemoveSpinner",
+        "name": "getTranslatedTextAndRemoveSpinner",
+        "filePath": "src/utils/host/translate/ui/spinner.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "Function:src/utils/host/translate/core/translation-modes.ts:translateNodesBilingualMode",
+        "name": "translateNodesBilingualMode",
+        "filePath": "src/utils/host/translate/core/translation-modes.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/utils/host/translate/core/translation-modes.ts:translateTranslationOnlyRun",
+        "name": "translateTranslationOnlyRun",
+        "filePath": "src/utils/host/translate/core/translation-modes.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/utils/host/translate/core/translation-modes.ts:translateVirtualParagraphs",
+        "name": "translateVirtualParagraphs",
+        "filePath": "src/utils/host/translate/core/translation-modes.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/utils/host/translate/core/translation-request.ts:createPageTranslationRequest",
+        "name": "createPageTranslationRequest",
+        "filePath": "src/utils/host/translate/core/translation-request.ts",
+        "relationType": "USES",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "3": [
+      {
+        "depth": 3,
+        "id": "Function:src/components/translation/error/retry-button.tsx:RetryButton.handleRetry@17:2",
+        "name": "handleRetry",
+        "filePath": "src/components/translation/error/retry-button.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/utils/host/translate/core/translation-modes.ts:maybeTranslateVirtualUnitRuns",
+        "name": "maybeTranslateVirtualUnitRuns",
+        "filePath": "src/utils/host/translate/core/translation-modes.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/utils/host/translate/core/translation-modes.ts:translateNodeTranslationOnlyMode",
+        "name": "translateNodeTranslationOnlyMode",
+        "filePath": "src/utils/host/translate/core/translation-modes.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/utils/host/translate/core/translation-modes.ts:translateNodes",
+        "name": "translateNodes",
+        "filePath": "src/utils/host/translate/core/translation-modes.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/utils/host/translate/core/translation-modes.ts:translateNonMaterializableGiant",
+        "name": "translateNonMaterializableGiant",
+        "filePath": "src/utils/host/translate/core/translation-modes.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Method:src/entrypoints/host.content/translation-control/page-translation.ts:PageTranslationManager.retranslateChangedSource#3",
+        "name": "retranslateChangedSource",
+        "filePath": "src/entrypoints/host.content/translation-control/page-translation.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ]
+  }
+}

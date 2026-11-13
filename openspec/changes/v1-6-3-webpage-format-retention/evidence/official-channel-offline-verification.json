@@ -1,0 +1,13 @@
+{
+  "verifiedAt": "2026-11-13T07:12:47.864Z",
+  "status": "offline-preparation-passed",
+  "checks": [
+    "preparation-only; no network executed",
+    "9 complete paragraph samples; 3 planned batches; zero retry",
+    "allowlisted complete HTML; unique format IDs; each atom bound exactly once; no page attributes or controls",
+    "official HTML request shape and target URLs; no credential fields; calculated character cap respected"
+  ],
+  "plannedCharacters": 7554,
+  "networkRequestsExecuted": 0,
+  "liveP0Status": "unverified"
+}

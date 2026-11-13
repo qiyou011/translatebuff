@@ -1,0 +1,407 @@
+{
+  "target": {
+    "id": "Function:src/utils/host/translate/translate-variants.ts:translateTextUsingPageConfig",
+    "name": "translateTextUsingPageConfig",
+    "type": "Function",
+    "filePath": "src/utils/host/translate/translate-variants.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 14,
+  "risk": "HIGH",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 2,
+    "processes_affected": 1,
+    "modules_affected": 4
+  },
+  "byDepthCounts": {
+    "1": 2,
+    "2": 6,
+    "3": 6
+  },
+  "affected_processes": [
+    {
+      "name": "bootstrapHostContent",
+      "type": "Function",
+      "filePath": "src/entrypoints/host.content/runtime.ts",
+      "affected_process_count": 9,
+      "total_hits": 35,
+      "earliest_broken_step": 3
+    }
+  ],
+  "affected_modules": [
+    {
+      "name": "Dom",
+      "hits": 6,
+      "impact": "indirect"
+    },
+    {
+      "name": "Background",
+      "hits": 3,
+      "impact": "direct"
+    },
+    {
+      "name": "Translation-control",
+      "hits": 3,
+      "impact": "indirect"
+    },
+    {
+      "name": "Translate",
+      "hits": 2,
+      "impact": "indirect"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/utils/host/translate/translate-variants.ts:translateTextForPage",
+        "name": "translateTextForPage",
+        "filePath": "src/utils/host/translate/translate-variants.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/utils/host/translate/translate-variants.ts:translateTextForPageTitle",
+        "name": "translateTextForPageTitle",
+        "filePath": "src/utils/host/translate/translate-variants.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_5_bootstraphostcontent",
+            "label": "BootstrapHostContent → Warn",
+            "processType": "cross_community",
+            "step": 7
+          },
+          {
+            "id": "proc_6_bootstraphostcontent",
+            "label": "BootstrapHostContent → IsLLMProviderConfig",
+            "processType": "cross_community",
+            "step": 7
+          },
+          {
+            "id": "proc_16_bootstraphostcontent",
+            "label": "BootstrapHostContent → GetPageTranslationSessionId",
+            "processType": "cross_community",
+            "step": 7
+          },
+          {
+            "id": "proc_8_bootstraphostcontent",
+            "label": "BootstrapHostContent → GetSystemProviderDef",
+            "processType": "cross_community",
+            "step": 7
+          },
+          {
+            "id": "proc_3_bootstraphostcontent",
+            "label": "BootstrapHostContent → GetStorageItem",
+            "processType": "cross_community",
+            "step": 7
+          },
+          {
+            "id": "proc_7_bootstraphostcontent",
+            "label": "BootstrapHostContent → CreateSystemProviderRef",
+            "processType": "cross_community",
+            "step": 7
+          },
+          {
+            "id": "proc_9_bootstraphostcontent",
+            "label": "BootstrapHostContent → IsLocalProviderConfigCompatibleWithCapability",
+            "processType": "cross_community",
+            "step": 7
+          },
+          {
+            "id": "proc_4_bootstraphostcontent",
+            "label": "BootstrapHostContent → Error",
+            "processType": "cross_community",
+            "step": 7
+          }
+        ]
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "Function:src/utils/host/translate/core/translation-modes.ts:translateVirtualParagraph",
+        "name": "translateVirtualParagraph",
+        "filePath": "src/utils/host/translate/core/translation-modes.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/utils/host/translate/core/translation-request.ts:createPageTranslationRequest.translate@150:6",
+        "name": "translate",
+        "filePath": "src/utils/host/translate/core/translation-request.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/utils/host/translate/core/translation-request.ts:createPageTranslationRequest.translateLegacyHtml@164:2",
+        "name": "translateLegacyHtml",
+        "filePath": "src/utils/host/translate/core/translation-request.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/utils/host/translate/core/translation-request.ts:createPageTranslationRequest.translateRequest@172:2",
+        "name": "translateRequest",
+        "filePath": "src/utils/host/translate/core/translation-request.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/utils/host/translate/ui/spinner.ts:getTranslatedTextAndRemoveSpinner",
+        "name": "getTranslatedTextAndRemoveSpinner",
+        "filePath": "src/utils/host/translate/ui/spinner.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Method:src/entrypoints/host.content/translation-control/page-translation.ts:PageTranslationManager.syncDocumentTitle#1",
+        "name": "syncDocumentTitle",
+        "filePath": "src/entrypoints/host.content/translation-control/page-translation.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_6_bootstraphostcontent",
+            "label": "BootstrapHostContent → IsLLMProviderConfig",
+            "processType": "cross_community",
+            "step": 6
+          },
+          {
+            "id": "proc_5_bootstraphostcontent",
+            "label": "BootstrapHostContent → Warn",
+            "processType": "cross_community",
+            "step": 6
+          },
+          {
+            "id": "proc_16_bootstraphostcontent",
+            "label": "BootstrapHostContent → GetPageTranslationSessionId",
+            "processType": "cross_community",
+            "step": 6
+          },
+          {
+            "id": "proc_9_bootstraphostcontent",
+            "label": "BootstrapHostContent → IsLocalProviderConfigCompatibleWithCapability",
+            "processType": "cross_community",
+            "step": 6
+          },
+          {
+            "id": "proc_22_bootstraphostcontent",
+            "label": "BootstrapHostContent → ShouldManageDocumentTitle",
+            "processType": "cross_community",
+            "step": 6
+          },
+          {
+            "id": "proc_3_bootstraphostcontent",
+            "label": "BootstrapHostContent → GetStorageItem",
+            "processType": "cross_community",
+            "step": 6
+          },
+          {
+            "id": "proc_7_bootstraphostcontent",
+            "label": "BootstrapHostContent → CreateSystemProviderRef",
+            "processType": "cross_community",
+            "step": 6
+          },
+          {
+            "id": "proc_8_bootstraphostcontent",
+            "label": "BootstrapHostContent → GetSystemProviderDef",
+            "processType": "cross_community",
+            "step": 6
+          },
+          {
+            "id": "proc_4_bootstraphostcontent",
+            "label": "BootstrapHostContent → Error",
+            "processType": "cross_community",
+            "step": 6
+          }
+        ]
+      }
+    ],
+    "3": [
+      {
+        "depth": 3,
+        "id": "Function:src/utils/host/translate/core/translation-modes.ts:translateNodesBilingualMode",
+        "name": "translateNodesBilingualMode",
+        "filePath": "src/utils/host/translate/core/translation-modes.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/utils/host/translate/core/translation-modes.ts:translateTranslationOnlyRun",
+        "name": "translateTranslationOnlyRun",
+        "filePath": "src/utils/host/translate/core/translation-modes.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/utils/host/translate/core/translation-modes.ts:translateVirtualParagraphs",
+        "name": "translateVirtualParagraphs",
+        "filePath": "src/utils/host/translate/core/translation-modes.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/utils/host/translate/core/translation-request.ts:createPageTranslationRequest",
+        "name": "createPageTranslationRequest",
+        "filePath": "src/utils/host/translate/core/translation-request.ts",
+        "relationType": "USES",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Method:src/entrypoints/host.content/translation-control/page-translation.ts:PageTranslationManager.handleDocumentTitleMutation#0",
+        "name": "handleDocumentTitleMutation",
+        "filePath": "src/entrypoints/host.content/translation-control/page-translation.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_9_bootstraphostcontent",
+            "label": "BootstrapHostContent → IsLocalProviderConfigCompatibleWithCapability",
+            "processType": "cross_community",
+            "step": 5
+          },
+          {
+            "id": "proc_3_bootstraphostcontent",
+            "label": "BootstrapHostContent → GetStorageItem",
+            "processType": "cross_community",
+            "step": 5
+          },
+          {
+            "id": "proc_4_bootstraphostcontent",
+            "label": "BootstrapHostContent → Error",
+            "processType": "cross_community",
+            "step": 5
+          },
+          {
+            "id": "proc_7_bootstraphostcontent",
+            "label": "BootstrapHostContent → CreateSystemProviderRef",
+            "processType": "cross_community",
+            "step": 5
+          },
+          {
+            "id": "proc_8_bootstraphostcontent",
+            "label": "BootstrapHostContent → GetSystemProviderDef",
+            "processType": "cross_community",
+            "step": 5
+          },
+          {
+            "id": "proc_22_bootstraphostcontent",
+            "label": "BootstrapHostContent → ShouldManageDocumentTitle",
+            "processType": "cross_community",
+            "step": 5
+          },
+          {
+            "id": "proc_6_bootstraphostcontent",
+            "label": "BootstrapHostContent → IsLLMProviderConfig",
+            "processType": "cross_community",
+            "step": 5
+          },
+          {
+            "id": "proc_5_bootstraphostcontent",
+            "label": "BootstrapHostContent → Warn",
+            "processType": "cross_community",
+            "step": 5
+          },
+          {
+            "id": "proc_16_bootstraphostcontent",
+            "label": "BootstrapHostContent → GetPageTranslationSessionId",
+            "processType": "cross_community",
+            "step": 5
+          }
+        ]
+      },
+      {
+        "depth": 3,
+        "id": "Method:src/entrypoints/host.content/translation-control/page-translation.ts:PageTranslationManager.startDocumentTitleTracking#0",
+        "name": "startDocumentTitleTracking",
+        "filePath": "src/entrypoints/host.content/translation-control/page-translation.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_16_bootstraphostcontent",
+            "label": "BootstrapHostContent → GetPageTranslationSessionId",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_5_bootstraphostcontent",
+            "label": "BootstrapHostContent → Warn",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_6_bootstraphostcontent",
+            "label": "BootstrapHostContent → IsLLMProviderConfig",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_22_bootstraphostcontent",
+            "label": "BootstrapHostContent → ShouldManageDocumentTitle",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_9_bootstraphostcontent",
+            "label": "BootstrapHostContent → IsLocalProviderConfigCompatibleWithCapability",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_8_bootstraphostcontent",
+            "label": "BootstrapHostContent → GetSystemProviderDef",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_3_bootstraphostcontent",
+            "label": "BootstrapHostContent → GetStorageItem",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_7_bootstraphostcontent",
+            "label": "BootstrapHostContent → CreateSystemProviderRef",
+            "processType": "cross_community",
+            "step": 3
+          },
+          {
+            "id": "proc_4_bootstraphostcontent",
+            "label": "BootstrapHostContent → Error",
+            "processType": "cross_community",
+            "step": 3
+          }
+        ]
+      }
+    ]
+  }
+}

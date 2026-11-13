@@ -3,9 +3,11 @@ import type { ProviderConfig } from "@/types/config/provider"
 import type { TranslationTextFormat } from "@/types/config/translate"
 import type { WebPagePromptContext } from "@/types/content"
 import type { MatchedTerm } from "@/utils/glossary/types"
+import type { BilingualFormatManifest } from "@/utils/host/translate/bilingual-format-protocol"
 
 export interface PageTranslationData {
   text: string
+  bilingualFormat?: BilingualFormatManifest
   langConfig: Config["language"]
   provider: ProviderConfig
   promptConfig: Config["pageTranslation"]["customPromptsConfig"]

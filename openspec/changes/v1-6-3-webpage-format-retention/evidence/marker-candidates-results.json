@@ -1,0 +1,1325 @@
+{
+  "at": "2026-11-13T06:45:31.218Z",
+  "groups": [
+    {
+      "targetCode": "cmn",
+      "candidate": "padded",
+      "records": [
+        {
+          "id": "F01",
+          "wire": "A daemon on your Mac drives the phone in three forms: an ⟦H0⟧ MCP server ⟦/H0⟧ for your agent; an ⟦B1⟧ HTTP API ⟦/B1⟧ for scripts (ZXQATOM2QXZ); and a ⟦B3⟧ web page and native iOS app ⟦/B3⟧ for people.",
+          "result": "Mac上的守护进程以三种形式驱动手机：为代理提供⟦H0⟧ MCP服务器⟦/H0⟧;一个⟦B1⟧ HTTP API ⟦/B1⟧用于脚本（ZXQATOM2QXZ）;以及面向用户的⟦B3⟧网页和原生iOS应用⟦/B3⟧。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "F24",
+          "wire": "A daemon on your Mac drives the phone and offers the same control in three forms: an ⟦H0⟧ MCP server ⟦/H0⟧ for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an ⟦B1⟧ HTTP API ⟦/B1⟧ for agents and scripts (ZXQATOM2QXZ); and a ⟦B3⟧ web page and native iOS app ⟦/B3⟧ for people.",
+          "result": "你的Mac上的守护进程驱动手机，提供三种形式的相同控制：一个⟦H0⟧ MCP服务器⟦/H0⟧，用于Claude Code、Codex、Claude Desktop、Cursor及其他MCP客户端;一个⟦B1⟧ HTTP API ⟦/B1⟧用于代理和脚本（ZXQATOM2QXZ）;以及面向用户的⟦B3⟧网页和原生iOS应用⟦/B3⟧。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "LIVE-1",
+          "wire": "⟦H0⟧ Let AI agents use your real iPhone. ⟦/H0⟧ With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app, ⟦B1⟧ including the ones with no API ⟦/B1⟧: Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+          "result": "⟦H0⟧ 让AI代理使用你的真实iPhone。⟦/H0⟧ 在你的Mac上安装了iPhone使用，Claude Code、Codex或任何MCP客户端会将手机屏幕读取为文本，点击、输入和滑动任何应用，⟦B1⟧包括没有API的应用 ⟦/B1⟧：健康、银行、聊天应用或你正在测试的应用。你可以随时观看直播，并把手机拿回去。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "REORDER",
+          "wire": "Before you close the window, please ⟦B0⟧ save your changes ⟦/B0⟧ and confirm the ⟦H1⟧ delivery address ⟦/H1⟧.",
+          "result": "关闭窗口前，请⟦B0⟧保存您的更改⟦/B0⟧，并确认⟦H1⟧送货地址⟦/H1⟧。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "REPEAT",
+          "wire": "The ⟦B0⟧ account ⟦/B0⟧ is active, but the ⟦H1⟧ account ⟦/H1⟧ must be verified. Run ZXQATOM2QXZ then calculate ZXQATOM3QXZ.",
+          "result": "⟦B0⟧账户⟦/B0⟧仍然活跃，但⟦H1⟧账户⟦/H1⟧必须验证。运行ZXQATOM2QXZ然后计算ZXQATOM3QXZ。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "NESTED",
+          "wire": "Keep the ⟦B0⟧ new ⟦H1⟧ payment deadline ⟦/H1⟧ unchanged ⟦/B0⟧ and run ZXQATOM2QXZ.",
+          "result": "保持新的⟦B0⟧新的⟦H1⟧付款截止日期⟦/H1⟧保持不变⟦/B0⟧，并运行ZXQATOM2QXZ。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "BREAKS",
+          "wire": "First step: ⟦B0⟧ save the file ⟦/B0⟧.\n\nSecond step: run ZXQATOM1QXZ.\nLast step: close the window.",
+          "result": "第一步：⟦B0⟧ 保存文件 ⟦/B0⟧。\n\n第二步：赶ZXQATOM1QXZ。\n最后一步：关上窗户。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        }
+      ]
+    },
+    {
+      "targetCode": "cmn",
+      "candidate": "numeric",
+      "records": [
+        {
+          "id": "F01",
+          "wire": "A daemon on your Mac drives the phone in three forms: an  ⟦0⟧ MCP server ⟦/0⟧  for your agent; an  ⟦1⟧ HTTP API ⟦/1⟧  for scripts (ZXQATOM2QXZ); and a  ⟦3⟧ web page and native iOS app ⟦/3⟧  for people.",
+          "result": "你 Mac 上的守护进程以三种形式驱动手机：一个 ⟦0⟧ MCP 服务器 ⟦/0⟧ 用于你的代理;一个⟦1⟧ HTTP API ⟦/1⟧用于脚本（ZXQATOM2QXZ）;以及一个⟦3⟧网页和原生iOS应用⟦/3⟧。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "F24",
+          "wire": "A daemon on your Mac drives the phone and offers the same control in three forms: an  ⟦0⟧ MCP server ⟦/0⟧  for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an  ⟦1⟧ HTTP API ⟦/1⟧  for agents and scripts (ZXQATOM2QXZ); and a  ⟦3⟧ web page and native iOS app ⟦/3⟧  for people.",
+          "result": "Mac上的守护进程驱动手机，提供三种形式的相同控制：⟦0⟧ MCP服务器⟦/0⟧用于Claude Code、Codex、Claude Desktop、Cursor及其他MCP客户端;一个⟦1⟧ HTTP API ⟦/1⟧用于代理和脚本（ZXQATOM2QXZ）;以及一个⟦3⟧网页和原生iOS应用⟦/3⟧。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "LIVE-1",
+          "wire": " ⟦0⟧ Let AI agents use your real iPhone. ⟦/0⟧  With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app,  ⟦1⟧ including the ones with no API ⟦/1⟧ : Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+          "result": "⟦0⟧ 让AI代理使用你的真实iPhone。⟦/0⟧ 在你的Mac上安装iPhone时，Claude Code、Codex或任何MCP客户端会将手机屏幕读取为文本，点击、输入和滑动任何应用，⟦1⟧包括那些没有API的应用 ⟦/1⟧：健康、银行、聊天应用或你正在测试的应用。你可以随时观看直播，并把手机拿回去。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "REORDER",
+          "wire": "Before you close the window, please  ⟦0⟧ save your changes ⟦/0⟧  and confirm the  ⟦1⟧ delivery address ⟦/1⟧ .",
+          "result": "关闭窗口前，请⟦0⟧保存您的更改⟦/0⟧并确认⟦1⟧送货地址⟦/1⟧。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "REPEAT",
+          "wire": "The  ⟦0⟧ account ⟦/0⟧  is active, but the  ⟦1⟧ account ⟦/1⟧  must be verified. Run ZXQATOM2QXZ then calculate ZXQATOM3QXZ.",
+          "result": "⟦0⟧账户⟦/0⟧仍然活跃，但⟦1⟧账户⟦/1⟧必须核实。运行ZXQATOM2QXZ然后计算ZXQATOM3QXZ。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "NESTED",
+          "wire": "Keep the  ⟦0⟧ new  ⟦1⟧ payment deadline ⟦/1⟧  unchanged ⟦/0⟧  and run ZXQATOM2QXZ.",
+          "result": "保持⟦0⟧新的⟦1⟧付款截止日期⟦/1⟧不变⟦/0⟧，并运行在ZXQATOM2QXZ。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "BREAKS",
+          "wire": "First step:  ⟦0⟧ save the file ⟦/0⟧ .\n\nSecond step: run ZXQATOM1QXZ.\nLast step: close the window.",
+          "result": "第一步：⟦0⟧ 保存文件 ⟦/0⟧。\n\n第二步：赶ZXQATOM1QXZ。\n最后一步：关上窗户。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        }
+      ]
+    },
+    {
+      "targetCode": "cmn",
+      "candidate": "curly",
+      "records": [
+        {
+          "id": "F01",
+          "wire": "A daemon on your Mac drives the phone in three forms: an  {{H0}} MCP server {{/H0}}  for your agent; an  {{B1}} HTTP API {{/B1}}  for scripts (ZXQATOM2QXZ); and a  {{B3}} web page and native iOS app {{/B3}}  for people.",
+          "result": "你 Mac 上的守护进程以三种形式驱动手机：为你的代理提供 {{H0}} MCP 服务器 {{/H0}};an {{B1}} HTTP API for scripts {{/B1}} （ZXQATOM2QXZ）;以及面向用户的{{B3}}网页和原生iOS应用{{/B3}}。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "F24",
+          "wire": "A daemon on your Mac drives the phone and offers the same control in three forms: an  {{H0}} MCP server {{/H0}}  for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an  {{B1}} HTTP API {{/B1}}  for agents and scripts (ZXQATOM2QXZ); and a  {{B3}} web page and native iOS app {{/B3}}  for people.",
+          "result": "Mac上的守护进程驱动手机，提供三种形式的控制：{{H0}} MCP服务器{{/H0}}，用于Claude Code、Codex、Claude桌面版、光标及其他MCP客户端;an {{B1}} HTTP API 用于代理和脚本（ZXQATOM2QXZ）;以及面向用户的{{B3}}网页和原生iOS应用{{/B3}}。",
+          "missingOrRepeated": ["{{/B1}}"],
+          "brokenAtoms": []
+        },
+        {
+          "id": "LIVE-1",
+          "wire": " {{H0}} Let AI agents use your real iPhone. {{/H0}}  With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app,  {{B1}} including the ones with no API {{/B1}} : Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+          "result": "{{H0}}让AI代理使用你的真实iPhone。{{/H0}} 在Mac上安装iPhone后，Claude Code、Codex或任何MCP客户端会将手机屏幕读取为文本，点击、输入和滑动，使用任何应用{{B1}}，包括没有API的应用{{/B1}}：健康、银行、聊天应用或你正在测试的应用。你可以随时观看直播，并把手机拿回去。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "REORDER",
+          "wire": "Before you close the window, please  {{B0}} save your changes {{/B0}}  and confirm the  {{H1}} delivery address {{/H1}} .",
+          "result": "关闭窗口前，请{{B0}}保存您的更改{{/B0}}并确认{{H1}}的送达地址{{/H1}}。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "REPEAT",
+          "wire": "The  {{B0}} account {{/B0}}  is active, but the  {{H1}} account {{/H1}}  must be verified. Run ZXQATOM2QXZ then calculate ZXQATOM3QXZ.",
+          "result": "{{B0}}账户{{/B0}}是活跃的，但{{H1}}账户{{/H1}}必须验证。运行ZXQATOM2QXZ然后计算ZXQATOM3QXZ。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "NESTED",
+          "wire": "Keep the  {{B0}} new  {{H1}} payment deadline {{/H1}}  unchanged {{/B0}}  and run ZXQATOM2QXZ.",
+          "result": "保持{{B0}}新的{{H1}}付款截止日期{{/H1}}不变{{/B0}}，然后继续ZXQATOM2QXZ。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "BREAKS",
+          "wire": "First step:  {{B0}} save the file {{/B0}} .\n\nSecond step: run ZXQATOM1QXZ.\nLast step: close the window.",
+          "result": "第一步：{{B0}} 保存文件 {{/B0}} 。\n\n第二步：赶ZXQATOM1QXZ。\n最后一步：关上窗户。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        }
+      ]
+    },
+    {
+      "targetCode": "cmn",
+      "candidate": "square",
+      "records": [
+        {
+          "id": "F01",
+          "wire": "A daemon on your Mac drives the phone in three forms: an  [[H0]] MCP server [[/H0]]  for your agent; an  [[B1]] HTTP API [[/B1]]  for scripts (ZXQATOM2QXZ); and a  [[B3]] web page and native iOS app [[/B3]]  for people.",
+          "result": "你 Mac 上的守护进程以三种形式驱动手机：为代理提供 [[H0]] MCP 服务器 [[/H0]];一个用于脚本的 [[[B1]] HTTP API [[/B1]]（ZXQATOM2QXZ）;以及为用户设计的[[B3]]网页和原生iOS应用[[/B3]]。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "F24",
+          "wire": "A daemon on your Mac drives the phone and offers the same control in three forms: an  [[H0]] MCP server [[/H0]]  for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an  [[B1]] HTTP API [[/B1]]  for agents and scripts (ZXQATOM2QXZ); and a  [[B3]] web page and native iOS app [[/B3]]  for people.",
+          "result": "Mac上的守护进程驱动手机，提供三种形式的控制：[[H0]] MCP服务器[[/H0]]，用于Claude Code、Codex、Claude Desktop、Chopsor及其他MCP客户端;一个 [[B1]] HTTP API [[/B1]] 用于代理和脚本（ZXQATOM2QXZ）;以及为用户设计的[[B3]]网页和原生iOS应用[[/B3]]。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "LIVE-1",
+          "wire": " [[H0]] Let AI agents use your real iPhone. [[/H0]]  With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app,  [[B1]] including the ones with no API [[/B1]] : Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+          "result": "[[H0]]让AI代理使用你的真实iPhone。[[/H0]] 在你的Mac上安装了iPhone时，Claude Code、Codex或任何MCP客户端会将手机屏幕读取为文本，在任何应用中点击、输入和滑动，包括那些没有API的应用[[/B1]]：健康、银行、聊天应用或你正在测试的应用。你可以随时观看直播，并把手机拿回去。",
+          "missingOrRepeated": ["[[B1]]"],
+          "brokenAtoms": []
+        },
+        {
+          "id": "REORDER",
+          "wire": "Before you close the window, please  [[B0]] save your changes [[/B0]]  and confirm the  [[H1]] delivery address [[/H1]] .",
+          "result": "关闭窗口前，请[[B0]]保存您的更改[[/B0]]，并确认[[H1]]的送达地址[[/H1]]。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "REPEAT",
+          "wire": "The  [[B0]] account [[/B0]]  is active, but the  [[H1]] account [[/H1]]  must be verified. Run ZXQATOM2QXZ then calculate ZXQATOM3QXZ.",
+          "result": "[[B0]] 账户 [[/B0]] 是活跃的，但 [[H1]] 账户 [[/H1]] 必须验证。运行ZXQATOM2QXZ然后计算ZXQATOM3QXZ。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "NESTED",
+          "wire": "Keep the  [[B0]] new  [[H1]] payment deadline [[/H1]]  unchanged [[/B0]]  and run ZXQATOM2QXZ.",
+          "result": "保持新的[[H1]]付款截止日期[[/H1]]不变，ZXQATOM2QXZ运行。",
+          "missingOrRepeated": ["[[B0]]", "[[/B0]]"],
+          "brokenAtoms": []
+        },
+        {
+          "id": "BREAKS",
+          "wire": "First step:  [[B0]] save the file [[/B0]] .\n\nSecond step: run ZXQATOM1QXZ.\nLast step: close the window.",
+          "result": "第一步：[[B0]] 保存文件 [[/B0]]。\n\n第二步：赶ZXQATOM1QXZ。\n最后一步：关上窗户。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        }
+      ]
+    },
+    {
+      "targetCode": "cmn",
+      "candidate": "xml",
+      "records": [
+        {
+          "id": "F01",
+          "wire": "A daemon on your Mac drives the phone in three forms: an <rfh0>MCP server</rfh0> for your agent; an <rfb1>HTTP API</rfb1> for scripts (ZXQATOM2QXZ); and a <rfb3>web page and native iOS app</rfb3> for people.",
+          "result": "你 Mac 上的守护进程以三种形式驱动手机：代理的 <rfh0>MCP 服务器</rfh0>;<rfb1>HTTP API</rfb1>用于脚本（ZXQATOM2QXZ）;以及面向用户的<RFB3>网页和原生iOS应用</RFB3>。",
+          "missingOrRepeated": ["<rfb3>", "</rfb3>"],
+          "brokenAtoms": []
+        },
+        {
+          "id": "F24",
+          "wire": "A daemon on your Mac drives the phone and offers the same control in three forms: an <rfh0>MCP server</rfh0> for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an <rfb1>HTTP API</rfb1> for agents and scripts (ZXQATOM2QXZ); and a <rfb3>web page and native iOS app</rfb3> for people.",
+          "result": "Mac上的守护进程驱动手机，提供三种形式的相同控制：<rfh0>MCP服务器</rfh0>用于Claude Code、Codex、Claude Desktop、Cursor及其他MCP客户端;<rfb1>HTTP API</rfb1>用于代理和脚本（ZXQATOM2QXZ）;以及面向用户的<RFB3>网页和原生iOS应用</RFB3>。",
+          "missingOrRepeated": ["<rfb3>", "</rfb3>"],
+          "brokenAtoms": []
+        },
+        {
+          "id": "LIVE-1",
+          "wire": "<rfh0>Let AI agents use your real iPhone.</rfh0> With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app, <rfb1>including the ones with no API</rfb1>: Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+          "result": "<rfh0>让AI代理使用你的真实iPhone。</rfh0> 在你的Mac上安装了iPhone使用，Claude Code、Codex或任何MCP客户端会将手机屏幕读取为文本，在任何应用中点击、输入和滑动，<rfb1>包括那些没有API的应用</rfb1>：健康、银行、聊天应用或你正在测试的应用。你可以随时观看直播，并把手机拿回去。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "REORDER",
+          "wire": "Before you close the window, please <rfb0>save your changes</rfb0> and confirm the <rfh1>delivery address</rfh1>.",
+          "result": "关闭窗口前，请<rfb0>保存您的更改</rfb0>并确认<rfh1>delivery address</rfh1>。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "REPEAT",
+          "wire": "The <rfb0>account</rfb0> is active, but the <rfh1>account</rfh1> must be verified. Run ZXQATOM2QXZ then calculate ZXQATOM3QXZ.",
+          "result": "<rfb0>account</rfb0>是有效的，但<rfh1>account</rfh1>必须验证。运行ZXQATOM2QXZ然后计算ZXQATOM3QXZ。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "NESTED",
+          "wire": "Keep the <rfb0>new <rfh1>payment deadline</rfh1> unchanged</rfb0> and run ZXQATOM2QXZ.",
+          "result": "保持<rfb0>new <rfh1>payment deadline</rfh1>保持不变</rfb0>并ZXQATOM2QXZ运行。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "BREAKS",
+          "wire": "First step: <rfb0>save the file</rfb0>.\n\nSecond step: run ZXQATOM1QXZ.\nLast step: close the window.",
+          "result": "第一步：<rfb0>save the file</rfb0>。\n\n第二步：赶ZXQATOM1QXZ。\n最后一步：关上窗户。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        }
+      ]
+    },
+    {
+      "targetCode": "cmn",
+      "candidate": "sentinel",
+      "records": [
+        {
+          "id": "F01",
+          "wire": "A daemon on your Mac drives the phone in three forms: an  ZXQSTARTH0QXZ MCP server ZXQENDH0QXZ  for your agent; an  ZXQSTARTB1QXZ HTTP API ZXQENDB1QXZ  for scripts (ZXQATOM2QXZ); and a  ZXQSTARTB3QXZ web page and native iOS app ZXQENDB3QXZ  for people.",
+          "result": "你 Mac 上的守护进程以三种形式驱动手机：ZXQSTARTH0QXZ MCP 服务器，ZXQENDH0QXZ你的代理;ZXQSTARTB1QXZ HTTP API ZXQENDB1QXZ用于脚本（ZXQATOM2QXZ）;以及面向用户的 ZXQSTARTB3QXZ 网页和原生 iOS 应用ZXQENDB3QXZ。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "F24",
+          "wire": "A daemon on your Mac drives the phone and offers the same control in three forms: an  ZXQSTARTH0QXZ MCP server ZXQENDH0QXZ  for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an  ZXQSTARTB1QXZ HTTP API ZXQENDB1QXZ  for agents and scripts (ZXQATOM2QXZ); and a  ZXQSTARTB3QXZ web page and native iOS app ZXQENDB3QXZ  for people.",
+          "result": "Mac上的守护进程驱动手机，提供三种形式的控制：ZXQSTARTH0QXZ MCP服务器ZXQENDH0QXZ Claude Code、Codex、Claude Desktop、Cursor及其他MCP客户端;ZXQSTARTB1QXZ HTTP API ZXQENDB1QXZ用于代理和脚本（ZXQATOM2QXZ）;以及面向用户的 ZXQSTARTB3QXZ 网页和原生 iOS 应用ZXQENDB3QXZ。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "LIVE-1",
+          "wire": " ZXQSTARTH0QXZ Let AI agents use your real iPhone. ZXQENDH0QXZ  With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app,  ZXQSTARTB1QXZ including the ones with no API ZXQENDB1QXZ : Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+          "result": "ZXQSTARTH0QXZ 让AI代理使用你的真实iPhone。ZXQENDH0QXZ 在你的Mac上安装了iPhone，Claude Code、Codex或任何MCP客户端会将手机屏幕读取为文本，在任何应用中点击、输入和滑动，ZXQSTARTB1QXZ包括那些没有API ZXQENDB1QXZ的应用：健康、银行、聊天应用或你正在测试的应用。你可以随时观看直播，并把手机拿回去。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "REORDER",
+          "wire": "Before you close the window, please  ZXQSTARTB0QXZ save your changes ZXQENDB0QXZ  and confirm the  ZXQSTARTH1QXZ delivery address ZXQENDH1QXZ .",
+          "result": "关闭窗口前，请ZXQSTARTB0QXZ保存您的更改并ZXQENDB0QXZ确认ZXQSTARTH1QXZ送达地址ZXQENDH1QXZ。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "REPEAT",
+          "wire": "The  ZXQSTARTB0QXZ account ZXQENDB0QXZ  is active, but the  ZXQSTARTH1QXZ account ZXQENDH1QXZ  must be verified. Run ZXQATOM2QXZ then calculate ZXQATOM3QXZ.",
+          "result": "ZXQSTARTB0QXZ账户ZXQENDB0QXZ是活跃的，但ZXQSTARTH1QXZ账户ZXQENDH1QXZ必须经过验证。运行ZXQATOM2QXZ然后计算ZXQATOM3QXZ。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "NESTED",
+          "wire": "Keep the  ZXQSTARTB0QXZ new  ZXQSTARTH1QXZ payment deadline ZXQENDH1QXZ  unchanged ZXQENDB0QXZ  and run ZXQATOM2QXZ.",
+          "result": "保持ZXQSTARTB0QXZ新的ZXQSTARTH1QXZ付款截止日期ZXQENDH1QXZ不变ZXQENDB0QXZ并运行ZXQATOM2QXZ。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "BREAKS",
+          "wire": "First step:  ZXQSTARTB0QXZ save the file ZXQENDB0QXZ .\n\nSecond step: run ZXQATOM1QXZ.\nLast step: close the window.",
+          "result": "第一步：ZXQSTARTB0QXZ保存文件ZXQENDB0QXZ。\n\n第二步：赶ZXQATOM1QXZ。\n最后一步：关上窗户。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        }
+      ]
+    },
+    {
+      "targetCode": "cmn",
+      "candidate": "angle",
+      "records": [
+        {
+          "id": "F01",
+          "wire": "A daemon on your Mac drives the phone in three forms: an  ⟪H0⟫ MCP server ⟪/H0⟫  for your agent; an  ⟪B1⟫ HTTP API ⟪/B1⟫  for scripts (ZXQATOM2QXZ); and a  ⟪B3⟫ web page and native iOS app ⟪/B3⟫  for people.",
+          "result": "Mac上的守护进程以三种形式驱动手机：为代理提供⟪H0⟫ MCP服务器⟪/H0⟫;一个⟪B1⟫ HTTP API ⟪/B1⟫用于脚本（ZXQATOM2QXZ）;以及面向用户的⟪B3⟫网页和原生iOS应用⟪/B3⟫。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "F24",
+          "wire": "A daemon on your Mac drives the phone and offers the same control in three forms: an  ⟪H0⟫ MCP server ⟪/H0⟫  for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an  ⟪B1⟫ HTTP API ⟪/B1⟫  for agents and scripts (ZXQATOM2QXZ); and a  ⟪B3⟫ web page and native iOS app ⟪/B3⟫  for people.",
+          "result": "Mac上的守护进程驱动手机，提供三种形式的相同控制：⟪H0⟫ MCP服务器⟪/H0⟫用于Claude Code、Codex、Claude Desktop、Cursor及其他MCP客户端;一个⟪B1⟫ HTTP API ⟪/B1⟫，用于代理和脚本（ZXQATOM2QXZ）;以及面向用户的⟪B3⟫网页和原生iOS应用⟪/B3⟫。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "LIVE-1",
+          "wire": " ⟪H0⟫ Let AI agents use your real iPhone. ⟪/H0⟫  With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app,  ⟪B1⟫ including the ones with no API ⟪/B1⟫ : Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+          "result": "⟪H0⟫ 让AI代理使用你的真实iPhone。⟪/H0⟫ 在Mac上安装iPhone时，Claude Code、Codex或任何MCP客户端会读取手机屏幕为文本，点击、输入和滑动任何应用，⟪B1⟫包括无API的应用 ⟪/B1⟫：健康、银行、聊天应用或你正在测试的应用。你可以随时观看直播，并把手机拿回去。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "REORDER",
+          "wire": "Before you close the window, please  ⟪B0⟫ save your changes ⟪/B0⟫  and confirm the  ⟪H1⟫ delivery address ⟪/H1⟫ .",
+          "result": "关闭窗口前，请⟪B0⟫保存您的更改⟪/B0⟫并确认⟪H1⟫的送货地址⟪/H1⟫。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "REPEAT",
+          "wire": "The  ⟪B0⟫ account ⟪/B0⟫  is active, but the  ⟪H1⟫ account ⟪/H1⟫  must be verified. Run ZXQATOM2QXZ then calculate ZXQATOM3QXZ.",
+          "result": "⟪B0⟫账户⟪/B0⟫仍然活跃，但⟪H1⟫账户⟪/H1⟫必须核实。运行ZXQATOM2QXZ然后计算ZXQATOM3QXZ。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "NESTED",
+          "wire": "Keep the  ⟪B0⟫ new  ⟪H1⟫ payment deadline ⟪/H1⟫  unchanged ⟪/B0⟫  and run ZXQATOM2QXZ.",
+          "result": "保持⟪B0⟫新的⟪H1⟫付款截止日期⟪/H1⟫不变⟪/B0⟫，ZXQATOM2QXZ运行。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "BREAKS",
+          "wire": "First step:  ⟪B0⟫ save the file ⟪/B0⟫ .\n\nSecond step: run ZXQATOM1QXZ.\nLast step: close the window.",
+          "result": "第一步：⟪B0⟫ 保存文件⟪/B0⟫。\n\n第二步：赶ZXQATOM1QXZ。\n最后一步：关上窗户。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        }
+      ]
+    },
+    {
+      "targetCode": "cmn",
+      "candidate": "bracket",
+      "records": [
+        {
+          "id": "F01",
+          "wire": "A daemon on your Mac drives the phone in three forms: an  【H0】 MCP server 【/H0】  for your agent; an  【B1】 HTTP API 【/B1】  for scripts (ZXQATOM2QXZ); and a  【B3】 web page and native iOS app 【/B3】  for people.",
+          "result": "你Mac上的守护进程以三种形式驱动手机：一个[H0] MCP服务器[/H0]用于你的代理;一个【B1】HTTP API 【/B1】用于脚本（ZXQATOM2QXZ）;以及面向用户的[B3]网页和原生iOS应用[/B3]。",
+          "missingOrRepeated": ["【H0】", "【/H0】", "【B3】", "【/B3】"],
+          "brokenAtoms": []
+        },
+        {
+          "id": "F24",
+          "wire": "A daemon on your Mac drives the phone and offers the same control in three forms: an  【H0】 MCP server 【/H0】  for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an  【B1】 HTTP API 【/B1】  for agents and scripts (ZXQATOM2QXZ); and a  【B3】 web page and native iOS app 【/B3】  for people.",
+          "result": "Mac上的守护进程驱动手机，提供三种形式的相同控制：[H0] MCP服务器[/H0]，用于Claude Code、Codex、Claude桌面、光标及其他MCP客户端;一个[B1] HTTP API [/B1]用于代理和脚本（ZXQATOM2QXZ）;以及面向用户的[B3]网页和原生iOS应用[/B3]。",
+          "missingOrRepeated": ["【H0】", "【/H0】", "【B1】", "【/B1】", "【B3】", "【/B3】"],
+          "brokenAtoms": []
+        },
+        {
+          "id": "LIVE-1",
+          "wire": " 【H0】 Let AI agents use your real iPhone. 【/H0】  With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app,  【B1】 including the ones with no API 【/B1】 : Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+          "result": "【H0】让AI代理使用你的真实iPhone。【/H0】在Mac上安装iPhone时，Claude Code、Codex或任何MCP客户端会将手机屏幕读取为文本，点击、输入和滑动任何应用，【B1】包括那些没有API【/B1】的应用：健康、银行、聊天应用或你正在测试的应用。你可以随时观看直播，并把手机拿回去。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "REORDER",
+          "wire": "Before you close the window, please  【B0】 save your changes 【/B0】  and confirm the  【H1】 delivery address 【/H1】 .",
+          "result": "关闭窗口前，请[B0]保存您的更改[/B0]并确认[H1]的送达地址[/H1]。",
+          "missingOrRepeated": ["【B0】", "【/B0】", "【H1】", "【/H1】"],
+          "brokenAtoms": []
+        },
+        {
+          "id": "REPEAT",
+          "wire": "The  【B0】 account 【/B0】  is active, but the  【H1】 account 【/H1】  must be verified. Run ZXQATOM2QXZ then calculate ZXQATOM3QXZ.",
+          "result": "【B0】账号【/B0】已激活，但【H1】账号【/H1】必须验证。运行ZXQATOM2QXZ然后计算ZXQATOM3QXZ。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "NESTED",
+          "wire": "Keep the  【B0】 new  【H1】 payment deadline 【/H1】  unchanged 【/B0】  and run ZXQATOM2QXZ.",
+          "result": "保持新的【H1】付款截止日期【/H1】不变【/B0】，ZXQATOM2QXZ跑。",
+          "missingOrRepeated": ["【B0】"],
+          "brokenAtoms": []
+        },
+        {
+          "id": "BREAKS",
+          "wire": "First step:  【B0】 save the file 【/B0】 .\n\nSecond step: run ZXQATOM1QXZ.\nLast step: close the window.",
+          "result": "第一步：【B0】保存文件【/B0】 。\n\n第二步：赶ZXQATOM1QXZ。\n最后一步：关上窗户。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        }
+      ]
+    },
+    {
+      "targetCode": "jpn",
+      "candidate": "padded",
+      "records": [
+        {
+          "id": "F01",
+          "wire": "A daemon on your Mac drives the phone in three forms: an ⟦H0⟧ MCP server ⟦/H0⟧ for your agent; an ⟦B1⟧ HTTP API ⟦/B1⟧ for scripts (ZXQATOM2QXZ); and a ⟦B3⟧ web page and native iOS app ⟦/B3⟧ for people.",
+          "result": "Mac上のデーモンは3つの形態で電話を駆動します:エージェント用の⟦H0⟧ MCPサーバー⟦/H0⟧;スクリプト用の⟦B1⟧ HTTP API ⟦/B1⟧(ZXQATOM2QXZ);そして、人向けには⟦B3⟧のウェブページとネイティブのiOSアプリ⟦/B3⟧も用意されています。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "F24",
+          "wire": "A daemon on your Mac drives the phone and offers the same control in three forms: an ⟦H0⟧ MCP server ⟦/H0⟧ for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an ⟦B1⟧ HTTP API ⟦/B1⟧ for agents and scripts (ZXQATOM2QXZ); and a ⟦B3⟧ web page and native iOS app ⟦/B3⟧ for people.",
+          "result": "Mac上のデーモンが電話を駆動し、同じ制御を3つの形態で提供します。すなわち、Claude Code、Codex、Claude Desktop、Cursor、その他のMCPクライアント用の⟦H0⟧ MCPサーバー ⟦/H0⟧;エージェントおよびスクリプト用の⟦B1⟧ HTTP API ⟦/B1⟧(ZXQATOM2QXZ);そして、人向けには⟦B3⟧のウェブページとネイティブのiOSアプリ⟦/B3⟧も用意されています。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "LIVE-1",
+          "wire": "⟦H0⟧ Let AI agents use your real iPhone. ⟦/H0⟧ With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app, ⟦B1⟧ including the ones with no API ⟦/B1⟧: Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+          "result": "⟦H0⟧ AIエージェントに本物のiPhoneを使わせて。⟦/H0⟧ MacにiPhoneがインストールされている場合、Claude Code、Codex、または任意のMCPクライアントがスマートフォンの画面をテキストとして読み取り、どのアプリでもタップ、入力、スワイプを行います。⟦B1⟧(APIなしを含む)⟦/B1⟧:健康、銀行、チャットアプリ、またはテスト中のアプリ。ライブ視聴もでき、いつでも電話を取り戻すことができます。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "REORDER",
+          "wire": "Before you close the window, please ⟦B0⟧ save your changes ⟦/B0⟧ and confirm the ⟦H1⟧ delivery address ⟦/H1⟧.",
+          "result": "ウィンドウを閉じる前に、変更内容を保存してください ⟦/B0⟧ と ⟦H1⟧ 配達先 ⟦/H1⟧ を確認してください。",
+          "missingOrRepeated": ["⟦B0⟧"],
+          "brokenAtoms": []
+        },
+        {
+          "id": "REPEAT",
+          "wire": "The ⟦B0⟧ account ⟦/B0⟧ is active, but the ⟦H1⟧ account ⟦/H1⟧ must be verified. Run ZXQATOM2QXZ then calculate ZXQATOM3QXZ.",
+          "result": "⟦B0⟧アカウント⟦/B0⟧は有効ですが、⟦H1⟧アカウント⟦/H1⟧は検証が必要です。ZXQATOM2QXZを実行してから、ZXQATOM3QXZを計算します。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "NESTED",
+          "wire": "Keep the ⟦B0⟧ new ⟦H1⟧ payment deadline ⟦/H1⟧ unchanged ⟦/B0⟧ and run ZXQATOM2QXZ.",
+          "result": "⟦B0⟧ 新しい⟦H1⟧支払い期限⟦/H1⟧は変更せず ⟦/B0⟧ ZXQATOM2QXZ走らせてください。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "BREAKS",
+          "wire": "First step: ⟦B0⟧ save the file ⟦/B0⟧.\n\nSecond step: run ZXQATOM1QXZ.\nLast step: close the window.",
+          "result": "最初のステップ:⟦B0⟧ファイルを保存します。\n\n第二のステップ:ZXQATOM1QXZ走る。\n最後のステップ:窓を閉めること。",
+          "missingOrRepeated": ["⟦/B0⟧"],
+          "brokenAtoms": []
+        }
+      ]
+    },
+    {
+      "targetCode": "jpn",
+      "candidate": "numeric",
+      "records": [
+        {
+          "id": "F01",
+          "wire": "A daemon on your Mac drives the phone in three forms: an  ⟦0⟧ MCP server ⟦/0⟧  for your agent; an  ⟦1⟧ HTTP API ⟦/1⟧  for scripts (ZXQATOM2QXZ); and a  ⟦3⟧ web page and native iOS app ⟦/3⟧  for people.",
+          "result": "Mac上のデーモンは3つの形態で電話を駆動します。エージェント用の⟦0⟧ MCPサーバー ⟦/0⟧;スクリプト用の⟦1⟧ HTTP API ⟦/1⟧(ZXQATOM2QXZ);そして、人向けには⟦3⟧のウェブページとネイティブiOSアプリ⟦/3⟧があります。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "F24",
+          "wire": "A daemon on your Mac drives the phone and offers the same control in three forms: an  ⟦0⟧ MCP server ⟦/0⟧  for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an  ⟦1⟧ HTTP API ⟦/1⟧  for agents and scripts (ZXQATOM2QXZ); and a  ⟦3⟧ web page and native iOS app ⟦/3⟧  for people.",
+          "result": "Mac上のデーモンが電話を駆動し、同じ制御を3つの形態で提供します。すなわち、Claude Code、Codex、Claude Desktop、Cursor、その他のMCPクライアント用の⟦0⟧ MCPサーバー ⟦/0⟧;エージェントとスクリプト用の⟦1⟧ HTTP API ⟦/1⟧(ZXQATOM2QXZ);そして、人向けには⟦3⟧のウェブページとネイティブiOSアプリ⟦/3⟧があります。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "LIVE-1",
+          "wire": " ⟦0⟧ Let AI agents use your real iPhone. ⟦/0⟧  With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app,  ⟦1⟧ including the ones with no API ⟦/1⟧ : Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+          "result": "⟦0⟧ AIエージェントに本物のiPhoneを使わせましょう。⟦/0⟧ MacにiPhoneがインストールされている場合、Claude Code、Codex、または任意のMCPクライアントが画面をテキストとして読み取り、どのアプリでもタップ、入力、スワイプを行います。⟦1⟧ APIのないアプリも含めて ⟦/1⟧ :健康、銀行、チャットアプリ、またはテスト中のアプリ。ライブ視聴もでき、いつでも電話を取り戻すことができます。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "REORDER",
+          "wire": "Before you close the window, please  ⟦0⟧ save your changes ⟦/0⟧  and confirm the  ⟦1⟧ delivery address ⟦/1⟧ .",
+          "result": "ウィンドウを閉じる前に、変更内容を保存して⟦/0⟧を保存し、⟦1⟧配送先を確認してください。",
+          "missingOrRepeated": ["⟦0⟧", "⟦/1⟧"],
+          "brokenAtoms": []
+        },
+        {
+          "id": "REPEAT",
+          "wire": "The  ⟦0⟧ account ⟦/0⟧  is active, but the  ⟦1⟧ account ⟦/1⟧  must be verified. Run ZXQATOM2QXZ then calculate ZXQATOM3QXZ.",
+          "result": "⟦0⟧アカウント⟦/0⟧は有効ですが、⟦1⟧アカウント⟦/1⟧は検証が必要です。ZXQATOM2QXZを実行してから、ZXQATOM3QXZを計算します。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "NESTED",
+          "wire": "Keep the  ⟦0⟧ new  ⟦1⟧ payment deadline ⟦/1⟧  unchanged ⟦/0⟧  and run ZXQATOM2QXZ.",
+          "result": "⟦0⟧ 新しい⟦1⟧支払い期限⟦/1⟧は変えず ⟦/0⟧ ZXQATOM2QXZ",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "BREAKS",
+          "wire": "First step:  ⟦0⟧ save the file ⟦/0⟧ .\n\nSecond step: run ZXQATOM1QXZ.\nLast step: close the window.",
+          "result": "最初のステップ:⟦0⟧ ファイルを保存 ⟦/0⟧ 。\n\n第二のステップ:ZXQATOM1QXZ走る。\n最後のステップ:窓を閉めること。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        }
+      ]
+    },
+    {
+      "targetCode": "jpn",
+      "candidate": "curly",
+      "records": [
+        {
+          "id": "F01",
+          "wire": "A daemon on your Mac drives the phone in three forms: an  {{H0}} MCP server {{/H0}}  for your agent; an  {{B1}} HTTP API {{/B1}}  for scripts (ZXQATOM2QXZ); and a  {{B3}} web page and native iOS app {{/B3}}  for people.",
+          "result": "Mac上のデーモンは3つの形態で電話を駆動します:エージェント用の{{H0}} MCPサーバー{{/H0}};スクリプト用の{{B1}} HTTP API {{/B1}} (ZXQATOM2QXZ);そして、ユーザー向けの{{B3}}ウェブページとネイティブiOSアプリ{{/B3}}です。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "F24",
+          "wire": "A daemon on your Mac drives the phone and offers the same control in three forms: an  {{H0}} MCP server {{/H0}}  for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an  {{B1}} HTTP API {{/B1}}  for agents and scripts (ZXQATOM2QXZ); and a  {{B3}} web page and native iOS app {{/B3}}  for people.",
+          "result": "Mac上のデーモンが電話を駆動し、同じ制御を3つの形態で提供します。{{H0}} MCPサーバー(Claude Code、Codex、Claude Desktop、Cursorおよびその他のMCPクライアント);{{B1}} HTTP API {{/B1}} (ZXQATOM2QXZ);そして、ユーザー向けの{{B3}}ウェブページとネイティブiOSアプリ{{/B3}}です。",
+          "missingOrRepeated": ["{{/H0}}"],
+          "brokenAtoms": []
+        },
+        {
+          "id": "LIVE-1",
+          "wire": " {{H0}} Let AI agents use your real iPhone. {{/H0}}  With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app,  {{B1}} including the ones with no API {{/B1}} : Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+          "result": "{{H0}}AIエージェントに本物のiPhoneを使わせましょう。{{/H0}} MacにiPhoneがインストールされている場合、Claude Code、Codex、または任意のMCPクライアントが画面をテキストとして読み取り、APIのないアプリも含めて(健康、銀行、チャットアプリ、テスト中のアプリを含む)で画面をテキストとして読み取り、タップ、入力、スワイプを行います。ライブ視聴もでき、いつでも電話を取り戻すことができます。",
+          "missingOrRepeated": ["{{B1}}", "{{/B1}}"],
+          "brokenAtoms": []
+        },
+        {
+          "id": "REORDER",
+          "wire": "Before you close the window, please  {{B0}} save your changes {{/B0}}  and confirm the  {{H1}} delivery address {{/H1}} .",
+          "result": "ウィンドウを閉じる前に、{{B0}} 変更内容を保存し、{{H1}} の配信アドレス {{/H1}} を確認してください。",
+          "missingOrRepeated": ["{{/B0}}"],
+          "brokenAtoms": []
+        },
+        {
+          "id": "REPEAT",
+          "wire": "The  {{B0}} account {{/B0}}  is active, but the  {{H1}} account {{/H1}}  must be verified. Run ZXQATOM2QXZ then calculate ZXQATOM3QXZ.",
+          "result": "{{B0}}アカウント{{/B0}}はアクティブですが、{{H1}}アカウント{{/H1}}は認証が必要です。ZXQATOM2QXZを実行してから、ZXQATOM3QXZを計算します。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "NESTED",
+          "wire": "Keep the  {{B0}} new  {{H1}} payment deadline {{/H1}}  unchanged {{/B0}}  and run ZXQATOM2QXZ.",
+          "result": "{{B0}}の新しい支払い期限{{/H1}}は変えずに、そのままZXQATOM2QXZ走ってください。",
+          "missingOrRepeated": ["{{H1}}", "{{/B0}}"],
+          "brokenAtoms": []
+        },
+        {
+          "id": "BREAKS",
+          "wire": "First step:  {{B0}} save the file {{/B0}} .\n\nSecond step: run ZXQATOM1QXZ.\nLast step: close the window.",
+          "result": "最初のステップ:{{B0}} ファイルを保存します {{/B0}} 。\n\n第二のステップ:ZXQATOM1QXZ走る。\n最後のステップ:窓を閉めること。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        }
+      ]
+    },
+    {
+      "targetCode": "jpn",
+      "candidate": "square",
+      "records": [
+        {
+          "id": "F01",
+          "wire": "A daemon on your Mac drives the phone in three forms: an  [[H0]] MCP server [[/H0]]  for your agent; an  [[B1]] HTTP API [[/B1]]  for scripts (ZXQATOM2QXZ); and a  [[B3]] web page and native iOS app [[/B3]]  for people.",
+          "result": "Mac上のデーモンは3つの形態で電話を駆動します:エージェント用の[[H0]] MCPサーバー[[/H0]];スクリプト用の[[B1]] HTTP API [[/B1]](ZXQATOM2QXZ);そして、[[B3]]のウェブページとネイティブiOSアプリ[[[/B3]]。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "F24",
+          "wire": "A daemon on your Mac drives the phone and offers the same control in three forms: an  [[H0]] MCP server [[/H0]]  for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an  [[B1]] HTTP API [[/B1]]  for agents and scripts (ZXQATOM2QXZ); and a  [[B3]] web page and native iOS app [[/B3]]  for people.",
+          "result": "Mac上のデーモンが電話を駆動し、同じ制御を3つの形態で提供します。すなわち、[[H0]] MCPサーバー(Claude Code、Codex、Claude Desktop、カーソル、その他のMCPクライアント用);エージェントおよびスクリプト用の[[B1]] HTTP API [[/B1]](ZXQATOM2QXZ);そして、[[B3]]のウェブページとネイティブiOSアプリ[[[/B3]]。",
+          "missingOrRepeated": ["[[/H0]]"],
+          "brokenAtoms": []
+        },
+        {
+          "id": "LIVE-1",
+          "wire": " [[H0]] Let AI agents use your real iPhone. [[/H0]]  With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app,  [[B1]] including the ones with no API [[/B1]] : Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+          "result": "[[H0]]AIエージェントに本物のiPhoneを使わせましょう。[[/H0]] MacにiPhoneがインストールされている場合、Claude Code、Codex、または任意のMCPクライアントが画面をテキストとして読み取り、[[B1]]]、APIのないアプリも含めて[[/B1]]で画面を読み取り、入力やスワイプを行います。[[/B1]]:健康、銀行、チャットアプリ、またはテストしているアプリも含めて。ライブ視聴もでき、いつでも電話を取り戻すことができます。",
+          "missingOrRepeated": ["[[/B1]]"],
+          "brokenAtoms": []
+        },
+        {
+          "id": "REORDER",
+          "wire": "Before you close the window, please  [[B0]] save your changes [[/B0]]  and confirm the  [[H1]] delivery address [[/H1]] .",
+          "result": "ウィンドウを閉じる前に、[[B0]]変更を保存し、[[/B0]]を保存し、[[H1]]の配達先[[/H1]を確認してください。",
+          "missingOrRepeated": ["[[/H1]]"],
+          "brokenAtoms": []
+        },
+        {
+          "id": "REPEAT",
+          "wire": "The  [[B0]] account [[/B0]]  is active, but the  [[H1]] account [[/H1]]  must be verified. Run ZXQATOM2QXZ then calculate ZXQATOM3QXZ.",
+          "result": "[[B0]]アカウント[[/B0]]はアクティブですが、[[H1]]アカウント[[/H1]]は認証が必要です。ZXQATOM2QXZを実行してから、ZXQATOM3QXZを計算します。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "NESTED",
+          "wire": "Keep the  [[B0]] new  [[H1]] payment deadline [[/H1]]  unchanged [[/B0]]  and run ZXQATOM2QXZ.",
+          "result": "[[B0]]の新しい[[H1]]の支払い期限[/H1]]は変更せず[[/B0]]を保持し、ZXQATOM2QXZ実行してください。",
+          "missingOrRepeated": ["[[/H1]]"],
+          "brokenAtoms": []
+        },
+        {
+          "id": "BREAKS",
+          "wire": "First step:  [[B0]] save the file [[/B0]] .\n\nSecond step: run ZXQATOM1QXZ.\nLast step: close the window.",
+          "result": "最初のステップ:[[B0]] ファイルを保存します [[/B0]] 。\n\n第二のステップ:ZXQATOM1QXZ走る。\n最後のステップ:窓を閉めること。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        }
+      ]
+    },
+    {
+      "targetCode": "jpn",
+      "candidate": "xml",
+      "records": [
+        {
+          "id": "F01",
+          "wire": "A daemon on your Mac drives the phone in three forms: an <rfh0>MCP server</rfh0> for your agent; an <rfb1>HTTP API</rfb1> for scripts (ZXQATOM2QXZ); and a <rfb3>web page and native iOS app</rfb3> for people.",
+          "result": "Mac上のデーモンは3つの形態で電話を駆動します。エージェント用の<rfh0>MCPサーバー</rfh0>、スクリプト用の <rfb1>HTTP API</rfb1> ZXQATOM2QXZまた、ユーザー向けの<rfb3>ウェブページとネイティブiOSアプリ</rfb3>も提供しています。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "F24",
+          "wire": "A daemon on your Mac drives the phone and offers the same control in three forms: an <rfh0>MCP server</rfh0> for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an <rfb1>HTTP API</rfb1> for agents and scripts (ZXQATOM2QXZ); and a <rfb3>web page and native iOS app</rfb3> for people.",
+          "result": "Mac上のデーモンが電話を駆動し、同じ制御を3つの形態で提供します。<rfh0>MCPサーバー</rfh0>はClaude Code、Codex、Claude Desktop、Cursor、その他のMCPクライアント用です。エージェントおよびスクリプト用の<rfb1>HTTP API</rfb1>(ZXQATOM2QXZ);また、ユーザー向けの<rfb3>ウェブページとネイティブiOSアプリ</rfb3>も提供しています。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "LIVE-1",
+          "wire": "<rfh0>Let AI agents use your real iPhone.</rfh0> With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app, <rfb1>including the ones with no API</rfb1>: Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+          "result": "<rfh0>AIエージェントに本物のiPhoneを使わせましょう。</rfh0> MacにiPhoneがインストールされている場合、Claude Code、Codex、または任意のMCPクライアントがスマートフォンの画面をテキストとして読み取り、APIなしのアプリ</rfb1>を含む)でタップ、入力、スワイプを行います。<rfb>1/rfb1 の健康、銀行、チャットアプリ、またはテスト中のアプリです。ライブ視聴もでき、いつでも電話を取り戻すことができます。",
+          "missingOrRepeated": ["<rfb1>"],
+          "brokenAtoms": []
+        },
+        {
+          "id": "REORDER",
+          "wire": "Before you close the window, please <rfb0>save your changes</rfb0> and confirm the <rfh1>delivery address</rfh1>.",
+          "result": "ウィンドウを閉じる前に、<rfb0>変更を保存</rfb0>し、<rfh1>delivery address</rfh1>を確認してください。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "REPEAT",
+          "wire": "The <rfb0>account</rfb0> is active, but the <rfh1>account</rfh1> must be verified. Run ZXQATOM2QXZ then calculate ZXQATOM3QXZ.",
+          "result": "<rfb0>account</rfb0>は有効ですが、<rfh1>account</rfh1>は検証が必要です。ZXQATOM2QXZを実行してから、ZXQATOM3QXZを計算します。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "NESTED",
+          "wire": "Keep the <rfb0>new <rfh1>payment deadline</rfh1> unchanged</rfb0> and run ZXQATOM2QXZ.",
+          "result": "<rfb0>new <rfh1>payment dateline</rfh1> </rfb0> はそのままZXQATOM2QXZ実行してください。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "BREAKS",
+          "wire": "First step: <rfb0>save the file</rfb0>.\n\nSecond step: run ZXQATOM1QXZ.\nLast step: close the window.",
+          "result": "最初のステップ:<rfb0>save the file</rfb0>。\n\n第二のステップ:ZXQATOM1QXZ走る。\n最後のステップ:窓を閉めること。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        }
+      ]
+    },
+    {
+      "targetCode": "jpn",
+      "candidate": "sentinel",
+      "records": [
+        {
+          "id": "F01",
+          "wire": "A daemon on your Mac drives the phone in three forms: an  ZXQSTARTH0QXZ MCP server ZXQENDH0QXZ  for your agent; an  ZXQSTARTB1QXZ HTTP API ZXQENDB1QXZ  for scripts (ZXQATOM2QXZ); and a  ZXQSTARTB3QXZ web page and native iOS app ZXQENDB3QXZ  for people.",
+          "result": "Mac上のデーモンは3つの形態で電話を駆動します。エージェント用のZXQSTARTH0QXZ MCPサーバー ZXQENDH0QXZ、スクリプト用のZXQSTARTB1QXZ HTTP API ZXQENDB1QXZ(ZXQATOM2QXZ);そして、ZXQSTARTB3QXZウェブページとネイティブiOSアプリZXQENDB3QXZ。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "F24",
+          "wire": "A daemon on your Mac drives the phone and offers the same control in three forms: an  ZXQSTARTH0QXZ MCP server ZXQENDH0QXZ  for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an  ZXQSTARTB1QXZ HTTP API ZXQENDB1QXZ  for agents and scripts (ZXQATOM2QXZ); and a  ZXQSTARTB3QXZ web page and native iOS app ZXQENDB3QXZ  for people.",
+          "result": "Mac上のデーモンが電話を駆動し、同じ制御を3つの形態で提供します。Claude Code、Codex、Claude Desktop、Cursorおよびその他のMCPクライアントのZXQENDH0QXZ ZXQSTARTH0QXZ MCPサーバー;エージェントとスクリプト向けのZXQSTARTB1QXZ HTTP API ZXQENDB1QXZ(ZXQATOM2QXZ)、そして、ZXQSTARTB3QXZウェブページとネイティブiOSアプリZXQENDB3QXZ。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "LIVE-1",
+          "wire": " ZXQSTARTH0QXZ Let AI agents use your real iPhone. ZXQENDH0QXZ  With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app,  ZXQSTARTB1QXZ including the ones with no API ZXQENDB1QXZ : Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+          "result": "ZXQSTARTH0QXZ AIエージェントに本物のiPhoneを使わせましょう。ZXQENDH0QXZ MacにiPhoneがインストールされている場合、Claude Code、Codex、または任意のMCPクライアントが画面をテキストとして読み取り、API ZXQSTARTB1QXZ ZXQENDB1QXZがないアプリ(健康、銀行、チャットアプリ、テスト中のアプリも含む)で画面をテキストとして読み取り、タップ、入力、スワイプを行います。ライブ視聴もでき、いつでも電話を取り戻すことができます。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "REORDER",
+          "wire": "Before you close the window, please  ZXQSTARTB0QXZ save your changes ZXQENDB0QXZ  and confirm the  ZXQSTARTH1QXZ delivery address ZXQENDH1QXZ .",
+          "result": "ウィンドウを閉じる前に、変更ZXQSTARTB0QXZ ZXQENDB0QXZ保存し、ZXQSTARTH1QXZ配達先をZXQENDH1QXZしてください。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "REPEAT",
+          "wire": "The  ZXQSTARTB0QXZ account ZXQENDB0QXZ  is active, but the  ZXQSTARTH1QXZ account ZXQENDH1QXZ  must be verified. Run ZXQATOM2QXZ then calculate ZXQATOM3QXZ.",
+          "result": "ZXQSTARTB0QXZアカウントZXQENDB0QXZは有効ですが、ZXQSTARTH1QXZアカウントZXQENDH1QXZは認証が必要です。ZXQATOM2QXZを実行してから、ZXQATOM3QXZを計算します。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "NESTED",
+          "wire": "Keep the  ZXQSTARTB0QXZ new  ZXQSTARTH1QXZ payment deadline ZXQENDH1QXZ  unchanged ZXQENDB0QXZ  and run ZXQATOM2QXZ.",
+          "result": "ZXQSTARTB0QXZ新しいZXQSTARTH1QXZ支払い期限ZXQENDH1QXZ変更ZXQENDB0QXZは変えず、実行ZXQATOM2QXZ。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "BREAKS",
+          "wire": "First step:  ZXQSTARTB0QXZ save the file ZXQENDB0QXZ .\n\nSecond step: run ZXQATOM1QXZ.\nLast step: close the window.",
+          "result": "最初のステップ:ファイルを保存ZXQSTARTB0QXZ ZXQENDB0QXZ。\n\n第二のステップ:ZXQATOM1QXZ走る。\n最後のステップ:窓を閉めること。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        }
+      ]
+    },
+    {
+      "targetCode": "jpn",
+      "candidate": "angle",
+      "records": [
+        {
+          "id": "F01",
+          "wire": "A daemon on your Mac drives the phone in three forms: an  ⟪H0⟫ MCP server ⟪/H0⟫  for your agent; an  ⟪B1⟫ HTTP API ⟪/B1⟫  for scripts (ZXQATOM2QXZ); and a  ⟪B3⟫ web page and native iOS app ⟪/B3⟫  for people.",
+          "result": "Mac上のデーモンは3つの形態で電話を駆動します。エージェント用の⟪H0⟫ MCPサーバー⟪/H0⟫、スクリプト用の⟪B1⟫ HTTP API ⟪/B1⟫(ZXQATOM2QXZ);そして、人々向けの⟪B3⟫ウェブページとネイティブiOSアプリ⟪/B3⟫も用意されています。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "F24",
+          "wire": "A daemon on your Mac drives the phone and offers the same control in three forms: an  ⟪H0⟫ MCP server ⟪/H0⟫  for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an  ⟪B1⟫ HTTP API ⟪/B1⟫  for agents and scripts (ZXQATOM2QXZ); and a  ⟪B3⟫ web page and native iOS app ⟪/B3⟫  for people.",
+          "result": "Mac上のデーモンが電話を駆動し、同じ制御を3つの形態で提供します。すなわち、Claude Code、Codex、Claude Desktop、Cursor、その他のMCPクライアント用の⟪H0⟫ MCPサーバー/H0⟫;エージェントおよびスクリプト用の⟪B1⟫ HTTP API ⟪/B1⟫(ZXQATOM2QXZ);そして、人々向けの⟪B3⟫ウェブページとネイティブiOSアプリ⟪/B3⟫も用意されています。",
+          "missingOrRepeated": ["⟪/H0⟫"],
+          "brokenAtoms": []
+        },
+        {
+          "id": "LIVE-1",
+          "wire": " ⟪H0⟫ Let AI agents use your real iPhone. ⟪/H0⟫  With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app,  ⟪B1⟫ including the ones with no API ⟪/B1⟫ : Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+          "result": "⟪H0⟫ AIエージェントに本物のiPhoneを使わせて。⟪/H0⟫ MacにiPhoneがインストールされている場合、Claude Code、Codex、または任意のMCPクライアントが画面をテキストとして読み取り、どのアプリでもタップ、入力、スワイプを行います。⟪B1⟫(APIなしを含む)⟪/B1⟫:健康、銀行、チャットアプリ、またはテストしているアプリ。ライブ視聴もでき、いつでも電話を取り戻すことができます。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "REORDER",
+          "wire": "Before you close the window, please  ⟪B0⟫ save your changes ⟪/B0⟫  and confirm the  ⟪H1⟫ delivery address ⟪/H1⟫ .",
+          "result": "ウィンドウを閉じる前に、変更内容を保存してください ⟪/B0⟫ そして ⟪H1⟫ 配達先 ⟪/H1⟫ を確認してください。",
+          "missingOrRepeated": ["⟪B0⟫"],
+          "brokenAtoms": []
+        },
+        {
+          "id": "REPEAT",
+          "wire": "The  ⟪B0⟫ account ⟪/B0⟫  is active, but the  ⟪H1⟫ account ⟪/H1⟫  must be verified. Run ZXQATOM2QXZ then calculate ZXQATOM3QXZ.",
+          "result": "⟪B0⟫アカウント⟪/B0⟫は有効ですが、⟪H1⟫アカウント⟪/H1⟫は検証が必要です。ZXQATOM2QXZを実行してから、ZXQATOM3QXZを計算します。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "NESTED",
+          "wire": "Keep the  ⟪B0⟫ new  ⟪H1⟫ payment deadline ⟪/H1⟫  unchanged ⟪/B0⟫  and run ZXQATOM2QXZ.",
+          "result": "⟪B0⟫ 新しい⟪H1⟫支払い期限⟪/H1⟫は変更せず⟪/B0⟫を保持し、ZXQATOM2QXZに実行してください。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "BREAKS",
+          "wire": "First step:  ⟪B0⟫ save the file ⟪/B0⟫ .\n\nSecond step: run ZXQATOM1QXZ.\nLast step: close the window.",
+          "result": "最初のステップ:⟪B0⟫ ファイルを保存 ⟪/B0⟫ 。\n\n第二のステップ:ZXQATOM1QXZ走る。\n最後のステップ:窓を閉めること。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        }
+      ]
+    },
+    {
+      "targetCode": "jpn",
+      "candidate": "bracket",
+      "records": [
+        {
+          "id": "F01",
+          "wire": "A daemon on your Mac drives the phone in three forms: an  【H0】 MCP server 【/H0】  for your agent; an  【B1】 HTTP API 【/B1】  for scripts (ZXQATOM2QXZ); and a  【B3】 web page and native iOS app 【/B3】  for people.",
+          "result": "Mac上のデーモンは3つの形態で電話を駆動します:エージェント用の[H0] MCPサーバー[/H0];スクリプト用の[B1] HTTP API [/B1](ZXQATOM2QXZ);そして[B3]のウェブページとネイティブiOSアプリ[/B3]も提供しています。",
+          "missingOrRepeated": ["【H0】", "【/H0】", "【B1】", "【/B1】", "【B3】", "【/B3】"],
+          "brokenAtoms": []
+        },
+        {
+          "id": "F24",
+          "wire": "A daemon on your Mac drives the phone and offers the same control in three forms: an  【H0】 MCP server 【/H0】  for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an  【B1】 HTTP API 【/B1】  for agents and scripts (ZXQATOM2QXZ); and a  【B3】 web page and native iOS app 【/B3】  for people.",
+          "result": "Mac上のデーモンが電話を駆動し、同じ制御を3つの形態で提供します。[H0] MCPサーバー(Claude Code、Codex、Claude Desktop、カーソル、その他のMCPクライアント用);エージェントとスクリプト用の[B1] HTTP API [/B1](ZXQATOM2QXZ);そして[B3]のウェブページとネイティブiOSアプリ[/B3]も提供しています。",
+          "missingOrRepeated": ["【H0】", "【/H0】", "【B1】", "【/B1】", "【B3】", "【/B3】"],
+          "brokenAtoms": []
+        },
+        {
+          "id": "LIVE-1",
+          "wire": " 【H0】 Let AI agents use your real iPhone. 【/H0】  With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app,  【B1】 including the ones with no API 【/B1】 : Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+          "result": "【H0】AIエージェントに本物のiPhoneを使わせて。【/H0】MacにiPhoneがインストールされている場合、Claude Code、Codex、または任意のMCPクライアントが画面をテキストとして読み取り、APIのないアプリも含めて[B1] でタップ、入力、スワイプを行います。[/B1] :健康、銀行、チャットアプリ、またはテスト中のアプリも含まれます。ライブ視聴もでき、いつでも電話を取り戻すことができます。",
+          "missingOrRepeated": ["【B1】", "【/B1】"],
+          "brokenAtoms": []
+        },
+        {
+          "id": "REORDER",
+          "wire": "Before you close the window, please  【B0】 save your changes 【/B0】  and confirm the  【H1】 delivery address 【/H1】 .",
+          "result": "ウィンドウを閉じる前に、[B0]の変更内容を保存し、[H1]の配達アドレス[/H1]を確認してください。",
+          "missingOrRepeated": ["【B0】", "【/B0】", "【H1】", "【/H1】"],
+          "brokenAtoms": []
+        },
+        {
+          "id": "REPEAT",
+          "wire": "The  【B0】 account 【/B0】  is active, but the  【H1】 account 【/H1】  must be verified. Run ZXQATOM2QXZ then calculate ZXQATOM3QXZ.",
+          "result": "【B0】アカウント【/B0】は有効ですが、【H1】アカウント【/H1】は認証が必要です。ZXQATOM2QXZを実行してから、ZXQATOM3QXZを計算します。",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "NESTED",
+          "wire": "Keep the  【B0】 new  【H1】 payment deadline 【/H1】  unchanged 【/B0】  and run ZXQATOM2QXZ.",
+          "result": "[B0] 新しい[H1] 支払い期限[/H1]は変えずに[/B0]をZXQATOM2QXZ走らせてください。",
+          "missingOrRepeated": ["【B0】", "【H1】", "【/H1】", "【/B0】"],
+          "brokenAtoms": []
+        },
+        {
+          "id": "BREAKS",
+          "wire": "First step:  【B0】 save the file 【/B0】 .\n\nSecond step: run ZXQATOM1QXZ.\nLast step: close the window.",
+          "result": "最初のステップ:[B0] ファイルを保存します [/B0] 。\n\n第二のステップ:ZXQATOM1QXZ走る。\n最後のステップ:窓を閉めること。",
+          "missingOrRepeated": ["【B0】", "【/B0】"],
+          "brokenAtoms": []
+        }
+      ]
+    },
+    {
+      "targetCode": "deu",
+      "candidate": "padded",
+      "records": [
+        {
+          "id": "F01",
+          "wire": "A daemon on your Mac drives the phone in three forms: an ⟦H0⟧ MCP server ⟦/H0⟧ for your agent; an ⟦B1⟧ HTTP API ⟦/B1⟧ for scripts (ZXQATOM2QXZ); and a ⟦B3⟧ web page and native iOS app ⟦/B3⟧ for people.",
+          "result": "Ein Daemon auf Ihrem Mac steuert das Telefon in drei Formen: ein ⟦H0⟧ MCP-Server ⟦/H0⟧ für Ihren Agenten; eine ⟦B1⟧ HTTP API ⟦/B1⟧ für Skripte (ZXQATOM2QXZ); und eine ⟦B3⟧-Webseite und eine native iOS-App ⟦/B3⟧ für die Leute.",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "F24",
+          "wire": "A daemon on your Mac drives the phone and offers the same control in three forms: an ⟦H0⟧ MCP server ⟦/H0⟧ for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an ⟦B1⟧ HTTP API ⟦/B1⟧ for agents and scripts (ZXQATOM2QXZ); and a ⟦B3⟧ web page and native iOS app ⟦/B3⟧ for people.",
+          "result": "Ein Daemon auf Ihrem Mac steuert das Telefon und bietet dieselbe Steuerung in drei Formen: einen ⟦H0⟧ MCP-Server ⟦/H0⟧ für Claude Code, Codex, Claude Desktop, Cursor und andere MCP-Clients; eine ⟦B1⟧ HTTP API ⟦/B1⟧ für Agenten und Skripte (ZXQATOM2QXZ); und eine ⟦B3⟧-Webseite und eine native iOS-App ⟦/B3⟧ für die Leute.",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "LIVE-1",
+          "wire": "⟦H0⟧ Let AI agents use your real iPhone. ⟦/H0⟧ With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app, ⟦B1⟧ including the ones with no API ⟦/B1⟧: Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+          "result": "⟦H0⟧ Lass KI-Agenten dein echtes iPhone benutzen. ⟦/H0⟧ Mit iPhone-Nutzung auf Ihrem Mac liest Claude Code, Codex oder jeder MCP-Client den Bildschirm des Telefons als Text, tippt, tippt und wischt in jeder App, ⟦B1⟧ einschließlich der ohne API ⟦/B1⟧: Gesundheits-, Banking-, Chat-Apps oder die App, die Sie testen. Du kannst es live ansehen und das Handy jederzeit zurücknehmen.",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "REORDER",
+          "wire": "Before you close the window, please ⟦B0⟧ save your changes ⟦/B0⟧ and confirm the ⟦H1⟧ delivery address ⟦/H1⟧.",
+          "result": "Bevor Sie das Fenster schließen, speichern Sie bitte ⟦B0⟧ Ihre Änderungen ⟦/B0⟧ und bestätigen Sie die Lieferadresse ⟦H1⟧ ⟦/H1⟧.",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "REPEAT",
+          "wire": "The ⟦B0⟧ account ⟦/B0⟧ is active, but the ⟦H1⟧ account ⟦/H1⟧ must be verified. Run ZXQATOM2QXZ then calculate ZXQATOM3QXZ.",
+          "result": "Das ⟦B0⟧-Konto ⟦/B0⟧ ist aktiv, aber das Konto ⟦H1⟧ ⟦/H1⟧ muss verifiziert werden. Laufe ZXQATOM2QXZ und berechne dann ZXQATOM3QXZ.",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "NESTED",
+          "wire": "Keep the ⟦B0⟧ new ⟦H1⟧ payment deadline ⟦/H1⟧ unchanged ⟦/B0⟧ and run ZXQATOM2QXZ.",
+          "result": "Behalte die neue Zahlungsfrist ⟦B0⟧ ⟦H1⟧ ⟦/H1⟧ unverändert ⟦/B0⟧ und führe ZXQATOM2QXZ durch.",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "BREAKS",
+          "wire": "First step: ⟦B0⟧ save the file ⟦/B0⟧.\n\nSecond step: run ZXQATOM1QXZ.\nLast step: close the window.",
+          "result": "Erster Schritt: ⟦B0⟧ Speichere die Datei ⟦/B0⟧.\n\nZweiter Schritt: Lauf ZXQATOM1QXZ.\nLetzter Schritt: Fenster schließen.",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        }
+      ]
+    },
+    {
+      "targetCode": "deu",
+      "candidate": "numeric",
+      "records": [
+        {
+          "id": "F01",
+          "wire": "A daemon on your Mac drives the phone in three forms: an  ⟦0⟧ MCP server ⟦/0⟧  for your agent; an  ⟦1⟧ HTTP API ⟦/1⟧  for scripts (ZXQATOM2QXZ); and a  ⟦3⟧ web page and native iOS app ⟦/3⟧  for people.",
+          "result": "Ein Daemon auf Ihrem Mac steuert das Telefon in drei Formen: ein ⟦0⟧ MCP-Server ⟦/0⟧ für Ihren Agenten; eine ⟦1⟧ HTTP API ⟦/1⟧ für Skripte (ZXQATOM2QXZ); sowie eine ⟦3⟧-Webseite und eine native iOS-App ⟦/3⟧ für Personen.",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "F24",
+          "wire": "A daemon on your Mac drives the phone and offers the same control in three forms: an  ⟦0⟧ MCP server ⟦/0⟧  for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an  ⟦1⟧ HTTP API ⟦/1⟧  for agents and scripts (ZXQATOM2QXZ); and a  ⟦3⟧ web page and native iOS app ⟦/3⟧  for people.",
+          "result": "Ein Daemon auf Ihrem Mac steuert das Telefon und bietet dieselbe Steuerung in drei Formen: einen ⟦0⟧ MCP-Server ⟦/0⟧ für Claude Code, Codex, Claude Desktop, Cursor und andere MCP-Clients; eine ⟦1⟧ HTTP API ⟦/1⟧ für Agenten und Skripte (ZXQATOM2QXZ); sowie eine ⟦3⟧-Webseite und eine native iOS-App ⟦/3⟧ für Personen.",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "LIVE-1",
+          "wire": " ⟦0⟧ Let AI agents use your real iPhone. ⟦/0⟧  With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app,  ⟦1⟧ including the ones with no API ⟦/1⟧ : Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+          "result": "⟦0⟧ Lassen Sie KI-Agenten Ihr echtes iPhone benutzen. ⟦/0⟧ Mit iPhone-Nutzung auf Ihrem Mac liest Claude Code, Codex oder jeder MCP-Client den Bildschirm des Telefons als Text, tippt, tippt und wischt in jeder App, ⟦1⟧ einschließlich der Apps ohne API ⟦/1⟧: Gesundheits-, Banking-, Chat-Apps oder die App, die Sie testen. Du kannst es live ansehen und das Handy jederzeit zurücknehmen.",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "REORDER",
+          "wire": "Before you close the window, please  ⟦0⟧ save your changes ⟦/0⟧  and confirm the  ⟦1⟧ delivery address ⟦/1⟧ .",
+          "result": "Bevor Sie das Fenster schließen, speichern Sie bitte ⟦0⟧ Ihre Änderungen ⟦/0⟧ und bestätigen Sie die ⟦1⟧ Lieferadresse ⟦/1⟧.",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "REPEAT",
+          "wire": "The  ⟦0⟧ account ⟦/0⟧  is active, but the  ⟦1⟧ account ⟦/1⟧  must be verified. Run ZXQATOM2QXZ then calculate ZXQATOM3QXZ.",
+          "result": "Das ⟦0⟧-Konto ⟦/0⟧ ist aktiv, aber das ⟦1⟧-Konto ⟦/1⟧ muss verifiziert werden. Laufe ZXQATOM2QXZ und berechne dann ZXQATOM3QXZ.",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "NESTED",
+          "wire": "Keep the  ⟦0⟧ new  ⟦1⟧ payment deadline ⟦/1⟧  unchanged ⟦/0⟧  and run ZXQATOM2QXZ.",
+          "result": "Behalte die ⟦0⟧ neue ⟦1⟧ Zahlungsfrist ⟦/1⟧ unverändert ⟦/0⟧ und laufe ZXQATOM2QXZ.",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "BREAKS",
+          "wire": "First step:  ⟦0⟧ save the file ⟦/0⟧ .\n\nSecond step: run ZXQATOM1QXZ.\nLast step: close the window.",
+          "result": "Erster Schritt: ⟦0⟧ Datei speichern ⟦/0⟧ .\n\nZweiter Schritt: Lauf ZXQATOM1QXZ.\nLetzter Schritt: Fenster schließen.",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        }
+      ]
+    },
+    {
+      "targetCode": "deu",
+      "candidate": "curly",
+      "records": [
+        {
+          "id": "F01",
+          "wire": "A daemon on your Mac drives the phone in three forms: an  {{H0}} MCP server {{/H0}}  for your agent; an  {{B1}} HTTP API {{/B1}}  for scripts (ZXQATOM2QXZ); and a  {{B3}} web page and native iOS app {{/B3}}  for people.",
+          "result": "Ein Daemon auf Ihrem Mac steuert das Telefon in drei Formen: ein {{H0}} MCP-Server {{/H0}} für Ihren Agenten; eine {{B1}} HTTP API {{/B1}} für Skripte (ZXQATOM2QXZ); sowie eine {{B3}}-Webseite und eine native iOS-App {{/B3}} für Menschen.",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "F24",
+          "wire": "A daemon on your Mac drives the phone and offers the same control in three forms: an  {{H0}} MCP server {{/H0}}  for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an  {{B1}} HTTP API {{/B1}}  for agents and scripts (ZXQATOM2QXZ); and a  {{B3}} web page and native iOS app {{/B3}}  for people.",
+          "result": "Ein Daemon auf Ihrem Mac steuert das Telefon und bietet dieselbe Steuerung in drei Formen: ein {{H0}} MCP-Server {{/H0}} für Claude Code, Codex, Claude Desktop, Cursor und andere MCP-Clients; eine {{B1}} HTTP API {{/B1}} für Agenten und Skripte (ZXQATOM2QXZ); sowie eine {{B3}}-Webseite und eine native iOS-App {{/B3}} für Menschen.",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "LIVE-1",
+          "wire": " {{H0}} Let AI agents use your real iPhone. {{/H0}}  With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app,  {{B1}} including the ones with no API {{/B1}} : Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+          "result": "{{H0}} Lassen Sie KI-Agenten Ihr echtes iPhone benutzen. {{/H0}}  Mit iPhone-Nutzung auf Ihrem Mac liest Claude Code, Codex oder jeder MCP-Client den Bildschirm des Telefons als Text, tippt, tippt und wischt in jeder App, {{B1}}, einschließlich der ohne API {{/B1}}: Gesundheits-, Banking-, Chat-Apps oder die App, die Sie testen. Du kannst es live ansehen und das Handy jederzeit zurücknehmen.",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "REORDER",
+          "wire": "Before you close the window, please  {{B0}} save your changes {{/B0}}  and confirm the  {{H1}} delivery address {{/H1}} .",
+          "result": "Bevor Sie das Fenster schließen, speichern Sie bitte {{B0}} Ihre Änderungen {{/B0}} und bestätigen Sie die {{H1}} Lieferadresse {{/H1}}.",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "REPEAT",
+          "wire": "The  {{B0}} account {{/B0}}  is active, but the  {{H1}} account {{/H1}}  must be verified. Run ZXQATOM2QXZ then calculate ZXQATOM3QXZ.",
+          "result": "Das {{B0}}-Konto {{/B0}} ist aktiv, aber das {{H1}}-Konto {{/H1}} muss verifiziert werden. Laufe ZXQATOM2QXZ und berechne dann ZXQATOM3QXZ.",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "NESTED",
+          "wire": "Keep the  {{B0}} new  {{H1}} payment deadline {{/H1}}  unchanged {{/B0}}  and run ZXQATOM2QXZ.",
+          "result": "Behalte die {{B0}} neue {{H1}} Zahlungsfrist {{/H1}} unverändert {{/B0}} und führe ZXQATOM2QXZ aus.",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "BREAKS",
+          "wire": "First step:  {{B0}} save the file {{/B0}} .\n\nSecond step: run ZXQATOM1QXZ.\nLast step: close the window.",
+          "result": "Erster Schritt: {{B0}} Speichere die Datei {{/B0}} .\n\nZweiter Schritt: Lauf ZXQATOM1QXZ.\nLetzter Schritt: Fenster schließen.",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        }
+      ]
+    },
+    {
+      "targetCode": "deu",
+      "candidate": "square",
+      "records": [
+        {
+          "id": "F01",
+          "wire": "A daemon on your Mac drives the phone in three forms: an  [[H0]] MCP server [[/H0]]  for your agent; an  [[B1]] HTTP API [[/B1]]  for scripts (ZXQATOM2QXZ); and a  [[B3]] web page and native iOS app [[/B3]]  for people.",
+          "result": "Ein Daemon auf Ihrem Mac steuert das Telefon in drei Formen: ein [[H0]] MCP-Server [[/H0]] für Ihren Agenten; eine [[B1]] HTTP-API [[/B1]] für Skripte (ZXQATOM2QXZ); sowie eine [[B3]]-Webseite und eine native iOS-App [[/B3]] für Personen.",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "F24",
+          "wire": "A daemon on your Mac drives the phone and offers the same control in three forms: an  [[H0]] MCP server [[/H0]]  for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an  [[B1]] HTTP API [[/B1]]  for agents and scripts (ZXQATOM2QXZ); and a  [[B3]] web page and native iOS app [[/B3]]  for people.",
+          "result": "Ein Daemon auf Ihrem Mac steuert das Telefon und bietet dieselbe Steuerung in drei Formen: ein [[H0]] MCP-Server [[/H0]] für Claude Code, Codex, Claude Desktop, Cursor und andere MCP-Clients; eine [[B1]] HTTP-API [[/B1]] für Agenten und Skripte (ZXQATOM2QXZ); sowie eine [[B3]]-Webseite und eine native iOS-App [[/B3]] für Personen.",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "LIVE-1",
+          "wire": " [[H0]] Let AI agents use your real iPhone. [[/H0]]  With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app,  [[B1]] including the ones with no API [[/B1]] : Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+          "result": "[[H0]] Lassen Sie KI-Agenten Ihr echtes iPhone benutzen. [[/H0]]  Mit iPhone-Nutzung auf Ihrem Mac liest Claude Code, Codex oder jeder MCP-Client den Bildschirm des Telefons als Text, tippt, tippt und wischt in jeder App, [[B1]], einschließlich der ohne API [[/B1]] : Gesundheits-, Banking-, Chat-Apps oder die von Ihnen getestete App. Du kannst es live ansehen und das Handy jederzeit zurücknehmen.",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "REORDER",
+          "wire": "Before you close the window, please  [[B0]] save your changes [[/B0]]  and confirm the  [[H1]] delivery address [[/H1]] .",
+          "result": "Bevor Sie das Fenster schließen, speichern Sie bitte [[B0]] Ihre Änderungen [[/B0]] und bestätigen Sie die [[H1]] Lieferadresse [[/H1]].",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "REPEAT",
+          "wire": "The  [[B0]] account [[/B0]]  is active, but the  [[H1]] account [[/H1]]  must be verified. Run ZXQATOM2QXZ then calculate ZXQATOM3QXZ.",
+          "result": "Das [[B0]]-Konto [[/B0]] ist aktiv, aber das [[H1]]-Konto [[/H1]] muss verifiziert werden. Laufe ZXQATOM2QXZ und berechne dann ZXQATOM3QXZ.",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "NESTED",
+          "wire": "Keep the  [[B0]] new  [[H1]] payment deadline [[/H1]]  unchanged [[/B0]]  and run ZXQATOM2QXZ.",
+          "result": "Behalte die [[B0]] neue [[H1]] Zahlungsfrist [[/H1]] unverändert [[/B0]] und führe ZXQATOM2QXZ aus.",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "BREAKS",
+          "wire": "First step:  [[B0]] save the file [[/B0]] .\n\nSecond step: run ZXQATOM1QXZ.\nLast step: close the window.",
+          "result": "Erster Schritt: [[B0]] Speichere die Datei [[/B0]].\n\nZweiter Schritt: Lauf ZXQATOM1QXZ.\nLetzter Schritt: Fenster schließen.",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        }
+      ]
+    },
+    {
+      "targetCode": "deu",
+      "candidate": "xml",
+      "records": [
+        {
+          "id": "F01",
+          "wire": "A daemon on your Mac drives the phone in three forms: an <rfh0>MCP server</rfh0> for your agent; an <rfb1>HTTP API</rfb1> for scripts (ZXQATOM2QXZ); and a <rfb3>web page and native iOS app</rfb3> for people.",
+          "result": "Ein Daemon auf Ihrem Mac steuert das Telefon in drei Formen: ein <rfh0>MCP-Server</rfh0> für Ihren Agenten; eine <rfb1>HTTP API</rfb1> für Skripte (ZXQATOM2QXZ); und eine <rfb3>Webseite sowie eine native iOS-App</rfb3> für die Leute.",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "F24",
+          "wire": "A daemon on your Mac drives the phone and offers the same control in three forms: an <rfh0>MCP server</rfh0> for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an <rfb1>HTTP API</rfb1> for agents and scripts (ZXQATOM2QXZ); and a <rfb3>web page and native iOS app</rfb3> for people.",
+          "result": "Ein Daemon auf Ihrem Mac steuert das Telefon und bietet dieselbe Steuerung in drei Formen: einen <rfh0>MCP-Server</rfh0> für Claude Code, Codex, Claude Desktop, Cursor und andere MCP-Clients; eine <rfb1>HTTP API</rfb1> für Agenten und Skripte (ZXQATOM2QXZ); und eine <rfb3>Webseite sowie eine native iOS-App</rfb3> für die Leute.",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "LIVE-1",
+          "wire": "<rfh0>Let AI agents use your real iPhone.</rfh0> With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app, <rfb1>including the ones with no API</rfb1>: Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+          "result": "<rfh0>Lassen Sie KI-Agenten Ihr echtes iPhone benutzen.</rfh0> Mit iPhone-Use auf Ihrem Mac liest Claude Code, Codex oder jeder MCP-Client den Bildschirm des Telefons als Text, tippt, tippt und wischt in jeder App <rfb1>einschließlich der ohne API</rfb1>: Gesundheits-, Banking-, Chat-Apps oder die App, die Sie testen. Du kannst es live ansehen und das Handy jederzeit zurücknehmen.",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "REORDER",
+          "wire": "Before you close the window, please <rfb0>save your changes</rfb0> and confirm the <rfh1>delivery address</rfh1>.",
+          "result": "Bevor Sie das Fenster schließen, <rfb0>speichern Sie Ihre Änderungen</rfb0> und bestätigen Sie die <rfh1>Lieferadresse</rfh1>.",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "REPEAT",
+          "wire": "The <rfb0>account</rfb0> is active, but the <rfh1>account</rfh1> must be verified. Run ZXQATOM2QXZ then calculate ZXQATOM3QXZ.",
+          "result": "Das <rfb0>Account</rfb0> ist aktiv, aber das <rfh1>account</rfh1> muss verifiziert werden. Laufe ZXQATOM2QXZ und berechne dann ZXQATOM3QXZ.",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "NESTED",
+          "wire": "Keep the <rfb0>new <rfh1>payment deadline</rfh1> unchanged</rfb0> and run ZXQATOM2QXZ.",
+          "result": "Behalte die <rfb0>neue <rfh1>Zahlungsfrist</rfh1> unverändert</rfb0> und führe ZXQATOM2QXZ aus.",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "BREAKS",
+          "wire": "First step: <rfb0>save the file</rfb0>.\n\nSecond step: run ZXQATOM1QXZ.\nLast step: close the window.",
+          "result": "Erster Schritt: <rfb0>die Datei speichern</rfb0>.\n\nZweiter Schritt: Lauf ZXQATOM1QXZ.\nLetzter Schritt: Fenster schließen.",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        }
+      ]
+    },
+    {
+      "targetCode": "deu",
+      "candidate": "sentinel",
+      "records": [
+        {
+          "id": "F01",
+          "wire": "A daemon on your Mac drives the phone in three forms: an  ZXQSTARTH0QXZ MCP server ZXQENDH0QXZ  for your agent; an  ZXQSTARTB1QXZ HTTP API ZXQENDB1QXZ  for scripts (ZXQATOM2QXZ); and a  ZXQSTARTB3QXZ web page and native iOS app ZXQENDB3QXZ  for people.",
+          "result": "Ein Daemon auf Ihrem Mac steuert das Telefon in drei Formen: ein ZXQSTARTH0QXZ MCP-Server ZXQENDH0QXZ für Ihren Agenten; eine ZXQSTARTB1QXZ HTTP API ZXQENDB1QXZ für Skripte (ZXQATOM2QXZ); und eine ZXQSTARTB3QXZ Webseite sowie eine native iOS-App ZXQENDB3QXZ für die Leute.",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "F24",
+          "wire": "A daemon on your Mac drives the phone and offers the same control in three forms: an  ZXQSTARTH0QXZ MCP server ZXQENDH0QXZ  for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an  ZXQSTARTB1QXZ HTTP API ZXQENDB1QXZ  for agents and scripts (ZXQATOM2QXZ); and a  ZXQSTARTB3QXZ web page and native iOS app ZXQENDB3QXZ  for people.",
+          "result": "Ein Daemon auf Ihrem Mac steuert das Telefon und bietet dieselbe Steuerung in drei Formen: einen ZXQSTARTH0QXZ MCP-Server ZXQENDH0QXZ für Claude Code, Codex, Claude Desktop, Cursor und andere MCP-Clients; eine ZXQSTARTB1QXZ HTTP-API ZXQENDB1QXZ für Agenten und Skripte (ZXQATOM2QXZ); und eine ZXQSTARTB3QXZ Webseite sowie eine native iOS-App ZXQENDB3QXZ für die Leute.",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "LIVE-1",
+          "wire": " ZXQSTARTH0QXZ Let AI agents use your real iPhone. ZXQENDH0QXZ  With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app,  ZXQSTARTB1QXZ including the ones with no API ZXQENDB1QXZ : Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+          "result": "ZXQSTARTH0QXZ Lassen Sie KI-Agenten Ihr echtes iPhone benutzen. ZXQENDH0QXZ Mit iPhone-Nutzung auf Ihrem Mac liest Claude Code, Codex oder jeder MCP-Client den Bildschirm des Telefons als Text, tippt, tippt und wischt in jeder App, ZXQSTARTB1QXZ auch in denen ohne API-ZXQENDB1QXZ: Gesundheit, Banking, Chat-Apps oder die App, die Sie testen. Du kannst es live ansehen und das Handy jederzeit zurücknehmen.",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "REORDER",
+          "wire": "Before you close the window, please  ZXQSTARTB0QXZ save your changes ZXQENDB0QXZ  and confirm the  ZXQSTARTH1QXZ delivery address ZXQENDH1QXZ .",
+          "result": "Bevor Sie das Fenster schließen, speichern Sie bitte ZXQSTARTB0QXZ Ihre Änderungen ZXQENDB0QXZ und bestätigen Sie die ZXQSTARTH1QXZ Lieferadresse ZXQENDH1QXZ .",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "REPEAT",
+          "wire": "The  ZXQSTARTB0QXZ account ZXQENDB0QXZ  is active, but the  ZXQSTARTH1QXZ account ZXQENDH1QXZ  must be verified. Run ZXQATOM2QXZ then calculate ZXQATOM3QXZ.",
+          "result": "Das ZXQSTARTB0QXZ Konto ZXQENDB0QXZ ist aktiv, aber das ZXQSTARTH1QXZ Konto muss ZXQENDH1QXZ überprüft werden. Laufe ZXQATOM2QXZ und berechne dann ZXQATOM3QXZ.",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "NESTED",
+          "wire": "Keep the  ZXQSTARTB0QXZ new  ZXQSTARTH1QXZ payment deadline ZXQENDH1QXZ  unchanged ZXQENDB0QXZ  and run ZXQATOM2QXZ.",
+          "result": "Behalten Sie die ZXQSTARTB0QXZ neuen ZXQSTARTH1QXZ Zahlungstermin ZXQENDH1QXZ unverändert ZXQENDB0QXZ und laufen Sie ZXQATOM2QXZ.",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "BREAKS",
+          "wire": "First step:  ZXQSTARTB0QXZ save the file ZXQENDB0QXZ .\n\nSecond step: run ZXQATOM1QXZ.\nLast step: close the window.",
+          "result": "Erster Schritt: ZXQSTARTB0QXZ speichere die Datei ZXQENDB0QXZ .\n\nZweiter Schritt: Lauf ZXQATOM1QXZ.\nLetzter Schritt: Fenster schließen.",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        }
+      ]
+    },
+    {
+      "targetCode": "deu",
+      "candidate": "angle",
+      "records": [
+        {
+          "id": "F01",
+          "wire": "A daemon on your Mac drives the phone in three forms: an  ⟪H0⟫ MCP server ⟪/H0⟫  for your agent; an  ⟪B1⟫ HTTP API ⟪/B1⟫  for scripts (ZXQATOM2QXZ); and a  ⟪B3⟫ web page and native iOS app ⟪/B3⟫  for people.",
+          "result": "Ein Daemon auf Ihrem Mac steuert das Telefon in drei Formen: ein ⟪H0⟫ MCP-Server ⟪/H0⟫ für Ihren Agenten; an ⟪B1⟫ HTTP API ⟪/B1⟫ für Skripte (ZXQATOM2QXZ); sowie eine ⟪B3⟫-Webseite und eine native iOS-App ⟪/B3⟫ für die Personen.",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "F24",
+          "wire": "A daemon on your Mac drives the phone and offers the same control in three forms: an  ⟪H0⟫ MCP server ⟪/H0⟫  for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an  ⟪B1⟫ HTTP API ⟪/B1⟫  for agents and scripts (ZXQATOM2QXZ); and a  ⟪B3⟫ web page and native iOS app ⟪/B3⟫  for people.",
+          "result": "Ein Daemon auf Ihrem Mac steuert das Telefon und bietet dieselbe Steuerung in drei Formen: einen ⟪H0⟫ MCP-Server ⟪/H0⟫ für Claude Code, Codex, Claude Desktop, Cursor und andere MCP-Clients; eine ⟪B1⟫ HTTP API ⟪/B1⟫ für Agenten und Skripte (ZXQATOM2QXZ); sowie eine ⟪B3⟫-Webseite und eine native iOS-App ⟪/B3⟫ für die Personen.",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "LIVE-1",
+          "wire": " ⟪H0⟫ Let AI agents use your real iPhone. ⟪/H0⟫  With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app,  ⟪B1⟫ including the ones with no API ⟪/B1⟫ : Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+          "result": "⟪H0⟫ Lass KI-Agenten dein echtes iPhone benutzen. ⟪/H0⟫ Mit iPhone-Nutzung auf Ihrem Mac liest Claude Code, Codex oder jeder MCP-Client den Bildschirm des Telefons als Text, tippt, tippt und wischt in jeder App, ⟪B1⟫ einschließlich der Apps ohne API ⟪/B1⟫ : Gesundheits-, Banking-, Chat-Apps oder die App, die Sie testen. Du kannst es live ansehen und das Handy jederzeit zurücknehmen.",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "REORDER",
+          "wire": "Before you close the window, please  ⟪B0⟫ save your changes ⟪/B0⟫  and confirm the  ⟪H1⟫ delivery address ⟪/H1⟫ .",
+          "result": "Bevor Sie das Fenster schließen, speichern Sie bitte ⟪B0⟫ Ihre Wechselgeld ⟪/B0⟫ und bestätigen Sie die Lieferadresse ⟪H1⟫",
+          "missingOrRepeated": ["⟪/H1⟫"],
+          "brokenAtoms": []
+        },
+        {
+          "id": "REPEAT",
+          "wire": "The  ⟪B0⟫ account ⟪/B0⟫  is active, but the  ⟪H1⟫ account ⟪/H1⟫  must be verified. Run ZXQATOM2QXZ then calculate ZXQATOM3QXZ.",
+          "result": "Das ⟪B0⟫-Konto ⟪/B0⟫ ist aktiv, aber das ⟪H1⟫-Konto ⟪/H1⟫ muss überprüft werden. Laufe ZXQATOM2QXZ und berechne dann ZXQATOM3QXZ.",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "NESTED",
+          "wire": "Keep the  ⟪B0⟫ new  ⟪H1⟫ payment deadline ⟪/H1⟫  unchanged ⟪/B0⟫  and run ZXQATOM2QXZ.",
+          "result": "Behalte die ⟪B0⟫ neue ⟪H1⟫ Zahlungsfrist ⟪/H1⟫ unverändert ⟪/B0⟫ und führe ZXQATOM2QXZ durch.",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "BREAKS",
+          "wire": "First step:  ⟪B0⟫ save the file ⟪/B0⟫ .\n\nSecond step: run ZXQATOM1QXZ.\nLast step: close the window.",
+          "result": "Erster Schritt: ⟪B0⟫ Speichere die Datei ⟪/B0⟫ .\n\nZweiter Schritt: Lauf ZXQATOM1QXZ.\nLetzter Schritt: Fenster schließen.",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        }
+      ]
+    },
+    {
+      "targetCode": "deu",
+      "candidate": "bracket",
+      "records": [
+        {
+          "id": "F01",
+          "wire": "A daemon on your Mac drives the phone in three forms: an  【H0】 MCP server 【/H0】  for your agent; an  【B1】 HTTP API 【/B1】  for scripts (ZXQATOM2QXZ); and a  【B3】 web page and native iOS app 【/B3】  for people.",
+          "result": "Ein Daemon auf deinem Mac steuert das Telefon in drei Formen: ein 【H0】 MCP-Server 【/H0】 für deinen Agenten; eine 【B1】 HTTP API 【/B1】 für Skripte (ZXQATOM2QXZ); sowie eine 【B3】-Webseite und eine native iOS-App 【/B3】 für Menschen.",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "F24",
+          "wire": "A daemon on your Mac drives the phone and offers the same control in three forms: an  【H0】 MCP server 【/H0】  for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an  【B1】 HTTP API 【/B1】  for agents and scripts (ZXQATOM2QXZ); and a  【B3】 web page and native iOS app 【/B3】  for people.",
+          "result": "Ein Daemon auf Ihrem Mac steuert das Telefon und bietet dieselbe Steuerung in drei Formen: einen 【H0】 MCP-Server 【/H0】 für Claude Code, Codex, Claude Desktop, Cursor und andere MCP-Clients; eine 【B1】 HTTP API 【/B1】 für Agenten und Skripte (ZXQATOM2QXZ); sowie eine 【B3】-Webseite und eine native iOS-App 【/B3】 für Menschen.",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "LIVE-1",
+          "wire": " 【H0】 Let AI agents use your real iPhone. 【/H0】  With iphone-use installed on your Mac, Claude Code, Codex or any MCP client reads the phone's screen as text, taps, types and swipes in any app,  【B1】 including the ones with no API 【/B1】 : Health, banking, chat apps, or the app you are testing. You can watch it live and take the phone back at any time.",
+          "result": "【H0】 Lass KI-Agenten dein echtes iPhone benutzen. 【/H0】 Mit iPhone-Nutzung auf Ihrem Mac liest Claude Code, Codex oder jeder MCP-Client den Bildschirm des Telefons als Text, tippt, tippt und wischt in jeder App, 【B1】 einschließlich der Apps ohne API 【/B1】 : Gesundheits-, Banking-, Chat-Apps oder die App, die Sie testen. Du kannst es live ansehen und das Handy jederzeit zurücknehmen.",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "REORDER",
+          "wire": "Before you close the window, please  【B0】 save your changes 【/B0】  and confirm the  【H1】 delivery address 【/H1】 .",
+          "result": "Bevor Sie das Fenster schließen, speichern Sie bitte 【B0】 Ihre Änderungen 【/B0】 und bestätigen Sie die 【H1】 Lieferadresse 【/H1】.",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "REPEAT",
+          "wire": "The  【B0】 account 【/B0】  is active, but the  【H1】 account 【/H1】  must be verified. Run ZXQATOM2QXZ then calculate ZXQATOM3QXZ.",
+          "result": "Das 【B0】-Konto 【/B0】 ist aktiv, aber das 【H1】-Konto 【/H1】 muss überprüft werden. Laufe ZXQATOM2QXZ und berechne dann ZXQATOM3QXZ.",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "NESTED",
+          "wire": "Keep the  【B0】 new  【H1】 payment deadline 【/H1】  unchanged 【/B0】  and run ZXQATOM2QXZ.",
+          "result": "Behalten Sie die 【B0】 neue 【H1】 Zahlungsfrist 【/H1】 unverändert 【/B0】 und starten Sie ZXQATOM2QXZ.",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        },
+        {
+          "id": "BREAKS",
+          "wire": "First step:  【B0】 save the file 【/B0】 .\n\nSecond step: run ZXQATOM1QXZ.\nLast step: close the window.",
+          "result": "Erster Schritt: 【B0】 Speichere die Datei 【/B0】.\n\nZweiter Schritt: Lauf ZXQATOM1QXZ.\nLetzter Schritt: Fenster schließen.",
+          "missingOrRepeated": [],
+          "brokenAtoms": []
+        }
+      ]
+    }
+  ]
+}

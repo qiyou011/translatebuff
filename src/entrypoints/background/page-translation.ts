@@ -1,5 +1,6 @@
 import type { createPageTranslationQueues } from "@/fork/page-translation/queues"
 import type { WebPagePromptContext } from "@/types/content"
+import type { BilingualFormatManifest } from "@/utils/host/translate/bilingual-format-protocol"
 import { browser } from "#imports"
 import { isLLMProviderConfig } from "@/types/config/provider"
 import { getLocalConfig } from "@/utils/config/storage"
@@ -9,6 +10,10 @@ import { cleanText } from "@/utils/content/utils"
 import { getRandomUUID } from "@/utils/crypto-polyfill"
 import { db } from "@/utils/db/dexie/db"
 import { Sha256Hex } from "@/utils/hash"
+import {
+  bilingualFormatError,
+  parseBilingualFormat,
+} from "@/utils/host/translate/bilingual-format-protocol"
 import { executeTranslate } from "@/utils/host/translate/execute-translate"
 import {
   assertHtmlAttributeMarkerIntegrity,
@@ -41,9 +46,19 @@ async function getValidatedCachedTranslation(
   sourceText: string,
   validateHtmlAttributeMarkers: boolean,
   allowSentinel = false,
+  bilingualFormat?: BilingualFormatManifest,
 ): Promise<string | undefined> {
   const cached = await db.translationCache.get(hash)
   if (!cached) return undefined
+  if (bilingualFormat) {
+    try {
+      parseBilingualFormat(cached.translation, bilingualFormat)
+      return cached.translation
+    } catch {
+      await db.translationCache.delete(hash)
+      return undefined
+    }
+  }
   if (allowSentinel && isNoTranslationSentinel(cached.translation)) return cached.translation
   if (!validateHtmlAttributeMarkers) return cached.translation
 
@@ -86,10 +101,21 @@ export function setupPageTranslationHandlers(
         forceRetranslation = false,
         glossaryTerms,
         glossaryRevision,
+        bilingualFormat,
       },
     } = message
     const scope = buildTranslationScopeKey(message.sender, sessionId)
     const localProvider = getLocalProviderConfig(providerRef)
+    if (bilingualFormat) {
+      if (
+        queues.kind !== "fork" ||
+        !localProvider ||
+        !["google-translate", "microsoft-translate"].includes(localProvider.provider) ||
+        message.data.hostedFeature !== "pageTranslation"
+      )
+        throw bilingualFormatError("unsupported background scope")
+      parseBilingualFormat(text, bilingualFormat)
+    }
     // Keep empty/MT snapshots compatible, but do not trust an older caller's
     // hash to distinguish changed terminology for a prompt-driven request.
     const hash =
@@ -105,7 +131,9 @@ export function setupPageTranslationHandlers(
               terms: [...glossaryTerms].sort((a, b) => a.matchKey.localeCompare(b.matchKey)),
             }),
           )
-        : callerHash
+        : bilingualFormat
+          ? Sha256Hex(callerHash, "bilingual-format", JSON.stringify(bilingualFormat))
+          : callerHash
 
     const validateHtmlAttributeMarkers =
       textFormat === "html" && hasHtmlAttributeMarkerProtocol(text)
@@ -115,12 +143,13 @@ export function setupPageTranslationHandlers(
 
     // Check cache first — unless the user asked for a fresh translation. The
     // existing entry is left untouched unless the fresh request succeeds below.
-    if (hash && !forceRetranslation) {
+    if (hash && !forceRetranslation && !bilingualFormat?.recovery) {
       const cachedTranslation = await getValidatedCachedTranslation(
         hash,
         text,
         validateHtmlAttributeMarkers,
         queues.kind === "fork",
+        bilingualFormat,
       )
       if (cachedTranslation !== undefined) return cachedTranslation
     }
@@ -162,6 +191,7 @@ export function setupPageTranslationHandlers(
           scope,
           textFormat,
           preserveLineBreaks,
+          bilingualFormat,
           hostedFeature: message.data.hostedFeature,
         })
       } else {
@@ -211,6 +241,7 @@ export function setupPageTranslationHandlers(
     }
 
     if (scope && cancelledScopes.has(scope)) throw new TranslationCancelledError(scope)
+    if (bilingualFormat) parseBilingualFormat(result, bilingualFormat)
     if (
       validateHtmlAttributeMarkers &&
       !(queues.kind === "fork" && isNoTranslationSentinel(result))
@@ -234,7 +265,7 @@ export function setupPageTranslationHandlers(
     }
 
     // Cache the translation result if successful
-    if (result && hash && inlineAtomTokensIntact) {
+    if (result && hash && inlineAtomTokensIntact && !bilingualFormat?.recovery) {
       await db.translationCache.put({
         key: hash,
         translation: result,
