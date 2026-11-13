@@ -48,7 +48,7 @@ function setup(extensionTheme: Theme = "light", background = "black") {
     originalText: "original draft",
     fromCode: "eng",
     lang: "tha",
-    langSource: "chatContext",
+    langSource: "configured",
   }
   let interaction: HTMLElement | null = null
   const props = {
@@ -100,7 +100,7 @@ describe("input translation themed menu", () => {
     expect(await screen.findByText("inputTranslationBar.translating")).toBeVisible()
     expect(screen.getByRole("combobox")).toBeDisabled()
     expect(screen.getByRole("button", { name: "inputTranslationBar.undo" })).toBeEnabled()
-    expect(screen.queryByText("inputTranslationBar.autoDetected")).toBeNull()
+    expect(screen.queryByText("inputTranslationBar.configured")).toBeNull()
   })
 
   it("initial error has only safe failure copy and retry, without a chooser or undo", async () => {
@@ -218,7 +218,7 @@ describe("input translation menu keyboard boundary", () => {
             originalText: "original",
             fromCode: "eng",
             lang: "tha",
-            langSource: "chatContext",
+            langSource: "configured",
           }}
           onRetranslate={onRetranslate}
           onUndo={() => {}}

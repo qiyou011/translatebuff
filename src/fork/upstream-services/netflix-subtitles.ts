@@ -1,20 +1,2 @@
-import { NetflixSubtitlesFetcher as UpstreamFetcher } from "@/utils/subtitles/fetchers/netflix"
-import { UpstreamCloudDisabledError } from "./disabled-error"
-
+// 1.7.0 approves existing native Netflix caption tracks. No AI transcription is enabled.
 export * from "@/utils/subtitles/fetchers/netflix"
-
-export class NetflixSubtitlesFetcher extends UpstreamFetcher {
-  override async fetch(): ReturnType<UpstreamFetcher["fetch"]> {
-    throw new UpstreamCloudDisabledError()
-  }
-
-  override async hasAvailableSubtitles(): Promise<boolean> {
-    return false
-  }
-
-  override async shouldUseSameTrack(): Promise<boolean> {
-    return false
-  }
-
-  override cleanup(): void {}
-}

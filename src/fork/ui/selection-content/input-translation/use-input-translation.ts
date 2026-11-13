@@ -1,27 +1,30 @@
 import type { LangCodeISO6393 } from "@read-frog/definitions"
 import type { InputTranslationError } from "./input-translation-error"
-import type { InputTranslationLangSource } from "./resolve-lang"
+import type { InputPlatformSession } from "./platforms/session"
 import type { InputTranslationLang } from "@/types/config/config"
 import { useAtomValue } from "jotai"
-import { useCallback, useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react"
 import { toastManager } from "@/components/ui/base-ui/toast"
 import { isLexicalElement } from "@/entrypoints/input-injector.content/editors/lexical"
+import { featureConfigAtom } from "@/fork/config/atoms"
+import { resolveFeatureConfig } from "@/fork/config/feature-config"
+import { readFeatureConfig } from "@/fork/config/storage"
 import { UpstreamCloudDisabledError } from "@/fork/upstream-services/disabled-error"
 import { ANALYTICS_FEATURE, ANALYTICS_SURFACE } from "@/types/analytics"
 import { createFeatureUsageContext, trackFeatureAttempt } from "@/utils/analytics"
 import { classifyResolvedProvider } from "@/utils/analytics-provider"
 import { configFieldsAtomMap } from "@/utils/atoms/config"
-import { getLocalConfig } from "@/utils/config/storage"
 import { INPUT_REPLACE_REQUEST_TYPE } from "@/utils/constants/input-injector"
 import { getDeepActiveElement } from "@/utils/dom/active-element"
-import { translateTextForInput } from "@/utils/host/translate/translate-variants"
 import { HostedAiProviderUnavailableError } from "@/utils/providers/provider-ref"
 import {
   isBuiltInAiProviderId,
   resolveProviderRefForCapability,
 } from "@/utils/providers/provider-registry"
 import { getChatContextSelector } from "./chat-context-sites"
+import { executeInputTranslation } from "./execute-input-translation"
 import { classifyInputTranslationError } from "./input-translation-error"
+import { captureInputPlatformSession } from "./platforms"
 import { replaceTelegramDraft } from "./replace-telegram-draft"
 import { resolveInputTranslationLang } from "./resolve-lang"
 import {
@@ -31,97 +34,9 @@ import {
 } from "./telegram-context"
 
 const SPACE_KEY = " "
-const TRIGGER_COUNT = 3
-const LAST_CYCLE_SWAPPED_KEY = "read-frog-input-translation-last-cycle-swapped"
-const SPINNER_ID = "read-frog-input-translation-spinner"
 const SEND_CONFIRMATION_WINDOW_MS = 1000
 /** Hammering the hotkey must stack one toast, not one per attempt. */
 const HOSTED_UNAVAILABLE_TOAST_ID = "input-translation-hosted-unavailable"
-
-function getLastCycleSwapped(): boolean {
-  try {
-    return sessionStorage.getItem(LAST_CYCLE_SWAPPED_KEY) === "true"
-  } catch {
-    return false
-  }
-}
-
-function setLastCycleSwapped(swapped: boolean): void {
-  try {
-    sessionStorage.setItem(LAST_CYCLE_SWAPPED_KEY, String(swapped))
-  } catch {
-    // sessionStorage may not be available
-  }
-}
-
-/**
- * Create and show a loading spinner near the input element
- * Uses the same style as page translation loading (border spinner with primary color)
- */
-function showSpinner(element: HTMLElement): () => void {
-  // Remove any existing spinner
-  const existingSpinner = document.getElementById(SPINNER_ID)
-  if (existingSpinner) {
-    existingSpinner.remove()
-  }
-
-  // Create spinner element - same style as createLightweightSpinner in translate/ui/spinner.ts
-  const spinner = document.createElement("span")
-  spinner.id = SPINNER_ID
-
-  // Use the same border spinner style as page translation
-  // Colors: brand yellow (oklch(76.034% 0.12361 82.191)) and muted gray
-  spinner.style.cssText = `
-    --rf-brand: oklch(76.034% 0.12361 82.191);
-    position: absolute !important;
-    display: inline-block !important;
-    width: 10px !important;
-    height: 10px !important;
-    border: 3px solid #e5e5e5 !important;
-    border-top: 3px solid var(--rf-brand) !important;
-    border-radius: 50% !important;
-    box-sizing: content-box !important;
-    z-index: 999999 !important;
-    pointer-events: none !important;
-  `
-
-  // Respect user's motion preferences for accessibility
-  const prefersReducedMotion =
-    window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false
-
-  if (!prefersReducedMotion) {
-    // Use Web Animations API for rotation
-    spinner.animate([{ transform: "rotate(0deg)" }, { transform: "rotate(360deg)" }], {
-      duration: 600,
-      iterations: Infinity,
-      easing: "linear",
-    })
-  } else {
-    // For reduced motion, keep the spinner static but preserve the brand
-    // segment so the loading state remains visible without animation.
-    spinner.style.borderTopColor = "var(--rf-brand)"
-  }
-
-  // Calculate position - vertically centered relative to the element
-  const rect = element.getBoundingClientRect()
-  const scrollX = window.scrollX
-  const scrollY = window.scrollY
-  const spinnerSize = 16 // 10px + 3px border * 2
-
-  // Vertically center for all element types
-  const top = rect.top + scrollY + (rect.height - spinnerSize) / 2
-  const left = rect.right + scrollX - spinnerSize - 8
-
-  spinner.style.top = `${top}px`
-  spinner.style.left = `${left}px`
-
-  document.body.appendChild(spinner)
-
-  // Return cleanup function
-  return () => {
-    spinner.remove()
-  }
-}
 
 /**
  * Set text content with undo support using execCommand.
@@ -179,7 +94,7 @@ function hasFocusWithin(element: HTMLElement, interactionElement: HTMLElement | 
 }
 
 /** 这次的语言是怎么定的，界面据此显示「自动检测」／「按网页源语言」／「手动选择」。 */
-export type InputTranslationBarSource = "chatContext" | "pageSource" | "manual"
+export type InputTranslationBarSource = "configured" | "manual"
 
 export type InputTranslationFeedback =
   | { kind: "pending" }
@@ -192,7 +107,7 @@ type TranslationDirection = { fromLang: InputTranslationLang; toLang: InputTrans
  * 必须记住 `element` 而不只是文本：同一个页面上主输入框、消息编辑框、搜索框同时存在，
  * 只记文本会把 A 框的原文撤销进 B 框。
  */
-export type InputTranslationBar =
+export type InputTranslationBar = (
   | {
       kind: "translated"
       element: HTMLInputElement | HTMLTextAreaElement | HTMLElement
@@ -217,6 +132,7 @@ export type InputTranslationBar =
   /** 两端同语言、什么都没换。同一位置、同款外观，但没有可撤销的对象。 */
   | { kind: "sameLanguage"; element: HTMLElement; lang: LangCodeISO6393; sessionKey?: string }
   | { kind: "hint"; element: HTMLElement; sessionKey?: string }
+) & { ownership?: InputPlatformSession | null }
 
 type InputTranslationBarState = {
   bar: InputTranslationBar
@@ -224,6 +140,7 @@ type InputTranslationBarState = {
 }
 
 type PendingInputRequest = {
+  revision?: string
   element: HTMLElement
   valid: () => boolean
   finish: () => void
@@ -232,40 +149,20 @@ type PendingInputRequest = {
   deferred: (() => void) | null
 }
 
-/**
- * 语言由配置直接给定（钉死的源语言、固定语言码）时不挂条子：没有自动判定，
- * 也就没有要纠错的对象，挂出来只是噪音。
- */
-function toBarSource(source: InputTranslationLangSource): InputTranslationBarSource | null {
-  return source === "explicit" ? null : source
-}
-
-/**
- * 把两端的语言选项解析成具体语言码。配置走 `getLocalConfig()` 而不是 atom 切片拼装——
- * `getEffectiveSiteRule` 按 Config 对象身份做记忆，每次现拼会让那份记忆永不命中。
- */
-async function resolveLangPair(
-  fromLang: InputTranslationLang,
-  toLang: InputTranslationLang,
-  element: HTMLElement,
-) {
-  const config = await getLocalConfig()
-  if (!config) {
-    return null
-  }
-  const url = window.location.href
-  const [from, to] = await Promise.all([
-    resolveInputTranslationLang(fromLang, config, url, document, element),
-    resolveInputTranslationLang(toLang, config, url, document, element),
-  ])
-  return { from, to }
-}
-
 export function useInputTranslation() {
+  const featureConfig = useAtomValue(featureConfigAtom)
+  const triggerCount = featureConfig?.forkConfig.inputTranslation.triggerCount ?? 2
   const inputTranslationConfig = useAtomValue(configFieldsAtomMap.inputTranslation)
   const providersConfig = useAtomValue(configFieldsAtomMap.providersConfig)
   const spaceTimestampsRef = useRef<number[]>([])
   const requestRef = useRef<PendingInputRequest | null>(null)
+  const configRevisionRef = useRef(featureConfig?.revision)
+  useLayoutEffect(() => {
+    if (configRevisionRef.current !== featureConfig?.revision) {
+      configRevisionRef.current = featureConfig?.revision
+      requestRef.current?.cancel()
+    }
+  }, [featureConfig?.revision])
   const writeIdRef = useRef(0)
   const writingElementRef = useRef<HTMLElement | null>(null)
   const triggerSnapshotRef = useRef<{ element: HTMLElement; text: string } | null>(null)
@@ -284,7 +181,13 @@ export function useInputTranslation() {
     (next: InputTranslationBar | null) => {
       updateState(() =>
         next
-          ? { bar: next, isVisible: hasFocusWithin(next.element, interactionElementRef.current) }
+          ? {
+              bar: {
+                ...next,
+                ownership: next.ownership ?? captureInputPlatformSession(next.element),
+              },
+              isVisible: hasFocusWithin(next.element, interactionElementRef.current),
+            }
           : null,
       )
     },
@@ -294,22 +197,26 @@ export function useInputTranslation() {
   // 否则重新聚焦原输入框时会丢失 originalText，也无法恢复撤销入口。
   const bar = barState?.bar ?? null
 
-  // The request owns its listeners/spinner. Logical cancellation deliberately does not
+  // The request owns its listeners. Logical cancellation deliberately does not
   // change the upstream transport; a late finally can only clean its own resources.
   const beginRequest = useCallback(
     (element: HTMLElement, onCancel: () => void) => {
       const draft = getEditableText(element)
       const url = window.location.href
       const telegramKey = isTelegramUrl(url) ? getTelegramSessionKey(url, element) : undefined
-      const hideSpinner = showSpinner(element)
-      const cleanup: Array<() => void> = [hideSpinner]
+      const ownership = captureInputPlatformSession(element)
+      const cleanup: Array<() => void> = []
       const request: PendingInputRequest = {
         element,
         deferred: null,
         valid: () =>
           requestRef.current === request &&
+          (request.revision === undefined ||
+            configRevisionRef.current === undefined ||
+            configRevisionRef.current === request.revision) &&
           element.isConnected &&
           window.location.href === url &&
+          (!ownership || ownership.isCurrent()) &&
           (telegramKey === undefined || getTelegramSessionKey(url, element) === telegramKey) &&
           getEditableText(element) === draft,
         finish: () => {
@@ -380,6 +287,13 @@ export function useInputTranslation() {
       for (let parent = element.parentElement; parent; parent = parent.parentElement) {
         observer.observe(parent, { childList: true })
       }
+      if (ownership)
+        observer.observe(ownership.root, {
+          childList: true,
+          subtree: true,
+          attributes: true,
+          attributeFilter: ["data-id", "data-list-key", "data-peer-id", "thingid", "title"],
+        })
       cleanup.push(() => observer.disconnect())
       return request
     },
@@ -415,6 +329,7 @@ export function useInputTranslation() {
       if (!text || !element.isConnected) return
       const url = window.location.href
       const telegram = isTelegramUrl(url)
+      const ownership = captureInputPlatformSession(element)
       const sessionKey = telegram ? (getTelegramSessionKey(url, element) ?? undefined) : undefined
       if (telegram && !sessionKey) return
       const originalText =
@@ -425,24 +340,18 @@ export function useInputTranslation() {
       const reddit = /(^|\.)reddit\.com$/.test(new URL(url).hostname) && isLexicalElement(element)
       const chatSite = telegram || reddit || getChatContextSelector(url) !== null
 
-      // Determine fromLang and toLang, possibly swapped if cycle is enabled
-      let fromLang = retryBar?.direction.fromLang ?? inputTranslationConfig.fromLang
-      let toLang = retryBar?.direction.toLang ?? inputTranslationConfig.toLang
-
-      if (inputTranslationConfig.enableCycle && !retryBar) {
-        const wasSwapped = getLastCycleSwapped()
-        if (wasSwapped) {
-          // Already swapped last time, use original direction
-          setLastCycleSwapped(false)
-        } else {
-          // Swap direction
-          ;[fromLang, toLang] = [toLang, fromLang]
-          setLastCycleSwapped(true)
-        }
+      const direction = {
+        fromLang: inputTranslationConfig.fromLang,
+        toLang: inputTranslationConfig.toLang,
       }
-
-      const direction = { fromLang, toLang }
-      publish(retryBar ? { ...retryBar, feedback: { kind: "pending" } } : null)
+      publish({
+        kind: "initial",
+        element,
+        sessionKey,
+        originalText,
+        direction,
+        feedback: { kind: "pending" },
+      })
       const request = beginRequest(element, () => publish(null))
       try {
         const provider = resolveProviderRefForCapability(
@@ -452,11 +361,14 @@ export function useInputTranslation() {
         )
         if (!provider && isBuiltInAiProviderId(inputTranslationConfig.providerId))
           throw new UpstreamCloudDisabledError()
-        const langs = await resolveLangPair(fromLang, toLang, element)
+        const config = await readFeatureConfig()
+        request.revision = config.revision
         if (!request.valid()) return
-        if (!langs) throw new Error("Input translation configuration is unavailable")
+        const snapshot = resolveFeatureConfig("input", config.mainConfig, config.forkConfig)
+        const langs = await resolveInputTranslationLang(originalText, config.mainConfig)
+        if (!request.valid()) return
         if (langs.from.code === langs.to.code) {
-          if (chatSite) publish({ kind: "sameLanguage", element, lang: langs.to.code, sessionKey })
+          publish({ kind: "sameLanguage", element, lang: langs.to.code, sessionKey })
           return
         }
         const translatedText = await trackFeatureAttempt(
@@ -471,7 +383,13 @@ export function useInputTranslation() {
             char_count: text.length,
             target_language: langs.to.code,
           },
-          () => translateTextForInput(text, langs.from.code, langs.to.code),
+          () =>
+            executeInputTranslation({
+              text: originalText.trim(),
+              source: langs.from.code,
+              snapshot,
+              readContext: ownership?.readContext,
+            }),
         )
 
         if (!translatedText) {
@@ -510,39 +428,39 @@ export function useInputTranslation() {
                 )
                 return
               }
-              const barSource = toBarSource(langs.to.source) ?? (reddit ? "manual" : null)
-              if (barSource)
-                publish({
-                  kind: "translated",
-                  element,
-                  sessionKey,
-                  translatedText,
-                  originalText,
-                  fromCode: langs.from.code,
-                  lang: langs.to.code,
-                  langSource: barSource,
-                })
-              else publish(null)
+              publish({
+                kind: "translated",
+                element,
+                sessionKey,
+                translatedText,
+                originalText,
+                fromCode: langs.from.code,
+                lang: langs.to.code,
+                langSource: "configured",
+              })
             })
             return
           }
           setTextWithUndo(element, translatedText)
-          const barSource = toBarSource(langs.to.source) ?? (reddit ? "manual" : null)
-          if (chatSite && barSource) {
-            publish({
-              kind: "translated",
-              element,
-              sessionKey,
-              originalText,
-              fromCode: langs.from.code,
-              lang: langs.to.code,
-              langSource: barSource,
-            })
-          } else publish(null)
+          publish({
+            kind: "translated",
+            element,
+            sessionKey,
+            originalText,
+            fromCode: langs.from.code,
+            lang: langs.to.code,
+            langSource: "configured",
+          })
         })
       } catch (error) {
         if (!request.valid()) return
-        if (chatSite) {
+        if (
+          chatSite ||
+          !(
+            error instanceof HostedAiProviderUnavailableError ||
+            error instanceof UpstreamCloudDisabledError
+          )
+        ) {
           publish({
             kind: "initial",
             element,
@@ -569,7 +487,6 @@ export function useInputTranslation() {
     [
       inputTranslationConfig.fromLang,
       inputTranslationConfig.toLang,
-      inputTranslationConfig.enableCycle,
       inputTranslationConfig.providerId,
       providersConfig,
       beginRequest,
@@ -598,6 +515,7 @@ export function useInputTranslation() {
       !element.isConnected
     )
       return false
+    if (expectedBar.ownership && !expectedBar.ownership.isCurrent()) return false
     if (
       expectedBar.sessionKey &&
       getTelegramSessionKey(window.location.href, element) !== expectedBar.sessionKey
@@ -649,6 +567,7 @@ export function useInputTranslation() {
     // 元素可能已经被 SPA 卸载；此时什么都不写，别去动一个不存在的目标。
     if (
       current?.kind === "translated" &&
+      (!current.ownership || current.ownership.isCurrent()) &&
       current.element.isConnected &&
       (!current.sessionKey ||
         (getTelegramSessionKey(window.location.href, current.element) === current.sessionKey &&
@@ -689,11 +608,17 @@ export function useInputTranslation() {
         )
         if (!provider && isBuiltInAiProviderId(inputTranslationConfig.providerId))
           throw new UpstreamCloudDisabledError()
-        const translated = await translateTextForInput(
-          current.originalText.trim(),
-          current.fromCode,
-          code,
-        )
+        const config = await readFeatureConfig()
+        request.revision = config.revision
+        if (!request.valid()) return
+        const snapshot = resolveFeatureConfig("input", config.mainConfig, config.forkConfig)
+        const translated = await executeInputTranslation({
+          text: current.originalText.trim(),
+          source: current.fromCode,
+          target: code,
+          snapshot,
+          readContext: current.ownership?.readContext,
+        })
         if (!translated) {
           if (request.valid()) publish(previous)
           return
@@ -833,6 +758,10 @@ export function useInputTranslation() {
     const handleFocusIn = (event: FocusEvent) => {
       if (bar.kind === "sameLanguage" || !eventComesFrom(event, bar.element)) return
 
+      if (bar.ownership && !bar.ownership.isCurrent()) {
+        dismissCurrentBar()
+        return
+      }
       if (
         bar.sessionKey &&
         getTelegramSessionKey(window.location.href, bar.element) !== bar.sessionKey
@@ -926,10 +855,15 @@ export function useInputTranslation() {
     const contentObserver = new MutationObserver(confirmPendingSend)
     contentObserver.observe(bar.element, { childList: true, characterData: true, subtree: true })
 
-    const sessionRoot = bar.sessionKey ? bar.element.closest(".MiddleColumn, .chat") : null
+    const sessionRoot =
+      bar.ownership?.root ?? (bar.sessionKey ? bar.element.closest(".MiddleColumn, .chat") : null)
     const sessionObserver = sessionRoot
       ? new MutationObserver(() => {
-          if (getTelegramSessionKey(window.location.href, bar.element) !== bar.sessionKey)
+          if (
+            (bar.ownership && !bar.ownership.isCurrent()) ||
+            (bar.sessionKey &&
+              getTelegramSessionKey(window.location.href, bar.element) !== bar.sessionKey)
+          )
             dismissCurrentBar()
         })
       : null
@@ -937,7 +871,7 @@ export function useInputTranslation() {
       childList: true,
       subtree: true,
       attributes: true,
-      attributeFilter: ["class", "data-list-key", "data-peer-id"],
+      attributeFilter: ["class", "data-list-key", "data-peer-id", "data-id", "thingid", "title"],
     })
 
     return () => {
@@ -985,7 +919,14 @@ export function useInputTranslation() {
 
     const handleKeyDown = (event: KeyboardEvent) => {
       // Only process space key
-      if (event.key !== SPACE_KEY) {
+      if (
+        event.key !== SPACE_KEY ||
+        event.isComposing ||
+        event.repeat ||
+        event.ctrlKey ||
+        event.metaKey ||
+        event.altKey
+      ) {
         // Reset on any other key
         spaceTimestampsRef.current = []
         triggerSnapshotRef.current = null
@@ -1018,7 +959,7 @@ export function useInputTranslation() {
       if (timestamps.length && now - timestamps[timestamps.length - 1]! > timeThreshold) {
         timestamps.length = 0
       }
-      while (timestamps.length > 0 && now - timestamps[0]! > timeThreshold * (TRIGGER_COUNT - 1)) {
+      while (timestamps.length > 0 && now - timestamps[0]! > timeThreshold * (triggerCount - 1)) {
         timestamps.shift()
       }
 
@@ -1034,7 +975,7 @@ export function useInputTranslation() {
       timestamps.push(now)
 
       // Check if we have enough rapid presses
-      if (timestamps.length >= TRIGGER_COUNT) {
+      if (timestamps.length >= triggerCount) {
         // Check if all presses are within the time threshold
         const allWithinThreshold = timestamps.every((ts, i) => {
           if (i === 0) return true
@@ -1076,6 +1017,7 @@ export function useInputTranslation() {
   }, [
     inputTranslationConfig.enabled,
     inputTranslationConfig.timeThreshold,
+    triggerCount,
     handleTranslation,
     publish,
   ])

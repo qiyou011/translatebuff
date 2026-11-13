@@ -12,6 +12,7 @@ import { RecoveryBoundary } from "@/components/recovery/recovery-boundary"
 import { SidebarProvider } from "@/components/ui/base-ui/sidebar"
 import { AnchoredToastProvider, ToastProvider } from "@/components/ui/base-ui/toast"
 import { TooltipProvider } from "@/components/ui/base-ui/tooltip"
+import { installFeatureConfigBridge } from "@/fork/config/main-config-bridge"
 import { configAtom } from "@/utils/atoms/config"
 import { baseThemeModeAtom } from "@/utils/atoms/theme"
 import { getLocalConfig } from "@/utils/config/storage"
@@ -41,6 +42,7 @@ function HydrateAtoms({
 }
 
 async function initApp() {
+  installFeatureConfigBridge()
   const root = document.getElementById("root")!
   root.className = "antialiased bg-background"
 

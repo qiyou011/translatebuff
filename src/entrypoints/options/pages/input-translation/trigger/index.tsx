@@ -55,7 +55,13 @@ export function TriggerSection() {
  * the draft lives here and only reaches the config once it is in range. Leaving the field with
  * something unusable in it says so and puts the last good value back.
  */
-function ThresholdInput({ value, onValue }: { value: number; onValue: (value: number) => void }) {
+export function ThresholdInput({
+  value,
+  onValue,
+}: {
+  value: number
+  onValue: (value: number) => void
+}) {
   const [draft, setDraft] = useState(String(value))
   const [prevValue, setPrevValue] = useState(value)
 

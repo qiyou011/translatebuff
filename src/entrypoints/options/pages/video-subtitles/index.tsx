@@ -1,3 +1,4 @@
+import { FeatureSettings } from "@/fork/ui/feature-settings"
 import { i18n } from "@/utils/i18n"
 import { PageLayout } from "../../components/page-layout"
 import { AiQuotaSection } from "./ai-quota"
@@ -14,6 +15,7 @@ export function VideoSubtitlesPage() {
       description={i18n.t("options.videoSubtitles.pageDescription")}
       innerClassName="flex flex-col gap-10"
     >
+      <FeatureSettings feature="subtitles" showEnabled={false} />
       <PreferenceSection />
       <AiQuotaSection />
       <SubtitlesStyleSection />

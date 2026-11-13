@@ -1,3 +1,4 @@
+import type { LangCodeISO6393 } from "@read-frog/definitions"
 import { Combobox as ComboboxPrimitive } from "@base-ui/react"
 import { IconChevronDown } from "@tabler/icons-react"
 import { useAtom } from "jotai"
@@ -16,8 +17,17 @@ import { useSelectionPopoverOverlayProps } from "@/components/ui/selection-popov
 import { configFieldsAtomMap } from "@/utils/atoms/config"
 import { i18n } from "@/utils/i18n"
 
-export function TargetLanguageSelector() {
-  const [language, setLanguage] = useAtom(configFieldsAtomMap.language)
+export function TargetLanguageSelector({
+  targetCode,
+  onTargetCodeChange,
+  disabled,
+}: {
+  targetCode?: LangCodeISO6393
+  onTargetCodeChange?: (code: LangCodeISO6393) => void
+  disabled?: boolean
+} = {}) {
+  const [globalLanguage, setLanguage] = useAtom(configFieldsAtomMap.language)
+  const language = { ...globalLanguage, targetCode: targetCode ?? globalLanguage.targetCode }
   const popoverOverlay = useSelectionPopoverOverlayProps()
   const languageItems = useMemo(() => getTargetLanguageItems(), [])
   const currentItem = useMemo(
@@ -28,13 +38,15 @@ export function TargetLanguageSelector() {
 
   return (
     <Combobox
+      disabled={disabled}
       value={currentItem}
       onValueChange={(item) => {
         if (!item || item.value === language.targetCode) {
           return
         }
 
-        void setLanguage({ targetCode: item.value })
+        if (onTargetCodeChange) onTargetCodeChange(item.value)
+        else void setLanguage({ targetCode: item.value })
       }}
       items={languageItems}
       filter={filterLanguage}

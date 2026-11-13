@@ -74,22 +74,13 @@ describe.each([
   { locale: "en", loginPath: "/login", redeemPath: "/" },
   { locale: "vi", loginPath: "/login", redeemPath: "/" },
 ])("$locale 界面", ({ locale, loginPath, redeemPath }) => {
-  describe("国内Popup", () => {
-    it.each(["logged-out", "free", "pro"])("%s 不显示兑换入口", (state) => {
-      renderAccount("cn", state, locale)
-      expect(screen.queryByRole("button", { name: "兑换码" })).not.toBeInTheDocument()
-      expect(browser.tabs.create).not.toHaveBeenCalled()
-    })
-
+  describe.each(["cn", "global"] as const)("%s Popup", (edition) => {
     it("未登录时保留登录入口", () => {
-      renderAccount("cn", "logged-out", locale)
+      renderAccount(edition, "logged-out", locale)
       expect(screen.getByRole("button", { name: "登录" })).toBeVisible()
     })
-  })
-
-  describe("海外Popup", () => {
     it.each(["logged-out", "free", "pro"])("%s 提供官网兑换入口", async (state) => {
-      renderAccount("global", state, locale)
+      renderAccount(edition, state, locale)
       const redeem = screen.getByRole("button", { name: "兑换码" })
       expect(redeem).toBeVisible()
       fireEvent.click(redeem)

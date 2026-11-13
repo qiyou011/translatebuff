@@ -3,10 +3,15 @@ import type {
   InputTranslationBar as BarState,
   InputTranslationBarSource,
 } from "./use-input-translation"
+import { useAtomValue } from "jotai"
 import { Info, TriangleAlert } from "lucide-react"
 import { useCallback, useEffect, useState } from "react"
+import { browser } from "#imports"
+import undoIcon from "@/assets/images/panel-v170/undo-icon.svg?url&no-inline"
 import { useTheme } from "@/components/providers/theme-provider"
+import { featureConfigAtom } from "@/fork/config/atoms"
 import { i18n } from "@/utils/i18n"
+import { BrandLoading } from "./brand-loading"
 import localStyles from "./input-translation-bar.css?inline"
 import { InputTranslationLanguageSelect } from "./input-translation-language-select"
 import { INPUT_TRANSLATION_PALETTES } from "./input-translation-palette"
@@ -28,21 +33,20 @@ interface BarPosition {
 }
 
 const SOURCE_LABEL_KEYS = {
-  chatContext: "inputTranslationBar.autoDetected",
-  pageSource: "inputTranslationBar.fromPageSource",
+  configured: "inputTranslationBar.configured",
   manual: "inputTranslationBar.manualSelection",
 } as const satisfies Record<InputTranslationBarSource, string>
 
 /**
  * 两种形态共用的外壳。
  *
- * 刻意不是浮层卡片——无描边、无阴影，只是贴着输入框的一小块，宽度随内容收拢，衬一层
- * 不透明中性底与聊天区分开，颜色由输入区域主题决定，避免背景图片影响可读性。
+ * 翻译中显示品牌加载环，完成后展开为带细描边的语言与撤销胶囊。
+ * 颜色跟随输入区域主题，宽度随内容收拢。
  */
 const SHELL_CLASS =
   "rf-input-translation-shell flex min-h-7 w-fit max-w-[calc(100vw-16px)] flex-wrap items-center gap-x-2.5 gap-y-1 rounded-md px-2.5 py-1 text-xs"
 
-/** 语言选择器与撤销都是纯文字，不是按钮——同上，别把它做成一块控件。 */
+/** 语言选择器沿用原交互，具体尺寸由局部样式控制。 */
 const PLAIN_TRIGGER_CLASS = "rf-input-translation-trigger h-auto px-0 py-0 font-semibold"
 
 /**
@@ -63,6 +67,8 @@ export function InputTranslationBar({
   onInteractionElementChange,
   onLanguageMenuOpenChange,
 }: InputTranslationBarProps) {
+  const triggerCount =
+    useAtomValue(featureConfigAtom)?.forkConfig.inputTranslation.triggerCount ?? 2
   const [position, setPosition] = useState<BarPosition | null>(null)
   const [portalContainer, setPortalContainer] = useState<HTMLDivElement | null>(null)
   const { theme: extensionTheme } = useTheme()
@@ -191,16 +197,25 @@ export function InputTranslationBar({
           zIndex: 2147483000,
         }}
         className={SHELL_CLASS}
+        title={bar.kind === "translated" ? i18n.t(SOURCE_LABEL_KEYS[bar.langSource]) : undefined}
+        data-bar-state={
+          bar.kind === "initial" && feedback?.kind === "pending" ? "loading" : bar.kind
+        }
       >
+        <BrandLoading dark={theme === "dark"} pending={feedback?.kind === "pending"} />
         {bar.kind === "hint" ? (
-          <span className="text-muted-foreground">{i18n.t("inputTranslationBar.triggerHint")}</span>
+          <span className="text-muted-foreground">
+            {i18n.t("inputTranslationBar.triggerHintCount", [triggerCount])}
+          </span>
         ) : bar.kind === "sameLanguage" ? (
           <span className="flex items-center gap-1.5 text-foreground">
             <Info className="size-3.5 shrink-0" />
             {i18n.t("inputTranslationBar.sameLanguage")}
           </span>
         ) : bar.kind === "initial" ? (
-          feedbackSlot
+          <span className={feedback?.kind === "pending" ? "sr-only" : undefined}>
+            {feedbackSlot}
+          </span>
         ) : (
           <>
             <span className="shrink-0 text-muted-foreground">
@@ -217,16 +232,21 @@ export function InputTranslationBar({
               />
             )}
             {feedbackSlot ?? (
-              <span className="shrink-0 text-[11px] text-muted-foreground">
-                {i18n.t(SOURCE_LABEL_KEYS[bar.langSource])}
-              </span>
+              <span className="sr-only">{i18n.t(SOURCE_LABEL_KEYS[bar.langSource])}</span>
             )}
             <button
               type="button"
               onClick={onUndo}
               className="rf-input-translation-undo shrink-0 cursor-pointer hover:underline"
+              aria-label={i18n.t("inputTranslationBar.undo")}
+              title={i18n.t("inputTranslationBar.undo")}
             >
-              {i18n.t("inputTranslationBar.undo")}
+              <img
+                src={new URL(undoIcon, browser.runtime.getURL("/")).href}
+                width={13}
+                height={13}
+                alt=""
+              />
             </button>
           </>
         )}

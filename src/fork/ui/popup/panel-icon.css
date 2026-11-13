@@ -1,0 +1,19 @@
+.tb-panel-icon {
+  display: block;
+  flex-shrink: 0;
+}
+.tb-panel-icon > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.tb-panel-icon > .tb-icon-dark {
+  display: none;
+}
+.dark .tb-panel-icon > .tb-icon-light {
+  display: none;
+}
+.dark .tb-panel-icon > .tb-icon-dark {
+  display: block;
+}

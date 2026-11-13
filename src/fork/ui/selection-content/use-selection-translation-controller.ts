@@ -28,11 +28,12 @@ import {
 import { useSelectionOpenRequestResolver } from "@/entrypoints/selection.content/selection-toolbar/use-selection-open-request"
 import { useSelectionShortcuts } from "@/entrypoints/selection.content/selection-toolbar/use-selection-shortcuts"
 import { captureSelectionActionContext } from "@/entrypoints/selection.content/utils"
+import { featureConfigAtom, writeFeatureConfigAtom } from "@/fork/config/atoms"
 import { ANALYTICS_FEATURE, ANALYTICS_SURFACE } from "@/types/analytics"
 import { isLLMProviderConfig, isTranslateProviderConfig } from "@/types/config/provider"
 import { createFeatureUsageContext, trackFeatureUsed } from "@/utils/analytics"
 import { classifyProviderConfig, UNKNOWN_FEATURE_PROVIDER } from "@/utils/analytics-provider"
-import { configFieldsAtomMap, writeConfigAtom } from "@/utils/atoms/config"
+import { configFieldsAtomMap } from "@/utils/atoms/config"
 import { buildFeatureProviderPatch } from "@/utils/constants/feature-providers"
 import { streamBackgroundText } from "@/utils/content-script/background-stream-client"
 import { getSourceDocumentTitle } from "@/utils/content/document-title"
@@ -47,6 +48,7 @@ import { getTranslatePromptFromConfig } from "@/utils/prompts/translate"
 import { resolveModelId } from "@/utils/providers/model-id"
 import { getProviderOptionsWithOverride } from "@/utils/providers/options"
 import { getSelectableProvidersForCapability } from "@/utils/providers/provider-registry"
+import { resolveProviderRefForCapability } from "@/utils/providers/provider-registry"
 import { getTopLevelReasoning } from "@/utils/providers/reasoning"
 
 // fork 翻译浮窗 controller —— 逐行镜像上游 translate-button/provider.tsx 的编排状态机
@@ -227,11 +229,28 @@ export function useSelectionTranslationController() {
   >(ANALYTICS_SURFACE.SELECTION_TOOLBAR)
   const [activeSession, setActiveSession] = useState<SelectionSession | null>(null)
   const selectionSession = useAtomValue(selectionSessionAtom)
-  const translateRequest = useAtomValue(selectionToolbarTranslateRequestAtom)
+  const upstreamRequest = useAtomValue(selectionToolbarTranslateRequestAtom)
+  const featureConfig = useAtomValue(featureConfigAtom)
+  const featureConfigReady = featureConfig !== null
+  const translateRequest = useMemo(() => {
+    if (!featureConfig) return upstreamRequest
+    const { mainConfig, forkConfig } = featureConfig
+    return {
+      language: { ...mainConfig.language, ...forkConfig.featureLanguages.selection },
+      enableAIContentAware: mainConfig.pageTranslation.enableAIContentAware,
+      glossaryEnabled: mainConfig.glossary.enabled,
+      customPromptsConfig: mainConfig.pageTranslation.customPromptsConfig,
+      provider: resolveProviderRefForCapability(
+        "selectionTranslation",
+        mainConfig.providersConfig,
+        mainConfig.selectionToolbar.features.translate.providerId,
+      ),
+    }
+  }, [featureConfig, upstreamRequest])
   const providersConfig = useAtomValue(configFieldsAtomMap.providersConfig)
   const selectionToolbar = useAtomValue(configFieldsAtomMap.selectionToolbar)
   const setIsSelectionToolbarVisible = useSetAtom(isSelectionToolbarVisibleAtom)
-  const setConfig = useSetAtom(writeConfigAtom)
+  const setConfig = useSetAtom(writeFeatureConfigAtom)
   const abortControllerRef = useRef<AbortController | null>(null)
   const pendingOpenRequestRef = useRef<SelectionTranslatePendingOpenRequest | null>(null)
   const popoverActionsRef = useRef<SelectionPopoverActions | null>(null)
@@ -278,7 +297,7 @@ export function useSelectionTranslationController() {
 
   const handleProviderChange = useCallback(
     (providerId: string) => {
-      void setConfig(buildFeatureProviderPatch({ selectionTranslation: providerId }))
+      void setConfig({ main: buildFeatureProviderPatch({ selectionTranslation: providerId }) })
     },
     [setConfig],
   )
@@ -441,7 +460,7 @@ export function useSelectionTranslationController() {
   })
 
   useEffect(() => {
-    if (!isOpen) {
+    if (!isOpen || !featureConfigReady) {
       return undefined
     }
 
@@ -471,6 +490,7 @@ export function useSelectionTranslationController() {
     popoverSessionKey,
     rerunNonce,
     translateRequestKey,
+    featureConfigReady,
   ])
 
   const applyPendingSession = useCallback(() => {

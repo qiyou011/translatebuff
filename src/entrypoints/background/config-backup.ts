@@ -1,9 +1,10 @@
-import type { Config } from "@/types/config/config"
-import { browser, storage } from "#imports"
+import { browser } from "#imports"
+import { featureConfigService } from "@/fork/background/feature-config-service"
+import { createFeatureBackup } from "@/fork/config/backup"
 import { addBackup, isSameAsLatestBackup } from "@/utils/backup/storage"
 import { EXTENSION_VERSION } from "@/utils/constants/app"
 import { BACKUP_INTERVAL_MINUTES } from "@/utils/constants/backup"
-import { CONFIG_SCHEMA_VERSION, CONFIG_STORAGE_KEY } from "@/utils/constants/config"
+import { CONFIG_SCHEMA_VERSION } from "@/utils/constants/config"
 import { logger } from "@/utils/logger"
 
 const CONFIG_BACKUP_ALARM = "config-backup"
@@ -33,21 +34,15 @@ export function setUpConfigBackup() {
 
 async function performAutoBackup() {
   try {
-    // Get current config from storage
-    const config = await storage.getItem<Config>(`local:${CONFIG_STORAGE_KEY}`)
+    const { config, forkConfig } = createFeatureBackup(await featureConfigService.read())
 
-    if (!config) {
-      logger.warn("No config found to backup")
-      return
-    }
-
-    if (await isSameAsLatestBackup(config, CONFIG_SCHEMA_VERSION)) {
+    if (await isSameAsLatestBackup(config, CONFIG_SCHEMA_VERSION, forkConfig)) {
       logger.info("Skipping backup: config is identical to latest backup")
       return
     }
 
     // Add backup
-    await addBackup(config, EXTENSION_VERSION)
+    await addBackup(config, EXTENSION_VERSION, forkConfig)
 
     logger.info("Auto backup completed successfully")
   } catch (error) {

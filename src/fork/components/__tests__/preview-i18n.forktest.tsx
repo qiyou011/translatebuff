@@ -62,12 +62,18 @@ describe("静态预览随界面语言变化", () => {
         throw new Error("preview must not fetch")
       })
       vi.stubGlobal("fetch", fetchSpy)
-      const { store } = await mount(<StylePreview />)
-      expect(screen.getByText(english).closest("[lang]")).toHaveAttribute("lang", "en")
+      const { store, container } = await mount(<StylePreview />)
+      expect(container.querySelector("#style-preview [lang]")).toHaveAttribute("lang", "en")
+      expect(container.querySelector("#style-preview")).toHaveTextContent(
+        "A quiet morning walk is a good way to explore the city.",
+      )
       await act(async () =>
         store.set(configAtom, { ...store.get(configAtom), uiLanguage: "zh-CN" }),
       )
-      expect(screen.getByText(chinese).closest("[lang]")).toHaveAttribute("lang", "zh")
+      expect(container.querySelector("#style-preview [lang]")).toHaveAttribute("lang", "zh")
+      expect(container.querySelector("#style-preview")).toHaveTextContent(
+        "清晨安静地散步，是探索这座城市的好方式。",
+      )
       expect(fetchSpy).not.toHaveBeenCalled()
     },
   )

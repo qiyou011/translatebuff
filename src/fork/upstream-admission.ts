@@ -8,8 +8,8 @@ export const FORK_UPSTREAM_ADMISSION = Object.freeze({
   aiTranscription: false,
   noteSuggestion: false,
   learningSidebar: false,
-  xSubtitles: false,
-  netflixSubtitles: false,
+  xSubtitles: true,
+  netflixSubtitles: true,
 })
 
 export const APPROVED_BUILT_IN_ACTION_IDS: readonly string[] = Object.freeze(["default-dictionary"])
@@ -29,7 +29,13 @@ export function isApprovedSubtitlesUrl(url: string): boolean {
       hostname === "youtube.com" ||
       hostname.endsWith(".youtube.com") ||
       hostname === "youtube-nocookie.com" ||
-      hostname.endsWith(".youtube-nocookie.com")
+      hostname.endsWith(".youtube-nocookie.com") ||
+      hostname === "x.com" ||
+      hostname.endsWith(".x.com") ||
+      hostname === "twitter.com" ||
+      hostname.endsWith(".twitter.com") ||
+      hostname === "netflix.com" ||
+      hostname === "www.netflix.com"
     )
   } catch {
     return false

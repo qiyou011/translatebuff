@@ -185,7 +185,7 @@ options:
         noteSuggestion: Note suggestions
         selectionTranslation: Selection translation
         videoSubtitles: Video subtitles
-        inputTranslation: Input translation
+        inputTranslation: Chat / Input Translation
         languageDetection: Language detection
     sponsorCta: Get fast, cost-effective AI
     sponsorCtaJalapenoCloud: Get 50% Off GLM 5.2
@@ -325,13 +325,13 @@ options:
       features:
         pageTranslation: Page translation
         selectionTranslation: Selection toolbar translation
-        inputTranslation: Input translation
+        inputTranslation: Chat / Input Translation
         videoSubtitles: Video subtitles
         noteSuggestion: Note suggestions
       descriptions:
         pageTranslation: Translates the whole page in bilingual or replace mode.
         selectionTranslation: Translates the text you select from the selection toolbar.
-        inputTranslation: Translates what you type into an input box before you send it.
+        inputTranslation: Chat / Input Translation
         videoSubtitles: Translates subtitles as they appear in a video player.
         noteSuggestion: Suggests words worth saving to your Notebase after a selection translation.
     languageDetection:
@@ -576,7 +576,7 @@ options:
   overlayTools:
     title: Overlay Tools
   inputTranslation:
-    title: Input Translation
+    title: Chat / Input Translation
     pageDescription: Translate what you type in input boxes before you send it.
     trigger:
       title: Trigger
@@ -2101,7 +2101,61 @@ languages:
   wls: Wallisian
   rar: Rarotongan
   hif: Fiji Hindi
+quickTranslation:
+  stylePreviewTranslation: "A quiet morning walk is a good way to explore the city."
+  brandTranslate: "TranslateBuff: translate selection"
+  enableSubtitles: "Enable video subtitles"
+  sitePaused: "Extension disabled on this site"
+  resumeSite: "Resume"
+  translatePage: "Translate this page"
+  allSettings: "All settings"
+  selectionTitle: "Selection translation"
+  supportedContextPlatforms: "Supported platforms for AI context"
+  supportedContextDescription: "Use AI context on supported platforms to translate drafts into your chosen target language."
+  triggerKey: "Trigger key"
+  triggerKeyDescription: "Use consecutive space presses to trigger translation."
+  spaceKey: "Space"
+  triggerCountDescription: "Choose between 2 and 5 consecutive space presses."
+  languageDirection: "Translation direction"
+  languageDirectionDescription: "Detect the draft language automatically and translate into your chosen target language."
+  moreTranslations: "More translations"
+  comicImage: "Comics / Images"
+  comingSoon: "Coming soon"
+  bilingual: "Bilingual"
+  translationOnly: "Translation only"
+  displayMode: "Display mode"
+  colorDescription: "Choose a color, or click the swatch to customize."
+  customColor: "Custom color"
+  quoteColor: "Quote line color"
+  dashedLineColor: "Dashed line color"
+  borderColor: "Border color"
+  backgroundColor: "Background color"
+  inputTutorial: "Write your message, then press Space $1 times to translate"
+  spaceCount: "Space × $1"
+  beforeTranslation: "Before translation"
+  afterTranslation: "After translation"
+  translatedToEnglish: "To English"
+  selectionTutorial: "Select text on a page, then click Translate in the toolbar"
+  selectionExample: "A quiet morning walk"
+  translateAction: "Translate"
+  videoExample: "Video subtitle translation example"
+  videoNoticeCN: "Supports YouTube, X and Netflix. Follow local laws and regulations. TranslateBuff does not provide network proxy services."
+  videoNoticeGlobal: "Supports YouTube, X and Netflix."
+  loading: "Loading settings…"
+  loadFailed: "Could not load settings. Reopen this page to try again."
+  saveFailed: "Could not save. Please try again."
+  enabled: "Enabled"
+  autoDraft: "Detect draft language"
+  autoDetect: "Auto-detect"
+  provider: "Translation provider"
+  triggerCount: "Space presses"
+  smartContext: "AI context"
+  platformNotice: "When using these platforms, follow the laws of your location. TranslateBuff does not provide network proxy services."
+  documentsUnavailable: "Document translation · Coming soon"
 inputTranslationBar:
+  configured: Configured
+  languageUndetected: Could not identify the input language. Add more text and try again.
+  triggerHintCount: Press Space $1 times to translate
   triggerHint: Press Space three times to translate
   translating: Translating…
   failed: Translation failed

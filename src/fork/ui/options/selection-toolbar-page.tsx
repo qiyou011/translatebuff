@@ -3,6 +3,7 @@ import { PageLayout } from "@/entrypoints/options/components/page-layout"
 import { ActionsSection } from "@/entrypoints/options/pages/selection-toolbar/actions"
 import { DisplaySection } from "@/entrypoints/options/pages/selection-toolbar/display"
 import { EnableItem } from "@/entrypoints/options/pages/selection-toolbar/enable-item"
+import { FeatureSettings } from "@/fork/ui/feature-settings"
 // 换皮：上游 options 功能页。上游用静态截图当功能示意图，图里是 read-frog 的界面；
 // fork 换成实时渲染的 CSS 插画（含品牌标），既不漏上游品牌、也不用维护三张截图。
 // 除示意区外与上游逐字一致——上游 v1.46.4 重构过本页，本副本已按新结构重新生成。
@@ -24,6 +25,7 @@ export function SelectionToolbarPage() {
         />
       </GradientBackground>
       <EnableItem />
+      <FeatureSettings feature="selection" languagesOnly />
       <ActionsSection />
       <DisplaySection />
     </PageLayout>

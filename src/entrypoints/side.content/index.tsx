@@ -10,6 +10,7 @@ import ReactDOM from "react-dom/client"
 import { createShadowRootUi, defineContentScript } from "#imports"
 import { ThemeProvider } from "@/components/providers/theme-provider"
 import { TooltipProvider } from "@/components/ui/base-ui/tooltip"
+import { installFeatureConfigBridge } from "@/fork/config/main-config-bridge"
 import { configAtom } from "@/utils/atoms/config"
 import { baseThemeModeAtom } from "@/utils/atoms/theme"
 import { getLocalConfig } from "@/utils/config/storage"
@@ -56,6 +57,7 @@ export default defineContentScript({
   matches: ["*://*/*", "file:///*"],
   cssInjectionMode: "ui",
   async main(ctx) {
+    installFeatureConfigBridge()
     const config = (await getLocalConfig()) ?? DEFAULT_CONFIG
 
     // Check global site control

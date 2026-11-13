@@ -48,7 +48,10 @@ it.each([
   )
   render(<RouterProvider router={router} />)
   const trigger = screen.getByRole("button", { name })
-  expect(trigger).toHaveAttribute("aria-expanded", "false")
+  expect(trigger).toHaveAttribute(
+    "aria-expanded",
+    name === "options.sidebar.translation" ? "true" : "false",
+  )
   await act(() => router!.navigate(path))
   expect(trigger).toHaveAttribute("aria-expanded", "true")
   fireEvent.click(trigger)

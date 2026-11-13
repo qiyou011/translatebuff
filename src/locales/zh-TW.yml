@@ -185,7 +185,7 @@ options:
         noteSuggestion: 猜你想存
         selectionTranslation: 選取文字翻譯
         videoSubtitles: 影片字幕
-        inputTranslation: 輸入翻譯
+        inputTranslation: 聊天／輸入翻譯
         languageDetection: 語言偵測
     sponsorCta: 取得高速高性價比 AI
     sponsorCtaJalapenoCloud: 取得 GLM 5.2 五折優惠
@@ -325,13 +325,13 @@ options:
       features:
         pageTranslation: 網頁翻譯
         selectionTranslation: 選取文字翻譯
-        inputTranslation: 輸入翻譯
+        inputTranslation: 聊天／輸入翻譯
         videoSubtitles: 影片字幕
         noteSuggestion: 猜你想存
       descriptions:
         pageTranslation: 翻譯整個網頁，雙語對照或直接取代原文。
         selectionTranslation: 透過劃詞工具列翻譯你選取的文字。
-        inputTranslation: 在送出前翻譯你寫在輸入框裡的內容。
+        inputTranslation: 聊天／輸入翻譯
         videoSubtitles: 翻譯影片播放器中隨播放出現的字幕。
         noteSuggestion: 選取文字翻譯後，推薦值得存入筆記庫的詞條。
     languageDetection:
@@ -576,7 +576,7 @@ options:
   overlayTools:
     title: 懸浮工具
   inputTranslation:
-    title: 輸入翻譯
+    title: 聊天／輸入翻譯
     pageDescription: 在送出之前，把你在輸入框裡寫的內容翻譯好。
     trigger:
       title: 觸發方式
@@ -1964,13 +1964,67 @@ languages:
   wls: 瓦利斯語
   rar: 庫克群島毛利語
   hif: 斐濟印地語
+quickTranslation:
+  stylePreviewTranslation: "清晨安靜地散步，是探索這座城市的好方式。"
+  brandTranslate: "任譯喵：翻譯選取範圍"
+  enableSubtitles: "開啟影片字幕"
+  sitePaused: "已在目前網站停用擴充功能"
+  resumeSite: "恢復使用"
+  translatePage: "翻譯目前網頁"
+  allSettings: "全部設定"
+  selectionTitle: "劃詞翻譯"
+  supportedContextPlatforms: "Supported platforms for AI context"
+  supportedContextDescription: "Use AI context on supported platforms to translate drafts into your chosen target language."
+  triggerKey: "Trigger key"
+  triggerKeyDescription: "Use consecutive space presses to trigger translation."
+  spaceKey: "Space"
+  triggerCountDescription: "Choose between 2 and 5 consecutive space presses."
+  languageDirection: "Translation direction"
+  languageDirectionDescription: "Detect the draft language automatically and translate into your chosen target language."
+  moreTranslations: "More translations"
+  comicImage: "Comics / Images"
+  comingSoon: "Coming soon"
+  bilingual: "Bilingual"
+  translationOnly: "Translation only"
+  displayMode: "Display mode"
+  colorDescription: "Choose a color, or click the swatch to customize."
+  customColor: "Custom color"
+  quoteColor: "引用線顏色"
+  dashedLineColor: "虛線顏色"
+  borderColor: "邊框顏色"
+  backgroundColor: "背景顏色"
+  inputTutorial: "Write your message, then press Space $1 times to translate"
+  spaceCount: "Space × $1"
+  beforeTranslation: "Before translation"
+  afterTranslation: "After translation"
+  translatedToEnglish: "To English"
+  selectionTutorial: "Select text on a page, then click Translate in the toolbar"
+  selectionExample: "A quiet morning walk"
+  translateAction: "Translate"
+  videoExample: "Video subtitle translation example"
+  videoNoticeCN: "Supports YouTube, X and Netflix. Follow local laws and regulations. TranslateBuff does not provide network proxy services."
+  videoNoticeGlobal: "Supports YouTube, X and Netflix."
+  loading: "正在載入設定…"
+  loadFailed: "設定載入失敗，請重新開啟此頁面後重試。"
+  saveFailed: "儲存失敗，請重試。"
+  enabled: "啟用功能"
+  autoDraft: "自動辨識輸入語言"
+  autoDetect: "自動辨識"
+  provider: "翻譯服務"
+  triggerCount: "觸發次數"
+  smartContext: "AI 智慧上下文"
+  platformNotice: "使用相關平台時，請遵守所在地法律法規。任譯喵不提供任何形式的網路代理或翻牆服務。"
+  documentsUnavailable: "文件翻譯 · 尚未開放"
 inputTranslationBar:
+  configured: 已設定
+  languageUndetected: 無法辨識輸入語言，請補充內容後重試
+  triggerHintCount: 連續 $1 次空格觸發翻譯
   triggerHint: 連按三次空白鍵觸發自動翻譯
   translating: 翻譯中…
   failed: 翻譯失敗
   retry: 重試
   contentBlocked: 內容未通過安全審核，無法翻譯
-  translateTo: 翻譯為
+  translateTo: 譯至
   autoDetected: 自動偵測
   fromPageSource: 依網頁原始語言
   manualSelection: 手動選擇

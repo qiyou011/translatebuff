@@ -40,6 +40,22 @@ describe("selectFreshTranslateProviders", () => {
     setLocalConfigMock.mockResolvedValue(undefined)
   })
 
+  it("uses the transaction's current settings after a delayed reachability probe", async () => {
+    const { selectFreshTranslateProviders } = await import("../default-translate-provider")
+    isGoogleTranslateReachableMock.mockResolvedValue(true)
+    const latest = structuredClone(DEFAULT_CONFIG)
+    latest.language.targetCode = "fra"
+    latest.inputTranslation.providerId = "openai-default"
+    let written: Config | undefined
+    await selectFreshTranslateProviders(async (update) => {
+      written = update(latest)
+    })
+    expect(written?.language.targetCode).toBe("fra")
+    expect(written?.inputTranslation.providerId).toBe("openai-default")
+    expect(written?.videoSubtitles.providerId).toBe(GOOGLE_TRANSLATE_PROVIDER_ID)
+    expect(setLocalConfigMock).not.toHaveBeenCalled()
+  })
+
   it("promotes Google on every translate feature when the probe reaches it", async () => {
     isGoogleTranslateReachableMock.mockResolvedValue(true)
 

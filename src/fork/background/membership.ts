@@ -58,9 +58,10 @@ async function readClientLanguage(): Promise<string> {
 }
 
 async function applyConfigPatch(computePatch: (config: Config) => Partial<Config>): Promise<void> {
-  const config = await storageAdapter.get(CONFIG_STORAGE_KEY, DEFAULT_CONFIG, configSchema)
-  const next = mergeWithArrayOverwrite(config, computePatch(config))
-  await storageAdapter.set(CONFIG_STORAGE_KEY, next, configSchema)
+  const { featureConfigService } = await import("./feature-config-service")
+  await featureConfigService.updateMain((config) =>
+    mergeWithArrayOverwrite(config, computePatch(config)),
+  )
 }
 
 // 端到端清态：清 fork 会话 + 清 provider key。登出移除 cookie / forkClearMembership 消息 / 接口 401 都归一到这里。

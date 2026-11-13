@@ -2,6 +2,7 @@ import type { StyleRoot } from "@/utils/dom/constructable-stylesheets"
 import customTranslationNodeCss from "@/assets/styles/custom-translation-node.css?raw"
 import hostThemeCss from "@/assets/styles/host-theme.css?raw"
 import translationNodePresetCss from "@/assets/styles/translation-node-preset.css?raw"
+import { registerTranslationColorRoot } from "@/fork/config/translation-color"
 import {
   getRootDocument,
   isDocumentRoot,
@@ -58,6 +59,7 @@ function getPresetStyleSheet(root: StyleRoot): CSSStyleSheet {
 
 /** Ensure preset styles are injected into the given root */
 export function ensurePresetStyles(root: StyleRoot): void {
+  registerTranslationColorRoot(root)
   if (injectedPresetRoots.has(root)) return
 
   // Mark as injected first to prevent race condition with concurrent calls

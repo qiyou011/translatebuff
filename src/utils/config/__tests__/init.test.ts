@@ -82,6 +82,7 @@ describe("initializeConfig", () => {
 
   it("does not write when config and meta are already up to date", async () => {
     const config = buildStableConfig()
+    config.pageTranslation.translationNodeStyle.preset = "textColor"
     getItemMock.mockResolvedValueOnce(config)
     getMetaMock.mockResolvedValueOnce({
       schemaVersion: CONFIG_SCHEMA_VERSION,
@@ -106,6 +107,7 @@ describe("initializeConfig", () => {
     expect(setItemMock).toHaveBeenCalledTimes(1)
     expect(setItemMock).toHaveBeenCalledWith("local:config", expect.any(Object))
     const freshConfig = setItemMock.mock.calls[0]?.[1] as Config
+    expect(freshConfig.pageTranslation.translationNodeStyle.preset).toBe("default")
     for (const providerId of ["openai-default", "jalapenocloud-default", "deepseek-default"]) {
       expect(freshConfig.providersConfig.find((provider) => provider.id === providerId)).toEqual(
         expect.objectContaining({ description: expect.any(String) }),

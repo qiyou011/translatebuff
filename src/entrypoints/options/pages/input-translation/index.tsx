@@ -1,7 +1,6 @@
+import { FeatureSettings } from "@/fork/ui/feature-settings"
 import { i18n } from "@/utils/i18n"
 import { PageLayout } from "../../components/page-layout"
-import { LanguagesSection } from "./languages"
-import { TriggerSection } from "./trigger"
 
 export function InputTranslationPage() {
   return (
@@ -10,8 +9,7 @@ export function InputTranslationPage() {
       description={i18n.t("options.inputTranslation.pageDescription")}
       innerClassName="flex flex-col gap-10"
     >
-      <TriggerSection />
-      <LanguagesSection />
+      <FeatureSettings feature="input" />
     </PageLayout>
   )
 }

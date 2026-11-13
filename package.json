@@ -114,6 +114,7 @@
     "jotai-family": "^1.1.0",
     "js-sha256": "^1.0.0",
     "liquidjs": "~10.30.0",
+    "lottie-web": "5.13.0",
     "lucide-react": "^1.54.0",
     "morphdom": "^2.7.8",
     "motion": "^14.0.0",

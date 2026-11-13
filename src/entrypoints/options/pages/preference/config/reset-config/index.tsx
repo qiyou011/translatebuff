@@ -1,5 +1,4 @@
 import { IconRefresh } from "@tabler/icons-react"
-import { useSetAtom } from "jotai"
 import { useState } from "react"
 import {
   AlertDialog,
@@ -13,16 +12,14 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/base-ui/alert-dialog"
 import { Button } from "@/components/ui/base-ui/button"
-import { writeConfigAtom } from "@/utils/atoms/config"
-import { buildFreshDefaultConfig } from "@/utils/constants/config"
+import { resetFeatureConfig } from "@/fork/config/backup"
 import { i18n } from "@/utils/i18n"
 import { ConfigItem } from "../../../../components/config-item"
 
 export function ResetConfigItem() {
   const [open, setOpen] = useState(false)
-  const setConfig = useSetAtom(writeConfigAtom)
   async function resetToDefaultConfig() {
-    await setConfig(buildFreshDefaultConfig())
+    await resetFeatureConfig()
     setOpen(false)
   }
 

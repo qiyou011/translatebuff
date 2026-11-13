@@ -1,19 +1,88 @@
+import type { ForkConfig } from "./schema"
+import type { FeatureConfigPatch, FeatureConfigSnapshot } from "./types"
 import { storage } from "#imports"
-import { storageAdapter } from "@/utils/atoms/storage-adapter"
-import { FORK_CONFIG_SCHEMA_VERSION, FORK_CONFIG_STORAGE_KEY } from "./constants"
-import { migrateForkConfig } from "./migration"
-import { DEFAULT_FORK_CONFIG, forkConfigSchema, type ForkConfig } from "./schema"
+import { sendForkMessage } from "../message"
 
-// 读取 fork 配置，缺失或旧版本走独立迁移。写入复用全库统一的 storageAdapter（自带 schema 校验）
+export function readFeatureConfig(): Promise<FeatureConfigSnapshot> {
+  return sendForkMessage("forkReadFeatureConfig")
+}
+
+// 页面只读后台已初始化快照，绝不自行迁移或写默认值。
 export async function loadForkConfig(): Promise<ForkConfig> {
-  // 需读原始值判定 schemaVersion 以决定是否迁移，故此处直接取（与上游 config/init.ts 同理）
-  const stored = await storage.getItem<ForkConfig>(`local:${FORK_CONFIG_STORAGE_KEY}`)
-  if (!stored) return DEFAULT_FORK_CONFIG
-  if (stored.schemaVersion === FORK_CONFIG_SCHEMA_VERSION) {
-    const parsed = forkConfigSchema.safeParse(stored)
-    return parsed.success ? parsed.data : DEFAULT_FORK_CONFIG
+  return (await readFeatureConfig()).forkConfig
+}
+
+export function patchFeatureConfig(patch: FeatureConfigPatch) {
+  return sendForkMessage("forkPatchFeatureConfig", patch)
+}
+
+// 存储事件只作失效信号；旧通知不能把新配置覆盖回去。
+export function subscribeFeatureConfig(
+  listener: (snapshot: FeatureConfigSnapshot) => void,
+  onError: (error: unknown) => void = () => {},
+) {
+  let active = true
+  let generation = 0
+  let reading = false
+  let requested = false
+  let lastRevision: string | undefined
+  let retries = 0
+  let retryTimer: ReturnType<typeof setTimeout> | undefined
+
+  async function refresh() {
+    if (reading) return
+    reading = true
+    try {
+      while (requested) {
+        if (!active) return
+        requested = false
+        const started = generation
+        const snapshot = await readFeatureConfig()
+        retries = 0
+        if (!active) return
+        if (started !== generation) {
+          requested = true
+          continue
+        }
+        if (snapshot.revision !== lastRevision) {
+          lastRevision = snapshot.revision
+          listener(snapshot)
+        }
+      }
+    } catch (error) {
+      if (active) {
+        onError(error)
+        // 扩展后台重启时消息接收端可能暂不可用；只重读，不写默认配置。
+        if (!requested && retries < 3) {
+          retries++
+          retryTimer = setTimeout(() => {
+            retryTimer = undefined
+            requested = true
+            void refresh()
+          }, 500 * retries)
+        }
+      }
+    } finally {
+      reading = false
+      if (active && requested) void refresh()
+    }
   }
-  const migrated = migrateForkConfig(stored)
-  await storageAdapter.set(FORK_CONFIG_STORAGE_KEY, migrated, forkConfigSchema)
-  return migrated
+
+  const invalidate = () => {
+    clearTimeout(retryTimer)
+    retryTimer = undefined
+    retries = 0
+    generation++
+    requested = true
+    void refresh()
+  }
+  const unwatchMain = storage.watch("local:config", invalidate)
+  const unwatchFork = storage.watch("local:forkConfig", invalidate)
+  invalidate()
+  return () => {
+    active = false
+    clearTimeout(retryTimer)
+    unwatchMain()
+    unwatchFork()
+  }
 }

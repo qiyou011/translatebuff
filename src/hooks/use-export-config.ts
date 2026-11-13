@@ -1,3 +1,4 @@
+import type { ConfigBackup } from "@/types/backup"
 import type { Config } from "@/types/config/config"
 import { useMutation } from "@tanstack/react-query"
 import { kebabCase } from "case-anything"
@@ -23,19 +24,24 @@ interface UseExportConfigOptions {
    * never existed.
    */
   includeGlossary?: boolean
+  forkConfig?: unknown
+  readBackup?: () => Promise<ConfigBackup>
 }
 
 export function useExportConfig({
   config,
   schemaVersion,
   includeGlossary = true,
+  forkConfig,
+  readBackup,
 }: UseExportConfigOptions) {
   return useMutation({
     mutationFn: async (includeApiKeys: boolean) => {
-      let exportConfig = config
+      const backup = readBackup ? await readBackup() : { config, schemaVersion, forkConfig }
+      let exportConfig = backup.config
 
       if (!includeApiKeys) {
-        exportConfig = getObjectWithoutAPIKeys(config)
+        exportConfig = getObjectWithoutAPIKeys(backup.config)
       }
 
       // Best effort, and deliberately so: this hook is also what the recovery
@@ -60,7 +66,8 @@ export function useExportConfig({
       const json = JSON.stringify(
         {
           config: exportConfig,
-          schemaVersion,
+          schemaVersion: backup.schemaVersion,
+          ...(backup.forkConfig === undefined ? {} : { forkConfig: backup.forkConfig }),
           // Its own top-level key, in the same shape the Drive sync writes, so
           // one reader handles both routes and a file from either can be
           // imported by either. Older builds simply ignore it.

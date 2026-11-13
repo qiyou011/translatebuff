@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 import { fakeBrowser } from "wxt/testing/fake-browser"
+import { storage } from "#imports"
 import { env } from "@/env"
 import {
   adoptCredential,
@@ -13,6 +14,14 @@ import { renyimiaoApiKey, renyimiaoBaseUrl, renyimiaoModelIds } from "@/fork/pro
 import { configSchema } from "@/types/config/config"
 import { storageAdapter } from "@/utils/atoms/storage-adapter"
 import { CONFIG_STORAGE_KEY, DEFAULT_CONFIG } from "@/utils/constants/config"
+import { createFeatureConfigStore } from "../initialize-feature-config"
+
+let featureConfigService: ReturnType<typeof createFeatureConfigStore>
+vi.mock("../feature-config-service", () => ({
+  get featureConfigService() {
+    return featureConfigService
+  },
+}))
 
 // 只挡 i18n 门面：它顶层 import src/locales/*.yml，而根 vitest 配置不带 ViteYaml 插件。
 // 归一逻辑照抄真实实现的「非 auto 原样返回」分支，Client-Language 的映射本身仍走真代码。
@@ -61,6 +70,11 @@ function mockCookieGet(value: unknown) {
 
 beforeEach(() => {
   fakeBrowser.reset()
+  // Each cleared fake browser represents a fresh background worker.
+  featureConfigService = createFeatureConfigStore(async () => {
+    if (!(await storage.getItem("local:config")))
+      await storage.setItem("local:config", structuredClone(DEFAULT_CONFIG))
+  })
   fetchMock.mockReset()
   vi.stubGlobal("fetch", fetchMock)
   vi.stubEnv("WXT_RENYIMIAO_API_URL", API_BASE)

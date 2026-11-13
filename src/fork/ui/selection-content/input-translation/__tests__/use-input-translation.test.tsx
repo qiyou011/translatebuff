@@ -17,6 +17,8 @@ import { ThemeContext } from "@/components/providers/theme-provider"
 import { InputTranslationBar as TranslationBar } from "../input-translation-bar"
 
 type Animate = Element["animate"]
+import { featureConfigAtom } from "@/fork/config/atoms"
+import { migrateFeatureConfig } from "@/fork/config/migration"
 import { configAtom } from "@/utils/atoms/config"
 import { DEFAULT_CONFIG } from "@/utils/constants/config"
 
@@ -24,11 +26,33 @@ const translateTextForInputMock = vi.fn<(...args: any[]) => any>()
 const toastAddMock = vi.fn<(...args: any[]) => any>()
 const getLocalConfigMock = vi.fn<(...args: any[]) => any>()
 const getDetectedCodeMock = vi.fn<(...args: any[]) => any>()
+let readConfigRevision = "test"
 const resolveProviderMock = vi.fn<() => unknown>()
+const detectDraftMock = vi.fn<() => Promise<string | null>>(() => Promise.resolve("cmn"))
 let execCommandMock: ReturnType<typeof vi.fn<() => boolean>>
 
 vi.mock("@/utils/host/translate/translate-variants", () => ({
   translateTextForInput: (...args: any[]) => translateTextForInputMock(...args),
+}))
+vi.mock("../execute-input-translation", () => ({
+  executeInputTranslation: ({ text, source, target, snapshot }: any) =>
+    translateTextForInputMock(text, source, target ?? snapshot.target),
+}))
+vi.mock("@/utils/content/language", () => ({ detectLanguage: () => detectDraftMock() }))
+vi.mock("@/fork/config/atoms", async () => {
+  const { atom } = await import("jotai")
+  return {
+    featureConfigAtom: atom({
+      revision: "test",
+      forkConfig: { inputTranslation: { triggerCount: 3 } },
+    }),
+  }
+})
+vi.mock("@/fork/config/storage", () => ({
+  readFeatureConfig: async () => ({
+    ...migrateFeatureConfig(await getLocalConfigMock(), undefined),
+    revision: readConfigRevision,
+  }),
 }))
 vi.mock("@/components/ui/base-ui/toast", () => ({
   toastManager: { add: (...args: any[]) => toastAddMock(...args) },
@@ -125,6 +149,7 @@ describe("Discord request feedback and stale-result protection", () => {
     toastAddMock.mockReset()
     getDetectedCodeMock.mockReset().mockResolvedValue("deu")
     getLocalConfigMock.mockReset()
+    detectDraftMock.mockReset().mockResolvedValue("cmn")
     sessionStorage.clear()
   })
   afterEach(() => {
@@ -146,6 +171,65 @@ describe("Discord request feedback and stale-result protection", () => {
     await waitFor(() => expect(context.input.value).toBe("Привет"))
     return context
   }
+
+  it.each([2, 3, 4, 5])("triggers exactly at the configured %i spaces", async (count) => {
+    const config = configWith({ targetCode: "eng" })
+    getLocalConfigMock.mockResolvedValue(config)
+    setupPage(RUSSIAN_CHAT)
+    renderWithConfig(config, count)
+    for (let index = 1; index < count; index++) {
+      act(() => {
+        fireEvent.keyDown(document, { key: " " })
+      })
+      await act(async () => {})
+      expect(translateTextForInputMock).not.toHaveBeenCalled()
+    }
+    act(() => {
+      fireEvent.keyDown(document, { key: " " })
+    })
+    await waitFor(() => expect(translateTextForInputMock).toHaveBeenCalledOnce())
+  })
+
+  it("shows pending during draft detection and does not translate after a route change", async () => {
+    let detect!: (value: string) => void
+    detectDraftMock.mockReturnValue(
+      new Promise((resolve) => {
+        detect = resolve
+      }),
+    )
+    const { rendered } = setup()
+    act(pressSpaceThrice)
+    await waitFor(() => expect(detectDraftMock).toHaveBeenCalledOnce())
+    expect(rendered.result.current.bar).toMatchObject({
+      kind: "initial",
+      feedback: { kind: "pending" },
+    })
+    expect(translateTextForInputMock).not.toHaveBeenCalled()
+    await act(async () => {
+      vi.stubGlobal("location", new URL("https://discord.com/channels/1/other"))
+      detect("cmn")
+    })
+    expect(translateTextForInputMock).not.toHaveBeenCalled()
+    expect(rendered.result.current.bar).toBeNull()
+  })
+
+  it("preserves the draft and reports failed detection without requesting translation", async () => {
+    detectDraftMock.mockResolvedValue(null)
+    const { input, rendered } = setup()
+    act(pressSpaceThrice)
+    await waitFor(() =>
+      expect(rendered.result.current.bar).toMatchObject({
+        feedback: {
+          kind: "error",
+          messageKey: "inputTranslationBar.languageUndetected",
+          retryable: false,
+        },
+      }),
+    )
+    expect(input.value).toBe("你好呀，最近怎么样")
+    expect(translateTextForInputMock).not.toHaveBeenCalled()
+    expect(getDetectedCodeMock).not.toHaveBeenCalled()
+  })
 
   it.each(["focusin", "input"])(
     "shows the triple-space hint for a Discord composer on %s without requesting translation",
@@ -252,7 +336,7 @@ describe("Discord request feedback and stale-result protection", () => {
     return { input, queries: within(queryRoot as HTMLElement), focusRoot, host }
   }
 
-  it("shows pending language and spinner without replacing the successful draft", async () => {
+  it("shows pending language without replacing the successful draft", async () => {
     const { input, rendered } = await translated()
     const request = deferredTranslation()
     translateTextForInputMock.mockReturnValue(request.promise)
@@ -264,11 +348,11 @@ describe("Discord request feedback and stale-result protection", () => {
       feedback: { kind: "pending" },
     })
     expect(input.value).toBe("Привет")
-    expect(document.getElementById("read-frog-input-translation-spinner")).not.toBeNull()
+    expect(rendered.result.current.bar).toMatchObject({ feedback: { kind: "pending" } })
     act(() => {
       void rendered.result.current.retranslate("eng")
     })
-    expect(translateTextForInputMock).toHaveBeenCalledTimes(2)
+    await waitFor(() => expect(translateTextForInputMock).toHaveBeenCalledTimes(2))
     await act(async () => request.resolve("こんにちは"))
     expect(input.value).toBe("こんにちは")
     expect(rendered.result.current.bar).toMatchObject({ lang: "jpn", langSource: "manual" })
@@ -284,6 +368,7 @@ describe("Discord request feedback and stale-result protection", () => {
       act(() => {
         void rendered.result.current.retranslate("jpn")
       })
+      await waitFor(() => expect(translateTextForInputMock).toHaveBeenCalledTimes(2))
       act(() => rendered.result.current.undo())
       await settleDeferred(request, settlement, "late Japanese")
       expect(input.value).toBe("你好呀，最近怎么样")
@@ -315,7 +400,13 @@ describe("Discord request feedback and stale-result protection", () => {
     })
     expect(document.activeElement).toBe(input)
     expect(rendered.result.current.bar).toMatchObject({ feedback: { kind: "pending" } })
-    expect(translateTextForInputMock).toHaveBeenLastCalledWith("你好呀，最近怎么样", "cmn", "rus")
+    await waitFor(() =>
+      expect(translateTextForInputMock).toHaveBeenLastCalledWith(
+        "你好呀，最近怎么样",
+        "cmn",
+        "rus",
+      ),
+    )
     await act(async () => request.resolve("Привет снова"))
     expect(input.value).toBe("Привет снова")
   })
@@ -339,19 +430,21 @@ describe("Discord request feedback and stale-result protection", () => {
     expect(rendered.result.current.bar).toMatchObject({ kind: "translated" })
   })
 
-  it("does not flip enableCycle a second time on first-failure retry", async () => {
+  it("ignores legacy enableCycle on the first request and retry", async () => {
     const { input, config, rendered } = setup()
     config.inputTranslation = { ...config.inputTranslation, enableCycle: true }
     rendered.unmount()
     const cycled = renderWithConfig(config)
     translateTextForInputMock.mockRejectedValueOnce(new Error("timeout"))
     act(pressSpaceThrice)
-    await waitFor(() => expect(cycled.result.current.bar?.kind).toBe("initial"))
-    expect(translateTextForInputMock).toHaveBeenLastCalledWith(input.value, "rus", "cmn")
+    await waitFor(() =>
+      expect(cycled.result.current.bar).toMatchObject({ feedback: { kind: "error" } }),
+    )
+    expect(translateTextForInputMock).toHaveBeenLastCalledWith(input.value, "cmn", "rus")
     await act(async () => {
       await cycled.result.current.retry()
     })
-    expect(translateTextForInputMock).toHaveBeenLastCalledWith("你好呀，最近怎么样", "rus", "cmn")
+    expect(translateTextForInputMock).toHaveBeenLastCalledWith("你好呀，最近怎么样", "cmn", "rus")
   })
 
   it.each([
@@ -393,6 +486,7 @@ describe("Discord request feedback and stale-result protection", () => {
       act(() => {
         void rendered.result.current.retranslate("jpn")
       })
+      await waitFor(() => expect(translateTextForInputMock).toHaveBeenCalledTimes(2))
       act(() => {
         input.value = "changed"
         input.dispatchEvent(new Event("input", { bubbles: true }))
@@ -470,7 +564,7 @@ describe("Discord request feedback and stale-result protection", () => {
   })
 
   it.each(["resolve", "reject"] as const)(
-    "an old %s finally cannot release the new request lock or remove its spinner",
+    "an old %s finally cannot release the new request lock or clear its pending feedback",
     async (settlement) => {
       const { input, rendered } = await translated()
       const old = deferredTranslation()
@@ -478,6 +572,7 @@ describe("Discord request feedback and stale-result protection", () => {
       act(() => {
         void rendered.result.current.retranslate("jpn")
       })
+      await waitFor(() => expect(translateTextForInputMock).toHaveBeenCalledTimes(2))
       act(() => rendered.result.current.undo())
       const next = deferredTranslation()
       translateTextForInputMock.mockReturnValueOnce(next.promise)
@@ -485,7 +580,7 @@ describe("Discord request feedback and stale-result protection", () => {
       await waitFor(() => expect(translateTextForInputMock).toHaveBeenCalledTimes(3))
       await settleDeferred(old, settlement, "old result")
       expect(input.value).toBe("你好呀，最近怎么样")
-      expect(document.getElementById("read-frog-input-translation-spinner")).not.toBeNull()
+      expect(rendered.result.current.bar).toMatchObject({ feedback: { kind: "pending" } })
       act(pressSpaceThrice)
       expect(translateTextForInputMock).toHaveBeenCalledTimes(3)
       await act(async () => next.resolve("new result"))
@@ -839,7 +934,7 @@ describe("Discord request feedback and stale-result protection", () => {
     },
   )
 
-  it("lets a new editor request started during focus handoff own the spinner and result", async () => {
+  it("lets a new editor request started during focus handoff own the pending feedback and result", async () => {
     const { input, rendered } = await translated()
     const interactionButton = document.createElement("button")
     const nextInput = document.createElement("input")
@@ -868,7 +963,7 @@ describe("Discord request feedback and stale-result protection", () => {
       expect(translateTextForInputMock).toHaveBeenCalledTimes(callsBeforeAction + 1),
     )
     expect(document.activeElement).toBe(nextInput)
-    expect(document.getElementById("read-frog-input-translation-spinner")).not.toBeNull()
+    expect(rendered.result.current.bar).toMatchObject({ feedback: { kind: "pending" } })
     await act(async () => nextRequest.resolve("next result"))
     expect(nextInput.value).toBe("next result")
     expect(document.getElementById("read-frog-input-translation-spinner")).toBeNull()
@@ -954,12 +1049,15 @@ describe("Discord request feedback and stale-result protection", () => {
     )
   })
 
-  it("keeps unregistered pages free of Discord correction UI", async () => {
+  it("shows the configured-target completion bar on ordinary editable pages", async () => {
     const { input, rendered } = setup()
     vi.stubGlobal("location", new URL("https://example.com"))
     act(pressSpaceThrice)
     await waitFor(() => expect(input.value).toBe("Привет"))
-    expect(rendered.result.current.bar).toBeNull()
+    expect(rendered.result.current.bar).toMatchObject({
+      kind: "translated",
+      langSource: "configured",
+    })
   })
 })
 
@@ -969,7 +1067,11 @@ const RUSSIAN_CHAT = [
 ]
 
 function configWith(language: Partial<Config["language"]>): Config {
-  return { ...DEFAULT_CONFIG, language: { ...DEFAULT_CONFIG.language, ...language } }
+  return {
+    ...DEFAULT_CONFIG,
+    language: { ...DEFAULT_CONFIG.language, ...language },
+    inputTranslation: { ...DEFAULT_CONFIG.inputTranslation, toLang: "rus" },
+  }
 }
 
 /** 铺一个 Discord 形态的对话，并返回已聚焦的输入框。 */
@@ -992,14 +1094,21 @@ function pressSpaceThrice() {
   }
 }
 
-function renderWithConfig(config: Config) {
+function renderWithConfig(config: Config, triggerCount = 3) {
+  readConfigRevision = "test"
   const store = createStore()
   store.set(configAtom, config)
-  return renderHook(() => useInputTranslation(), {
-    wrapper: ({ children }: { children: ReactNode }) => (
-      <Provider store={store}>{children}</Provider>
-    ),
-  })
+  const snapshot = migrateFeatureConfig(config, undefined)
+  snapshot.forkConfig.inputTranslation.triggerCount = triggerCount
+  store.set(featureConfigAtom, { ...snapshot, revision: "test" })
+  return {
+    store,
+    ...renderHook(() => useInputTranslation(), {
+      wrapper: ({ children }: { children: ReactNode }) => (
+        <Provider store={store}>{children}</Provider>
+      ),
+    }),
+  }
 }
 
 type InputTranslationLifecycleApi = {
@@ -1013,6 +1122,8 @@ function lifecycleApi(rendered: ReturnType<typeof renderWithConfig>) {
 
 describe("useInputTranslation 的语言解析", () => {
   beforeEach(() => {
+    resolveProviderMock.mockReset().mockReturnValue({ kind: "local", config: {} })
+    detectDraftMock.mockReset().mockResolvedValue("cmn")
     // 以下三个都是 jsdom 的缺口，不补桩会在到达断言前就抛，且异常被 `void handleTranslation()`
     // 吞掉，表现为「什么都没发生」。execCommand 用于替换输入框内容，animate 用于 spinner 转圈。
     execCommandMock = vi.fn<() => boolean>(() => true)
@@ -1037,7 +1148,76 @@ describe("useInputTranslation 的语言解析", () => {
     document.body.innerHTML = ""
   })
 
-  it("Telegram shows a trigger hint without a request and resolves the current chat on triple space", async () => {
+  it("discards a pending result after target changes and captures the next target", async () => {
+    const config = configWith({ targetCode: "eng" })
+    getLocalConfigMock.mockResolvedValue(config)
+    const input = setupPage([])
+    let finish!: (value: string) => void
+    translateTextForInputMock.mockReturnValueOnce(
+      new Promise<string>((resolve) => {
+        finish = resolve
+      }),
+    )
+    const rendered = renderWithConfig(config)
+    act(pressSpaceThrice)
+    await waitFor(() => expect(translateTextForInputMock).toHaveBeenCalledOnce())
+    const updated = structuredClone(config)
+    updated.inputTranslation.toLang = "fra"
+    getLocalConfigMock.mockResolvedValue(updated)
+    readConfigRevision = "changed"
+    act(() => {
+      rendered.store.set(configAtom, updated)
+      rendered.store.set(featureConfigAtom, {
+        ...migrateFeatureConfig(updated, undefined),
+        revision: "changed",
+      })
+    })
+    await act(async () => {
+      finish("stale")
+    })
+    expect(input.value).not.toBe("stale")
+    act(pressSpaceThrice)
+    await waitFor(() =>
+      expect(translateTextForInputMock).toHaveBeenLastCalledWith(
+        "你好呀，最近怎么样",
+        "cmn",
+        "fra",
+      ),
+    )
+  })
+
+  it("does not write into a different WhatsApp conversation that reuses the editor", async () => {
+    vi.stubGlobal("location", new URL("https://web.whatsapp.com/"))
+    const config = configWith({ targetCode: "eng" })
+    getLocalConfigMock.mockResolvedValue(config)
+    document.body.innerHTML =
+      '<div id="main"><div data-id="false_123@c.us_1"></div><footer><input /></footer></div>'
+    const input = document.querySelector("input")!
+    document.execCommand = vi.fn<(_command: string, _show?: boolean, value?: string) => boolean>(
+      (command, _show, value) => {
+        if (command === "insertText") input.value = value ?? ""
+        return true
+      },
+    )
+    input.value = "你好呀，最近怎么样"
+    input.focus()
+    let finish!: (value: string) => void
+    translateTextForInputMock.mockReturnValueOnce(
+      new Promise<string>((resolve) => {
+        finish = resolve
+      }),
+    )
+    renderWithConfig(config)
+    act(pressSpaceThrice)
+    await waitFor(() => expect(translateTextForInputMock).toHaveBeenCalledOnce())
+    document.querySelector("[data-id]")!.setAttribute("data-id", "false_456@c.us_2")
+    await act(async () => {
+      finish("stale")
+    })
+    expect(input.value).toBe("你好呀，最近怎么样")
+  })
+
+  it("Telegram shows a trigger hint and translates to the configured target regardless of chat language", async () => {
     vi.stubGlobal("location", new URL("https://web.telegram.org/a/#123"))
     const config = configWith({ sourceCode: "auto", targetCode: "cmn" })
     getLocalConfigMock.mockResolvedValue(config)
@@ -1053,7 +1233,7 @@ describe("useInputTranslation 的语言解析", () => {
     expect(translateTextForInputMock).not.toHaveBeenCalled()
     act(pressSpaceThrice)
     await waitFor(() =>
-      expect(translateTextForInputMock).toHaveBeenCalledWith("你好", "cmn", "jpn"),
+      expect(translateTextForInputMock).toHaveBeenCalledWith("你好", "cmn", "rus"),
     )
   })
 
@@ -1209,20 +1389,20 @@ describe("useInputTranslation 的语言解析", () => {
   it("解析后两端语言相同时不调引擎，改在输入框上方挂提示条", async () => {
     // 对话是俄语，用户的目标语言也设成俄语 → 无事可做。
     const config = configWith({ sourceCode: "auto", targetCode: "rus" })
+    config.inputTranslation.toLang = "cmn"
     getLocalConfigMock.mockResolvedValue(config)
     setupPage(RUSSIAN_CHAT)
     const rendered = renderWithConfig(config)
 
     pressSpaceThrice()
 
-    await waitFor(() => expect(rendered.result.current.bar).not.toBeNull())
-    expect(rendered.result.current.bar).toMatchObject({ kind: "sameLanguage" })
+    await waitFor(() => expect(rendered.result.current.bar).toMatchObject({ kind: "sameLanguage" }))
     expect(translateTextForInputMock).not.toHaveBeenCalled()
     // 提示挪进内联条后，toast 这条路就该断掉，否则同一件事说两遍。
     expect(toastAddMock).not.toHaveBeenCalled()
   })
 
-  it("用户钉死源语言时不被对话检测顶掉", async () => {
+  it("网页固定源语言不影响草稿识别和用户设置的目标", async () => {
     const config = configWith({ sourceCode: "eng", targetCode: "cmn" })
     getLocalConfigMock.mockResolvedValue(config)
     setupPage(RUSSIAN_CHAT)
@@ -1231,7 +1411,7 @@ describe("useInputTranslation 的语言解析", () => {
     pressSpaceThrice()
 
     await waitFor(() => {
-      expect(translateTextForInputMock).toHaveBeenCalledWith("你好呀，最近怎么样", "cmn", "eng")
+      expect(translateTextForInputMock).toHaveBeenCalledWith("你好呀，最近怎么样", "cmn", "rus")
     })
   })
 })
@@ -1269,6 +1449,7 @@ describe("useInputTranslation 的内联条", () => {
 
   function renderSameLanguage() {
     const config = configWith({ sourceCode: "auto", targetCode: "rus" })
+    config.inputTranslation.toLang = "cmn"
     getLocalConfigMock.mockResolvedValue(config)
     const input = setupPage(RUSSIAN_CHAT)
     const rendered = renderWithConfig(config)
@@ -1285,11 +1466,11 @@ describe("useInputTranslation 的内联条", () => {
       element: input,
       originalText: "你好呀，最近怎么样",
       lang: "rus",
-      langSource: "chatContext",
+      langSource: "configured",
     })
   })
 
-  it("回退整页源语言时，来源标成 pageSource 而不是 chatContext", async () => {
+  it("聊天没有可识别文本时仍使用配置目标，不读取整页语言", async () => {
     const config = configWith({ sourceCode: "auto", targetCode: "cmn" })
     getLocalConfigMock.mockResolvedValue(config)
     setupPage(["👍", "🎉"]) // 判不出语种 → 回退
@@ -1297,7 +1478,7 @@ describe("useInputTranslation 的内联条", () => {
     pressSpaceThrice()
 
     await waitFor(() => expect(rendered.result.current.bar).not.toBeNull())
-    expect(rendered.result.current.bar).toMatchObject({ langSource: "pageSource" })
+    expect(rendered.result.current.bar).toMatchObject({ langSource: "configured" })
   })
 
   it("翻译期间用户改了输入、系统放弃替换时，不挂内联条", async () => {
@@ -1384,7 +1565,7 @@ describe("useInputTranslation 的内联条", () => {
     expect(other.value).toBe("别动我")
   })
 
-  it("源语言被钉死时不挂内联条——没有自动判定，也就没有要纠错的对象", async () => {
+  it("网页源语言固定时仍显示输入翻译完成条", async () => {
     const config = configWith({ sourceCode: "eng", targetCode: "cmn" })
     getLocalConfigMock.mockResolvedValue(config)
     setupPage(RUSSIAN_CHAT)
@@ -1393,7 +1574,10 @@ describe("useInputTranslation 的内联条", () => {
     pressSpaceThrice()
 
     await waitFor(() => expect(translateTextForInputMock).toHaveBeenCalled())
-    expect(rendered.result.current.bar).toBeNull()
+    expect(rendered.result.current.bar).toMatchObject({
+      kind: "translated",
+      langSource: "configured",
+    })
   })
 
   it("改语言后用原文重译，而不是拿已翻译的文本再翻一遍", async () => {

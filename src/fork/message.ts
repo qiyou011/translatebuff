@@ -1,8 +1,17 @@
+import type {
+  FeatureConfigPatch,
+  FeatureConfigPatchResult,
+  FeatureConfigSnapshot,
+  FeatureConfigReplacement,
+} from "./config/types"
 import { defineExtensionMessaging } from "@webext-core/messaging"
 
 // fork 专属消息契约，独立于上游 ProtocolMap，避免同步冲突
 interface ForkProtocolMap {
   forkPing: () => "pong"
+  forkReadFeatureConfig: () => FeatureConfigSnapshot
+  forkPatchFeatureConfig: (patch: FeatureConfigPatch) => FeatureConfigPatchResult
+  forkReplaceFeatureConfig: (replacement: FeatureConfigReplacement) => FeatureConfigPatchResult
   forkGetInstallChannel: () => Promise<string>
   // 挂载补偿（R6）：popup/选项页挂载时若「已登录但 key 空」，请后台用会话凭据重取 tokens 并注入。
   forkEnsureMembershipKey: () => void

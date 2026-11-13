@@ -8,6 +8,7 @@ import { HelpButton } from "@/components/help-button"
 import { ThemeProvider } from "@/components/providers/theme-provider"
 import { AnchoredToastProvider, ToastProvider } from "@/components/ui/base-ui/toast"
 import { TooltipProvider } from "@/components/ui/base-ui/tooltip"
+import { installFeatureConfigBridge } from "@/fork/config/main-config-bridge"
 import { configAtom } from "@/utils/atoms/config"
 import { baseThemeModeAtom } from "@/utils/atoms/theme"
 import { getLocalConfig } from "@/utils/config/storage"
@@ -32,6 +33,7 @@ function HydrateAtoms({ initialValues, children }: HydrateAtomsProps) {
 }
 
 async function initApp() {
+  installFeatureConfigBridge()
   const root = document.getElementById("root")!
   root.className = "text-base antialiased min-h-screen bg-background"
 

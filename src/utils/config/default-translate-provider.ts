@@ -1,3 +1,4 @@
+import type { Config } from "@/types/config/config"
 import type { FeatureKey } from "@/utils/constants/feature-providers"
 import { mergeWithArrayOverwrite } from "@/utils/atoms/config"
 import {
@@ -24,16 +25,28 @@ import { getLocalConfigAndMeta, setLocalConfig } from "./storage"
  * Google, the better provider where it works. Slots the user already changed keep their
  * choice; where Google is blocked, the Microsoft default stays.
  */
-export async function selectFreshTranslateProviders(): Promise<void> {
+type CommitConfigUpdate = (update: (current: Config) => Config) => Promise<unknown>
+
+export async function selectFreshTranslateProviders(commit?: CommitConfigUpdate): Promise<void> {
   if (await isGoogleTranslateReachable()) {
-    await promoteMicrosoftDefaultsToGoogle()
+    await promoteMicrosoftDefaultsToGoogle(commit)
   }
 }
 
 /** Move every translate feature still pointing at the Microsoft default onto Google. */
-async function promoteMicrosoftDefaultsToGoogle(): Promise<void> {
+async function promoteMicrosoftDefaultsToGoogle(commit?: CommitConfigUpdate): Promise<void> {
+  if (commit) {
+    await commit(withGoogleDefaults)
+    return
+  }
   const { value: config } = await getLocalConfigAndMeta()
+  const next = withGoogleDefaults(config)
+  if (next === config) return
+  await setLocalConfig(next)
+  logger.info("[Config] Google Translate reachable, promoted it to the default translate provider")
+}
 
+function withGoogleDefaults(config: Config): Config {
   const assignments: Partial<Record<FeatureKey, string>> = {}
   for (const featureKey of FEATURE_KEYS) {
     if (
@@ -43,9 +56,7 @@ async function promoteMicrosoftDefaultsToGoogle(): Promise<void> {
     }
   }
   if (Object.keys(assignments).length === 0) {
-    return
+    return config
   }
-
-  await setLocalConfig(mergeWithArrayOverwrite(config, buildFeatureProviderPatch(assignments)))
-  logger.info("[Config] Google Translate reachable, promoted it to the default translate provider")
+  return mergeWithArrayOverwrite(config, buildFeatureProviderPatch(assignments))
 }

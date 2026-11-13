@@ -11,6 +11,16 @@ import { NetflixSubtitlesFetcher } from "@/utils/subtitles/fetchers/netflix"
 import { requestVideoSummary } from "@/utils/subtitles/video-summary"
 
 const { handlers } = vi.hoisted(() => ({ handlers: new Map<string, () => Promise<unknown>>() }))
+vi.mock("@/utils/subtitles/fetchers/post-message-request", () => ({
+  postMessageRequest: async () => ({
+    type: "response",
+    requestId: "1",
+    movieId: 1,
+    trackId: null,
+    translatable: false,
+    ttml: null,
+  }),
+}))
 vi.mock("@/utils/message", () => ({
   onMessage: (name: string, handler: () => Promise<unknown>) => handlers.set(name, handler),
   sendMessage: vi
@@ -66,14 +76,11 @@ describe("real redirected subtitle boundaries", () => {
     expect(aiFactory).not.toHaveBeenCalled()
   })
 
-  it("rejects direct Netflix, AI and learning requests without opening background work", async () => {
+  it("keeps native Netflix's no-caption state while rejecting AI and learning requests", async () => {
     const netflix = new NetflixSubtitlesFetcher()
-    expect(await netflix.hasAvailableSubtitles()).toBe(false)
+    expect(await netflix.hasAvailableSubtitles()).toBe(true)
     expect(await netflix.shouldUseSameTrack()).toBe(false)
-    await expect(netflix.fetch()).rejects.toMatchObject({
-      code: "UPSTREAM_CLOUD_DISABLED",
-      isRetryable: false,
-    })
+    await expect(netflix.fetch()).rejects.toThrow("subtitles.errors.noSubtitlesFound")
     netflix.cleanup()
     await expect(
       requestAiSubtitles({ videoId: "v", url: "https://youtube.com/watch?v=v", durationSec: 1 }),

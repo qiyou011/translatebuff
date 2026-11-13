@@ -11,6 +11,9 @@ import { PersonalizedPromptsSection } from "../personalized-prompts"
 import { PreferenceSection } from "../preference"
 import { TranslationStyleSection } from "../translation-style"
 
+// The fork color setting has its own store-backed interaction tests.
+vi.mock("@/fork/ui/options/translation-color", () => ({ TranslationColorSetting: () => null }))
+
 const { translateAtom, configAtom, setTranslateMock, testState } = vi.hoisted(() => ({
   translateAtom: {},
   configAtom: {},

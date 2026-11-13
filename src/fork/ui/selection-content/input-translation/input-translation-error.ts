@@ -13,6 +13,7 @@ export type InputTranslationError = {
   messageKey:
     | (typeof HOSTED_REASONS)[keyof typeof HOSTED_REASONS]
     | "inputTranslationBar.failed"
+    | "inputTranslationBar.languageUndetected"
     | "inputTranslationBar.contentBlocked"
     | "subtitles.errors.aiAuthFailed"
     | "options.selectionToolbar.customActions.form.selectProvider"
@@ -42,6 +43,9 @@ function errorEvidence(error: unknown, depth = 0): string {
 
 export function classifyInputTranslationError(error: unknown): InputTranslationError {
   const evidence = errorEvidence(error)
+  if (/\bINPUT_LANGUAGE_UNDETECTED\b/.test(evidence)) {
+    return { retryable: false, messageKey: "inputTranslationBar.languageUndetected" }
+  }
   if (/\bUPSTREAM_CLOUD_DISABLED\b/.test(evidence)) {
     return {
       retryable: false,

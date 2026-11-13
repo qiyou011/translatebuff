@@ -74,6 +74,7 @@ import {
 import { removeReactShadowHost } from "@/utils/react-shadow-host/create-shadow-host"
 import { isTranslationCancelledError } from "@/utils/request/cancellation"
 import { createWorkPacer } from "@/utils/scheduler"
+import { getEffectiveSiteControlUrl, isSiteEnabled } from "@/utils/site-control"
 import { getEffectiveSiteRule } from "@/utils/site-rules/effective"
 
 type SimpleIntersectionOptions = Omit<IntersectionObserverInit, "threshold"> & {
@@ -389,6 +390,8 @@ export class PageTranslationManager implements IPageTranslationManager {
       return
     }
     this.titleTranslationEnabled = config.pageTranslation.page.translateTitle
+
+    if (!isSiteEnabled(getEffectiveSiteControlUrl(window.location.href), config)) return
 
     const requestedProviderConfig = resolvePageTranslationProviderOrNull(config)
     const providerAnalytics = classifyResolvedProvider(requestedProviderConfig)

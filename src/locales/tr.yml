@@ -185,7 +185,7 @@ options:
         noteSuggestion: Not önerileri
         selectionTranslation: Seçim çevirisi
         videoSubtitles: Video altyazıları
-        inputTranslation: Giriş çevirisi
+        inputTranslation: Sohbet / giriş çevirisi
         languageDetection: Dil algılama
     sponsorCta: Hızlı ve uygun maliyetli yapay zekâ al
     sponsorCtaJalapenoCloud: GLM 5.2ʼde %50 indirim al
@@ -324,13 +324,13 @@ options:
       features:
         pageTranslation: Sayfa çevirisi
         selectionTranslation: Seçim araç çubuğu çevirisi
-        inputTranslation: Giriş çevirisi
+        inputTranslation: Sohbet / giriş çevirisi
         videoSubtitles: Video altyazıları
         noteSuggestion: Not önerileri
       descriptions:
         pageTranslation: Sayfanın tamamını iki dilli ya da değiştirme modunda çevirir.
         selectionTranslation: Seçim araç çubuğundan, seçtiğiniz metni çevirir.
-        inputTranslation: Bir metin kutusuna yazdıklarınızı göndermeden önce çevirir.
+        inputTranslation: Sohbet / giriş çevirisi
         videoSubtitles: Video oynatıcıda görünen altyazıları çevirir.
         noteSuggestion: Seçim çevirisinden sonra Notebase'inize kaydetmeye değer kelimeler önerir.
     languageDetection:
@@ -575,7 +575,7 @@ options:
   overlayTools:
     title: Kaplama Araçları
   inputTranslation:
-    title: Giriş Çevirisi
+    title: Sohbet / giriş çevirisi
     pageDescription: Giriş kutularına yazdıklarınızı göndermeden önce çevirin.
     trigger:
       title: Tetikleme
@@ -1954,7 +1954,61 @@ languages:
   wls: Wallis Dili
   rar: Rarotongan
   hif: Fiji Hintçesi
+quickTranslation:
+  stylePreviewTranslation: "A quiet morning walk is a good way to explore the city."
+  brandTranslate: "TranslateBuff: translate selection"
+  enableSubtitles: "Enable video subtitles"
+  sitePaused: "Extension disabled on this site"
+  resumeSite: "Resume"
+  translatePage: "Translate this page"
+  allSettings: "All settings"
+  selectionTitle: "Selection translation"
+  supportedContextPlatforms: "Supported platforms for AI context"
+  supportedContextDescription: "Use AI context on supported platforms to translate drafts into your chosen target language."
+  triggerKey: "Trigger key"
+  triggerKeyDescription: "Use consecutive space presses to trigger translation."
+  spaceKey: "Space"
+  triggerCountDescription: "Choose between 2 and 5 consecutive space presses."
+  languageDirection: "Translation direction"
+  languageDirectionDescription: "Detect the draft language automatically and translate into your chosen target language."
+  moreTranslations: "More translations"
+  comicImage: "Comics / Images"
+  comingSoon: "Coming soon"
+  bilingual: "Bilingual"
+  translationOnly: "Translation only"
+  displayMode: "Display mode"
+  colorDescription: "Choose a color, or click the swatch to customize."
+  customColor: "Custom color"
+  quoteColor: "Alıntı çizgisi rengi"
+  dashedLineColor: "Kesikli çizgi rengi"
+  borderColor: "Kenarlık rengi"
+  backgroundColor: "Arka plan rengi"
+  inputTutorial: "Write your message, then press Space $1 times to translate"
+  spaceCount: "Space × $1"
+  beforeTranslation: "Before translation"
+  afterTranslation: "After translation"
+  translatedToEnglish: "To English"
+  selectionTutorial: "Select text on a page, then click Translate in the toolbar"
+  selectionExample: "A quiet morning walk"
+  translateAction: "Translate"
+  videoExample: "Video subtitle translation example"
+  videoNoticeCN: "Supports YouTube, X and Netflix. Follow local laws and regulations. TranslateBuff does not provide network proxy services."
+  videoNoticeGlobal: "Supports YouTube, X and Netflix."
+  loading: "Ayarlar yükleniyor…"
+  loadFailed: "Ayarlar yüklenemedi. Tekrar denemek için bu sayfayı yeniden açın."
+  saveFailed: "Kaydedilemedi. Tekrar deneyin."
+  enabled: "Özelliği etkinleştir"
+  autoDraft: "Giriş dilini algıla"
+  autoDetect: "Otomatik algıla"
+  provider: "Çeviri hizmeti"
+  triggerCount: "Boşluk basma sayısı"
+  smartContext: "Yapay zekâ bağlamı"
+  platformNotice: "Platformları kullanırken yerel yasalara uyun. TranslateBuff ağ proxy hizmetleri sunmaz."
+  documentsUnavailable: "Belge çevirisi · Yakında"
 inputTranslationBar:
+  configured: Ayarlanmış
+  languageUndetected: Giriş dili belirlenemedi. Daha fazla metin ekleyip tekrar deneyin.
+  triggerHintCount: Çevirmek için Boşluk tuşuna $1 kez basın
   triggerHint: Çevirmek için üç kez boşluk tuşuna basın
   translating: Çevriliyor…
   failed: Çeviri başarısız

@@ -3,6 +3,8 @@ import type { Config } from "./config/config"
 export interface ConfigBackup {
   schemaVersion: number
   config: Config
+  /** Optional product-owned settings; older backups omit this field. */
+  forkConfig?: unknown
 }
 
 export interface ConfigBackupMetadata extends Record<string, unknown> {

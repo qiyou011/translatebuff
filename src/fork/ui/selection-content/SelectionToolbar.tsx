@@ -40,6 +40,7 @@ import { cn } from "@/utils/styles/utils"
 import { urlMatchesPattern } from "@/utils/url-pattern"
 import { CustomActionTrigger } from "./CustomActionTrigger"
 import { TranslateButton } from "./TranslateButton"
+import "./selection-ui.css"
 
 // fork 药丸 Toolbar。选区检测/定位机制忠实镜像上游 selection-toolbar/index.tsx（component body
 // 与其 module-private helpers 逐段照搬、只把相对 import 改成绝对路径），不重写机制；仅重写药丸 JSX
@@ -571,14 +572,21 @@ export function SelectionToolbar() {
         >
           <div
             data-slot="selection-toolbar-surface"
-            className="shadow-floating flex items-center rounded-xl bg-popover p-1"
+            className="tb-selection-toolbar shadow-floating flex items-center bg-popover"
             style={{ opacity: "var(--rf-selection-opacity, 1)" }}
           >
             <div className="no-scrollbar flex max-w-105 items-center overflow-x-auto overflow-y-hidden rounded-xl">
+              {features.translate.enabled && <TranslateButton brand />}
               {features.translate.enabled && <TranslateButton />}
-              {features.speak.enabled && <SpeakButton />}
+              {features.speak.enabled && (
+                <span className="tb-selection-speak">
+                  <SpeakButton />
+                </span>
+              )}
               {enabledCustomActions.map((action) => (
-                <CustomActionTrigger key={action.id} action={action} />
+                <span key={action.id} className="tb-selection-action" data-action={action.id}>
+                  <CustomActionTrigger action={action} />
+                </span>
               ))}
             </div>
             <CloseButton />

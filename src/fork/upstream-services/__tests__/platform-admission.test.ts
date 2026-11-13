@@ -2,6 +2,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest"
 import { subtitlesContentScriptMatches } from "@/entrypoints/subtitles.content/content-script-matches"
 import { bootstrapSubtitlesRuntime } from "@/entrypoints/subtitles.content/runtime"
+import { isApprovedSubtitlesUrl, FORK_UPSTREAM_ADMISSION } from "@/fork/upstream-admission"
 
 const { youtube, xcom, netflix } = vi.hoisted(() => ({
   youtube: vi.fn<(...args: unknown[]) => void>(),
@@ -19,19 +20,19 @@ vi.mock("@/entrypoints/subtitles.content/init-netflix-subtitles", () => ({
 beforeEach(() => vi.clearAllMocks())
 
 describe("subtitle platform admission", () => {
-  it("does not register X or Netflix auto-injection patterns", () => {
-    expect(
-      subtitlesContentScriptMatches.some((pattern) => /x\.com|twitter|netflix/.test(pattern)),
-    ).toBe(false)
-    expect(subtitlesContentScriptMatches.some((pattern) => pattern.includes("youtube.com"))).toBe(
-      true,
-    )
+  it("registers all three approved native subtitle platforms", () => {
+    for (const host of ["youtube.com", "x.com", "netflix.com"]) {
+      expect(subtitlesContentScriptMatches.some((pattern) => pattern.includes(host))).toBe(true)
+      expect(isApprovedSubtitlesUrl(`https://www.${host}/watch`)).toBe(true)
+      expect(isApprovedSubtitlesUrl(`https://${host}.unrelated.test/watch`)).toBe(false)
+    }
+    expect(FORK_UPSTREAM_ADMISSION.aiTranscription).toBe(false)
   })
 
-  it("starts native YouTube without initializing the unapproved platform runtimes", () => {
+  it("initializes the three native platform runtimes", () => {
     bootstrapSubtitlesRuntime({} as never)
     expect(youtube).toHaveBeenCalledOnce()
-    expect(xcom).not.toHaveBeenCalled()
-    expect(netflix).not.toHaveBeenCalled()
+    expect(xcom).toHaveBeenCalledOnce()
+    expect(netflix).toHaveBeenCalledOnce()
   })
 })

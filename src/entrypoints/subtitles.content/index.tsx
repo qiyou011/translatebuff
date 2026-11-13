@@ -1,5 +1,6 @@
 import "@/utils/zod-config"
 import { defineContentScript } from "#imports"
+import { startSubtitlesWhenEnabled } from "@/fork/config/start-subtitles-when-enabled"
 import { isApprovedSubtitlesUrl } from "@/fork/upstream-admission"
 import { getLocalConfig } from "@/utils/config/storage"
 import { initI18n } from "@/utils/i18n"
@@ -21,18 +22,16 @@ export default defineContentScript({
     window.__READ_FROG_SUBTITLES_INJECTED__ = true
 
     const config = await getLocalConfig()
-    if (!config?.videoSubtitles?.enabled) {
-      window.__READ_FROG_SUBTITLES_INJECTED__ = false
-      return
-    }
-
-    await initI18n(config.uiLanguage)
+    await initI18n(config?.uiLanguage)
 
     ctx.onInvalidated(() => {
       window.__READ_FROG_SUBTITLES_INJECTED__ = false
     })
 
-    const { bootstrapSubtitlesRuntime } = await import("./runtime")
-    bootstrapSubtitlesRuntime(ctx)
+    const stopWatching = startSubtitlesWhenEnabled(async () => {
+      const { bootstrapSubtitlesRuntime } = await import("./runtime")
+      if (!ctx.isInvalid) bootstrapSubtitlesRuntime(ctx)
+    })
+    ctx.onInvalidated(stopWatching)
   },
 })

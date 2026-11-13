@@ -94,6 +94,8 @@ export interface SubtitlesProvidersAdapter {
 }
 
 export class UniversalVideoAdapter implements SubtitlesProvidersAdapter {
+  private readTranslationConfig: () => Promise<Config | null>
+  private sessionConfigIdentity: string | null = null
   private config: PlatformConfig
   private subtitlesScheduler: SubtitlesScheduler | null = null
   private fetchers: SubtitlesFetcherFactories
@@ -155,11 +157,14 @@ export class UniversalVideoAdapter implements SubtitlesProvidersAdapter {
   constructor({
     config,
     fetchers,
+    readTranslationConfig = getLocalConfig,
   }: {
     config: PlatformConfig
     fetchers: SubtitlesFetcherFactories
+    readTranslationConfig?: () => Promise<Config | null>
   }) {
     this.config = config
+    this.readTranslationConfig = readTranslationConfig
     this.navigationVideoId = config.getVideoId?.() ?? null
     this.fetchers = fetchers
     this.fetcher = fetchers.native()
@@ -329,6 +334,7 @@ export class UniversalVideoAdapter implements SubtitlesProvidersAdapter {
     this.translatedSubtitlesDownloader ??= new TranslatedSubtitlesDownloader(
       () => this.fetcher,
       this.config,
+      this.readTranslationConfig,
     )
   }
 
@@ -468,6 +474,7 @@ export class UniversalVideoAdapter implements SubtitlesProvidersAdapter {
   }
 
   private clearRuntimeSession() {
+    this.sessionConfigIdentity = null
     this.translationCoordinator?.stop()
     this.segmentationPipeline?.stop()
     this.translationCoordinator = null
@@ -720,6 +727,22 @@ export class UniversalVideoAdapter implements SubtitlesProvidersAdapter {
     }
   }
 
+  /** Invalidate in-flight work before restarting with a newly captured configuration. */
+  handleTranslationConfigChanged(enabled: boolean) {
+    if (this.destroyed) return
+    const wasActive = !!this.subtitlesScheduler?.isActive()
+    this.switchOperationId++
+    this.clearRuntimeSession()
+    this.translatedSubtitlesDownloader?.dispose()
+    this.subtitlesScheduler?.reset()
+    subtitlesStore.set(translatedTrackAtom, [])
+    if (!enabled) {
+      this.handleToggleSubtitles(false)
+    } else if (wasActive) {
+      this.handleToggleSubtitles(true)
+    }
+  }
+
   requestAiSubtitles = async (): Promise<void> => {
     if (await this.config.isLiveContent?.()) {
       showAiSubtitlesWallToast(i18n.t("subtitles.errors.aiLiveReplayUnsupported"))
@@ -865,8 +888,13 @@ export class UniversalVideoAdapter implements SubtitlesProvidersAdapter {
     let loadingSource = false
 
     try {
-      const analyticsConfig = await getLocalConfig()
+      const analyticsConfig = await this.readTranslationConfig()
       if (!isCurrent()) return false
+      if (analyticsConfig?.videoSubtitles.enabled === false) {
+        this.handleToggleSubtitles(false)
+        return false
+      }
+      const configIdentity = JSON.stringify(analyticsConfig)
       targetLanguage = analyticsConfig?.language.targetCode
       // Resolve through the capability registry, not providersConfig: Built-in
       // AI is synthesized by the registry and is never a row there, so the
@@ -883,7 +911,9 @@ export class UniversalVideoAdapter implements SubtitlesProvidersAdapter {
       )
       const currentVideoId = this.config.getVideoId?.() ?? ""
       const hasCurrentSession =
-        this.sessionProcessedFragments.length > 0 && this.sessionVideoId === currentVideoId
+        this.sessionProcessedFragments.length > 0 &&
+        this.sessionVideoId === currentVideoId &&
+        this.sessionConfigIdentity === configIdentity
       this.sessionVideoId = currentVideoId
 
       // Only a running session can be resumed, so a fresh start skips the track check.
@@ -914,6 +944,7 @@ export class UniversalVideoAdapter implements SubtitlesProvidersAdapter {
 
       this.clearRuntimeSession()
       this.sessionVideoId = currentVideoId
+      this.sessionConfigIdentity = configIdentity
       this.subtitlesScheduler?.reset()
 
       this.subtitlesScheduler?.setState("loading", { message: LOADING_MESSAGE[this.source] })
@@ -1108,6 +1139,7 @@ export class UniversalVideoAdapter implements SubtitlesProvidersAdapter {
     }
 
     this.translationCoordinator = new TranslationCoordinator({
+      configSnapshot: config ?? undefined,
       getFragments: () =>
         this.segmentationPipeline
           ? this.segmentationPipeline.processedFragments

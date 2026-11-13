@@ -1,7 +1,6 @@
 import type { ConfigBackup, ConfigBackupMetadata } from "@/types/backup"
 import { Icon } from "@iconify/react/dist/iconify.js"
 import { useMutation } from "@tanstack/react-query"
-import { useAtomValue, useSetAtom } from "jotai"
 import { useState } from "react"
 import {
   AlertDialog,
@@ -33,12 +32,10 @@ import {
 import { Spinner } from "@/components/ui/base-ui/spinner"
 import { toastManager } from "@/components/ui/base-ui/toast"
 import { ViewConfig } from "@/entrypoints/options/components/view-config"
+import { importFeatureConfig } from "@/fork/config/backup"
 import { useExportConfig } from "@/hooks/use-export-config"
-import { configAtom, writeConfigAtom } from "@/utils/atoms/config"
-import { addBackup, isSameAsLatestBackup, removeBackup } from "@/utils/backup/storage"
+import { removeBackup } from "@/utils/backup/storage"
 import { migrateConfig } from "@/utils/config/migration"
-import { EXTENSION_VERSION } from "@/utils/constants/app"
-import { CONFIG_SCHEMA_VERSION } from "@/utils/constants/config"
 import { i18n } from "@/utils/i18n"
 import { queryClient } from "@/utils/tanstack-query"
 
@@ -82,8 +79,6 @@ export function BackupConfigItem({ backupId, backupMetadata, backup }: BackupCon
 
 function RestoreButton({ backup }: { backup: ConfigBackup }) {
   const [open, setOpen] = useState(false)
-  const currentConfig = useAtomValue(configAtom)
-  const setConfig = useSetAtom(writeConfigAtom)
 
   const { mutate: restoreBackup, isPending: isRestoring } = useMutation({
     mutationFn: async (backupToRestore: ConfigBackup) => {
@@ -92,12 +87,7 @@ function RestoreButton({ backup }: { backup: ConfigBackup }) {
         backupToRestore.schemaVersion,
       )
 
-      const isSame = await isSameAsLatestBackup(currentConfig, CONFIG_SCHEMA_VERSION)
-
-      if (!isSame) {
-        await addBackup(currentConfig, EXTENSION_VERSION)
-      }
-      await setConfig(migratedBackup)
+      await importFeatureConfig(migratedBackup, backupToRestore.forkConfig)
     },
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ["config-backups"] })
@@ -155,6 +145,7 @@ function MoreOptions({ backupId, backup }: { backupId: string; backup: ConfigBac
   const { mutate: exportConfig, isPending: isExporting } = useExportConfig({
     config: backup.config,
     schemaVersion: backup.schemaVersion,
+    forkConfig: backup.forkConfig,
     // A stored backup is a config from a particular moment. Today's glossaries
     // were not part of that moment, and attaching them would make the file claim
     // a state that never existed.

@@ -1,129 +1,47 @@
-// @vitest-environment jsdom
-
-import type { Config } from "@/types/config/config"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 import { DEFAULT_CONFIG } from "@/utils/constants/config"
 import { resolveInputTranslationLang } from "../resolve-lang"
-
-// 整页检测码来自 background，测试里不起消息通道；固定成日语，好和对话里的语种区分开。
-const { mockGetDetectedCodeFromStorage } = vi.hoisted(() => ({
-  mockGetDetectedCodeFromStorage: vi.fn<(...args: any[]) => any>(),
+const { detect, pageLanguage } = vi.hoisted(() => ({
+  detect: vi.fn<(...args: unknown[]) => Promise<string | null>>(),
+  pageLanguage: vi.fn<() => Promise<string>>(),
 }))
-vi.mock("@/utils/config/languages", async (importOriginal) => ({
-  ...(await importOriginal<typeof import("@/utils/config/languages")>()),
-  getDetectedCodeFromStorage: mockGetDetectedCodeFromStorage,
-}))
+vi.mock("@/utils/content/language", () => ({ detectLanguage: detect }))
+vi.mock("@/utils/config/languages", () => ({ getDetectedCodeFromStorage: pageLanguage }))
 
-const DISCORD_URL = "https://discord.com/channels/1/2"
-const PLAIN_URL = "https://example.com/article"
-const TELEGRAM_URL = "https://web.telegram.org/a/#123"
-
-const RUSSIAN_CHAT = [
-  "Элис, еще раз добрый день! У меня появились срочные обстоятельства.",
-  "Поэтому я смогу очень мало времени уделять стримам, к сожалению.",
-]
-
-function renderChat(messages: string[]) {
-  document.body.innerHTML = messages
-    .map(
-      (text, index) =>
-        `<li id="chat-messages-${index}"><div id="message-content-${index}">${text}</div></li>`,
-    )
-    .join("")
-}
-
-function configWith(language: Partial<Config["language"]>): Config {
-  return { ...DEFAULT_CONFIG, language: { ...DEFAULT_CONFIG.language, ...language } }
-}
-
-describe("resolveInputTranslationLang", () => {
+describe("input draft language resolution", () => {
   beforeEach(() => {
-    document.body.innerHTML = ""
-    mockGetDetectedCodeFromStorage.mockReset()
-    // 整页检测码固定为德语：只要结果不是 deu，就说明没走整页那条路。
-    mockGetDetectedCodeFromStorage.mockResolvedValue("deu")
+    detect.mockReset().mockResolvedValue("cmn")
+    pageLanguage.mockReset()
   })
-
-  it("targetCode 直接取全局目标语言", async () => {
-    const config = configWith({ targetCode: "cmn" })
-    await expect(
-      resolveInputTranslationLang("targetCode", config, DISCORD_URL, document),
-    ).resolves.toEqual({ code: "cmn", source: "explicit" })
+  it("detects only the draft and uses the configured concrete target", async () => {
+    const config = structuredClone(DEFAULT_CONFIG)
+    config.language = { ...config.language, sourceCode: "jpn", targetCode: "deu" }
+    config.inputTranslation = {
+      ...config.inputTranslation,
+      fromLang: "fra",
+      toLang: "eng",
+      enableCycle: true,
+    }
+    await expect(resolveInputTranslationLang("这是当前输入的草稿", config)).resolves.toEqual({
+      from: { code: "cmn", source: "draft" },
+      to: { code: "eng", source: "configured" },
+    })
+    expect(detect).toHaveBeenCalledWith("这是当前输入的草稿", { enableLLM: false })
+    expect(pageLanguage).not.toHaveBeenCalled()
   })
-
-  it("固定语言码原样返回", async () => {
-    const config = configWith({})
-    await expect(
-      resolveInputTranslationLang("jpn", config, DISCORD_URL, document),
-    ).resolves.toEqual({ code: "jpn", source: "explicit" })
+  it("fails without a page or chat fallback when detection has no result", async () => {
+    detect.mockResolvedValue(null)
+    const config = structuredClone(DEFAULT_CONFIG)
+    config.inputTranslation.toLang = "eng"
+    await expect(resolveInputTranslationLang("👍", config)).rejects.toThrow(
+      "INPUT_LANGUAGE_UNDETECTED",
+    )
+    expect(pageLanguage).not.toHaveBeenCalled()
   })
-
-  it("源语言为自动、站点有对话时，跟随对话语种", async () => {
-    renderChat(RUSSIAN_CHAT)
-    const config = configWith({ sourceCode: "auto" })
-    await expect(
-      resolveInputTranslationLang("sourceCode", config, DISCORD_URL, document),
-    ).resolves.toEqual({ code: "rus", source: "chatContext" })
-  })
-
-  it("源语言被用户钉死时，绝不被对话检测顶掉", async () => {
-    // 页面上摆着俄语对话；结果必须是用户钉死的英语，而不是 rus。
-    renderChat(RUSSIAN_CHAT)
-    const config = configWith({ sourceCode: "eng" })
-    await expect(
-      resolveInputTranslationLang("sourceCode", config, DISCORD_URL, document),
-    ).resolves.toEqual({ code: "eng", source: "explicit" })
-  })
-
-  it("对话判不出语种时回退整页源语言", async () => {
-    renderChat(["👍", "🎉"])
-    const config = configWith({ sourceCode: "auto" })
-    await expect(
-      resolveInputTranslationLang("sourceCode", config, DISCORD_URL, document),
-    ).resolves.toEqual({ code: "deu", source: "pageSource" })
-  })
-
-  it("站点没登记对话选择器时走整页源语言", async () => {
-    renderChat(RUSSIAN_CHAT)
-    const config = configWith({ sourceCode: "auto" })
-    await expect(
-      resolveInputTranslationLang("sourceCode", config, PLAIN_URL, document),
-    ).resolves.toEqual({ code: "deu", source: "pageSource" })
-  })
-
-  it("页面上没有任何消息时回退整页源语言", async () => {
-    const config = configWith({ sourceCode: "auto" })
-    await expect(
-      resolveInputTranslationLang("sourceCode", config, DISCORD_URL, document),
-    ).resolves.toEqual({ code: "deu", source: "pageSource" })
-  })
-
-  it("Telegram follows the current editor's chat instead of another mounted chat", async () => {
-    document.body.innerHTML = `<div class="MiddleColumn"><div class="MessageList" data-list-key="old"><div class="Message" data-message-id="1"><div class="text-content">안녕하세요</div></div><div class="list-bottom-marker"></div></div></div>
-      <div class="MiddleColumn"><div class="MessageList" data-list-key="current"><div class="Message" data-message-id="2"><div class="text-content">こんばんは<span class="MessageMeta">12:00</span></div></div><div class="list-bottom-marker"></div></div><div id="editable-message-text" contenteditable="true">你好</div></div>`
-    const editor = document.querySelector<HTMLElement>("#editable-message-text")!
-    await expect(
-      resolveInputTranslationLang(
-        "sourceCode",
-        configWith({ sourceCode: "auto" }),
-        TELEGRAM_URL,
-        document,
-        editor,
-      ),
-    ).resolves.toEqual({ code: "jpn", source: "chatContext" })
-  })
-
-  it("Telegram Web K reads the active peer's original bubble text", async () => {
-    document.body.innerHTML = `<div class="chat active"><div class="bubbles scrolled-down"><div class="bubbles-scrollable"><div class="bubbles-inner"><div class="bubble" data-mid="1" data-peer-id="42"><div class="message spoilers-container">안녕하세요<span class="time">11:30</span><span class="read-frog-translated-content-wrapper">English translation</span></div></div></div></div></div><div class="chat-input"><div class="input-message-input" contenteditable="true">draft</div></div></div>`
-    const editor = document.querySelector<HTMLElement>(".input-message-input")!
-    await expect(
-      resolveInputTranslationLang(
-        "sourceCode",
-        configWith({ sourceCode: "auto" }),
-        "https://web.telegram.org/k/#42",
-        document,
-        editor,
-      ),
-    ).resolves.toEqual({ code: "kor", source: "chatContext" })
+  it("reports equal languages for the caller's no-request feedback", async () => {
+    const config = structuredClone(DEFAULT_CONFIG)
+    config.inputTranslation.toLang = "cmn"
+    const pair = await resolveInputTranslationLang("这是一段中文草稿内容", config)
+    expect(pair.from.code).toBe(pair.to.code)
   })
 })

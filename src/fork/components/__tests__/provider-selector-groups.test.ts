@@ -15,14 +15,14 @@ const systemItem = {
 } as unknown as ProviderSelectorOption // 免费AI（应被隐藏）
 
 describe("getForkProviderSelectorGroups", () => {
-  it("只呈现任译喵组（置顶）与普通翻译组", () => {
+  it("普通翻译组排在任译喵组之前", () => {
     const groups = getForkProviderSelectorGroups([
       userLLM,
       translateProvider,
       renyimiao,
       systemItem,
     ])
-    expect(groups.map((g) => g.key)).toEqual(["renyimiao", "normalTranslator"])
+    expect(groups.map((g) => g.key)).toEqual(["normalTranslator", "renyimiao"])
   })
 
   it("任译喵实例进任译喵组、纯翻译进普通翻译组", () => {

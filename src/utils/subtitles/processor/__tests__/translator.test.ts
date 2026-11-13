@@ -103,6 +103,45 @@ describe("subtitles translator", () => {
     expect(firstHash).not.toBe(secondHash)
   })
 
+  it("isolates cache keys by captured feature language and provider without changing global configuration", async () => {
+    const { translateSubtitles } = await import("../translator")
+    const { projectSubtitleConfig } = await import("@/fork/config/subtitle-config")
+    const { migrateFeatureConfig } = await import("@/fork/config/migration")
+    const pair = migrateFeatureConfig(structuredClone(DEFAULT_CONFIG), undefined)
+    pair.forkConfig.featureLanguages.subtitles.targetCode = "deu"
+    const first = projectSubtitleConfig(pair)
+    const second = structuredClone(first)
+    second.language.targetCode = "fra"
+    const third = structuredClone(second)
+    third.videoSubtitles.providerId = "google-translate-default"
+    const fragments = [{ text: "hello", start: 0, end: 1000 }]
+    await translateSubtitles(
+      fragments,
+      { videoTitle: "Video", subtitlesTextContent: "hello" },
+      first,
+    )
+    await translateSubtitles(
+      fragments,
+      { videoTitle: "Video", subtitlesTextContent: "hello" },
+      second,
+    )
+    await translateSubtitles(
+      fragments,
+      { videoTitle: "Video", subtitlesTextContent: "hello" },
+      third,
+    )
+    await translateSubtitles(
+      fragments,
+      { videoTitle: "Video", subtitlesTextContent: "hello" },
+      first,
+    )
+    const [a, b, c, again] = enqueueRequests()
+    expect(a.hash).not.toBe(b.hash)
+    expect(b.hash).not.toBe(c.hash)
+    expect(again.hash).toBe(a.hash)
+    expect(pair.mainConfig.language).toEqual(DEFAULT_CONFIG.language)
+  })
+
   it("requests subtitle summary through a dedicated background message", async () => {
     sendMessageMock.mockResolvedValue("Generated summary")
 

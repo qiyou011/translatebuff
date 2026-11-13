@@ -61,7 +61,8 @@ vi.mock("@/utils/message", () => ({
   sendMessage: mockSendMessage,
 }))
 
-vi.mock("@/utils/site-control", () => ({
+vi.mock("@/utils/site-control", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("@/utils/site-control")>()),
   clearEffectiveSiteControlUrl: mockClearEffectiveSiteControlUrl,
 }))
 
@@ -192,14 +193,15 @@ describe("bootstrapHostContent URL changes", () => {
     try {
       await bootstrapHostContent(ctx, null)
       const manager = managerInstances[0]!
-      const onConfigChange = watch.mock.calls.find(
-        ([key]) => key === `local:${CONFIG_STORAGE_KEY}`,
-      )?.[1]
+      const onConfigChange = (value: unknown, old: unknown) => {
+        for (const [key, listener] of watch.mock.calls)
+          if (key === `local:${CONFIG_STORAGE_KEY}`) listener(value, old)
+      }
       expect(onConfigChange).toBeDefined()
 
       const switchedOff = structuredClone(DEFAULT_CONFIG)
       switchedOff.pageTranslation.page.translateTitle = false
-      onConfigChange!(switchedOff, DEFAULT_CONFIG)
+      onConfigChange(switchedOff, DEFAULT_CONFIG)
 
       expect(manager.setTitleTranslationEnabled).toHaveBeenLastCalledWith(false)
       expect(manager.stop).not.toHaveBeenCalled()
@@ -207,12 +209,12 @@ describe("bootstrapHostContent URL changes", () => {
       // Written before v109: the schema default keeps the title translated.
       const preMigration: any = structuredClone(DEFAULT_CONFIG)
       delete preMigration.pageTranslation.page.translateTitle
-      onConfigChange!(preMigration, switchedOff)
+      onConfigChange(preMigration, switchedOff)
 
       expect(manager.setTitleTranslationEnabled).toHaveBeenLastCalledWith(true)
 
       invalidate()
-      expect(unwatch).toHaveBeenCalledOnce()
+      expect(unwatch).toHaveBeenCalledTimes(2)
     } finally {
       watch.mockRestore()
     }

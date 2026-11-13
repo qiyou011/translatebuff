@@ -19,6 +19,7 @@ import { AppShell } from "@/entrypoints/options/app-shell"
 import { ROUTE_DEFS } from "@/entrypoints/options/app-sidebar/nav-items"
 import { SettingsSearch } from "@/entrypoints/options/command-palette/settings-search"
 import { ScrollRestoration } from "@/entrypoints/options/navigation/scroll-restoration"
+import { createFeatureConfigStore } from "@/fork/background/initialize-feature-config"
 import { saveForkSession } from "@/fork/membership/session"
 import { buildRenyimiaoProvider } from "@/fork/providers/renyimiao"
 import { configAtom } from "@/utils/atoms/config"
@@ -41,6 +42,7 @@ vi.mock("@/fork/message", async (importOriginal) => ({
   sendForkMessage: vi.fn<(type: string) => Promise<unknown>>(async (type) => {
     if (type === "forkSyncMembership" || type === "forkEnsureMembershipKey") return undefined
     if (type === "forkGetInstallChannel") return "route-smoke"
+    if (type === "forkReadFeatureConfig") return featureService.read()
     throw new Error(`Unexpected background RPC during route mount: ${type}`)
   }),
 }))
@@ -51,6 +53,7 @@ vi.mock("@/utils/db/dexie/db", async () => {
 })
 
 let activeRouter: ReturnType<typeof createMemoryRouter> | undefined
+let featureService: ReturnType<typeof createFeatureConfigStore>
 const originalScrollIntoView = Object.getOwnPropertyDescriptor(Element.prototype, "scrollIntoView")
 const originalRangeRects = Object.getOwnPropertyDescriptor(Range.prototype, "getClientRects")
 const network = vi.fn<typeof fetch>(async () => {
@@ -61,6 +64,7 @@ beforeEach(async () => {
   fakeBrowser.reset()
   queryClient.clear()
   await storage.clear("local")
+  featureService = createFeatureConfigStore(async () => {})
   vi.stubGlobal("fetch", network)
   network.mockClear()
   vi.stubGlobal("matchMedia", (query: string) => ({

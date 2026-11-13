@@ -1,0 +1,162 @@
+/* Figma 2191:5915. The source/target semantics follow the approved prototype. */
+.tb-input-settings {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+.tb-input-settings h2 {
+  margin: 0;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 600;
+}
+.tb-supported-platforms {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.tb-supported-platforms > p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 24px;
+  color: var(--rf-muted-foreground);
+}
+.tb-input-settings .tb-platform-icons {
+  display: flex;
+  height: 40px;
+  isolation: isolate;
+}
+.tb-input-settings .tb-platform-icons > span {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  margin-right: -5px;
+}
+.tb-input-settings .tb-platform-icons img {
+  position: absolute;
+  top: -2.7px;
+  left: -2.7px;
+  width: 41.4px;
+  height: 41.4px;
+  max-width: none;
+}
+.tb-input-setting-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 32px;
+  min-height: 106px;
+  padding: 24px;
+  border-radius: 14px;
+  background: var(--rf-card);
+}
+.tb-input-setting-row > span:first-child {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 40%;
+  flex-shrink: 0;
+}
+.tb-input-setting-row strong,
+.tb-input-language-card h3 {
+  margin: 0;
+  font-size: 18px;
+  line-height: 28px;
+  font-weight: 600;
+}
+.tb-input-setting-row > span:first-child > span,
+.tb-input-language-card p {
+  margin: 0;
+  font-size: 15px;
+  line-height: 24px;
+  color: var(--rf-muted-foreground);
+}
+.tb-input-setting-row > input,
+.tb-input-setting-row > select,
+.tb-input-setting-row > button:not([role="switch"]) {
+  width: 53%;
+  min-width: 0;
+  height: 40px;
+  margin-top: 4px;
+  padding: 0 14px;
+  border: 1px solid var(--rf-border);
+  border-radius: 10px;
+  background: var(--rf-card);
+  font-size: 15px;
+  line-height: 22.5px;
+}
+.tb-input-setting-row > [role="switch"] {
+  margin-top: 4px;
+}
+.tb-input-setting-row > select {
+  appearance: none;
+  padding-right: 40px;
+  background-image: url("../../../assets/images/panel-v170/chevron-icon.svg");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+}
+.dark .tb-input-setting-row > select {
+  background-image: url("../../../assets/images/panel-v170/chevron-dark-icon.svg");
+}
+.tb-input-language-card {
+  padding: 24px;
+}
+.tb-input-language-card p {
+  margin-top: 6px;
+}
+.tb-input-language-controls {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-top: 30px;
+}
+.tb-input-language-controls > span:first-child,
+.tb-input-language-controls > button {
+  flex: 1;
+  min-width: 0;
+  padding: 0 14px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--rf-border);
+  border-radius: 10px;
+  background: var(--rf-card);
+  font-size: 15px;
+}
+.tb-input-platform-notice {
+  font-size: 14px;
+  line-height: 24px;
+  color: var(--rf-muted-foreground);
+}
+html[data-translatebuff-options-theme]
+  [data-slot="sidebar-inset"]
+  > div:has(.tb-input-settings)
+  > div
+  > header
+  > p {
+  display: none;
+}
+html[data-translatebuff-options-theme]
+  [data-slot="sidebar-inset"]
+  > div:has(.tb-input-settings)
+  > div
+  > header
+  + div {
+  margin-top: 32px;
+}
+@container (max-width:600px) {
+  .tb-input-setting-row {
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .tb-input-setting-row > span:first-child {
+    width: 100%;
+  }
+  .tb-input-setting-row > input,
+  .tb-input-setting-row > select,
+  .tb-input-setting-row > button:not([role="switch"]) {
+    width: 100%;
+  }
+}

@@ -1,11 +1,13 @@
 import type { LexicalEditor } from "lexical"
 // @vitest-environment jsdom
 import type { ReactNode } from "react"
+import type { Config } from "@/types/config/config"
 import { act, cleanup, renderHook, waitFor } from "@testing-library/react"
 import { createStore, Provider } from "jotai"
 import { $createParagraphNode, $createTextNode, $getRoot, createEditor } from "lexical"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 import { replaceText } from "@/entrypoints/input-injector.content/replace-text"
+import { migrateFeatureConfig } from "@/fork/config/migration"
 import { configAtom } from "@/utils/atoms/config"
 import { DEFAULT_CONFIG } from "@/utils/constants/config"
 import { INPUT_REPLACE_REQUEST_TYPE } from "@/utils/constants/input-injector"
@@ -16,6 +18,26 @@ const { translate, getConfig } = vi.hoisted(() => ({
   getConfig: vi.fn<() => Promise<unknown>>(),
 }))
 vi.mock("@/utils/host/translate/translate-variants", () => ({ translateTextForInput: translate }))
+vi.mock("../execute-input-translation", () => ({
+  executeInputTranslation: ({ text, source, target, snapshot }: any) =>
+    translate(text, source, target ?? snapshot.target),
+}))
+vi.mock("@/utils/content/language", () => ({ detectLanguage: () => Promise.resolve("cmn") }))
+vi.mock("@/fork/config/atoms", async () => {
+  const { atom } = await import("jotai")
+  return {
+    featureConfigAtom: atom({
+      revision: "test",
+      forkConfig: { inputTranslation: { triggerCount: 3 } },
+    }),
+  }
+})
+vi.mock("@/fork/config/storage", () => ({
+  readFeatureConfig: async () => ({
+    ...migrateFeatureConfig((await getConfig()) as Config, undefined),
+    revision: "test",
+  }),
+}))
 vi.mock("@/utils/config/storage", () => ({ getLocalConfig: getConfig }))
 vi.mock("@/utils/config/languages", async (original) => ({
   ...(await original<typeof import("@/utils/config/languages")>()),
@@ -65,6 +87,7 @@ function editorText(editor: LexicalEditor) {
 function setup(shadow = false) {
   const config = {
     ...DEFAULT_CONFIG,
+    inputTranslation: { ...DEFAULT_CONFIG.inputTranslation, toLang: "eng" as const },
     language: {
       ...DEFAULT_CONFIG.language,
       sourceCode: "auto" as const,
@@ -129,7 +152,9 @@ describe("actual fork Reddit Lexical translation", () => {
       trigger(element)
       await waitFor(() => expect(editorText(editor)).toBe("English reply"))
       expect(editorText(first.editor)).toBe("其他回复")
-      expect(hook.result.current.bar).toMatchObject({ kind: "translated", originalText })
+      await waitFor(() =>
+        expect(hook.result.current.bar).toMatchObject({ kind: "translated", originalText }),
+      )
       editor.update(
         () =>
           $getRoot()

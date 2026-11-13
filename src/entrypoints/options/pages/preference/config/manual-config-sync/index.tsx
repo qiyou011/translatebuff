@@ -1,6 +1,6 @@
 import { Icon } from "@iconify/react"
 import { useMutation } from "@tanstack/react-query"
-import { useAtomValue, useSetAtom } from "jotai"
+import { useAtomValue } from "jotai"
 import { useState } from "react"
 import {
   AlertDialog,
@@ -17,11 +17,10 @@ import { Button } from "@/components/ui/base-ui/button"
 import { Input } from "@/components/ui/base-ui/input"
 import { Label } from "@/components/ui/base-ui/label"
 import { toastManager } from "@/components/ui/base-ui/toast"
+import { importFeatureConfig, readFeatureBackup } from "@/fork/config/backup"
 import { useExportConfig } from "@/hooks/use-export-config"
-import { configAtom, writeConfigAtom } from "@/utils/atoms/config"
-import { addBackup } from "@/utils/backup/storage"
+import { configAtom } from "@/utils/atoms/config"
 import { migrateConfig } from "@/utils/config/migration"
-import { EXTENSION_VERSION } from "@/utils/constants/app"
 import { CONFIG_SCHEMA_VERSION } from "@/utils/constants/config"
 import { MAX_GLOSSARIES, MAX_GLOSSARY_TERMS } from "@/utils/constants/glossary"
 import { readGlossaryDocument } from "@/utils/glossary/sync/document"
@@ -59,8 +58,6 @@ export function ManualConfigSyncConfigItems() {
 }
 
 function ImportConfig() {
-  const currentConfig = useAtomValue(configAtom)
-  const setConfig = useSetAtom(writeConfigAtom)
   const invalidateGlossary = useGlossaryInvalidation()
 
   const { mutate: importConfig, isPending: isImporting } = useMutation({
@@ -84,6 +81,7 @@ function ImportConfig() {
         schemaVersion?: unknown
         config?: unknown
         glossary?: unknown
+        forkConfig?: unknown
       }
 
       const importConfigSchemaVersion = parsed.schemaVersion
@@ -126,21 +124,21 @@ function ImportConfig() {
         )
       }
 
-      await addBackup(currentConfig, EXTENSION_VERSION)
-      await setConfig(newConfig)
-
-      if (!glossary?.ok) return { glossaryTerms: null }
-
-      const replaced = await replaceGlossary(glossary.document)
-      if (!replaced.ok) {
-        throw new Error(
-          i18n.t("options.preference.config.manualSync.glossaryCapExceeded", [
-            String(replaced.overflowBy),
-            String(replaced.reason === "termCapExceeded" ? MAX_GLOSSARY_TERMS : MAX_GLOSSARIES),
-          ]),
-        )
-      }
-      return { glossaryTerms: replaced.terms }
+      let glossaryTerms: number | null = null
+      await importFeatureConfig(newConfig, parsed.forkConfig, async () => {
+        if (!glossary?.ok) return
+        const replaced = await replaceGlossary(glossary.document)
+        if (!replaced.ok) {
+          throw new Error(
+            i18n.t("options.preference.config.manualSync.glossaryCapExceeded", [
+              String(replaced.overflowBy),
+              String(replaced.reason === "termCapExceeded" ? MAX_GLOSSARY_TERMS : MAX_GLOSSARIES),
+            ]),
+          )
+        }
+        glossaryTerms = replaced.terms
+      })
+      return { glossaryTerms }
     },
     onSuccess: (result) => {
       void queryClient.invalidateQueries({ queryKey: ["config-backups"] })
@@ -230,6 +228,7 @@ function ExportConfig() {
   const { mutate: exportConfig, isPending: isExporting } = useExportConfig({
     config,
     schemaVersion: CONFIG_SCHEMA_VERSION,
+    readBackup: readFeatureBackup,
   })
 
   return (

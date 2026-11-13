@@ -1,5 +1,6 @@
 import { useAtom } from "jotai"
 import { Switch } from "@/components/ui/base-ui/switch"
+import { TranslationColorSetting } from "@/fork/ui/options/translation-color"
 import { configFieldsAtomMap } from "@/utils/atoms/config"
 import { i18n } from "@/utils/i18n"
 import { ConfigItem } from "../../../components/config-item"
@@ -47,6 +48,7 @@ export function TranslationStyleSection() {
           >
             <PresetStyleSelect />
           </ConfigItem>
+          <TranslationColorSetting />
           <StylePreview />
         </>
       )}

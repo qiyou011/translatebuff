@@ -161,7 +161,7 @@ describe("translatedSubtitlesDownloader", () => {
           text: translation,
         })),
         videoId: "video-id",
-        suffix: "translated",
+        suffix: "translated-cmn",
       }),
     )
   })

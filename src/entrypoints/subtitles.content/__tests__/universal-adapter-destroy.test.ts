@@ -189,6 +189,7 @@ describe("universalVideoAdapter destroy", () => {
       }
       ;(adapter as any).sessionProcessedFragments = [{ text: "old", start: 0, end: 1000 }]
       ;(adapter as any).sessionVideoId = "video-1"
+      ;(adapter as any).sessionConfigIdentity = JSON.stringify(await mocks.getLocalConfig())
       let finish!: (value: boolean) => void
       fetcher.shouldUseSameTrack.mockReturnValueOnce(
         new Promise<boolean>((resolve) => {

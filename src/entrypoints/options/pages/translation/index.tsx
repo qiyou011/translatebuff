@@ -12,13 +12,12 @@ export function TranslationPage() {
   return (
     <PageLayout
       title={i18n.t("options.translation.title")}
-      description={i18n.t("options.translation.pageDescription")}
       innerClassName="translation-page flex flex-col gap-10"
     >
-      <PreferenceSection />
-      <HoverTranslationSection />
       <TranslationStyleSection />
       <PersonalizedPromptsSection />
+      <PreferenceSection />
+      <HoverTranslationSection />
       <h2 className="translation-controls-heading">
         {i18n.t("options.translation.controlsAndRequests")}
       </h2>

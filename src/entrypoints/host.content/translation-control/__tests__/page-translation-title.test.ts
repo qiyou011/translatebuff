@@ -146,6 +146,18 @@ describe("pageTranslationManager title handling", () => {
     manager.stop()
   })
 
+  it("rejects a new start on a disabled site before translating or announcing success", async () => {
+    mockGetLocalConfig.mockResolvedValue({
+      ...DEFAULT_CONFIG,
+      siteControl: { mode: "whitelist", whitelistPatterns: [], blacklistPatterns: [] },
+    })
+    const manager = new PageTranslationManager()
+    await manager.start()
+    expect(manager.isActive).toBe(false)
+    expect(mockTranslateTextForPageTitle).not.toHaveBeenCalled()
+    expect(mockSendMessage).not.toHaveBeenCalled()
+  })
+
   it("primes webpage context on start for AI-aware llm translation", async () => {
     mockGetLocalConfig.mockResolvedValue({
       ...DEFAULT_CONFIG,

@@ -10,6 +10,7 @@ import { ThemeProvider } from "@/components/providers/theme-provider"
 import { RecoveryBoundary } from "@/components/recovery/recovery-boundary"
 import { AnchoredToastProvider, ToastProvider } from "@/components/ui/base-ui/toast"
 import { TooltipProvider } from "@/components/ui/base-ui/tooltip"
+import { installFeatureConfigBridge } from "@/fork/config/main-config-bridge"
 import { configAtom } from "@/utils/atoms/config"
 import { baseThemeModeAtom } from "@/utils/atoms/theme"
 import { getLocalConfig } from "@/utils/config/storage"
@@ -56,6 +57,7 @@ function HydrateAtoms({
 }
 
 async function initApp() {
+  installFeatureConfigBridge()
   const root = document.getElementById("root")!
   root.className = "text-base antialiased w-[320px] bg-background"
 

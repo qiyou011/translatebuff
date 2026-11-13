@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/base-ui/combobox"
 import { SHARED_POPUP_CLOSED_STATE_CLASS } from "@/components/ui/base-ui/popup-animation-classes"
 import { i18n } from "@/utils/i18n"
+import { getLanguageName } from "@/utils/language-labels"
 import { cn } from "@/utils/styles/utils"
 
 interface InputTranslationLanguageSelectProps {
@@ -100,7 +101,7 @@ export function InputTranslationLanguageSelect({
         <ComboboxValue>
           {(item: (typeof items)[number] | null) => (
             <span className="min-w-0 flex-1 truncate text-left">
-              {item?.label ?? i18n.t("translationHub.searchLanguages")}
+              {item ? getLanguageName(item.value) : i18n.t("translationHub.searchLanguages")}
             </span>
           )}
         </ComboboxValue>

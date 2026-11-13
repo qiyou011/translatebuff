@@ -135,7 +135,7 @@
     },
     {
       "path": "src/entrypoints/host.content/translation-control/page-translation.ts",
-      "sha256": "271eb74ce4eef166bd6b417ead5691a0abce45f34402810173ea52319d6b6f51",
+      "sha256": "9632f04a860b61be7ea04010894796c48411e393d7fc4141754838e018e2d08c",
       "sources": [
         "1308e8d1be455d08ec4e907eb2c8966998abca0b",
         "f2e72180008812358b501e105b6a5ca66ff53b4e",
@@ -154,7 +154,7 @@
     },
     {
       "path": "src/entrypoints/options/app-sidebar/features-nav.tsx",
-      "sha256": "305369062dd6a29b33932a378ed23ae550547cc3edd3a1ffed5c9f4a3edc845e",
+      "sha256": "4d255d911094af0cb1c256a6bcb28eaf4d1106b65eabc25590232a22090799b9",
       "sources": ["f3f1806b4255b31863dc1246b808bf6c416dc709"]
     },
     {
@@ -214,7 +214,7 @@
     },
     {
       "path": "src/entrypoints/subtitles.content/__tests__/universal-adapter-destroy.test.ts",
-      "sha256": "d54bf36fc287f16b79cc5759c81caec99f3fa36c210e6dd3fb39b7fe534a5252",
+      "sha256": "f4b66cd29adf991304902cc750c5eaeb832b2c6508441ca9f212558dd446897e",
       "sources": ["97347ff85c357bbd565ef24ced07e7b2c8b5dc1d"]
     },
     {
@@ -269,7 +269,7 @@
     },
     {
       "path": "src/entrypoints/subtitles.content/universal-adapter.ts",
-      "sha256": "ff2ad8e786e947768d03fe1993874bc6333893f6ea4fd263680eb9f6c2213ecd",
+      "sha256": "72260b85b3f1becbd21a61436afc9a92a4f48ff9163bb7729378b7701b01caf9",
       "sources": [
         "97347ff85c357bbd565ef24ced07e7b2c8b5dc1d",
         "68bba6ec35d91e398c80109c216b42b817e92f76"
@@ -277,7 +277,7 @@
     },
     {
       "path": "src/fork/identity/redirect-baseline.json",
-      "sha256": "48e245c30a5171e0852c7d5a4aea18340fdc8226716e625207d1e95b9c54f602",
+      "sha256": "a5b0ef26cca8cdafffe5e4b14ed2f1910ec8120cebb04953dc99d36eab4bbac8",
       "sources": [
         "97347ff85c357bbd565ef24ced07e7b2c8b5dc1d",
         "68bba6ec35d91e398c80109c216b42b817e92f76"
@@ -298,12 +298,12 @@
     },
     {
       "path": "src/fork/ui/options/__tests__/navigation-fixes.forktest.tsx",
-      "sha256": "dd8e57efd74ff1587eef4f188cbacbfca492408f51c26ad52f23de74f540768d",
+      "sha256": "337db82f34f46ec446d22e491bb23ad6972ba71235f9ab94ada9a6a892fa1925",
       "sources": ["f3f1806b4255b31863dc1246b808bf6c416dc709"]
     },
     {
       "path": "src/fork/upstream-services/__tests__/subtitle-admission.forktest.ts",
-      "sha256": "374d8e96716f0ea78a7da22e2374f7ec26ff7fcab29b613d910fe8334cc441db",
+      "sha256": "9ba0237f9984fa428d18b041d8f6262c18bb293599b4ab4af3b78b73565fcdf3",
       "sources": ["97347ff85c357bbd565ef24ced07e7b2c8b5dc1d"]
     },
     {
@@ -401,7 +401,7 @@
     },
     {
       "path": "src/utils/host/translate/api/google.ts",
-      "sha256": "a3e67fd0895954cc17747cfd5bb8c0d39e6fb13199468fd8615145ee191259fd",
+      "sha256": "33d369201c634cc251e09796d6a12626e1ddcc0610fa2ecf4a43b259d6ba62f8",
       "sources": [
         "3d768aad26791cc2664129d206cbcf39179e0486",
         "7dda3ceff30c86b98941dfc04f44051ed22a1bb8"

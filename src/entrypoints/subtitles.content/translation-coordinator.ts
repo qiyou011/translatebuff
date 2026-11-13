@@ -1,4 +1,5 @@
 import type { SegmentationPipeline } from "./segmentation-pipeline"
+import type { Config } from "@/types/config/config"
 import type { SubtitlesVideoContext } from "@/utils/subtitles/processor/translator"
 import type { SubtitlesFragment, SubtitlesState } from "@/utils/subtitles/types"
 import { getLocalConfig } from "@/utils/config/storage"
@@ -8,6 +9,7 @@ import { translateSubtitles } from "@/utils/subtitles/processor/translator"
 import { adPlayingAtom, subtitlesStore } from "./atoms"
 
 export interface TranslationCoordinatorOptions {
+  configSnapshot?: Config
   getFragments: () => SubtitlesFragment[]
   getVideoElement: () => HTMLVideoElement | null
   getCurrentState: () => SubtitlesState
@@ -21,6 +23,7 @@ function fragmentIdentity(fragment: Pick<SubtitlesFragment, "end" | "text">): st
 }
 
 export class TranslationCoordinator {
+  private configSnapshot?: Config
   private translatingStarts = new Set<number>()
   private translatedStarts = new Set<number>()
   private failedStarts = new Set<number>()
@@ -43,6 +46,9 @@ export class TranslationCoordinator {
   private onStateChange: (state: SubtitlesState, data?: Record<string, string>) => void
 
   constructor(options: TranslationCoordinatorOptions) {
+    this.configSnapshot = options.configSnapshot
+      ? structuredClone(options.configSnapshot)
+      : undefined
     this.getFragments = options.getFragments
     this.getVideoElement = options.getVideoElement
     this.getCurrentState = options.getCurrentState
@@ -221,7 +227,7 @@ export class TranslationCoordinator {
     })
 
     try {
-      const translated = await translateSubtitles(batch, this.videoContext)
+      const translated = await translateSubtitles(batch, this.videoContext, this.configSnapshot)
       if (!this.active || runId !== this.runId) {
         batch.forEach((f) => this.translatingStarts.delete(f.start))
         return

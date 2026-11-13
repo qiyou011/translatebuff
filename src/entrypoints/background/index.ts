@@ -2,6 +2,7 @@ import "@/utils/zod-config"
 import type { Config, UiLanguage } from "@/types/config/config"
 import { browser, defineBackground } from "#imports"
 import { setupFork } from "@/fork/background"
+import { featureConfigService } from "@/fork/background/feature-config-service"
 import { createPageTranslationQueues } from "@/fork/page-translation/queues"
 import { getWebsiteUrl } from "@/fork/website-url"
 import { storageAdapter } from "@/utils/atoms/storage-adapter"
@@ -73,7 +74,7 @@ export default defineBackground({
       // storage, and a config rebuilt from defaults after failing validation during an
       // update deserves the same provider selection a fresh install gets.
       if (await isFreshInstalledConfig()) {
-        await selectFreshTranslateProviders()
+        await selectFreshTranslateProviders(featureConfigService.updateMain)
       }
 
       // Clear blog cache on extension update to fetch latest blog posts

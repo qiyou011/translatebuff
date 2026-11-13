@@ -43,6 +43,7 @@ export class TranslatedSubtitlesDownloader {
   constructor(
     private getFetcher: () => SubtitlesFetcher,
     private config: PlatformConfig,
+    private readConfig: () => Promise<Config | null> = getLocalConfig,
   ) {}
 
   private get fetcher(): SubtitlesFetcher {
@@ -63,7 +64,7 @@ export class TranslatedSubtitlesDownloader {
     this.setStatus(TranslatedDownloadPhase.Checking, null)
 
     try {
-      const configSnapshot = await getLocalConfig()
+      const configSnapshot = structuredClone(await this.readConfig())
       this.assertActive(operationId)
       if (!configSnapshot) {
         throw new Error(i18n.t("subtitles.errors.translatedExportFailed"))
@@ -97,7 +98,7 @@ export class TranslatedSubtitlesDownloader {
         })),
         pageTitle,
         videoId,
-        suffix: "translated",
+        suffix: `translated-${configSnapshot.language.targetCode}`,
       })
       this.assertActive(operationId)
 

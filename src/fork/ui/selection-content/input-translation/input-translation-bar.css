@@ -17,6 +17,9 @@
 .rf-input-translation-scope .rf-input-translation-undo {
   color: var(--rf-foreground);
 }
+.rf-input-translation-scope[data-input-translation-theme="dark"] .rf-input-translation-undo img {
+  filter: invert(1);
+}
 
 .rf-input-translation-scope .rf-input-translation-trigger:focus-visible,
 .rf-input-translation-scope .rf-input-translation-undo:focus-visible {
@@ -71,4 +74,115 @@
 .rf-input-translation-menu [data-highlighted] {
   background: var(--rf-accent);
   color: var(--rf-accent-foreground);
+}
+
+/* Figma 2179:562 / 2179:563 and 2218:2798: 24px loading, 28px completion. */
+.rf-input-translation-scope .rf-input-translation-shell {
+  min-height: 28px;
+  padding: 0 5px 0 2px;
+  gap: 0;
+  border: 1px solid #e5e5e5;
+  border-radius: 14px;
+  background: #fff;
+  color: #0a0a0a;
+  font-family: "Noto Sans SC", "Source Han Sans SC", sans-serif;
+  font-size: 10px;
+  line-height: 14px;
+  font-weight: 400;
+}
+.rf-input-translation-scope[data-input-translation-theme="dark"] .rf-input-translation-shell {
+  background: #171717;
+  color: #fafafa;
+  border-color: rgb(255 255 255 / 10%);
+}
+.rf-input-translation-scope .rf-input-translation-shell[data-bar-state="loading"] {
+  width: 24px;
+  min-height: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+.rf-brand-loading {
+  position: relative;
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+.rf-brand-loading img {
+  position: absolute;
+  display: block;
+  max-width: none;
+}
+.rf-brand-ring {
+  left: 0;
+  top: 0;
+  width: 24px;
+  height: 24px;
+}
+.rf-brand-base {
+  left: 3px;
+  top: 3px;
+  width: 18px;
+  height: 18px;
+}
+.rf-brand-logo {
+  left: 5px;
+  top: 5.538px;
+  width: 14px;
+  height: 12.923px;
+}
+.rf-brand-loading[data-pending] .rf-brand-ring {
+  animation: rf-brand-spin 0.9s cubic-bezier(0.55, 0.05, 0.45, 0.95) infinite;
+}
+.rf-input-translation-shell > .rf-brand-loading {
+  margin-right: 6px;
+}
+.rf-input-translation-shell[data-bar-state="loading"] > .rf-brand-loading {
+  margin: 0;
+}
+.rf-input-translation-scope .rf-input-translation-trigger {
+  height: 26px;
+  padding: 0 6px 0 3px;
+  gap: 3px;
+  font-size: 11px;
+  line-height: 16px;
+  font-weight: 500;
+  color: inherit;
+}
+.rf-input-translation-scope .rf-input-translation-undo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 25px;
+  height: 16px;
+  margin-left: 6px;
+  padding-left: 8px;
+  border-left: 1px solid #e5e5e5;
+}
+.rf-input-translation-shell:not([data-bar-state="loading"]) {
+  animation: rf-brand-complete 0.46s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes rf-brand-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes rf-brand-complete {
+  from {
+    opacity: 0;
+    clip-path: inset(0 0 0 calc(100% - 24px) round 14px);
+  }
+  to {
+    opacity: 1;
+    clip-path: inset(0 round 14px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rf-brand-loading[data-pending] .rf-brand-ring,
+  .rf-input-translation-shell:not([data-bar-state="loading"]) {
+    animation: none;
+  }
 }

@@ -17,7 +17,7 @@ export const ROUTE_EXPECTATIONS = [
   ["/floating-button", "options.floatingButton.title", "#floating-button-display"],
   ["/selection-toolbar", "options.selectionToolbar.title", "#selection-toolbar-translate"],
   ["/context-menu", "options.contextMenu.title", "[role=switch]"],
-  ["/input-translation", "options.inputTranslation.title", "#input-translation-languages"],
+  ["/input-translation", "options.inputTranslation.title", "[data-feature-settings=input] select"],
   ["/tts", "options.tts.title", "#tts-voice"],
   ["/advanced", "options.advanced.glossary.title", "#glossary-library"],
   ["/help-and-community", "options.helpAndCommunity.title", "a[href]"],

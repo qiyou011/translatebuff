@@ -42,6 +42,7 @@ export async function getAllBackupsWithMetadata(): Promise<Array<ConfigBackupWit
 export async function isSameAsLatestBackup(
   config: Config,
   configSchemaVersion: number,
+  forkConfig?: unknown,
 ): Promise<boolean> {
   const backupsWithMetadata = await getAllBackupsWithMetadata()
   if (backupsWithMetadata.length === 0) {
@@ -55,7 +56,10 @@ export async function isSameAsLatestBackup(
     return false
   }
 
-  return dequal(latestBackupWithMetadata!.config, config)
+  return (
+    dequal(latestBackupWithMetadata!.config, config) &&
+    dequal(latestBackupWithMetadata!.forkConfig, forkConfig)
+  )
 }
 
 /**
@@ -63,7 +67,11 @@ export async function isSameAsLatestBackup(
  * Automatically removes oldest backup if limit is exceeded
  * Skips backup if config is identical to the latest backup
  */
-export async function addBackup(config: Config, extensionVersion: string): Promise<void> {
+export async function addBackup(
+  config: Config,
+  extensionVersion: string,
+  forkConfig?: unknown,
+): Promise<void> {
   try {
     const timestamp = Date.now()
     const backupId = generateBackupId(timestamp)
@@ -71,6 +79,7 @@ export async function addBackup(config: Config, extensionVersion: string): Promi
     const backup: ConfigBackup = {
       schemaVersion: CONFIG_SCHEMA_VERSION,
       config,
+      ...(forkConfig === undefined ? {} : { forkConfig }),
     }
 
     // Get current backup IDs

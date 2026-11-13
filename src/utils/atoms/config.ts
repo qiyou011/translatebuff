@@ -29,6 +29,14 @@ let writeVersion = 0
 let pendingWrites = 0
 const refreshListeners = new Set<() => void>()
 
+type ConfigCommitter = (update: (current: Config) => Config) => Promise<Config>
+let configCommitter: ConfigCommitter | undefined
+
+/** Optional cross-context persistence boundary; the default remains local storage. */
+export function setConfigCommitter(committer: ConfigCommitter) {
+  configCommitter = committer
+}
+
 function applyUpdate(current: Config, update: ConfigUpdate): Config {
   return typeof update === "function"
     ? mergeUpdaterResult(current, update(current))
@@ -45,8 +53,10 @@ export const writeConfigAtom = atom(null, async (get, set, update: ConfigUpdate)
     let stored: Config | undefined
     try {
       stored = await storageAdapter.get(CONFIG_STORAGE_KEY, DEFAULT_CONFIG, configSchema)
-      const next = applyUpdate(stored, update)
-      await storageAdapter.set(CONFIG_STORAGE_KEY, next, configSchema)
+      const next = configCommitter
+        ? await configCommitter((current) => applyUpdate(current, update))
+        : applyUpdate(stored, update)
+      if (!configCommitter) await storageAdapter.set(CONFIG_STORAGE_KEY, next, configSchema)
       await storageAdapter.setMeta(CONFIG_STORAGE_KEY, { lastModifiedAt: Date.now() })
       if (version === writeVersion && !dequal(get(configAtom), next)) set(configAtom, next)
     } catch (error) {

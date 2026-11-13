@@ -19,6 +19,7 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/base-ui/sidebar"
+import translationMenu from "@/fork/assets/translation-menu.svg"
 import { TRANSLATION_HUB_PAGE_PATH } from "@/utils/constants/translation-hub"
 import { i18n } from "@/utils/i18n"
 
@@ -57,7 +58,7 @@ export function FeaturesNav() {
             </SidebarMenuButton>
           </SidebarMenuItem>
 
-          <CollapsibleNavGroup active={isTranslationActive}>
+          <CollapsibleNavGroup active={isTranslationActive} defaultOpen>
             <SidebarMenuItem>
               <CollapsibleTrigger
                 render={
@@ -67,9 +68,11 @@ export function FeaturesNav() {
                   />
                 }
               >
-                {/* Page translation's own icon stands for the group: it is the
-                    feature the other two are variations of. */}
-                <Icon icon="ri:translate" />
+                <span
+                  aria-hidden="true"
+                  className="size-[18px] shrink-0 bg-current"
+                  style={{ mask: `url("${translationMenu}") center / contain no-repeat` }}
+                />
                 <span>{i18n.t("options.sidebar.translation")}</span>
                 <Icon
                   icon="tabler:chevron-right"
@@ -224,8 +227,16 @@ export function FeaturesNav() {
  * hand. Base UI reads `defaultOpen` once, so a route-driven `defaultOpen` neither opened the
  * group nor stayed quiet about changing.
  */
-function CollapsibleNavGroup({ active, children }: { active: boolean; children: ReactNode }) {
-  const [open, setOpen] = useState(active)
+function CollapsibleNavGroup({
+  active,
+  children,
+  defaultOpen = false,
+}: {
+  active: boolean
+  children: ReactNode
+  defaultOpen?: boolean
+}) {
+  const [open, setOpen] = useState(active || defaultOpen)
   // Adjusted while rendering rather than in an effect, so the group opens with the page instead of
   // a frame later. Comparing booleans, one update settles it.
   const [wasActive, setWasActive] = useState(active)

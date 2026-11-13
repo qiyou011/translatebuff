@@ -185,7 +185,7 @@ options:
         noteSuggestion: 猜你想存
         selectionTranslation: 划词翻译
         videoSubtitles: 视频字幕
-        inputTranslation: 输入翻译
+        inputTranslation: 聊天/输入翻译
         languageDetection: 语言检测
     sponsorCta: 获取高速性价比 AI
     sponsorCtaJalapenoCloud: 获取 GLM 5.2 五折优惠
@@ -325,13 +325,13 @@ options:
       features:
         pageTranslation: 网页翻译
         selectionTranslation: 划词翻译
-        inputTranslation: 输入翻译
+        inputTranslation: 聊天/输入翻译
         videoSubtitles: 视频字幕
         noteSuggestion: 猜你想存
       descriptions:
         pageTranslation: 翻译整个网页，双语对照或直接替换原文。
         selectionTranslation: 通过划词工具栏翻译你选中的文本。
-        inputTranslation: 在发送前翻译你写在输入框里的内容。
+        inputTranslation: 聊天/输入翻译
         videoSubtitles: 翻译视频播放器中随播放出现的字幕。
         noteSuggestion: 划词翻译后，推荐值得存入笔记库的词条。
     languageDetection:
@@ -576,7 +576,7 @@ options:
   overlayTools:
     title: 悬浮工具
   inputTranslation:
-    title: 输入翻译
+    title: 聊天/输入翻译
     pageDescription: 在发送之前，把你在输入框里写的内容翻译好。
     trigger:
       title: 触发方式
@@ -1964,13 +1964,67 @@ languages:
   wls: 瓦利斯语
   rar: 拉罗汤加语
   hif: 斐济印地语
+quickTranslation:
+  stylePreviewTranslation: "清晨安静地散步，是探索这座城市的好方式。"
+  brandTranslate: "任译喵：翻译选区"
+  enableSubtitles: "开启视频字幕"
+  sitePaused: "已在当前网站禁用扩展"
+  resumeSite: "恢复使用"
+  translatePage: "翻译当前网页"
+  allSettings: "全部设置"
+  selectionTitle: "划词翻译"
+  supportedContextPlatforms: "已支持的 AI 智能上下文平台"
+  supportedContextDescription: "在已支持平台可开启 AI 智能上下文，将输入内容翻译为你设置的目标语言。"
+  triggerKey: "触发按键"
+  triggerKeyDescription: "仅支持使用空格键触发，不支持更换其他按键。"
+  spaceKey: "空格"
+  triggerCountDescription: "可调整为连续按 2～5 次空格触发。"
+  languageDirection: "语言方向"
+  languageDirectionDescription: "自动识别输入内容的语言，翻译为你设置的目标语言。"
+  moreTranslations: "更多翻译"
+  comicImage: "漫画/图片翻译"
+  comingSoon: "敬请期待"
+  bilingual: "双语对照"
+  translationOnly: "仅译文"
+  displayMode: "显示方式"
+  colorDescription: "选择颜色，或点击色块自定义。"
+  customColor: "自定义颜色"
+  quoteColor: "引用线颜色"
+  dashedLineColor: "虚线颜色"
+  borderColor: "边框颜色"
+  backgroundColor: "背景颜色"
+  inputTutorial: "在输入框写好内容，连按 $1 次空格即可翻译"
+  spaceCount: "空格 × $1"
+  beforeTranslation: "翻译前"
+  afterTranslation: "翻译后"
+  translatedToEnglish: "译至 英语"
+  selectionTutorial: "选中网页中的文字，点击工具栏翻译"
+  selectionExample: "清晨安静地散步"
+  translateAction: "翻译"
+  videoExample: "视频字幕翻译示意"
+  videoNoticeCN: "支持 YouTube、X、Netflix平台，请遵守所在地法律法规。任译喵不提供任何形式的网络代理或“翻墙”服务"
+  videoNoticeGlobal: "支持 YouTube、X、Netflix平台。"
+  loading: "正在加载设置…"
+  loadFailed: "设置加载失败，请重新打开此页面后重试。"
+  saveFailed: "保存失败，请重试。"
+  enabled: "启用功能"
+  autoDraft: "自动识别输入语言"
+  autoDetect: "自动识别"
+  provider: "翻译提供商"
+  triggerCount: "触发次数"
+  smartContext: "AI 智能上下文"
+  platformNotice: "使用相关平台时，请遵守所在地法律法规。任译喵不提供任何形式的网络代理或“翻墙”服务。"
+  documentsUnavailable: "文档翻译 · 暂未开放"
 inputTranslationBar:
+  configured: 已设置
+  languageUndetected: 无法识别输入语言，请补充内容后重试
+  triggerHintCount: 连续 $1 次空格触发翻译
   triggerHint: 三连空格触发自动翻译
   translating: 翻译中…
   failed: 翻译失败
   retry: 重试
   contentBlocked: 内容未通过安全审核，无法翻译
-  translateTo: 翻译为
+  translateTo: 译至
   autoDetected: 自动检测
   fromPageSource: 按网页源语言
   manualSelection: 手动选择
