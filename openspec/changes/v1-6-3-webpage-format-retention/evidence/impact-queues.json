@@ -1,0 +1,58 @@
+{
+  "target": {
+    "id": "Function:src/fork/page-translation/queues.ts:createPageTranslationQueues",
+    "name": "createPageTranslationQueues",
+    "type": "Function",
+    "filePath": "src/fork/page-translation/queues.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 2,
+  "risk": "LOW",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 1,
+    "processes_affected": 0,
+    "modules_affected": 1
+  },
+  "byDepthCounts": {
+    "1": 1,
+    "2": 1
+  },
+  "affected_processes": [],
+  "affected_modules": [
+    {
+      "name": "Background",
+      "hits": 1,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:openspec/changes/upstream-fixes-v1-6-1/evidence/alternative-acceptance.forktest.ts:queue",
+        "name": "queue",
+        "filePath": "openspec/changes/upstream-fixes-v1-6-1/evidence/alternative-acceptance.forktest.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "File:openspec/changes/upstream-fixes-v1-6-1/evidence/alternative-acceptance.forktest.ts",
+        "name": "alternative-acceptance.forktest.ts",
+        "filePath": "openspec/changes/upstream-fixes-v1-6-1/evidence/alternative-acceptance.forktest.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ]
+  }
+}

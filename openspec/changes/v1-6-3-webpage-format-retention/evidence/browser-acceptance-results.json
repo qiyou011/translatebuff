@@ -1,0 +1,1514 @@
+{
+  "browser": "Chrome/157.0.8103.78",
+  "builtExtension": "D:\\project\\translatebuff\\.output\\chrome-mv3",
+  "runs": [
+    {
+      "provider": "google-translate-default",
+      "config": {
+        "mode": "bilingual",
+        "target": "cmn",
+        "provider": "google-translate-default"
+      },
+      "cases": [
+        {
+          "id": "F01",
+          "translations": [
+            {
+              "text": "Mac 上的守护进程以三种形式驱动手机： MCP服务器适用于您的代理；适用于脚本的HTTP API ( /agent/* )；以及适用于用户的网页和原生 iOS 应用。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-format-status=\"normal\" data-read-frog-custom-translation-style=\"default\" style=\"white-space: pre-wrap;\">Mac 上的守护进程以三种形式驱动手机：<mark style=\"color: inherit; background-image: linear-gradient(100deg, rgba(0, 0, 0, 0), rgb(246, 218, 91) 3%, rgb(246, 218, 91) 97%, rgba(0, 0, 0, 0));\"> MCP服务器</mark>适用于您的代理；适用于脚本的<strong style=\"color: inherit;\">HTTP API</strong> ( <code style=\"color: inherit; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; white-space: pre-wrap;\">/agent/*</code> )；以及适用于用户的<strong style=\"color: inherit;\">网页和原生 iOS 应用</strong>。</span>",
+              "status": "normal",
+              "strong": ["HTTP API", "网页和原生 iOS 应用"],
+              "marks": [
+                {
+                  "text": " MCP服务器",
+                  "background": "linear-gradient(100deg, rgba(0, 0, 0, 0), rgb(246, 218, 91) 3%, rgb(246, 218, 91) 97%, rgba(0, 0, 0, 0))",
+                  "color": "rgb(39, 43, 40)"
+                }
+              ],
+              "atoms": [
+                {
+                  "tag": "code",
+                  "text": "/agent/*"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "F02",
+          "translations": [
+            {
+              "text": "F02 增强",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-custom-translation-style=\"default\">F02 增强</span>",
+              "status": "legacy",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            },
+            {
+              "text": "请在关闭窗口前保存更改。主帐户已激活，临时帐户将于明日过期，备用帐户仍然可用。请阅读重要通知并忽略此提示。过时的指示。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-format-status=\"normal\" data-read-frog-custom-translation-style=\"default\" style=\"white-space: pre-wrap;\">请在关闭窗口前<strong style=\"color: inherit;\">保存更改</strong>。<strong style=\"color: inherit;\">主帐户</strong>已激活，<em style=\"color: inherit;\">临时帐户</em>将于明日过期，<em style=\"color: inherit;\">备用帐户</em>仍然可用。请阅读<u style=\"color: inherit;\">重要通知</u>并忽略此提示。<del style=\"color: inherit;\">过时的指示</del>。</span>",
+              "status": "normal",
+              "strong": ["保存更改", "主帐户"],
+              "marks": [],
+              "atoms": []
+            }
+          ]
+        },
+        {
+          "id": "F03",
+          "translations": [
+            {
+              "text": "报告称付款截止日期为下周五。而收货地址必须今天确认。请将两个提醒都放在显眼位置。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-format-status=\"normal\" data-read-frog-custom-translation-style=\"default\" style=\"white-space: pre-wrap;\">报告称<mark style=\"color: inherit; background-color: rgb(255, 241, 160);\">付款截止日期为下周五。</mark>而<mark style=\"color: inherit; background-image: linear-gradient(100deg, rgba(0, 0, 0, 0), rgb(246, 218, 91) 3%, rgb(246, 218, 91) 97%, rgba(0, 0, 0, 0));\">收货地址必须今天确认。</mark>请将两个提醒都放在显眼位置。</span>",
+              "status": "normal",
+              "strong": [],
+              "marks": [
+                {
+                  "text": "付款截止日期为下周五。",
+                  "background": "none",
+                  "color": "rgb(39, 43, 40)"
+                },
+                {
+                  "text": "收货地址必须今天确认。",
+                  "background": "linear-gradient(100deg, rgba(0, 0, 0, 0), rgb(246, 218, 91) 3%, rgb(246, 218, 91) 97%, rgba(0, 0, 0, 0))",
+                  "color": "rgb(39, 43, 40)"
+                }
+              ],
+              "atoms": []
+            }
+          ]
+        },
+        {
+          "id": "F04",
+          "translations": [
+            {
+              "text": "F04 纯风格跨度",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-custom-translation-style=\"default\">F04 纯风格跨度</span>",
+              "status": "legacy",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            },
+            {
+              "text": "付款失败需要关注，已批准的付款无需采取任何行动，而待付款项将于明日核查。 。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-format-status=\"normal\" data-read-frog-custom-translation-style=\"default\" style=\"white-space: pre-wrap;\">付款失败需要关注，<strong style=\"color: inherit;\">已批准的付款无需采取任何行动</strong>，而<mark style=\"color: inherit; background-color: rgb(219, 234, 254);\">待付款项将于明日核查。</mark> 。</span>",
+              "status": "normal",
+              "strong": ["已批准的付款无需采取任何行动"],
+              "marks": [
+                {
+                  "text": "待付款项将于明日核查。",
+                  "background": "none",
+                  "color": "rgb(39, 43, 40)"
+                }
+              ],
+              "atoms": []
+            }
+          ]
+        },
+        {
+          "id": "F05",
+          "translations": [
+            {
+              "text": "F05 演讲格式",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-custom-translation-style=\"default\">F05 演讲格式</span>",
+              "status": "legacy",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            },
+            {
+              "text": "付款前请务必确认正确的送货日期。下一个三个工作日保留以供审核。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-format-status=\"normal\" data-read-frog-custom-translation-style=\"default\" style=\"white-space: pre-wrap;\">付款前请务必<strong style=\"color: inherit;\">确认<em style=\"color: inherit;\">正确的送货日期</em></strong>。下一个<mark style=\"color: inherit; background-color: rgb(255, 241, 160);\">三个<strong style=\"color: inherit;\">工作日</strong></mark>保留以供审核。</span>",
+              "status": "normal",
+              "strong": ["确认正确的送货日期", "工作日"],
+              "marks": [
+                {
+                  "text": "三个工作日",
+                  "background": "none",
+                  "color": "rgb(39, 43, 40)"
+                }
+              ],
+              "atoms": []
+            }
+          ]
+        },
+        {
+          "id": "F06",
+          "translations": [
+            {
+              "text": "向/agent/*发送请求，并在开始前设置IPHONE_USE_NO_CLIENT_SETUP=1 。结果字段retry_safe在脚本中必须保持不变。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-format-status=\"normal\" data-read-frog-custom-translation-style=\"default\" style=\"white-space: pre-wrap;\">向<code style=\"color: inherit; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; white-space: pre-wrap;\">/agent/*</code>发送请求，并在开始前设置<code style=\"color: inherit; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; white-space: pre-wrap;\">IPHONE_USE_NO_CLIENT_SETUP=1</code> 。结果字段<code style=\"color: inherit; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; white-space: pre-wrap;\">retry_safe</code>在脚本中必须保持不变。</span>",
+              "status": "normal",
+              "strong": [],
+              "marks": [],
+              "atoms": [
+                {
+                  "tag": "code",
+                  "text": "/agent/*"
+                },
+                {
+                  "tag": "code",
+                  "text": "IPHONE_USE_NO_CLIENT_SETUP=1"
+                },
+                {
+                  "tag": "code",
+                  "text": "retry_safe"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "F07",
+          "translations": [
+            {
+              "text": "命令npm install example-package用于准备项目。请保持变量 CUSTOM_SESSION_ID 不变，然后仔细阅读翻译后的说明。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-format-status=\"normal\" data-read-frog-custom-translation-style=\"default\" style=\"white-space: pre-wrap;\">命令<code style=\"color: inherit; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; white-space: pre-wrap;\">npm install example-package</code>用于准备项目。请保持变量 CUSTOM_SESSION_ID 不变，然后仔细阅读翻译后的说明。</span>",
+              "status": "normal",
+              "strong": [],
+              "marks": [],
+              "atoms": [
+                {
+                  "tag": "code",
+                  "text": "npm install example-package"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "F08",
+          "translations": [
+            {
+              "text": "F08 键 位／输出／变量／上下标",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-custom-translation-style=\"default\">F08 键 位／输出／变量／上下标</span>",
+              "status": "legacy",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            },
+            {
+              "text": "按下Ctrl + C复制结果。输出READY_OK表示成功。计算 x 2并检查参考值中的 H 2 O。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-format-status=\"normal\" data-read-frog-custom-translation-style=\"default\" style=\"white-space: pre-wrap;\">按下<kbd style=\"color: inherit; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; white-space: pre-wrap;\">Ctrl</kbd> + <kbd style=\"color: inherit; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; white-space: pre-wrap;\">C</kbd>复制结果。输出<samp style=\"color: inherit; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; white-space: pre-wrap;\">READY_OK</samp>表示成功。计算 x <sup style=\"color: inherit;\">2</sup>并检查参考值中的 H <sub style=\"color: inherit;\">2</sub> O。</span>",
+              "status": "normal",
+              "strong": [],
+              "marks": [],
+              "atoms": [
+                {
+                  "tag": "kbd",
+                  "text": "Ctrl"
+                },
+                {
+                  "tag": "kbd",
+                  "text": "C"
+                },
+                {
+                  "tag": "samp",
+                  "text": "READY_OK"
+                },
+                {
+                  "tag": "sup",
+                  "text": "2"
+                },
+                {
+                  "tag": "sub",
+                  "text": "2"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "F09",
+          "translations": [
+            {
+              "text": "请先阅读完整的安装指南再继续。如果您的访问权限已过期，请访问帐户安全页面。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-format-status=\"normal\" data-read-frog-custom-translation-style=\"default\" style=\"white-space: pre-wrap;\">请先阅读完整的安装指南再继续。如果您的访问权限已过期，请访问<strong style=\"color: inherit;\">帐户安全页面</strong>。</span>",
+              "status": "normal",
+              "strong": ["帐户安全页面"],
+              "marks": [],
+              "atoms": []
+            }
+          ]
+        },
+        {
+          "id": "F10",
+          "translations": [
+            {
+              "text": "F10 标题字体与体系",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-custom-translation-style=\"default\">F10 标题字体与体系</span>",
+              "status": "legacy",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            },
+            {
+              "text": "将您的代理连接到正确的设备",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-format-status=\"normal\" data-read-frog-custom-translation-style=\"default\" style=\"white-space: pre-wrap;\"><strong style=\"color: inherit;\">将您的代理连接到正确的设备</strong></span>",
+              "status": "normal",
+              "strong": ["将您的代理连接到正确的设备"],
+              "marks": [],
+              "atoms": []
+            },
+            {
+              "text": "发送请求前请检查连接。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-format-status=\"normal\" data-read-frog-custom-translation-style=\"default\" style=\"white-space: pre-wrap;\"><strong style=\"color: inherit;\">发送请求前请检查连接。</strong></span>",
+              "status": "normal",
+              "strong": ["发送请求前请检查连接。"],
+              "marks": [],
+              "atoms": []
+            },
+            {
+              "text": "标题和副标题特意使用了不同的字体和字号。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-custom-translation-style=\"default\">标题和副标题特意使用了不同的字体和字号。</span>",
+              "status": "legacy",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            }
+          ]
+        },
+        {
+          "id": "F11",
+          "translations": [
+            {
+              "text": "第一批货物将于周一到达。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-custom-translation-style=\"default\">第一批货物将于周一到达。</span>",
+              "status": "legacy",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            },
+            {
+              "text": "第二批货物将于周二到达。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-format-status=\"normal\" data-read-frog-custom-translation-style=\"default\" style=\"white-space: pre-wrap;\"><strong style=\"color: inherit;\">第二批货物</strong>将于周二到达。</span>",
+              "status": "normal",
+              "strong": ["第二批货物"],
+              "marks": [],
+              "atoms": []
+            },
+            {
+              "text": "最后一批货物不得早于周五到达。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-custom-translation-style=\"default\">最后一批货物不得早于周五到达。</span>",
+              "status": "legacy",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            }
+          ]
+        },
+        {
+          "id": "F12",
+          "translations": [
+            {
+              "text": "准备安装文件。\n  - 打开浏览器设置。\n  - 确认扩展文件夹是否正确。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-custom-translation-style=\"default\">准备安装文件。\n  - 打开浏览器设置。\n  - 确认扩展文件夹是否正确。</span>",
+              "status": "legacy",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            },
+            {
+              "text": "安装完成后请重启浏览器。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-custom-translation-style=\"default\">安装完成后请重启浏览器。</span>",
+              "status": "legacy",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            }
+          ]
+        },
+        {
+          "id": "F13",
+          "translations": [
+            {
+              "text": "该句子在 HTML 源代码中被分成了几行，但在浏览器中应该保持为一个普通段落。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-format-status=\"normal\" data-read-frog-custom-translation-style=\"default\" style=\"white-space: pre-wrap;\">该句子在 HTML 源代码中被分成了几行，但在浏览器中应该保持为一个普通段落。</span>",
+              "status": "normal",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            }
+          ]
+        },
+        {
+          "id": "F14",
+          "translations": [
+            {
+              "text": "F14 征求列表",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-custom-translation-style=\"default\">F14 征求列表</span>",
+              "status": "legacy",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            },
+            {
+              "text": "下载适合您操作系统的软件包。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-format-status=\"normal\" data-read-frog-custom-translation-style=\"default\" style=\"white-space: pre-wrap;\">下载<strong style=\"color: inherit;\">适合您操作系统的软件包</strong>。</span>",
+              "status": "normal",
+              "strong": ["适合您操作系统的软件包"],
+              "marks": [],
+              "atoms": []
+            },
+            {
+              "text": "请查看以下要求：",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-custom-translation-style=\"default\">请查看以下要求：</span>",
+              "status": "legacy",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            },
+            {
+              "text": "保持安装目录可用。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-custom-translation-style=\"default\">保持安装目录可用。</span>",
+              "status": "legacy",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            },
+            {
+              "text": "请勿删除已保存的浏览器设置。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-custom-translation-style=\"default\">请勿删除已保存的浏览器设置。</span>",
+              "status": "legacy",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            },
+            {
+              "text": "重启浏览器并验证结果。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-custom-translation-style=\"default\">重启浏览器并验证结果。</span>",
+              "status": "legacy",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            }
+          ]
+        },
+        {
+          "id": "F15",
+          "translations": [
+            {
+              "text": "三个客户群的交付计划",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-custom-translation-style=\"default\">三个客户群的交付计划</span>",
+              "status": "legacy",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            },
+            {
+              "text": "  客户群",
+              "html": "<span>&nbsp;&nbsp;</span><span class=\"notranslate read-frog-translated-inline-content\" data-read-frog-format-status=\"normal\" data-read-frog-custom-translation-style=\"default\" style=\"white-space: pre-wrap;\"><strong style=\"color: inherit;\">客户群</strong></span>",
+              "status": "normal",
+              "strong": ["客户群"],
+              "marks": [],
+              "atoms": []
+            },
+            {
+              "text": "  交货日期",
+              "html": "<span>&nbsp;&nbsp;</span><span class=\"notranslate read-frog-translated-inline-content\" data-read-frog-format-status=\"normal\" data-read-frog-custom-translation-style=\"default\" style=\"white-space: pre-wrap;\"><strong style=\"color: inherit;\">交货日期</strong></span>",
+              "status": "normal",
+              "strong": ["交货日期"],
+              "marks": [],
+              "atoms": []
+            },
+            {
+              "text": "  地位",
+              "html": "<span>&nbsp;&nbsp;</span><span class=\"notranslate read-frog-translated-inline-content\" data-read-frog-format-status=\"normal\" data-read-frog-custom-translation-style=\"default\" style=\"white-space: pre-wrap;\"><strong style=\"color: inherit;\">地位</strong></span>",
+              "status": "normal",
+              "strong": ["地位"],
+              "marks": [],
+              "atoms": []
+            },
+            {
+              "text": "  企业客户",
+              "html": "<span>&nbsp;&nbsp;</span><span class=\"notranslate read-frog-translated-inline-content\" data-read-frog-format-status=\"normal\" data-read-frog-custom-translation-style=\"default\" style=\"white-space: pre-wrap;\"><strong style=\"color: inherit;\">企业客户</strong></span>",
+              "status": "normal",
+              "strong": ["企业客户"],
+              "marks": [],
+              "atoms": []
+            },
+            {
+              "text": "  11月12日",
+              "html": "<span>&nbsp;&nbsp;</span><span class=\"notranslate read-frog-translated-inline-content\" data-read-frog-custom-translation-style=\"default\">11月12日</span>",
+              "status": "legacy",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            },
+            {
+              "text": "  需要确认",
+              "html": "<span>&nbsp;&nbsp;</span><span class=\"notranslate read-frog-translated-inline-content\" data-read-frog-format-status=\"normal\" data-read-frog-custom-translation-style=\"default\" style=\"white-space: pre-wrap;\"><mark style=\"color: inherit; background-color: rgb(255, 241, 160);\">需要确认</mark></span>",
+              "status": "normal",
+              "strong": [],
+              "marks": [
+                {
+                  "text": "需要确认",
+                  "background": "none",
+                  "color": "rgb(39, 43, 40)"
+                }
+              ],
+              "atoms": []
+            },
+            {
+              "text": "  个人客户",
+              "html": "<span>&nbsp;&nbsp;</span><span class=\"notranslate read-frog-translated-inline-content\" data-read-frog-custom-translation-style=\"default\">个人客户</span>",
+              "status": "legacy",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            },
+            {
+              "text": "  11月15日",
+              "html": "<span>&nbsp;&nbsp;</span><span class=\"notranslate read-frog-translated-inline-content\" data-read-frog-custom-translation-style=\"default\">11月15日</span>",
+              "status": "legacy",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            },
+            {
+              "text": "  准备发货",
+              "html": "<span>&nbsp;&nbsp;</span><span class=\"notranslate read-frog-translated-inline-content\" data-read-frog-custom-translation-style=\"default\">准备发货</span>",
+              "status": "legacy",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            }
+          ]
+        },
+        {
+          "id": "F16",
+          "translations": [
+            {
+              "text": "请保留原始收据，直至退款确认为止。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-custom-translation-style=\"default\">请保留原始收据，直至退款确认为止。</span>",
+              "status": "legacy",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            }
+          ]
+        },
+        {
+          "id": "F17",
+          "translations": [
+            {
+              "text": "安装程序已完成",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-format-status=\"normal\" data-read-frog-custom-translation-style=\"default\" style=\"white-space: pre-wrap;\"><strong style=\"color: inherit;\">安装程序已完成</strong></span>",
+              "status": "normal",
+              "strong": ["安装程序已完成"],
+              "marks": [],
+              "atoms": []
+            },
+            {
+              "text": "安装程序会准备所需文件并检查当前浏览器版本。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-custom-translation-style=\"default\">安装程序会准备所需文件并检查当前浏览器版本。</span>",
+              "status": "legacy",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            }
+          ]
+        },
+        {
+          "id": "F18",
+          "translations": [
+            {
+              "text": "翻译后的段落中应仅显示可见的交付说明。透明的诊断信息。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-custom-translation-style=\"default\">翻译后的段落中应仅显示可见的交付说明。透明的诊断信息。</span>",
+              "status": "legacy",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            },
+            {
+              "text": "这句话必须全部保留英文原形。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-custom-translation-style=\"default\">这句话必须全部保留英文原形。</span>",
+              "status": "legacy",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            }
+          ]
+        },
+        {
+          "id": "F19",
+          "translations": [
+            {
+              "text": "安装指南已准备就绪。此句旁边应显示确认符号。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-custom-translation-style=\"default\">安装指南已准备就绪。此句旁边应显示确认符号。</span>",
+              "status": "legacy",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            }
+          ]
+        },
+        {
+          "id": "F20",
+          "translations": [
+            {
+              "text": "F20 分娩公式",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-custom-translation-style=\"default\">F20 分娩公式</span>",
+              "status": "legacy",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            },
+            {
+              "text": "该计算使用x2+y2=z2来描述关系。请保持公式不变并翻译此说明。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-format-status=\"normal\" data-read-frog-custom-translation-style=\"default\" style=\"white-space: pre-wrap;\">该计算使用<math><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>=</mo><msup><mi>z</mi><mn>2</mn></msup></math>来描述关系。请保持公式不变并翻译此说明。</span>",
+              "status": "normal",
+              "strong": [],
+              "marks": [],
+              "atoms": [
+                {
+                  "tag": "math",
+                  "text": "x2+y2=z2"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "F21",
+          "translations": [
+            {
+              "text": "---【安装指南】-----\n第一章 ............ 12\n##### 重要通知 #####\n+-------------------------+\n流程已准备就绪，可以开始了。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-custom-translation-style=\"default\">---【安装指南】-----\n第一章 ............ 12\n##### 重要通知 #####\n+-------------------------+\n流程已准备就绪，可以开始了。</span>",
+              "status": "legacy",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            }
+          ]
+        },
+        {
+          "id": "F22",
+          "translations": [
+            {
+              "text": "F22按钮／剔除／折叠",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-custom-translation-style=\"default\">F22按钮／剔除／折叠</span>",
+              "status": "legacy",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            },
+            {
+              "text": "请确认您已阅读安装说明后再继续。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-custom-translation-style=\"default\">请确认您已阅读安装说明后再继续。</span>",
+              "status": "legacy",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            },
+            {
+              "text": "  确认安装选项",
+              "html": "<span>&nbsp;&nbsp;</span><span class=\"notranslate read-frog-translated-inline-content\" data-read-frog-custom-translation-style=\"default\">确认安装选项</span>",
+              "status": "legacy",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            },
+            {
+              "text": "保留原有的浏览器配置",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-custom-translation-style=\"default\">保留原有的浏览器配置</span>",
+              "status": "legacy",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            },
+            {
+              "text": "请阅读其他安装要求",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-custom-translation-style=\"default\">请阅读其他安装要求</span>",
+              "status": "legacy",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            },
+            {
+              "text": "在选择扩展程序文件夹时，浏览器必须保持打开状态。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-custom-translation-style=\"default\">在选择扩展程序文件夹时，浏览器必须保持打开状态。</span>",
+              "status": "legacy",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            }
+          ]
+        },
+        {
+          "id": "F23",
+          "translations": [
+            {
+              "text": "在添加动态内容之前，可以看到当前的安装指南。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-custom-translation-style=\"default\">在添加动态内容之前，可以看到当前的安装指南。</span>",
+              "status": "legacy",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            }
+          ]
+        },
+        {
+          "id": "F24",
+          "translations": [
+            {
+              "text": "Mac 上的一个守护进程驱动着手机，并以三种形式提供相同的控制： MCP服务器适用于 Claude Code、Codex、Claude Desktop、Cursor 和其他 MCP 客户端；适用于代理和脚本的HTTP API ( /agent/* )；以及面向用户的网页和原生 iOS 应用。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-format-status=\"normal\" data-read-frog-custom-translation-style=\"default\" style=\"white-space: pre-wrap;\">Mac 上的一个守护进程驱动着手机，并以三种形式提供相同的控制：<mark style=\"color: inherit; background-image: linear-gradient(100deg, rgba(0, 0, 0, 0), rgb(246, 218, 91) 3%, rgb(246, 218, 91) 97%, rgba(0, 0, 0, 0));\"> MCP服务器</mark>适用于 Claude Code、Codex、Claude Desktop、Cursor 和其他 MCP 客户端；适用于代理和脚本的<strong style=\"color: inherit;\">HTTP API</strong> ( <code style=\"color: inherit; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; white-space: pre-wrap;\">/agent/*</code> )；以及面向用户的<strong style=\"color: inherit;\">网页和原生 iOS 应用</strong>。</span>",
+              "status": "normal",
+              "strong": ["HTTP API", "网页和原生 iOS 应用"],
+              "marks": [
+                {
+                  "text": " MCP服务器",
+                  "background": "linear-gradient(100deg, rgba(0, 0, 0, 0), rgb(246, 218, 91) 3%, rgb(246, 218, 91) 97%, rgba(0, 0, 0, 0))",
+                  "color": "rgb(39, 43, 40)"
+                }
+              ],
+              "atoms": [
+                {
+                  "tag": "code",
+                  "text": "/agent/*"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "F25",
+          "translations": [
+            {
+              "text": "F25 删除测试属性",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-custom-translation-style=\"default\">F25 删除测试属性</span>",
+              "status": "legacy",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            },
+            {
+              "text": "请在关闭窗口前保存更改。临时帐户将于明日过期。收货地址必须今天确认。 ，以及送货日期是下周五。 。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-format-status=\"normal\" data-read-frog-custom-translation-style=\"default\" style=\"white-space: pre-wrap;\">请在关闭窗口前<strong style=\"color: inherit;\">保存更改</strong>。<em style=\"color: inherit;\">临时帐户</em>将于明日过期。<mark style=\"color: inherit; background-color: rgb(255, 241, 160);\">收货地址必须今天确认。</mark> ，以及<mark style=\"color: inherit; background-image: linear-gradient(100deg, rgba(0, 0, 0, 0), rgb(246, 218, 91) 3%, rgb(246, 218, 91) 97%, rgba(0, 0, 0, 0));\">送货日期是下周五。</mark> 。</span>",
+              "status": "normal",
+              "strong": ["保存更改"],
+              "marks": [
+                {
+                  "text": "收货地址必须今天确认。",
+                  "background": "none",
+                  "color": "rgb(39, 43, 40)"
+                },
+                {
+                  "text": "送货日期是下周五。",
+                  "background": "linear-gradient(100deg, rgba(0, 0, 0, 0), rgb(246, 218, 91) 3%, rgb(246, 218, 91) 97%, rgba(0, 0, 0, 0))",
+                  "color": "rgb(39, 43, 40)"
+                }
+              ],
+              "atoms": []
+            }
+          ]
+        },
+        {
+          "id": "F26",
+          "translations": [
+            {
+              "text": "F26 删除段落样式类",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-custom-translation-style=\"default\">F26 删除段落样式类</span>",
+              "status": "legacy",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            },
+            {
+              "text": "Mac 上的一个守护进程驱动着手机，并以三种形式提供相同的控制： MCP服务器适用于 Claude Code、Codex、Claude Desktop、Cursor 和其他 MCP 客户端；适用于代理和脚本的HTTP API ( /agent/* )；以及面向用户的网页和原生 iOS 应用。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-format-status=\"normal\" data-read-frog-custom-translation-style=\"default\" style=\"white-space: pre-wrap;\">Mac 上的一个守护进程驱动着手机，并以三种形式提供相同的控制：<mark style=\"color: inherit; background-image: linear-gradient(100deg, rgba(0, 0, 0, 0), rgb(246, 218, 91) 3%, rgb(246, 218, 91) 97%, rgba(0, 0, 0, 0));\"> MCP服务器</mark>适用于 Claude Code、Codex、Claude Desktop、Cursor 和其他 MCP 客户端；适用于代理和脚本的<strong style=\"color: inherit;\">HTTP API</strong> ( <code style=\"color: inherit; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; white-space: pre-wrap;\">/agent/*</code> )；以及面向用户的<strong style=\"color: inherit;\">网页和原生 iOS 应用</strong>。</span>",
+              "status": "normal",
+              "strong": ["HTTP API", "网页和原生 iOS 应用"],
+              "marks": [
+                {
+                  "text": " MCP服务器",
+                  "background": "linear-gradient(100deg, rgba(0, 0, 0, 0), rgb(246, 218, 91) 3%, rgb(246, 218, 91) 97%, rgba(0, 0, 0, 0))",
+                  "color": "rgb(39, 43, 40)"
+                }
+              ],
+              "atoms": [
+                {
+                  "tag": "code",
+                  "text": "/agent/*"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "F27",
+          "translations": [
+            {
+              "text": "F27句短强调",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-custom-translation-style=\"default\">F27句短强调</span>",
+              "status": "legacy",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            },
+            {
+              "text": "安装文件已准备就绪。请保留。原始文件夹直到流程完成。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-format-status=\"normal\" data-read-frog-custom-translation-style=\"default\" style=\"white-space: pre-wrap;\"><strong style=\"color: inherit;\">安装文件</strong>已准备就绪。请保留。<mark style=\"color: inherit; background-color: rgb(255, 241, 160);\">原始文件夹</mark>直到流程完成。</span>",
+              "status": "normal",
+              "strong": ["安装文件"],
+              "marks": [
+                {
+                  "text": "原始文件夹",
+                  "background": "none",
+                  "color": "rgb(39, 43, 40)"
+                }
+              ],
+              "atoms": []
+            }
+          ]
+        }
+      ],
+      "dynamic": {
+        "text": "The new delivery date is now next Thursday. Keep /agent/status unchanged while translating this new paragraph.新的交货日期是下周四翻译此新段落时，请保持/agent/status不变。",
+        "html": "The <strong data-read-frog-walked=\"bd2fe19a-ada5-4195-9c75-c761daa7153e\" data-read-frog-paragraph=\"\" data-read-frog-inline-node=\"\">new delivery date</strong> is now <mark data-read-frog-walked=\"bd2fe19a-ada5-4195-9c75-c761daa7153e\" data-read-frog-paragraph=\"\" data-read-frog-inline-node=\"\">next Thursday</mark>. Keep <code data-read-frog-walked=\"bd2fe19a-ada5-4195-9c75-c761daa7153e\" data-read-frog-paragraph=\"\" data-read-frog-inline-node=\"\">/agent/status</code> unchanged while translating this new paragraph.<span class=\"notranslate read-frog-translated-content-wrapper\" data-read-frog-translation-mode=\"bilingual\" data-read-frog-walked=\"bd2fe19a-ada5-4195-9c75-c761daa7153e\" dir=\"ltr\" lang=\"zh\"><br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-format-status=\"normal\" data-read-frog-custom-translation-style=\"default\" style=\"white-space: pre-wrap;\"><strong style=\"color: inherit;\">新的交货日期</strong>是<mark style=\"color: inherit; background-color: rgb(255, 241, 160);\">下周四</mark>翻译此新段落时，请保持<code style=\"color: inherit; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; white-space: pre-wrap;\">/agent/status</code>不变。</span></span>"
+      },
+      "restored": {
+        "wrappers": 0,
+        "sameButton": true,
+        "checkbox": true,
+        "details": true,
+        "clickCount": " 点击次数：1"
+      },
+      "originalSite": {
+        "url": "https://iphone-use.leeguoo.com/en/",
+        "lede": "\n        <span class=\"mark\" data-read-frog-walked=\"15742922-2bcd-4ca6-8863-7bebea1e3628\" data-read-frog-paragraph=\"\" data-read-frog-inline-node=\"\">Let AI agents use your real iPhone.</span> With iphone-use installed on your Mac, Claude Code, Codex\n        or any MCP client reads the phone's screen as text, taps, types and swipes in any app, <strong data-read-frog-walked=\"15742922-2bcd-4ca6-8863-7bebea1e3628\" data-read-frog-paragraph=\"\" data-read-frog-inline-node=\"\">including the\n        ones with no API</strong>: Health, banking, chat apps, or the app you are testing. You can watch it live and\n        take the phone back at any time.\n      <span class=\"notranslate read-frog-translated-content-wrapper\" data-read-frog-translation-mode=\"bilingual\" data-read-frog-walked=\"15742922-2bcd-4ca6-8863-7bebea1e3628\" dir=\"ltr\" lang=\"zh\"><br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-format-status=\"normal\" data-read-frog-custom-translation-style=\"default\" style=\"white-space: pre-wrap;\"><mark style=\"color: inherit; background-image: linear-gradient(104deg, rgba(0, 0, 0, 0) 0px, rgb(245, 210, 74) 2%, rgb(245, 210, 74) 98%, rgba(0, 0, 0, 0) 100%);\">让AI代理使用你的真实iPhone。</mark>在 Mac 上安装 iPhone 专用软件后，Claude Code、Codex 或任何 MCP 客户端都能将手机屏幕读取为文本，并识别任何应用中的点击、输入和滑动操作，<strong style=\"color: inherit;\">包括那些没有 API 的应用</strong>，例如健康、银行、聊天应用或您正在测试的应用。您可以实时查看操作过程，并随时取回手机。</span></span>",
+        "headings": [
+          "Connect your agent in three steps<a class=\"du-anchor\" href=\"#sec-connect-your-agent-in-three-steps\" aria-label=\"Copy link to this section\" title=\"Copy link to this section\" data-read-frog-walked=\"15742922-2bcd-4ca6-8863-7bebea1e3628\" data-read-frog-paragraph=\"\" data-read-frog-inline-node=\"\">#</a><span class=\"notranslate read-frog-translated-content-wrapper\" data-read-frog-translation-mode=\"bilingual\" data-read-frog-walked=\"15742922-2bcd-4ca6-8863-7bebea1e3628\" dir=\"ltr\" lang=\"zh\"><br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-custom-translation-style=\"default\">三步轻松联系您的代理#</span></span>",
+          "Ask your agent<a class=\"du-anchor\" href=\"#sec-ask-your-agent\" aria-label=\"Copy link to this section\" title=\"Copy link to this section\" data-read-frog-walked=\"15742922-2bcd-4ca6-8863-7bebea1e3628\" data-read-frog-paragraph=\"\" data-read-frog-inline-node=\"\">#</a><span class=\"notranslate read-frog-translated-content-wrapper\" data-read-frog-translation-mode=\"bilingual\" data-read-frog-walked=\"15742922-2bcd-4ca6-8863-7bebea1e3628\" dir=\"ltr\" lang=\"zh\"><br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-custom-translation-style=\"default\">请咨询您的经纪人#</span></span>",
+          "Without the terminal<a class=\"du-anchor\" href=\"#sec-without-the-terminal\" aria-label=\"Copy link to this section\" title=\"Copy link to this section\" data-read-frog-walked=\"15742922-2bcd-4ca6-8863-7bebea1e3628\" data-read-frog-paragraph=\"\" data-read-frog-inline-node=\"\">#</a>",
+          "Why a real iPhone<a class=\"du-anchor\" href=\"#sec-why-a-real-iphone\" aria-label=\"Copy link to this section\" title=\"Copy link to this section\" data-read-frog-walked=\"15742922-2bcd-4ca6-8863-7bebea1e3628\" data-read-frog-paragraph=\"\" data-read-frog-inline-node=\"\">#</a>",
+          "Under the hood<a class=\"du-anchor\" href=\"#sec-under-the-hood\" aria-label=\"Copy link to this section\" title=\"Copy link to this section\" data-read-frog-walked=\"15742922-2bcd-4ca6-8863-7bebea1e3628\" data-read-frog-paragraph=\"\" data-read-frog-inline-node=\"\">#</a>",
+          "Quick answers<a class=\"du-anchor\" href=\"#sec-quick-answers\" aria-label=\"Copy link to this section\" title=\"Copy link to this section\" data-read-frog-walked=\"15742922-2bcd-4ca6-8863-7bebea1e3628\" data-read-frog-paragraph=\"\" data-read-frog-inline-node=\"\">#</a>",
+          "The *-use family<a class=\"du-anchor\" href=\"#sec-the-use-family\" aria-label=\"Copy link to this section\" title=\"Copy link to this section\" data-read-frog-walked=\"15742922-2bcd-4ca6-8863-7bebea1e3628\" data-read-frog-paragraph=\"\" data-read-frog-inline-node=\"\">#</a>",
+          "Paid setup and sponsorship<a class=\"du-anchor\" href=\"#sec-paid-setup-and-sponsorship\" aria-label=\"Copy link to this section\" title=\"Copy link to this section\" data-read-frog-walked=\"15742922-2bcd-4ca6-8863-7bebea1e3628\" data-read-frog-paragraph=\"\" data-read-frog-inline-node=\"\">#</a>"
+        ],
+        "code": [
+          "$ curl -fsSL https://raw.githubusercontent.com/leeguooooo/iphone-use/main/install.sh | sh",
+          "$ iphone-use doctor   # what is missing, and how to fix it\n$ iphone-use try      # a harmless check: open Settings, read the screen, go Home"
+        ],
+        "nav": "/en/install",
+        "copyButton": true,
+        "wrappers": 44,
+        "restoredWrappers": 0
+      }
+    },
+    {
+      "provider": "microsoft-translate-default",
+      "config": {
+        "mode": "bilingual",
+        "target": "cmn",
+        "provider": "microsoft-translate-default"
+      },
+      "cases": [
+        {
+          "id": "F01",
+          "translations": [
+            {
+              "text": "你Mac上的守护进程以三种形式驱动手机：为你的代理提供MCP服务器;脚本的HTTP API（/agent/*）;以及一个面向用户的网页和原生iOS应用。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-format-status=\"normal\" data-read-frog-custom-translation-style=\"default\" style=\"white-space: pre-wrap;\">你Mac上的守护进程以三种形式驱动手机：为你的代理提供<mark style=\"color: inherit; background-image: linear-gradient(100deg, rgba(0, 0, 0, 0), rgb(246, 218, 91) 3%, rgb(246, 218, 91) 97%, rgba(0, 0, 0, 0));\">MCP服务器</mark>;脚本的<strong style=\"color: inherit;\">HTTP API</strong>（<code style=\"color: inherit; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; white-space: pre-wrap;\">/agent/*</code>）;以及一个面向用户的<strong style=\"color: inherit;\">网页和原生iOS应用</strong>。</span>",
+              "status": "normal",
+              "strong": ["HTTP API", "网页和原生iOS应用"],
+              "marks": [
+                {
+                  "text": "MCP服务器",
+                  "background": "linear-gradient(100deg, rgba(0, 0, 0, 0), rgb(246, 218, 91) 3%, rgb(246, 218, 91) 97%, rgba(0, 0, 0, 0))",
+                  "color": "rgb(39, 43, 40)"
+                }
+              ],
+              "atoms": [
+                {
+                  "tag": "code",
+                  "text": "/agent/*"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "F02",
+          "translations": [
+            {
+              "text": "请在关闭窗口前保存您的更改。主账户是活跃的，临时账户明天到期，备用账户仍然可用。阅读重要通知，忽略过时的说明。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-format-status=\"normal\" data-read-frog-custom-translation-style=\"default\" style=\"white-space: pre-wrap;\">请在关闭窗口前<strong style=\"color: inherit;\">保存您的更改</strong>。<strong style=\"color: inherit;\">主账户</strong>是活跃的，<em style=\"color: inherit;\">临时账户</em>明天到期，<em style=\"color: inherit;\">备用账户</em>仍然可用。阅读<u style=\"color: inherit;\">重要通知</u>，忽略<del style=\"color: inherit;\">过时的说明</del>。</span>",
+              "status": "normal",
+              "strong": ["保存您的更改", "主账户"],
+              "marks": [],
+              "atoms": []
+            }
+          ]
+        },
+        {
+          "id": "F03",
+          "translations": [
+            {
+              "text": "报告显示付款截止时间为下周五，而收货地址必须今天确认。保持两个提醒都可见。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-format-status=\"normal\" data-read-frog-custom-translation-style=\"default\" style=\"white-space: pre-wrap;\">报告显示<mark style=\"color: inherit; background-color: rgb(255, 241, 160);\">付款截止时间为下周五</mark>，而<mark style=\"color: inherit; background-image: linear-gradient(100deg, rgba(0, 0, 0, 0), rgb(246, 218, 91) 3%, rgb(246, 218, 91) 97%, rgba(0, 0, 0, 0));\">收货地址必须今天确认</mark>。保持两个提醒都可见。</span>",
+              "status": "normal",
+              "strong": [],
+              "marks": [
+                {
+                  "text": "付款截止时间为下周五",
+                  "background": "none",
+                  "color": "rgb(39, 43, 40)"
+                },
+                {
+                  "text": "收货地址必须今天确认",
+                  "background": "linear-gradient(100deg, rgba(0, 0, 0, 0), rgb(246, 218, 91) 3%, rgb(246, 218, 91) 97%, rgba(0, 0, 0, 0))",
+                  "color": "rgb(39, 43, 40)"
+                }
+              ],
+              "atoms": []
+            }
+          ]
+        },
+        {
+          "id": "F04",
+          "translations": [
+            {
+              "text": "未付款需要处理，批准的付款无需处理，待处理付款将在明天进行检查。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-format-status=\"normal\" data-read-frog-custom-translation-style=\"default\" style=\"white-space: pre-wrap;\">未付款需要处理，<strong style=\"color: inherit;\">批准的付款无需处理</strong>，待<mark style=\"color: inherit; background-color: rgb(219, 234, 254);\">处理付款将在明天进行</mark>检查。</span>",
+              "status": "normal",
+              "strong": ["批准的付款无需处理"],
+              "marks": [
+                {
+                  "text": "处理付款将在明天进行",
+                  "background": "none",
+                  "color": "rgb(39, 43, 40)"
+                }
+              ],
+              "atoms": []
+            }
+          ]
+        },
+        {
+          "id": "F05",
+          "translations": [
+            {
+              "text": "付款前必须确认正确的送货日期。接下来的三个工作日保留给审核时间。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-format-status=\"normal\" data-read-frog-custom-translation-style=\"default\" style=\"white-space: pre-wrap;\">付款前必须<strong style=\"color: inherit;\">确认<em style=\"color: inherit;\">正确的送货日期</em></strong>。接下来的<mark style=\"color: inherit; background-color: rgb(255, 241, 160);\">三个<strong style=\"color: inherit;\">工作日</strong></mark>保留给审核时间。</span>",
+              "status": "normal",
+              "strong": ["确认正确的送货日期", "工作日"],
+              "marks": [
+                {
+                  "text": "三个工作日",
+                  "background": "none",
+                  "color": "rgb(39, 43, 40)"
+                }
+              ],
+              "atoms": []
+            }
+          ]
+        },
+        {
+          "id": "F06",
+          "translations": [
+            {
+              "text": "在开始前向/agent/*发送请求并设置IPHONE_USE_NO_CLIENT_SETUP=1。结果字段retry_safe必须保持不变。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-format-status=\"normal\" data-read-frog-custom-translation-style=\"default\" style=\"white-space: pre-wrap;\">在开始前向<code style=\"color: inherit; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; white-space: pre-wrap;\">/agent/*</code>发送请求并设置<code style=\"color: inherit; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; white-space: pre-wrap;\">IPHONE_USE_NO_CLIENT_SETUP=1</code>。结果字段<code style=\"color: inherit; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; white-space: pre-wrap;\">retry_safe</code>必须保持不变。</span>",
+              "status": "normal",
+              "strong": [],
+              "marks": [],
+              "atoms": [
+                {
+                  "tag": "code",
+                  "text": "/agent/*"
+                },
+                {
+                  "tag": "code",
+                  "text": "IPHONE_USE_NO_CLIENT_SETUP=1"
+                },
+                {
+                  "tag": "code",
+                  "text": "retry_safe"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "F07",
+          "translations": [
+            {
+              "text": "指挥npm install example-package准备项目。保持变量CUSTOM_SESSION_ID不变，然后仔细阅读翻译后的说明。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-format-status=\"normal\" data-read-frog-custom-translation-style=\"default\" style=\"white-space: pre-wrap;\">指挥<code style=\"color: inherit; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; white-space: pre-wrap;\">npm install example-package</code>准备项目。保持变量CUSTOM_SESSION_ID不变，然后仔细阅读翻译后的说明。</span>",
+              "status": "normal",
+              "strong": [],
+              "marks": [],
+              "atoms": [
+                {
+                  "tag": "code",
+                  "text": "npm install example-package"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "F08",
+          "translations": [
+            {
+              "text": "按Ctrl+C复制结果。输出READY_OK证实了成功。计算 x2，并在参考文献中检查H2O。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-format-status=\"normal\" data-read-frog-custom-translation-style=\"default\" style=\"white-space: pre-wrap;\">按<kbd style=\"color: inherit; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; white-space: pre-wrap;\">Ctrl</kbd>+<kbd style=\"color: inherit; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; white-space: pre-wrap;\">C</kbd>复制结果。输出<samp style=\"color: inherit; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; white-space: pre-wrap;\">READY_OK</samp>证实了成功。计算 x<sup style=\"color: inherit;\">2</sup>，并在参考文献中检查H<sub style=\"color: inherit;\">2</sub>O。</span>",
+              "status": "normal",
+              "strong": [],
+              "marks": [],
+              "atoms": [
+                {
+                  "tag": "kbd",
+                  "text": "Ctrl"
+                },
+                {
+                  "tag": "kbd",
+                  "text": "C"
+                },
+                {
+                  "tag": "samp",
+                  "text": "READY_OK"
+                },
+                {
+                  "tag": "sup",
+                  "text": "2"
+                },
+                {
+                  "tag": "sub",
+                  "text": "2"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "F09",
+          "translations": [
+            {
+              "text": "在继续之前，请阅读完整的安装指南。如果您的访问权限已过期，请访问账户安全页面。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-format-status=\"normal\" data-read-frog-custom-translation-style=\"default\" style=\"white-space: pre-wrap;\">在继续之前，请阅读完整的安装指南。如果您的访问权限已过期，请访问<strong style=\"color: inherit;\">账户安全页面</strong>。</span>",
+              "status": "normal",
+              "strong": ["账户安全页面"],
+              "marks": [],
+              "atoms": []
+            }
+          ]
+        },
+        {
+          "id": "F10",
+          "translations": [
+            {
+              "text": "将您的代理连接到合适的设备",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-format-status=\"normal\" data-read-frog-custom-translation-style=\"default\" style=\"white-space: pre-wrap;\"><strong style=\"color: inherit;\">将您的代理连接到合适的设备</strong></span>",
+              "status": "normal",
+              "strong": ["将您的代理连接到合适的设备"],
+              "marks": [],
+              "atoms": []
+            },
+            {
+              "text": "发送请求前请先检查连接",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-format-status=\"normal\" data-read-frog-custom-translation-style=\"default\" style=\"white-space: pre-wrap;\"><strong style=\"color: inherit;\">发送请求前请先检查连接</strong></span>",
+              "status": "normal",
+              "strong": ["发送请求前请先检查连接"],
+              "marks": [],
+              "atoms": []
+            },
+            {
+              "text": "标题和副标题有意使用不同的字体家族和大小。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-custom-translation-style=\"default\">标题和副标题有意使用不同的字体家族和大小。</span>",
+              "status": "legacy",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            }
+          ]
+        },
+        {
+          "id": "F11",
+          "translations": [
+            {
+              "text": "第一批货周一到达。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-custom-translation-style=\"default\">第一批货周一到达。</span>",
+              "status": "legacy",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            },
+            {
+              "text": "第二批货周二到达。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-format-status=\"normal\" data-read-frog-custom-translation-style=\"default\" style=\"white-space: pre-wrap;\"><strong style=\"color: inherit;\">第二批货</strong>周二到达。</span>",
+              "status": "normal",
+              "strong": ["第二批货"],
+              "marks": [],
+              "atoms": []
+            },
+            {
+              "text": "最终的交付必须在周五之前到达。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-custom-translation-style=\"default\">最终的交付必须在周五之前到达。</span>",
+              "status": "legacy",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            }
+          ]
+        },
+        {
+          "id": "F12",
+          "translations": [
+            {
+              "text": "准备安装文件。\n  - 打开浏览器设置。\n  - 确认正确的扩展文件夹。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-custom-translation-style=\"default\">准备安装文件。\n  - 打开浏览器设置。\n  - 确认正确的扩展文件夹。</span>",
+              "status": "legacy",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            },
+            {
+              "text": "安装后重启浏览器。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-custom-translation-style=\"default\">安装后重启浏览器。</span>",
+              "status": "legacy",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            }
+          ]
+        },
+        {
+          "id": "F13",
+          "translations": [
+            {
+              "text": "这句话在HTML源代码中被拆分成几行，但在浏览器中应保持为一个正常段落。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-format-status=\"normal\" data-read-frog-custom-translation-style=\"default\" style=\"white-space: pre-wrap;\">这句话在HTML源代码中被拆分成几行，但在浏览器中应保持为一个正常段落。</span>",
+              "status": "normal",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            }
+          ]
+        },
+        {
+          "id": "F14",
+          "translations": [
+            {
+              "text": "下载适合你操作系统的正确软件包。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-format-status=\"normal\" data-read-frog-custom-translation-style=\"default\" style=\"white-space: pre-wrap;\">下载适合你操作系统的<strong style=\"color: inherit;\">正确软件包</strong>。</span>",
+              "status": "normal",
+              "strong": ["正确软件包"],
+              "marks": [],
+              "atoms": []
+            },
+            {
+              "text": "请审查这些要求：",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-custom-translation-style=\"default\">请审查这些要求：</span>",
+              "status": "legacy",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            },
+            {
+              "text": "保持安装目录可用。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-custom-translation-style=\"default\">保持安装目录可用。</span>",
+              "status": "legacy",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            },
+            {
+              "text": "不要删除你保存的浏览器设置。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-custom-translation-style=\"default\">不要删除你保存的浏览器设置。</span>",
+              "status": "legacy",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            },
+            {
+              "text": "重启浏览器并验证结果。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-custom-translation-style=\"default\">重启浏览器并验证结果。</span>",
+              "status": "legacy",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            }
+          ]
+        },
+        {
+          "id": "F15",
+          "translations": [
+            {
+              "text": "三类客户的配送计划",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-custom-translation-style=\"default\">三类客户的配送计划</span>",
+              "status": "legacy",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            },
+            {
+              "text": "  客户群",
+              "html": "<span>&nbsp;&nbsp;</span><span class=\"notranslate read-frog-translated-inline-content\" data-read-frog-format-status=\"normal\" data-read-frog-custom-translation-style=\"default\" style=\"white-space: pre-wrap;\"><strong style=\"color: inherit;\">客户群</strong></span>",
+              "status": "normal",
+              "strong": ["客户群"],
+              "marks": [],
+              "atoms": []
+            },
+            {
+              "text": "  交付日期",
+              "html": "<span>&nbsp;&nbsp;</span><span class=\"notranslate read-frog-translated-inline-content\" data-read-frog-format-status=\"normal\" data-read-frog-custom-translation-style=\"default\" style=\"white-space: pre-wrap;\"><strong style=\"color: inherit;\">交付日期</strong></span>",
+              "status": "normal",
+              "strong": ["交付日期"],
+              "marks": [],
+              "atoms": []
+            },
+            {
+              "text": "  现状",
+              "html": "<span>&nbsp;&nbsp;</span><span class=\"notranslate read-frog-translated-inline-content\" data-read-frog-format-status=\"normal\" data-read-frog-custom-translation-style=\"default\" style=\"white-space: pre-wrap;\"><strong style=\"color: inherit;\">现状</strong></span>",
+              "status": "normal",
+              "strong": ["现状"],
+              "marks": [],
+              "atoms": []
+            },
+            {
+              "text": "  商业客户",
+              "html": "<span>&nbsp;&nbsp;</span><span class=\"notranslate read-frog-translated-inline-content\" data-read-frog-format-status=\"normal\" data-read-frog-custom-translation-style=\"default\" style=\"white-space: pre-wrap;\"><strong style=\"color: inherit;\">商业客户</strong></span>",
+              "status": "normal",
+              "strong": ["商业客户"],
+              "marks": [],
+              "atoms": []
+            },
+            {
+              "text": "  11月12日",
+              "html": "<span>&nbsp;&nbsp;</span><span class=\"notranslate read-frog-translated-inline-content\" data-read-frog-custom-translation-style=\"default\">11月12日</span>",
+              "status": "legacy",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            },
+            {
+              "text": "  需要确认",
+              "html": "<span>&nbsp;&nbsp;</span><span class=\"notranslate read-frog-translated-inline-content\" data-read-frog-format-status=\"normal\" data-read-frog-custom-translation-style=\"default\" style=\"white-space: pre-wrap;\"><mark style=\"color: inherit; background-color: rgb(255, 241, 160);\">需要确认</mark></span>",
+              "status": "normal",
+              "strong": [],
+              "marks": [
+                {
+                  "text": "需要确认",
+                  "background": "none",
+                  "color": "rgb(39, 43, 40)"
+                }
+              ],
+              "atoms": []
+            },
+            {
+              "text": "  个人客户",
+              "html": "<span>&nbsp;&nbsp;</span><span class=\"notranslate read-frog-translated-inline-content\" data-read-frog-custom-translation-style=\"default\">个人客户</span>",
+              "status": "legacy",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            },
+            {
+              "text": "  11月15日",
+              "html": "<span>&nbsp;&nbsp;</span><span class=\"notranslate read-frog-translated-inline-content\" data-read-frog-custom-translation-style=\"default\">11月15日</span>",
+              "status": "legacy",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            },
+            {
+              "text": "  准备交付",
+              "html": "<span>&nbsp;&nbsp;</span><span class=\"notranslate read-frog-translated-inline-content\" data-read-frog-custom-translation-style=\"default\">准备交付</span>",
+              "status": "legacy",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            }
+          ]
+        },
+        {
+          "id": "F16",
+          "translations": [
+            {
+              "text": "请保留原始收据，直到退款确认。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-custom-translation-style=\"default\">请保留原始收据，直到退款确认。</span>",
+              "status": "legacy",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            }
+          ]
+        },
+        {
+          "id": "F17",
+          "translations": [
+            {
+              "text": "安装工已经做了",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-format-status=\"normal\" data-read-frog-custom-translation-style=\"default\" style=\"white-space: pre-wrap;\"><strong style=\"color: inherit;\">安装工已经做了</strong></span>",
+              "status": "normal",
+              "strong": ["安装工已经做了"],
+              "marks": [],
+              "atoms": []
+            },
+            {
+              "text": "安装程序会准备所需文件并检查当前浏览器版本。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-custom-translation-style=\"default\">安装程序会准备所需文件并检查当前浏览器版本。</span>",
+              "status": "legacy",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            }
+          ]
+        },
+        {
+          "id": "F18",
+          "translations": [
+            {
+              "text": "只有可见的送达说明应出现在翻译段落中。透明的诊断信息。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-custom-translation-style=\"default\">只有可见的送达说明应出现在翻译段落中。透明的诊断信息。</span>",
+              "status": "legacy",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            },
+            {
+              "text": "这句话必须保持英文。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-custom-translation-style=\"default\">这句话必须保持英文。</span>",
+              "status": "legacy",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            }
+          ]
+        },
+        {
+          "id": "F19",
+          "translations": [
+            {
+              "text": "安装指南已经准备好了。 确认符号应留在这句话旁边。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-custom-translation-style=\"default\">安装指南已经准备好了。 确认符号应留在这句话旁边。</span>",
+              "status": "legacy",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            }
+          ]
+        },
+        {
+          "id": "F20",
+          "translations": [
+            {
+              "text": "计算中使用x2+y2=z2来描述这种关系。保持公式不变，并翻译这个解释。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-format-status=\"normal\" data-read-frog-custom-translation-style=\"default\" style=\"white-space: pre-wrap;\">计算中使用<math><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>=</mo><msup><mi>z</mi><mn>2</mn></msup></math>来描述这种关系。保持公式不变，并翻译这个解释。</span>",
+              "status": "normal",
+              "strong": [],
+              "marks": [],
+              "atoms": [
+                {
+                  "tag": "math",
+                  "text": "x2+y2=z2"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "F21",
+          "translations": [
+            {
+              "text": "---[安装指南]-----\n第一章 ............12\n##### 重要通知 #####\n+-------------------------+\n流程已经准备好开始。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-custom-translation-style=\"default\">---[安装指南]-----\n第一章 ............12\n##### 重要通知 #####\n+-------------------------+\n流程已经准备好开始。</span>",
+              "status": "legacy",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            }
+          ]
+        },
+        {
+          "id": "F22",
+          "translations": [
+            {
+              "text": "在继续之前，请确认您已阅读安装说明。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-custom-translation-style=\"default\">在继续之前，请确认您已阅读安装说明。</span>",
+              "status": "legacy",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            },
+            {
+              "text": "  确认安装选择",
+              "html": "<span>&nbsp;&nbsp;</span><span class=\"notranslate read-frog-translated-inline-content\" data-read-frog-custom-translation-style=\"default\">确认安装选择</span>",
+              "status": "legacy",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            },
+            {
+              "text": "保持原始浏览器配置",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-custom-translation-style=\"default\">保持原始浏览器配置</span>",
+              "status": "legacy",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            },
+            {
+              "text": "阅读额外的安装要求",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-custom-translation-style=\"default\">阅读额外的安装要求</span>",
+              "status": "legacy",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            },
+            {
+              "text": "在选择扩展文件夹时，浏览器必须保持开启状态。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-custom-translation-style=\"default\">在选择扩展文件夹时，浏览器必须保持开启状态。</span>",
+              "status": "legacy",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            }
+          ]
+        },
+        {
+          "id": "F23",
+          "translations": [
+            {
+              "text": "当前安装指南在动态内容添加前可见。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-custom-translation-style=\"default\">当前安装指南在动态内容添加前可见。</span>",
+              "status": "legacy",
+              "strong": [],
+              "marks": [],
+              "atoms": []
+            }
+          ]
+        },
+        {
+          "id": "F24",
+          "translations": [
+            {
+              "text": "Mac上的守护进程驱动手机，提供三种形式的控制：MCP服务器，用于Claude Code、Codex、Claude Desktop、Cursor及其他MCP客户端;用于代理和脚本的HTTP API（/agent/*）;以及一个面向用户的网页和原生iOS应用。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-format-status=\"normal\" data-read-frog-custom-translation-style=\"default\" style=\"white-space: pre-wrap;\">Mac上的守护进程驱动手机，提供三种形式的控制：<mark style=\"color: inherit; background-image: linear-gradient(100deg, rgba(0, 0, 0, 0), rgb(246, 218, 91) 3%, rgb(246, 218, 91) 97%, rgba(0, 0, 0, 0));\">MCP服务器</mark>，用于Claude Code、Codex、Claude Desktop、Cursor及其他MCP客户端;用于代理和脚本的<strong style=\"color: inherit;\">HTTP API</strong>（<code style=\"color: inherit; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; white-space: pre-wrap;\">/agent/*</code>）;以及一个面向用户的<strong style=\"color: inherit;\">网页和原生iOS应用</strong>。</span>",
+              "status": "normal",
+              "strong": ["HTTP API", "网页和原生iOS应用"],
+              "marks": [
+                {
+                  "text": "MCP服务器",
+                  "background": "linear-gradient(100deg, rgba(0, 0, 0, 0), rgb(246, 218, 91) 3%, rgb(246, 218, 91) 97%, rgba(0, 0, 0, 0))",
+                  "color": "rgb(39, 43, 40)"
+                }
+              ],
+              "atoms": [
+                {
+                  "tag": "code",
+                  "text": "/agent/*"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "F25",
+          "translations": [
+            {
+              "text": "请在关闭窗口前保存您的更改。临时账户明天到期。收货地址必须今天确认，送达日期是下周五。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-format-status=\"normal\" data-read-frog-custom-translation-style=\"default\" style=\"white-space: pre-wrap;\">请在关闭窗口前<strong style=\"color: inherit;\">保存您的更改</strong>。<em style=\"color: inherit;\">临时账户</em>明天到期。<mark style=\"color: inherit; background-color: rgb(255, 241, 160);\">收货地址必须今天确认</mark>，<mark style=\"color: inherit; background-image: linear-gradient(100deg, rgba(0, 0, 0, 0), rgb(246, 218, 91) 3%, rgb(246, 218, 91) 97%, rgba(0, 0, 0, 0));\">送达日期是下周五</mark>。</span>",
+              "status": "normal",
+              "strong": ["保存您的更改"],
+              "marks": [
+                {
+                  "text": "收货地址必须今天确认",
+                  "background": "none",
+                  "color": "rgb(39, 43, 40)"
+                },
+                {
+                  "text": "送达日期是下周五",
+                  "background": "linear-gradient(100deg, rgba(0, 0, 0, 0), rgb(246, 218, 91) 3%, rgb(246, 218, 91) 97%, rgba(0, 0, 0, 0))",
+                  "color": "rgb(39, 43, 40)"
+                }
+              ],
+              "atoms": []
+            }
+          ]
+        },
+        {
+          "id": "F26",
+          "translations": [
+            {
+              "text": "Mac上的守护进程驱动手机，提供三种形式的控制：MCP服务器，用于Claude Code、Codex、Claude Desktop、Cursor及其他MCP客户端;用于代理和脚本的HTTP API（/agent/*）;以及一个面向用户的网页和原生iOS应用。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-format-status=\"normal\" data-read-frog-custom-translation-style=\"default\" style=\"white-space: pre-wrap;\">Mac上的守护进程驱动手机，提供三种形式的控制：<mark style=\"color: inherit; background-image: linear-gradient(100deg, rgba(0, 0, 0, 0), rgb(246, 218, 91) 3%, rgb(246, 218, 91) 97%, rgba(0, 0, 0, 0));\">MCP服务器</mark>，用于Claude Code、Codex、Claude Desktop、Cursor及其他MCP客户端;用于代理和脚本的<strong style=\"color: inherit;\">HTTP API</strong>（<code style=\"color: inherit; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; white-space: pre-wrap;\">/agent/*</code>）;以及一个面向用户的<strong style=\"color: inherit;\">网页和原生iOS应用</strong>。</span>",
+              "status": "normal",
+              "strong": ["HTTP API", "网页和原生iOS应用"],
+              "marks": [
+                {
+                  "text": "MCP服务器",
+                  "background": "linear-gradient(100deg, rgba(0, 0, 0, 0), rgb(246, 218, 91) 3%, rgb(246, 218, 91) 97%, rgba(0, 0, 0, 0))",
+                  "color": "rgb(39, 43, 40)"
+                }
+              ],
+              "atoms": [
+                {
+                  "tag": "code",
+                  "text": "/agent/*"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "F27",
+          "translations": [
+            {
+              "text": "安装文件已经准备好了。在流程完成前，先保留原文件夹。",
+              "html": "<br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-format-status=\"normal\" data-read-frog-custom-translation-style=\"default\" style=\"white-space: pre-wrap;\"><strong style=\"color: inherit;\">安装文件</strong>已经准备好了。在流程完成前，先保留<mark style=\"color: inherit; background-color: rgb(255, 241, 160);\">原文件夹</mark>。</span>",
+              "status": "normal",
+              "strong": ["安装文件"],
+              "marks": [
+                {
+                  "text": "原文件夹",
+                  "background": "none",
+                  "color": "rgb(39, 43, 40)"
+                }
+              ],
+              "atoms": []
+            }
+          ]
+        }
+      ],
+      "dynamic": {
+        "text": "The new delivery date is now next Thursday. Keep /agent/status unchanged while translating this new paragraph.新的送货日期现在定在下周四。翻译新段落时保持/agent/status不变。",
+        "html": "The <strong data-read-frog-walked=\"ee53bcc4-0b61-41c9-b5ca-f9aa7d872a07\" data-read-frog-paragraph=\"\" data-read-frog-inline-node=\"\">new delivery date</strong> is now <mark data-read-frog-walked=\"ee53bcc4-0b61-41c9-b5ca-f9aa7d872a07\" data-read-frog-paragraph=\"\" data-read-frog-inline-node=\"\">next Thursday</mark>. Keep <code data-read-frog-walked=\"ee53bcc4-0b61-41c9-b5ca-f9aa7d872a07\" data-read-frog-paragraph=\"\" data-read-frog-inline-node=\"\">/agent/status</code> unchanged while translating this new paragraph.<span class=\"notranslate read-frog-translated-content-wrapper\" data-read-frog-translation-mode=\"bilingual\" data-read-frog-walked=\"ee53bcc4-0b61-41c9-b5ca-f9aa7d872a07\" dir=\"ltr\" lang=\"zh\"><br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-format-status=\"normal\" data-read-frog-custom-translation-style=\"default\" style=\"white-space: pre-wrap;\"><strong style=\"color: inherit;\">新的送货日期</strong>现在定<mark style=\"color: inherit; background-color: rgb(255, 241, 160);\">在下周四</mark>。翻译新段落时保持<code style=\"color: inherit; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; white-space: pre-wrap;\">/agent/status</code>不变。</span></span>"
+      },
+      "restored": {
+        "wrappers": 0,
+        "sameButton": true,
+        "checkbox": true,
+        "details": true,
+        "clickCount": " 点击次数：1"
+      },
+      "originalSite": {
+        "url": "https://iphone-use.leeguoo.com/en/",
+        "lede": "\n        <span class=\"mark\" data-read-frog-walked=\"9da5e1b9-4480-4ebc-9314-ebe779535fbf\" data-read-frog-paragraph=\"\" data-read-frog-inline-node=\"\">Let AI agents use your real iPhone.</span> With iphone-use installed on your Mac, Claude Code, Codex\n        or any MCP client reads the phone's screen as text, taps, types and swipes in any app, <strong data-read-frog-walked=\"9da5e1b9-4480-4ebc-9314-ebe779535fbf\" data-read-frog-paragraph=\"\" data-read-frog-inline-node=\"\">including the\n        ones with no API</strong>: Health, banking, chat apps, or the app you are testing. You can watch it live and\n        take the phone back at any time.\n      <span class=\"notranslate read-frog-translated-content-wrapper\" data-read-frog-translation-mode=\"bilingual\" data-read-frog-walked=\"9da5e1b9-4480-4ebc-9314-ebe779535fbf\" dir=\"ltr\" lang=\"zh\"><br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-format-status=\"normal\" data-read-frog-custom-translation-style=\"default\" style=\"white-space: pre-wrap;\"><mark style=\"color: inherit; background-image: linear-gradient(104deg, rgba(0, 0, 0, 0) 0px, rgb(245, 210, 74) 2%, rgb(245, 210, 74) 98%, rgba(0, 0, 0, 0) 100%);\">让AI代理使用你的真实iPhone。</mark>在你的Mac上安装iPhone时，Claude Code、Codex或任何MCP客户端都会将手机屏幕读取为文本，在任何应用中点击、输入和滑动，<strong style=\"color: inherit;\">包括那些没有API的</strong>应用：健康、银行、聊天应用或你正在测试的应用。你可以随时观看直播，并把手机拿回去。</span></span>",
+        "headings": [
+          "Connect your agent in three steps<a class=\"du-anchor\" href=\"#sec-connect-your-agent-in-three-steps\" aria-label=\"Copy link to this section\" title=\"Copy link to this section\" data-read-frog-walked=\"9da5e1b9-4480-4ebc-9314-ebe779535fbf\" data-read-frog-paragraph=\"\" data-read-frog-inline-node=\"\">#</a><span class=\"notranslate read-frog-translated-content-wrapper\" data-read-frog-translation-mode=\"bilingual\" data-read-frog-walked=\"9da5e1b9-4480-4ebc-9314-ebe779535fbf\" dir=\"ltr\" lang=\"zh\"><br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-custom-translation-style=\"default\">将您的经纪人分三步连接起来#</span></span>",
+          "Ask your agent<a class=\"du-anchor\" href=\"#sec-ask-your-agent\" aria-label=\"Copy link to this section\" title=\"Copy link to this section\" data-read-frog-walked=\"9da5e1b9-4480-4ebc-9314-ebe779535fbf\" data-read-frog-paragraph=\"\" data-read-frog-inline-node=\"\">#</a><span class=\"notranslate read-frog-translated-content-wrapper\" data-read-frog-translation-mode=\"bilingual\" data-read-frog-walked=\"9da5e1b9-4480-4ebc-9314-ebe779535fbf\" dir=\"ltr\" lang=\"zh\"><br><span class=\"notranslate read-frog-translated-block-content\" data-read-frog-custom-translation-style=\"default\">问问你的经纪人#</span></span>",
+          "Without the terminal<a class=\"du-anchor\" href=\"#sec-without-the-terminal\" aria-label=\"Copy link to this section\" title=\"Copy link to this section\" data-read-frog-walked=\"9da5e1b9-4480-4ebc-9314-ebe779535fbf\" data-read-frog-paragraph=\"\" data-read-frog-inline-node=\"\">#</a>",
+          "Why a real iPhone<a class=\"du-anchor\" href=\"#sec-why-a-real-iphone\" aria-label=\"Copy link to this section\" title=\"Copy link to this section\" data-read-frog-walked=\"9da5e1b9-4480-4ebc-9314-ebe779535fbf\" data-read-frog-paragraph=\"\" data-read-frog-inline-node=\"\">#</a>",
+          "Under the hood<a class=\"du-anchor\" href=\"#sec-under-the-hood\" aria-label=\"Copy link to this section\" title=\"Copy link to this section\" data-read-frog-walked=\"9da5e1b9-4480-4ebc-9314-ebe779535fbf\" data-read-frog-paragraph=\"\" data-read-frog-inline-node=\"\">#</a>",
+          "Quick answers<a class=\"du-anchor\" href=\"#sec-quick-answers\" aria-label=\"Copy link to this section\" title=\"Copy link to this section\" data-read-frog-walked=\"9da5e1b9-4480-4ebc-9314-ebe779535fbf\" data-read-frog-paragraph=\"\" data-read-frog-inline-node=\"\">#</a>",
+          "The *-use family<a class=\"du-anchor\" href=\"#sec-the-use-family\" aria-label=\"Copy link to this section\" title=\"Copy link to this section\" data-read-frog-walked=\"9da5e1b9-4480-4ebc-9314-ebe779535fbf\" data-read-frog-paragraph=\"\" data-read-frog-inline-node=\"\">#</a>",
+          "Paid setup and sponsorship<a class=\"du-anchor\" href=\"#sec-paid-setup-and-sponsorship\" aria-label=\"Copy link to this section\" title=\"Copy link to this section\" data-read-frog-walked=\"9da5e1b9-4480-4ebc-9314-ebe779535fbf\" data-read-frog-paragraph=\"\" data-read-frog-inline-node=\"\">#</a>"
+        ],
+        "code": [
+          "$ curl -fsSL https://raw.githubusercontent.com/leeguooooo/iphone-use/main/install.sh | sh",
+          "$ iphone-use doctor   # what is missing, and how to fix it\n$ iphone-use try      # a harmless check: open Settings, read the screen, go Home"
+        ],
+        "nav": "/en/install",
+        "copyButton": true,
+        "wrappers": 45,
+        "restoredWrappers": 0
+      }
+    }
+  ],
+  "errors": [],
+  "extensionId": "dpjljamigpipdclbdjeoapiflkpkihge"
+}

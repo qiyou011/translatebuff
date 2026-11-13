@@ -1,0 +1,15 @@
+{
+  "head": "588f4191692a2931883ae25f07a93f0485398c76",
+  "hostNode": "v22.23.4",
+  "prototypeSha256": "7d4167fd456ecec9c27db86b277fa0269854c8ff9b737e0a0725c7287b35cdf1",
+  "files": {
+    "src/utils/host/translate/core/translation-request.ts": "44e96c4711590f3bfe193c5400b1668a9b2d5b28a7c0d218266d23265a555d8d",
+    "src/utils/host/translate/core/translation-modes.ts": "d2ef80cf9f2234095a33c95cf994e8b6036779ce19ff30fc8ac2748f3d3ab2e7",
+    "src/utils/host/translate/api/microsoft.ts": "ba91ebeac737e6452b7fdc6f5c7e3023d8f9aa8c7d23817db595882381874851",
+    "src/utils/host/translate/api/google.ts": "33d369201c634cc251e09796d6a12626e1ddcc0610fa2ecf4a43b259d6ba62f8",
+    "src/fork/page-translation/queues.ts": "ef0ef39c75d66c1338df44dbbee3563e67cb1691753d5a93f4434fcb9df03d20",
+    "src/fork/page-translation/mt.ts": "80474e275fb0d1ef4f9ab8329f624d0170cd74fdc4b288887c79f9e2ca1bdd6c",
+    "src/utils/host/translate/dom/inline-atoms.ts": "78b4b10f1cb77e25abba1b14c15cb943048d6baee6c0ce3267b105bf8ec385cc",
+    "src/entrypoints/background/page-translation.ts": "98adfa96ec5bb5784c53a6c3c6677de83026b24853ac6420757223245d06faf4"
+  }
+}

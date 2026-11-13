@@ -1,0 +1,195 @@
+{
+  "sourceSha256": "7d4167fd456ecec9c27db86b277fa0269854c8ff9b737e0a0725c7287b35cdf1",
+  "fixtureCss": "\n:root{--paper:#faf8f2;--ink:#272b28;--muted:#73796e;--line:#d8dccf;--accent:#315c49}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.8 Georgia,\"Noto Serif CJK SC\",serif}header{border-bottom:1px solid var(--line);padding:32px max(24px,calc((100vw - 900px)/2)) 25px;background:#edf0e5}header .eyebrow{font:12px/1.4 monospace;letter-spacing:2px;color:var(--accent)}header h1{font:600 29px/1.4 Georgia,serif;margin:12px 0}header p{margin:8px 0;font:14px/1.8 system-ui,sans-serif;color:#596254}.navigation{display:flex;gap:7px;flex-wrap:wrap;margin-top:18px}.navigation a{font:12px/1 monospace;color:var(--accent);border:1px solid #c3cdbd;padding:7px;text-decoration:none}main{max-width:900px;margin:auto;padding:0 25px 60px}.case{padding:28px 0 32px;border-bottom:1px solid var(--line);scroll-margin-top:24px}.case-header{display:flex;gap:14px;align-items:baseline;font-family:system-ui,sans-serif}.case-id{font:13px/1 monospace;color:var(--accent)}.case-header h2{font-size:17px;margin:0}.case-note{font:12px/1.6 system-ui,sans-serif;color:var(--muted);margin:4px 0 17px 43px}.sample{font:17px/1.9 Georgia,serif}.sample p{margin:12px 0}.sample strong,.sample b{font-weight:800}.marker,.mark{background:linear-gradient(100deg,transparent,#f6da5b 3%,#f6da5b 97%,transparent);border-radius:6px;padding:.08em .2em}.red{color:#b52d33}.css-bold{font-weight:800}mark{background:#fff1a0;color:inherit}code,kbd,samp{font:0.88em/1.7 \"SFMono-Regular\",Consolas,monospace;background:#ece8f6;color:#675196;border:1px solid #dcd5ec;border-radius:4px;padding:1px 4px}kbd{border-bottom-width:3px}var{font-style:italic;color:#126259}a{color:#295e83}table{border-collapse:collapse;width:100%;font-size:15px}td,th{border:1px solid var(--line);padding:10px 13px;text-align:left}th{background:#edf0e5}caption{text-align:left;padding-bottom:9px}blockquote{margin:16px 0;border-left:3px solid #7c9c86;padding:10px 20px;background:#f0f2e9}pre{background:#eeede8;padding:18px;border:1px solid var(--line);overflow:auto;white-space:pre-wrap}pre code{border:0;background:none;padding:0}.preserved{white-space:pre-wrap;font:15px/1.9 Consolas,monospace}.special-title{font:700 31px/1.5 Georgia,serif;letter-spacing:.03em}.mono-title{font:600 21px/1.6 Consolas,monospace}.permalink{opacity:0;font-family:monospace;font-size:.7em;margin-left:5px}.permalink:hover{opacity:1}.badge-before::before{content:\"NOTE \";font:700 11px monospace;color:#a44c25}.inline-icon{width:19px;height:19px;vertical-align:middle;color:#315c49}.sample button,.utility{border:1px solid #bac4b4;border-radius:6px;background:#e7eddf;color:var(--ink);padding:9px 14px;font:14px/1.5 system-ui,sans-serif;cursor:pointer}details{margin:14px 0;padding:10px 14px;border:1px solid var(--line)}summary{cursor:pointer}.footer{font:12px system-ui,sans-serif;color:var(--muted);padding-top:30px}@media(max-width:640px){header{padding:24px}.sample{font-size:16px}main{padding:0 20px}.case-note{margin-left:0}}\n",
+  "cases": [
+    {
+      "id": "F01",
+      "title": "高亮／粗体／代码混排",
+      "source": "<p class=\"sample\">A daemon on your Mac drives the phone in three forms: an <span class=\"marker\" data-original=\"marker\">MCP server</span> for your agent; an <strong data-original=\"strong\">HTTP API</strong> for scripts (<code data-original=\"code\">/agent/*</code>); and a <strong>web page and native iOS app</strong> for people.</p>",
+      "requirement": "**P0**：对应中文片段保留粗体、高亮，代码原样保护",
+      "accept": "不是整段统一粗体或高亮；语序变化后仍对应正确内容，代码字符与外观保留"
+    },
+    {
+      "id": "F02",
+      "title": "语义强调",
+      "source": "<p class=\"sample\">Please <strong data-original=\"strong\">save your changes</strong> before closing the window. The <b>primary account</b> is active, the <em data-original=\"em\">temporary account</em> expires tomorrow, and the <i>backup account</i> stays available. Read the <u data-original=\"u\">important notice</u> and ignore the <del data-original=\"del\">outdated instruction</del>.</p>",
+      "requirement": "粗体 **P0**；斜体、下划线、删除线 **P1**",
+      "accept": "逐种格式记录结果；斜体未通过不改变粗体的验收判定"
+    },
+    {
+      "id": "F03",
+      "title": "背景高亮",
+      "source": "<p class=\"sample\">The report says <mark data-original=\"mark\">payment is due next Friday</mark>, while the <span class=\"marker\" data-original=\"marker\">shipping address must be confirmed today</span>. Keep both reminders visible.</p>",
+      "requirement": "高亮 **P0**，包括原站成功样本，不把本地失败隐藏掉",
+      "accept": "对应提醒内容带高亮，普通文字不被扩大标记；背景与用户文字颜色分别处理"
+    },
+    {
+      "id": "F04",
+      "title": "纯样式跨度",
+      "source": "<p class=\"sample\">The <span class=\"red\" data-original=\"red\">failed payment needs attention</span>, the <span class=\"css-bold\" data-original=\"css-bold\">approved payment needs no action</span>, and the <span data-original=\"inline-style\" style=\"background:#dbeafe;color:#1e40af\">pending payment will be checked tomorrow</span>.</p>",
+      "requirement": "其他自定义局部样式 **P1**；已明确的粗体、高亮 **P0** 规则仍适用；原文字颜色按用户设置覆盖",
+      "accept": "按具体效果分别验收，不把原网页红字覆盖用户译文颜色作为成功条件"
+    },
+    {
+      "id": "F05",
+      "title": "嵌套格式",
+      "source": "<p class=\"sample\">You must <strong data-original=\"nested-strong\">confirm the <em data-original=\"nested-em\">correct delivery date</em></strong> before paying. The next <mark>three <b>business days</b></mark> are reserved for review.</p>",
+      "requirement": "复杂嵌套 **P1**",
+      "accept": "内容完整，已恢复的格式边界正确；不得把内层样式错误扩大到整句"
+    },
+    {
+      "id": "F06",
+      "title": "行内代码",
+      "source": "<p class=\"sample\">Send a request to <code data-original=\"path\">/agent/*</code> and set <code data-original=\"parameter\">IPHONE_USE_NO_CLIENT_SETUP=1</code> before starting. The result field <code>retry_safe</code> must remain unchanged in your script.</p>",
+      "requirement": "**P0**",
+      "accept": "三段代码字符逐项不变，代码仍可辨识；周围正文正常翻译"
+    },
+    {
+      "id": "F07",
+      "title": "显式不翻译内容",
+      "source": "<p class=\"sample\">The command <code data-original=\"no-code\" translate=\"no\">npm install example-package</code> prepares the project. Keep the variable <span class=\"notranslate\" data-original=\"no-span\">CUSTOM_SESSION_ID</span> unchanged, then read the translated instructions carefully.</p>",
+      "requirement": "代码保护 **P0**；通用“不翻译”标记的新增支持暂不承诺本期",
+      "accept": "分别核对代码原样、变量文字和标记规则，不以变量碰巧未变证明规则生效"
+    },
+    {
+      "id": "F08",
+      "title": "键位／输出／变量／上下标",
+      "source": "<p class=\"sample\">Press <kbd data-original=\"kbd\">Ctrl</kbd> + <kbd>C</kbd> to copy the result. The output <samp>READY_OK</samp> confirms success. Calculate <var data-original=\"var\">x</var><sup data-original=\"sup\">2</sup> and check H<sub data-original=\"sub\">2</sub>O in the reference.</p>",
+      "requirement": "键位、输出片段、上下标 **P0**；变量格式暂不承诺本期新增",
+      "accept": "键名和输出字符不改，上下标仍对应原位置；变量格式独立记录"
+    },
+    {
+      "id": "F09",
+      "title": "链接及链接内粗体",
+      "source": "<p class=\"sample\">Read the <a data-original=\"link\" href=\"#target\">complete installation guide</a> before you continue. Visit the <a href=\"#target\"><strong>account security page</strong></a> if your access has expired.</p>",
+      "requirement": "译文链接新增适配暂不承诺本期；原链接保持可用，粗体按其适用规则记录",
+      "accept": "不能把原链接可点击当作译文链接已支持；本期不得破坏原链接目标和功能"
+    },
+    {
+      "id": "F10",
+      "title": "标题字体与层级",
+      "source": "<div class=\"sample\"><h2 class=\"special-title\" data-original=\"title\">Connect your agent to the right device</h2><h3 class=\"mono-title\" data-original=\"subtitle\">Check the connection before sending a request</h3><p>The title and subtitle intentionally use different font families and sizes.</p></div>",
+      "requirement": "标题结构 **P0**；字体按共同策略尽量跟随，不宣称竞品字体全面通过",
+      "accept": "标题层级与位置不乱；分别检查标题、正文及代码的实际字体和缺字回退"
+    },
+    {
+      "id": "F11",
+      "title": "显式换行",
+      "source": "<p class=\"sample\" data-original=\"br\">The first delivery arrives on Monday.<br/>The <strong>second delivery</strong> arrives on Tuesday.<br/><br/>The final delivery must not arrive before Friday.</p>",
+      "requirement": "换行 **P0**，粗体按对应 **P0** 规则单独验收",
+      "accept": "按可见行边界形成清楚的双语对应，不合并丢行或重复插入"
+    },
+    {
+      "id": "F12",
+      "title": "预格式换行／缩进",
+      "source": "<div class=\"sample preserved\" data-original=\"prewrap\">Prepare the installation files.\n  - Open the browser settings.\n  - Confirm the correct extension folder.\n\nRestart the browser after installation.</div>",
+      "requirement": "已支持的换行、空行及步骤基本结构 **P0**；完整缩进暂不承诺本期新增",
+      "accept": "内容顺序、换行及空行保留；前导空格另记结果，不以整组通过遮盖损失"
+    },
+    {
+      "id": "F13",
+      "title": "普通源码换行",
+      "source": "<p class=\"sample\" data-original=\"normal-space\">This sentence is split\n across several lines\n in the HTML source, but it should remain one normal paragraph in the browser.</p>",
+      "requirement": "**P0**",
+      "accept": "按浏览器可见段落处理，不能把源码排版换行误当真实分段"
+    },
+    {
+      "id": "F14",
+      "title": "嵌套列表",
+      "source": "<div class=\"sample\"><ol><li>Download the <strong>correct package</strong> for your operating system.</li><li>Review these requirements:<ul><li>Keep the installation directory available.</li><li>Do not delete your saved browser settings.</li></ul></li><li>Restart the browser and verify the result.</li></ol></div>",
+      "requirement": "列表结构、局部粗体均 **P0**，分别验收",
+      "accept": "编号与层级不乱，译文不跨列表项；粗体保留不能用列表结构继承代替"
+    },
+    {
+      "id": "F15",
+      "title": "表格／表头／标题",
+      "source": "<div class=\"sample\"><table><caption>Delivery schedule for three customer groups</caption><thead><tr><th>Customer group</th><th>Delivery date</th><th>Status</th></tr></thead><tbody><tr><td><strong>Business customers</strong></td><td>November 12</td><td><mark>Confirmation required</mark></td></tr><tr><td>Personal customers</td><td>November 15</td><td>Ready for delivery</td></tr></tbody></table></div>",
+      "requirement": "表格结构 **P0**；单元格内格式按对应 P0／P1 规则验收，缺证部分**需要我们调研／复测**",
+      "accept": "表格标题与单元格对应不乱，不能把表格转成纯文本；局部格式单独核对"
+    },
+    {
+      "id": "F16",
+      "title": "引用与代码块",
+      "source": "<div class=\"sample\"><blockquote data-original=\"quote\">Please keep the original receipt until the refund has been confirmed.</blockquote><pre><code data-original=\"code-block\">export API_MODE=\"safe\"\ncurl https://example.invalid/status\n# Do not translate the executable command above.</code></pre></div>",
+      "requirement": "**P0**",
+      "accept": "引用正文完整；代码块字符、换行保持原样，不把可执行命令当正文翻译"
+    },
+    {
+      "id": "F17",
+      "title": "透明章节定位符",
+      "source": "<div class=\"sample\"><h3 data-original=\"anchor-title\">Already done by the installer<a aria-label=\"Copy link to this section\" class=\"permalink\" data-original=\"anchor\" href=\"#F17\">#</a></h3><p>The installer prepares the required files and checks the current browser version.</p></div>",
+      "requirement": "**P0**",
+      "accept": "标题译文无多余井号，原链接仍能定位；不能据此全局删除所有透明元素"
+    },
+    {
+      "id": "F18",
+      "title": "隐藏与不翻译范围",
+      "source": "<div class=\"sample\"><p>Only the visible delivery instructions should appear in the translated paragraph.<span data-original=\"display-none\" style=\"display:none\">Hidden account reset instruction.</span><span data-original=\"visibility-hidden\" style=\"visibility:hidden\">Invisible payment instruction.</span><span data-original=\"opacity-zero\" style=\"opacity:0\">Transparent diagnostic message.</span></p><p data-original=\"translate-no\" translate=\"no\">This entire sentence must remain in English.</p><p class=\"notranslate\" data-original=\"class-notranslate\">This second sentence must also remain in English.</p></div>",
+      "requirement": "已验证的隐藏辅助内容过滤行为 **P0**；其他隐藏与通用不翻译规则暂不承诺本期新增",
+      "accept": "对各隐藏原因分别记录；正文完整，不能以过滤为由删除真实可见内容"
+    },
+    {
+      "id": "F19",
+      "title": "装饰和图标",
+      "source": "<p class=\"sample\">The <span class=\"badge-before\" data-original=\"pseudo\">installation guide is ready</span>. <svg aria-label=\"Confirmation icon\" class=\"inline-icon\" role=\"img\" viewbox=\"0 0 20 20\"><path d=\"M3 10l4 4L17 4\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"></path></svg> The confirmation symbol should stay next to this sentence.</p>",
+      "requirement": "**P0**：正文完整、原图标保留；复杂装饰重建另行调研",
+      "accept": "原装饰／图标仍可见，译文不引入无关辅助文字或重复图标；不要求译文另复制一个图标"
+    },
+    {
+      "id": "F20",
+      "title": "原生公式",
+      "source": "<p class=\"sample\">The calculation uses <math data-original=\"math\"><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>=</mo><msup><mi>z</mi><mn>2</mn></msup></math> to describe the relationship. Keep the formula unchanged and translate this explanation.</p>",
+      "requirement": "**P0**，限本次原生公式样例，不自动覆盖所有公式库",
+      "accept": "公式内容、结构、位置正确，说明正常翻译，内部保护标记不出现在译文"
+    },
+    {
+      "id": "F21",
+      "title": "连续符号与字符画",
+      "source": "<div class=\"sample preserved\" data-original=\"punctuation\">---[INSTALLATION GUIDE]-----\nChapter One ............ 12\n##### Important notice #####\n+-------------------------+\nThe process is ready to start.</div>",
+      "requirement": "已支持的符号基本结构 **P0**；完整连续符号保护及严格空白对齐暂不承诺本期新增",
+      "accept": "分项检查符号组是否仍在及正文是否完整；不能写成全部字符画逐字符通过"
+    },
+    {
+      "id": "F22",
+      "title": "按钮／勾选／折叠",
+      "source": "<div class=\"sample\"><p>Confirm that you have read the installation instructions before continuing.</p><button data-original=\"button\" id=\"sample-action\" type=\"button\">Confirm the installation choice</button><span class=\"notranslate\" id=\"click-count\"> 点击次数：0</span><p><label><input id=\"sample-checkbox\" type=\"checkbox\"/> Keep the original browser configuration</label></p><details id=\"sample-details\"><summary>Read the additional installation requirements</summary><p>The browser must remain open while the extension folder is being selected.</p></details></div>",
+      "requirement": "**P0**",
+      "accept": "原按钮继续计数；勾选、展开状态保留；不复制控件，不重置用户操作"
+    },
+    {
+      "id": "F23",
+      "title": "动态新增内容",
+      "source": "<div class=\"sample\" id=\"dynamic-host\"><p>The current installation guide is visible before the dynamic content is added.</p></div><button class=\"notranslate utility\" id=\"append-dynamic\" type=\"button\">插入动态测试段落</button>",
+      "requirement": "动态处理 **P0**；格式采用与静态内容相同的 P0／P1 规则",
+      "accept": "每个当前有效段落只出现一份译文；不让旧响应覆盖新正文，动态强调与代码分别验收"
+    },
+    {
+      "id": "F24",
+      "title": "原站首段逐字复制",
+      "source": "<div class=\"sample\"><p class=\"du-lede\">\n        A daemon on your Mac drives the phone and offers the same control in three forms: an <span class=\"mark\">MCP server</span>\n        for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an <strong>HTTP API</strong> for agents and\n        scripts (<code>/agent/*</code>); and a <strong>web page and native iOS app</strong> for people.\n      </p></div>",
+      "requirement": "**P0 对照案例**，不是新增站点专属功能",
+      "accept": "在原站和受控页分别验收同套规则，不能用单站成功代替通用能力验证"
+    },
+    {
+      "id": "F25",
+      "title": "移除测试属性",
+      "source": "<div class=\"sample\"><p>Please <strong>save your changes</strong> before closing the window. The <em>temporary account</em> expires tomorrow. The <mark>shipping address must be confirmed today</mark>, and the <span class=\"mark\">delivery date is next Friday</span>.</p></div>",
+      "requirement": "**控制变量案例**：粗体、高亮按 P0，斜体按 P1",
+      "accept": "移除测试属性不能改变应达到的规则；按各格式结果记录，不另算一项功能"
+    },
+    {
+      "id": "F26",
+      "title": "移除段落样式类",
+      "source": "<div class=\"sample\"><p>\n        A daemon on your Mac drives the phone and offers the same control in three forms: an <span class=\"mark\">MCP server</span>\n        for Claude Code, Codex, Claude Desktop, Cursor and other MCP clients; an <strong>HTTP API</strong> for agents and\n        scripts (<code>/agent/*</code>); and a <strong>web page and native iOS app</strong> for people.\n      </p></div>",
+      "requirement": "**P0 控制变量案例**",
+      "accept": "粗体、高亮和代码目标不依赖该段落样式类；不能据此声称已确认竞品内部原因"
+    },
+    {
+      "id": "F27",
+      "title": "短句强调",
+      "source": "<div class=\"sample\"><p>The <strong>installation files</strong> are ready. Keep the <mark>original folder</mark> until the process is complete.</p></div>",
+      "requirement": "**P0 控制变量案例**",
+      "accept": "短句同样保留正确粗体、高亮；不能以缩短句子代替解决格式映射"
+    }
+  ]
+}

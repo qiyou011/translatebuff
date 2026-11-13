@@ -1,0 +1,80 @@
+{
+  "target": {
+    "id": "Function:src/entrypoints/background/page-translation.ts:setupPageTranslationHandlers",
+    "name": "setupPageTranslationHandlers",
+    "type": "Function",
+    "filePath": "src/entrypoints/background/page-translation.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 1,
+  "risk": "LOW",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 1,
+    "processes_affected": 1,
+    "modules_affected": 1
+  },
+  "byDepthCounts": {
+    "1": 1
+  },
+  "affected_processes": [
+    {
+      "name": "main",
+      "type": "Function",
+      "filePath": "src/entrypoints/background/index.ts",
+      "affected_process_count": 4,
+      "total_hits": 4,
+      "earliest_broken_step": 1
+    }
+  ],
+  "affected_modules": [
+    {
+      "name": "Background",
+      "hits": 1,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/background/index.ts:main",
+        "name": "main",
+        "filePath": "src/entrypoints/background/index.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_171_main",
+            "label": "Main → GetStorageItem",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_50_main",
+            "label": "Main → Info",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_139_main",
+            "label": "Main → SetStorageItem",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_131_main",
+            "label": "Main → Error",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      }
+    ]
+  }
+}

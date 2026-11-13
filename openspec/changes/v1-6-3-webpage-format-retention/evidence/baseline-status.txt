@@ -1,0 +1,14 @@
+ M .changeset/panel-figma-ui.md
+ M scripts/fork-allowlist.json
+ M src/fork/ui/popup/panel.css
+ M src/locales/az.yml
+ M src/locales/en.yml
+ M src/locales/es.yml
+ M src/locales/ja.yml
+ M src/locales/ko.yml
+ M src/locales/ru.yml
+ M src/locales/tr.yml
+ M src/locales/vi.yml
+ M src/locales/zh-CN.yml
+ M src/locales/zh-TW.yml
+?? openspec/changes/v1-6-3-webpage-format-retention/

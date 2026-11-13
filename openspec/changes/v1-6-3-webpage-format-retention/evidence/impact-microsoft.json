@@ -1,0 +1,165 @@
+{
+  "target": {
+    "id": "Function:src/utils/host/translate/api/microsoft.ts:requestMicrosoftTranslationBatch",
+    "name": "requestMicrosoftTranslationBatch",
+    "type": "Function",
+    "filePath": "src/utils/host/translate/api/microsoft.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 13,
+  "risk": "LOW",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 2,
+    "processes_affected": 0,
+    "modules_affected": 2
+  },
+  "byDepthCounts": {
+    "1": 2,
+    "2": 2,
+    "3": 9
+  },
+  "affected_processes": [],
+  "affected_modules": [
+    {
+      "name": "Background",
+      "hits": 11,
+      "impact": "direct"
+    },
+    {
+      "name": "Page-translation",
+      "hits": 2,
+      "impact": "indirect"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/fork/page-translation/mt.ts:requestPageMt",
+        "name": "requestPageMt",
+        "filePath": "src/fork/page-translation/mt.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 1,
+        "id": "Function:src/utils/host/translate/api/microsoft.ts:microsoftTranslate",
+        "name": "microsoftTranslate",
+        "filePath": "src/utils/host/translate/api/microsoft.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "Function:src/fork/page-translation/queues.ts:createPageTranslationQueues.invoke@78:2",
+        "name": "invoke",
+        "filePath": "src/fork/page-translation/queues.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 2,
+        "id": "Function:src/utils/host/translate/execute-translate.ts:executeTranslate",
+        "name": "executeTranslate",
+        "filePath": "src/utils/host/translate/execute-translate.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ],
+    "3": [
+      {
+        "depth": 3,
+        "id": "Function:src/entrypoints/background/page-translation.ts:setupPageTranslationHandlers.fn@67:39.thunk@203:6",
+        "name": "thunk",
+        "filePath": "src/entrypoints/background/page-translation.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/entrypoints/background/subtitles-translation.ts:setupSubtitlesTranslationHandlers.fn@20:48.thunk@74:6",
+        "name": "thunk",
+        "filePath": "src/entrypoints/background/subtitles-translation.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/entrypoints/background/translation-queues.ts:executeQueuedTranslation",
+        "name": "executeQueuedTranslation",
+        "filePath": "src/entrypoints/background/translation-queues.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/components/connection-button.tsx:ConnectionTestButton.mutationFn@95:4",
+        "name": "mutationFn",
+        "filePath": "src/entrypoints/options/pages/api-providers/providers-config/provider-config-form/components/connection-button.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/entrypoints/translation-hub/components/translation-card.tsx:TranslationCard.mutationFn@73:4",
+        "name": "mutationFn",
+        "filePath": "src/entrypoints/translation-hub/components/translation-card.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/fork/page-translation/queues.ts:createPageTranslationQueues.executeBatch@154:2",
+        "name": "executeBatch",
+        "filePath": "src/fork/page-translation/queues.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/fork/page-translation/queues.ts:createPageTranslationQueues.single@140:2",
+        "name": "single",
+        "filePath": "src/fork/page-translation/queues.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/fork/ui/options/connection-test-button.tsx:ConnectionTestButton.mutationFn@83:4",
+        "name": "mutationFn",
+        "filePath": "src/fork/ui/options/connection-test-button.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      },
+      {
+        "depth": 3,
+        "id": "Function:src/fork/ui/translation-hub/translation-card.tsx:TranslationCard.mutationFn@56:4",
+        "name": "mutationFn",
+        "filePath": "src/fork/ui/translation-hub/translation-card.tsx",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": []
+      }
+    ]
+  }
+}

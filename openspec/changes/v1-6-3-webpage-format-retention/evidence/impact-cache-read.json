@@ -1,0 +1,167 @@
+{
+  "target": {
+    "id": "Function:src/entrypoints/background/page-translation.ts:getValidatedCachedTranslation",
+    "name": "getValidatedCachedTranslation",
+    "type": "Function",
+    "filePath": "src/entrypoints/background/page-translation.ts"
+  },
+  "direction": "upstream",
+  "impactedCount": 2,
+  "risk": "LOW",
+  "riskSharedAxes": "LOW",
+  "riskScale": {
+    "comparableAcrossKinds": true,
+    "unusedAxes": []
+  },
+  "epistemic": "exact",
+  "summary": {
+    "direct": 1,
+    "processes_affected": 2,
+    "modules_affected": 1
+  },
+  "byDepthCounts": {
+    "1": 1,
+    "2": 1
+  },
+  "affected_processes": [
+    {
+      "name": "setupPageTranslationHandlers",
+      "type": "Function",
+      "filePath": "src/entrypoints/background/page-translation.ts",
+      "affected_process_count": 11,
+      "total_hits": 11,
+      "earliest_broken_step": 1
+    },
+    {
+      "name": "main",
+      "type": "Function",
+      "filePath": "src/entrypoints/background/index.ts",
+      "affected_process_count": 4,
+      "total_hits": 4,
+      "earliest_broken_step": 1
+    }
+  ],
+  "affected_modules": [
+    {
+      "name": "Background",
+      "hits": 2,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Function:src/entrypoints/background/page-translation.ts:setupPageTranslationHandlers",
+        "name": "setupPageTranslationHandlers",
+        "filePath": "src/entrypoints/background/page-translation.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_172_setuppagetranslation",
+            "label": "SetupPageTranslationHandlers → Error",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_87_setuppagetranslation",
+            "label": "SetupPageTranslationHandlers → CancelledScopeRegistry",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_1_setuppagetranslation",
+            "label": "SetupPageTranslationHandlers → RawT",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_11_setuppagetranslation",
+            "label": "SetupPageTranslationHandlers → ResolveBrowserLocale",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_20_setuppagetranslation",
+            "label": "SetupPageTranslationHandlers → MigratePair",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_0_setuppagetranslation",
+            "label": "SetupPageTranslationHandlers → IsAPIProvider",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_130_setuppagetranslation",
+            "label": "SetupPageTranslationHandlers → GetStorageItem",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_2_setuppagetranslation",
+            "label": "SetupPageTranslationHandlers → T",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_19_setuppagetranslation",
+            "label": "SetupPageTranslationHandlers → SetStorageItem",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_132_setuppagetranslation",
+            "label": "SetupPageTranslationHandlers → Warn",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_21_setuppagetranslation",
+            "label": "SetupPageTranslationHandlers → RunMigration",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      }
+    ],
+    "2": [
+      {
+        "depth": 2,
+        "id": "Function:src/entrypoints/background/index.ts:main",
+        "name": "main",
+        "filePath": "src/entrypoints/background/index.ts",
+        "relationType": "CALLS",
+        "confidence": 0.85,
+        "processes": [
+          {
+            "id": "proc_171_main",
+            "label": "Main → GetStorageItem",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_50_main",
+            "label": "Main → Info",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_139_main",
+            "label": "Main → SetStorageItem",
+            "processType": "cross_community",
+            "step": 1
+          },
+          {
+            "id": "proc_131_main",
+            "label": "Main → Error",
+            "processType": "cross_community",
+            "step": 1
+          }
+        ]
+      }
+    ]
+  }
+}
