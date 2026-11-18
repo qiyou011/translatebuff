@@ -1,7 +1,12 @@
 import type { BilingualFormatManifest } from "../bilingual-format-protocol"
 import type { VirtualParagraphSourceFragment } from "./paragraph-segmentation"
+import type { Config } from "@/types/config/config"
 import { CONTENT_WRAPPER_CLASS } from "@/utils/constants/dom-labels"
 import { Sha256Hex } from "@/utils/hash"
+import {
+  isDontWalkIntoButTranslateAsChildElement,
+  isSiteRuleExcludedElement,
+} from "../../dom/filter"
 import { parseBilingualFormat } from "../bilingual-format-protocol"
 
 interface FormatStyle {
@@ -92,8 +97,15 @@ function safeAtom(node: Node, doc: Document): Node {
 /** Extract a unit without touching original nodes, controls or event listeners. */
 export function extractBilingualFormat(
   nodes: readonly Node[],
-  preserveLineBreaks = false,
-  fragments?: readonly VirtualParagraphSourceFragment[],
+  {
+    config,
+    preserveLineBreaks = false,
+    fragments,
+  }: {
+    config?: Config
+    preserveLineBreaks?: boolean
+    fragments?: readonly VirtualParagraphSourceFragment[]
+  } = {},
 ): BilingualFormatSource {
   const doc = nodes[0]?.ownerDocument ?? document
   const view = doc.defaultView!
@@ -147,6 +159,9 @@ export function extractBilingualFormat(
       tag = el.localName.toLowerCase()
     if (
       omittedTags.has(tag) ||
+      (config &&
+        isSiteRuleExcludedElement(el, config) &&
+        !isDontWalkIntoButTranslateAsChildElement(el, config)) ||
       el.classList.contains(CONTENT_WRAPPER_CLASS) ||
       el.hidden ||
       el.getAttribute("aria-hidden") === "true"

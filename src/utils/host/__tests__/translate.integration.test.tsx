@@ -934,7 +934,7 @@ describe("translate", () => {
 
       it("replaces a truncated translation after X expands the same tweetText node", async () => {
         await withHost("x.com", async () => {
-          const truncatedRequestText = "I'm a cardiologist.No protein"
+          const truncatedRequestText = "I'm a cardiologist.\nNo protein"
           const expandedFirstParagraph = "I'm a cardiologist.\nNo protein and more."
           const hashtagParagraph = "#Football #Soccer"
           const translations = {
@@ -980,12 +980,10 @@ describe("translate", () => {
           })
 
           expect(translateTextForPage).toHaveBeenCalledTimes(3)
-          expect(translateTextForPage).toHaveBeenNthCalledWith(
-            1,
-            truncatedRequestText,
-            "plain",
-            PRESERVE_LINE_BREAKS_TRANSLATION_OPTIONS,
-          )
+          expect(translateTextForPage).toHaveBeenNthCalledWith(1, truncatedRequestText, "plain", {
+            ...PRESERVE_LINE_BREAKS_TRANSLATION_OPTIONS,
+            bilingualFormat: expect.objectContaining({ formats: [], atoms: [] }),
+          })
           expect(translateTextForPage).toHaveBeenNthCalledWith(
             2,
             expandedFirstParagraph,

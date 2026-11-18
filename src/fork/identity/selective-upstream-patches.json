@@ -339,7 +339,7 @@
     },
     {
       "path": "src/utils/host/__tests__/translate.integration.test.tsx",
-      "sha256": "c268a5250cf07e536cddbe56404c7da1f61289b6bb4f5dcd6324dabcc900aeb5",
+      "sha256": "8bb16a3c460a7631060c5e76bcddd85446aed8c82d107bd60138fe464e529f9f",
       "sources": [
         "1308e8d1be455d08ec4e907eb2c8966998abca0b",
         "3d768aad26791cc2664129d206cbcf39179e0486",
@@ -409,12 +409,12 @@
     },
     {
       "path": "src/utils/host/translate/core/translation-modes.ts",
-      "sha256": "d2ef80cf9f2234095a33c95cf994e8b6036779ce19ff30fc8ac2748f3d3ab2e7",
+      "sha256": "2ce5d304dab193ae4ebf5232f2ff4a7036cafbb2dfd2f82ff551312cd1a09981",
       "sources": ["3d768aad26791cc2664129d206cbcf39179e0486"]
     },
     {
       "path": "src/utils/host/translate/core/translation-request.ts",
-      "sha256": "32e3aaf8743a3af1455035875836416e23332f360e3db8018caa087b2475d2a0",
+      "sha256": "f05a41221dd5ade2d17b7caa8a76bf845f0a52704cd3e462a640eff3b2c9a397",
       "sources": ["3d768aad26791cc2664129d206cbcf39179e0486"]
     },
     {

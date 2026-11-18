@@ -20,10 +20,13 @@ describe("bilingual format extraction and safe rebuilding", () => {
     const root = document.querySelector("div")!
     const selected = root.querySelector("strong")!.firstChild as Text
     const tail = root.querySelector("strong")!.nextSibling as Text
-    const source = extractBilingualFormat([root], true, [
-      { source: selected, startOffset: 0, endOffset: selected.length, atomic: false },
-      { source: tail, startOffset: 0, endOffset: 4, atomic: false },
-    ])
+    const source = extractBilingualFormat([root], {
+      preserveLineBreaks: true,
+      fragments: [
+        { source: selected, startOffset: 0, endOffset: selected.length, atomic: false },
+        { source: tail, startOffset: 0, endOffset: 4, atomic: false },
+      ],
+    })
     expect(source.text).toBe("⟦B0⟧Save the account⟦/B0⟧ now")
   })
   it("extracts computed bold/highlight and protects code with stable format identity", () => {

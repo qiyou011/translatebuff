@@ -274,6 +274,7 @@
     "src/entrypoints/host.content/translation-control/__tests__/page-translation-observer-root.test.ts",
     "src/entrypoints/host.content/translation-control/__tests__/page-translation-rewrite-carry.test.ts",
     "src/utils/host/translate/core/translation-request.ts",
+    "src/utils/host/translate/core/translation-modes.ts",
     "src/utils/host/translate/dom/__tests__/bilingual-format.test.ts",
     "src/utils/host/translate/dom/bilingual-format.ts",
     ".changeset/fix-170-qa-boundaries.md"

@@ -158,7 +158,12 @@ export function createPageTranslationRequest(
           (node as Element).querySelector(".katex, mjx-container, .MathJax")),
     )
     if (usesBilingualFormat(config) && !hasCustomFormula) {
-      const formatted = extractBilingualFormat(source.nodes, options.preserveLineBreaks)
+      const extractFormat = () =>
+        extractBilingualFormat(source.nodes, {
+          config,
+          preserveLineBreaks: options.preserveLineBreaks,
+        })
+      const formatted = extractFormat()
       if (
         formatted.manifest.formats.length ||
         formatted.manifest.atoms.length ||
@@ -167,9 +172,7 @@ export function createPageTranslationRequest(
       ) {
         return {
           ...createBilingualFormatRequest(formatted, { ...options, preserveLineBreaks: true }),
-          isFormatCurrent: () =>
-            extractBilingualFormat(source.nodes, options.preserveLineBreaks).manifest.identity ===
-            formatted.manifest.identity,
+          isFormatCurrent: () => extractFormat().manifest.identity === formatted.manifest.identity,
         }
       }
     }

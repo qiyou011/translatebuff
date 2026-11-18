@@ -201,9 +201,13 @@ async function translateVirtualParagraphs(
   const formatRequests = new Map<number, ReturnType<typeof createBilingualFormatRequest>>()
   let isFormatCurrent: (() => boolean) | undefined
   if (usesBilingualFormat(config)) {
-    const identity = extractBilingualFormat([layoutSource], true).manifest.identity
+    const formatOptions = { config, preserveLineBreaks: true }
+    const identity = extractBilingualFormat([layoutSource], formatOptions).manifest.identity
     for (const unit of units) {
-      const source = extractBilingualFormat([layoutSource], true, unit.sourceFragments)
+      const source = extractBilingualFormat([layoutSource], {
+        ...formatOptions,
+        fragments: unit.sourceFragments,
+      })
       if (source.manifest.formats.length || source.manifest.atoms.length)
         formatRequests.set(
           unit.id,
@@ -212,7 +216,7 @@ async function translateVirtualParagraphs(
     }
     if (formatRequests.size)
       isFormatCurrent = () =>
-        extractBilingualFormat([layoutSource], true).manifest.identity === identity
+        extractBilingualFormat([layoutSource], formatOptions).manifest.identity === identity
   }
   const group: VirtualParagraphGroup = {
     isFormatCurrent,
