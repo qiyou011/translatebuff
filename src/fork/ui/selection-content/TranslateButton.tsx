@@ -17,7 +17,9 @@ import { useSelectionTranslationContext } from "./context"
 export function TranslateButton({ brand = false }: { brand?: boolean }) {
   const { prepareToolbarOpen } = useSelectionTranslationContext()
   const selectionToolbar = useAtomValue(configFieldsAtomMap.selectionToolbar)
-  const triggerLabel = i18n.t("action.translation")
+  const triggerLabel = brand
+    ? i18n.t("quickTranslation.brandTranslate")
+    : i18n.t("action.translation")
   const shortcut = selectionToolbar.features.translate.shortcut
   const shortcutParts = isShortcutEmpty(shortcut) ? [] : formatHotkeyParts(shortcut)
   const tooltipContent =

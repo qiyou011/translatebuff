@@ -58,6 +58,11 @@ vi.mock("@/utils/config/languages", () => ({
   getDetectedCodeFromStorage: mockGetDetectedCodeFromStorage,
 }))
 
+vi.mock("@/fork/config/storage", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("@/fork/config/storage")>()),
+  readFeatureConfig: async () => ({ mainConfig: await mockGetLocalConfig() }),
+}))
+
 vi.mock("@/utils/config/storage", () => ({
   getLocalConfig: mockGetLocalConfig,
 }))

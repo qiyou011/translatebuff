@@ -14,6 +14,9 @@ forkPreview:
   sampleText: Mr. Kamiya is not fighting against the world, but against things that could make the world take notice.
 
 forkProviders:
+  providedModels: "Models provided by $1"
+  unavailable: "Service unavailable. Choose another service"
+  noServices: "No translation services available"
   description: "For translation and vocabulary explanations"
   modelsLabel: "Models"
   keyAfterLogin: "Retrieved automatically after login"
@@ -2102,6 +2105,7 @@ languages:
   rar: Rarotongan
   hif: Fiji Hindi
 quickTranslation:
+  restrictedPage: "The browser prevents translation on this page"
   stylePreviewTranslation: "A quiet morning walk is a good way to explore the city."
   brandTranslate: "TranslateBuff: translate selection"
   enableSubtitles: "Enable video subtitles"

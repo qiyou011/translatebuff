@@ -5,6 +5,7 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/base-ui/dropdown-menu"
+import { currentEdition } from "@/fork/identity/edition"
 import { accountLabel } from "@/fork/membership/account-label"
 import {
   useForkSession,
@@ -59,14 +60,16 @@ export function ForkAccountMenu() {
           </Button>
         </div>
       )}
-      <Button
-        size="xs"
-        variant="ghost"
-        className="text-sm text-muted-foreground"
-        onClick={openRedeem}
-      >
-        {i18n.t("forkMembership.redeemCode")}
-      </Button>
+      {currentEdition() === "global" && (
+        <Button
+          size="xs"
+          variant="ghost"
+          className="text-sm text-muted-foreground"
+          onClick={openRedeem}
+        >
+          {i18n.t("forkMembership.redeemCode")}
+        </Button>
+      )}
     </div>
   )
 }

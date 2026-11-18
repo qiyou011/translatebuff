@@ -3,6 +3,7 @@ import type { FeatureUsageContext } from "@/types/analytics"
 import type { Config } from "@/types/config/config"
 import debounce from "debounce"
 import { toastManager } from "@/components/ui/base-ui/toast"
+import { readFeatureConfig } from "@/fork/config/storage"
 import { ANALYTICS_FEATURE, ANALYTICS_SURFACE } from "@/types/analytics"
 import { createFeatureUsageContext, trackFeatureUsed } from "@/utils/analytics"
 import { classifyFailureReason } from "@/utils/analytics-failure-reason"
@@ -381,7 +382,7 @@ export class PageTranslationManager implements IPageTranslationManager {
   ): Promise<void> {
     const trackedContext = window === window.top ? analyticsContext : undefined
 
-    const config = await getLocalConfig()
+    const { mainConfig: config } = await readFeatureConfig()
     if (this.pendingStart !== startToken) {
       return
     }

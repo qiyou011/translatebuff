@@ -14,6 +14,9 @@ forkPreview:
   sampleText: 神谷先生不是在對抗世界，而是在對抗可能讓世界為之側目的事物。
 
 forkProviders:
+  providedModels: "$1 提供的模型"
+  unavailable: "目前服務已無法使用，請選擇其他服務"
+  noServices: "暫無可用翻譯服務"
   description: "用於翻譯和詞彙解析功能"
   modelsLabel: "模型"
   keyAfterLogin: "登入後自動取得"
@@ -1965,6 +1968,7 @@ languages:
   rar: 庫克群島毛利語
   hif: 斐濟印地語
 quickTranslation:
+  restrictedPage: "瀏覽器限制此頁面，無法進行網頁翻譯"
   stylePreviewTranslation: "清晨安靜地散步，是探索這座城市的好方式。"
   brandTranslate: "任譯喵：翻譯選取範圍"
   enableSubtitles: "開啟影片字幕"

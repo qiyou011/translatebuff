@@ -162,6 +162,7 @@ export function createPageTranslationRequest(
       if (
         formatted.manifest.formats.length ||
         formatted.manifest.atoms.length ||
+        (source.atoms.length === 0 && formatted.plainText !== source.filterText) ||
         (!options.preserveLineBreaks && source.requestText.includes("\n"))
       ) {
         return {

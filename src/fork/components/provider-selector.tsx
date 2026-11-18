@@ -12,7 +12,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/base-ui/select"
-import { getForkDisplayName } from "@/fork/branding"
 import { i18n } from "@/utils/i18n"
 import { getProviderLogo, getProviderName } from "@/utils/providers/provider-display"
 import { getForkProviderSelectorGroups } from "./provider-selector-groups"
@@ -42,7 +41,9 @@ interface ForkProviderSelectorProps {
 }
 
 function getGroupLabel(key: ForkProviderGroupKey): string {
-  return key === "renyimiao" ? getForkDisplayName() : i18n.t("translateService.normalTranslator")
+  return key === "renyimiao"
+    ? i18n.t("forkProviders.providedModels", ["TranslateBuff"])
+    : i18n.t("translateService.normalTranslator")
 }
 
 // 任译喵组内去掉冗余的「任译喵 」前缀（组头已带品牌），平铺展示模型名；仅展示层，不改配置 name。
@@ -65,13 +66,21 @@ export default function ForkProviderSelector({
   selectContentProps,
 }: ForkProviderSelectorProps) {
   const { theme } = useTheme()
-  const currentProvider = providers.find((provider) => provider.id === value)
   const groups = getForkProviderSelectorGroups(providers)
+  const currentProvider = groups
+    .flatMap((group) => group.providers)
+    .find((provider) => provider.id === value)
+  const emptyLabel =
+    groups.length === 0
+      ? i18n.t("forkProviders.noServices")
+      : !currentProvider
+        ? i18n.t("forkProviders.unavailable")
+        : placeholder
   const isDisabled = (id: string) => disabledProviderIds?.includes(id) ?? false
 
   const trigger = (
     <SelectTrigger className={className} size={triggerSize}>
-      <SelectValue placeholder={placeholder}>
+      <SelectValue placeholder={emptyLabel}>
         {/* 选中值不在当前列表（如被过滤掉的任译喵）时 base-ui 用 null 调本 render；
             守卫 null 退化成 placeholder，避免 getProviderLogo(null) → 'kind' in null 崩。 */}
         {(provider: ProviderSelectorOption | null) =>
@@ -81,7 +90,9 @@ export default function ForkProviderSelector({
               name={getProviderName(provider)}
               size="sm"
             />
-          ) : null
+          ) : (
+            emptyLabel
+          )
         }
       </SelectValue>
     </SelectTrigger>
@@ -96,7 +107,7 @@ export default function ForkProviderSelector({
           if (provider) onChange(provider.id)
         }}
         itemToStringValue={(provider) => provider.id}
-        disabled={providers.length === 0}
+        disabled={groups.length === 0}
       >
         {trigger}
         <SelectContent className="min-w-fit" {...selectContentProps}>

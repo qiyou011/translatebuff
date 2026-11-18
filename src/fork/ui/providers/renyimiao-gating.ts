@@ -13,6 +13,9 @@ export function computeRenyimiaoGating(
   const providers = gated
     ? allProviders.filter((provider) => !isRenyimiaoInstance(provider))
     : allProviders
-  const showFallback = gated && (providers.length === 0 || isRenyimiaoInstance({ id: selectedId }))
+  const showFallback =
+    gated &&
+    allProviders.some(isRenyimiaoInstance) &&
+    (providers.length === 0 || isRenyimiaoInstance({ id: selectedId }))
   return { providers, showFallback }
 }

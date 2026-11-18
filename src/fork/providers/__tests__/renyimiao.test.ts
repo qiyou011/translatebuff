@@ -122,7 +122,7 @@ describe("syncRenyimiaoModels（以 fetch 结果为准重建实例集）", () =>
     const config = seededConfig()
     const patch = syncRenyimiaoModels(config, ["Deepseek-V4-Pro", "GLM-5.2", "Kimi-k2.7"])
     const next = applyPatch(config, patch)
-    expect(renyimiaoModelIds(next.providersConfig).sort()).toEqual(
+    expect(renyimiaoModelIds(next.providersConfig.filter((p) => p.enabled)).sort()).toEqual(
       ["Deepseek-V4-Pro", "GLM-5.2", "Kimi-k2.7"].sort(),
     )
     expect(next.providersConfig.some((provider) => provider.id === "openai-default")).toBe(true)
@@ -140,18 +140,18 @@ describe("syncRenyimiaoModels（以 fetch 结果为准重建实例集）", () =>
     expect(glm && "apiKey" in glm ? glm.apiKey : undefined).toBe("user-key")
   })
 
-  it("功能指向被移除的任译喵实例时 repoint 到存活实例", () => {
+  it("模型下线时保留选择并停用原实例", () => {
     const config: Config = {
       ...seededConfig(),
       pageTranslation: { ...DEFAULT_CONFIG.pageTranslation, providerId: DEEPSEEK_ID },
     }
     const patch = syncRenyimiaoModels(config, ["GLM-5.2"])
     const next = applyPatch(config, patch)
-    expect(next.pageTranslation.providerId).toBe(renyimiaoInstanceId("GLM-5.2"))
+    expect(next.pageTranslation.providerId).toBe(DEEPSEEK_ID)
+    expect(next.providersConfig.find((p) => p.id === DEEPSEEK_ID)?.enabled).toBe(false)
   })
 
-  it("划词工具栏翻译功能与自定义动作同时指向被移除实例：翻译 repoint 不被自定义动作补丁覆盖", () => {
-    // seed 后词典自定义动作已指向 DEEPSEEK_ID；再让划词工具栏翻译功能也指向它 → 构造共现（两者同触发 repoint）。
+  it("模型下线后划词和自定义动作保留原选择", () => {
     const seeded = seededConfig()
     const config: Config = {
       ...seeded,
@@ -163,13 +163,11 @@ describe("syncRenyimiaoModels（以 fetch 结果为准重建实例集）", () =>
         },
       },
     }
-    const survivor = renyimiaoInstanceId("GLM-5.2")
+
     const next = applyPatch(config, syncRenyimiaoModels(config, ["GLM-5.2"]))
-    // 划词翻译 repoint 到存活实例（bug 时被 { ...config.selectionToolbar } 覆盖盖回被移除的 DEEPSEEK_ID）。
-    expect(next.selectionToolbar.features.translate.providerId).toBe(survivor)
-    // 共现的另一半：自定义动作也已 repoint，不再指向被移除实例。
+    expect(next.selectionToolbar.features.translate.providerId).toBe(DEEPSEEK_ID)
     expect(
-      next.selectionToolbar.customActions.every((action) => action.providerId !== DEEPSEEK_ID),
+      next.selectionToolbar.customActions.every((action) => action.providerId === DEEPSEEK_ID),
     ).toBe(true)
   })
 })
@@ -180,7 +178,7 @@ describe("共享 API Key 读写", () => {
     const withModels = applyPatch(config, syncRenyimiaoModels(config, ["A-model", "B-model"]))
     const broadcast = setRenyimiaoApiKey(withModels.providersConfig, "k-123")
     const renyimiaoInstances = broadcast.filter((provider) => provider.id.startsWith("renyimiao-"))
-    expect(renyimiaoInstances.length).toBe(2)
+    expect(renyimiaoInstances.length).toBe(3)
     expect(
       renyimiaoInstances.every((provider) => "apiKey" in provider && provider.apiKey === "k-123"),
     ).toBe(true)
@@ -215,7 +213,7 @@ describe("共享网关 base_url 读写", () => {
     const withModels = applyPatch(config, syncRenyimiaoModels(config, ["A-model", "B-model"]))
     const broadcast = setRenyimiaoBaseUrl(withModels.providersConfig, "https://dyn.gw")
     const instances = broadcast.filter((provider) => provider.id.startsWith("renyimiao-"))
-    expect(instances.length).toBe(2)
+    expect(instances.length).toBe(3)
     expect(
       instances.every(
         (provider) => "baseURL" in provider && provider.baseURL === "https://dyn.gw/v1",

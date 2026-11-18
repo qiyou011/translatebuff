@@ -87,6 +87,7 @@ export function buildRenyimiaoProvider(
 export function renyimiaoModelIds(providersConfig: ProvidersConfig): string[] {
   return providersConfig
     .filter(isRenyimiaoProviderConfig)
+    .filter((provider) => provider.enabled)
     .map((provider) => provider.model.customModel ?? "")
     .filter((modelId) => modelId !== "")
 }
@@ -129,9 +130,9 @@ export function isForkVisibleProvider(provider: ProviderConfig): boolean {
   return isRenyimiaoInstance(provider) || isPureTranslateProviderConfig(provider)
 }
 
-// 某 providerId 是否可见：存在于 config 且 fork 可见。
-// 用"实际存在"判断（而非仅前缀），使 seed 与 sync 都能把指向已移除实例的功能识别为需 repoint。
+// 托管选择即使下线也保留，其他 provider 仍按 fork 可见性接纳。
 function isVisibleProviderId(providerId: string, providersConfig: ProvidersConfig): boolean {
+  if (isRenyimiaoInstance({ id: providerId })) return true
   const provider = providersConfig.find((item) => item.id === providerId)
   return provider ? isForkVisibleProvider(provider) : false
 }
@@ -252,11 +253,8 @@ export function computeForkConfigSync(config: Config): Partial<Config> | null {
 
 // 以「更新模型」fetch 的结果为准重建任译喵实例集：
 //   已有同名模型的实例保留（含其 apiKey）、新模型按共享 key 新建、fetch 里没有的模型移除；
-//   指向被移除实例的功能 / 自定义动作 repoint 到存活实例。空列表不清空（防误清）。返回补丁。
+//   下线实例保留记录并停用，保存的选择由用户显式替换。空目录同样停用全部托管实例。
 export function syncRenyimiaoModels(config: Config, modelIds: string[]): Partial<Config> {
-  if (modelIds.length === 0) {
-    return {}
-  }
   const sharedKey = renyimiaoApiKey(config.providersConfig)
   const sharedBaseUrl = renyimiaoBaseUrl(config.providersConfig) || RENYIMIAO_GATEWAY_BASE_URL
   const existingById = new Map(
@@ -265,17 +263,15 @@ export function syncRenyimiaoModels(config: Config, modelIds: string[]): Partial
       .map((provider) => [provider.id, provider]),
   )
   const nonRenyimiao = config.providersConfig.filter((provider) => !isRenyimiaoInstance(provider))
-  const desired = modelIds.map(
-    (modelId) =>
-      existingById.get(renyimiaoInstanceId(modelId)) ??
-      buildRenyimiaoProvider(modelId, sharedKey, sharedBaseUrl),
-  )
-  const nextProviders = [...nonRenyimiao, ...desired]
-
-  const repoint = repointHidden(config, nextProviders, renyimiaoInstanceId(modelIds[0]!))
-  const patch = buildRepointPatch(config, repoint)
-  patch.providersConfig = nextProviders
-  return patch
+  const desired = modelIds.map((modelId) => ({
+    ...(existingById.get(renyimiaoInstanceId(modelId)) ??
+      buildRenyimiaoProvider(modelId, sharedKey, sharedBaseUrl)),
+    enabled: true,
+  }))
+  const retired = [...existingById.values()]
+    .filter((provider) => !modelIds.includes(provider.model.customModel ?? ""))
+    .map((provider) => ({ ...provider, enabled: false }))
+  return { providersConfig: [...nonRenyimiao, ...desired, ...retired] }
 }
 
 // UI 挂载时调用：从 storage 读最新 config（post-init，避开新装竞态）、算 seed 补丁、有变化则写回。幂等。

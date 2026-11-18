@@ -5,11 +5,25 @@ import type {
 } from "@/utils/providers/provider-registry"
 import { isRenyimiaoInstance } from "@/fork/providers/renyimiao-identity"
 import {
+  doesProviderSupportsCapability as supportsUpstream,
   isLocalProviderConfigCompatibleWithCapability,
   resolveProviderRefForCapability as resolveUpstream,
 } from "@/utils/providers/provider-registry"
 
 export * from "@/utils/providers/provider-registry"
+
+// Saved selections survive directory removal so users can choose a replacement.
+export function doesProviderSupportsCapability(
+  capability: ProviderCapability,
+  providersConfig: ProvidersConfig,
+  providerId: string,
+  options: { requireEnable?: boolean } = {},
+): boolean {
+  return supportsUpstream(capability, providersConfig, providerId, {
+    ...options,
+    requireEnable: false,
+  })
+}
 
 export function resolveProviderRefForCapability<C extends ProviderCapability>(
   capability: C,
@@ -17,6 +31,7 @@ export function resolveProviderRefForCapability<C extends ProviderCapability>(
   providerId: string,
 ): ProviderRefForCapability<C> | null {
   const resolved = resolveUpstream(capability, providersConfig, providerId)
+  if (resolved?.kind === "local" && !resolved.config.enabled) return null
   if (!resolved || resolved.kind === "local") return resolved
   // 检测只允许本地降级；已关闭的笔记建议不能因兼容而恢复付费请求。
   if (capability === "languageDetection" || capability === "noteSuggestion") return null

@@ -33,6 +33,11 @@ const {
   mockValidateTranslationConfigAndToast: vi.fn<(...args: any[]) => any>(),
 }))
 
+vi.mock("@/fork/config/storage", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("@/fork/config/storage")>()),
+  readFeatureConfig: async () => ({ mainConfig: await mockGetLocalConfig() }),
+}))
+
 vi.mock("@/utils/config/storage", () => ({ getLocalConfig: mockGetLocalConfig }))
 vi.mock("@/utils/host/translate/filter-small-paragraph", () => ({
   shouldFilterSmallParagraph: vi.fn<(...args: any[]) => any>().mockResolvedValue(false),

@@ -9,6 +9,7 @@ import { defineExtensionMessaging } from "@webext-core/messaging"
 // fork 专属消息契约，独立于上游 ProtocolMap，避免同步冲突
 interface ForkProtocolMap {
   forkPing: () => "pong"
+  forkGetPageTranslationStatus: () => { translated: boolean; failed: boolean; pending: boolean }
   forkReadFeatureConfig: () => FeatureConfigSnapshot
   forkPatchFeatureConfig: (patch: FeatureConfigPatch) => FeatureConfigPatchResult
   forkReplaceFeatureConfig: (replacement: FeatureConfigReplacement) => FeatureConfigPatchResult

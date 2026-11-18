@@ -128,7 +128,9 @@ describe("adoptCredential（接管编排）", () => {
       }
       if (url.includes("/models")) {
         return Promise.resolve(
-          jsonResponse(200, { data: [{ id: "GLM-5.2" }, { id: "Kimi-k2.7" }] }),
+          jsonResponse(200, {
+            data: [{ id: "GLM-5.2" }, { id: "Kimi-k2.7" }, { id: "Deepseek-V4-Flash" }],
+          }),
         )
       }
       return Promise.resolve(jsonResponse(404, {}))
@@ -139,7 +141,11 @@ describe("adoptCredential（接管编排）", () => {
     const config = await storageAdapter.get(CONFIG_STORAGE_KEY, DEFAULT_CONFIG, configSchema)
     expect(renyimiaoApiKey(config.providersConfig)).toBe(SK)
     expect(renyimiaoBaseUrl(config.providersConfig)).toBe("https://dyn.gw/v1")
-    expect(renyimiaoModelIds(config.providersConfig).sort()).toEqual(["GLM-5.2", "Kimi-k2.7"])
+    expect(renyimiaoModelIds(config.providersConfig).sort()).toEqual([
+      "Deepseek-V4-Flash",
+      "GLM-5.2",
+      "Kimi-k2.7",
+    ])
   })
 
   it("拉模型失败 → 降级不阻断：会话/key/base_url 仍写入、保留静态实例", async () => {

@@ -1,6 +1,9 @@
 import type { ProvidersConfig } from "@/types/config/provider"
 import { describe, expect, it } from "vitest"
-import { resolveProviderRefForCapability } from "@/utils/providers/provider-registry"
+import {
+  doesProviderSupportsCapability,
+  resolveProviderRefForCapability,
+} from "@/utils/providers/provider-registry"
 
 const candidate = {
   id: "renyimiao-test",
@@ -83,4 +86,28 @@ describe("fork legacy provider resolution", () => {
     expect(ref.config).toBe(local)
     expect(resolveProviderRefForCapability("pageTranslation", [candidate], "missing")).toBeNull()
   })
+})
+
+it("retains disabled references for settings while refusing to resolve them for requests", () => {
+  const disabled = { ...candidate, enabled: false }
+  expect(
+    doesProviderSupportsCapability("pageTranslation", [disabled], disabled.id, {
+      requireEnable: true,
+    }),
+  ).toBe(true)
+  expect(
+    resolveProviderRefForCapability("pageTranslation", [disabled, candidate], disabled.id),
+  ).toBeNull()
+})
+
+it("keeps an empty service directory readable without enabling a provider", async () => {
+  const { configSchema } = await import("@/types/config/config")
+  const { DEFAULT_CONFIG } = await import("@/utils/constants/config")
+  const config = structuredClone(DEFAULT_CONFIG)
+  config.providersConfig = config.providersConfig.map((p) => ({ ...p, enabled: false }))
+  expect(configSchema.safeParse(config).success).toBe(true)
+  for (const p of config.providersConfig)
+    expect(
+      resolveProviderRefForCapability("pageTranslation", config.providersConfig, p.id),
+    ).toBeNull()
 })

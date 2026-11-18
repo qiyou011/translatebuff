@@ -1,3 +1,4 @@
+import { FeatureSettings } from "@/fork/ui/feature-settings"
 import { i18n } from "@/utils/i18n"
 import { PageLayout } from "../../components/page-layout"
 import { CacheSection } from "./cache"
@@ -14,6 +15,7 @@ export function TranslationPage() {
       title={i18n.t("options.translation.title")}
       innerClassName="translation-page flex flex-col gap-10"
     >
+      <FeatureSettings feature="page" languagesOnly />
       <TranslationStyleSection />
       <PersonalizedPromptsSection />
       <PreferenceSection />

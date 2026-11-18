@@ -127,7 +127,7 @@
     },
     {
       "path": "src/entrypoints/host.content/translation-control/__tests__/page-translation-mutations.test.ts",
-      "sha256": "0097201bd1bb47e2efad754cafea6fceeb8954d64c1b014154b423af231b8a9d",
+      "sha256": "c4fc9404edfca4c8d3b30b8dfab70af866e99ad9b604b644178c7762db19621b",
       "sources": [
         "f2e72180008812358b501e105b6a5ca66ff53b4e",
         "543683a70adc5af7d77861d98e4ad0ef618ea3fa"
@@ -135,7 +135,7 @@
     },
     {
       "path": "src/entrypoints/host.content/translation-control/page-translation.ts",
-      "sha256": "9632f04a860b61be7ea04010894796c48411e393d7fc4141754838e018e2d08c",
+      "sha256": "ae399ca003f8fd3cfe135122708ae826c7024aa89aae56323f1921ebcd8e8571",
       "sources": [
         "1308e8d1be455d08ec4e907eb2c8966998abca0b",
         "f2e72180008812358b501e105b6a5ca66ff53b4e",
@@ -414,7 +414,7 @@
     },
     {
       "path": "src/utils/host/translate/core/translation-request.ts",
-      "sha256": "44e96c4711590f3bfe193c5400b1668a9b2d5b28a7c0d218266d23265a555d8d",
+      "sha256": "32e3aaf8743a3af1455035875836416e23332f360e3db8018caa087b2475d2a0",
       "sources": ["3d768aad26791cc2664129d206cbcf39179e0486"]
     },
     {

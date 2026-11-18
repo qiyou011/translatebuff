@@ -1,3 +1,4 @@
+import { sendForkMessage } from "@/fork/message"
 import { ANALYTICS_FEATURE, ANALYTICS_SURFACE } from "@/types/analytics"
 import { createFeatureUsageContext } from "@/utils/analytics"
 import { sendMessage } from "@/utils/message"
@@ -16,7 +17,20 @@ export async function requestPageTranslation(tabId: number, enabled: boolean, si
     signal.throwIfAborted()
     const actual = await sendMessage("getEnablePageTranslationByTabId", { tabId })
     signal.throwIfAborted()
-    if (actual === enabled) return actual
+    if (actual === enabled) {
+      if (!enabled) return false
+      const result = await sendForkMessage("forkGetPageTranslationStatus", undefined, {
+        tabId,
+        frameId: 0,
+      })
+      signal.throwIfAborted()
+      if (result.translated) return true
+      if (result.pending) attempt = 0
+      if (result.failed && !result.pending) {
+        await sendMessage("tryToSetEnablePageTranslationByTabId", { tabId, enabled: false })
+        throw new Error("Page translation failed")
+      }
+    }
     await new Promise((resolve) => setTimeout(resolve, 200))
   }
   throw new Error("Page translation did not acknowledge the requested state")

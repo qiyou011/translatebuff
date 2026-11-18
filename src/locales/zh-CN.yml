@@ -14,6 +14,9 @@ forkPreview:
   sampleText: 神谷先生不是在对抗世界，而是在对抗可能让世界为之侧目的事物。
 
 forkProviders:
+  providedModels: "$1 提供的模型"
+  unavailable: "当前服务已不可用，请选择其他服务"
+  noServices: "暂无可用翻译服务"
   description: "用于翻译和词汇解析功能"
   modelsLabel: "模型"
   keyAfterLogin: "登录后自动获取"
@@ -72,7 +75,7 @@ popup:
         current: 当前为仅译文
         action: 点击切换为双语对照
   hub:
-    tooltip: 一次性调用多个翻译模型翻译文本
+    tooltip: 一次调用多个模型翻译文本
   discord:
     tooltip: 加入 Discord 与开发者交流，抢先体验新功能
   blog:
@@ -1965,8 +1968,9 @@ languages:
   rar: 拉罗汤加语
   hif: 斐济印地语
 quickTranslation:
+  restrictedPage: "浏览器限制此页面，无法进行网页翻译"
   stylePreviewTranslation: "清晨安静地散步，是探索这座城市的好方式。"
-  brandTranslate: "任译喵：翻译选区"
+  brandTranslate: "任译喵翻译"
   enableSubtitles: "开启视频字幕"
   sitePaused: "已在当前网站禁用扩展"
   resumeSite: "恢复使用"

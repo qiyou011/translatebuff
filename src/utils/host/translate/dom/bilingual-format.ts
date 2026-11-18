@@ -154,6 +154,20 @@ export function extractBilingualFormat(
       return ""
     const computed = view.getComputedStyle(el)
     if (computed.display === "none" || computed.visibility === "hidden") return ""
+    const hasTransition = `${computed.transition} ${computed.transitionDuration}`
+      .split(/[,\s]+/)
+      .some((part) => /m?s$/.test(part) && Number.parseFloat(part) > 0)
+    // Keep reveal animations and interactive content eligible for translation.
+    if (
+      tag === "span" &&
+      computed.opacity === "0" &&
+      !hasTransition &&
+      (!computed.transitionDuration || /^0s(?:,\s*0s)*$/.test(computed.transitionDuration)) &&
+      (!computed.animationName || computed.animationName === "none") &&
+      !el.matches("[tabindex], [role], [contenteditable]") &&
+      !el.querySelector("a, button, input, select, textarea, [tabindex], [role], [contenteditable]")
+    )
+      return ""
     // The prototype's transparent section anchor is auxiliary; opacity alone is NOT a generic skip rule.
     if (
       tag === "a" &&

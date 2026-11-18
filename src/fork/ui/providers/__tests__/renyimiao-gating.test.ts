@@ -46,3 +46,10 @@ describe("computeRenyimiaoGating", () => {
     expect(result.providers.map((p) => p.id)).toEqual(["microsoft"])
   })
 })
+
+it("uses the empty service state when the directory has no available models", () => {
+  expect(computeRenyimiaoGating([], "", "renyimiao-retired")).toEqual({
+    providers: [],
+    showFallback: false,
+  })
+})

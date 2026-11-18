@@ -3,6 +3,8 @@ import type { ContentScriptContext } from "#imports"
 import type { Config } from "@/types/config/config"
 import { storage } from "#imports"
 import { watchSiteTranslation } from "@/fork/config/watch-site-translation"
+import { onForkMessage } from "@/fork/message"
+import { readPageTranslationStatus } from "@/fork/page-translation/status"
 import { configSchema } from "@/types/config/config"
 import { CONFIG_STORAGE_KEY, DEFAULT_CONFIG } from "@/utils/constants/config"
 import { detectPageLanguageLightweight } from "@/utils/content/page-language"
@@ -46,6 +48,10 @@ export async function bootstrapHostContent(
 
   const cleanupPageTranslationTriggers = manager.registerPageTranslationTriggers()
   const cleanupSiteTranslationWatch = watchSiteTranslation(manager)
+  const cleanupResultStatus = onForkMessage(
+    "forkGetPageTranslationStatus",
+    readPageTranslationStatus,
+  )
 
   // The tab-title switch applies to an already-translated page at once. Only
   // the top frame owns the title, so iframes skip parsing every config write.
@@ -160,6 +166,7 @@ export async function bootstrapHostContent(
     teardownNodeTranslation()
     cleanupPageTranslationTriggers()
     cleanupSiteTranslationWatch()
+    cleanupResultStatus()
     cleanupTitleTranslationWatch()
     cleanupTranslationShortcut()
     cleanupTranslationModeShortcut()

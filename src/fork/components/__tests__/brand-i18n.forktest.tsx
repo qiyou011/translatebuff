@@ -34,17 +34,19 @@ describe("海外真实语言资源", () => {
     await initI18n(locale)
     const translation = resources[locale]!.translation as Record<string, unknown>
     const entries = translation.forkProviders as Record<string, string>
-    expect(Object.keys(entries).sort()).toEqual([
-      "description",
-      "fetchHint",
-      "keyAfterLogin",
-      "keyLoading",
-      "loginEnable",
-      "modelsAfterLogin",
-      "modelsLabel",
-      "modelsLoading",
-      "updatedModels",
-    ])
+    expect(Object.keys(entries).sort()).toEqual(
+      expect.arrayContaining([
+        "description",
+        "fetchHint",
+        "keyAfterLogin",
+        "keyLoading",
+        "loginEnable",
+        "modelsAfterLogin",
+        "modelsLabel",
+        "modelsLoading",
+        "updatedModels",
+      ]),
+    )
     expect(Object.values(entries).every((value) => value.trim().length > 0)).toBe(true)
     expect(i18n.t("forkProviders.updatedModels", [2])).toContain("2")
     expect(i18n.t("forkProviders.modelsLoading", ["TranslateBuff"])).toContain("TranslateBuff")

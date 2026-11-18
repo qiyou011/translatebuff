@@ -24,7 +24,17 @@ export default function TranslateButton({ className }: { className?: string }) {
   const request = useRef<AbortController | null>(null)
   const [pending, setPending] = useState(false)
   const [failed, setFailed] = useState(false)
-  const blocked = ignored || (mode === "whitelist" ? !inWhitelist : inBlacklist)
+  const [restricted, setRestricted] = useState(ignored)
+  useEffect(() => {
+    let active = true
+    void browser.tabs.query({ active: true, currentWindow: true }).then(([tab]) => {
+      if (active) setRestricted(!!tab?.url && !/^(https?|file):/.test(tab.url))
+    })
+    return () => {
+      active = false
+    }
+  }, [])
+  const blocked = restricted || ignored || (mode === "whitelist" ? !inWhitelist : inBlacklist)
   useEffect(() => () => request.current?.abort(), [])
   useEffect(() => {
     if (blocked) request.current?.abort()
@@ -66,6 +76,11 @@ export default function TranslateButton({ className }: { className?: string }) {
           <kbd className="ml-2 text-xs">{formatHotkeyParts(config.page.shortcut).join(" + ")}</kbd>
         )}
       </Button>
+      {(restricted || ignored) && (
+        <span role="status" className="text-xs text-muted-foreground">
+          {i18n.t("quickTranslation.restrictedPage")}
+        </span>
+      )}
       {failed && (
         <span role="alert" className="text-xs text-destructive">
           {i18n.t("inputTranslationBar.failed")}

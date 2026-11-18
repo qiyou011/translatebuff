@@ -33,6 +33,15 @@ vi.mock("@/utils/config/languages", () => ({
   getDetectedCodeFromStorage: mockGetDetectedCodeFromStorage,
 }))
 
+const readyConfig = vi.hoisted(() => vi.fn<() => Promise<unknown>>())
+vi.mock("@/fork/config/storage", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("@/fork/config/storage")>()),
+  readFeatureConfig: async () => {
+    await readyConfig()
+    return { mainConfig: await mockGetLocalConfig() }
+  },
+}))
+
 vi.mock("@/utils/config/storage", () => ({
   getLocalConfig: mockGetLocalConfig,
 }))
@@ -391,4 +400,23 @@ describe("pageTranslationManager title handling", () => {
     manager.stop()
     expect(document.title).toBe("Updated Source Title")
   })
+})
+
+it("waits for the fork configuration barrier before starting page work", async () => {
+  let release!: () => void
+  readyConfig.mockImplementationOnce(
+    () =>
+      new Promise<void>((resolve) => {
+        release = resolve
+      }),
+  )
+  mockGetLocalConfig.mockResolvedValue(DEFAULT_CONFIG)
+  const manager = new PageTranslationManager({ root: null, rootMargin: "0px", threshold: 0 })
+  const pending = manager.start()
+  await Promise.resolve()
+  expect(manager.isActive).toBe(false)
+  manager.stop()
+  release()
+  await pending
+  expect(manager.isActive).toBe(false)
 })

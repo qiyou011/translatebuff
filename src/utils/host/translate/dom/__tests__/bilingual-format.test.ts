@@ -70,3 +70,12 @@ describe("bilingual format extraction and safe rebuilding", () => {
     expect(target.textContent).toBe("The literal ⟦B0⟧ and ZXQATOM0QXZ are examples.")
   })
 })
+
+it("omits static transparent auxiliary spans while retaining interactive and animated content", () => {
+  document.body.innerHTML = `<p>Visible instructions.<span style="opacity:0">Transparent diagnostic message.</span><a href="/next" style="opacity:0">Next page</a><span style="opacity:0;transition:opacity 1s">Revealing content</span></p>`
+  const source = extractBilingualFormat([document.querySelector("p")!])
+  expect(source.plainText).not.toContain("Transparent diagnostic")
+  expect(source.plainText).toContain("Visible instructions.")
+  expect(source.plainText).toContain("Next page")
+  expect(source.plainText).toContain("Revealing content")
+})
