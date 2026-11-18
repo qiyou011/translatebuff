@@ -20,7 +20,7 @@ SHA-256：ee1f2166485ab36ca7dbb8ff37c227b139850704da07d6310a5a9cf6f97cb905
 
 ## 3. cn-home / global-home
 
-配置语言与提供商展示：展示源语言、目标语言及提供商同行选择。配置：各翻译功能独立保存语言与提供商，切换功能不覆盖其他配置；数据影响：新用户国内版默认 Microsoft Translator，海外版默认 Google Translate，已有用户保留已保存配置。
+配置语言与提供商展示：按已审设计稿展示。源语言与目标语言可在一行，提供商可另起一行。配置：各翻译功能独立保存语言与提供商，切换功能不覆盖其他配置；数据影响：新用户国内版默认 Microsoft Translator，海外版默认 Google Translate，已有用户保留已保存配置。
 
 ## 4. cn-home / global-home
 

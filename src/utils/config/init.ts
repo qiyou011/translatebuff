@@ -1,6 +1,7 @@
 import type { Config } from "@/types/config/config"
 import type { ConfigMeta } from "@/types/config/meta"
 import { storage } from "#imports"
+import { fillMissingTranslateProviderIds } from "@/fork/config/edition-provider"
 import { configSchema } from "@/types/config/config"
 import { isAPIProviderConfig } from "@/types/config/provider"
 import { initI18n } from "@/utils/i18n"
@@ -16,8 +17,7 @@ import { runMigration } from "./migration"
 export interface InitializeConfigResult {
   /**
    * The config was created from defaults in this run — either no stored value existed, or the
-   * stored value failed validation and was rebuilt. Callers use it to run one-time setup that
-   * only makes sense on untouched defaults (see `selectFreshTranslateProviders`).
+   * stored value failed validation and was rebuilt. Callers use it to run one-time setup for a fresh config.
    */
   isFreshInstall: boolean
 }
@@ -61,6 +61,8 @@ export async function initializeConfig(): Promise<InitializeConfigResult> {
     }
   }
 
+  if (storedConfig && fillMissingTranslateProviderIds(config)) didConfigChange = true
+
   const parsedConfig = configSchema.safeParse(config)
   if (parsedConfig.success) {
     // Stored as every reader gets it: defaults filled in, the selection
@@ -72,8 +74,6 @@ export async function initializeConfig(): Promise<InitializeConfigResult> {
     config = buildFreshDefaultConfig()
     currentVersion = CONFIG_SCHEMA_VERSION
     didConfigChange = true
-    // The rebuilt config is untouched defaults, so recovered users get the
-    // same one-time provider selection a genuine fresh install does.
     isFreshInstall = true
   }
 

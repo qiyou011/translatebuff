@@ -6,6 +6,7 @@ import type {
 } from "@/types/config/selection-toolbar"
 import type { PageTranslateRange } from "@/types/config/translate"
 import { DEFAULT_LAYOUT } from "@read-frog/layout-engine/presets"
+import { EDITION_TRANSLATE_PROVIDER_ID } from "@/fork/config/edition-provider"
 import {
   buildDictionaryActionLayout,
   buildImproveWritingActionLayout,
@@ -33,7 +34,6 @@ import {
   buildDefaultProviderConfigList,
   DEFAULT_PROVIDER_CONFIG,
   DEFAULT_PROVIDER_CONFIG_LIST,
-  MICROSOFT_TRANSLATE_PROVIDER_ID,
 } from "./providers"
 import {
   DEFAULT_SELECTION_OVERLAY_OPACITY,
@@ -171,7 +171,7 @@ export const DEFAULT_CONFIG: Config = {
   },
   providersConfig: DEFAULT_PROVIDER_CONFIG_LIST,
   pageTranslation: {
-    providerId: MICROSOFT_TRANSLATE_PROVIDER_ID,
+    providerId: EDITION_TRANSLATE_PROVIDER_ID,
     mode: "bilingual",
     modeShortcut: DEFAULT_TRANSLATION_MODE_SHORTCUT_KEY,
     node: {
@@ -230,7 +230,7 @@ export const DEFAULT_CONFIG: Config = {
     features: {
       translate: {
         enabled: true,
-        providerId: MICROSOFT_TRANSLATE_PROVIDER_ID,
+        providerId: EDITION_TRANSLATE_PROVIDER_ID,
         shortcut: DEFAULT_SELECTION_TRANSLATION_SHORTCUT_KEY,
       },
       speak: {
@@ -278,7 +278,7 @@ export const DEFAULT_CONFIG: Config = {
   },
   inputTranslation: {
     enabled: true,
-    providerId: MICROSOFT_TRANSLATE_PROVIDER_ID,
+    providerId: EDITION_TRANSLATE_PROVIDER_ID,
     fromLang: "targetCode",
     toLang: "sourceCode",
     enableCycle: false,
@@ -288,7 +288,7 @@ export const DEFAULT_CONFIG: Config = {
     enabled: true,
     autoStart: false,
     toggleShortcut: DEFAULT_SUBTITLES_TOGGLE_SHORTCUT_KEY,
-    providerId: MICROSOFT_TRANSLATE_PROVIDER_ID,
+    providerId: EDITION_TRANSLATE_PROVIDER_ID,
     style: {
       displayMode: DEFAULT_DISPLAY_MODE,
       translationPosition: DEFAULT_TRANSLATION_POSITION,
@@ -341,11 +341,6 @@ export const DEFAULT_CONFIG: Config = {
   glossary: { ...DEFAULT_GLOSSARY_CONFIG },
 }
 
-/**
- * Translate features start on Microsoft Translate, which is reachable everywhere; a fresh
- * install is moved onto Google Translate afterwards where that endpoint answers — see
- * `selectFreshTranslateProviders`.
- */
 export function buildFreshDefaultConfig(): Config {
   return {
     ...DEFAULT_CONFIG,

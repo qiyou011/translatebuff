@@ -4,6 +4,7 @@ export interface BilingualFormatManifest {
   identity: string
   formats: { id: string; parent?: string }[]
   atoms: string[]
+  microsoftRangeGuards?: true
   recovery?: boolean
 }
 

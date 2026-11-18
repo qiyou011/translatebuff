@@ -1,5 +1,9 @@
+import type { TranslateTextOptions } from "@/utils/host/translate/translate-text"
 import { toastManager } from "@/components/ui/base-ui/toast"
-import { validateTranslationConfigAndToast as validateUpstream } from "@/utils/host/translate/translate-text"
+import {
+  translateTextCore as translateUpstream,
+  validateTranslationConfigAndToast as validateUpstream,
+} from "@/utils/host/translate/translate-text"
 import { UpstreamCloudDisabledError } from "./disabled-error"
 import { isBuiltInAiProviderId, resolveProviderRefForCapability } from "./provider-registry"
 
@@ -24,4 +28,23 @@ export function validateTranslationConfigAndToast(
     return false
   }
   return validateUpstream(config)
+}
+
+export function translateTextCore(options: TranslateTextOptions): Promise<string> {
+  const { bilingualFormat, providerConfig, langConfig } = options
+  if (
+    bilingualFormat &&
+    providerConfig.kind === "local" &&
+    providerConfig.config.provider === "microsoft-translate" &&
+    (langConfig.targetCode === "cmn" || langConfig.targetCode === "cmn-Hant") &&
+    bilingualFormat.formats.some(({ id }) => /^[DH]/.test(id)) &&
+    !/[【】]/.test(options.text)
+  ) {
+    // The manifest keys both caches and follows this paragraph through batching.
+    return translateUpstream({
+      ...options,
+      bilingualFormat: { ...bilingualFormat, microsoftRangeGuards: true },
+    })
+  }
+  return translateUpstream(options)
 }

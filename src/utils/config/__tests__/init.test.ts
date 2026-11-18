@@ -2,7 +2,6 @@ import type { Config } from "@/types/config/config"
 import { beforeEach, describe, expect, it, vi } from "vitest"
 import { isAPIProviderConfig } from "@/types/config/provider"
 import { CONFIG_SCHEMA_VERSION, DEFAULT_CONFIG } from "@/utils/constants/config"
-import { MICROSOFT_TRANSLATE_PROVIDER_ID } from "@/utils/constants/providers"
 
 const getItemMock = vi.fn<(...args: any[]) => any>()
 const getMetaMock = vi.fn<(...args: any[]) => any>()
@@ -123,21 +122,33 @@ describe("initializeConfig", () => {
     )
   })
 
-  it("starts every translate feature on the globally reachable Microsoft default", async () => {
-    getItemMock.mockResolvedValueOnce(null)
-    getMetaMock.mockResolvedValueOnce(null)
+  it.each([
+    ["cn", "microsoft-translate-default"],
+    ["global", "google-translate-default"],
+  ])("uses the %s edition default from the first config write", async (edition, expected) => {
+    vi.stubEnv("WXT_FORK_EDITION", edition)
+    try {
+      getItemMock.mockResolvedValueOnce(null)
+      getMetaMock.mockResolvedValueOnce(null)
+      const { initializeConfig } = await import("../init")
+      expect((await initializeConfig()).isFreshInstall).toBe(true)
+      expect(translateProviderIdsOf(setItemMock.mock.calls[0]![1])).toEqual(Array(4).fill(expected))
 
-    const { initializeConfig } = await import("../init")
-    const { isFreshInstall } = await initializeConfig()
-
-    expect(isFreshInstall).toBe(true)
-    const freshConfig = setItemMock.mock.calls[0]?.[1] as Config
-    expect(translateProviderIdsOf(freshConfig)).toEqual([
-      MICROSOFT_TRANSLATE_PROVIDER_ID,
-      MICROSOFT_TRANSLATE_PROVIDER_ID,
-      MICROSOFT_TRANSLATE_PROVIDER_ID,
-      MICROSOFT_TRANSLATE_PROVIDER_ID,
-    ])
+      const saved = buildStableConfig()
+      saved.language.targetCode = "fra"
+      const chosen = edition === "cn" ? "google-translate-default" : "microsoft-translate-default"
+      saved.pageTranslation.providerId = chosen
+      Reflect.deleteProperty(saved.inputTranslation, "providerId")
+      getItemMock.mockResolvedValueOnce(saved)
+      getMetaMock.mockResolvedValueOnce({ schemaVersion: CONFIG_SCHEMA_VERSION, lastModifiedAt: 1 })
+      expect((await initializeConfig()).isFreshInstall).toBe(false)
+      const repaired = setItemMock.mock.calls[1]![1] as Config
+      expect(repaired.pageTranslation.providerId).toBe(chosen)
+      expect(repaired.inputTranslation.providerId).toBe(expected)
+      expect(repaired.language.targetCode).toBe("fra")
+    } finally {
+      vi.unstubAllEnvs()
+    }
   })
 
   it("does not report a fresh install when a stored config is reused", async () => {
@@ -154,7 +165,7 @@ describe("initializeConfig", () => {
     expect(isFreshInstall).toBe(false)
   })
 
-  it("reports recovery from an unparseable config as a fresh install so the provider probe reruns", async () => {
+  it("reports recovery from an unparseable config as a fresh install", async () => {
     getItemMock.mockResolvedValueOnce({ not: "a config" })
     getMetaMock.mockResolvedValueOnce({
       schemaVersion: CONFIG_SCHEMA_VERSION,

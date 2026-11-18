@@ -11,6 +11,37 @@ describe("Microsoft serializer-only protocol", () => {
         .join(" and ") + " ZXQATOM21QXZ"
     expect(decodeMicrosoftFormat(encodeMicrosoftFormat(source, manifest), manifest)).toBe(source)
   })
+  it.each([
+    ["D5", "outdated instruction", "过时的说明"],
+    ["H1", "pending payment will be checked tomorrow", "待处理付款将于明天检查"],
+  ])(
+    "preserves the whole translated %s range and strips only validated delimiters",
+    (id, phrase, translation) => {
+      const manifest = {
+        version: 1 as const,
+        identity: "range",
+        formats: [{ id }],
+        atoms: [],
+        microsoftRangeGuards: true as const,
+      }
+      expect(encodeMicrosoftFormat(`⟦${id}⟧${phrase}⟦/${id}⟧`, manifest)).toBe(
+        `<b>【${phrase}】</b>`,
+      )
+      expect(decodeMicrosoftFormat(`<b>【${translation}】</b>`, manifest)).toBe(
+        `⟦${id}⟧${translation}⟦/${id}⟧`,
+      )
+      expect(() => decodeMicrosoftFormat(`【<b>${translation}】</b>`, manifest)).toThrow(
+        "delimiter",
+      )
+      expect(() => decodeMicrosoftFormat(`<b>${translation}</b>`, manifest)).toThrow("delimiter")
+      expect(
+        decodeMicrosoftFormat(`<b>【${translation}】</b>`, {
+          ...manifest,
+          microsoftRangeGuards: undefined,
+        }),
+      ).toContain(`【${translation}】`)
+    },
+  )
   it("escapes source HTML and refuses invented attributes and mismatched ranges", () => {
     const manifest = { version: 1 as const, identity: "safe", formats: [{ id: "H0" }], atoms: [] }
     const source = "literal <img src=x onerror=alert(1)> ⟦H0⟧notice⟦/H0⟧"

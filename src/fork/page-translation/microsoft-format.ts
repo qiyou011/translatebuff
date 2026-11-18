@@ -33,12 +33,14 @@ export function encodeMicrosoftFormat(text: string, manifest: BilingualFormatMan
       if (token.type === "text") return escapeText(token.text)
       if (token.type === "atom") return `ZXQATOM${token.id}QXZ`
       const tags = mapping.get(token.id)!
+      const guarded = manifest.microsoftRangeGuards && /^[DH]/.test(token.id)
       return token.type === "open"
-        ? tags.map((tag) => `<${tag}>`).join("")
-        : tags
-            .toReversed()
-            .map((tag) => `</${tag}>`)
-            .join("")
+        ? tags.map((tag) => `<${tag}>`).join("") + (guarded ? "【" : "")
+        : (guarded ? "】" : "") +
+            tags
+              .toReversed()
+              .map((tag) => `</${tag}>`)
+              .join("")
     })
     .join("")
 }
@@ -78,6 +80,17 @@ export function decodeMicrosoftFormat(text: string, manifest: BilingualFormatMan
     cursor += opening[0].length
   }
   if (stack.length) throw bilingualFormatError("unclosed Microsoft range")
+  if (manifest.microsoftRangeGuards) {
+    // Require each generated delimiter immediately inside its own validated range.
+    result = result.replace(
+      /⟦([DH]\d+)⟧【|】⟦\/([DH]\d+)⟧|⟦\/?[DH]\d+⟧|[【】]/g,
+      (_match, open, close) => {
+        if (open) return `⟦${open}⟧`
+        if (close) return `⟦/${close}⟧`
+        throw bilingualFormatError("damaged Microsoft range delimiter")
+      },
+    )
+  }
   parseBilingualFormat(result, manifest)
   return result
 }

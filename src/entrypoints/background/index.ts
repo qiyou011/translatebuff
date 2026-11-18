@@ -2,11 +2,9 @@ import "@/utils/zod-config"
 import type { Config, UiLanguage } from "@/types/config/config"
 import { browser, defineBackground } from "#imports"
 import { setupFork } from "@/fork/background"
-import { featureConfigService } from "@/fork/background/feature-config-service"
 import { createPageTranslationQueues } from "@/fork/page-translation/queues"
 import { getWebsiteUrl } from "@/fork/website-url"
 import { storageAdapter } from "@/utils/atoms/storage-adapter"
-import { selectFreshTranslateProviders } from "@/utils/config/default-translate-provider"
 import { CONFIG_STORAGE_KEY } from "@/utils/constants/config"
 import { initI18n, setUiLanguage } from "@/utils/i18n"
 import { ensureInstalledAtRecorded } from "@/utils/install-time"
@@ -17,7 +15,7 @@ import { SessionCacheGroupRegistry } from "@/utils/session-cache/session-cache-g
 import { runAiSegmentSubtitles } from "./ai-segmentation"
 import { dispatchBackgroundStreamPort } from "./background-stream"
 import { initializeActionIcons, registerActionIconListeners } from "./browser-action-icon"
-import { ensureInitializedConfig, isFreshInstalledConfig } from "./config"
+import { ensureInitializedConfig } from "./config"
 import { setUpConfigBackup } from "./config-backup"
 import { initializeContextMenu, registerContextMenuListeners } from "./context-menu"
 import {
@@ -64,17 +62,6 @@ export default defineBackground({
         await browser.tabs.create({
           url: getWebsiteUrl("/guide/step-1?from=install"),
         })
-      }
-
-      // Deliberately last: probing Google Translate can hang for seconds on networks that
-      // block it, and nothing above should wait for that. Awaiting inside the listener
-      // keeps the service worker alive until the probe settles. Guarded by the config
-      // actually being new rather than by the install reason: reloading an unpacked
-      // extension reports "install" while the developer's provider choice is still in
-      // storage, and a config rebuilt from defaults after failing validation during an
-      // update deserves the same provider selection a fresh install gets.
-      if (await isFreshInstalledConfig()) {
-        await selectFreshTranslateProviders(featureConfigService.updateMain)
       }
 
       // Clear blog cache on extension update to fetch latest blog posts
