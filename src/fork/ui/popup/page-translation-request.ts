@@ -1,3 +1,4 @@
+import { browser } from "#imports"
 import { sendForkMessage } from "@/fork/message"
 import { ANALYTICS_FEATURE, ANALYTICS_SURFACE } from "@/types/analytics"
 import { createFeatureUsageContext } from "@/utils/analytics"
@@ -19,14 +20,19 @@ export async function requestPageTranslation(tabId: number, enabled: boolean, si
     signal.throwIfAborted()
     if (actual === enabled) {
       if (!enabled) return false
-      const result = await sendForkMessage("forkGetPageTranslationStatus", undefined, {
-        tabId,
-        frameId: 0,
-      })
+      const frames = await browser.webNavigation.getAllFrames({ tabId })
+      const frameIds = new Set([0, ...(frames ?? []).map((frame) => frame.frameId)])
+      const results = await Promise.all(
+        [...frameIds].map((frameId) =>
+          sendForkMessage("forkGetPageTranslationStatus", undefined, { tabId, frameId })
+            // A detached or restricted frame may have no content-script receiver.
+            .catch(() => undefined),
+        ),
+      )
       signal.throwIfAborted()
-      if (result.translated) return true
-      if (result.pending) attempt = 0
-      if (result.failed && !result.pending) {
+      if (results.some((result) => result?.translated)) return true
+      if (results.some((result) => result?.pending)) attempt = 0
+      else if (results.some((result) => result?.failed)) {
         await sendMessage("tryToSetEnablePageTranslationByTabId", { tabId, enabled: false })
         throw new Error("Page translation failed")
       }

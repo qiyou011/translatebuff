@@ -26,17 +26,22 @@ function codes(manifest: BilingualFormatManifest): Map<string, string[]> {
   )
 }
 
+function rangeDelimiters(manifest: BilingualFormatManifest) {
+  return manifest.microsoftRangeGuards === true ? "【】" : manifest.microsoftRangeGuards
+}
+
 export function encodeMicrosoftFormat(text: string, manifest: BilingualFormatManifest): string {
   const mapping = codes(manifest)
+  const delimiters = rangeDelimiters(manifest)
   return parseBilingualFormat(text, manifest)
     .map((token) => {
       if (token.type === "text") return escapeText(token.text)
       if (token.type === "atom") return `ZXQATOM${token.id}QXZ`
       const tags = mapping.get(token.id)!
-      const guarded = manifest.microsoftRangeGuards && /^[DH]/.test(token.id)
+      const guard = /^[DH]/.test(token.id) ? delimiters : undefined
       return token.type === "open"
-        ? tags.map((tag) => `<${tag}>`).join("") + (guarded ? "【" : "")
-        : (guarded ? "】" : "") +
+        ? tags.map((tag) => `<${tag}>`).join("") + (guard?.[0] ?? "")
+        : (guard?.[1] ?? "") +
             tags
               .toReversed()
               .map((tag) => `</${tag}>`)
@@ -80,16 +85,25 @@ export function decodeMicrosoftFormat(text: string, manifest: BilingualFormatMan
     cursor += opening[0].length
   }
   if (stack.length) throw bilingualFormatError("unclosed Microsoft range")
-  if (manifest.microsoftRangeGuards) {
-    // Require each generated delimiter immediately inside its own validated range.
-    result = result.replace(
-      /⟦([DH]\d+)⟧【|】⟦\/([DH]\d+)⟧|⟦\/?[DH]\d+⟧|[【】]/g,
-      (_match, open, close) => {
-        if (open) return `⟦${open}⟧`
-        if (close) return `⟦/${close}⟧`
-        throw bilingualFormatError("damaged Microsoft range delimiter")
-      },
-    )
+  const delimiters = rangeDelimiters(manifest)
+  if (delimiters) {
+    // Edge can wrap neighbouring prose in its HTML tag. Only move plain text
+    // across the boundary, never a nested range or an atom.
+    const [left, right] = delimiters
+    const plain = `([^⟦⟧${delimiters}]*?)`
+    const opening = new RegExp(`(⟦[DH]\\d+⟧)${plain}${left}|⟦[DH]\\d+⟧|${left}`, "g")
+    const closing = new RegExp(`${right}${plain}(⟦/[DH]\\d+⟧)|⟦/[DH]\\d+⟧|${right}`, "g")
+    result = result
+      .replace(opening, (_match, tag: string | undefined, before: string) => {
+        if (!tag || before.includes("ZXQATOM"))
+          throw bilingualFormatError("damaged Microsoft range delimiter")
+        return before + tag
+      })
+      .replace(closing, (_match, after: string, tag: string | undefined) => {
+        if (!tag || after.includes("ZXQATOM"))
+          throw bilingualFormatError("damaged Microsoft range delimiter")
+        return tag + after
+      })
   }
   parseBilingualFormat(result, manifest)
   return result

@@ -42,6 +42,25 @@ describe("Microsoft serializer-only protocol", () => {
       ).toContain(`【${translation}】`)
     },
   )
+  it("keeps literal brackets and places widened neighbouring prose outside the highlight", () => {
+    const manifest = {
+      version: 1 as const,
+      identity: "literal",
+      formats: [{ id: "H0" }],
+      atoms: [],
+      microsoftRangeGuards: "〈〉" as const,
+    }
+    const source = "Original 【account】, ⟦H0⟧pending payment will be checked tomorrow⟦/H0⟧."
+    expect(encodeMicrosoftFormat(source, manifest)).toBe(
+      "Original 【account】, <b>〈pending payment will be checked tomorrow〉</b>.",
+    )
+    expect(
+      decodeMicrosoftFormat("<b>原始【账户】，〈待处理付款将于明天检查〉。</b>", manifest),
+    ).toBe("原始【账户】，⟦H0⟧待处理付款将于明天检查⟦/H0⟧。")
+    expect(() =>
+      decodeMicrosoftFormat("<b>原始【账户】，待处理付款将于明天检查。</b>", manifest),
+    ).toThrow("delimiter")
+  })
   it("escapes source HTML and refuses invented attributes and mismatched ranges", () => {
     const manifest = { version: 1 as const, identity: "safe", formats: [{ id: "H0" }], atoms: [] }
     const source = "literal <img src=x onerror=alert(1)> ⟦H0⟧notice⟦/H0⟧"

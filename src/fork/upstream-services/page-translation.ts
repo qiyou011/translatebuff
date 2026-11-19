@@ -37,13 +37,17 @@ export function translateTextCore(options: TranslateTextOptions): Promise<string
     providerConfig.kind === "local" &&
     providerConfig.config.provider === "microsoft-translate" &&
     (langConfig.targetCode === "cmn" || langConfig.targetCode === "cmn-Hant") &&
-    bilingualFormat.formats.some(({ id }) => /^[DH]/.test(id)) &&
-    !/[【】]/.test(options.text)
+    bilingualFormat.formats.some(({ id }) => /^[DH]/.test(id))
   ) {
+    const pair = (["【】", "〈〉", "《》"] as const).find(
+      (candidate) =>
+        !options.text.includes(candidate.charAt(0)) && !options.text.includes(candidate.charAt(1)),
+    )
+    if (!pair) return translateUpstream(options)
     // The manifest keys both caches and follows this paragraph through batching.
     return translateUpstream({
       ...options,
-      bilingualFormat: { ...bilingualFormat, microsoftRangeGuards: true },
+      bilingualFormat: { ...bilingualFormat, microsoftRangeGuards: pair === "【】" ? true : pair },
     })
   }
   return translateUpstream(options)
