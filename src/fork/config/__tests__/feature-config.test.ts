@@ -28,8 +28,10 @@ describe("translation feature snapshots", () => {
       target: "spa",
       providerId: main.videoSubtitles.providerId,
     })
-    expect(resolveFeatureConfig("input", main, fork)).toMatchObject({
-      source: "auto-draft",
+    expect(
+      resolveFeatureConfig("input", main, fork, { sourceCode: "eng", targetCode: "fra" }),
+    ).toMatchObject({
+      source: "eng",
       target: "fra",
       providerId: main.inputTranslation.providerId,
     })
@@ -41,7 +43,10 @@ describe("translation feature snapshots", () => {
       undefined,
     )
     main.pageTranslation.enableAIContentAware = true
-    const snapshot = resolveFeatureConfig("input", main, fork)
+    const snapshot = resolveFeatureConfig("input", main, fork, {
+      sourceCode: "cmn",
+      targetCode: "eng",
+    })
     const saved = structuredClone(snapshot)
     main.inputTranslation.toLang = "fra"
     main.providersConfig.length = 0

@@ -39,10 +39,34 @@ describe("background feature configuration store", () => {
     release()
     const snapshot = await pending
     expect(snapshot.forkConfig.inputTranslation.triggerCount).toBe(2)
-    expect(snapshot.mainConfig.inputTranslation.toLang).toBe(
-      snapshot.mainConfig.language.targetCode,
-    )
+    expect(snapshot.mainConfig.inputTranslation).toMatchObject({
+      fromLang: "targetCode",
+      toLang: "sourceCode",
+      enableCycle: false,
+    })
     expect(await storage.getItem(FEATURE_CONFIG_JOURNAL_KEY)).toBeNull()
+  })
+
+  it("preserves dynamic language settings and cycling across unrelated writes and restarts", async () => {
+    const service = store()
+    const { revision } = await service.read()
+    const inputTranslation = {
+      fromLang: "sourceCode",
+      toLang: "targetCode",
+      enableCycle: true,
+    } as const
+    const saved = await service.patch({ expectedRevision: revision, main: { inputTranslation } })
+    expect(saved.ok).toBe(true)
+    const reopened = store()
+    const snapshot = await reopened.read()
+    expect(snapshot.mainConfig.inputTranslation).toMatchObject(inputTranslation)
+    const edited = await reopened.patch({
+      expectedRevision: snapshot.revision,
+      fork: { inputTranslation: { triggerCount: 4 } },
+    })
+    expect(edited.ok).toBe(true)
+    expect(edited.snapshot.mainConfig.inputTranslation).toMatchObject(inputTranslation)
+    expect(edited.snapshot.forkConfig.inputTranslation.triggerCount).toBe(4)
   })
 
   it("recovers an interrupted commit on background restart before returning ready", async () => {

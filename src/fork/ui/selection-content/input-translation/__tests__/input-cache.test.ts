@@ -26,7 +26,10 @@ describe("actual input request cache identity", () => {
     mainConfig.inputTranslation.toLang = "fra"
     mainConfig.inputTranslation.providerId = "openai-default"
     mainConfig.pageTranslation.enableAIContentAware = true
-    const first = resolveFeatureConfig("input", mainConfig, forkConfig)
+    const first = resolveFeatureConfig("input", mainConfig, forkConfig, {
+      sourceCode: "eng",
+      targetCode: "fra",
+    })
     await executeInputTranslation({
       text: "hello",
       source: "eng",
@@ -40,7 +43,10 @@ describe("actual input request cache identity", () => {
       readContext: () => ({ webContent: "Chat B" }),
     })
     mainConfig.inputTranslation.toLang = "deu"
-    const next = resolveFeatureConfig("input", mainConfig, forkConfig)
+    const next = resolveFeatureConfig("input", mainConfig, forkConfig, {
+      sourceCode: "eng",
+      targetCode: "deu",
+    })
     await executeInputTranslation({
       text: "hello",
       source: "eng",
@@ -51,7 +57,10 @@ describe("actual input request cache identity", () => {
     await executeInputTranslation({
       text: "hello",
       source: "eng",
-      snapshot: resolveFeatureConfig("input", mainConfig, forkConfig),
+      snapshot: resolveFeatureConfig("input", mainConfig, forkConfig, {
+        sourceCode: "eng",
+        targetCode: "deu",
+      }),
     })
     await executeInputTranslation({
       text: "hello",

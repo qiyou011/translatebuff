@@ -1,7 +1,9 @@
 import type { LangCodeISO6393 } from "@read-frog/definitions"
 import type { TranslationFeature } from "@/fork/config/feature-config"
 import type { FeatureConfigPatch } from "@/fork/config/types"
+import type { InputTranslationLang } from "@/types/config/config"
 import { Icon } from "@iconify/react"
+import { IconSwitchHorizontal } from "@tabler/icons-react"
 import { useAtomValue, useSetAtom } from "jotai"
 import { useState } from "react"
 import { LanguageCombobox } from "@/components/language-combobox"
@@ -98,29 +100,43 @@ export function FeatureSettings({
     setFailed(false)
     void write(patch).catch(() => setFailed(true))
   }
-  const inputTarget = main.inputTranslation.toLang
   const language =
-    feature === "page"
-      ? main.language
-      : feature === "input"
-        ? {
-            sourceCode: "auto" as const,
-            targetCode:
-              inputTarget === "sourceCode" || inputTarget === "targetCode"
-                ? main.language.targetCode
-                : inputTarget,
-          }
-        : fork.featureLanguages[feature]
+    feature === "page" || feature === "input" ? main.language : fork.featureLanguages[feature]
   const setLanguage = (field: "sourceCode" | "targetCode", value: LangCodeISO6393 | "auto") => {
     if (field === "targetCode" && value === "auto") return
-    if (feature === "input") {
-      if (value !== "auto") save({ main: { inputTranslation: { toLang: value } } })
-    } else if (feature === "page") {
+    if (feature === "page") {
       save({ main: { language: { [field]: value } } })
-    } else {
+    } else if (feature !== "input") {
       save({ fork: { featureLanguages: { [feature]: { [field]: value } } } })
     }
   }
+  const inputLanguageItems =
+    feature === "input"
+      ? [
+          {
+            value: "targetCode" as const,
+            label: `${i18n.t("options.inputTranslation.languages.targetCode")} (${getLanguageName(main.language.targetCode)})`,
+          },
+          {
+            value: "sourceCode" as const,
+            label: `${i18n.t("options.inputTranslation.languages.sourceCode")} (${main.language.sourceCode === "auto" ? i18n.t("quickTranslation.autoDetect") : getLanguageName(main.language.sourceCode)})`,
+          },
+          ...getTargetLanguageItems(),
+        ]
+      : []
+  const inputLanguageSelect = (field: "fromLang" | "toLang") => (
+    <LanguageCombobox<InputTranslationLang>
+      items={inputLanguageItems}
+      value={main.inputTranslation[field]}
+      onValueChange={(value) => save({ main: { inputTranslation: { [field]: value } } })}
+      triggerSize="sm"
+    />
+  )
+  const inputDirectionIcon = main.inputTranslation.enableCycle ? (
+    <IconSwitchHorizontal className="tb-panel-icon" size={20} aria-hidden />
+  ) : (
+    <PanelIcon name="arrow" size={20} />
+  )
   const enabled =
     feature === "input"
       ? main.inputTranslation.enabled
@@ -150,7 +166,7 @@ export function FeatureSettings({
         {failed && <p role="alert">{i18n.t("quickTranslation.saveFailed")}</p>}
         <div className="tb-language-row">
           {feature === "input" ? (
-            <span className="tb-fixed-language">{i18n.t("quickTranslation.autoDetect")}</span>
+            inputLanguageSelect("fromLang")
           ) : (
             <LanguageCombobox
               items={sources}
@@ -160,13 +176,17 @@ export function FeatureSettings({
               triggerSize="sm"
             />
           )}
-          <PanelIcon name="arrow" />
-          <LanguageCombobox
-            items={targets}
-            value={language.targetCode}
-            onValueChange={(value) => setLanguage("targetCode", value)}
-            triggerSize="sm"
-          />
+          {feature === "input" ? inputDirectionIcon : <PanelIcon name="arrow" />}
+          {feature === "input" ? (
+            inputLanguageSelect("toLang")
+          ) : (
+            <LanguageCombobox
+              items={targets}
+              value={language.targetCode}
+              onValueChange={(value) => setLanguage("targetCode", value)}
+              triggerSize="sm"
+            />
+          )}
         </div>
         <div className="tb-provider-row" data-provider={providerId}>
           {showFallback ? (
@@ -283,17 +303,24 @@ export function FeatureSettings({
         <h2>{i18n.t("options.inputTranslation.languages.title")}</h2>
         <section className="tb-input-language-card">
           <h3>{i18n.t("quickTranslation.languageDirection")}</h3>
-          <p>{i18n.t("quickTranslation.languageDirectionDescription")}</p>
+          <p>{i18n.t("options.inputTranslation.languages.pair.description")}</p>
           <div className="tb-input-language-controls">
-            <span>{i18n.t("quickTranslation.autoDetect")}</span>
-            <PanelIcon name="arrow" size={20} />
-            <LanguageCombobox
-              items={getTargetLanguageItems()}
-              value={language.targetCode}
-              onValueChange={(value) => setLanguage("targetCode", value)}
-            />
+            {inputLanguageSelect("fromLang")}
+            {inputDirectionIcon}
+            {inputLanguageSelect("toLang")}
           </div>
         </section>
+        <label className="tb-input-setting-row">
+          <span>
+            <strong>{i18n.t("options.inputTranslation.languages.cycle.title")}</strong>
+            <span>{i18n.t("options.inputTranslation.languages.cycle.description")}</span>
+          </span>
+          <Switch
+            aria-label={i18n.t("options.inputTranslation.languages.cycle.title")}
+            checked={main.inputTranslation.enableCycle}
+            onCheckedChange={(enableCycle) => save({ main: { inputTranslation: { enableCycle } } })}
+          />
+        </label>
         <div className="tb-input-setting-row">
           <span>
             <strong>{i18n.t("quickTranslation.provider")}</strong>
@@ -344,9 +371,7 @@ export function FeatureSettings({
         <div className="flex min-w-0 flex-col gap-2">
           <span className="text-sm">{i18n.t("side.sourceLang")}</span>
           {feature === "input" ? (
-            <span className="rounded-md border p-2 text-sm">
-              {i18n.t("quickTranslation.autoDraft")}
-            </span>
+            inputLanguageSelect("fromLang")
           ) : (
             <LanguageCombobox
               value={language.sourceCode}
@@ -358,12 +383,16 @@ export function FeatureSettings({
         </div>
         <div className="flex min-w-0 flex-col gap-2">
           <span className="text-sm">{i18n.t("side.targetLang")}</span>
-          <LanguageCombobox
-            items={getTargetLanguageItems()}
-            value={language.targetCode}
-            onValueChange={(value) => setLanguage("targetCode", value)}
-            triggerSize="sm"
-          />
+          {feature === "input" ? (
+            inputLanguageSelect("toLang")
+          ) : (
+            <LanguageCombobox
+              items={getTargetLanguageItems()}
+              value={language.targetCode}
+              onValueChange={(value) => setLanguage("targetCode", value)}
+              triggerSize="sm"
+            />
+          )}
         </div>
       </div>
       {!languagesOnly && (

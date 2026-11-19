@@ -27,31 +27,25 @@ describe("1.7.0 feature configuration migration", () => {
       })
       expect(result.forkConfig.schemaVersion).toBe(FORK_CONFIG_SCHEMA_VERSION)
       expect(result.mainConfig.inputTranslation).toMatchObject({
-        toLang: "eng",
-        enableCycle: false,
+        toLang: "sourceCode",
+        enableCycle: true,
         timeThreshold: 500,
       })
     },
   )
 
-  it.each(["sourceCode", "targetCode"] as const)(
-    "converts %s to the global target snapshot",
-    (toLang) => {
-      const main = mainConfig()
-      main.inputTranslation.toLang = toLang
-      expect(migrateFeatureConfig(main, undefined).mainConfig.inputTranslation.toLang).toBe("eng")
-      expect(main.inputTranslation.toLang).toBe(toLang)
-    },
-  )
+  it.each(["sourceCode", "targetCode"] as const)("preserves the dynamic target %s", (toLang) => {
+    const main = mainConfig()
+    main.inputTranslation.toLang = toLang
+    expect(migrateFeatureConfig(main, undefined).mainConfig.inputTranslation.toLang).toBe(toLang)
+    expect(main.inputTranslation.toLang).toBe(toLang)
+  })
 
   it("preserves a concrete target and unrelated settings", () => {
     const main = mainConfig()
     main.inputTranslation.toLang = "fra"
     const result = migrateFeatureConfig(main, undefined)
-    expect(result.mainConfig).toEqual({
-      ...main,
-      inputTranslation: { ...main.inputTranslation, enableCycle: false },
-    })
+    expect(result.mainConfig).toEqual(main)
   })
 
   it("keeps subsequent user choices on the second and later startup", () => {

@@ -110,13 +110,6 @@ export function createFeatureConfigStore(initializeMain: () => Promise<unknown>)
             revision: current.forkConfig.revision + 1,
           }),
         })
-        if (
-          next.mainConfig.inputTranslation.toLang === "sourceCode" ||
-          next.mainConfig.inputTranslation.toLang === "targetCode"
-        ) {
-          throw new Error("Input translation requires a concrete target language")
-        }
-        next.mainConfig.inputTranslation.enableCycle = false
         await persist(next)
         return { ok: true, snapshot: await snapshot() }
       }),

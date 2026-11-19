@@ -17,7 +17,10 @@ describe("input translation snapshot execution", () => {
       undefined,
     )
     mainConfig.inputTranslation.toLang = "eng"
-    const snapshot = resolveFeatureConfig("input", mainConfig, forkConfig)
+    const snapshot = resolveFeatureConfig("input", mainConfig, forkConfig, {
+      sourceCode: "cmn",
+      targetCode: "eng",
+    })
     mainConfig.inputTranslation.toLang = "fra"
     const context = vi.fn<() => undefined>()
     await executeInputTranslation({
@@ -49,7 +52,10 @@ describe("input translation snapshot execution", () => {
       executeInputTranslation({
         text: "hello",
         source: "eng",
-        snapshot: resolveFeatureConfig("input", mainConfig, forkConfig),
+        snapshot: resolveFeatureConfig("input", mainConfig, forkConfig, {
+          sourceCode: "eng",
+          targetCode: "eng",
+        }),
       }),
     ).resolves.toBe("")
     expect(translate).not.toHaveBeenCalled()
@@ -62,7 +68,10 @@ describe("input translation snapshot execution", () => {
     mainConfig.inputTranslation.providerId = "openai-default"
     mainConfig.inputTranslation.toLang = "fra"
     mainConfig.pageTranslation.enableAIContentAware = true
-    const snapshot = resolveFeatureConfig("input", mainConfig, forkConfig)
+    const snapshot = resolveFeatureConfig("input", mainConfig, forkConfig, {
+      sourceCode: "eng",
+      targetCode: "fra",
+    })
     const context = vi.fn<() => { webTitle: string; webContent: string }>(() => ({
       webTitle: "Current conversation",
       webContent: "Only this conversation",

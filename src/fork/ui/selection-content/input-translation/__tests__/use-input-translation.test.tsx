@@ -423,7 +423,7 @@ describe("Discord request feedback and stale-result protection", () => {
     expect(rendered.result.current.bar).toMatchObject({ kind: "translated" })
   })
 
-  it("ignores legacy enableCycle on the first request and retry", async () => {
+  it("alternates direction on new triggers and keeps the failed direction on retry", async () => {
     const { input, config, rendered } = setup()
     config.inputTranslation = { ...config.inputTranslation, enableCycle: true }
     rendered.unmount()
@@ -433,11 +433,34 @@ describe("Discord request feedback and stale-result protection", () => {
     await waitFor(() =>
       expect(cycled.result.current.bar).toMatchObject({ feedback: { kind: "error" } }),
     )
-    expect(translateTextForInputMock).toHaveBeenLastCalledWith(input.value, "cmn", "rus")
+    expect(translateTextForInputMock).toHaveBeenLastCalledWith(input.value, "rus", "cmn")
     await act(async () => {
       await cycled.result.current.retry()
     })
-    expect(translateTextForInputMock).toHaveBeenLastCalledWith("你好呀，最近怎么样", "cmn", "rus")
+    expect(translateTextForInputMock).toHaveBeenLastCalledWith("你好呀，最近怎么样", "rus", "cmn")
+    input.value = "你好"
+    act(pressSpaceThrice)
+    await waitFor(() =>
+      expect(translateTextForInputMock).toHaveBeenLastCalledWith("你好", "cmn", "rus"),
+    )
+  })
+
+  it("uses the release default direction for a two-character draft with two spaces", async () => {
+    const config = structuredClone(DEFAULT_CONFIG)
+    config.language = { ...config.language, sourceCode: "auto", targetCode: "cmn" }
+    getLocalConfigMock.mockResolvedValue(config)
+    getDetectedCodeMock.mockResolvedValue("eng")
+    vi.stubGlobal("location", new URL("https://example.com/"))
+    const input = setupPage([])
+    input.value = "你好"
+    renderWithConfig(config, 2)
+    act(() => {
+      fireEvent.keyDown(input, { key: " " })
+      fireEvent.keyDown(input, { key: " " })
+    })
+    await waitFor(() =>
+      expect(translateTextForInputMock).toHaveBeenCalledExactlyOnceWith("你好", "cmn", "eng"),
+    )
   })
 
   it.each([

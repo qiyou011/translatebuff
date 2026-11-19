@@ -34,6 +34,7 @@ import {
 } from "./telegram-context"
 
 const SPACE_KEY = " "
+const LAST_CYCLE_SWAPPED_KEY = "read-frog-input-translation-last-cycle-swapped"
 const SEND_CONFIRMATION_WINDOW_MS = 1000
 /** Hammering the hotkey must stack one toast, not one per attempt. */
 const HOSTED_UNAVAILABLE_TOAST_ID = "input-translation-hosted-unavailable"
@@ -100,6 +101,17 @@ export type InputTranslationFeedback =
   | { kind: "pending" }
   | ({ kind: "error" } & InputTranslationError)
 type TranslationDirection = { fromLang: InputTranslationLang; toLang: InputTranslationLang }
+
+function nextCycleDirection(direction: TranslationDirection): TranslationDirection {
+  let swap = true
+  try {
+    swap = sessionStorage.getItem(LAST_CYCLE_SWAPPED_KEY) !== "true"
+    sessionStorage.setItem(LAST_CYCLE_SWAPPED_KEY, String(swap))
+  } catch {
+    // Some pages block access to sessionStorage.
+  }
+  return swap ? { fromLang: direction.toLang, toLang: direction.fromLang } : direction
+}
 
 /**
  * 输入框上方那条的两种形态。
@@ -340,7 +352,7 @@ export function useInputTranslation() {
       const reddit = /(^|\.)reddit\.com$/.test(new URL(url).hostname) && isLexicalElement(element)
       const chatSite = telegram || reddit || getChatContextSelector(url) !== null
 
-      const direction = {
+      let direction = retryBar?.direction ?? {
         fromLang: inputTranslationConfig.fromLang,
         toLang: inputTranslationConfig.toLang,
       }
@@ -364,13 +376,24 @@ export function useInputTranslation() {
         const config = await readFeatureConfig()
         request.revision = config.revision
         if (!request.valid()) return
-        const snapshot = resolveFeatureConfig("input", config.mainConfig, config.forkConfig)
-        const langs = await resolveInputTranslationLang(config.mainConfig, url, element)
+        if (!retryBar) {
+          const { fromLang, toLang, enableCycle } = config.mainConfig.inputTranslation
+          direction = { fromLang, toLang }
+          if (enableCycle) direction = nextCycleDirection(direction)
+        }
+        const [source, target] = await Promise.all([
+          resolveInputTranslationLang(direction.fromLang, config.mainConfig, url, element),
+          resolveInputTranslationLang(direction.toLang, config.mainConfig, url, element),
+        ])
         if (!request.valid()) return
-        if (langs.from.code === langs.to.code) {
-          publish({ kind: "sameLanguage", element, lang: langs.to.code, sessionKey })
+        if (source === target) {
+          publish({ kind: "sameLanguage", element, lang: target, sessionKey })
           return
         }
+        const snapshot = resolveFeatureConfig("input", config.mainConfig, config.forkConfig, {
+          sourceCode: source,
+          targetCode: target,
+        })
         const translatedText = await trackFeatureAttempt(
           {
             ...createFeatureUsageContext(
@@ -381,12 +404,12 @@ export function useInputTranslation() {
             // it is synthesized by the registry and never a providersConfig row.
             ...classifyResolvedProvider(provider),
             char_count: text.length,
-            target_language: langs.to.code,
+            target_language: target,
           },
           () =>
             executeInputTranslation({
               text: originalText.trim(),
-              source: langs.from.code,
+              source,
               snapshot,
               readContext: ownership?.readContext,
             }),
@@ -434,8 +457,8 @@ export function useInputTranslation() {
                 sessionKey,
                 translatedText,
                 originalText,
-                fromCode: langs.from.code,
-                lang: langs.to.code,
+                fromCode: source,
+                lang: target,
                 langSource: "configured",
               })
             })
@@ -447,8 +470,8 @@ export function useInputTranslation() {
             element,
             sessionKey,
             originalText,
-            fromCode: langs.from.code,
-            lang: langs.to.code,
+            fromCode: source,
+            lang: target,
             langSource: "configured",
           })
         })
@@ -611,11 +634,13 @@ export function useInputTranslation() {
         const config = await readFeatureConfig()
         request.revision = config.revision
         if (!request.valid()) return
-        const snapshot = resolveFeatureConfig("input", config.mainConfig, config.forkConfig)
+        const snapshot = resolveFeatureConfig("input", config.mainConfig, config.forkConfig, {
+          sourceCode: current.fromCode,
+          targetCode: code,
+        })
         const translated = await executeInputTranslation({
           text: current.originalText.trim(),
           source: current.fromCode,
-          target: code,
           snapshot,
           readContext: current.ownership?.readContext,
         })

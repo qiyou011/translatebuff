@@ -56,19 +56,8 @@ export function migrateForkConfig(raw: unknown, mainConfig: Config = DEFAULT_CON
 
 /** 纯计算迁移计划；后台负责跨存储键提交和中断恢复。 */
 export function migrateFeatureConfig(mainConfig: Config, rawForkConfig: unknown) {
-  const { toLang } = mainConfig.inputTranslation
   return {
-    mainConfig: {
-      ...mainConfig,
-      inputTranslation: {
-        ...mainConfig.inputTranslation,
-        toLang:
-          toLang === "sourceCode" || toLang === "targetCode"
-            ? mainConfig.language.targetCode
-            : toLang,
-        enableCycle: false,
-      },
-    },
+    mainConfig,
     forkConfig: migrateForkConfig(rawForkConfig, mainConfig),
   }
 }
