@@ -1,47 +1,62 @@
-import { beforeEach, describe, expect, it, vi } from "vitest"
+// @vitest-environment jsdom
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 import { DEFAULT_CONFIG } from "@/utils/constants/config"
 import { resolveInputTranslationLang } from "../resolve-lang"
-const { detect, pageLanguage } = vi.hoisted(() => ({
-  detect: vi.fn<(...args: unknown[]) => Promise<string | null>>(),
+
+const { pageLanguage } = vi.hoisted(() => ({
   pageLanguage: vi.fn<() => Promise<string>>(),
 }))
-vi.mock("@/utils/content/language", () => ({ detectLanguage: detect }))
 vi.mock("@/utils/config/languages", () => ({ getDetectedCodeFromStorage: pageLanguage }))
 
-describe("input draft language resolution", () => {
+const discordUrl = "https://discord.com/channels/1/2"
+
+describe("input translation language resolution", () => {
   beforeEach(() => {
-    detect.mockReset().mockResolvedValue("cmn")
-    pageLanguage.mockReset()
+    pageLanguage.mockReset().mockResolvedValue("deu")
   })
-  it("detects only the draft and uses the configured concrete target", async () => {
+  afterEach(() => document.body.replaceChildren())
+
+  it.each([
+    ["fra", "jpn", "fra"],
+    ["targetCode", "jpn", "cmn"],
+    ["sourceCode", "jpn", "jpn"],
+  ] as const)(
+    "uses the saved source option %s and the separate input target",
+    async (fromLang, sourceCode, source) => {
+      const config = structuredClone(DEFAULT_CONFIG)
+      config.language.sourceCode = sourceCode
+      config.language.targetCode = "cmn"
+      config.inputTranslation.fromLang = fromLang
+      config.inputTranslation.toLang = "eng"
+      await expect(
+        resolveInputTranslationLang(config, discordUrl, document.createElement("input")),
+      ).resolves.toEqual({
+        from: { code: source },
+        to: { code: "eng", source: "configured" },
+      })
+      expect(pageLanguage).not.toHaveBeenCalled()
+    },
+  )
+
+  it("uses chat language first and falls back to the page language when chat has no result", async () => {
     const config = structuredClone(DEFAULT_CONFIG)
-    config.language = { ...config.language, sourceCode: "jpn", targetCode: "deu" }
-    config.inputTranslation = {
-      ...config.inputTranslation,
-      fromLang: "fra",
-      toLang: "eng",
-      enableCycle: true,
-    }
-    await expect(resolveInputTranslationLang("这是当前输入的草稿", config)).resolves.toEqual({
-      from: { code: "cmn", source: "draft" },
-      to: { code: "eng", source: "configured" },
-    })
-    expect(detect).toHaveBeenCalledWith("这是当前输入的草稿", { enableLLM: false })
-    expect(pageLanguage).not.toHaveBeenCalled()
-  })
-  it("fails without a page or chat fallback when detection has no result", async () => {
-    detect.mockResolvedValue(null)
-    const config = structuredClone(DEFAULT_CONFIG)
+    config.language.sourceCode = "auto"
+    config.inputTranslation.fromLang = "sourceCode"
     config.inputTranslation.toLang = "eng"
-    await expect(resolveInputTranslationLang("👍", config)).rejects.toThrow(
-      "INPUT_LANGUAGE_UNDETECTED",
-    )
+    document.body.innerHTML =
+      '<li id="chat-messages-1"><div id="message-content-1">こんにちは</div></li><input />'
+    const editor = document.querySelector("input")!
+    await expect(resolveInputTranslationLang(config, discordUrl, editor)).resolves.toMatchObject({
+      from: { code: "jpn" },
+      to: { code: "eng" },
+    })
     expect(pageLanguage).not.toHaveBeenCalled()
-  })
-  it("reports equal languages for the caller's no-request feedback", async () => {
-    const config = structuredClone(DEFAULT_CONFIG)
-    config.inputTranslation.toLang = "cmn"
-    const pair = await resolveInputTranslationLang("这是一段中文草稿内容", config)
-    expect(pair.from.code).toBe(pair.to.code)
+
+    document.querySelector("#message-content-1")!.textContent = "👍"
+    await expect(resolveInputTranslationLang(config, discordUrl, editor)).resolves.toMatchObject({
+      from: { code: "deu" },
+      to: { code: "eng" },
+    })
+    expect(pageLanguage).toHaveBeenCalledOnce()
   })
 })

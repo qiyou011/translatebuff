@@ -365,7 +365,7 @@ export function useInputTranslation() {
         request.revision = config.revision
         if (!request.valid()) return
         const snapshot = resolveFeatureConfig("input", config.mainConfig, config.forkConfig)
-        const langs = await resolveInputTranslationLang(originalText, config.mainConfig)
+        const langs = await resolveInputTranslationLang(config.mainConfig, url, element)
         if (!request.valid()) return
         if (langs.from.code === langs.to.code) {
           publish({ kind: "sameLanguage", element, lang: langs.to.code, sessionKey })

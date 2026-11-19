@@ -28,7 +28,6 @@ const getLocalConfigMock = vi.fn<(...args: any[]) => any>()
 const getDetectedCodeMock = vi.fn<(...args: any[]) => any>()
 let readConfigRevision = "test"
 const resolveProviderMock = vi.fn<() => unknown>()
-const detectDraftMock = vi.fn<() => Promise<string | null>>(() => Promise.resolve("cmn"))
 let execCommandMock: ReturnType<typeof vi.fn<() => boolean>>
 
 vi.mock("@/utils/host/translate/translate-variants", () => ({
@@ -38,7 +37,6 @@ vi.mock("../execute-input-translation", () => ({
   executeInputTranslation: ({ text, source, target, snapshot }: any) =>
     translateTextForInputMock(text, source, target ?? snapshot.target),
 }))
-vi.mock("@/utils/content/language", () => ({ detectLanguage: () => detectDraftMock() }))
 vi.mock("@/fork/config/atoms", async () => {
   const { atom } = await import("jotai")
   return {
@@ -149,7 +147,6 @@ describe("Discord request feedback and stale-result protection", () => {
     toastAddMock.mockReset()
     getDetectedCodeMock.mockReset().mockResolvedValue("deu")
     getLocalConfigMock.mockReset()
-    detectDraftMock.mockReset().mockResolvedValue("cmn")
     sessionStorage.clear()
   })
   afterEach(() => {
@@ -190,16 +187,20 @@ describe("Discord request feedback and stale-result protection", () => {
     await waitFor(() => expect(translateTextForInputMock).toHaveBeenCalledOnce())
   })
 
-  it("shows pending during draft detection and does not translate after a route change", async () => {
+  it("shows pending during source resolution and does not translate after a route change", async () => {
     let detect!: (value: string) => void
-    detectDraftMock.mockReturnValue(
+    getDetectedCodeMock.mockReturnValue(
       new Promise((resolve) => {
         detect = resolve
       }),
     )
-    const { rendered } = setup()
+    const config = configWith({ sourceCode: "auto", targetCode: "cmn" })
+    config.inputTranslation.fromLang = "sourceCode"
+    getLocalConfigMock.mockResolvedValue(config)
+    setupPage([])
+    const rendered = renderWithConfig(config)
     act(pressSpaceThrice)
-    await waitFor(() => expect(detectDraftMock).toHaveBeenCalledOnce())
+    await waitFor(() => expect(getDetectedCodeMock).toHaveBeenCalledOnce())
     expect(rendered.result.current.bar).toMatchObject({
       kind: "initial",
       feedback: { kind: "pending" },
@@ -213,21 +214,13 @@ describe("Discord request feedback and stale-result protection", () => {
     expect(rendered.result.current.bar).toBeNull()
   })
 
-  it("preserves the draft and reports failed detection without requesting translation", async () => {
-    detectDraftMock.mockResolvedValue(null)
-    const { input, rendered } = setup()
+  it("translates a two-character draft with the saved source and target", async () => {
+    const { input } = setup()
+    input.value = "你好"
     act(pressSpaceThrice)
     await waitFor(() =>
-      expect(rendered.result.current.bar).toMatchObject({
-        feedback: {
-          kind: "error",
-          messageKey: "inputTranslationBar.languageUndetected",
-          retryable: false,
-        },
-      }),
+      expect(translateTextForInputMock).toHaveBeenCalledWith("你好", "cmn", "rus"),
     )
-    expect(input.value).toBe("你好呀，最近怎么样")
-    expect(translateTextForInputMock).not.toHaveBeenCalled()
     expect(getDetectedCodeMock).not.toHaveBeenCalled()
   })
 
@@ -1123,7 +1116,6 @@ function lifecycleApi(rendered: ReturnType<typeof renderWithConfig>) {
 describe("useInputTranslation 的语言解析", () => {
   beforeEach(() => {
     resolveProviderMock.mockReset().mockReturnValue({ kind: "local", config: {} })
-    detectDraftMock.mockReset().mockResolvedValue("cmn")
     // 以下三个都是 jsdom 的缺口，不补桩会在到达断言前就抛，且异常被 `void handleTranslation()`
     // 吞掉，表现为「什么都没发生」。execCommand 用于替换输入框内容，animate 用于 spinner 转圈。
     execCommandMock = vi.fn<() => boolean>(() => true)
@@ -1180,7 +1172,7 @@ describe("useInputTranslation 的语言解析", () => {
     await waitFor(() =>
       expect(translateTextForInputMock).toHaveBeenLastCalledWith(
         "你好呀，最近怎么样",
-        "cmn",
+        "eng",
         "fra",
       ),
     )
@@ -1381,15 +1373,14 @@ describe("useInputTranslation 的语言解析", () => {
       expect(translateTextForInputMock).toHaveBeenCalledWith(
         "你好呀，最近怎么样",
         "cmn", // fromLang: targetCode
-        "rus", // toLang: sourceCode → 跟随对话
+        "rus", // 输入翻译配置的目标
       )
     })
   })
 
   it("解析后两端语言相同时不调引擎，改在输入框上方挂提示条", async () => {
-    // 对话是俄语，用户的目标语言也设成俄语 → 无事可做。
+    // 源语言沿用全局目标，输入翻译的目标也设成俄语。
     const config = configWith({ sourceCode: "auto", targetCode: "rus" })
-    config.inputTranslation.toLang = "cmn"
     getLocalConfigMock.mockResolvedValue(config)
     setupPage(RUSSIAN_CHAT)
     const rendered = renderWithConfig(config)
@@ -1402,8 +1393,9 @@ describe("useInputTranslation 的语言解析", () => {
     expect(toastAddMock).not.toHaveBeenCalled()
   })
 
-  it("网页固定源语言不影响草稿识别和用户设置的目标", async () => {
+  it("按源语言设置读取固定网页源语言，并使用输入翻译的目标", async () => {
     const config = configWith({ sourceCode: "eng", targetCode: "cmn" })
+    config.inputTranslation.fromLang = "sourceCode"
     getLocalConfigMock.mockResolvedValue(config)
     setupPage(RUSSIAN_CHAT)
     renderWithConfig(config)
@@ -1411,7 +1403,7 @@ describe("useInputTranslation 的语言解析", () => {
     pressSpaceThrice()
 
     await waitFor(() => {
-      expect(translateTextForInputMock).toHaveBeenCalledWith("你好呀，最近怎么样", "cmn", "rus")
+      expect(translateTextForInputMock).toHaveBeenCalledWith("你好呀，最近怎么样", "eng", "rus")
     })
   })
 })
@@ -1449,7 +1441,6 @@ describe("useInputTranslation 的内联条", () => {
 
   function renderSameLanguage() {
     const config = configWith({ sourceCode: "auto", targetCode: "rus" })
-    config.inputTranslation.toLang = "cmn"
     getLocalConfigMock.mockResolvedValue(config)
     const input = setupPage(RUSSIAN_CHAT)
     const rendered = renderWithConfig(config)
