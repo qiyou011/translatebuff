@@ -15,3 +15,5 @@ fix(translation): preserve Microsoft highlights alongside literal brackets when 
 fix(translation): recover a Microsoft highlight when its complete boundaries move outside the HTML tag
 
 fix(selection): use the brand logo as the sole toolbar translation button
+
+fix(popup): fit restriction notices and restore quick panel backdrop, footer, and subtitle styling

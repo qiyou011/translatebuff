@@ -46,6 +46,22 @@ function App() {
   if (sitePaused && activeFeature !== null) setActiveFeature(null)
   const openSettings = () =>
     void openOptionsPage({ route: FEATURE_ROUTES[activeFeature ?? "page"] })
+  const panelBottom = (
+    <>
+      <div className="tb-site-control">
+        <SiteControlToggle />
+      </div>
+      <footer className="tb-panel-footer">
+        <button type="button" onClick={openSettings}>
+          <PanelIcon name="sliders" size={14} />
+          {i18n.t("quickTranslation.allSettings")}
+        </button>
+        <span>
+          {currentEdition() === "cn" ? "任译喵" : "TranslateBuff"} · {EXTENSION_VERSION}
+        </span>
+      </footer>
+    </>
+  )
   return (
     <div className="tb-panel" data-site-paused={sitePaused || undefined}>
       <header className="tb-panel-header">
@@ -98,24 +114,24 @@ function App() {
               </DialogTrigger>
               <DialogContent
                 className="tb-quick-sheet"
+                data-feature={feature}
                 overlayClassName="tb-sheet-overlay"
                 showCloseButton={false}
               >
-                <div className="tb-sheet-heading">
-                  <DialogTitle>
-                    <PanelIcon name={feature === "subtitles" ? "video" : feature} size={24} />
-                    {i18n.t(FEATURE_LABELS[feature])}
-                  </DialogTitle>
-                  <DialogClose className="tb-sheet-close" aria-label="Close">
-                    <PanelIcon name="close" size={16} />
-                  </DialogClose>
+                <div className="tb-sheet-body">
+                  <div className="tb-sheet-heading">
+                    <DialogTitle>
+                      <PanelIcon name={feature === "subtitles" ? "video" : feature} size={24} />
+                      {i18n.t(FEATURE_LABELS[feature])}
+                    </DialogTitle>
+                    <DialogClose className="tb-sheet-close" aria-label="Close">
+                      <PanelIcon name="close" size={16} />
+                    </DialogClose>
+                  </div>
+                  <FeatureSettings feature={feature} compact />
+                  <QuickPanelTutorial feature={feature} />
                 </div>
-                <FeatureSettings feature={feature} compact />
-                <QuickPanelTutorial feature={feature} />
-                <button type="button" className="tb-sheet-settings" onClick={openSettings}>
-                  <PanelIcon name="sliders" size={14} />
-                  {i18n.t("quickTranslation.allSettings")}
-                </button>
+                <div className="tb-sheet-bottom">{panelBottom}</div>
               </DialogContent>
             </Dialog>
           ))}
@@ -126,18 +142,7 @@ function App() {
           </Button>
         </div>
       </section>
-      <div className="tb-site-control">
-        <SiteControlToggle />
-      </div>
-      <footer className="tb-panel-footer">
-        <button type="button" onClick={openSettings}>
-          <PanelIcon name="sliders" size={14} />
-          {i18n.t("quickTranslation.allSettings")}
-        </button>
-        <span>
-          {currentEdition() === "cn" ? "任译喵" : "TranslateBuff"} · {EXTENSION_VERSION}
-        </span>
-      </footer>
+      {panelBottom}
     </div>
   )
 }
