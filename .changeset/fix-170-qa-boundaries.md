@@ -11,3 +11,5 @@ fix(translation): keep site-excluded code listings out of bilingual paragraph re
 fix(translation): report iframe translation results and keep neighbouring text outside Microsoft highlights
 
 fix(translation): preserve Microsoft highlights alongside literal brackets when translating to Chinese
+
+fix(translation): recover a Microsoft highlight when its complete boundaries move outside the HTML tag

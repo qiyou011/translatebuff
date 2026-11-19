@@ -99,6 +99,33 @@ describe("Microsoft serializer-only protocol", () => {
       expect(selectMicrosoftRangeGuards(collision, base)).toBe("〈〉")
     }
   })
+  it("recovers the original QA highlight when Microsoft moves or omits its tag", () => {
+    const base = {
+      version: 1 as const,
+      identity: "qa-original",
+      formats: [{ id: "H0" }],
+      atoms: [],
+    }
+    const source =
+      "The ⟦H0⟧pending payment will be checked tomorrow⟦/H0⟧ for the original 【account】."
+    const manifest = { ...base, microsoftRangeGuards: selectMicrosoftRangeGuards(source, base) }
+    expect(encodeMicrosoftFormat(source, manifest)).toBe(
+      "The <b>【pending payment will be checked tomorrow】</b> for the original “account”.",
+    )
+    const expected = "⟦H0⟧待付款将于明天检查⟦/H0⟧原【账户】的账号。"
+    expect(decodeMicrosoftFormat("【<b>待付款将于明天检查】</b>原“账户”的账号。", manifest)).toBe(
+      expected,
+    )
+    expect(decodeMicrosoftFormat("【待付款将于明天检查】原“账户”的账号。", manifest)).toBe(expected)
+    for (const response of [
+      "【待付款将于明天检查原“账户”的账号。",
+      "【待付款】【将于明天检查】原“账户”的账号。",
+      "【<i>待付款将于明天检查</i>】原“账户”的账号。",
+      "【<b>待付款将于明天检查</b></b>】原“账户”的账号。",
+    ]) {
+      expect(() => decodeMicrosoftFormat(response, manifest)).toThrow("Bilingual format integrity")
+    }
+  })
   it("escapes source HTML and refuses invented attributes and mismatched ranges", () => {
     const manifest = { version: 1 as const, identity: "safe", formats: [{ id: "H0" }], atoms: [] }
     const source = "literal <img src=x onerror=alert(1)> ⟦H0⟧notice⟦/H0⟧"

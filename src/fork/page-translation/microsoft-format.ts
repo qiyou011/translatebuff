@@ -94,7 +94,22 @@ export function decodeMicrosoftFormat(text: string, manifest: BilingualFormatMan
   }
   if (stack.length) throw bilingualFormatError("unclosed Microsoft range")
   const delimiters = rangeDelimiters(manifest)
-  if (delimiters) {
+  const literalGuards = manifest.microsoftRangeGuards
+  const onlyFormat = manifest.formats.length === 1 ? manifest.formats[0] : undefined
+  if (
+    typeof literalGuards === "object" &&
+    onlyFormat?.id.startsWith("H") &&
+    !manifest.atoms.length
+  ) {
+    // Literal brackets were escaped on input. With one highlight and one
+    // complete guard pair, the boundaries are known even if Edge moved its tags.
+    const open = `⟦${onlyFormat.id}⟧`
+    const close = `⟦/${onlyFormat.id}⟧`
+    const guarded = result.replace(open, "").replace(close, "")
+    const range = /^([^【】⟦⟧]*)【([^【】⟦⟧]+)】([^【】⟦⟧]*)$/.exec(guarded)
+    if (!range) throw bilingualFormatError("damaged Microsoft range delimiter")
+    result = `${range[1]}${open}${range[2]}${close}${range[3]}`
+  } else if (delimiters) {
     // Edge can wrap neighbouring prose in its HTML tag. Only move plain text
     // across the boundary, never a nested range or an atom.
     const [left, right] = delimiters
@@ -113,7 +128,6 @@ export function decodeMicrosoftFormat(text: string, manifest: BilingualFormatMan
         return tag + after
       })
   }
-  const literalGuards = manifest.microsoftRangeGuards
   if (typeof literalGuards === "object") {
     result = result.replaceAll("“", "【").replaceAll("”", "】")
     const pairs = countPlainBracketPairs(parseBilingualFormat(result, manifest))
