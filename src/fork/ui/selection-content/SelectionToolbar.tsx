@@ -576,7 +576,6 @@ export function SelectionToolbar() {
             style={{ opacity: "var(--rf-selection-opacity, 1)" }}
           >
             <div className="no-scrollbar flex max-w-105 items-center overflow-x-auto overflow-y-hidden rounded-xl">
-              {features.translate.enabled && <TranslateButton brand />}
               {features.translate.enabled && <TranslateButton />}
               {features.speak.enabled && (
                 <span className="tb-selection-speak">

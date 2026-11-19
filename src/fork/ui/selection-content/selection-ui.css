@@ -10,8 +10,7 @@
   border-radius: 14px;
 }
 .tb-selection-toolbar > div > button,
-.tb-selection-speak > button,
-.tb-selection-brand {
+.tb-selection-speak > button {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -19,6 +18,9 @@
   height: 28px;
   padding: 0 8px;
   flex-shrink: 0;
+}
+.tb-selection-toolbar .tb-selection-brand:not(:last-child) {
+  border-inline-end: 1px solid #e5e5e5;
 }
 .tb-selection-toolbar > div > button:hover,
 .tb-selection-speak > button:hover {
@@ -182,7 +184,9 @@
 .dark .tb-selection-speak > button:hover {
   background: #262626;
 }
-.dark .tb-selection-brand img,
+.dark .tb-selection-toolbar .tb-selection-brand:not(:last-child) {
+  border-color: rgb(255 255 255 / 16%);
+}
 .dark .tb-selection-translate-icon,
 .dark .tb-selection-speak svg.tabler-icon-volume {
   filter: invert(1);

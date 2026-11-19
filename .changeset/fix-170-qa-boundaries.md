@@ -13,3 +13,5 @@ fix(translation): report iframe translation results and keep neighbouring text o
 fix(translation): preserve Microsoft highlights alongside literal brackets when translating to Chinese
 
 fix(translation): recover a Microsoft highlight when its complete boundaries move outside the HTML tag
+
+fix(selection): use the brand logo as the sole toolbar translation button
