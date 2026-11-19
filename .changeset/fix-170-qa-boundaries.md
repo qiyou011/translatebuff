@@ -9,3 +9,5 @@ fix(translation): preserve Microsoft Chinese strikethrough and highlight boundar
 fix(translation): keep site-excluded code listings out of bilingual paragraph requests
 
 fix(translation): report iframe translation results and keep neighbouring text outside Microsoft highlights
+
+fix(translation): preserve Microsoft highlights alongside literal brackets when translating to Chinese

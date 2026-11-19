@@ -1,5 +1,6 @@
 import type { TranslateTextOptions } from "@/utils/host/translate/translate-text"
 import { toastManager } from "@/components/ui/base-ui/toast"
+import { selectMicrosoftRangeGuards } from "@/fork/page-translation/microsoft-range-guards"
 import {
   translateTextCore as translateUpstream,
   validateTranslationConfigAndToast as validateUpstream,
@@ -39,15 +40,12 @@ export function translateTextCore(options: TranslateTextOptions): Promise<string
     (langConfig.targetCode === "cmn" || langConfig.targetCode === "cmn-Hant") &&
     bilingualFormat.formats.some(({ id }) => /^[DH]/.test(id))
   ) {
-    const pair = (["【】", "〈〉", "《》"] as const).find(
-      (candidate) =>
-        !options.text.includes(candidate.charAt(0)) && !options.text.includes(candidate.charAt(1)),
-    )
-    if (!pair) return translateUpstream(options)
+    const microsoftRangeGuards = selectMicrosoftRangeGuards(options.text, bilingualFormat)
+    if (!microsoftRangeGuards) return translateUpstream(options)
     // The manifest keys both caches and follows this paragraph through batching.
     return translateUpstream({
       ...options,
-      bilingualFormat: { ...bilingualFormat, microsoftRangeGuards: pair === "【】" ? true : pair },
+      bilingualFormat: { ...bilingualFormat, microsoftRangeGuards },
     })
   }
   return translateUpstream(options)

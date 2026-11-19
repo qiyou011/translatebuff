@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest"
 import { decodeMicrosoftFormat, encodeMicrosoftFormat } from "../microsoft-format"
+import { selectMicrosoftRangeGuards } from "../microsoft-range-guards"
 describe("Microsoft serializer-only protocol", () => {
   it("round-trips more ranges than available tags without relying on returned order", () => {
     const formats = Array.from({ length: 20 }, (_, index) => ({ id: `B${index}` }))
@@ -60,6 +61,43 @@ describe("Microsoft serializer-only protocol", () => {
     expect(() =>
       decodeMicrosoftFormat("<b>原始【账户】，待处理付款将于明天检查。</b>", manifest),
     ).toThrow("delimiter")
+  })
+  it("keeps the complete contextual translation when Microsoft rewrites angle brackets", () => {
+    const base = { version: 1 as const, identity: "qa", formats: [{ id: "H0" }], atoms: [] }
+    const source = "The original 【account】 ⟦H0⟧pending payment will be checked tomorrow⟦/H0⟧."
+    expect(() =>
+      decodeMicrosoftFormat("原始【账户】<b>《待付款将于明天检查</b>。", {
+        ...base,
+        microsoftRangeGuards: "〈〉",
+      }),
+    ).toThrow("delimiter")
+    const manifest = { ...base, microsoftRangeGuards: selectMicrosoftRangeGuards(source, base) }
+    expect(encodeMicrosoftFormat(source, manifest)).toBe(
+      "The original “account” <b>【pending payment will be checked tomorrow】</b>.",
+    )
+    expect(decodeMicrosoftFormat("原始“账户”<b>【待付款将于明天检查】</b>。", manifest)).toBe(
+      "原始【账户】⟦H0⟧待付款将于明天检查⟦/H0⟧。",
+    )
+    expect(decodeMicrosoftFormat("<b>原始“账户”的【待付款将于明天检查】。</b>", manifest)).toBe(
+      "原始【账户】的⟦H0⟧待付款将于明天检查⟦/H0⟧。",
+    )
+    for (const damaged of ["原始账户", "原始“账户", "“原始”“账户”"]) {
+      expect(() =>
+        decodeMicrosoftFormat(damaged + "<b>【待付款将于明天检查】</b>。", manifest),
+      ).toThrow("literal brackets")
+    }
+    expect(() =>
+      decodeMicrosoftFormat("<b>【原始“账户”的待付款将于明天检查】</b>。", manifest),
+    ).toThrow("literal brackets")
+    for (const collision of [
+      '"quoted" ' + source,
+      "“quoted” " + source,
+      source + "】",
+      "Run ⟦H0⟧【this】⟦/H0⟧.",
+      source.replace("【account】", "【a【b】】"),
+    ]) {
+      expect(selectMicrosoftRangeGuards(collision, base)).toBe("〈〉")
+    }
   })
   it("escapes source HTML and refuses invented attributes and mismatched ranges", () => {
     const manifest = { version: 1 as const, identity: "safe", formats: [{ id: "H0" }], atoms: [] }

@@ -5,6 +5,7 @@ import {
   parseBilingualFormat,
 } from "@/utils/host/translate/bilingual-format-protocol"
 import { attachRequestErrorMeta } from "@/utils/request/retry-policy"
+import { countPlainBracketPairs } from "./microsoft-range-guards"
 
 // Attribute-free inline tags survive Edge's tag aligner. A fixed-width tag
 // sequence identifies each range without relying on source/target order.
@@ -27,7 +28,8 @@ function codes(manifest: BilingualFormatManifest): Map<string, string[]> {
 }
 
 function rangeDelimiters(manifest: BilingualFormatManifest) {
-  return manifest.microsoftRangeGuards === true ? "【】" : manifest.microsoftRangeGuards
+  const guards = manifest.microsoftRangeGuards
+  return guards === true || typeof guards === "object" ? "【】" : guards
 }
 
 export function encodeMicrosoftFormat(text: string, manifest: BilingualFormatManifest): string {
@@ -35,7 +37,13 @@ export function encodeMicrosoftFormat(text: string, manifest: BilingualFormatMan
   const delimiters = rangeDelimiters(manifest)
   return parseBilingualFormat(text, manifest)
     .map((token) => {
-      if (token.type === "text") return escapeText(token.text)
+      if (token.type === "text") {
+        const source =
+          typeof manifest.microsoftRangeGuards === "object"
+            ? token.text.replaceAll("【", "“").replaceAll("】", "”")
+            : token.text
+        return escapeText(source)
+      }
       if (token.type === "atom") return `ZXQATOM${token.id}QXZ`
       const tags = mapping.get(token.id)!
       const guard = /^[DH]/.test(token.id) ? delimiters : undefined
@@ -105,7 +113,15 @@ export function decodeMicrosoftFormat(text: string, manifest: BilingualFormatMan
         return tag + after
       })
   }
-  parseBilingualFormat(result, manifest)
+  const literalGuards = manifest.microsoftRangeGuards
+  if (typeof literalGuards === "object") {
+    result = result.replaceAll("“", "【").replaceAll("”", "】")
+    const pairs = countPlainBracketPairs(parseBilingualFormat(result, manifest))
+    if (!pairs || pairs !== literalGuards.literalBracketPairs)
+      throw bilingualFormatError("damaged Microsoft literal brackets")
+  } else {
+    parseBilingualFormat(result, manifest)
+  }
   return result
 }
 
