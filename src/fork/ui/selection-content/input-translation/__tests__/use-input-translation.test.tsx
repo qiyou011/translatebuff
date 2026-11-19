@@ -1252,6 +1252,44 @@ describe("useInputTranslation 的语言解析", () => {
     )
   })
 
+  it.each([
+    { triggerCount: 2, editDraft: false },
+    { triggerCount: 5, editDraft: false },
+    { triggerCount: 2, editDraft: true },
+  ])(
+    "Telegram Web K counts $triggerCount spaces with a separate input notification (draft edited: $editDraft)",
+    async ({ triggerCount, editDraft }) => {
+      vi.stubGlobal("location", new URL("https://web.telegram.org/k/#123"))
+      const config = configWith({ sourceCode: "auto", targetCode: "cmn" })
+      getLocalConfigMock.mockResolvedValue(config)
+      translateTextForInputMock.mockReturnValue(deferredTranslation().promise)
+      document.body.innerHTML = `<div class="chat active">
+      <div class="bubbles scrolled-down"><div class="bubbles-scrollable"><div class="bubbles-inner"></div></div></div>
+      <div class="chat-input"><div class="input-message-input" contenteditable="true">说话</div></div>
+    </div>`
+      const editor = document.querySelector<HTMLElement>(".input-message-input")!
+      Object.defineProperty(editor, "isContentEditable", { value: true })
+      editor.focus()
+      renderWithConfig(config, triggerCount)
+
+      for (let i = 1; i < triggerCount + Number(editDraft); i++) {
+        expect(fireEvent.keyDown(editor, { key: " " })).toBe(true)
+        editor.textContent += "\u00a0"
+        fireEvent.input(editor, { inputType: "insertText", data: " " })
+        if (editDraft && i === 1) editor.textContent = "新草稿"
+        fireEvent(editor, new Event("input", { bubbles: true }))
+      }
+      expect(fireEvent.keyDown(editor, { key: " " })).toBe(false)
+      await waitFor(() => {
+        expect(translateTextForInputMock).toHaveBeenCalledExactlyOnceWith(
+          editDraft ? "新草稿" : "说话",
+          "cmn",
+          "rus",
+        )
+      })
+    },
+  )
+
   it("Telegram does not show undo when the host rejects the draft replacement", async () => {
     vi.stubGlobal("location", new URL("https://web.telegram.org/a/#123"))
     const config = configWith({ sourceCode: "auto", targetCode: "cmn" })

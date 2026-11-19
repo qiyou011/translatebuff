@@ -177,7 +177,11 @@ export function useInputTranslation() {
   }, [featureConfig?.revision])
   const writeIdRef = useRef(0)
   const writingElementRef = useRef<HTMLElement | null>(null)
-  const triggerSnapshotRef = useRef<{ element: HTMLElement; text: string } | null>(null)
+  const triggerSnapshotRef = useRef<{
+    element: HTMLElement
+    text: string
+    spaceInputText?: string
+  } | null>(null)
   const interactionElementRef = useRef<HTMLElement | null>(null)
   const languageMenuOpenRef = useRef(false)
   const [barState, setBarState] = useState<InputTranslationBarState | null>(null)
@@ -1016,7 +1020,8 @@ export function useInputTranslation() {
     }
 
     const handleDraftEdit = (event: Event) => {
-      if (!eventComesFrom(event, triggerSnapshotRef.current?.element ?? null)) return
+      const snapshot = triggerSnapshotRef.current
+      if (!snapshot || !eventComesFrom(event, snapshot.element)) return
       // A keyboard space's default insertion is part of the sequence. Paste, drop,
       // composition and other edits are not: the next space must take a fresh snapshot.
       if (
@@ -1024,6 +1029,22 @@ export function useInputTranslation() {
         event.inputType === "insertText" &&
         event.data === SPACE_KEY &&
         !event.isComposing
+      ) {
+        if (
+          spaceTimestampsRef.current.length &&
+          window.location.pathname.startsWith("/k/") &&
+          isTelegramUrl(window.location.href)
+        ) {
+          snapshot.spaceInputText = getEditableText(snapshot.element)
+        }
+        return
+      }
+      // Telegram Web K emits a plain input notification after the native space insertion.
+      if (
+        !(event instanceof InputEvent) &&
+        snapshot.spaceInputText !== undefined &&
+        spaceTimestampsRef.current.length &&
+        snapshot.spaceInputText === getEditableText(snapshot.element)
       )
         return
       spaceTimestampsRef.current = []
