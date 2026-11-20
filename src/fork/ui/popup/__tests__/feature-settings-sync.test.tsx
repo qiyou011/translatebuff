@@ -29,6 +29,28 @@ afterEach(() => {
 })
 
 describe("quick settings and full settings synchronization", () => {
+  it("keeps the subtitle switch in full settings and leaves the compact tutorial to animate it", async () => {
+    await storage.clear("local")
+    service = createFeatureConfigStore(async () => {
+      await storage.setItem("local:config", structuredClone(DEFAULT_CONFIG))
+    })
+    const view = render(
+      <Provider store={createStore()}>
+        <FeatureSettings feature="subtitles" compact />
+      </Provider>,
+    )
+    await waitFor(() =>
+      expect(document.querySelector('[data-feature-settings="subtitles"]')).toBeTruthy(),
+    )
+    expect(screen.queryByRole("switch", { name: "quickTranslation.enabled" })).toBeNull()
+    view.rerender(
+      <Provider store={createStore()}>
+        <FeatureSettings feature="subtitles" />
+      </Provider>,
+    )
+    expect(await screen.findByRole("switch", { name: "quickTranslation.enabled" })).toBeTruthy()
+  })
+
   it("replaces the error with the saved settings when the background recovers", async () => {
     await storage.clear("local")
     service = createFeatureConfigStore(async () => {

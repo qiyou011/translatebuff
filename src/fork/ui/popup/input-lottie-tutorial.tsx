@@ -20,8 +20,8 @@ export function InputLottieTutorial({ label, fallback }: { label: string; fallba
       src={sources[currentEdition()][theme]}
       label={label}
       fallback={fallback}
-      viewBox={`${theme === "light" ? 36.7 : 484.7} 272.9 376 111.8`}
-      aspectRatio="376 / 111.8"
+      viewBox={`${theme === "light" ? 36.7 : 484.7} 304.9 376 131.8`}
+      aspectRatio="376 / 131.8"
       stillFrame={320}
     />
   )

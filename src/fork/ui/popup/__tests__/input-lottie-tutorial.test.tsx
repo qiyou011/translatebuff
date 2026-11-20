@@ -84,7 +84,7 @@ describe("input Lottie tutorial", () => {
       expect(player.loadAnimation).toHaveBeenCalledWith(
         expect.objectContaining({
           rendererSettings: expect.objectContaining({
-            viewBoxSize: "44.7 272.13613 360 202.56387",
+            viewBoxSize: "36.7 219.13613 374.6 258.76057",
           }),
         }),
       )
@@ -94,7 +94,7 @@ describe("input Lottie tutorial", () => {
       expect(player.loadAnimation).toHaveBeenLastCalledWith(
         expect.objectContaining({
           rendererSettings: expect.objectContaining({
-            viewBoxSize: "492.7 272.13613 360 202.56387",
+            viewBoxSize: "484.7 219.13613 374.6 258.76057",
           }),
         }),
       )

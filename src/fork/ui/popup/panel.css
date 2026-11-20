@@ -11,6 +11,7 @@
 .tb-quick-sheet {
   --tb-canvas: #fff;
   --tb-surface: #fff;
+  --tb-account-hover: #e8e8e8;
   --tb-subtle: #f5f5f5;
   --tb-text: #0a0a0a;
   --tb-muted: #737373;
@@ -29,6 +30,7 @@
 .dark .tb-quick-sheet {
   --tb-canvas: #0a0a0a;
   --tb-surface: #171717;
+  --tb-account-hover: #202020;
   --tb-subtle: #262626;
   --tb-text: #fafafa;
   --tb-muted: #a3a3a3;
@@ -70,6 +72,10 @@
   padding: 4px 8px;
   border-radius: 10px;
 }
+.tb-panel-account [data-slot="dropdown-menu-trigger"]:is(:hover, :active, [data-popup-open]) {
+  background: var(--tb-account-hover);
+  color: var(--tb-text);
+}
 .tb-panel-account [data-slot="dropdown-menu-trigger"] > svg,
 .tb-panel-account > div > div > svg {
   width: 27px;
@@ -80,11 +86,38 @@
 .tb-panel-account > div > div > svg * {
   visibility: hidden;
 }
-.tb-panel-account [data-slot="dropdown-menu-trigger"] > span {
+.tb-panel-account [data-slot="dropdown-menu-trigger"] > span.truncate {
   font-size: 11.5px;
   line-height: 18px;
   font-weight: 400;
   max-width: 143px;
+}
+.tb-panel-account [data-slot="dropdown-menu-trigger"] > span:not(.truncate) {
+  font-family: "Inter Variable", "TB Noto Sans SC", sans-serif;
+  font-size: 10px;
+  line-height: 10px;
+  font-weight: 900;
+}
+.tb-panel-account > div > button {
+  font-size: 11px;
+  line-height: 18px;
+  font-weight: 500;
+}
+.tb-panel .tb-redeem-button {
+  width: 56px;
+  height: 28px;
+  min-height: 28px;
+  flex-shrink: 0;
+  padding: 0 8px;
+  border: 1px solid var(--tb-border);
+  border-radius: 8px;
+  background: var(--tb-surface);
+  color: var(--tb-text);
+  box-shadow: none;
+  cursor: pointer;
+}
+.tb-panel .tb-redeem-button:hover {
+  background: var(--tb-border);
 }
 .tb-panel-hub button {
   width: 34px;
@@ -224,9 +257,14 @@
   display: flex;
   align-items: center;
   gap: 6px;
+  font-size: 13px;
+  line-height: 20px;
+  font-weight: 400;
+}
+.tb-smart-settings > div:first-child > span {
   font-size: 11.5px;
   line-height: 18px;
-  font-weight: 400;
+  font-weight: 500;
 }
 .tb-smart-row[data-unavailable] {
   color: var(--tb-muted);
@@ -240,8 +278,8 @@
   border: 1px solid var(--tb-border);
   border-radius: 12px;
   background: var(--tb-subtle);
-  font-size: 10px;
-  line-height: 16px;
+  font-size: 13px;
+  line-height: 20px;
   box-shadow: none;
 }
 .tb-prompt-selector:disabled {
@@ -361,9 +399,9 @@
 }
 .tb-site-control span {
   color: var(--tb-muted);
-  font-size: 10px;
+  font-size: 13px;
   font-weight: 400;
-  line-height: 16px;
+  line-height: 20px;
 }
 .tb-panel-footer {
   display: flex;
@@ -379,13 +417,13 @@
   align-items: center;
   gap: 6px;
   height: 25px;
-  font-size: 10px;
-  line-height: 16px;
+  font-size: 13px;
+  line-height: 20px;
   cursor: pointer;
 }
 .tb-panel-footer > span {
-  font-size: 9px;
-  line-height: 16px;
+  font-size: 12px;
+  line-height: 18px;
 }
 .tb-quick-sheet[data-slot="dialog-content"] {
   display: flex;
@@ -518,9 +556,9 @@
 }
 .tb-tutorial-description p {
   flex: 1;
-  font-size: 10.5px;
-  line-height: 16px;
-  color: var(--tb-muted);
+  font-size: 13px;
+  line-height: 20px;
+  color: var(--tb-text);
 }
 .tb-platform-icons {
   display: flex;
@@ -608,15 +646,15 @@
 }
 .tb-platform-notice {
   padding: 16px 8px 0;
-  font-size: 10.5px;
-  line-height: 14px;
+  font-size: 13px;
+  line-height: 20px;
   color: var(--tb-muted);
 }
 .tb-selection-description {
   padding: 17px 8px 6px;
-  font-size: 10px;
-  line-height: 16px;
-  color: var(--tb-muted);
+  font-size: 13px;
+  line-height: 20px;
+  color: var(--tb-text);
 }
 .tb-selection-scene {
   display: flex;
@@ -673,9 +711,12 @@
   border-top: 1px solid var(--tb-border);
 }
 .tb-video-tutorial {
-  padding: 9px 8px 0;
+  padding: 0;
 }
-.tb-video-tutorial .tb-lottie-tutorial,
+.tb-video-tutorial .tb-lottie-tutorial {
+  border-radius: 0;
+  background: transparent;
+}
 .tb-video-browser {
   border-radius: 4.305px;
 }
@@ -698,9 +739,9 @@
   height: 184.56387329101562px;
 }
 .tb-video-tutorial > p {
-  padding-top: 6px;
-  font-size: 9px;
-  line-height: 13px;
+  padding: 6px 8px 0;
+  font-size: 13px;
+  line-height: 20px;
   color: var(--tb-muted);
 }
 .dark .tb-discord-scene {
@@ -743,7 +784,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 15px;
+  font-size: 16px;
 }
 .tb-quick-sheet .tb-language-row > .tb-panel-icon {
   width: 20px !important;
@@ -751,7 +792,8 @@
 }
 .tb-quick-sheet .tb-context-row {
   height: 44px;
-  font-size: 11.5px;
+  font-size: 13px;
+  line-height: 20px;
   font-weight: 400;
 }
 .tb-quick-sheet .tb-feature-settings {

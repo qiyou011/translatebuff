@@ -81,12 +81,6 @@ describe.each([
     })
     it.each(["logged-out", "free", "pro"])("%s 提供官网兑换入口", async (state) => {
       renderAccount(edition, state, locale)
-      if (edition === "cn") {
-        // The domestic header follows the edition-specific entry policy.
-        if (screen.queryByRole("button", { name: "兑换码" }))
-          throw new Error("Domestic redeem entry visible")
-        return
-      }
       const redeem = screen.getByRole("button", { name: "兑换码" })
       expect(redeem).toBeVisible()
       fireEvent.click(redeem)

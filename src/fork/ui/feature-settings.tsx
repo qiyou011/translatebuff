@@ -220,16 +220,6 @@ export function FeatureSettings({
             />
           </label>
         )}
-        {feature === "subtitles" && (
-          <label className="tb-context-row">
-            <span>{i18n.t("quickTranslation.enableSubtitles")}</span>
-            <Switch
-              aria-label={i18n.t("quickTranslation.enabled")}
-              checked={enabled}
-              onCheckedChange={setEnabled}
-            />
-          </label>
-        )}
       </div>
     )
   }

@@ -20,8 +20,8 @@ export function SubtitleLottieTutorial({
       src={sources[currentEdition()]}
       label={label}
       fallback={fallback}
-      viewBox={`${theme === "light" ? 44.7 : 492.7} 272.13613 360 202.56387`}
-      aspectRatio="360 / 202.56387"
+      viewBox={`${theme === "light" ? 36.7 : 484.7} 219.13613 374.6 258.76057`}
+      aspectRatio="374.6 / 258.76057"
       stillFrame={240}
     />
   )
