@@ -5,7 +5,7 @@ import { setupTtmlCapture } from "./ttml-capture"
 
 export default defineContentScript({
   matches: ["*://www.netflix.com/*"],
-  excludeMatches: FORK_UPSTREAM_ADMISSION.netflixSubtitles ? [] : ["*://www.netflix.com/*"],
+  excludeMatches: FORK_UPSTREAM_ADMISSION.netflixSubtitles ? undefined : ["*://www.netflix.com/*"],
   world: "MAIN",
   runAt: "document_start",
   main() {
